@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
-    <artifactId>traverser</artifactId>
+    <artifactId>gremlin</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
-    <name>Traverser Framework</name>
+    <name>Gremlin: A Graph Walker Language</name>
 
     <dependencies>
         <dependency>
