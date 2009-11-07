@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="Maven: org.neo4j:neo:1.0-b10" level="project" />
+    <orderEntry type="library" exported="" name="Maven: javax.transaction:jta:1.1" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.neo4j:index-util:0.8" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.apache.lucene:lucene-core:2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.neo4j:shell:1.0-b10" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.neo4j:remote-neo:0.3" level="project" />
+    <orderEntry type="library" exported="" name="Maven: junit:junit:4.5" level="project" />
+  </component>
+</module>
+
