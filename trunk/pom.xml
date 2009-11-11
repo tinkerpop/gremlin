@@ -11,11 +11,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>commons-jxpath</groupId>
+            <artifactId>commons-jxpath</artifactId>
+            <version>1.3</version>
+        </dependency>
+        <!-- SUPPORT -->
+        <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>apoc</artifactId>
             <version>0.2</version>
             <type>pom</type>
         </dependency>
+        <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -25,6 +32,10 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>maven repository</id>
+            <url>http://mvnrepository.com/</url>
+        </repository>
         <repository>
             <id>aduna-repo</id>
             <name>Aduna repository</name>
@@ -38,7 +49,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>                                                        
+    </repositories>
 
     <build>
         <directory>${basedir}/target</directory>

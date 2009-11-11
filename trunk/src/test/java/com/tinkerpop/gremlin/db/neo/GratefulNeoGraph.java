@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.db.neo;
 
-import com.tinkerpop.gremlin.Walker;
 import org.neo4j.api.core.*;
 import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.LuceneIndexService;
@@ -20,7 +19,7 @@ public class GratefulNeoGraph {
     private IndexService index;
 
     public static enum DeadRelationships implements RelationshipType {
-        FOLLOWS, WRITTEN_BY, SUNG_BY
+        FOLLOWED_BY, WRITTEN_BY, SUNG_BY
     }
 
     public static final String NEO_DIRECTORY = "/tmp/grateful_neo_graph";
@@ -49,7 +48,7 @@ public class GratefulNeoGraph {
         // LOAD SONG FOLLOWS GRAPH
         Transaction tx = neo.beginTx();
         try {
-            BufferedReader input = new BufferedReader(new InputStreamReader(Walker.class.getResourceAsStream("song-follows-net.txt")));
+            BufferedReader input = new BufferedReader(new InputStreamReader(GratefulNeoGraph.class.getResourceAsStream("../song-follows-net.txt")));
             String line = input.readLine();
             while (line != null) {
                 String[] edge = line.split("\t");
@@ -67,8 +66,8 @@ public class GratefulNeoGraph {
                     index.index(endSong, NAME, edge[1]);
                 }
                 if (!startSong.getProperty(NAME).equals(endSong.getProperty(NAME))) {
-                    System.out.println(startSong.getProperty(NAME) + "--FOLLOWS[" + new Float(edge[2]).intValue() + "]-->" + endSong.getProperty(NAME));
-                    Relationship r = startSong.createRelationshipTo(endSong, DeadRelationships.FOLLOWS);
+                    System.out.println(startSong.getProperty(NAME) + "--FOLLOWED_BY[" + new Float(edge[2]).intValue() + "]-->" + endSong.getProperty(NAME));
+                    Relationship r = startSong.createRelationshipTo(endSong, DeadRelationships.FOLLOWED_BY);
                     r.setProperty(WEIGHT, new Float(edge[2]).intValue());
                 }
 
@@ -85,7 +84,7 @@ public class GratefulNeoGraph {
         // LOAD SONG AUTHOR/SINGER NETWORK
         tx = neo.beginTx();
         try {
-            BufferedReader input = new BufferedReader(new InputStreamReader(Walker.class.getResourceAsStream("author-singer-net.txt")));
+            BufferedReader input = new BufferedReader(new InputStreamReader(GratefulNeoGraph.class.getResourceAsStream("../author-singer-net.txt")));
             input.readLine();
             String line = input.readLine();
             while (line != null) {

@@ -1,7 +1,10 @@
 package com.tinkerpop.gremlin;
 
-import java.util.List;
-import java.util.LinkedList;
+import org.apache.commons.jxpath.ClassFunctions;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.JXPathIntrospector;
+
+import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -9,27 +12,20 @@ import java.util.LinkedList;
  */
 public class Evaluator {
 
-    private WalkerSet walkerSet;
+    protected JXPathContext baseContext;
 
-    public Evaluator(WalkerSet walkerSet) {
-        this.walkerSet = walkerSet;
+    public Evaluator() {
+        JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
+        JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
+        this.baseContext = JXPathContext.newContext(null);
+        this.baseContext.setFunctions(new ClassFunctions(TestFunctions.class, "test"));
     }
 
-    public void execute(int numberOfSteps) {
-        for (int i = 0; i < numberOfSteps; i++) {
-            this.step();
-            if (this.walkerSet.getSize() == 0) {
-                return;
-            }
-        }
+    public Iterator evaluate(Element startElement, String path) {
+        JXPathContext context = JXPathContext.newContext(baseContext, startElement);
+
+        return context.iterate(path);
     }
 
-    public void step() {
 
-        List<Walker> toRemove = new LinkedList<Walker>();
-        for (Walker w : this.walkerSet.getWalkers()) {
-            w.evaluate();
-        }
-        this.walkerSet.removeWalkers(toRemove);
-    }
 }

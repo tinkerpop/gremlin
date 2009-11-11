@@ -8,27 +8,20 @@ import org.neo4j.api.core.Relationship;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoEdge implements Edge {
-
-    private Relationship relationship;
+public class NeoEdge extends NeoElement implements Edge {
 
     public NeoEdge(Relationship relationship) {
-        this.relationship = relationship;
+        this.element = relationship;
     }
 
-    public String getEdgeLabel() {
-        return relationship.getType().name();
+    public String getLabel() {
+        return ((Relationship) this.element).getType().name();
     }
 
-    public Vertex getInVertex() {
-        return new NeoVertex(relationship.getEndNode());
-    }
-
-    public Vertex getOutVertex() {
-        return new NeoVertex(relationship.getStartNode());
-    }
-
-    public Relationship getEdgeObject() {
-        return this.relationship;
+    public Vertex getVertex(Vertex.Direction direction) {
+        if (direction == Vertex.Direction.OUT)
+            return new NeoVertex(((Relationship) this.element).getEndNode());
+        else
+            return new NeoVertex(((Relationship) this.element).getStartNode());
     }
 }
