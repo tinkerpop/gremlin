@@ -32,10 +32,13 @@ public class NeoWalkerTest extends TestCase {
             Vertex vertex = new NeoVertex(node);
             System.out.println("Outedges size: " + vertex.getEdges(Vertex.Direction.OUT).size());
             Evaluator eval = new Evaluator();
-            Iterator itty = eval.evaluate(vertex, "./outEdges[@label = 'SUNG_BY']/outVertex/inEdges[@label='WRITTEN_BY']/inVertex/.[test:updateMap(.)]");
+            //Iterator itty = eval.evaluate(vertex, "./outEdges[@label = 'SUNG_BY']/outVertex/inEdges[@label='WRITTEN_BY'][g:random(last())]/inVertex/@name");
+            Iterator itty = eval.evaluate(vertex, "./outEdges[@label='FOLLOWED_BY'][g:random(last())]/outVertex/name");
+
             int counter = 0;
             while(itty.hasNext()) {
-                System.out.println(itty.next());
+                Object obj = itty.next();
+                System.out.println(obj + "---" + obj.getClass());
                 counter++;
             }
             System.out.println("Counter: " + counter);
@@ -44,6 +47,8 @@ public class NeoWalkerTest extends TestCase {
         } finally {
             tx.finish();
         }
+        index.shutdown();
+        neo.shutdown();
 
     }
 

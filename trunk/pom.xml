@@ -15,7 +15,12 @@
             <artifactId>commons-jxpath</artifactId>
             <version>1.3</version>
         </dependency>
-        <!-- SUPPORT -->
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>0.9.94</version>
+        </dependency>
+        <!-- GRAPH IMPLEMENTATION SUPPORT -->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>apoc</artifactId>

@@ -2,9 +2,8 @@ package com.tinkerpop.gremlin;
 
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
