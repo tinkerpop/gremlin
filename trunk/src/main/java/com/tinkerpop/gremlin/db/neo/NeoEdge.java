@@ -20,8 +20,8 @@ public class NeoEdge extends NeoElement implements Edge {
 
     public Vertex getVertex(Vertex.Direction direction) {
         if (direction == Vertex.Direction.OUT)
-            return new NeoVertex(((Relationship) this.element).getEndNode());
-        else
             return new NeoVertex(((Relationship) this.element).getStartNode());
+        else
+            return new NeoVertex(((Relationship) this.element).getEndNode());
     }
 }

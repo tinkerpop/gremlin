@@ -18,13 +18,16 @@ public class Console {
 
         String line;
         PrintWriter out = new PrintWriter(System.out);
-
+        Evaluator evaluator = new Evaluator();
         while ((line = reader.readLine("gremlin> ")) != null) {
             out.println("======>\"" + line + "\"");
             out.flush();
 
             if (line.equalsIgnoreCase("quit"))
                 break;
+            else {
+                evaluator.evaluate(null, line);
+            }
 
         }
 

@@ -42,6 +42,8 @@ public class NeoWalkerTest extends TestCase {
                 counter++;
             }
             System.out.println("Counter: " + counter);
+            
+
             tx.success();
 
         } finally {
