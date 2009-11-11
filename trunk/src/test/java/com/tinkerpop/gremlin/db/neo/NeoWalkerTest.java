@@ -1,16 +1,16 @@
 package com.tinkerpop.gremlin.db.neo;
 
-import com.tinkerpop.gremlin.*;
+import java.util.Iterator;
+
 import junit.framework.TestCase;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathIntrospector;
-import org.apache.commons.jxpath.ClassFunctions;
+
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
 
-import java.util.Iterator;
+import com.tinkerpop.gremlin.Evaluator;
+import com.tinkerpop.gremlin.Vertex;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
