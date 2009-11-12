@@ -1,21 +1,19 @@
-package com.tinkerpop.gremlin.db.mini;
+package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.Edge;
 import com.tinkerpop.gremlin.Vertex;
-
-import java.util.UUID;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class MiniEdge extends MiniElement implements Edge {
+public class TinkerEdge extends TinkerElement implements Edge {
 
     protected String label;
     protected Vertex inVertex;
     protected Vertex outVertex;
 
-    public MiniEdge(Vertex outVertex, Vertex inVertex, String label) {
+    public TinkerEdge(Vertex outVertex, Vertex inVertex, String label) {
         super();
         this.label = label;
         this.outVertex = outVertex;
@@ -27,7 +25,7 @@ public class MiniEdge extends MiniElement implements Edge {
     }
 
     public Vertex getVertex(Vertex.Direction direction) {
-        if(direction == Vertex.Direction.OUT)
+        if (direction == Vertex.Direction.OUT)
             return this.outVertex;
         else
             return this.inVertex;

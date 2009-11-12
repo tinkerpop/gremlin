@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.mini;
+package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.Edge;
 import com.tinkerpop.gremlin.Vertex;
@@ -10,12 +10,12 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class MiniVertex extends MiniElement implements Vertex {
+public class TinkerVertex extends TinkerElement implements Vertex {
 
     protected Set<Edge> outEdges = new HashSet<Edge>();
     protected Set<Edge> inEdges = new HashSet<Edge>();
 
-    public MiniVertex(String id) {
+    public TinkerVertex(String id) {
         super(id);
     }
 
@@ -32,15 +32,15 @@ public class MiniVertex extends MiniElement implements Vertex {
         }
     }
 
-    public MiniEdge createOutEdge(MiniVertex inVertex, String label) {
-        MiniEdge edge = new MiniEdge(this, inVertex, label);
+    public TinkerEdge createOutEdge(TinkerVertex inVertex, String label) {
+        TinkerEdge edge = new TinkerEdge(this, inVertex, label);
         this.outEdges.add(edge);
         inVertex.inEdges.add(edge);
         return edge;
     }
 
-    public MiniEdge createInEdge(MiniVertex outVertex, String label) {
-        MiniEdge edge = new MiniEdge(outVertex, this, label);
+    public TinkerEdge createInEdge(TinkerVertex outVertex, String label) {
+        TinkerEdge edge = new TinkerEdge(outVertex, this, label);
         this.inEdges.add(edge);
         outVertex.outEdges.add(edge);
         return edge;

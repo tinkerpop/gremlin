@@ -1,16 +1,14 @@
 package com.tinkerpop.gremlin.db.neo;
 
-import java.util.Iterator;
-
+import com.tinkerpop.gremlin.Evaluator;
+import com.tinkerpop.gremlin.Vertex;
 import junit.framework.TestCase;
-
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
 
-import com.tinkerpop.gremlin.Evaluator;
-import com.tinkerpop.gremlin.Vertex;
+import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -36,13 +34,13 @@ public class NeoWalkerTest extends TestCase {
             Iterator itty = eval.evaluate(vertex, "./outEdges[@label='FOLLOWED_BY'][g:random(last())]/outVertex/name");
 
             int counter = 0;
-            while(itty.hasNext()) {
+            while (itty.hasNext()) {
                 Object obj = itty.next();
                 System.out.println(obj + "---" + obj.getClass());
                 counter++;
             }
             System.out.println("Counter: " + counter);
-            
+
 
             tx.success();
 

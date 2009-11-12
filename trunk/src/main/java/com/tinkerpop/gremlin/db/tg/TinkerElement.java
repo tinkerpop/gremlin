@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.mini;
+package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.Element;
 
@@ -11,16 +11,16 @@ import java.util.UUID;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class MiniElement implements Element {
+public class TinkerElement implements Element {
 
     protected Map<String, Object> properties = new HashMap<String, Object>();
     protected String id;
 
-    public MiniElement() {
+    public TinkerElement() {
         this.id = UUID.randomUUID().toString();
     }
 
-    public MiniElement(String id) {
+    public TinkerElement(String id) {
         this.id = id;
     }
 

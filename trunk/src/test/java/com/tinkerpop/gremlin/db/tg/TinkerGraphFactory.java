@@ -1,42 +1,42 @@
-package com.tinkerpop.gremlin.db.mini;
+package com.tinkerpop.gremlin.db.tg;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class MiniGraphFactory {
+public class TinkerGraphFactory {
 
-    public static MiniGraph createTinkerGraph() {
+    public static TinkerGraph createTinkerGraph() {
         // see tinker-graph.pdf for a visualization of this graph
 
-        MiniGraph graph = new MiniGraph();
+        TinkerGraph graph = new TinkerGraph();
 
-        MiniVertex marko = new MiniVertex("1");
+        TinkerVertex marko = new TinkerVertex("1");
         marko.setProperty("name", "marko");
         marko.setProperty("age", 29);
         graph.addVertex(marko);
 
-        MiniVertex vadas = new MiniVertex("2");
+        TinkerVertex vadas = new TinkerVertex("2");
         vadas.setProperty("name", "vadas");
         vadas.setProperty("age", 27);
         graph.addVertex(vadas);
 
-        MiniVertex lop = new MiniVertex("3");
+        TinkerVertex lop = new TinkerVertex("3");
         lop.setProperty("name", "lop");
         lop.setProperty("lang", "java");
         graph.addVertex(lop);
 
-        MiniVertex josh = new MiniVertex("4");
+        TinkerVertex josh = new TinkerVertex("4");
         josh.setProperty("name", "josh");
         josh.setProperty("age", 32);
         graph.addVertex(josh);
 
-        MiniVertex ripple = new MiniVertex("5");
+        TinkerVertex ripple = new TinkerVertex("5");
         ripple.setProperty("name", "ripple");
         ripple.setProperty("lang", "java");
         graph.addVertex(ripple);
 
-        MiniVertex peter = new MiniVertex("6");
+        TinkerVertex peter = new TinkerVertex("6");
         peter.setProperty("name", "peter");
         peter.setProperty("age", 35);
         graph.addVertex(peter);

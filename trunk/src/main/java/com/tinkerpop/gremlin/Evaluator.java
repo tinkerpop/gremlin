@@ -26,11 +26,11 @@ public class Evaluator {
     }
 
     public Iterator evaluate(Element startElement, String path) {
-        if(path.trim().startsWith("def $")) {
+        if (path.trim().startsWith("def $")) {
             int a = path.indexOf("$");
             int b = path.indexOf("=");
-            String variable = path.substring(a,b).trim();
-            String value = path.substring(b+1).trim();
+            String variable = path.substring(a, b).trim();
+            String value = path.substring(b + 1).trim();
             this.baseContext.getVariables().declareVariable(variable, value);
             System.out.println(variable + "!!" + value);
         } else {

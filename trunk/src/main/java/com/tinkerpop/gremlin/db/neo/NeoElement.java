@@ -1,11 +1,10 @@
 package com.tinkerpop.gremlin.db.neo;
 
+import com.tinkerpop.gremlin.Element;
 import org.neo4j.api.core.PropertyContainer;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import com.tinkerpop.gremlin.Element;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
