@@ -7,17 +7,18 @@ import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import junit.framework.TestCase;
+import com.tinkerpop.gremlin.Evaluator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
 public class GremlinLanguageTest extends TestCase {
+
     public static void main(String args[]) throws Exception {
-        GremlinLexer lex = new GremlinLexer(new ANTLRFileStream("/Users/marko/software/gremlin/trunk/src/test/resources/com/tinkerpop/gremlin/lang/gremlin-examples.txt"));
-        //GremlinLexer lex = new GremlinLexer(new ANTLRStringStream("$i := 2\r\n"));
+        //GremlinLexer lex = new GremlinLexer(new ANTLRFileStream("/Users/marko/software/gremlin/trunk/src/test/resources/com/tinkerpop/gremlin/lang/gremlin-examples.txt"));
+        GremlinLexer lex = new GremlinLexer(new ANTLRStringStream("$i := 2"));
         CommonTokenStream tokens = new CommonTokenStream(lex);
-        System.out.println("TOKENS: " + tokens.getTokens());
         GremlinParser g = new GremlinParser(tokens);
 
         try {
@@ -26,11 +27,8 @@ public class GremlinLanguageTest extends TestCase {
             System.out.println("TREE: " + tree.toStringTree());
             CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
             nodes.setTokenStream(tokens);
-            GremlinWalker walker = new GremlinWalker(nodes);
+            Gremlin walker = new Gremlin(nodes, new Evaluator());
             walker.program();
-
-            System.out.println("NODES: " + nodes.toTokenTypeString());
-
 
         } catch (RecognitionException e) {
             e.printStackTrace();

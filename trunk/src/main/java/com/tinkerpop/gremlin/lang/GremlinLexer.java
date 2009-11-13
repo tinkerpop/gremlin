@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g 2009-11-12 16:22:51
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g 2009-11-13 11:24:30
  package com.tinkerpop.gremlin.lang; 
 
 import org.antlr.runtime.*;
@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class GremlinLexer extends Lexer {
-    public static final int INTEGER=10;
     public static final int SINGLE_COMMENT=6;
     public static final int EOF=-1;
     public static final int VARIABLE=7;
     public static final int STRING=12;
     public static final int ASSIGN=8;
+    public static final int NATURAL=10;
     public static final int DIGIT=9;
     public static final int REAL=11;
     public static final int WHITESPACE=4;
@@ -413,10 +413,10 @@ public class GremlinLexer extends Lexer {
     }
     // $ANTLR end "DIGIT"
 
-    // $ANTLR start "INTEGER"
-    public final void mINTEGER() throws RecognitionException {
+    // $ANTLR start "NATURAL"
+    public final void mNATURAL() throws RecognitionException {
         try {
-            int _type = INTEGER;
+            int _type = NATURAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
             // /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g:16:9: ( ( '1' .. '9' ) ( DIGIT )* )
             // /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g:16:11: ( '1' .. '9' ) ( DIGIT )*
@@ -462,7 +462,7 @@ public class GremlinLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "INTEGER"
+    // $ANTLR end "NATURAL"
 
     // $ANTLR start "REAL"
     public final void mREAL() throws RecognitionException {
@@ -675,7 +675,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR end "PATH"
 
     public void mTokens() throws RecognitionException {
-        // /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g:1:8: ( WHITESPACE | NEWLINE | SINGLE_COMMENT | VARIABLE | ASSIGN | INTEGER | REAL | STRING | PATH )
+        // /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g:1:8: ( WHITESPACE | NEWLINE | SINGLE_COMMENT | VARIABLE | ASSIGN | NATURAL | REAL | STRING | PATH )
         int alt12=9;
         alt12 = dfa12.predict(input);
         switch (alt12) {
@@ -715,9 +715,9 @@ public class GremlinLexer extends Lexer {
                 }
                 break;
             case 6 :
-                // /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g:1:60: INTEGER
+                // /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/lang/GremlinLexer.g:1:60: NATURAL
                 {
-                mINTEGER(); 
+                mNATURAL(); 
 
                 }
                 break;
@@ -807,7 +807,7 @@ public class GremlinLexer extends Lexer {
             this.transition = DFA12_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( WHITESPACE | NEWLINE | SINGLE_COMMENT | VARIABLE | ASSIGN | INTEGER | REAL | STRING | PATH );";
+            return "1:1: Tokens : ( WHITESPACE | NEWLINE | SINGLE_COMMENT | VARIABLE | ASSIGN | NATURAL | REAL | STRING | PATH );";
         }
     }
  

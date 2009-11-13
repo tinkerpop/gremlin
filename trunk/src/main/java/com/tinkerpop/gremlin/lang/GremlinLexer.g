@@ -13,7 +13,7 @@ VARIABLE : '$' ('a'..'z' | 'A' .. 'Z') (('a'..'z') | ('A' .. 'Z') | ('0'..'9'))*
 ASSIGN	: ':=';	
 
 fragment DIGIT : ('0'..'9');
-INTEGER : ('1'..'9') DIGIT*;
+NATURAL : ('1'..'9') DIGIT*;
 REAL : ('0'..'9')+ '.' '0'..'9'*;
 STRING : '"' ~('"')* '"' | '\'' ~('\'')* '\'';
 PATH : '~' STRING;
