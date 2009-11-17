@@ -1,12 +1,9 @@
 package com.tinkerpop.gremlin;
 
-import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.JXPathInvalidAccessException;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.List;
-import java.io.PrintStream;
 
 
 /**
@@ -15,19 +12,20 @@ import java.io.PrintStream;
  */
 public class Evaluator {
 
-    protected GremlinPathContext baseContext = (GremlinPathContext)GremlinPathContext.newContext(null);
-    protected PrintStream output;
+    protected GremlinPathContext baseContext = (GremlinPathContext) GremlinPathContext.newContext(null);
 
     /*static {
-        System.setProperty("org.apache.commons.jxpath.JXPathContextFactory","com.tinkerpop.gremlin.GremlinPathContextFactory");
+        System.setProperty("org.apache.commons.jxpath.JXPathContextFactory", "com.tinkerpop.gremlin.GremlinPathContextFactory");
     }*/
+
 
     public List evaluate(String path) throws JXPathInvalidSyntaxException, JXPathInvalidAccessException {
 
-        if(this.baseContext.rootChanged() && null != this.baseContext.getContextBean()) {
-            this.baseContext = (GremlinPathContext)GremlinPathContext.newContext(this.baseContext, this.baseContext.getContextBean());
+        if (this.baseContext.rootChanged()) {
+            //System.out.println("new root.");
+            this.baseContext = (GremlinPathContext) GremlinPathContext.newContext(this.baseContext, this.baseContext.getContextBean());
         }
-        
+
         List results = this.baseContext.selectNodes(path);
         this.baseContext.getVariables().declareVariable("_", results);
         return results;

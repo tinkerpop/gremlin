@@ -85,8 +85,8 @@ public class EvaluatorTest extends TestCase {
 
     public void testHaltCont() {
         TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
-        assertEquals(marko.getProperty("name"), "marko");
+        TinkerVertex marko = graph.getVertex("6");
+        //assertEquals(marko.getProperty("name"), "marko");
         JXPathContext context = JXPathContext.newContext(marko);
         context.setLenient(true);
 
@@ -95,9 +95,13 @@ public class EvaluatorTest extends TestCase {
         library.addFunctions(context.getFunctions());
         context.setFunctions(library);
 
-        assertEquals(context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(count($i) = 3)]/name"), context.selectNodes("./outEdges/inVertex/name"));
-        context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(count($i) < 2)]/name[g:set('$i')]");
-        assertEquals(context.iterate("$i[g:print()]"), context.iterate("./outEdges/inVertex[g:print()]"));
+        //assertEquals(context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(count($i) = 3)]/name"), context.selectNodes("./outEdges/inVertex/name"));
+        //context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(count($i) < 2)]/name[g:set('$i')]");
+//        assertEquals(context.iterate("$i[g:print()]"), context.iterate("./outEdges/inVertex[g:print()]"));
+
+        printList(context.selectNodes("((./outEdges[@label=\"created\"]/inVertex/inEdges[@label=\"created\"]/outVertex/@name)[g:set('$y')]/../@age)[g:set('$z')][g:cont(false())]"));
+        print(context.iterate("$y"));
+        print(context.iterate("$z"));
 
 
     }

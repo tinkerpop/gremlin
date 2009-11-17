@@ -1,13 +1,10 @@
 package com.tinkerpop.gremlin;
 
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.ClassFunctions;
+import org.apache.commons.jxpath.FunctionLibrary;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-
-import java.util.List;
-import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,10 +12,10 @@ import java.util.Iterator;
  */
 public class GremlinPathContext extends JXPathContextReferenceImpl {
 
-    protected String contextPath;
+    //protected String contextPath;
     private static final String FUNCTION_NAMESPACE = "g";
     protected Graph graph;
-    protected boolean rootChanged = false;
+    private boolean newRoot = false;
 
     static {
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
@@ -27,14 +24,14 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     public GremlinPathContext(JXPathContext parentContext, Object element) {
         super(parentContext, element);
-        if(null == parentContext) {
+        if (null == parentContext) {
             FunctionLibrary library = new FunctionLibrary();
             library.addFunctions(new ClassFunctions(GremlinFunctions.class, FUNCTION_NAMESPACE));
             library.addFunctions(this.getFunctions());
             this.setFunctions(library);
             this.getVariables().declareVariable("_", null);
-        } else {
-            this.setGraph(((GremlinPathContext)parentContext).getGraph());
+        } else if (parentContext instanceof GremlinPathContext) {
+            this.setGraph(((GremlinPathContext) parentContext).getGraph());
         }
     }
 
@@ -50,19 +47,20 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return GremlinPathContext.newContext(null, element);
     }
 
-    public List selectNodes(String path) {
-        this.contextPath = path;
+    /* public List selectNodes(String path) {
+        //System.out.println(this.contextBean + " root nodes");
+        //this.contextPath = path;
         return super.selectNodes(path);
-    }
-    
-    public Iterator iterate(String path) {
-        this.contextPath = path;
-        return super.iterate(path);
-    }
+    }*/
 
-    public String getContextPath() {
+    /*public Iterator iterate(String path) {
+        //this.contextPath = path;
+        return super.iterate(path);
+    }*/
+
+    /*public String getContextPath() {
         return this.contextPath;
-    }
+    }*/
 
     public void setGraph(Graph graph) {
         this.graph = graph;
@@ -73,12 +71,12 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
 
-    public void setRootElement(Object element) {
-        this.contextBean = element;
-        this.rootChanged = true;
+    public void setContextBean(Object root) {
+        this.contextBean = root;
+        this.newRoot = true;
     }
 
     public boolean rootChanged() {
-        return this.rootChanged;
+        return this.newRoot;
     }
 }

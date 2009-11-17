@@ -1,13 +1,15 @@
 package com.tinkerpop.gremlin;
 
-import org.apache.commons.jxpath.*;
+import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
+import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.JXPathContext;
+import org.apache.commons.jxpath.NodeSet;
+import org.apache.commons.jxpath.Pointer;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
-import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -26,18 +28,23 @@ public class GremlinFunctions {
 
     public static Object index_v(ExpressionContext context, Object indexKey) {
         Graph graph = GremlinHelpers.getGremlin(context).getGraph();
-        if(graph == null)
+        if (graph == null)
             return Boolean.FALSE;
-        return(graph.getVertex(indexKey));
+        return (graph.getVertex(indexKey));
     }
 
-    public static Object root(ExpressionContext context, Object roots) {
-        GremlinHelpers.getGremlin(context).setRootElement(roots);
+    public static Object root(ExpressionContext context, Object root) {
+        if (root instanceof List) {
+            if (((List) root).size() == 1) {
+                root = ((List) root).get(0);
+            }
+        }
+        GremlinHelpers.getGremlin(context).setContextBean(root);
         return Boolean.TRUE;
     }
 
     public static Object root(ExpressionContext context) {
-        return GremlinFunctions.root(context, context.getContextNodeList());
+        return GremlinFunctions.root(context, GremlinHelpers.asValue(context.getContextNodeList()));
     }
 
     public static Object random(Integer value) {
@@ -110,6 +117,11 @@ public class GremlinFunctions {
         return Boolean.TRUE;
     }
 
+    public static Object print(String line) {
+        System.out.println(line);
+        return Boolean.TRUE;
+    }
+
     public static Object loop(ExpressionContext context, String path, Integer times) {
         List<Object> results = GremlinHelpers.asValue(context.getContextNodeList());
         List<Object> finalResults = new LinkedList<Object>();
@@ -132,9 +144,9 @@ public class GremlinFunctions {
     }
 
     public static Object loopX(ExpressionContext context, Integer times) {
-        List<Object> results = new LinkedList<Object>(); 
+        List<Object> results = new LinkedList<Object>();
         results.add(context.getJXPathContext().getContextBean());
-        String path = (String)context.getContextNodePointer().getValue();
+        String path = (String) context.getContextNodePointer().getValue();
         List<Object> finalResults = new LinkedList<Object>();
         JXPathContext base = JXPathContext.newContext(null);
         int counter = 0;

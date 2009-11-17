@@ -6,6 +6,7 @@ import org.apache.commons.jxpath.JXPathContext;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -22,7 +23,7 @@ public class GremlinHelpers {
     }
 
     public static List<Object> asValue(List<Pointer> nodePointers) {
-        List<Object> nodeValues = new LinkedList<Object>();
+        List<Object> nodeValues = new ArrayList<Object>();
         for(Pointer p : nodePointers) {
             nodeValues.add(p.getValue());
         }

@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathContext;
 
 /**
@@ -13,8 +12,7 @@ public class GremlinPathContextFactory { //extends JXPathContextFactory {
         return GremlinPathContext.newContext(parentContext, contextBean);
     }
 
-    public static JXPathContextFactory newInstance() {
-        return null;
-        //return new GremlinPathContextFactory();
-    }
+    /*public static JXPathContextFactory newInstance() {
+        return new GremlinPathContextFactory();
+    }*/
 }
