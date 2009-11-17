@@ -1,17 +1,12 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.db.tg.TinkerGraph;
+import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
+import com.tinkerpop.gremlin.db.tg.TinkerVertex;
 import jline.ConsoleReader;
+import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
-import java.io.PrintWriter;
-
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
-import com.tinkerpop.gremlin.lang.GremlinParser;
-import com.tinkerpop.gremlin.lang.GremlinLexer;
-import com.tinkerpop.gremlin.lang.Gremlin;
+import java.io.IOException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -19,43 +14,27 @@ import com.tinkerpop.gremlin.lang.Gremlin;
  */
 public class Console {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
 
-        Console console = new Console();
         ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
         reader.setUseHistory(true);
-
+        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
+        TinkerVertex marko = graph.getVertex("1");
         String line;
-        Evaluator evaluator = new Evaluator(System.out);
+        Evaluator evaluator = new Evaluator(marko);
         while ((line = reader.readLine("gremlin> ")) != null) {
-
             if (line.equalsIgnoreCase("quit"))
                 break;
-            else {
-                console.evaluate(line, evaluator);
+            else if (line.length() > 0) {
+                try {
+                    evaluator.evaluate(line);
+                } catch (JXPathInvalidSyntaxException e) {
+                    System.out.println(e.getMessage().replace("Invalid XPath:", "Invalid expression:"));
+                }
             }
 
         }
 
     }
-
-    public void evaluate(String line, Evaluator evaluator) {
-        GremlinLexer lex = new GremlinLexer(new ANTLRStringStream(line));
-        CommonTokenStream tokens = new CommonTokenStream(lex);
-        GremlinParser g = new GremlinParser(tokens);
-
-        try {
-            GremlinParser.program_return ret = g.program();
-            CommonTree tree = (CommonTree) ret.getTree();
-            CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
-            nodes.setTokenStream(tokens);
-            Gremlin walker = new Gremlin(nodes, evaluator);
-            walker.program();
-
-        } catch (RecognitionException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

@@ -35,4 +35,5 @@ public class NeoVertex extends NeoElement implements Vertex {
         }
         return edges;
     }
+   
 }

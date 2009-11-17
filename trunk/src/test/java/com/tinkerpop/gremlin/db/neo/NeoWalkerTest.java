@@ -29,17 +29,17 @@ public class NeoWalkerTest extends TestCase {
             System.out.println(node);
             Vertex vertex = new NeoVertex(node);
             System.out.println("Outedges size: " + vertex.getEdges(Vertex.Direction.OUT).size());
-            Evaluator eval = new Evaluator();
+            //Evaluator eval = new Evaluator();
             //Iterator itty = eval.evaluate(vertex, "./outEdges[@label = 'SUNG_BY']/outVertex/inEdges[@label='WRITTEN_BY'][g:random(last())]/inVertex/@name");
-            Iterator itty = eval.evaluate(vertex, "./outEdges[@label='FOLLOWED_BY'][g:random(last())]/outVertex/name");
+            //Iterator itty = eval.evaluate(vertex, "./outEdges[@label='FOLLOWED_BY'][g:random(last())]/outVertex/name");
 
-            int counter = 0;
+            /*int counter = 0;
             while (itty.hasNext()) {
                 Object obj = itty.next();
                 System.out.println(obj + "---" + obj.getClass());
                 counter++;
             }
-            System.out.println("Counter: " + counter);
+            System.out.println("Counter: " + counter);*/
 
 
             tx.success();

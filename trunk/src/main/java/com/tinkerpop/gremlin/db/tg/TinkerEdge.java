@@ -31,4 +31,8 @@ public class TinkerEdge extends TinkerElement implements Edge {
             return this.inVertex;
     }
 
+    public String toString() {
+        return ((TinkerVertex)outVertex).getId() + "--" + label + "-->" + ((TinkerVertex)inVertex).getId();
+    }
+
 }

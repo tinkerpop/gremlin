@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>jline</groupId>
-            <artifactId>jline</artifactId>                    
+            <artifactId>jline</artifactId>
             <version>0.9.94</version>
         </dependency>
         <!-- GRAPH IMPLEMENTATION SUPPORT -->
@@ -89,8 +89,35 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2-beta-4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/standalone.xml</descriptor>
+                        <!--<descriptor>src/assembly/distribution.xml</descriptor>-->
+                    </descriptors>
+                    <finalName>gremlin-${project.version}</finalName>
+                    <outputDirectory>target</outputDirectory>
+                    <workDirectory>target/assembly/work</workDirectory>
+                    <tarLongFileMode>warn</tarLongFileMode>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.tinkerpop.gremlin.Console</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>

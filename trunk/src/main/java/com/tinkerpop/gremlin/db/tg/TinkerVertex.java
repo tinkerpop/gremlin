@@ -45,4 +45,9 @@ public class TinkerVertex extends TinkerElement implements Vertex {
         outVertex.outEdges.add(edge);
         return edge;
     }
+
+    public String toString() {
+        //return "vertex[id:" + id + "][outEdges:" + outEdges.size() + "][inEdges:" + inEdges.size() + "]";
+        return "vertex[id:" + id + "]";
+    }
 }
