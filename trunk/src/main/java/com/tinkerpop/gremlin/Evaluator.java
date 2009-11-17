@@ -15,22 +15,21 @@ import java.io.PrintStream;
  */
 public class Evaluator {
 
-    protected GremlinPathContext baseContext;
+    protected GremlinPathContext baseContext = (GremlinPathContext)GremlinPathContext.newContext(null);
     protected PrintStream output;
 
-    public Evaluator(Element rootElement) {
+    /*static {
+        System.setProperty("org.apache.commons.jxpath.JXPathContextFactory","com.tinkerpop.gremlin.GremlinPathContextFactory");
+    }*/
 
-        this.baseContext = GremlinPathContext.newContext(rootElement);
-        
-    }
+    public List evaluate(String path) throws JXPathInvalidSyntaxException, JXPathInvalidAccessException {
 
-    public List<Object> evaluate(String path) throws JXPathInvalidSyntaxException {
-        List<Object> results = this.baseContext.selectNodes(path);
-        this.baseContext.getVariables().declareVariable("_", results);
-        this.baseContext.getVariables().declareVariable("_P", path);
-        for(Object o : results) {
-            System.out.println(o);
+        if(this.baseContext.rootChanged() && null != this.baseContext.getContextBean()) {
+            this.baseContext = (GremlinPathContext)GremlinPathContext.newContext(this.baseContext, this.baseContext.getContextBean());
         }
+        
+        List results = this.baseContext.selectNodes(path);
+        this.baseContext.getVariables().declareVariable("_", results);
         return results;
     }
 }

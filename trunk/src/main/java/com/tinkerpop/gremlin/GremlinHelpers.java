@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin;
 
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Pointer;
+import org.apache.commons.jxpath.JXPathContext;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -14,6 +15,10 @@ public class GremlinHelpers {
 
     public static boolean isLastInContext(ExpressionContext context) {
         return (context.getContextNodeList().size() == context.getPosition()) || (context.getPosition() == 0);      
+    }
+
+    public static GremlinPathContext getGremlin(ExpressionContext context) {
+        return (GremlinPathContext)context.getJXPathContext();
     }
 
     public static List<Object> asValue(List<Pointer> nodePointers) {

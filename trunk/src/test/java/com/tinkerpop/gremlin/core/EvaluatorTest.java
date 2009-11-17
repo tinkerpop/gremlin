@@ -42,7 +42,7 @@ public class EvaluatorTest extends TestCase {
         TinkerVertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
 
-        GremlinPathContext context = GremlinPathContext.newContext(marko);
+        GremlinPathContext context = (GremlinPathContext)GremlinPathContext.newContext(marko);
         context.setLenient(true);
 
         

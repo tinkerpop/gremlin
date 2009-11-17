@@ -1,15 +1,13 @@
 package com.tinkerpop.gremlin;
 
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.NodeSet;
-import org.apache.commons.jxpath.Pointer;
-import org.apache.commons.jxpath.ri.EvalContext;
+import org.apache.commons.jxpath.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
+import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -21,6 +19,27 @@ public class GremlinFunctions {
     private static final String DOLLAR_SIGN = "$";
     private static final String EMPTY_STRING = "";
 
+    public static Object load_tg(ExpressionContext context, String graphFile) {
+        GremlinHelpers.getGremlin(context).setGraph(TinkerGraphFactory.createTinkerGraph());
+        return Boolean.TRUE;
+    }
+
+    public static Object index_v(ExpressionContext context, Object indexKey) {
+        Graph graph = GremlinHelpers.getGremlin(context).getGraph();
+        if(graph == null)
+            return Boolean.FALSE;
+        return(graph.getVertex(indexKey));
+    }
+
+    public static Object root(ExpressionContext context, Object roots) {
+        GremlinHelpers.getGremlin(context).setRootElement(roots);
+        return Boolean.TRUE;
+    }
+
+    public static Object root(ExpressionContext context) {
+        return GremlinFunctions.root(context, context.getContextNodeList());
+    }
+
     public static Object random(Integer value) {
         return random.nextInt(value);
     }
@@ -29,7 +48,7 @@ public class GremlinFunctions {
         return random.nextBoolean();
     }
 
-    public static Object set(ExpressionContext context, String variable, String value) {
+    public static Object set(ExpressionContext context, String variable, Object value) {
         variable = variable.replace(DOLLAR_SIGN, EMPTY_STRING);
         if (GremlinHelpers.isLastInContext(context))
             context.getJXPathContext().getVariables().declareVariable(variable, value);
@@ -37,10 +56,7 @@ public class GremlinFunctions {
     }
 
     public static Object set(ExpressionContext context, String variable) {
-        variable = variable.replace(DOLLAR_SIGN, EMPTY_STRING);
-        if (GremlinHelpers.isLastInContext(context))
-            context.getJXPathContext().getVariables().declareVariable(variable, GremlinHelpers.asValue(context.getContextNodeList()));
-        return Boolean.TRUE;
+        return GremlinFunctions.set(context, variable, GremlinHelpers.asValue(context.getContextNodeList()));
     }
 
     public static Object unset(ExpressionContext context, String variable) {
