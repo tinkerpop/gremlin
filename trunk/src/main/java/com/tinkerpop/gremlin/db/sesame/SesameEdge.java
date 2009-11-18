@@ -66,4 +66,8 @@ public class SesameEdge implements Edge {
         else
             return new SesameVertex(this.statement.getObject(), this.sailConnection);
     }
+
+    public String toString() {
+        return this.statement.toString();
+    }
 }

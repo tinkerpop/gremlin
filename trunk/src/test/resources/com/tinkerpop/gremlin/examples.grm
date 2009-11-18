@@ -1,0 +1,2 @@
+tg:open_tg("graph-example-1.xml")[g:set('$x')]
+g:get_v($x, '1')[g:set_root()]

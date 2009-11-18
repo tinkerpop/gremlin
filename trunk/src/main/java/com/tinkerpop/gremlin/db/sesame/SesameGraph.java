@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.Graph;
 import com.tinkerpop.gremlin.Vertex;
-import org.openrdf.model.Value;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
@@ -22,15 +22,17 @@ public class SesameGraph implements Graph {
     }
 
     public Vertex getVertex(Object id) {
-        if (id instanceof Value) {
-            return new SesameVertex((Value) id, this.sailConnection);
-        } else {
-            return null;
+        return new SesameVertex(new URIImpl((String) id), this.sailConnection);
+    }
+
+    public void shutdown() {
+        try {
+            this.sailConnection.close();
+            this.sail.shutDown();
+        } catch (SailException e) {
+            e.printStackTrace();
         }
     }
 
-    public void shutdown() throws SailException {
-        this.sailConnection.close();
-        this.sail.shutDown();
-    }
+
 }

@@ -62,4 +62,8 @@ public class SesameVertex implements Vertex {
         return edges;
 
     }
+
+    public String toString() {
+        return this.value.toString();
+    }
 }

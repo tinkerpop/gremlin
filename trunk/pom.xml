@@ -73,6 +73,11 @@
             <artifactId>sesame-rio-ntriples</artifactId>
             <version>2.3-pr1</version>
         </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-sail-nativerdf</artifactId>
+            <version>2.3-pr1</version>
+        </dependency>
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -95,7 +100,7 @@
     <repositories>
         <repository>
             <id>maven repository</id>
-            <url>http://mvnrepository.com/</url>
+            <url>http://mvnrepository.com</url>
         </repository>
         <repository>
             <id>aduna-repo</id>

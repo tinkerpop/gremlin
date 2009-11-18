@@ -25,10 +25,9 @@ public class Evaluator {
         System.setProperty("org.apache.commons.jxpath.JXPathContextFactory", "com.tinkerpop.gremlin.GremlinPathContextFactory");
     }*/
 
-
     public List evaluate(String path) throws JXPathInvalidSyntaxException, JXPathInvalidAccessException {
 
-        System.out.println("Evaluating: " + path);
+        //System.out.println("Evaluating: " + path);
 
         if (this.baseContext.rootChanged()) {
             //System.out.println("new root.");
@@ -40,11 +39,19 @@ public class Evaluator {
         return results;
     }
 
-    public void setVariable(String variableName, Object value) {
-        this.baseContext.getVariables().declareVariable(variableName, value);
+    public void setVariable(String variable, Object value) {
+        this.baseContext.getVariables().declareVariable(FunctionHelper.getVariable(variable), value);
     }
 
-    public static void main(String args[]) throws Exception {
+    public Object getVariable(String variable) {
+        return this.baseContext.getVariables().getVariable(FunctionHelper.getVariable(variable));
+    }
+
+    public void setRoot(Object rootObject) {
+        this.baseContext.setContextBean(rootObject);
+    }
+
+    /*public static void main(String args[]) throws Exception {
         //GremlinLexer lex = new GremlinLexer(new ANTLRFileStream("/Users/marko/software/gremlin/trunk/src/test/resources/com/tinkerpop/gremlin/lang/gremlin-examples.txt"));
         GremlinLexer gremlinLexer = new GremlinLexer(new ANTLRStringStream("substring($i)"));
         GremlinParser gremlinParser = new GremlinParser(new CommonTokenStream(gremlinLexer));
@@ -57,5 +64,5 @@ public class Evaluator {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

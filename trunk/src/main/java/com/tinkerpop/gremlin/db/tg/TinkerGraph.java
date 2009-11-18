@@ -24,4 +24,6 @@ public class TinkerGraph implements Graph {
     public TinkerVertex getVertex(Object id) {
         return this.vertices.get(id);
     }
+
+    public void shutdown() { }
 }

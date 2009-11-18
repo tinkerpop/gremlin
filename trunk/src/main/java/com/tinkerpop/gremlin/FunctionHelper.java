@@ -12,7 +12,10 @@ import java.util.ArrayList;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class GremlinHelpers {
+public class FunctionHelper {
+
+    private static final String DOLLAR_SIGN = "$";
+    private static final String EMPTY_STRING = "";
 
     public static boolean isLastInContext(ExpressionContext context) {
         return (context.getContextNodeList().size() == context.getPosition()) || (context.getPosition() == 0);      
@@ -28,5 +31,9 @@ public class GremlinHelpers {
             nodeValues.add(p.getValue());
         }
         return nodeValues;
+    }
+
+    public static String getVariable(String variable) {
+        return variable.replace(DOLLAR_SIGN, EMPTY_STRING);
     }
 }

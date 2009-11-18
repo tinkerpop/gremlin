@@ -7,4 +7,5 @@ package com.tinkerpop.gremlin;
 public interface Graph {
 
     public Vertex getVertex(Object indexKey);
+    public void shutdown();
 }
