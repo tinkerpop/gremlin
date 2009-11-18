@@ -68,6 +68,11 @@
             <artifactId>sesame-repository-sail</artifactId>
             <version>2.3-pr1</version>
         </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-rio-ntriples</artifactId>
+            <version>2.3-pr1</version>
+        </dependency>
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -75,15 +80,16 @@
             <version>4.5</version>
             <!--<scope>test</scope>-->
         </dependency>
+        <!-- LOGGING -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.15</version>
+            <version>1.2.14</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j13</artifactId>
-            <version>1.0.1</version>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.5</version>
         </dependency>
     </dependencies>
     <repositories>
