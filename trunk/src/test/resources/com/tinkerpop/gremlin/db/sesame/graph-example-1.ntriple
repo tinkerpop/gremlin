@@ -1,0 +1,6 @@
+<http://tinkerpop.com#1> <http://tinkerpop.com#knows> <http://tinkerpop.com#2>
+<http://tinkerpop.com#1> <http://tinkerpop.com#knows> <http://tinkerpop.com#4>
+<http://tinkerpop.com#1> <http://tinkerpop.com#created> <http://tinkerpop.com#3>
+<http://tinkerpop.com#4> <http://tinkerpop.com#created> <http://tinkerpop.com#3>
+<http://tinkerpop.com#4> <http://tinkerpop.com#created> <http://tinkerpop.com#5>
+<http://tinkerpop.com#6> <http://tinkerpop.com#created> <http://tinkerpop.com#3>

@@ -7,7 +7,7 @@ package com.tinkerpop.gremlin.db.tg;
 public class TinkerGraphFactory {
 
     public static TinkerGraph createTinkerGraph() {
-        // see tinker-graph.pdf for a visualization of this graph
+        // see graph-example-1.pdf for a visualization of this graph
 
         TinkerGraph graph = new TinkerGraph();
 
