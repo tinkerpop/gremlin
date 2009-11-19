@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import com.tinkerpop.gremlin.Edge;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -25,7 +25,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
     }
 
     public Vertex getVertex(Vertex.Direction direction) {
-        if (direction == Vertex.Direction.OUT)
+        if (direction == Direction.OUT)
             return this.outVertex;
         else
             return this.inVertex;

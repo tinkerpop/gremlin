@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.model;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -7,5 +7,6 @@ package com.tinkerpop.gremlin;
 public interface Graph {
 
     public Vertex getVertex(Object indexKey);
+
     public void shutdown();
 }

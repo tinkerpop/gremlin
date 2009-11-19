@@ -1,12 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.parse.GremlinLexer;
-import com.tinkerpop.gremlin.parse.GremlinParser;
-import com.tinkerpop.gremlin.parse.GremlinTree;
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.tree.CommonTree;
-import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.apache.commons.jxpath.JXPathInvalidAccessException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 

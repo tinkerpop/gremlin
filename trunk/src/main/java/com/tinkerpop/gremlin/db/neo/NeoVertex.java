@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.neo;
 
-import com.tinkerpop.gremlin.Edge;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 

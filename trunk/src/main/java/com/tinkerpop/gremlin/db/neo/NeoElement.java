@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.db.neo;
 
-import com.tinkerpop.gremlin.Element;
+import com.tinkerpop.gremlin.model.Element;
 import org.neo4j.api.core.PropertyContainer;
 
 import java.util.HashSet;

@@ -1,8 +1,10 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.model.Element;
+import com.tinkerpop.gremlin.model.Vertex;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,13 +13,17 @@ import java.util.List;
  */
 public class VertexPropertyHandler implements DynamicPropertyHandler {
 
+    public static final String OUT_EDGES = "outEdges";
+    public static final String IN_EDGES = "inEdges";
+    public static final String BOTH_EDGES = "bothEdges";
+
     public String[] getPropertyNames(Object vertexObject) {
         Vertex vertex = (Vertex) vertexObject;
-        List<String> list = new LinkedList<String>();
+        List<String> list = new ArrayList<String>();
         list.addAll(vertex.getPropertyKeys());
-        list.add("outEdges");
-        list.add("inEdges");
-        list.add("bothEdges");
+        list.add(OUT_EDGES);
+        list.add(IN_EDGES);
+        list.add(BOTH_EDGES);
         return list.toArray(new String[list.size()]);
     }
 
@@ -28,12 +34,12 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
 
     public Object getProperty(Object vertexObject, String key) {
         Vertex vertex = (Vertex) vertexObject;
-        if (key.equals("outEdges")) {
-            return vertex.getEdges(Vertex.Direction.OUT);
-        } else if (key.equals("inEdges")) {
-            return vertex.getEdges(Vertex.Direction.IN);
-        } else if (key.equals("bothEdges")) {
-            return vertex.getEdges(Vertex.Direction.BOTH);
+        if (key.equals(OUT_EDGES)) {
+            return vertex.getEdges(Element.Direction.OUT);
+        } else if (key.equals(IN_EDGES)) {
+            return vertex.getEdges(Element.Direction.IN);
+        } else if (key.equals(BOTH_EDGES)) {
+            return vertex.getEdges(Element.Direction.BOTH);
         } else {
             return vertex.getProperty(key);
         }

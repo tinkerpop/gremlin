@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.parse;
+package com.tinkerpop.gremlin.lang;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

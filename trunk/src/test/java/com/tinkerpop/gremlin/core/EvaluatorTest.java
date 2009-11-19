@@ -1,18 +1,16 @@
 package com.tinkerpop.gremlin.core;
 
 import com.tinkerpop.gremlin.*;
+import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.db.tg.TinkerGraph;
 import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.db.tg.TinkerVertex;
-import junit.framework.TestCase;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -20,7 +18,7 @@ import java.util.regex.Matcher;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class EvaluatorTest extends TestCase {
+public class EvaluatorTest extends BaseTest {
 
     public EvaluatorTest() {
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
@@ -47,13 +45,13 @@ public class EvaluatorTest extends TestCase {
 
         
 
-        //print(context.iterate("(./outEdges/inVertex)[g:printX()]"));
-        //sweep(context.iterate("(./outEdges/inVertex)[g:set('$i')][g:print()]"));
+        //printIterator(context.iterate("(./outEdges/inVertex)[g:printX()]"));
+        //sweep(context.iterate("(./outEdges/inVertex)[g:set('$i')][g:printIterator()]"));
         //System.out.println(context.getContextPath());
         //context.getVariables().declareVariable("$i",new LinkedList<Object>());
         //context.selectNodes("./outEdges/inVertex[g:set('$i')]/@name[g:set('$i')]");
         //System.out.println("--------------------------");
-        //print(context.iterate("$i"));
+        //printIterator(context.iterate("$i"));
         //System.out.println(context.getContextPath());
         //System.out.println("--------------------------");
         String path = "(((./outEdges/inVertex){2}/outEdges/inVertex){2}/inEdges[g:clip()]){5}";
@@ -66,10 +64,10 @@ public class EvaluatorTest extends TestCase {
         /*for(String s : path.split("\\{[0-9]+\\}")) {
             System.out.println(s);
         }*/
-        //print(context.iterate(path));
+        //printIterator(context.iterate(path));
 
-        //print(context.iterate("(1+2)[g:set('$i')]"));
-        //print(context.iterate("./outEdges/inVertex/@name"));
+        //printIterator(context.iterate("(1+2)[g:set('$i')]"));
+        //printIterator(context.iterate("./outEdges/inVertex/@name"));
         //System.out.println("----------");
         //context.selectNodes("./outEdges[g:halt(10 <= 5)]/inVertex/@name[g:setX(.,'$i')]");
         //context.selectNodes("./outEdges[g:halt(10 > 5)]/inVertex/@age[g:setX(.,'$i')]");
@@ -95,13 +93,13 @@ public class EvaluatorTest extends TestCase {
         library.addFunctions(context.getFunctions());
         context.setFunctions(library);
 
-        //assertEquals(context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(count($i) = 3)]/name"), context.selectNodes("./outEdges/inVertex/name"));
-        //context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(count($i) < 2)]/name[g:set('$i')]");
-//        assertEquals(context.iterate("$i[g:print()]"), context.iterate("./outEdges/inVertex[g:print()]"));
+        //assertEquals(context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(countIterator($i) = 3)]/name"), context.selectNodes("./outEdges/inVertex/name"));
+        //context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(countIterator($i) < 2)]/name[g:set('$i')]");
+//        assertEquals(context.iterate("$i[g:printIterator()]"), context.iterate("./outEdges/inVertex[g:printIterator()]"));
 
         printList(context.selectNodes("((./outEdges[@label=\"created\"]/inVertex/inEdges[@label=\"created\"]/outVertex/@name)[g:set('$y')]/../@age)[g:set('$z')][g:cont(false())]"));
-        print(context.iterate("$y"));
-        print(context.iterate("$z"));
+        printIterator(context.iterate("$y"));
+        printIterator(context.iterate("$z"));
 
 
     }
@@ -157,14 +155,14 @@ public class EvaluatorTest extends TestCase {
         context.setLenient(true);
         assertEquals(context.getValue("./@name"), "marko");
         assertEquals(context.getValue("./@age"), 29);
-        assertEquals(count(context.iterate("./outEdges")), 3);
+        assertEquals(countIterator(context.iterate("./outEdges")), 3);
 
-        assertEquals(count(context.iterate("./outEdges[@label='knows']")), 2);
-        assertEquals(count(context.iterate("./outEdges[@label='knows']/inVertex/@name")), 2);
-        assertEquals(count(context.iterate("./outEdges[@label='knows' and @weight='1.0']/inVertex/@name")), 1);
-        assertEquals(count(context.iterate("./outEdges[@label='knows' and @weight > '1.0']/inVertex/@name")), 0);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='knows']")), 2);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='knows']/inVertex/@name")), 2);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='knows' and @weight='1.0']/inVertex/@name")), 1);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='knows' and @weight > '1.0']/inVertex/@name")), 0);
 
-        assertEquals(count(context.iterate("./outEdges[@label='created']")), 1);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='created']")), 1);
         assertEquals(context.getValue("./outEdges[@label='created']/inVertex"), graph.getVertex("3"));
         assertEquals(context.getValue("./outEdges[@label='created']/@weight"), 0.4);
         assertEquals(context.getValue("./outEdges[@label='created' and @weight ='0.4']/inVertex"), graph.getVertex("3"));
@@ -181,12 +179,12 @@ public class EvaluatorTest extends TestCase {
 
         JXPathContext context = JXPathContext.newContext(marko);
         context.setLenient(true);
-        assertEquals(count(context.iterate("./outEdges")), 3);
-        assertEquals(count(context.iterate("./outEdges[@label='knows']")), 2);
-        assertEquals(count(context.iterate("./outEdges[@label='created']/inVertex/@name")), 1);
+        assertEquals(countIterator(context.iterate("./outEdges")), 3);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='knows']")), 2);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='created']/inVertex/@name")), 1);
         assertEquals(context.getValue("./outEdges[@label='created']/inVertex/@name"), "lop");
-        assertEquals(count(context.iterate("./outEdges[@label='created']/inVertex/inEdges[@label='created']/outVertex")), 3);
-        assertEquals(count(context.iterate("./outEdges[@label='created']/inVertex/inEdges[@label='created' and @weight='0.2']/outVertex")), 1);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='created']/inVertex/inEdges[@label='created']/outVertex")), 3);
+        assertEquals(countIterator(context.iterate("./outEdges[@label='created']/inVertex/inEdges[@label='created' and @weight='0.2']/outVertex")), 1);
         assertEquals(context.getValue("./outEdges[@label='created']/inVertex/inEdges[@label='created' and @weight='0.2']/outVertex/@name"), "peter");
         assertEquals(context.getValue("./outEdges[@label='created']/inVertex/inEdges[@label='created' and @weight='0.2']/outVertex[matches(@name,'peter')]/@age"), 35);
         assertEquals(context.getValue("./outEdges[@label='created']/inVertex/inEdges[@label='created' and @weight='0.2']/outVertex[matches(@name,'peter')]/age"), 35);
@@ -204,31 +202,6 @@ public class EvaluatorTest extends TestCase {
 
     }
 
-    public static void printList(List list) {
-        for(Object o : list) {
-            System.out.println(o);
-        }
-    }
 
-    public static void print(Iterator itty) {
-        while (itty.hasNext()) {
-            System.out.println(itty.next());
-        }
-    }
-
-    public static int count(Iterator itty) {
-        int counter = 0;
-        while (itty.hasNext()) {
-            itty.next();
-            counter++;
-        }
-        return counter;
-    }
-
-    public static void sweep(Iterator itty) {
-        while(itty.hasNext()) {
-            itty.next();
-        }
-    }
 
 }

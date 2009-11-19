@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import com.tinkerpop.gremlin.Graph;
+import com.tinkerpop.gremlin.model.Graph;
 
 import java.util.HashMap;
 import java.util.Map;

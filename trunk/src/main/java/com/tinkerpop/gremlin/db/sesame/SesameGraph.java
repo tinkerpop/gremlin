@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.sesame;
 
-import com.tinkerpop.gremlin.Graph;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.model.Vertex;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;

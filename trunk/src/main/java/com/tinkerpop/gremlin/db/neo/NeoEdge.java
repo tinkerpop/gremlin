@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.neo;
 
-import com.tinkerpop.gremlin.Edge;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 import org.neo4j.api.core.Relationship;
 
 /**
@@ -19,7 +19,7 @@ public class NeoEdge extends NeoElement implements Edge {
     }
 
     public Vertex getVertex(Vertex.Direction direction) {
-        if (direction == Vertex.Direction.OUT)
+        if (direction == Direction.OUT)
             return new NeoVertex(((Relationship) this.element).getStartNode());
         else
             return new NeoVertex(((Relationship) this.element).getEndNode());

@@ -7,6 +7,9 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
+import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.model.Edge;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

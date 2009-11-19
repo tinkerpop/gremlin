@@ -7,7 +7,7 @@ import org.openrdf.sail.memory.MemoryStore;
 
 import java.io.File;
 
-import com.tinkerpop.gremlin.Graph;
+import com.tinkerpop.gremlin.model.Graph;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

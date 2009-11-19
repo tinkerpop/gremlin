@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.sesame;
 
-import com.tinkerpop.gremlin.Edge;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.ContextStatementImpl;
@@ -61,7 +61,7 @@ public class SesameEdge implements Edge {
     }
 
     public Vertex getVertex(Vertex.Direction direction) {
-        if (direction == Vertex.Direction.OUT)
+        if (direction == Direction.OUT)
             return new SesameVertex(this.statement.getSubject(), this.sailConnection);
         else
             return new SesameVertex(this.statement.getObject(), this.sailConnection);

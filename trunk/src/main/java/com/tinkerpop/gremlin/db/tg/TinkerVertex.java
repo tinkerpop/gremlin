@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import com.tinkerpop.gremlin.Edge;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 
 import java.util.HashSet;
 import java.util.Set;

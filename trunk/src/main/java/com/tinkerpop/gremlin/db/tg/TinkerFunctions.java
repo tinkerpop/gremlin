@@ -1,9 +1,5 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import org.apache.commons.jxpath.ExpressionContext;
-import com.tinkerpop.gremlin.Graph;
-import com.tinkerpop.gremlin.FunctionHelper;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1

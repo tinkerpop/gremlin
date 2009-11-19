@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.db.sesame;
 
-import junit.framework.TestCase;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.sail.SailRepository;
@@ -11,17 +10,15 @@ import org.openrdf.sail.SailException;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.Statement;
 import info.aduna.iteration.CloseableIteration;
-import com.tinkerpop.gremlin.Vertex;
+import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.Evaluator;
-
-import java.util.List;
-import java.util.ArrayList;
+import com.tinkerpop.gremlin.BaseTest;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameGraphTest extends TestCase {
+public class SesameGraphTest extends BaseTest {
 
     public static final String TP_NS = "http://tinkerpop.com#";
 
@@ -40,27 +37,24 @@ public class SesameGraphTest extends TestCase {
         MemoryStore sail = loadMemoryStore("graph-example-1.ntriple", RDFFormat.NTRIPLES);
         SailConnection sc = sail.getConnection();
         CloseableIteration<? extends Statement, SailException> results = sc.getStatements(null,null,null,false);
-        assertEquals(6, countStatements(results, true));
+        assertEquals(7, countStatements(results, true));
         SesameGraph graph = new SesameGraph(sail);
         Vertex vertex = graph.getVertex("http://tinkerpop.com#1");
 
         Evaluator evaluator = new Evaluator();
         evaluator.setVariable("$sail", graph);
         evaluator.setRoot(vertex);
-        assertEquals(3, evaluator.evaluate("./outEdges").size());
-        assertEquals(2, evaluator.evaluate("./outEdges[@label='http://tinkerpop.com#knows']/inVertex").size());
-        assertEquals(asList(new URIImpl(TP_NS + "graph"), 3), evaluator.evaluate("./outEdges/@named_graph"));
+        assertEquals(4, evaluator.evaluate("./outEdges").size());
+        //assertEquals(2, evaluator.evaluate("./outEdges[@label='http://tinkerpop.com#knows']/inVertex").size());
+        assertEquals(asList(new URIImpl(TP_NS + "graph"), 4), evaluator.evaluate("./outEdges/@named_graph"));
+        System.out.println("here");
+        // NAMESPACE IT!
+        //printList(evaluator.evaluate("./http://tinkerpop.com#name"));
 
         graph.shutdown();
     }
 
-    public static List asList(Object x, int times) {
-        List list = new ArrayList();
-        for(int i=0; i<times; i++) {
-            list.add(x);
-        }
-        return list;
-    }
+
 
     public static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {
         int counter = 0;

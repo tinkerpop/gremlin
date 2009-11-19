@@ -1,14 +1,12 @@
 // $ANTLR 3.2 Sep 23, 2009 12:02:23 /Users/marko/software/gremlin/trunk/src/main/java/com/tinkerpop/gremlin/parse/GremlinTree.g 2009-11-17 16:13:27
 
-package com.tinkerpop.gremlin.parse;
+package com.tinkerpop.gremlin.lang.antlr;
 
 import com.tinkerpop.gremlin.Evaluator;
 
 
 import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.tree.*;
 
 public class GremlinTree extends TreeParser {
     public static final String[] tokenNames = new String[] {
