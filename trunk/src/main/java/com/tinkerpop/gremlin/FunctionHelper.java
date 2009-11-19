@@ -14,9 +14,6 @@ import java.util.ArrayList;
  */
 public class FunctionHelper {
 
-    private static final String DOLLAR_SIGN = "$";
-    private static final String EMPTY_STRING = "";
-
     public static boolean isLastInContext(ExpressionContext context) {
         return (context.getContextNodeList().size() == context.getPosition()) || (context.getPosition() == 0);      
     }
@@ -33,7 +30,5 @@ public class FunctionHelper {
         return nodeValues;
     }
 
-    public static String getVariable(String variable) {
-        return variable.replace(DOLLAR_SIGN, EMPTY_STRING);
-    }
+
 }

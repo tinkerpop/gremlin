@@ -2,7 +2,7 @@
 
 package com.tinkerpop.gremlin.lang.antlr;
 
-import com.tinkerpop.gremlin.Evaluator;
+import com.tinkerpop.gremlin.GremlinEvaluator;
 
 
 import org.antlr.runtime.*;
@@ -85,11 +85,11 @@ public class GremlinTree extends TreeParser {
 
 
             
-            protected Evaluator evaluator;
+            protected GremlinEvaluator gremlinEvaluator;
             
-            public GremlinTree(TreeNodeStream input, Evaluator evaluator) {
+            public GremlinTree(TreeNodeStream input, GremlinEvaluator gremlinEvaluator) {
                 this(input, new RecognizerSharedState());
-                this.evaluator = evaluator;
+                this.gremlinEvaluator = gremlinEvaluator;
             }	
 
 
@@ -276,7 +276,7 @@ public class GremlinTree extends TreeParser {
 
 
                     match(input, Token.UP, null); 
-                     evaluator.evaluate("marko");
+                     gremlinEvaluator.evaluate("marko");
 
                     }
                     break;
@@ -293,7 +293,7 @@ public class GremlinTree extends TreeParser {
 
 
                     match(input, Token.UP, null); 
-                     evaluator.evaluate("paul");
+                     gremlinEvaluator.evaluate("paul");
 
                     }
                     break;
@@ -310,7 +310,7 @@ public class GremlinTree extends TreeParser {
 
 
                     match(input, Token.UP, null); 
-                    evaluator.evaluate(literal2);
+                    gremlinEvaluator.evaluate(literal2);
 
                     }
                     break;

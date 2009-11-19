@@ -52,22 +52,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return GremlinPathContext.newContext(null, element);
     }
 
-    /* public List selectNodes(String path) {
-        //System.out.println(this.contextBean + " set_root nodes");
-        //this.contextPath = path;
-        return super.selectNodes(path);
-    }*/
-
-    /*public Iterator iterate(String path) {
-        //this.contextPath = path;
-        return super.iterate(path);
-    }*/
-
-    /*public String getContextPath() {
-        return this.contextPath;
-    }*/
-
-    public void setContextBean(Object root) {
+    public void setRoot(Object root) {
         this.contextBean = root;
         this.newRoot = true;
     }

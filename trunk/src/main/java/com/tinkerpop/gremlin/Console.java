@@ -10,6 +10,8 @@ import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 import java.io.IOException;
 import java.util.List;
 
+import com.tinkerpop.gremlin.lang.SyntaxErrorException;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
@@ -28,13 +30,13 @@ public class Console {
                         "outVertex", "inVertex", "bothVertex"})));
 
         String line;
-        Evaluator evaluator = new Evaluator();
+        GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
         while ((line = reader.readLine("gremlin> ")) != null) {
             if (line.equalsIgnoreCase("quit"))
                 break;
             else if (line.length() > 0) {
                 try {
-                    List results = evaluator.evaluate(line);
+                    List results = gremlinEvaluator.evaluate(line);
                     for (Object o : results) {
                         System.out.println(PRINT_SPACING + o);
                     }
@@ -43,6 +45,8 @@ public class Console {
                 } catch (JXPathInvalidAccessException e) {
                     System.out.println(e.getMessage());
                 } catch (JXPathFunctionNotFoundException e) {
+                    System.out.println(e.getMessage());
+                } catch(SyntaxErrorException e) {
                     System.out.println(e.getMessage());
                 }
             }
