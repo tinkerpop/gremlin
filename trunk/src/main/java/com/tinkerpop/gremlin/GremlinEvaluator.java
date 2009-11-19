@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.lang.*;
-import org.apache.commons.jxpath.JXPathInvalidAccessException;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class GremlinEvaluator {
         this.xPathEvaluator = new XPathEvaluator();
     }
 
-    public List evaluate(String line) throws JXPathInvalidSyntaxException, JXPathInvalidAccessException {
+    public List evaluate(String line) throws SyntaxErrorException, JXPathException {
         line = line.trim();
 
         try {
@@ -33,7 +33,13 @@ public class GremlinEvaluator {
                     AssignmentStatement assignmentStatement = new AssignmentStatement(this.xPathEvaluator);
                     assignmentStatement.compileTokens(line);
                     return assignmentStatement.evaluate();
-                } else {
+                } else if (WhileStatement.isStatement(line)) {
+                    this.currentStatement = new WhileStatement(this.xPathEvaluator);
+                    this.currentStatement.compileTokens(line); 
+                } else if (RepeatStatement.isStatement(line)) {
+                    this.currentStatement = new RepeatStatement(this.xPathEvaluator);
+                    this.currentStatement.compileTokens(line);
+                }  else {
                     XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
                     xPathStatement.compileTokens(line);
                     return xPathStatement.evaluate();
@@ -45,9 +51,13 @@ public class GremlinEvaluator {
                     return results;
                 }
             }
+        } catch (JXPathInvalidSyntaxException e) {
+            this.currentStatement = null;
+            throw new SyntaxErrorException(e.getMessage());
         } catch (SyntaxErrorException e) {
             this.currentStatement = null;
+            throw new SyntaxErrorException(e.getMessage());
         }
-        return new ArrayList();
+        return null;
     }
 }

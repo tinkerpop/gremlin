@@ -12,5 +12,5 @@ public class TinkerFunctions {
         // this returns the hardcoded graph-example-1 graph until I can implement a tinker graph serialization
         return TinkerGraphFactory.createTinkerGraph();
     }
-    
+
 }

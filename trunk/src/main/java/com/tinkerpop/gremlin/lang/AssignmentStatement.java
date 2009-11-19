@@ -10,9 +10,12 @@ import java.util.List;
  */
 public class AssignmentStatement extends Statement {
 
-    public static final String ASSIGNMENT = ":=";
-    public String variable;
-    public XPathStatement assignmentBody;
+    private String variable;
+    private XPathStatement assignmentBody;
+
+    /*
+        $i := ./././
+     */
 
     public AssignmentStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -20,15 +23,15 @@ public class AssignmentStatement extends Statement {
 
     public boolean compileTokens(String line) throws SyntaxErrorException {
         super.compileTokens(line);
-        String[] parts = line.split(SINGLESPACE);
-        if (!parts[0].startsWith(DOLLAR_SIGN)) {
-            throw new SyntaxErrorException("An assignment statement must start with variable reference: " + this.fullStatement);
-        } else if (!parts[1].equals(ASSIGNMENT)) {
-            throw new SyntaxErrorException("An assignment statement must have an assignment operator: " + this.fullStatement);
+        String[] parts = line.split(Tokens.SINGLESPACE);
+        if (!parts[0].startsWith(Tokens.DOLLAR_SIGN)) {
+            throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Assignment must start with a variable.");
+        } else if (!parts[1].equals(Tokens.ASSIGNMENT)) {
+            throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Assignment must have the assignment operator.");
         }
         this.variable = parts[0];
         XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-        int xPathStart = line.indexOf(" " + ASSIGNMENT + " ");
+        int xPathStart = line.indexOf(" " + Tokens.ASSIGNMENT + " ");
         xPathStatement.compileTokens(line.substring(xPathStart + 4));
         this.assignmentBody = xPathStatement;
         return true;
@@ -36,15 +39,23 @@ public class AssignmentStatement extends Statement {
 
     public List evaluate() {
         List results = this.assignmentBody.evaluate();
-        this.xPathEvaluator.setVariable(variable, results);
+        this.xPathEvaluator.evaluate("g:set('"+ this.variable +"'," + this.assignmentBody.getRawStatement() + ")");
         return results;
     }
 
     public static boolean isStatement(String firstLine) {
-        return firstLine.startsWith(DOLLAR_SIGN) && firstLine.contains(SINGLESPACE + ASSIGNMENT + SINGLESPACE);
+        return firstLine.startsWith(Tokens.DOLLAR_SIGN) && firstLine.contains(Tokens.SINGLESPACE + Tokens.ASSIGNMENT + Tokens.SINGLESPACE);
+    }
+
+    public String getVariable() {
+        return this.variable;
+    }
+
+    public XPathStatement getAssignmentBody() {
+        return this.assignmentBody;
     }
 
     public String toString() {
-        return "(ASSIGNEMENT VARIABLE["+ this.variable +"] BODY["+ this.assignmentBody +"])";
+        return "(ASSIGNMENT VARIABLE[" + this.variable + "] BODY[" + this.assignmentBody + "])";
     }
 }

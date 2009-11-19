@@ -3,10 +3,10 @@ package com.tinkerpop.gremlin.db.sesame;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import info.aduna.iteration.CloseableIteration;
+import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Value;
-import org.openrdf.model.Literal;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
@@ -39,15 +39,15 @@ public class SesameVertex implements Vertex {
             while (results.hasNext()) {
                 Statement s = results.next();
                 Value value = s.getObject();
-                if(value instanceof Literal) {
+                if (value instanceof Literal) {
                     values.add(value);
                 }
             }
             results.close();
-        } catch(SailException e) {
+        } catch (SailException e) {
             e.printStackTrace();
         }
-        if(values.size() > 0)
+        if (values.size() > 0)
             return values;
         else
             return null;
@@ -60,12 +60,12 @@ public class SesameVertex implements Vertex {
             while (results.hasNext()) {
                 Statement s = results.next();
                 Value value = s.getObject();
-                if(value instanceof Literal) {
+                if (value instanceof Literal) {
                     keys.add(s.getPredicate().toString());
                 }
             }
             results.close();
-        } catch(SailException e) {
+        } catch (SailException e) {
             e.printStackTrace();
         }
         return keys;

@@ -1,13 +1,12 @@
 package com.tinkerpop.gremlin.db.sesame;
 
+import com.tinkerpop.gremlin.model.Graph;
 import org.apache.commons.jxpath.ExpressionContext;
-import org.openrdf.sail.nativerdf.NativeStore;
 import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
+import org.openrdf.sail.nativerdf.NativeStore;
 
 import java.io.File;
-
-import com.tinkerpop.gremlin.model.Graph;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -30,7 +29,7 @@ public class SesameFunctions {
     }
 
     public static Object close_ns(ExpressionContext context, String variableName) {
-        ((Graph)context.getJXPathContext().getVariables().getVariable(variableName)).shutdown();
+        ((Graph) context.getJXPathContext().getVariables().getVariable(variableName)).shutdown();
         return Boolean.TRUE;
     }
 

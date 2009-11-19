@@ -35,7 +35,7 @@ public class NeoElement implements Element {
     }
 
     public boolean equals(Object object) {
-        if(object instanceof Element)
+        if (object instanceof Element)
             return this.hashCode() == object.hashCode();
         else
             return false;

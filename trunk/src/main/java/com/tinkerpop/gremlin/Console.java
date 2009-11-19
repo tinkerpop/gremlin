@@ -1,16 +1,13 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.lang.SyntaxErrorException;
 import jline.ArgumentCompletor;
 import jline.ConsoleReader;
 import jline.SimpleCompletor;
-import org.apache.commons.jxpath.JXPathFunctionNotFoundException;
-import org.apache.commons.jxpath.JXPathInvalidAccessException;
-import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
+import org.apache.commons.jxpath.JXPathException;
 
 import java.io.IOException;
 import java.util.List;
-
-import com.tinkerpop.gremlin.lang.SyntaxErrorException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -37,16 +34,14 @@ public class Console {
             else if (line.length() > 0) {
                 try {
                     List results = gremlinEvaluator.evaluate(line);
-                    for (Object o : results) {
-                        System.out.println(PRINT_SPACING + o);
+                    if (null != results) {
+                        for (Object o : results) {
+                            System.out.println(PRINT_SPACING + o);
+                        }
                     }
-                } catch (JXPathInvalidSyntaxException e) {
-                    System.out.println(e.getMessage().replace("Invalid XPath:", "Invalid expression:"));
-                } catch (JXPathInvalidAccessException e) {
-                    System.out.println(e.getMessage());
-                } catch (JXPathFunctionNotFoundException e) {
-                    System.out.println(e.getMessage());
-                } catch(SyntaxErrorException e) {
+                } catch (JXPathException e) {
+                    System.out.println(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
+                } catch (SyntaxErrorException e) {
                     System.out.println(e.getMessage());
                 }
             }

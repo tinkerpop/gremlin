@@ -1,16 +1,13 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.model.Graph;
 import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
-
-import com.tinkerpop.gremlin.model.Graph;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -24,24 +21,48 @@ public class GremlinFunctions {
 
     public static Object get_v(Graph graph, Object indexKey) {
         if (graph == null)
-            return Boolean.FALSE;
+            return null;
         else
             return (graph.getVertex(indexKey));
     }
 
-    /*public static Object set_root(ExpressionContext context, Object root) {
-        if (root instanceof List) {
-            if (((List) root).size() == 1) {
-                root = ((List) root).get(0);
-            }
-        }
-        FunctionHelper.getGremlin(context).setRoot(root);
-        return root;
+
+    public static Object set(ExpressionContext context, String variable, Object value) {
+        if (FunctionHelper.isLastInContext(context))
+            FunctionHelper.getGremlin(context).setVariable(variable, value);
+        return value;
     }
 
-    public static Object set_root(ExpressionContext context) {
-        return GremlinFunctions.set_root(context, FunctionHelper.asValue(context.getContextNodeList()));
-    }*/
+    public static Object set(ExpressionContext context, String variableName) {
+        return GremlinFunctions.set(context, variableName, FunctionHelper.asValue(context.getContextNodeList()));
+    }
+
+    public static Object unset(ExpressionContext context, String variable) {
+        FunctionHelper.getGremlin(context).removeVariable(variable);
+        return Boolean.TRUE;
+    }
+
+    public static Object halt(boolean halt) {
+        return new Boolean(!halt);
+    }
+
+    public static Object cont(boolean cont) {
+        return new Boolean(cont);
+    }
+
+    public static Object noop() {
+        return Boolean.TRUE;
+    }
+
+    public static Object print(ExpressionContext context) {
+        System.out.println(context.getContextNodePointer().getValue());
+        return Boolean.TRUE;
+    }
+
+    public static Object print(String line) {
+        System.out.println(line);
+        return Boolean.TRUE;
+    }
 
     public static Object random(Integer value) {
         return random.nextInt(value);
@@ -51,23 +72,7 @@ public class GremlinFunctions {
         return random.nextBoolean();
     }
 
-    public static Object set(ExpressionContext context, String variableName, Object value) {
-        if (FunctionHelper.isLastInContext(context))
-            context.getJXPathContext().getVariables().declareVariable(variableName, value);
-        return Boolean.TRUE;
-    }
-
-    public static Object set(ExpressionContext context, String variableName) {
-        GremlinFunctions.set(context, variableName, FunctionHelper.asValue(context.getContextNodeList()));
-        return context.getContextNodeList();
-    }
-
-    public static Object unset(ExpressionContext context, String variable) {
-        context.getJXPathContext().getVariables().undeclareVariable(variable);
-        return Boolean.TRUE;
-    }
-
-    public static Object append(ExpressionContext context, String variable) {
+       /*public static Object append(ExpressionContext context, String variable) {
         Collection<Object> currentValue;
         try {
             currentValue = (Collection<Object>) context.getJXPathContext().getVariables().getVariable(variable);
@@ -91,27 +96,5 @@ public class GremlinFunctions {
 
         Object value = ((Pointer) context.getContextNodeList().get(context.getPosition() - 1)).getValue();
         return !history.getValues().contains(value);
-    }
-
-    public static Object halt(boolean halt) {
-        return new Boolean(!halt);
-    }
-
-    public static Object cont(boolean cont) {
-        return new Boolean(cont);
-    }
-
-    public static Object noop() {
-        return Boolean.TRUE;
-    }
-
-    public static Object print(ExpressionContext context) {
-        System.out.println(context.getContextNodePointer().getValue());
-        return context.getContextNodeList();
-    }
-
-    public static Object print(ExpressionContext context, String line) {
-        System.out.println(line);
-        return context.getContextNodeList();
-    }
+    }*/
 }

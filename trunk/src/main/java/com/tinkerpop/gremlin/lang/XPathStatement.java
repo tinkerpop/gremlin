@@ -10,15 +10,15 @@ import java.util.List;
  */
 public class XPathStatement extends Statement {
 
-    protected String xPath;
+    private String xPath;
 
     public XPathStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
     public boolean compileTokens(String line) {
+        super.compileTokens(line);
         this.xPath = line;
-        this.fullStatement = this.xPath;
         return true;
     }
 

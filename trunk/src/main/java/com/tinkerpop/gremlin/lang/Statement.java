@@ -9,25 +9,23 @@ import java.util.List;
  * @version 0.1
  */
 public abstract class Statement {
-    public static final String DO = "do";
-    public static final String DOLLAR_SIGN = "$";
-
-    protected static final String NEWLINE = "\n";
-    protected static final String ANY_WHITESPACE_REGEX = "[' '\t]+";
-    protected static final String SINGLESPACE = " ";
 
 
     protected XPathEvaluator xPathEvaluator;
 
-    protected String fullStatement = new String();
+    private String rawStatement = new String();
 
     public Statement(XPathEvaluator xPathEvaluator) {
         this.xPathEvaluator = xPathEvaluator;
     }
 
     public boolean compileTokens(String line) {
-        this.fullStatement = (this.fullStatement + NEWLINE + line).trim();
+        this.rawStatement = (this.rawStatement + Tokens.SINGLESPACE + line).trim();
         return true;
+    }
+
+    public String getRawStatement() {
+        return this.rawStatement;
     }
 
     public abstract List evaluate();

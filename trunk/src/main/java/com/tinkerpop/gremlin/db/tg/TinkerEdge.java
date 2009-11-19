@@ -32,7 +32,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
     }
 
     public String toString() {
-        return ((TinkerVertex)outVertex).getId() + "--" + label + "-->" + ((TinkerVertex)inVertex).getId();
+        return ((TinkerVertex) outVertex).getId() + "--" + label + "-->" + ((TinkerVertex) inVertex).getId();
     }
 
 }
