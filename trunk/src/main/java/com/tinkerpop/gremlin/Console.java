@@ -17,7 +17,9 @@ import java.util.List;
 public class Console {
 
     private static final String MIDSTATEMENT_SPACING = "           ";
-    private static final String PRINT_SPACING = "  ";
+    private static final String PRINT_SPACING = "==>";
+    private static final String NULL = "null";
+    private static final String EMPTY = "[]";
 
     public static void main(String[] args) throws IOException {
 
@@ -28,8 +30,12 @@ public class Console {
                 new SimpleCompletor(new String[]{"outEdges", "inEdges", "bothEdges",
                         "outVertex", "inVertex", "bothVertex"})));
 
-        String line = "";
         GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
+        String line = "";
+        System.out.println();
+        System.out.println("         \\,,,/");
+        System.out.println("         (o o)");
+        System.out.println("-----oOOo-(_)-oOOo-----");
         while (line != null) {
             if (gremlinEvaluator.inStatement())
                 line = reader.readLine(MIDSTATEMENT_SPACING);
@@ -37,15 +43,26 @@ public class Console {
                 line = reader.readLine("gremlin> ");
                 if (line.equalsIgnoreCase("quit"))
                     break;
+                else if(line.equals("?")) {
+                    System.out.println(PRINT_SPACING + "Gremlin 0.1");
+                    System.out.println(PRINT_SPACING + "'quit': exit gremlin");
+                    line = "";
+                }
             }
 
             if (line.length() > 0) {
                 try {
                     List results = gremlinEvaluator.evaluate(line);
                     if (null != results) {
-                        for (Object o : results) {
-                            System.out.println(PRINT_SPACING + o);
+                        if (results.size() > 0) {
+                            for (Object o : results) {
+                                System.out.println(PRINT_SPACING + o);
+                            }
+                        } else {
+                            System.out.println(PRINT_SPACING + EMPTY);
                         }
+                    } else {
+                        System.out.println(PRINT_SPACING + NULL);
                     }
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());
