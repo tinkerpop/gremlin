@@ -11,6 +11,7 @@ import org.neo4j.api.core.Relationship;
 public class NeoEdge extends NeoElement implements Edge {
 
     public NeoEdge(Relationship relationship) {
+        super(relationship.getId());
         this.element = relationship;
     }
 

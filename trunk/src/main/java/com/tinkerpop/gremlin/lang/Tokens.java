@@ -16,8 +16,8 @@ public class Tokens {
 
     public static final String DOLLAR_SIGN = "$";
     public static final String EMPTY_STRING = "";
-    public static final String AT_VARIABLE = "$_@";
-    public static final String LAST_VARIABLE = "$_";
+    public static final String AT_VARIABLE = "$_";
+    public static final String LAST_VALUE = "$_last";
 
     protected static final String NEWLINE = "\n";
     protected static final String ANY_WHITESPACE_REGEX = "[' '\t]+";

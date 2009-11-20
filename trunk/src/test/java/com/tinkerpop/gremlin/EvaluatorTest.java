@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.core;
+package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.*;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -25,15 +25,7 @@ public class EvaluatorTest extends BaseTest {
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
     }
 
-    public void testBasicXpath() {
-        JXPathContext context = JXPathContext.newContext(null);
-        context.setLenient(true);
-        assertFalse((Boolean) context.getValue("matches('marko','peter')"));
-        assertTrue((Boolean) context.getValue("(((matches('marko','marko'))))"));
-        assertTrue((Boolean) context.getValue("matches(\"marko\",\"marko\")"));
-        assertEquals("marko", context.getValue("'marko'"));
-        assertEquals("marko", context.getValue("\"marko\""));
-    }
+    
 
     public void testGFunctions() {
         TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();

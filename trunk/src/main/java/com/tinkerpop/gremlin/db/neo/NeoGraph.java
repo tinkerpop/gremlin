@@ -21,8 +21,18 @@ public class NeoGraph implements Graph {
     public NeoGraph(String directory, String indexKey) {
         this.neo = new EmbeddedNeo(directory);
         this.index = new LuceneIndexService(neo);
+        this.indexKey = indexKey;
     }
 
+    public void removeVertex(Object id) {
+        Node node = neo.getNodeById((Long)id);
+        if(null != node) {
+            this.index.removeIndex(node, this.indexKey, node.getProperty(this.indexKey));
+            node.delete();
+        }
+
+    }
+    
     public Vertex getVertex(Object id) {
         Node node = this.index.getSingleNode(this.indexKey, id);
         if (null != node) {

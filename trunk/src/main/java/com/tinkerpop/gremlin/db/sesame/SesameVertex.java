@@ -23,7 +23,7 @@ public class SesameVertex extends SesameElement implements Vertex {
     Value value;
 
     public SesameVertex(Value value, SailConnection sailConnection) {
-        super(sailConnection);
+        super(value.stringValue(), sailConnection);
         this.value = value;
     }
 

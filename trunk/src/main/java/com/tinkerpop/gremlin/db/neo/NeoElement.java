@@ -13,6 +13,11 @@ import java.util.Set;
 public class NeoElement implements Element {
 
     protected PropertyContainer element;
+    protected long id;
+
+    public NeoElement(long id) {
+        this.id = id;
+    }
 
     public void setProperty(String key, Object value) {
         this.element.setProperty(key, value);
@@ -34,6 +39,10 @@ public class NeoElement implements Element {
         return this.element.hashCode();
     }
 
+    public PropertyContainer getRawElement() {
+        return this.element;
+    }
+
     public boolean equals(Object object) {
         if (object instanceof Element)
             return this.hashCode() == object.hashCode();
@@ -46,5 +55,9 @@ public class NeoElement implements Element {
             return null;
         else
             return this.element.toString();
+    }
+
+    public Object getId() {
+        return id;
     }
 }

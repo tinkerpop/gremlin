@@ -13,8 +13,14 @@ import org.openrdf.sail.SailException;
 public abstract class SesameElement implements Element {
 
     protected SailConnection sailConnection;
+    protected String id;
 
-    public SesameElement(SailConnection sailConnection) {
+    public SesameElement(String id, SailConnection sailConnection) {
         this.sailConnection = sailConnection;
+        this.id = id;
+    }
+
+    public Object getId() {
+        return this.id;
     }
 }

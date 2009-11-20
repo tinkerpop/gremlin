@@ -9,4 +9,5 @@ public interface Edge extends Element {
     public Vertex getVertex(Vertex.Direction direction);
 
     public String getLabel();
+    
 }

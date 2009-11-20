@@ -27,7 +27,7 @@ public class XPathEvaluator {
             this.baseContext = GremlinPathContext.newContext(this.baseContext, this.baseContext.getRoot());
         }
         List results = this.baseContext.selectNodes(xPathString);
-        this.setVariable(Tokens.LAST_VARIABLE, results);
+        this.setVariable(Tokens.LAST_VALUE, results);
         return results;
     }
 

@@ -32,7 +32,14 @@ public class TinkerEdge extends TinkerElement implements Edge {
     }
 
     public String toString() {
-        return ((TinkerVertex) outVertex).getId() + "--" + label + "-->" + ((TinkerVertex) inVertex).getId();
+        return ((TinkerVertex) this.outVertex).getId() + "--" + this.label + "-->" + ((TinkerVertex) this.inVertex).getId();
+    }
+
+    public boolean equals(Object object) {
+        if(object instanceof TinkerEdge)
+            return object.hashCode() == this.hashCode();
+        else
+            return false;
     }
 
 }

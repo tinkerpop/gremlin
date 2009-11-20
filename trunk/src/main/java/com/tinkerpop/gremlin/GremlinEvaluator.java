@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.lang.*;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,17 +29,20 @@ public class GremlinEvaluator {
                 if (ForeachStatement.isStatement(line)) {
                     this.currentStatement = new ForeachStatement(this.xPathEvaluator);
                     this.currentStatement.compileTokens(line);
+                    return null;
                 } else if (AssignmentStatement.isStatement(line)) {
                     AssignmentStatement assignmentStatement = new AssignmentStatement(this.xPathEvaluator);
                     assignmentStatement.compileTokens(line);
                     return assignmentStatement.evaluate();
                 } else if (WhileStatement.isStatement(line)) {
                     this.currentStatement = new WhileStatement(this.xPathEvaluator);
-                    this.currentStatement.compileTokens(line); 
+                    this.currentStatement.compileTokens(line);
+                    return null;
                 } else if (RepeatStatement.isStatement(line)) {
                     this.currentStatement = new RepeatStatement(this.xPathEvaluator);
                     this.currentStatement.compileTokens(line);
-                }  else {
+                    return null;
+                } else {
                     XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
                     xPathStatement.compileTokens(line);
                     return xPathStatement.evaluate();
@@ -50,6 +52,8 @@ public class GremlinEvaluator {
                     List results = this.currentStatement.evaluate();
                     this.currentStatement = null;
                     return results;
+                } else {
+                    return null;
                 }
             }
         } catch (JXPathInvalidSyntaxException e) {
@@ -62,7 +66,6 @@ public class GremlinEvaluator {
             this.currentStatement = null;
             throw e;
         }
-        return null;
     }
 
     public boolean inStatement() {

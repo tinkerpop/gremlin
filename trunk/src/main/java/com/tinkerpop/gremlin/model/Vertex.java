@@ -9,4 +9,6 @@ import java.util.Set;
 public interface Vertex extends Element {
 
     public Set<Edge> getEdges(Direction direction);
+    // public void removeEdge(Edge edge)
+    // public void addEdge(Edge edge)
 }

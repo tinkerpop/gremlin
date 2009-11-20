@@ -32,6 +32,33 @@ public class TinkerVertex extends TinkerElement implements Vertex {
         }
     }
 
+    public void removeEdge(Edge edge) {
+        this.outEdges.remove(edge);
+        this.inEdges.remove(edge);
+    }
+
+    public void removeOutEdge(TinkerVertex inVertex, String label) {
+        Set<Edge> toRemove = new HashSet<Edge>();
+        for (Edge edge : this.outEdges) {
+            if (edge.getVertex(Direction.IN).equals(inVertex) && (edge.getLabel().equals(label) || label == null)) {
+                toRemove.add(edge);
+                inVertex.removeEdge(edge);
+            }
+        }
+        this.outEdges.removeAll(toRemove);
+    }
+
+    public void removeInEdge(TinkerVertex outVertex, String label) {
+        Set<Edge> toRemove = new HashSet<Edge>();
+        for (Edge edge : this.outEdges) {
+            if (edge.getVertex(Direction.OUT).equals(outVertex) && (edge.getLabel().equals(label) || label == null)) {
+                toRemove.add(edge);
+                outVertex.removeEdge(edge);
+            }
+        }
+        this.inEdges.removeAll(toRemove);
+    }
+
     public TinkerEdge createOutEdge(TinkerVertex inVertex, String label) {
         TinkerEdge edge = new TinkerEdge(this, inVertex, label);
         this.outEdges.add(edge);
@@ -49,5 +76,12 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     public String toString() {
         //return "vertex[id:" + id + "][outEdges:" + outEdges.size() + "][inEdges:" + inEdges.size() + "]";
         return "vertex[id:" + id + "]";
+    }
+
+    public boolean equals(Object object) {
+        if (object instanceof TinkerEdge)
+            return object.hashCode() == this.hashCode();
+        else
+            return false;
     }
 }

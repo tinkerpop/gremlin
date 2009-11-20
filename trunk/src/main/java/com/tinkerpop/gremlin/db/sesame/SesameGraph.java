@@ -30,6 +30,16 @@ public class SesameGraph implements Graph {
         return new SesameVertex(new URIImpl((String) id), this.sailConnection);
     }
 
+    public void removeVertex(Object id) {
+        URIImpl uri = new URIImpl((String)id);
+        try {
+            this.sailConnection.removeStatements(uri, null, null);
+            this.sailConnection.removeStatements(null, null, uri);
+        } catch (SailException e) {
+            e.printStackTrace();
+        }
+    }
+
     public SailConnection getSailConnection() {
         return this.sailConnection;
     }

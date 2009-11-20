@@ -3,9 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
-    <key id="d0" for="node" attr.name="color" attr.type="string">
-        <default>yellow</default>
-    </key>
     <key id="weight" for="edge" attr.name="weight" attr.type="float"/>
     <key id="label" for="edge" attr.name="label" attr.type="string"/>
     <key id="name" for="node" attr.name="name" attr.type="string"/>

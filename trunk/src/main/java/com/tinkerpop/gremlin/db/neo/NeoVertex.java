@@ -25,6 +25,7 @@ public class NeoVertex extends NeoElement implements Vertex {
     }
 
     public NeoVertex(Node node) {
+        super(node.getId());
         this.element = node;
     }
 

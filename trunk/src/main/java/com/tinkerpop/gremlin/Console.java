@@ -62,8 +62,6 @@ public class Console {
                         } else {
                             System.out.println(PRINT_RETURN + EMPTY);
                         }
-                    } else {
-                        System.out.println(PRINT_RETURN + NULL);
                     }
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());

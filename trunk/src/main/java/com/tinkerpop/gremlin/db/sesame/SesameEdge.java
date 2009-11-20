@@ -27,9 +27,8 @@ public class SesameEdge extends SesameElement implements Edge {
     }
 
     public SesameEdge(Statement statement, SailConnection sailConnection) {
-        super(sailConnection);
+        super(statement.toString(),sailConnection);
         this.statement = statement;
-
     }
 
     public String getLabel() {
