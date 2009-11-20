@@ -31,5 +31,5 @@ public class Tokens {
     public static final String IN_VERTEX = "inVertex";
     public static final String LABEL = "label";
      
-    
+             
 }
