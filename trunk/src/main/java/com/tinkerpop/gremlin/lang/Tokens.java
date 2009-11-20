@@ -30,6 +30,6 @@ public class Tokens {
     public static final String OUT_VERTEX = "outVertex";
     public static final String IN_VERTEX = "inVertex";
     public static final String LABEL = "label";
-    
+     
     
 }
