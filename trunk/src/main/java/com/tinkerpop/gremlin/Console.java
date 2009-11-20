@@ -17,7 +17,8 @@ import java.util.List;
 public class Console {
 
     private static final String MIDSTATEMENT_SPACING = "           ";
-    private static final String PRINT_SPACING = "==>";
+    private static final String PRINT_RETURN = "==>";
+    private static final String PRINT_SPACING = "   ";
     private static final String NULL = "null";
     private static final String EMPTY = "[]";
 
@@ -56,13 +57,13 @@ public class Console {
                     if (null != results) {
                         if (results.size() > 0) {
                             for (Object o : results) {
-                                System.out.println(PRINT_SPACING + o);
+                                System.out.println(PRINT_RETURN + o);
                             }
                         } else {
-                            System.out.println(PRINT_SPACING + EMPTY);
+                            System.out.println(PRINT_RETURN + EMPTY);
                         }
                     } else {
-                        System.out.println(PRINT_SPACING + NULL);
+                        System.out.println(PRINT_RETURN + NULL);
                     }
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());
