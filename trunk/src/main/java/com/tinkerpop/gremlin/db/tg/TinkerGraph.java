@@ -26,13 +26,14 @@ public class TinkerGraph implements Graph {
     }
 
     public void removeVertex(Object id) {
-        Vertex vertex = vertices.get((String)id);
+        TinkerVertex vertex = vertices.get((String)id);
         Set<Edge> edges = vertex.getEdges(Element.Direction.BOTH);
         for(Edge edge : edges) {
             TinkerVertex vIn = (TinkerVertex) edge.getVertex(Element.Direction.IN);
             vIn.removeEdge(edge);
-            TinkerVertex vOut = (TinkerVertex) edge.getVertex(Element.Direction.BOTH);
+            TinkerVertex vOut = (TinkerVertex) edge.getVertex(Element.Direction.OUT);
             vOut.removeEdge(edge);
+            vertex.removeEdge(edge);
         }
         this.vertices.remove((String)id);
     }

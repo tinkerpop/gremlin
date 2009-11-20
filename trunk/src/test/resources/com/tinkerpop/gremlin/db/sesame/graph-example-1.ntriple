@@ -1,8 +1,26 @@
 <http://tinkerpop.com#1> <http://tinkerpop.com#knows> <http://tinkerpop.com#2> .
 <http://tinkerpop.com#1> <http://tinkerpop.com#knows> <http://tinkerpop.com#4> .
 <http://tinkerpop.com#1> <http://tinkerpop.com#created> <http://tinkerpop.com#3> .
+
 <http://tinkerpop.com#4> <http://tinkerpop.com#created> <http://tinkerpop.com#3> .
 <http://tinkerpop.com#4> <http://tinkerpop.com#created> <http://tinkerpop.com#5> .
+
 <http://tinkerpop.com#6> <http://tinkerpop.com#created> <http://tinkerpop.com#3> .
 
 <http://tinkerpop.com#1> <http://tinkerpop.com#name> "marko" .
+<http://tinkerpop.com#1> <http://tinkerpop.com#age> "29" .
+
+<http://tinkerpop.com#2> <http://tinkerpop.com#name> "vadas" .
+<http://tinkerpop.com#2> <http://tinkerpop.com#age> "27" .
+
+<http://tinkerpop.com#3> <http://tinkerpop.com#name> "lop" .
+<http://tinkerpop.com#3> <http://tinkerpop.com#lang> "java" .
+
+<http://tinkerpop.com#4> <http://tinkerpop.com#name> "josh" .
+<http://tinkerpop.com#4> <http://tinkerpop.com#age> "32" .
+
+<http://tinkerpop.com#5> <http://tinkerpop.com#name> "ripple" .
+<http://tinkerpop.com#5> <http://tinkerpop.com#lang> "java" .
+
+<http://tinkerpop.com#6> <http://tinkerpop.com#name> "peter" .
+<http://tinkerpop.com#6> <http://tinkerpop.com#age> "35" .

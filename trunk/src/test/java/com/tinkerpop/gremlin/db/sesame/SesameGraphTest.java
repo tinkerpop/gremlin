@@ -37,7 +37,7 @@ public class SesameGraphTest extends BaseTest {
         MemoryStore sail = loadMemoryStore("graph-example-1.ntriple", RDFFormat.NTRIPLES);
         SailConnection sc = sail.getConnection();
         CloseableIteration<? extends Statement, SailException> results = sc.getStatements(null, null, null, false);
-        assertEquals(7, countStatements(results, true));
+        assertEquals(18, countStatements(results, true));
         SesameGraph graph = new SesameGraph(sail);
         graph.registerNamespace("tg", "http://tinkerpop.com#");
         Vertex vertex = graph.getVertex("tg:1");
@@ -45,14 +45,15 @@ public class SesameGraphTest extends BaseTest {
         evaluator.setRoot(vertex);
 
         assertEquals(vertex.toString(), "http://tinkerpop.com#1");
-        assertEquals(4, evaluator.evaluate("./outEdges").size());
+        assertEquals(5, evaluator.evaluate("./outEdges").size());
         System.out.println(evaluator.evaluate("./outEdges"));
         //printList(evaluator.evaluate("./outEdges[@label='tg:knows']"));
         assertEquals(2, evaluator.evaluate("./outEdges[@label='tg:knows']/inVertex").size());
-        assertEquals(asList(new URIImpl(TP_NS + "graph"), 4), evaluator.evaluate("./outEdges/@named_graph"));
+        assertEquals(asList(new URIImpl(TP_NS + "graph"), 5), evaluator.evaluate("./outEdges/@named_graph"));
         assertEquals(asList("marko",1), evaluator.evaluate("@tg:name"));
         assertEquals(asList("marko",1), evaluator.evaluate("./@tg:name"));
         assertEquals(asList("marko",1).get(0), evaluator.evaluate("./outEdges[@label='tg:name']/inVertex").get(0).toString());
+        assertEquals(asList("29",1).get(0), evaluator.evaluate("./outEdges[@label='tg:age']/inVertex").get(0).toString());
 
         graph.shutdown();
     }
