@@ -60,12 +60,17 @@ public class ForeachStatement extends Statement {
         }
     }
 
-    public List evaluate() {
-        List set = this.loopSet.evaluate();
+    public List evaluate() throws EvaluationErrorException {
         List results = null;
-        for (Object item : set) {
-            xPathEvaluator.setVariable(this.variable, item);
-            results = this.loopBody.evaluate();
+        try {
+            List set = this.loopSet.evaluate();
+
+            for (Object item : set) {
+                xPathEvaluator.setVariable(this.variable, item);
+                results = this.loopBody.evaluate();
+            }
+        } catch (Exception e) {
+            throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
         }
         return results;
     }

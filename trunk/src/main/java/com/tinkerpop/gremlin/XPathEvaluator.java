@@ -39,15 +39,11 @@ public class XPathEvaluator {
         return this.baseContext.getVariable(variable);
     }
 
-    public void setRoot(Object rootObject) {
-        this.baseContext.setRoot(rootObject);
+    public void setRoot(Object root) {
+        this.baseContext.setRoot(root);
     }
 
     public Object getRoot() {
         return this.baseContext;
     }
-
-
-
-
 }

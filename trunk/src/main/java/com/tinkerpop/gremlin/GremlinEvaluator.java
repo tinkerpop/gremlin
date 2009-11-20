@@ -19,9 +19,10 @@ public class GremlinEvaluator {
 
     public GremlinEvaluator() {
         this.xPathEvaluator = new XPathEvaluator();
+        this.currentStatement = null;
     }
 
-    public List evaluate(String line) throws SyntaxErrorException, JXPathException {
+    public List evaluate(String line) throws SyntaxErrorException, EvaluationErrorException, JXPathException {
         line = line.trim();
 
         try {
@@ -53,11 +54,26 @@ public class GremlinEvaluator {
             }
         } catch (JXPathInvalidSyntaxException e) {
             this.currentStatement = null;
-            throw new SyntaxErrorException(e.getMessage());
+            throw new SyntaxErrorException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
         } catch (SyntaxErrorException e) {
             this.currentStatement = null;
-            throw new SyntaxErrorException(e.getMessage());
+            throw e;
+        } catch (EvaluationErrorException e) {
+            this.currentStatement = null;
+            throw e;
         }
         return null;
+    }
+
+    public boolean inStatement() {
+        return null != this.currentStatement;
+    }
+
+    public void setVariable(String variable, Object value) {
+        this.xPathEvaluator.setVariable(variable, value);
+    }
+
+    public void setRoot(Object root) {
+        this.xPathEvaluator.setRoot(root);
     }
 }

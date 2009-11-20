@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.lang.EvaluationErrorException;
 import com.tinkerpop.gremlin.lang.SyntaxErrorException;
 import jline.ArgumentCompletor;
 import jline.ConsoleReader;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class Console {
 
+    private static final String MIDSTATEMENT_SPACING = "           ";
     private static final String PRINT_SPACING = "  ";
 
     public static void main(String[] args) throws IOException {
@@ -26,12 +28,18 @@ public class Console {
                 new SimpleCompletor(new String[]{"outEdges", "inEdges", "bothEdges",
                         "outVertex", "inVertex", "bothVertex"})));
 
-        String line;
+        String line = "";
         GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
-        while ((line = reader.readLine("gremlin> ")) != null) {
-            if (line.equalsIgnoreCase("quit"))
-                break;
-            else if (line.length() > 0) {
+        while (line != null) {
+            if (gremlinEvaluator.inStatement())
+                line = reader.readLine(MIDSTATEMENT_SPACING);
+            else {
+                line = reader.readLine("gremlin> ");
+                if (line.equalsIgnoreCase("quit"))
+                    break;
+            }
+
+            if (line.length() > 0) {
                 try {
                     List results = gremlinEvaluator.evaluate(line);
                     if (null != results) {
@@ -40,8 +48,10 @@ public class Console {
                         }
                     }
                 } catch (JXPathException e) {
-                    System.out.println(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
+                    System.out.println(e.getMessage());
                 } catch (SyntaxErrorException e) {
+                    System.out.println(e.getMessage());
+                } catch (EvaluationErrorException e) {
                     System.out.println(e.getMessage());
                 }
             }

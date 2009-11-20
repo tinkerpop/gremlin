@@ -1,18 +1,18 @@
 package com.tinkerpop.gremlin.db.sesame;
 
+import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+import com.tinkerpop.gremlin.model.Vertex;
+import info.aduna.iteration.CloseableIteration;
+import org.openrdf.model.Statement;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.memory.MemoryStore;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
-import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.Statement;
-import info.aduna.iteration.CloseableIteration;
-import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.BaseTest;
+import org.openrdf.sail.memory.MemoryStore;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -33,34 +33,49 @@ public class SesameGraphTest extends BaseTest {
         return sail;
     }
 
-    /*public void testGraphExample1() throws Exception {
+    public void testGraphExample1() throws Exception {
         MemoryStore sail = loadMemoryStore("graph-example-1.ntriple", RDFFormat.NTRIPLES);
         SailConnection sc = sail.getConnection();
-        CloseableIteration<? extends Statement, SailException> results = sc.getStatements(null,null,null,false);
+        CloseableIteration<? extends Statement, SailException> results = sc.getStatements(null, null, null, false);
         assertEquals(7, countStatements(results, true));
         SesameGraph graph = new SesameGraph(sail);
-        Vertex vertex = graph.getVertex("http://tinkerpop.com#1");
+        graph.registerNamespace("tg", "http://tinkerpop.com#");
+        Vertex vertex = graph.getVertex("tg:1");
+        GremlinEvaluator evaluator = new GremlinEvaluator();
+        evaluator.setRoot(vertex);
 
-        GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
-        gremlinEvaluator.setVariable("$sail", graph);
-        gremlinEvaluator.setRoot(vertex);
-        assertEquals(4, gremlinEvaluator.evaluate("./outEdges").size());
-        //assertEquals(2, evaluator.evaluate("./outEdges[@label='http://tinkerpop.com#knows']/inVertex").size());
-        assertEquals(asList(new URIImpl(TP_NS + "graph"), 4), gremlinEvaluator.evaluate("./outEdges/@named_graph"));
-        System.out.println("here");
-        // NAMESPACE IT!
-        //printList(evaluator.evaluate("./http://tinkerpop.com#name"));
+        assertEquals(vertex.toString(), "http://tinkerpop.com#1");
+        assertEquals(4, evaluator.evaluate("./outEdges").size());
+        System.out.println(evaluator.evaluate("./outEdges"));
+        //printList(evaluator.evaluate("./outEdges[@label='tg:knows']"));
+        assertEquals(2, evaluator.evaluate("./outEdges[@label='tg:knows']/inVertex").size());
+        assertEquals(asList(new URIImpl(TP_NS + "graph"), 4), evaluator.evaluate("./outEdges/@named_graph"));
+        assertEquals(asList("marko",1), evaluator.evaluate("@tg:name"));
+        assertEquals(asList("marko",1), evaluator.evaluate("./@tg:name"));
+        assertEquals(asList("marko",1).get(0), evaluator.evaluate("./outEdges[@label='tg:name']/inVertex").get(0).toString());
 
         graph.shutdown();
-    }*/
+    }
 
+    public void testNamespaceConversion() throws Exception {
+        MemoryStore sail = new MemoryStore();
+        sail.initialize();
+        SesameGraph graph = new SesameGraph(sail);
+        graph.registerNamespace("tg", "http://tinkerpop.com#");
+        graph.registerNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+        assertEquals(SesameGraph.prefixToNamespace("tg:name", graph.getSailConnection()),"http://tinkerpop.com#name");
+        assertEquals(SesameGraph.prefixToNamespace("rdf:label", graph.getSailConnection()),"http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
+        assertEquals(SesameGraph.namespaceToPrefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#label", graph.getSailConnection()), "rdf:label");
+        assertEquals(SesameGraph.namespaceToPrefix("http://tinkerpop.com#name", graph.getSailConnection()), "tg:name");
+        graph.shutdown();
 
+    }
 
     public static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {
         int counter = 0;
-        while(itty.hasNext()) {
+        while (itty.hasNext()) {
             Statement s = itty.next();
-            if(print)
+            if (print)
                 System.out.println(s);
             counter++;
         }

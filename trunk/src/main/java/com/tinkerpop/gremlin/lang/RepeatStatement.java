@@ -50,13 +50,17 @@ public class RepeatStatement extends Statement {
         }
     }
 
-    public List evaluate() {
-        int numberOfTimes = Float.valueOf(times.evaluate().get(0).toString()).intValue();
+    public List evaluate() throws EvaluationErrorException {
         List results = null;
-        for(int i=0; i<numberOfTimes; i++) {
-            results = loopBody.evaluate();
+        try {
+            int numberOfTimes = Float.valueOf(times.evaluate().get(0).toString()).intValue();
+            for (int i = 0; i < numberOfTimes; i++) {
+                results = loopBody.evaluate();
+            }
+        } catch (Exception e) {
+            throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
         }
-        return results; 
+        return results;
     }
 
     public XPathStatement getTimes() {

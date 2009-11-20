@@ -58,10 +58,15 @@ public class WhileStatement extends Statement {
         return this.loopBody;
     }
 
-    public List evaluate() {
+    public List evaluate() throws EvaluationErrorException {
         List results = null;
-        while ((Boolean) condition.evaluate().get(0)) {
-            results = this.loopBody.evaluate();
+        try {
+            while ((Boolean) condition.evaluate().get(0)) {
+                results = this.loopBody.evaluate();
+            }
+        }
+        catch (Exception e) {
+            throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
         }
         return results;
     }

@@ -37,9 +37,14 @@ public class AssignmentStatement extends Statement {
         return true;
     }
 
-    public List evaluate() {
-        List results = this.assignmentBody.evaluate();
-        this.xPathEvaluator.evaluate("g:set('"+ this.variable +"'," + this.assignmentBody.getRawStatement() + ")");
+    public List evaluate() throws EvaluationErrorException {
+        List results = null;
+        try {
+            results = this.assignmentBody.evaluate();
+            this.xPathEvaluator.evaluate("g:set('" + this.variable + "'," + this.assignmentBody.getRawStatement() + ")");
+        } catch (Exception e) {
+            throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
+        }
         return results;
     }
 

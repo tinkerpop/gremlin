@@ -15,10 +15,9 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameEdge implements Edge {
+public class SesameEdge extends SesameElement implements Edge {
 
     Statement statement;
-    SailConnection sailConnection;
 
     protected final static String NAMED_GRAPH = "named_graph";
     protected static Set<String> keys = new HashSet<String>();
@@ -28,12 +27,13 @@ public class SesameEdge implements Edge {
     }
 
     public SesameEdge(Statement statement, SailConnection sailConnection) {
+        super(sailConnection);
         this.statement = statement;
-        this.sailConnection = sailConnection;
+
     }
 
     public String getLabel() {
-        return this.statement.getPredicate().toString();
+        return SesameGraph.namespaceToPrefix(this.statement.getPredicate().stringValue(), this.sailConnection);
     }
 
     public Set<String> getPropertyKeys() {
@@ -68,6 +68,20 @@ public class SesameEdge implements Edge {
     }
 
     public String toString() {
-        return this.statement.toString();
+        //return this.statement.toString();
+        return SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection) +
+                "--" + this.getLabel() + "-->" + 
+                SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
+    }
+
+    public int hashCode() {
+        return this.statement.hashCode();
+    }
+
+    public boolean equals(Object object) {
+        if(object instanceof SesameEdge)
+            return object.hashCode() == this.hashCode();
+        else
+            return false;
     }
 }
