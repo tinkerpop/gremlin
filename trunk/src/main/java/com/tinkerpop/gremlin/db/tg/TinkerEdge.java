@@ -24,6 +24,10 @@ public class TinkerEdge extends TinkerElement implements Edge {
         return this.label;
     }
 
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public Vertex getVertex(Vertex.Direction direction) {
         if (direction == Direction.OUT)
             return this.outVertex;

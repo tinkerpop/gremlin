@@ -34,7 +34,7 @@
             <data key="age">35</data>
         </node>
         <edge id="e0" source="1" target="2">
-            <data key="weight">1.0</data>
+            <data key="weight">0.5</data>
             <data key="label">knows</data>
         </edge>
         <edge id="e1" source="1" target="3">
