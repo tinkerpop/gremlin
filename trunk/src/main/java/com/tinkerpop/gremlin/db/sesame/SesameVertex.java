@@ -33,24 +33,29 @@ public class SesameVertex extends SesameElement implements Vertex {
 
     public Object getProperty(String key) {
         key = SesameGraph.prefixToNamespace(key, this.sailConnection);
-        Set<String> values = new HashSet<String>();
+        Set<Object> values = new HashSet<Object>();
         try {
             CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(this.resource, new URIImpl(key), null, false);
             while (results.hasNext()) {
                 Statement s = results.next();
                 Value value = s.getObject();
                 if (value instanceof Literal) {
-                    values.add(value.stringValue());
+                    String dataType = ((Literal) value).getDatatype().stringValue();
+                    String literalValue = ((Literal) value).getLabel();
+                    values.add(SesameGraph.castLiteral(literalValue, dataType));
                 }
             }
             results.close();
         } catch (SailException e) {
             e.printStackTrace();
         }
-        if (values.size() > 0)
-            return values;
-        else
+        int size = values.size();
+        if (size == 0)
             return null;
+        else if (size == 1)
+            return values.iterator().next();
+        else
+            return values;
 
     }
 

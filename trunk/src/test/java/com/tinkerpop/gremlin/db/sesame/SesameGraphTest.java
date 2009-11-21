@@ -46,7 +46,7 @@ public class SesameGraphTest extends BaseTest {
 
         assertEquals(vertex.toString(), "http://tinkerpop.com#1");
         assertEquals(5, evaluator.evaluate("./outEdges").size());
-        System.out.println(evaluator.evaluate("./outEdges"));
+        //System.out.println(evaluator.evaluate("./outEdges"));
         //printList(evaluator.evaluate("./outEdges[@label='tg:knows']"));
         assertEquals(2, evaluator.evaluate("./outEdges[@label='tg:knows']/inVertex").size());
         assertEquals(asList(new URIImpl(TP_NS + "graph"), 5), evaluator.evaluate("./outEdges/@named_graph"));
@@ -54,6 +54,8 @@ public class SesameGraphTest extends BaseTest {
         assertEquals(asList("marko",1), evaluator.evaluate("./@tg:name"));
         assertTrue((Boolean)evaluator.evaluate("@tg:name='marko'").get(0));
         assertTrue((Boolean)evaluator.evaluate("@tg:age='29'").get(0));
+
+        assertEquals(evaluator.evaluate("./@tg:age[g:set('$x')]/../outEdges[@label='tg:knows']/inVertex[@tg:name='josh'][@tg:age > $x]").get(0).toString(), "http://tinkerpop.com#4");
 
         graph.shutdown();
     }

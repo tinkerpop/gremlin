@@ -4,17 +4,13 @@ import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Namespace;
-import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.LiteralImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -24,8 +20,17 @@ public class SesameGraph implements Graph {
 
     Sail sail;
     SailConnection sailConnection;
-    //private Map<String, >
+    private static Map<String, String> dataTypeToClass = new HashMap<String, String>();
     private static final String NAMESPACE_SEPARATOR = ":";
+    private static final String XSD_NS = "http://www.w3.org/2001/XMLSchema#";
+
+
+    static {
+        dataTypeToClass.put(XSD_NS + "string", "java.lang.String");
+        dataTypeToClass.put(XSD_NS + "int", "java.lang.Integer");
+        dataTypeToClass.put(XSD_NS + "integer", "java.lang.Integer");
+        dataTypeToClass.put(XSD_NS + "float", "java.lang.Float");
+    }
 
 
     public SesameGraph(Sail sail) throws SailException {
@@ -39,7 +44,7 @@ public class SesameGraph implements Graph {
     }
 
     public void removeVertex(Object id) {
-        URIImpl uri = new URIImpl((String)id);
+        URIImpl uri = new URIImpl((String) id);
         try {
             this.sailConnection.removeStatements(uri, null, null);
             this.sailConnection.removeStatements(null, null, uri);
@@ -61,7 +66,7 @@ public class SesameGraph implements Graph {
     }
 
     public Map<String, String> getNamespaces() {
-        Map<String, String> namespaces  = new HashMap<String, String>();
+        Map<String, String> namespaces = new HashMap<String, String>();
         try {
             CloseableIteration<? extends Namespace, SailException> results = sailConnection.getNamespaces();
             while (results.hasNext()) {
@@ -110,12 +115,33 @@ public class SesameGraph implements Graph {
         return uri;
     }
 
-    public void reisterCastType(URI datatype, Class cast) {
+    /*public void registerCastType(String dataType, String className) {
+        this.dataTypeToClass.put(dataType, className);
+    }*/
 
-    }
-
-    public Object castLiteral(String literalValue, URI datatype) {
-        return null;
+    public static Object castLiteral(String literalValue, String dataType) {
+        String className = dataTypeToClass.get(dataType);
+        if (null == className)
+            return literalValue;
+        else {
+            try {
+                Class c = Class.forName(className);
+                if(c == String.class) {
+                    return literalValue;
+                } else if(c == Float.class) {
+                    return Float.valueOf(literalValue);
+                } else if(c == Integer.class) {
+                    return Integer.valueOf(literalValue);
+                } else  if(c == Double.class) {
+                    return Double.valueOf(literalValue);
+                } else {
+                    return literalValue;
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return literalValue;
+            }
+        }
     }
 
 
