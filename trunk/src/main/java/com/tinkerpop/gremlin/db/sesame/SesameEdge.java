@@ -63,7 +63,7 @@ public class SesameEdge extends SesameElement implements Edge {
         if (direction == Direction.OUT)
             return new SesameVertex(this.statement.getSubject(), this.sailConnection);
         else
-            return new SesameVertex(this.statement.getObject(), this.sailConnection);
+            return new SesameVertex((Resource)this.statement.getObject(), this.sailConnection);
     }
 
     public String toString() {

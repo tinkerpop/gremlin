@@ -4,10 +4,17 @@ import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Namespace;
+import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.model.impl.LiteralImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
+
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -17,6 +24,7 @@ public class SesameGraph implements Graph {
 
     Sail sail;
     SailConnection sailConnection;
+    //private Map<String, >
     private static final String NAMESPACE_SEPARATOR = ":";
 
 
@@ -50,6 +58,20 @@ public class SesameGraph implements Graph {
         } catch (SailException e) {
             e.printStackTrace();
         }
+    }
+
+    public Map<String, String> getNamespaces() {
+        Map<String, String> namespaces  = new HashMap<String, String>();
+        try {
+            CloseableIteration<? extends Namespace, SailException> results = sailConnection.getNamespaces();
+            while (results.hasNext()) {
+                Namespace namespace = results.next();
+                namespaces.put(namespace.getPrefix(), namespace.getName());
+            }
+        } catch (SailException e) {
+            e.printStackTrace();
+        }
+        return namespaces;
     }
 
     public void shutdown() {
@@ -86,6 +108,14 @@ public class SesameGraph implements Graph {
             e.printStackTrace();
         }
         return uri;
+    }
+
+    public void reisterCastType(URI datatype, Class cast) {
+
+    }
+
+    public Object castLiteral(String literalValue, URI datatype) {
+        return null;
     }
 
 

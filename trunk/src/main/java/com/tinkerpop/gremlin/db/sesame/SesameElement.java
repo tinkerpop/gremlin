@@ -23,4 +23,5 @@ public abstract class SesameElement implements Element {
     public Object getId() {
         return this.id;
     }
+    
 }

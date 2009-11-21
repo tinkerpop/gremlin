@@ -52,8 +52,8 @@ public class SesameGraphTest extends BaseTest {
         assertEquals(asList(new URIImpl(TP_NS + "graph"), 5), evaluator.evaluate("./outEdges/@named_graph"));
         assertEquals(asList("marko",1), evaluator.evaluate("@tg:name"));
         assertEquals(asList("marko",1), evaluator.evaluate("./@tg:name"));
-        assertEquals(asList("marko",1).get(0), evaluator.evaluate("./outEdges[@label='tg:name']/inVertex").get(0).toString());
-        assertEquals(asList("29",1).get(0), evaluator.evaluate("./outEdges[@label='tg:age']/inVertex").get(0).toString());
+        assertTrue((Boolean)evaluator.evaluate("@tg:name='marko'").get(0));
+        assertTrue((Boolean)evaluator.evaluate("@tg:age='29'").get(0));
 
         graph.shutdown();
     }

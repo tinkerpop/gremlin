@@ -28,16 +28,13 @@ public class SesameFunctions {
         return new SesameGraph(sail);
     }
 
-    public static Boolean show_ns(ExpressionContext context, String graphVariable) throws SailException {
-        return true;   
+    public static Boolean register_ns(SesameGraph graph, String prefix, String namespace) throws SailException {
+        graph.registerNamespace(prefix, namespace);
+        return Boolean.TRUE;
     }
 
-    public static Boolean register_ns(ExpressionContext context, String prefix, String namespace) throws SailException {
-        return true;
-    }
-
-    public static Object close(ExpressionContext context, String graphVariable) {
-        ((Graph) context.getJXPathContext().getVariables().getVariable(graphVariable)).shutdown();
+    public static Boolean close(SesameGraph graph) {
+        graph.shutdown();
         return Boolean.TRUE;
     }
 
