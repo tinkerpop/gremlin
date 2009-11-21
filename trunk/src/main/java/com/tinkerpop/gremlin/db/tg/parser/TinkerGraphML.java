@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.db.tg.TinkerVertex;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class TinkerGraphML {
     private static final String DOUBLE = "double";
     private static final String INT = "int";
 
-    public static TinkerGraph generateGraph(InputStream xmlInputStream) throws Exception {
+    public static TinkerGraph generateGraph(InputStream xmlInputStream) throws XMLStreamException {
 
         TinkerGraph graph = new TinkerGraph();
 
@@ -75,12 +76,12 @@ public class TinkerGraphML {
                     String key = xmlReader.getAttributeValue(null, KEY);
                     String value = xmlReader.getElementText();
                     if (currentVertex != null) {
-                        currentVertex.setProperty(key, typeCaseValue(key, value, dataTypeMap));
+                        currentVertex.setProperty(key, typeCastValue(key, value, dataTypeMap));
                     } else if (currentEdge != null) {
                         if (key.equals(LABEL)) {
                             currentEdge.setLabel(value);
                         } else {
-                            currentEdge.setProperty(key, typeCaseValue(key, value, dataTypeMap));
+                            currentEdge.setProperty(key, typeCastValue(key, value, dataTypeMap));
                         }
                     }
                 }
@@ -98,7 +99,7 @@ public class TinkerGraphML {
         return graph;
     }
 
-    public static Object typeCaseValue(String key, String value, Map<String, String> dataTypeMap) {
+    public static Object typeCastValue(String key, String value, Map<String, String> dataTypeMap) {
         String type = dataTypeMap.get(key);
         if (type.equals(STRING)) {
             return value;
