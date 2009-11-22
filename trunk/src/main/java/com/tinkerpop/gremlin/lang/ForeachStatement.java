@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.lang;
 import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -14,8 +16,12 @@ public class ForeachStatement extends CompoundStatement {
     private String variable;
     private XPathStatement loopSet;
 
+    private static final Pattern foreachPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX + Tokens.FOREACH + Tokens.WHITESPACE_REGEX +
+            Tokens.VARIABLE_REGEX + Tokens.WHITESPACE_REGEX + Tokens.IN + Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
+
     /* foreach $i in ./././
-         do ./././
+         ./././
+         end
      */
 
     public ForeachStatement(XPathEvaluator xPathEvaluator) {
@@ -25,24 +31,21 @@ public class ForeachStatement extends CompoundStatement {
     public void compileTokens(String line) throws SyntaxErrorException {
         super.compileTokens(line);
         if (variable == null && null == loopSet) {
-            if (line.startsWith(Tokens.FOREACH)) {
-                String[] parts = line.split(Tokens.SINGLESPACE);
-                if (!parts[0].equals(Tokens.FOREACH))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must start with 'foreach'.");
-                else if (!parts[1].startsWith(Tokens.DOLLAR_SIGN))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must have a variable component.");
-                else if (!parts[2].equals(Tokens.IN))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must have an 'in' component.");
 
-                this.variable = parts[1];
+            String[] parts = line.split(Tokens.WHITESPACE_REGEX);
 
-                int startXPath = line.indexOf(Tokens.SINGLESPACE + Tokens.IN + Tokens.SINGLESPACE);
+            if (parts.length < 4)
+                throw new SyntaxErrorException("Invalid statement: '" + this.toString());
+
+            this.variable = parts[1];
+
+            Matcher matcher = foreachPattern.matcher(line);
+            if (matcher.find()) {
                 XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-                xPathStatement.compileTokens(line.substring(startXPath + 4));
+                xPathStatement.compileTokens(line.substring(matcher.end() - 1));
                 this.loopSet = xPathStatement;
-
             } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must start with 'foreach'.");
+                throw new SyntaxErrorException("Invalid statement: '" + this.toString());
             }
         } else {
             this.updateStatementList(line);
@@ -66,8 +69,7 @@ public class ForeachStatement extends CompoundStatement {
     }
 
     public static boolean isStatement(String firstLine) {
-        return firstLine.matches(Tokens.FOREACH + Tokens.WHITESPACE_REGEX + Tokens.VARIABLE_REGEX +
-                Tokens.WHITESPACE_REGEX + Tokens.IN + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
+        return foreachPattern.matcher(firstLine).find();
     }
 
 }

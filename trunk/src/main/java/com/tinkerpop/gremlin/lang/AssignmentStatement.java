@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.lang;
 import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -12,6 +14,9 @@ public class AssignmentStatement extends SimpleStatement {
 
     private String variable;
     private XPathStatement assignmentBody;
+
+    private static final Pattern assignmentPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX +
+            Tokens.VARIABLE_REGEX + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
 
     /*
         $i := ./././
@@ -23,21 +28,21 @@ public class AssignmentStatement extends SimpleStatement {
 
     public void compileTokens(String line) throws SyntaxErrorException {
         super.compileTokens(line);
-        String[] parts = line.split(Tokens.SINGLESPACE);
-        if (!parts[0].startsWith(Tokens.DOLLAR_SIGN)) {
-            throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Assignment must start with a variable.");
-        } else if (!parts[1].equals(Tokens.ASSIGNMENT)) {
-            throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Assignment must have the assignment operator.");
-        }
+        String[] parts = line.split(Tokens.WHITESPACE_REGEX);
         this.variable = parts[0];
-        XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-        int xPathStart = line.indexOf(" " + Tokens.ASSIGNMENT + " ");
-        xPathStatement.compileTokens(line.substring(xPathStart + 4));
-        this.assignmentBody = xPathStatement;
+        Matcher matcher = assignmentPattern.matcher(line);
+        if (matcher.find()) {
+            XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
+            xPathStatement.compileTokens(line.substring(matcher.end() - 1));
+            System.out.println(line.substring(matcher.end() - 1));
+            this.assignmentBody = xPathStatement;
+        } else {
+            throw new SyntaxErrorException("Invalid statement: '" + this.toString());
+        }
     }
 
     public List evaluate() throws EvaluationErrorException {
-        List results = null;
+        List results;
         try {
             results = this.assignmentBody.evaluate();
             this.xPathEvaluator.evaluate("g:set('" + this.variable + "'," + this.assignmentBody.toString() + ")");
@@ -48,6 +53,6 @@ public class AssignmentStatement extends SimpleStatement {
     }
 
     public static boolean isStatement(String firstLine) {
-        return firstLine.matches(Tokens.VARIABLE_REGEX + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
+        return assignmentPattern.matcher(firstLine).find();
     }
 }

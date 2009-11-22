@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.lang;
 import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -12,6 +14,14 @@ public class WhileStatement extends CompoundStatement {
 
     private XPathStatement condition;
 
+    private static final Pattern whilePattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX + Tokens.WHILE +
+            Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
+
+     /* while ./././
+         ./././
+         end
+     */
+
     public WhileStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
@@ -19,16 +29,13 @@ public class WhileStatement extends CompoundStatement {
     public void compileTokens(String line) {
         super.compileTokens(line);
         if (condition == null) {
-            if (line.startsWith(Tokens.WHILE)) {
-                String[] parts = line.split(Tokens.SINGLESPACE);
-                if (!parts[0].equals(Tokens.WHILE))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. While must start with 'while'.");
-
+            Matcher matcher = whilePattern.matcher(line);
+            if (matcher.find()) {
                 XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-                xPathStatement.compileTokens(line.substring(6));
+                xPathStatement.compileTokens(line.substring(matcher.end() - 1));
                 this.condition = xPathStatement;
             } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. While must start with 'while'.");
+                throw new SyntaxErrorException("Invalid statement: '" + this.toString());
             }
         } else {
             this.updateStatementList(line);
@@ -52,6 +59,6 @@ public class WhileStatement extends CompoundStatement {
     }
 
     public static boolean isStatement(String firstLine) {
-        return firstLine.matches(Tokens.WHILE + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
+        return whilePattern.matcher(firstLine).find();
     }
 }

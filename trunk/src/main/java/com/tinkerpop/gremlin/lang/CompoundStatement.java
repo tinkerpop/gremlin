@@ -16,7 +16,7 @@ public abstract class CompoundStatement extends Statement {
     public CompoundStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
         this.statementList = new ArrayList<Statement>();
-        this.xPathEvaluator.incrDepth();
+        this.xPathEvaluator.incrDepth(); // COMPOUND STATEMENT HAS STARTED: INCREMENT THE DEPTH OF THE EVALUATOR
     }
 
     private Statement getCurrentStatement() {
@@ -33,7 +33,7 @@ public abstract class CompoundStatement extends Statement {
         } else {
             if (line.startsWith(Tokens.END)) {
                 this.complete = true;
-                this.xPathEvaluator.decrDepth();
+                this.xPathEvaluator.decrDepth(); // COMPOUND STATEMENT HAS ENDED: DECREMENT THE DEPTH OF THE EVALUATOR
             } else {
                 Statement statement = StatementGenerator.generateStatement(line, this.xPathEvaluator);
                 statement.compileTokens(line);

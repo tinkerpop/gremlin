@@ -28,4 +28,15 @@ public class TokensTest extends BaseTest {
         assertFalse("$123".matches(Tokens.VARIABLE_REGEX));
         assertFalse("a0Z".matches(Tokens.VARIABLE_REGEX));
     }
+
+    public void testNonWhitespaceRegEx() {
+        assertTrue(".".matches(Tokens.NONWHITESPACE_REGEX));
+        assertTrue("/".matches(Tokens.NONWHITESPACE_REGEX));
+        assertTrue("a".matches(Tokens.NONWHITESPACE_REGEX));
+        assertTrue("$".matches(Tokens.NONWHITESPACE_REGEX));
+        assertTrue("x".matches(Tokens.NONWHITESPACE_REGEX));
+        assertFalse(" ".matches(Tokens.NONWHITESPACE_REGEX));
+        assertFalse("   ".matches(Tokens.NONWHITESPACE_REGEX));
+        assertFalse("/t".matches(Tokens.NONWHITESPACE_REGEX));
+    }
 }
