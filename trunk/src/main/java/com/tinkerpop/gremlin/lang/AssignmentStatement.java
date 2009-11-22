@@ -25,9 +25,9 @@ public class AssignmentStatement extends SimpleStatement {
         super.compileTokens(line);
         String[] parts = line.split(Tokens.SINGLESPACE);
         if (!parts[0].startsWith(Tokens.DOLLAR_SIGN)) {
-            throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Assignment must start with a variable.");
+            throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Assignment must start with a variable.");
         } else if (!parts[1].equals(Tokens.ASSIGNMENT)) {
-            throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Assignment must have the assignment operator.");
+            throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Assignment must have the assignment operator.");
         }
         this.variable = parts[0];
         XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
@@ -40,7 +40,7 @@ public class AssignmentStatement extends SimpleStatement {
         List results = null;
         try {
             results = this.assignmentBody.evaluate();
-            this.xPathEvaluator.evaluate("g:set('" + this.variable + "'," + this.assignmentBody.getRawStatement() + ")");
+            this.xPathEvaluator.evaluate("g:set('" + this.variable + "'," + this.assignmentBody.toString() + ")");
         } catch (Exception e) {
             throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
         }
@@ -48,10 +48,6 @@ public class AssignmentStatement extends SimpleStatement {
     }
 
     public static boolean isStatement(String firstLine) {
-        return firstLine.startsWith(Tokens.DOLLAR_SIGN) && firstLine.contains(Tokens.SINGLESPACE + Tokens.ASSIGNMENT + Tokens.SINGLESPACE);
-    }
-
-    public String toString() {
-        return "(ASSIGNMENT VARIABLE[" + this.variable + "] BODY[" + this.assignmentBody + "])";
+        return firstLine.matches(Tokens.VARIABLE_REGEX + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
     }
 }

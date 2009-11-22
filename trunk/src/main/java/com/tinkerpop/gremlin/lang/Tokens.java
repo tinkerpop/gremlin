@@ -11,16 +11,18 @@ public class Tokens {
     public static final String IN = "in";
     public static final String WHILE = "while";
     public static final String REPEAT = "repeat";
-
     public static final String END = "end";
 
     public static final String DOLLAR_SIGN = "$";
     public static final String EMPTY_STRING = "";
     public static final String AT_VARIABLE = "$_";
-    public static final String LAST_VALUE = "$_last";
+    public static final String LAST_VARIABLE = "$_last";
 
     protected static final String NEWLINE = "\n";
-    protected static final String ANY_WHITESPACE_REGEX = "[' '\t]+";
+    protected static final String WHITESPACE_REGEX = "[' '\t]+";
+    protected static final String VARIABLE_REGEX = "[$][a-zA-Z'_'][a-zA-Z'_'0-9'.']*";
+    protected static final String ANYTHING_REGEX = ".*";
+
     protected static final String SINGLESPACE = " ";
 
     public static final String OUT_EDGES = "outEdges";
@@ -30,6 +32,6 @@ public class Tokens {
     public static final String OUT_VERTEX = "outVertex";
     public static final String IN_VERTEX = "inVertex";
     public static final String LABEL = "label";
-                
-              
+
+
 }

@@ -16,23 +16,19 @@ public class WhileStatement extends CompoundStatement {
         super(xPathEvaluator);
     }
 
-    public static boolean isStatement(String firstLine) {
-        return firstLine.startsWith(Tokens.WHILE + Tokens.SINGLESPACE);
-    }
-
     public void compileTokens(String line) {
         super.compileTokens(line);
         if (condition == null) {
             if (line.startsWith(Tokens.WHILE)) {
                 String[] parts = line.split(Tokens.SINGLESPACE);
                 if (!parts[0].equals(Tokens.WHILE))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. While must start with 'while'.");
+                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. While must start with 'while'.");
 
                 XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
                 xPathStatement.compileTokens(line.substring(6));
                 this.condition = xPathStatement;
             } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. While must start with 'while'.");
+                throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. While must start with 'while'.");
             }
         } else {
             this.updateStatementList(line);
@@ -55,7 +51,7 @@ public class WhileStatement extends CompoundStatement {
         return results;
     }
 
-    public String toString() {
-        return "WHILE";
+    public static boolean isStatement(String firstLine) {
+        return firstLine.matches(Tokens.WHILE + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
     }
 }

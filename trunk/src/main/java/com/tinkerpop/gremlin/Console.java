@@ -19,7 +19,6 @@ public class Console {
     private static final String INDENT = "         ";
     private static final int TAB_LENGTH = 2;
     private static final String PRINT_RETURN = "==>";
-    private static final String PRINT_SPACING = "   ";
     private static final String NULL = "null";
     private static final String EMPTY = "[]";
     private static final String PROMPT = "gremlin> ";
@@ -45,7 +44,7 @@ public class Console {
         while (line != null) {
             //System.out.println("DEPTH: " + gremlinEvaluator.getDepth());
             if (gremlinEvaluator.inStatement())
-                line = reader.readLine(INDENT + generateSpacing(gremlinEvaluator.getDepth() * TAB_LENGTH));
+                line = reader.readLine(INDENT + generateIndentation(gremlinEvaluator.getDepth() * TAB_LENGTH));
             else {
                 line = reader.readLine(PROMPT);
                 if (line.equalsIgnoreCase(QUIT))
@@ -74,7 +73,7 @@ public class Console {
         }
     }
 
-    private static String generateSpacing(int spaces) {
+    private static String generateIndentation(int spaces) {
         String spaceString = new String();
         for (int i = 0; i < spaces; i++) {
             spaceString = spaceString + SINGLE_SPACE;

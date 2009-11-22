@@ -24,14 +24,14 @@ public abstract class Statement {
         this.rawStatement = this.rawStatement + Tokens.SINGLESPACE + line;
     }
 
-    public String getRawStatement() {
-        return this.rawStatement;
-    }
-
     public boolean isComplete() {
         return complete;
     }
 
     public abstract List evaluate();
+
+    public String toString() {
+        return this.rawStatement;
+    }
 
 }

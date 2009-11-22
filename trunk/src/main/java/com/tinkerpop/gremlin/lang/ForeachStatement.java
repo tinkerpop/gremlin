@@ -28,11 +28,11 @@ public class ForeachStatement extends CompoundStatement {
             if (line.startsWith(Tokens.FOREACH)) {
                 String[] parts = line.split(Tokens.SINGLESPACE);
                 if (!parts[0].equals(Tokens.FOREACH))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Foreach must start with 'foreach'.");
+                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must start with 'foreach'.");
                 else if (!parts[1].startsWith(Tokens.DOLLAR_SIGN))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Foreach must have a variable component.");
+                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must have a variable component.");
                 else if (!parts[2].equals(Tokens.IN))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Foreach must have an 'in' component.");
+                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must have an 'in' component.");
 
                 this.variable = parts[1];
 
@@ -42,7 +42,7 @@ public class ForeachStatement extends CompoundStatement {
                 this.loopSet = xPathStatement;
 
             } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Foreach must start with 'foreach'.");
+                throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Foreach must start with 'foreach'.");
             }
         } else {
             this.updateStatementList(line);
@@ -66,11 +66,8 @@ public class ForeachStatement extends CompoundStatement {
     }
 
     public static boolean isStatement(String firstLine) {
-        return firstLine.startsWith(Tokens.FOREACH + Tokens.SINGLESPACE);
-    }
-
-    public String toString() {
-        return "FOREACH";
+        return firstLine.matches(Tokens.FOREACH + Tokens.WHITESPACE_REGEX + Tokens.VARIABLE_REGEX +
+                Tokens.WHITESPACE_REGEX + Tokens.IN + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
     }
 
 }

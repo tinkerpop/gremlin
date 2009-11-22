@@ -46,13 +46,8 @@ public class EvaluatorTest extends BaseTest {
         //printIterator(context.iterate("$i"));
         //System.out.println(context.getContextPath());
         //System.out.println("--------------------------");
-        String path = "(((./outEdges/inVertex){2}/outEdges/inVertex){2}/inEdges[g:clip()]){5}";
-        //Pattern pattern = Pattern.compile("\\{[0-9]+\\}");
-        Pattern pattern = Pattern.compile(".*");
-        Matcher matcher = pattern.matcher(path);
-        System.out.println(matcher.matches() + "--");
-        System.out.println(matcher.toMatchResult().groupCount());
-        System.out.println(path.matches(".+\\{[0-9]+\\}.+"));
+        String path = "foreach $i in ././";
+        System.out.println(path.matches("foreach[' '\t]+[$][a-z][' '\t]+in[' '\t].*"));
         /*for(String s : path.split("\\{[0-9]+\\}")) {
             System.out.println(s);
         }*/

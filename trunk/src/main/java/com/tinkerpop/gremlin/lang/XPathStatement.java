@@ -24,9 +24,4 @@ public class XPathStatement extends SimpleStatement {
     public List evaluate() {
         return this.xPathEvaluator.evaluate(this.xPath);
     }
-
-
-    public String toString() {
-        return "(XPATH " + this.xPath + ")";
-    }
 }

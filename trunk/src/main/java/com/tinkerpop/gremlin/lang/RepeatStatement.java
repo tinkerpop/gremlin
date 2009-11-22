@@ -16,23 +16,19 @@ public class RepeatStatement extends CompoundStatement {
         super(xPathEvaluator);
     }
 
-    public static boolean isStatement(String firstLine) {
-        return firstLine.startsWith(Tokens.REPEAT + Tokens.SINGLESPACE);
-    }
-
     public void compileTokens(String line) {
         super.compileTokens(line);
         if (times == null) {
             if (line.startsWith(Tokens.REPEAT)) {
                 String[] parts = line.split(Tokens.SINGLESPACE);
                 if (!parts[0].equals(Tokens.REPEAT))
-                    throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Repeat must start with 'repeat'.");
+                    throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Repeat must start with 'repeat'.");
 
                 XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
                 xPathStatement.compileTokens(line.substring(7));
                 this.times = xPathStatement;
             } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Repeat must start with 'repeat'.");
+                throw new SyntaxErrorException("Invalid statement: '" + this.toString() + "'. Repeat must start with 'repeat'.");
             }
         } else {
             this.updateStatementList(line);
@@ -44,7 +40,7 @@ public class RepeatStatement extends CompoundStatement {
         try {
             int numberOfTimes = Float.valueOf(times.evaluate().get(0).toString()).intValue();
             for (int i = 0; i < numberOfTimes; i++) {
-                for(Statement statement : this.statementList) {
+                for (Statement statement : this.statementList) {
                     results = statement.evaluate();
                 }
             }
@@ -54,7 +50,7 @@ public class RepeatStatement extends CompoundStatement {
         return results;
     }
 
-    public String toString() {
-        return "REPEAT";
+    public static boolean isStatement(String firstLine) {
+        return firstLine.matches(Tokens.REPEAT + Tokens.WHITESPACE_REGEX + Tokens.ANYTHING_REGEX);
     }
 }

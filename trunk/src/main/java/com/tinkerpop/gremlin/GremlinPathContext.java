@@ -32,7 +32,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
             library.addFunctions(this.getFunctions());
             this.setFunctions(library);
-            this.getVariables().declareVariable(Tokens.LAST_VALUE, element);
+            this.getVariables().declareVariable(Tokens.LAST_VARIABLE, element);
         }
     }
 
