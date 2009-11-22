@@ -52,12 +52,20 @@ public class SesameGraphTest extends BaseTest {
         assertEquals(asList(new URIImpl(TP_NS + "graph"), 5), evaluator.evaluate("./outEdges/@named_graph"));
         assertEquals(asList("marko",1), evaluator.evaluate("@tg:name"));
         assertEquals(asList("marko",1), evaluator.evaluate("./@tg:name"));
-        assertTrue((Boolean)evaluator.evaluate("@tg:name='marko'").get(0));
-        assertTrue((Boolean)evaluator.evaluate("@tg:age='29'").get(0));
+        assertTrue((Boolean) evaluator.evaluate("@tg:name='marko'").get(0));
+        assertTrue((Boolean) evaluator.evaluate("@tg:age='29'").get(0));
 
         assertEquals(evaluator.evaluate("./@tg:age[g:set('$x')]/../outEdges[@label='tg:knows']/inVertex[@tg:name='josh'][@tg:age > $x]").get(0).toString(), "http://tinkerpop.com#4");
-
+        //System.out.println(evaluator.evaluate(".[name()]"));
         graph.shutdown();
+    }
+
+    public void testTypeConversion() {
+        assertEquals(SesameGraph.castLiteral("marko", "http://www.w3.org/2001/XMLSchema#string").getClass(), String.class);
+        assertEquals(SesameGraph.castLiteral("marko", "").getClass(), String.class);
+        assertEquals(SesameGraph.castLiteral("27", "http://www.w3.org/2001/XMLSchema#int").getClass(), Integer.class);
+        assertEquals(SesameGraph.castLiteral("27", "http://www.w3.org/2001/XMLSchema#float").getClass(), Float.class);
+        assertEquals(SesameGraph.castLiteral("27.0134", "http://www.w3.org/2001/XMLSchema#double").getClass(), Double.class);
     }
 
     public void testNamespaceConversion() throws Exception {

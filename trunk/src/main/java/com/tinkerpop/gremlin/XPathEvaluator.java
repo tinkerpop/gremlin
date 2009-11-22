@@ -14,12 +14,26 @@ public class XPathEvaluator {
         System.setProperty("org.apache.commons.jxpath.JXPathContextFactory", "com.tinkerpop.gremlin.GremlinPathContextFactory");
     }*/
 
+    protected int codeDepth = 0;
+
     private GremlinPathContext baseContext;
 
     public XPathEvaluator() {
         this.baseContext = GremlinPathContext.newContext(null);
         this.baseContext.setLenient(false);
 
+    }
+
+    public void incrDepth() {
+        this.codeDepth++;
+    }
+
+    public void decrDepth() {
+        this.codeDepth--;
+    }
+
+    public int getDepth() {
+        return this.codeDepth;
     }
 
     public List evaluate(String xPathString) {

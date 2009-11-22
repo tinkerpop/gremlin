@@ -9,7 +9,7 @@ import com.tinkerpop.gremlin.XPathEvaluator;
  */
 public class ForeachStatementTest extends BaseTest {
 
-    public void testForeach1() {
+    /*public void testForeach1() {
         XPathEvaluator xPathEvaluator = new XPathEvaluator();
         ForeachStatement foreachStatement = new ForeachStatement(xPathEvaluator);
         assertFalse(foreachStatement.compileTokens("foreach $i in true()"));
@@ -32,5 +32,5 @@ public class ForeachStatementTest extends BaseTest {
         assertTrue(foreachStatement.compileTokens("do g:set('$x', $x + $i)"));
         assertEquals(foreachStatement.getLoopBody().getRawStatement(), "g:set('$x', $x + $i)");
         assertEquals(foreachStatement.evaluate(), asList(15.0,1));
-    }
+    }*/
 }

@@ -20,11 +20,11 @@ import java.util.Set;
  */
 public class SesameVertex extends SesameElement implements Vertex {
 
-    Resource resource;
+    Value value;
 
-    public SesameVertex(Resource resource, SailConnection sailConnection) {
-        super(resource.stringValue(), sailConnection);
-        this.resource = resource;
+    public SesameVertex(Value value, SailConnection sailConnection) {
+        super(value.stringValue(), sailConnection);
+        this.value = value;
     }
 
     public void setProperty(String key, Object value) {
@@ -32,99 +32,119 @@ public class SesameVertex extends SesameElement implements Vertex {
     }
 
     public Object getProperty(String key) {
-        key = SesameGraph.prefixToNamespace(key, this.sailConnection);
-        Set<Object> values = new HashSet<Object>();
-        try {
-            CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(this.resource, new URIImpl(key), null, false);
-            while (results.hasNext()) {
-                Statement s = results.next();
-                Value value = s.getObject();
-                if (value instanceof Literal) {
-                    String dataType = ((Literal) value).getDatatype().stringValue();
-                    String literalValue = ((Literal) value).getLabel();
-                    values.add(SesameGraph.castLiteral(literalValue, dataType));
+        if (this.value instanceof Resource) {
+            key = SesameGraph.prefixToNamespace(key, this.sailConnection);
+            Set<Object> values = new HashSet<Object>();
+            try {
+                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, new URIImpl(key), null, false);
+                while (results.hasNext()) {
+                    Statement s = results.next();
+                    Value value = s.getObject();
+                    if (value instanceof Literal) {
+                        String dataType = ((Literal) value).getDatatype().stringValue();
+                        String literalValue = ((Literal) value).getLabel();
+                        values.add(SesameGraph.castLiteral(literalValue, dataType));
+                    }
                 }
+                results.close();
+            } catch (SailException e) {
+                e.printStackTrace();
             }
-            results.close();
-        } catch (SailException e) {
-            e.printStackTrace();
-        }
-        int size = values.size();
-        if (size == 0)
+            int size = values.size();
+            if (size == 0)
+                return null;
+            else if (size == 1)
+                return values.iterator().next();
+            else
+                return values;
+        } else {
             return null;
-        else if (size == 1)
-            return values.iterator().next();
-        else
-            return values;
+        }
 
     }
 
     public Set<String> getPropertyKeys() {
-        Set<String> keys = new HashSet<String>();
-        try {
-            CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(this.resource, null, null, false);
-            while (results.hasNext()) {
-                Statement s = results.next();
-                Value value = s.getObject();
-                if (value instanceof Literal) {
-                    keys.add(SesameGraph.namespaceToPrefix(s.getPredicate().stringValue(), this.sailConnection));
+        if (this.value instanceof Resource) {
+            Set<String> keys = new HashSet<String>();
+            try {
+                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, null, null, false);
+                while (results.hasNext()) {
+                    Statement s = results.next();
+                    Value value = s.getObject();
+                    if (value instanceof Literal) {
+                        keys.add(SesameGraph.namespaceToPrefix(s.getPredicate().stringValue(), this.sailConnection));
+                    }
                 }
+                results.close();
+            } catch (SailException e) {
+                e.printStackTrace();
             }
-            results.close();
-        } catch (SailException e) {
-            e.printStackTrace();
+            return keys;
+        } else {
+            return null;
         }
-        return keys;
     }
 
     private Set<SesameEdge> getOutEdges() {
-        Set<SesameEdge> edges = new HashSet<SesameEdge>();
-        try {
-            CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(this.resource, null, null, false);
-            while (results.hasNext()) {
-                edges.add(new SesameEdge(results.next(), this.sailConnection));
-            }
-            results.close();
+        if (this.value instanceof Resource) {
+            Set<SesameEdge> edges = new HashSet<SesameEdge>();
+            try {
+                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, null, null, false);
+                while (results.hasNext()) {
+                    edges.add(new SesameEdge(results.next(), this.sailConnection));
+                }
+                results.close();
 
-        } catch (SailException e) {
-            e.printStackTrace();
+            } catch (SailException e) {
+                e.printStackTrace();
+            }
+            return edges;
+        } else {
+            return null;
         }
-        return edges;
     }
 
     private Set<SesameEdge> getInEdges() {
-        Set<SesameEdge> edges = new HashSet<SesameEdge>();
-        try {
-            CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(null, null, this.resource, false);
-            while (results.hasNext()) {
-                edges.add(new SesameEdge(results.next(), this.sailConnection));
+        if (this.value instanceof Resource) {
+            Set<SesameEdge> edges = new HashSet<SesameEdge>();
+            try {
+                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(null, null, this.value, false);
+                while (results.hasNext()) {
+                    edges.add(new SesameEdge(results.next(), this.sailConnection));
+                }
+                results.close();
+            } catch (SailException e) {
+                e.printStackTrace();
             }
-            results.close();
-        } catch (SailException e) {
-            e.printStackTrace();
+            return edges;
+        } else {
+            return null;
         }
-        return edges;
     }
 
     public Set<Edge> getEdges(Direction direction) {
-        Set<Edge> edges = new HashSet<Edge>();
-        if (direction == Direction.OUT) {
-            edges.addAll(this.getOutEdges());
-        } else if (direction == Direction.IN) {
-            edges.addAll(this.getInEdges());
-        } else if (direction == Direction.BOTH) {
-            edges.addAll(this.getOutEdges());
-            edges.addAll(this.getInEdges());
+        if (this.value instanceof Resource) {
+            Set<Edge> edges = new HashSet<Edge>();
+            if (direction == Direction.OUT) {
+                edges.addAll(this.getOutEdges());
+            } else if (direction == Direction.IN) {
+                edges.addAll(this.getInEdges());
+            } else if (direction == Direction.BOTH) {
+                edges.addAll(this.getOutEdges());
+                edges.addAll(this.getInEdges());
+            }
+            return edges;
+        } else {
+            return null;
         }
-        return edges;
     }
 
     public String toString() {
-        return this.resource.stringValue();
+        return this.value.stringValue();
     }
 
     public int hashCode() {
-        return this.resource.hashCode();
+        return this.value.hashCode();
     }
 
     public boolean equals(Object object) {

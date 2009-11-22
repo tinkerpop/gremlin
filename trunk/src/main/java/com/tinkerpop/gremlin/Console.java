@@ -16,11 +16,15 @@ import java.util.List;
  */
 public class Console {
 
-    private static final String MIDSTATEMENT_SPACING = "           ";
+    private static final String INDENT = "         ";
+    private static final int TAB_LENGTH = 2;
     private static final String PRINT_RETURN = "==>";
     private static final String PRINT_SPACING = "   ";
     private static final String NULL = "null";
     private static final String EMPTY = "[]";
+    private static final String PROMPT = "gremlin> ";
+    private static final String QUIT = "quit";
+    private static final String SINGLE_SPACE = " ";
 
     public static void main(String[] args) throws IOException {
 
@@ -37,20 +41,16 @@ public class Console {
         System.out.println("         \\,,,/");
         System.out.println("         (o o)");
         System.out.println("-----oOOo-(_)-oOOo-----");
-        while (line != null) {
-            if (gremlinEvaluator.inStatement())
-                line = reader.readLine(MIDSTATEMENT_SPACING);
-            else {
-                line = reader.readLine("gremlin> ");
-                if (line.equalsIgnoreCase("quit"))
-                    break;
-                else if(line.equals("?")) {
-                    System.out.println(PRINT_SPACING + "Gremlin 0.1");
-                    System.out.println(PRINT_SPACING + "'quit': exit gremlin");
-                    line = "";
-                }
-            }
 
+        while (line != null) {
+            //System.out.println("DEPTH: " + gremlinEvaluator.getDepth());
+            if (gremlinEvaluator.inStatement())
+                line = reader.readLine(INDENT + generateSpacing(gremlinEvaluator.getDepth() * TAB_LENGTH));
+            else {
+                line = reader.readLine(PROMPT);
+                if (line.equalsIgnoreCase(QUIT))
+                    break;
+            }
             if (line.length() > 0) {
                 try {
                     List results = gremlinEvaluator.evaluate(line);
@@ -71,8 +71,14 @@ public class Console {
                     System.out.println(e.getMessage());
                 }
             }
-
         }
+    }
 
+    private static String generateSpacing(int spaces) {
+        String spaceString = new String();
+        for (int i = 0; i < spaces; i++) {
+            spaceString = spaceString + SINGLE_SPACE;
+        }
+        return spaceString;
     }
 }

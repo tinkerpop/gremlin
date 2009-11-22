@@ -30,6 +30,7 @@ public class SesameGraph implements Graph {
         dataTypeToClass.put(XSD_NS + "int", "java.lang.Integer");
         dataTypeToClass.put(XSD_NS + "integer", "java.lang.Integer");
         dataTypeToClass.put(XSD_NS + "float", "java.lang.Float");
+        dataTypeToClass.put(XSD_NS + "double", "java.lang.Double");
     }
 
 

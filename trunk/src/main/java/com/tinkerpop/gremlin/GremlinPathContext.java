@@ -5,10 +5,7 @@ import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.lang.Tokens;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import org.apache.commons.jxpath.ClassFunctions;
-import org.apache.commons.jxpath.FunctionLibrary;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.*;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
@@ -26,7 +23,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
     }
 
-    public GremlinPathContext(JXPathContext parentContext, Object element) {
+    public GremlinPathContext(GremlinPathContext parentContext, Object element) {
         super(parentContext, element);
         if (null == parentContext) {
             FunctionLibrary library = new FunctionLibrary();
@@ -35,15 +32,17 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
             library.addFunctions(this.getFunctions());
             this.setFunctions(library);
-            this.getVariables().declareVariable(Tokens.LAST_VALUE, null);
+            this.getVariables().declareVariable(Tokens.LAST_VALUE, element);
         }
     }
+
+
 
     public GremlinPathContext(Object element) {
         this(null, element);
     }
 
-    public static GremlinPathContext newContext(JXPathContext parentContext, Object element) {
+    public static GremlinPathContext newContext(GremlinPathContext parentContext, Object element) {
         return new GremlinPathContext(parentContext, element);
     }
 
@@ -87,5 +86,4 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     private static String cleanVariable(String variable) {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
-
 }

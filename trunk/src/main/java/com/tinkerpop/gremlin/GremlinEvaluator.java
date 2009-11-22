@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.lang.*;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
@@ -21,41 +22,29 @@ public class GremlinEvaluator {
         this.currentStatement = null;
     }
 
+    public int getDepth() {
+        return this.xPathEvaluator.getDepth();
+    }
+
     public List evaluate(String line) throws SyntaxErrorException, EvaluationErrorException, JXPathException {
         line = line.trim();
 
         try {
             if (null == this.currentStatement) {
-                if (ForeachStatement.isStatement(line)) {
-                    this.currentStatement = new ForeachStatement(this.xPathEvaluator);
-                    this.currentStatement.compileTokens(line);
-                    return null;
-                } else if (AssignmentStatement.isStatement(line)) {
-                    AssignmentStatement assignmentStatement = new AssignmentStatement(this.xPathEvaluator);
-                    assignmentStatement.compileTokens(line);
-                    return assignmentStatement.evaluate();
-                } else if (WhileStatement.isStatement(line)) {
-                    this.currentStatement = new WhileStatement(this.xPathEvaluator);
-                    this.currentStatement.compileTokens(line);
-                    return null;
-                } else if (RepeatStatement.isStatement(line)) {
-                    this.currentStatement = new RepeatStatement(this.xPathEvaluator);
-                    this.currentStatement.compileTokens(line);
-                    return null;
-                } else {
-                    XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-                    xPathStatement.compileTokens(line);
-                    return xPathStatement.evaluate();
-                }
+                this.currentStatement = StatementGenerator.generateStatement(line, xPathEvaluator);
+                this.currentStatement.compileTokens(line);                   
             } else {
-                if (this.currentStatement.compileTokens(line)) {
-                    List results = this.currentStatement.evaluate();
-                    this.currentStatement = null;
-                    return results;
-                } else {
-                    return null;
-                }
+                this.currentStatement.compileTokens(line);
             }
+
+            if (this.currentStatement.isComplete()) {
+                Statement temp = this.currentStatement;
+                this.currentStatement = null;
+                return temp.evaluate();
+            } else {
+                return null;
+            }
+
         } catch (JXPathInvalidSyntaxException e) {
             this.currentStatement = null;
             throw new SyntaxErrorException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));

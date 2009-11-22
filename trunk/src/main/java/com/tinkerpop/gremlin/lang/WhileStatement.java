@@ -8,10 +8,9 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class WhileStatement extends Statement {
+public class WhileStatement extends CompoundStatement {
 
     private XPathStatement condition;
-    private XPathStatement loopBody;
 
     public WhileStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -21,7 +20,7 @@ public class WhileStatement extends Statement {
         return firstLine.startsWith(Tokens.WHILE + Tokens.SINGLESPACE);
     }
 
-    public boolean compileTokens(String line) {
+    public void compileTokens(String line) {
         super.compileTokens(line);
         if (condition == null) {
             if (line.startsWith(Tokens.WHILE)) {
@@ -32,37 +31,22 @@ public class WhileStatement extends Statement {
                 XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
                 xPathStatement.compileTokens(line.substring(6));
                 this.condition = xPathStatement;
-                return false;
             } else {
                 throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. While must start with 'while'.");
             }
-        } else if (null == loopBody) {
-            if (line.startsWith(Tokens.DO)) {
-                XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-                xPathStatement.compileTokens(line.substring(3));
-                this.loopBody = xPathStatement;
-                return true;
-            } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. While must have a 'do' component.");
-            }
         } else {
-            throw new SyntaxErrorException("Invalid statement: " + this.getRawStatement());
+            this.updateStatementList(line);
         }
     }
 
-    public XPathStatement getCondition() {
-        return this.condition;
-    }
-
-    public XPathStatement getLoopBody() {
-        return this.loopBody;
-    }
 
     public List evaluate() throws EvaluationErrorException {
         List results = null;
         try {
             while ((Boolean) condition.evaluate().get(0)) {
-                results = this.loopBody.evaluate();
+                for (Statement statement : this.statementList) {
+                    results = statement.evaluate();
+                }
             }
         }
         catch (Exception e) {
@@ -72,6 +56,6 @@ public class WhileStatement extends Statement {
     }
 
     public String toString() {
-        return "(WHILE CONDITION[" + this.condition + "] LOOPBODY[" + this.loopBody + "])";
+        return "WHILE";
     }
 }

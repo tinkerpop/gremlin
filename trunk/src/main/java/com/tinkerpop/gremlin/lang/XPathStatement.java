@@ -8,7 +8,7 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class XPathStatement extends Statement {
+public class XPathStatement extends SimpleStatement {
 
     private String xPath;
 
@@ -16,10 +16,9 @@ public class XPathStatement extends Statement {
         super(xPathEvaluator);
     }
 
-    public boolean compileTokens(String line) {
+    public void compileTokens(String line) {
         super.compileTokens(line);
         this.xPath = line;
-        return true;
     }
 
     public List evaluate() {

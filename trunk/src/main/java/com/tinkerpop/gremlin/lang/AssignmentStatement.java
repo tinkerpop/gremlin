@@ -8,7 +8,7 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class AssignmentStatement extends Statement {
+public class AssignmentStatement extends SimpleStatement {
 
     private String variable;
     private XPathStatement assignmentBody;
@@ -21,7 +21,7 @@ public class AssignmentStatement extends Statement {
         super(xPathEvaluator);
     }
 
-    public boolean compileTokens(String line) throws SyntaxErrorException {
+    public void compileTokens(String line) throws SyntaxErrorException {
         super.compileTokens(line);
         String[] parts = line.split(Tokens.SINGLESPACE);
         if (!parts[0].startsWith(Tokens.DOLLAR_SIGN)) {
@@ -34,7 +34,6 @@ public class AssignmentStatement extends Statement {
         int xPathStart = line.indexOf(" " + Tokens.ASSIGNMENT + " ");
         xPathStatement.compileTokens(line.substring(xPathStart + 4));
         this.assignmentBody = xPathStatement;
-        return true;
     }
 
     public List evaluate() throws EvaluationErrorException {
@@ -50,14 +49,6 @@ public class AssignmentStatement extends Statement {
 
     public static boolean isStatement(String firstLine) {
         return firstLine.startsWith(Tokens.DOLLAR_SIGN) && firstLine.contains(Tokens.SINGLESPACE + Tokens.ASSIGNMENT + Tokens.SINGLESPACE);
-    }
-
-    public String getVariable() {
-        return this.variable;
-    }
-
-    public XPathStatement getAssignmentBody() {
-        return this.assignmentBody;
     }
 
     public String toString() {

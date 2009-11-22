@@ -8,10 +8,9 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class RepeatStatement extends Statement {
+public class RepeatStatement extends CompoundStatement {
 
     private XPathStatement times;
-    private XPathStatement loopBody;
 
     public RepeatStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -21,7 +20,7 @@ public class RepeatStatement extends Statement {
         return firstLine.startsWith(Tokens.REPEAT + Tokens.SINGLESPACE);
     }
 
-    public boolean compileTokens(String line) {
+    public void compileTokens(String line) {
         super.compileTokens(line);
         if (times == null) {
             if (line.startsWith(Tokens.REPEAT)) {
@@ -32,21 +31,11 @@ public class RepeatStatement extends Statement {
                 XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
                 xPathStatement.compileTokens(line.substring(7));
                 this.times = xPathStatement;
-                return false;
             } else {
                 throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Repeat must start with 'repeat'.");
             }
-        } else if (null == loopBody) {
-            if (line.startsWith(Tokens.DO)) {
-                XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
-                xPathStatement.compileTokens(line.substring(3));
-                this.loopBody = xPathStatement;
-                return true;
-            } else {
-                throw new SyntaxErrorException("Invalid statement: '" + this.getRawStatement() + "'. Repeat must have a 'do' component.");
-            }
         } else {
-            throw new SyntaxErrorException("Invalid statement: " + this.getRawStatement());
+            this.updateStatementList(line);
         }
     }
 
@@ -55,7 +44,9 @@ public class RepeatStatement extends Statement {
         try {
             int numberOfTimes = Float.valueOf(times.evaluate().get(0).toString()).intValue();
             for (int i = 0; i < numberOfTimes; i++) {
-                results = loopBody.evaluate();
+                for(Statement statement : this.statementList) {
+                    results = statement.evaluate();
+                }
             }
         } catch (Exception e) {
             throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
@@ -63,17 +54,7 @@ public class RepeatStatement extends Statement {
         return results;
     }
 
-    public XPathStatement getTimes() {
-        return this.times;
-    }
-
-    public XPathStatement getLoopBody() {
-        return this.loopBody;
-    }
-
     public String toString() {
-        return "(REPEAT TIMES[" + this.times + "] LOOPBODY[" + this.loopBody + "])";
+        return "REPEAT";
     }
-
-
 }
