@@ -1,3 +1,0 @@
-= Gremlin: A Graph Programming Language =
-
-Gremlin is a Turing-complete, graph-based programming language designed for key/value-pair multi-relational graphs. Gremlin makes extensive use of the XPath language to support complex graph traversals. This language has applications in the areas of graph query, analysis, and manipulation. Connectors exist for the Neo4j graph database, Sesame 2.0-compliant RDF stores, and TinkerGraph.
