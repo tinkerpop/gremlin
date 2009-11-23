@@ -34,7 +34,6 @@ public class AssignmentStatement extends SimpleStatement {
         if (matcher.find()) {
             XPathStatement xPathStatement = new XPathStatement(this.xPathEvaluator);
             xPathStatement.compileTokens(line.substring(matcher.end() - 1));
-            System.out.println(line.substring(matcher.end() - 1));
             this.assignmentBody = xPathStatement;
         } else {
             throw new SyntaxErrorException("Invalid statement: '" + this.toString());

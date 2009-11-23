@@ -22,7 +22,7 @@ public abstract class CompoundStatement extends Statement {
         this.xPathEvaluator.incrDepth(); // COMPOUND STATEMENT HAS STARTED: INCREMENT THE DEPTH OF THE EVALUATOR
     }
 
-    private Statement getCurrentStatement() {
+    protected Statement getCurrentStatement() {
         if (this.statementList.size() > 0)
             return this.statementList.get(this.statementList.size() - 1);
         else

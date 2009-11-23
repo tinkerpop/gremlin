@@ -51,11 +51,11 @@ public class IfElseStatement extends CompoundStatement {
             } else {
                 throw new SyntaxErrorException("Invalid statement: '" + this.toString());
             }
-        } else if (elsePattern.matcher(line).find()) {
+        } else if (this.ifElseStatementsAreComplete() && elsePattern.matcher(line).find()) {
             this.inElse = true;
         } else if (!this.inElse) {
             this.updateStatementList(line);
-        } else if (this.inElse) {
+        } else {
             this.updateElseStatementList(line);
         }
     }
@@ -64,11 +64,11 @@ public class IfElseStatement extends CompoundStatement {
         List results = null;
         try {
             if ((Boolean) condition.evaluate().get(0)) {
-                for(Statement statement : this.statementList) {
+                for (Statement statement : this.statementList) {
                     results = statement.evaluate();
                 }
             } else {
-                for(Statement statement : this.elseStatementList) {
+                for (Statement statement : this.elseStatementList) {
                     results = statement.evaluate();
                 }
             }
@@ -78,11 +78,22 @@ public class IfElseStatement extends CompoundStatement {
         return results;
     }
 
-   public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(String firstLine) {
         return ifPattern.matcher(firstLine).find();
     }
 
-    protected void updateElseStatementList(String line) {
+    private boolean ifElseStatementsAreComplete() {
+        Statement currentIfStatement = this.getCurrentStatement();
+        Statement currentElseStatement  = this.getCurrentElseStatement();
+        if(currentIfStatement != null && currentIfStatement.isComplete()) {
+           if(currentElseStatement == null || currentElseStatement.isComplete()) {
+               return true;
+           }
+        }
+        return false;
+    }
+
+    private void updateElseStatementList(String line) {
         Statement currentElseStatement = this.getCurrentElseStatement();
         if (null != currentElseStatement && !currentElseStatement.isComplete()) {
             currentElseStatement.compileTokens(line);
@@ -100,7 +111,7 @@ public class IfElseStatement extends CompoundStatement {
 
     private Statement getCurrentElseStatement() {
         if (this.elseStatementList.size() > 0)
-            return this.elseStatementList.get(this.statementList.size() - 1);
+            return this.elseStatementList.get(this.elseStatementList.size() - 1);
         else
             return null;
     }
