@@ -9,7 +9,9 @@ import com.tinkerpop.gremlin.XPathEvaluator;
 public class StatementGenerator {
 
     public static Statement generateStatement(String line, XPathEvaluator xPathEvaluator) {
-        if (ForeachStatement.isStatement(line)) {
+        if(IfElseStatement.isStatement(line)) {
+            return new IfElseStatement(xPathEvaluator);    
+        } else if (ForeachStatement.isStatement(line)) {
             return new ForeachStatement(xPathEvaluator);
         } else if (AssignmentStatement.isStatement(line)) {
             return new AssignmentStatement(xPathEvaluator);

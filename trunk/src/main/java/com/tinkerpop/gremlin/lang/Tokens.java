@@ -13,6 +13,8 @@ public class Tokens {
     public static final String IN = "in";
     public static final String WHILE = "while";
     public static final String REPEAT = "repeat";
+    public static final String IF = "if";
+    public static final String ELSE = "else";
     public static final String END = "end";
 
     public static final String DOLLAR_SIGN = "$";

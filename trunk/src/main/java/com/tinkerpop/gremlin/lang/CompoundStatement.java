@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -12,6 +13,8 @@ import java.util.List;
 public abstract class CompoundStatement extends Statement {
 
     protected List<Statement> statementList;
+
+    protected static final Pattern endPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX + Tokens.END);
 
     public CompoundStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -31,7 +34,7 @@ public abstract class CompoundStatement extends Statement {
         if (null != currentStatement && !currentStatement.isComplete()) {
             currentStatement.compileTokens(line);
         } else {
-            if (line.startsWith(Tokens.END)) {
+            if (endPattern.matcher(line).find()) {
                 this.complete = true;
                 this.xPathEvaluator.decrDepth(); // COMPOUND STATEMENT HAS ENDED: DECREMENT THE DEPTH OF THE EVALUATOR
             } else {
