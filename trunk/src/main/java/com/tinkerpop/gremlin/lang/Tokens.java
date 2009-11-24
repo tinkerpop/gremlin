@@ -16,6 +16,7 @@ public class Tokens {
     public static final String IF = "if";
     public static final String ELSE = "else";
     public static final String END = "end";
+    public static final String COMMENT = "#";
 
     public static final String DOLLAR_SIGN = "$";
     public static final String EMPTY_STRING = "";

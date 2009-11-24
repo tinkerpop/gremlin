@@ -44,7 +44,7 @@ public class AssignmentStatement extends SimpleStatement {
         List results;
         try {
             results = this.assignmentBody.evaluate();
-            this.xPathEvaluator.evaluate("g:set('" + this.variable + "'," + this.assignmentBody.toString() + ")");
+            this.xPathEvaluator.evaluate("g:assign('" + this.variable + "'," + this.assignmentBody.toString() + ")");
         } catch (Exception e) {
             throw new EvaluationErrorException("Evaluation error: " + e.getMessage());
         }

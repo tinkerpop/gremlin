@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.*;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.db.tg.TinkerGraph;
@@ -10,9 +9,6 @@ import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
-
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -38,10 +34,10 @@ public class EvaluatorTest extends BaseTest {
         
 
         //printIterator(context.iterate("(./outEdges/inVertex)[g:printX()]"));
-        //sweep(context.iterate("(./outEdges/inVertex)[g:set('$i')][g:printIterator()]"));
+        //sweep(context.iterate("(./outEdges/inVertex)[g:assign('$i')][g:printIterator()]"));
         //System.out.println(context.getContextPath());
         //context.getVariables().declareVariable("$i",new LinkedList<Object>());
-        //context.selectNodes("./outEdges/inVertex[g:set('$i')]/@name[g:set('$i')]");
+        //context.selectNodes("./outEdges/inVertex[g:assign('$i')]/@name[g:assign('$i')]");
         //System.out.println("--------------------------");
         //printIterator(context.iterate("$i"));
         //System.out.println(context.getContextPath());
@@ -53,7 +49,7 @@ public class EvaluatorTest extends BaseTest {
         }*/
         //printIterator(context.iterate(path));
 
-        //printIterator(context.iterate("(1+2)[g:set('$i')]"));
+        //printIterator(context.iterate("(1+2)[g:assign('$i')]"));
         //printIterator(context.iterate("./outEdges/inVertex/@name"));
         //System.out.println("----------");
         //context.selectNodes("./outEdges[g:halt(10 <= 5)]/inVertex/@name[g:setX(.,'$i')]");
@@ -80,11 +76,11 @@ public class EvaluatorTest extends BaseTest {
         library.addFunctions(context.getFunctions());
         context.setFunctions(library);
 
-        //assertEquals(context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(countIterator($i) = 3)]/name"), context.selectNodes("./outEdges/inVertex/name"));
-        //context.selectNodes("(./outEdges/inVertex)[g:set('$i')][g:cont(countIterator($i) < 2)]/name[g:set('$i')]");
+        //assertEquals(context.selectNodes("(./outEdges/inVertex)[g:assign('$i')][g:cont(countIterator($i) = 3)]/name"), context.selectNodes("./outEdges/inVertex/name"));
+        //context.selectNodes("(./outEdges/inVertex)[g:assign('$i')][g:cont(countIterator($i) < 2)]/name[g:assign('$i')]");
 //        assertEquals(context.iterate("$i[g:printIterator()]"), context.iterate("./outEdges/inVertex[g:printIterator()]"));
 
-        printList(context.selectNodes("((./outEdges[@label=\"created\"]/inVertex/inEdges[@label=\"created\"]/outVertex/@name)[g:set('$y')]/../@age)[g:set('$z')][g:cont(false())]"));
+        printList(context.selectNodes("((./outEdges[@label=\"created\"]/inVertex/inEdges[@label=\"created\"]/outVertex/@name)[g:assign('$y')]/../@age)[g:assign('$z')][g:cont(false())]"));
         printIterator(context.iterate("$y"));
         printIterator(context.iterate("$z"));
 
@@ -104,11 +100,11 @@ public class EvaluatorTest extends BaseTest {
         context.setFunctions(library);
 
         assertEquals(context.selectNodes("."), context.selectNodes("."));
-        assertEquals(context.selectNodes("./name[g:set('$i')]"), context.selectNodes("./name"));
-        assertEquals(context.selectNodes("./name[g:set('$i')]"), context.selectNodes("$i"));
-        context.selectNodes("./inEdges[g:set('$i')]");
+        assertEquals(context.selectNodes("./name[g:assign('$i')]"), context.selectNodes("./name"));
+        assertEquals(context.selectNodes("./name[g:assign('$i')]"), context.selectNodes("$i"));
+        context.selectNodes("./inEdges[g:assign('$i')]");
         assertEquals(context.selectNodes("$i").size(), 1);
-        context.selectNodes("(./inEdges)[g:set('$i')]");
+        context.selectNodes("(./inEdges)[g:assign('$i')]");
         assertEquals(context.selectNodes("$i").size(), 3);       
     }
 

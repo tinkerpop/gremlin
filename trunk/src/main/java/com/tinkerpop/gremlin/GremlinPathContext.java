@@ -5,7 +5,9 @@ import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.lang.Tokens;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import org.apache.commons.jxpath.*;
+import org.apache.commons.jxpath.ClassFunctions;
+import org.apache.commons.jxpath.FunctionLibrary;
+import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
@@ -35,7 +37,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             this.getVariables().declareVariable(Tokens.LAST_VARIABLE, element);
         }
     }
-
 
 
     public GremlinPathContext(Object element) {
@@ -76,7 +77,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
     public Object getVariable(String variable) {
-        return this.getVariables().getVariable(GremlinPathContext.cleanVariable(variable));
+        try {
+            return this.getVariables().getVariable(GremlinPathContext.cleanVariable(variable));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void removeVariable(String variable) {

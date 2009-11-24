@@ -16,15 +16,15 @@ public class TinkerFunctions {
 
     public static TinkerGraph open_tg(String graphFile) {
         // this returns the hardcoded graph-example-1 graph until I can implement a tinker graph serialization
-        //return TinkerGraphFactory.createTinkerGraph();
-        try {
+        return TinkerGraphFactory.createTinkerGraph();
+        /*try {
             return TinkerGraphML.generateGraph(new FileInputStream(graphFile));
         } catch(FileNotFoundException e) {
             System.out.println(e);
         } catch(XMLStreamException e) {
             System.out.println(e);
         }
-        return null;
+        return null;*/
     }
 
 }

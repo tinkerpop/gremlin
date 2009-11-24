@@ -55,7 +55,7 @@ public class SesameGraphTest extends BaseTest {
         assertTrue((Boolean) evaluator.evaluate("@tg:name='marko'").get(0));
         assertTrue((Boolean) evaluator.evaluate("@tg:age='29'").get(0));
 
-        assertEquals(evaluator.evaluate("./@tg:age[g:set('$x')]/../outEdges[@label='tg:knows']/inVertex[@tg:name='josh'][@tg:age > $x]").get(0).toString(), "http://tinkerpop.com#4");
+        assertEquals(evaluator.evaluate("./@tg:age[g:assign('$x')]/../outEdges[@label='tg:knows']/inVertex[@tg:name='josh'][@tg:age > $x]").get(0).toString(), "http://tinkerpop.com#4");
         //System.out.println(evaluator.evaluate(".[name()]"));
         graph.shutdown();
     }

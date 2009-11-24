@@ -19,11 +19,12 @@ public class Console {
     private static final String INDENT = "         ";
     private static final int TAB_LENGTH = 2;
     private static final String PRINT_RETURN = "==>";
-    private static final String NULL = "null";
-    private static final String EMPTY = "[]";
+    private static final String NULL_RESULT = "null";
+    private static final String EMPTY_RESULT = "[]";
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
     private static final String SINGLE_SPACE = " ";
+    private static final String EMPTY_STRING = "";
 
     public static void main(String[] args) throws IOException {
 
@@ -59,7 +60,7 @@ public class Console {
                                 System.out.println(PRINT_RETURN + o);
                             }
                         } else {
-                            System.out.println(PRINT_RETURN + EMPTY);
+                            System.out.println(PRINT_RETURN + EMPTY_RESULT);
                         }
                     }
                 } catch (JXPathException e) {
@@ -74,7 +75,7 @@ public class Console {
     }
 
     private static String generateIndentation(int spaces) {
-        String spaceString = new String();
+        String spaceString = EMPTY_STRING;
         for (int i = 0; i < spaces; i++) {
             spaceString = spaceString + SINGLE_SPACE;
         }
