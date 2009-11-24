@@ -8,10 +8,6 @@ import java.util.Set;
  */
 public interface Element {
 
-    static enum Direction {
-        IN, OUT, BOTH
-    }
-
     public Object getProperty(String key);
 
     public Set<String> getPropertyKeys();

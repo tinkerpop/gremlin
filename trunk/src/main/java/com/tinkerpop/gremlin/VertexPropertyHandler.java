@@ -33,11 +33,11 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
     public Object getProperty(Object vertexObject, String key) {
         Vertex vertex = (Vertex) vertexObject;
         if (key.equals(Tokens.OUT_EDGES)) {
-            return vertex.getEdges(Element.Direction.OUT);
+            return vertex.getOutEdges();
         } else if (key.equals(Tokens.IN_EDGES)) {
-            return vertex.getEdges(Element.Direction.IN);
+            return vertex.getInEdges();
         } else if (key.equals(Tokens.BOTH_EDGES)) {
-            return vertex.getEdges(Element.Direction.BOTH);
+            return vertex.getBothEdges();
         } else {
             return vertex.getProperty(key);
         }

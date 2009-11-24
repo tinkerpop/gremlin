@@ -27,7 +27,7 @@ public class SesameEdge extends SesameElement implements Edge {
     }
 
     public SesameEdge(Statement statement, SailConnection sailConnection) {
-        super(statement.toString(),sailConnection);
+        super(statement.toString(), sailConnection);
         this.statement = statement;
     }
 
@@ -59,17 +59,18 @@ public class SesameEdge extends SesameElement implements Edge {
         }
     }
 
-    public Vertex getVertex(Vertex.Direction direction) {
-        if (direction == Direction.OUT)
-            return new SesameVertex(this.statement.getSubject(), this.sailConnection);
-        else
-            return new SesameVertex((Resource)this.statement.getObject(), this.sailConnection);
+    public Vertex getInVertex() {
+        return new SesameVertex(this.statement.getObject(), this.sailConnection);
+    }
+
+    public Vertex getOutVertex() {
+        return new SesameVertex(this.statement.getSubject(), this.sailConnection);
     }
 
     public String toString() {
         //return this.statement.toString();
         return SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection) +
-                "--" + this.getLabel() + "-->" + 
+                "--" + this.getLabel() + "-->" +
                 SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
     }
 
@@ -78,7 +79,7 @@ public class SesameEdge extends SesameElement implements Edge {
     }
 
     public boolean equals(Object object) {
-        if(object instanceof SesameEdge)
+        if (object instanceof SesameEdge)
             return object.hashCode() == this.hashCode();
         else
             return false;

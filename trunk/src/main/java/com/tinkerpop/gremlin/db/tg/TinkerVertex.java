@@ -19,18 +19,22 @@ public class TinkerVertex extends TinkerElement implements Vertex {
         super(id);
     }
 
-    public Set<Edge> getEdges(Direction direction) {
-        if (direction == Direction.OUT)
-            return outEdges;
-        else if (direction == Direction.IN) {
-            return inEdges;
-        } else {
-            Set<Edge> bothEdges = new HashSet<Edge>();
+    public Set<Edge> getOutEdges() {
+        return this.outEdges;
+    }
+
+    public Set<Edge> getInEdges() {
+        return this.inEdges;
+    }
+
+    public Set<Edge> getBothEdges() {
+         Set<Edge> bothEdges = new HashSet<Edge>();
             bothEdges.addAll(outEdges);
             bothEdges.addAll(inEdges);
             return bothEdges;
-        }
     }
+
+
 
     public void removeEdge(Edge edge) {
         this.outEdges.remove(edge);
@@ -40,7 +44,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     public void removeOutEdge(TinkerVertex inVertex, String label) {
         Set<Edge> toRemove = new HashSet<Edge>();
         for (Edge edge : this.outEdges) {
-            if (edge.getVertex(Direction.IN).equals(inVertex) && (edge.getLabel().equals(label) || label == null)) {
+            if (edge.getInVertex().equals(inVertex) && (edge.getLabel().equals(label) || label == null)) {
                 toRemove.add(edge);
                 inVertex.removeEdge(edge);
             }
@@ -51,7 +55,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     public void removeInEdge(TinkerVertex outVertex, String label) {
         Set<Edge> toRemove = new HashSet<Edge>();
         for (Edge edge : this.outEdges) {
-            if (edge.getVertex(Direction.OUT).equals(outVertex) && (edge.getLabel().equals(label) || label == null)) {
+            if (edge.getOutVertex().equals(outVertex) && (edge.getLabel().equals(label) || label == null)) {
                 toRemove.add(edge);
                 outVertex.removeEdge(edge);
             }

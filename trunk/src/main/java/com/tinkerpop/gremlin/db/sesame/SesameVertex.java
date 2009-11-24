@@ -85,9 +85,9 @@ public class SesameVertex extends SesameElement implements Vertex {
         }
     }
 
-    private Set<SesameEdge> getOutEdges() {
+    public Set<Edge> getOutEdges() {
         if (this.value instanceof Resource) {
-            Set<SesameEdge> edges = new HashSet<SesameEdge>();
+            Set<Edge> edges = new HashSet<Edge>();
             try {
                 CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, null, null, false);
                 while (results.hasNext()) {
@@ -104,39 +104,29 @@ public class SesameVertex extends SesameElement implements Vertex {
         }
     }
 
-    private Set<SesameEdge> getInEdges() {
-        if (this.value instanceof Resource) {
-            Set<SesameEdge> edges = new HashSet<SesameEdge>();
-            try {
-                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(null, null, this.value, false);
-                while (results.hasNext()) {
-                    edges.add(new SesameEdge(results.next(), this.sailConnection));
-                }
-                results.close();
-            } catch (SailException e) {
-                e.printStackTrace();
+    public Set<Edge> getInEdges() {
+        Set<Edge> edges = new HashSet<Edge>();
+        try {
+            CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(null, null, this.value, false);
+            while (results.hasNext()) {
+                edges.add(new SesameEdge(results.next(), this.sailConnection));
             }
-            return edges;
-        } else {
-            return null;
+            results.close();
+        } catch (SailException e) {
+            e.printStackTrace();
         }
+        return edges;
     }
 
-    public Set<Edge> getEdges(Direction direction) {
-        if (this.value instanceof Resource) {
-            Set<Edge> edges = new HashSet<Edge>();
-            if (direction == Direction.OUT) {
-                edges.addAll(this.getOutEdges());
-            } else if (direction == Direction.IN) {
-                edges.addAll(this.getInEdges());
-            } else if (direction == Direction.BOTH) {
-                edges.addAll(this.getOutEdges());
-                edges.addAll(this.getInEdges());
-            }
-            return edges;
-        } else {
-            return null;
+    public Set<Edge> getBothEdges() {
+
+
+        Set<Edge> bothEdges = new HashSet<Edge>();
+        bothEdges.addAll(this.getInEdges());
+        if (!(this.value instanceof Resource)) {
+            bothEdges.addAll(this.getOutEdges());
         }
+        return bothEdges;
     }
 
     public String toString() {

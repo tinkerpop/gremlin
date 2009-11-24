@@ -19,10 +19,11 @@ public class NeoEdge extends NeoElement implements Edge {
         return ((Relationship) this.element).getType().name();
     }
 
-    public Vertex getVertex(Vertex.Direction direction) {
-        if (direction == Direction.OUT)
-            return new NeoVertex(((Relationship) this.element).getStartNode());
-        else
-            return new NeoVertex(((Relationship) this.element).getEndNode());
+    public Vertex getOutVertex() {
+        return new NeoVertex(((Relationship) this.element).getStartNode());
+    }
+
+    public Vertex getInVertex() {
+        return new NeoVertex(((Relationship) this.element).getEndNode());
     }
 }

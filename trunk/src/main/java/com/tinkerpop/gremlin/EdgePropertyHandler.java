@@ -33,9 +33,9 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
     public Object getProperty(Object edgeObject, String key) {
         Edge edge = (Edge) edgeObject;
         if (key.equals(Tokens.OUT_VERTEX)) {
-            return edge.getVertex(Element.Direction.OUT);
+            return edge.getOutVertex();
         } else if (key.equals(Tokens.IN_VERTEX)) {
-            return edge.getVertex(Element.Direction.IN);
+            return edge.getInVertex();
         } else if (key.equals(Tokens.LABEL)) {
             return edge.getLabel();
         } else {

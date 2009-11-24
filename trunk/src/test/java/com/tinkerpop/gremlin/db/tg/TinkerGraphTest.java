@@ -41,19 +41,19 @@ public class TinkerGraphTest extends BaseTest {
         marko.createOutEdge(jen, "knows");
         marko.createOutEdge(chewy, "pets");
         jen.createOutEdge(chewy, "pets");
-        assertEquals(marko.getEdges(Element.Direction.OUT).size(), 2);
-        assertEquals(jen.getEdges(Element.Direction.OUT).size(), 1);
-        assertEquals(chewy.getEdges(Element.Direction.IN).size(), 2);
-        assertEquals(jen.getEdges(Element.Direction.IN).size(), 1);
+        assertEquals(marko.getOutEdges().size(), 2);
+        assertEquals(jen.getOutEdges().size(), 1);
+        assertEquals(chewy.getInEdges().size(), 2);
+        assertEquals(jen.getInEdges().size(), 1);
         graph.addVertex(marko);
         graph.addVertex(jen);
         graph.addVertex(chewy);
         assertEquals(graph.vertices.size(), 3);
         graph.removeVertex("marko");
         assertEquals(graph.vertices.size(), 2);
-        assertEquals(marko.getEdges(Element.Direction.OUT).size(), 0);
-        assertEquals(jen.getEdges(Element.Direction.OUT).size(), 1);
-        assertEquals(chewy.getEdges(Element.Direction.IN).size(), 1);
-        assertEquals(jen.getEdges(Element.Direction.IN).size(), 0);
+        assertEquals(marko.getOutEdges().size(), 0);
+        assertEquals(jen.getOutEdges().size(), 1);
+        assertEquals(chewy.getInEdges().size(), 1);
+        assertEquals(jen.getInEdges().size(), 0);
     }
 }

@@ -26,7 +26,7 @@ public class NeoWalkerTest extends TestCase {
             Node node = index.getSingleNode(GratefulNeoGraph.NAME, "DARK STAR");
             System.out.println(node);
             Vertex vertex = new NeoVertex(node);
-            System.out.println("Outedges size: " + vertex.getEdges(Element.Direction.OUT).size());
+            System.out.println("Outedges size: " + vertex.getOutEdges().size());
             //Evaluator eval = new Evaluator();
             //Iterator itty = eval.evaluate(vertex, "./outEdges[@label = 'SUNG_BY']/outVertex/inEdges[@label='WRITTEN_BY'][g:random(last())]/inVertex/@name");
             //Iterator itty = eval.evaluate(vertex, "./outEdges[@label='FOLLOWED_BY'][g:random(last())]/outVertex/name");

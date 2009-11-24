@@ -6,8 +6,10 @@ package com.tinkerpop.gremlin.model;
  */
 public interface Edge extends Element {
 
-    public Vertex getVertex(Vertex.Direction direction);
+    public Vertex getOutVertex();
+
+    public Vertex getInVertex();
 
     public String getLabel();
-    
+
 }

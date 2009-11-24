@@ -28,11 +28,12 @@ public class TinkerEdge extends TinkerElement implements Edge {
         this.label = label;
     }
 
-    public Vertex getVertex(Vertex.Direction direction) {
-        if (direction == Direction.OUT)
-            return this.outVertex;
-        else
-            return this.inVertex;
+    public Vertex getOutVertex() {
+        return this.outVertex;
+    }
+
+    public Vertex getInVertex() {
+        return this.inVertex;
     }
 
     public String toString() {

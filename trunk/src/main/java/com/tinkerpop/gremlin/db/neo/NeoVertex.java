@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.model.Vertex;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,23 +14,30 @@ import java.util.Set;
  */
 public class NeoVertex extends NeoElement implements Vertex {
 
-    public static final HashMap<Direction, org.neo4j.api.core.Direction> directionMap =
-            new HashMap<Direction, org.neo4j.api.core.Direction>();
-
-    static {
-        directionMap.put(Direction.OUT, org.neo4j.api.core.Direction.OUTGOING);
-        directionMap.put(Direction.IN, org.neo4j.api.core.Direction.INCOMING);
-        directionMap.put(Direction.BOTH, org.neo4j.api.core.Direction.BOTH);
-    }
-
     public NeoVertex(Node node) {
         super(node.getId());
         this.element = node;
     }
 
-    public Set<Edge> getEdges(Direction direction) {
+    public Set<Edge> getOutEdges() {
         Set<Edge> edges = new HashSet<Edge>();
-        for (Relationship r : ((Node) this.element).getRelationships(directionMap.get(direction))) {
+        for (Relationship r : ((Node) this.element).getRelationships(org.neo4j.api.core.Direction.OUTGOING)) {
+            edges.add(new NeoEdge(r));
+        }
+        return edges;
+    }
+
+    public Set<Edge> getInEdges() {
+        Set<Edge> edges = new HashSet<Edge>();
+        for (Relationship r : ((Node) this.element).getRelationships(org.neo4j.api.core.Direction.INCOMING)) {
+            edges.add(new NeoEdge(r));
+        }
+        return edges;
+    }
+
+    public Set<Edge> getBothEdges() {
+        Set<Edge> edges = new HashSet<Edge>();
+        for (Relationship r : ((Node) this.element).getRelationships(org.neo4j.api.core.Direction.BOTH)) {
             edges.add(new NeoEdge(r));
         }
         return edges;
