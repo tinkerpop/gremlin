@@ -19,6 +19,16 @@ public class GremlinFunctions {
     private static final String SET = "assign";
     private static final String LIST = "list";
 
+    /*
+        public static Integer sum(Integer... a) {
+        int total = 0;
+        for(Integer i : a) {
+            total = total + i;
+        }
+        return total;
+    }
+     */
+
     public static Object get_vertex(Graph graph, Object indexKey) {
         if (graph == null)
             return null;
@@ -30,23 +40,25 @@ public class GremlinFunctions {
     public static Object assign(ExpressionContext context, String variable, Object value) {
         if (FunctionHelper.isLastInContext(context))
             FunctionHelper.getGremlin(context).setVariable(variable, value);
-        return context.getContextNodeList();
+        return value;
     }
 
-    public static Object assign(ExpressionContext context, String variable) {
-        return GremlinFunctions.assign(context, variable, FunctionHelper.asValue(context.getContextNodeList()));
+    public static Boolean assign(ExpressionContext context, String variable) {
+        if (FunctionHelper.isLastInContext(context))
+            FunctionHelper.getGremlin(context).setVariable(variable, FunctionHelper.asValue(context.getContextNodeList()));
+        return Boolean.TRUE;
     }
 
-    public static Object unassign(ExpressionContext context, String variable) {
+    public static Boolean unassign(ExpressionContext context, String variable) {
         FunctionHelper.getGremlin(context).removeVariable(variable);
-        return context.getContextNodeList();
+        return Boolean.TRUE;
     }
 
-    public static Object cont(boolean cont) {
+    public static Boolean cont(boolean cont) {
        return cont;
     }
 
-    public static Object halt(boolean halt) {
+    public static Boolean halt(boolean halt) {
         return !halt;
     }
 
@@ -61,7 +73,7 @@ public class GremlinFunctions {
 
     public static Object print(Object object) {
         System.out.println(object);
-        return null;
+        return object;
     }
 
     public static Integer random(Integer value) {
@@ -105,53 +117,110 @@ public class GremlinFunctions {
         return map.keySet();
     }
 
-    public static List as_list(Collection collection) {
-        return new ArrayList(collection);
+    public static List as_list(Object a) {
+        if(a instanceof Collection)
+            return new ArrayList((Collection)a);
+        else {
+            List b = new ArrayList();
+            b.add(a);
+            return b;
+        }
     }
 
-    public static Set as_set(Collection collection) {
-        return new HashSet(collection);
+    public static Set as_set(Object a) {
+        if(a instanceof Collection)
+            return new HashSet((Collection)a);
+        else {
+            Set b = new HashSet();
+            b.add(a);
+            return b;
+        }
     }
 
-    public static List append(Collection collectionA, Collection collectionB) {
-        List listC = new ArrayList(collectionA);
-        listC.addAll(collectionB);
-        return listC;
+    public static List append(Object a, Object b) {
+        List c = new ArrayList();
+        if(a instanceof Collection)
+            c.addAll((Collection)a);
+        else
+            c.add(a);
+        if(b instanceof Collection)
+            c.addAll((Collection)b);
+        else
+            c.add(b);
+        return c;
     }
 
-    public static Set union(Collection collectionA, Collection collectionB) {
-        Set setC = new HashSet(collectionA);
-        setC.addAll(collectionB);
-        return setC;
+    public static Set union(Object a, Object b) {
+        Set c = new HashSet();
+        if(a instanceof Collection)
+            c.addAll((Collection)a);
+        else
+            c.add(a);
+        if(b instanceof Collection)
+            c.addAll((Collection)b);
+        else
+            c.add(b);
+        return c;
+
     }
 
-    public static Set intersect(Collection collectionA, Collection collectionB) {
-        Set setC = new HashSet(collectionA);
-        setC.retainAll(collectionB);
-        return setC;
+    public static Set intersect(Object a, Object b) {
+        Set c = new HashSet();
+        Set d = new HashSet();
+        if(a instanceof Collection)
+            c.addAll((Collection)a);
+        else
+            c.add(a);
+        if(b instanceof Collection)
+            d.addAll((Collection)b);
+        else
+            d.add(b);
+        
+        c.retainAll(d);
+        return c;
     }
 
-    public static Set difference(Collection collectionA, Collection collectionB) {
-        Set setC = new HashSet(collectionA);
-        setC.removeAll(collectionB);
-        return setC;
+    public static Set difference(Object a, Object b) {
+        Set c = new HashSet();
+        Set d = new HashSet();
+        if(a instanceof Collection)
+            c.addAll((Collection)a);
+        else
+            c.add(a);
+        if(b instanceof Collection)
+            d.addAll((Collection)b);
+        else
+            d.add(b);
+
+        c.removeAll(d);
+        return c;
     }
 
-    public static Boolean retain(ExpressionContext context, Collection collection) {
-        Set setA = new HashSet(collection);
-        Set setB = new HashSet();
-        setB.add(context.getContextNodePointer().getValue());
-        collection.retainAll(setB);
-        return setA.size() > 0;
+    public static Boolean retain(ExpressionContext context, Object a) {
+        Set b = new HashSet();
+        if(a instanceof Collection)
+            b.addAll((Collection)a);
+        else
+            b.add(a);
+
+        Set c = new HashSet();
+        c.add(context.getContextNodePointer().getValue());
+        b.retainAll(c);
+        return b.size() > 0;
     }
 
 
-    public static Boolean except(ExpressionContext context, Collection collection) {
-        Set setA = new HashSet(collection);
-        Set setB = new HashSet();
-        setB.add(context.getContextNodePointer().getValue());
-        setB.removeAll(setA);
-        return setB.size() > 0;
+    public static Boolean except(ExpressionContext context, Object a) {
+        Set b = new HashSet();
+        if(a instanceof Collection)
+            b.addAll((Collection)a);
+        else
+            b.add(a);
+
+        Set c = new HashSet();
+        c.add(context.getContextNodePointer().getValue());
+        c.removeAll(b);
+        return c.size() > 0;
     }
 
     public static String type(Object object) {
