@@ -28,14 +28,17 @@ public class TinkerGraphMLTest extends BaseTest {
             if(e.getInVertex().getId().equals("2")) {
                 assertEquals(e.getProperty("weight"), new Float(0.5));
                 assertEquals(e.getLabel(), "knows");
+                assertEquals(e.getId(), "7");
                 counter++;
             } else if(e.getInVertex().getId().equals("3")) {
                 assertEquals(e.getProperty("weight"), new Float(0.4));
                 assertEquals(e.getLabel(), "created");
+                assertEquals(e.getId(), "9");
                 counter++;
             } else if(e.getInVertex().getId().equals("4")) {
                 assertEquals(e.getProperty("weight"), new Float(1.0));
                 assertEquals(e.getLabel(), "knows");
+                assertEquals(e.getId(), "8");
                 counter++;
             }
         }
@@ -50,10 +53,12 @@ public class TinkerGraphMLTest extends BaseTest {
             if(e.getInVertex().getId().equals("3")) {
                 assertEquals(e.getProperty("weight"), new Float(0.4));
                 assertEquals(e.getLabel(), "created");
+                assertEquals(e.getId(), "11");
                 counter++;
             } else if(e.getInVertex().getId().equals("5")) {
                 assertEquals(e.getProperty("weight"), new Float(1.0));
                 assertEquals(e.getLabel(), "created");
+                assertEquals(e.getId(), "10");
                 counter++;
             }
         }

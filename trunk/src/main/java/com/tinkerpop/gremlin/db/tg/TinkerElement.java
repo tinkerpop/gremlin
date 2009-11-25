@@ -16,12 +16,11 @@ public class TinkerElement implements Element {
     protected Map<String, Object> properties = new HashMap<String, Object>();
     protected String id;
 
-    public TinkerElement() {
-        this.id = UUID.randomUUID().toString();
-    }
-
     public TinkerElement(String id) {
-        this.id = id;
+        if (null == id)
+            this.id = UUID.randomUUID().toString();
+        else
+            this.id = id;
     }
 
     public Set<String> getPropertyKeys() {

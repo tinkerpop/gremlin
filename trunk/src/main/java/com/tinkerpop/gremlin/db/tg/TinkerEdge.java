@@ -13,8 +13,8 @@ public class TinkerEdge extends TinkerElement implements Edge {
     protected Vertex inVertex;
     protected Vertex outVertex;
 
-    public TinkerEdge(Vertex outVertex, Vertex inVertex, String label) {
-        super();
+    public TinkerEdge(String id, Vertex outVertex, Vertex inVertex, String label) {
+        super(id);
         this.label = label;
         this.outVertex = outVertex;
         this.inVertex = inVertex;
@@ -37,7 +37,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
     }
 
     public String toString() {
-        return ((TinkerVertex) this.outVertex).getId() + "--" + this.label + "-->" + ((TinkerVertex) this.inVertex).getId();
+        return "e[" + this.id + "][" + ((TinkerVertex) this.outVertex).getId() + "-" + this.label + "->" + ((TinkerVertex) this.inVertex).getId() + "]";
     }
 
     public boolean equals(Object object) {

@@ -38,9 +38,9 @@ public class TinkerGraphTest extends BaseTest {
         TinkerVertex marko = new TinkerVertex("marko");
         TinkerVertex jen = new TinkerVertex("jen");
         TinkerVertex chewy = new TinkerVertex("chewy");
-        marko.createOutEdge(jen, "knows");
-        marko.createOutEdge(chewy, "pets");
-        jen.createOutEdge(chewy, "pets");
+        marko.createOutEdge(null, jen, "knows");
+        marko.createOutEdge(null, chewy, "pets");
+        jen.createOutEdge(null, chewy, "pets");
         assertEquals(marko.getOutEdges().size(), 2);
         assertEquals(jen.getOutEdges().size(), 1);
         assertEquals(chewy.getInEdges().size(), 2);

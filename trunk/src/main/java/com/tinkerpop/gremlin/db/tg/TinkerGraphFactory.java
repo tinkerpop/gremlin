@@ -41,14 +41,14 @@ public class TinkerGraphFactory {
         peter.setProperty("age", 35);
         graph.addVertex(peter);
 
-        marko.createOutEdge(vadas, "knows").setProperty("weight", 0.5);
-        marko.createOutEdge(josh, "knows").setProperty("weight", 1.0);
-        marko.createOutEdge(lop, "created").setProperty("weight", 0.4);
+        marko.createOutEdge("7", vadas, "knows").setProperty("weight", 0.5);
+        marko.createOutEdge("8", josh, "knows").setProperty("weight", 1.0);
+        marko.createOutEdge("9", lop, "created").setProperty("weight", 0.4);
 
-        josh.createOutEdge(lop, "created").setProperty("weight", 0.4);
-        josh.createOutEdge(ripple, "created").setProperty("weight", 1.0);
-
-        peter.createOutEdge(lop, "created").setProperty("weight", 0.2);
+        josh.createOutEdge("10", ripple, "created").setProperty("weight", 1.0);
+        josh.createOutEdge("11", lop, "created").setProperty("weight", 0.4);
+        
+        peter.createOutEdge("12", lop, "created").setProperty("weight", 0.2);
 
         return graph;
 

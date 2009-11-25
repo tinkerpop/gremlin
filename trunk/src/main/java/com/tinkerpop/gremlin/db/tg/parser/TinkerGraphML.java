@@ -5,8 +5,8 @@ import com.tinkerpop.gremlin.db.tg.TinkerGraph;
 import com.tinkerpop.gremlin.db.tg.TinkerVertex;
 
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -47,7 +47,6 @@ public class TinkerGraphML {
 
         while (xmlReader.hasNext()) {
 
-
             Integer eventType = xmlReader.next();
             if (eventType.equals(XMLEvent.START_ELEMENT)) {
                 String elementName = xmlReader.getName().getLocalPart();
@@ -60,7 +59,7 @@ public class TinkerGraphML {
                     currentVertex = new TinkerVertex(vertexId);
                     graph.addVertex(currentVertex);
                 } else if (elementName.equals(EDGE)) {
-                    //String edgeId = xmlReader.getAttributeValue(null, ID);
+                    String edgeId = xmlReader.getAttributeValue(null, ID);
                     String edgeOut = xmlReader.getAttributeValue(null, SOURCE);
                     String edgeIn = xmlReader.getAttributeValue(null, TARGET);
                     TinkerVertex outVertex = graph.getVertex(edgeOut);
@@ -71,7 +70,7 @@ public class TinkerGraphML {
                     if (null == inVertex) {
                         inVertex = new TinkerVertex(edgeIn);
                     }
-                    currentEdge = outVertex.createOutEdge(inVertex, null);
+                    currentEdge = outVertex.createOutEdge(edgeId, inVertex, null);
                 } else if (elementName.equals(DATA)) {
                     String key = xmlReader.getAttributeValue(null, KEY);
                     String value = xmlReader.getElementText();
