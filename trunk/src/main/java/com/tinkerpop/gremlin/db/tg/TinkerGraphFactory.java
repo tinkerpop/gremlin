@@ -13,10 +13,9 @@ public class TinkerGraphFactory {
 
         TinkerGraph graph = new TinkerGraph();
 
-        TinkerVertex marko = new TinkerVertex("1");
+        Vertex marko = graph.addVertex("1");
         marko.setProperty("name", "marko");
         marko.setProperty("age", 29);
-        graph.addVertex(marko);
 
         Vertex vadas = graph.addVertex("2");
         vadas.setProperty("name", "vadas");

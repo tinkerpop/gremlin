@@ -4,9 +4,7 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -14,10 +12,10 @@ import java.util.Set;
  */
 public class TinkerGraph implements Graph {
 
-    protected Map<String, TinkerVertex> vertices;
+    protected Map<String, Vertex> vertices;
 
     public TinkerGraph() {
-        this.vertices = new HashMap<String, TinkerVertex>();
+        this.vertices = new HashMap<String, Vertex>();
     }
 
     public Vertex addVertex(Object id) {
@@ -26,8 +24,12 @@ public class TinkerGraph implements Graph {
         return vertex;
     }
 
-    public TinkerVertex getVertex(Object id) {
+    public Vertex getVertex(Object id) {
         return this.vertices.get((String) id);
+    }
+
+    public Iterable<Vertex> getVertices() {
+        return vertices.values();
     }
 
     public void removeVertex(Vertex vertex) {
@@ -59,4 +61,5 @@ public class TinkerGraph implements Graph {
 
     public void shutdown() {
     }
+
 }

@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.db.tg.TinkerGraph;
 import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.db.tg.TinkerVertex;
@@ -21,52 +22,10 @@ public class EvaluatorTest extends BaseTest {
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
     }
 
-    
-
-    public void testGFunctions() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
-        assertEquals(marko.getProperty("name"), "marko");
-
-        GremlinPathContext context = (GremlinPathContext)GremlinPathContext.newContext(marko);
-        context.setLenient(true);
-
-        
-
-        //printIterator(context.iterate("(./outEdges/inVertex)[g:printX()]"));
-        //sweep(context.iterate("(./outEdges/inVertex)[g:assign('$i')][g:printIterator()]"));
-        //System.out.println(context.getContextPath());
-        //context.getVariables().declareVariable("$i",new LinkedList<Object>());
-        //context.selectNodes("./outEdges/inVertex[g:assign('$i')]/@name[g:assign('$i')]");
-        //System.out.println("--------------------------");
-        //printIterator(context.iterate("$i"));
-        //System.out.println(context.getContextPath());
-        //System.out.println("--------------------------");
-        String path = "foreach $i in ././";
-        System.out.println(path.matches("foreach[' '\t]+[$][a-z][' '\t]+in[' '\t].*"));
-        /*for(String s : path.split("\\{[0-9]+\\}")) {
-            System.out.println(s);
-        }*/
-        //printIterator(context.iterate(path));
-
-        //printIterator(context.iterate("(1+2)[g:assign('$i')]"));
-        //printIterator(context.iterate("./outEdges/inVertex/@name"));
-        //System.out.println("----------");
-        //context.selectNodes("./outEdges[g:halt(10 <= 5)]/inVertex/@name[g:setX(.,'$i')]");
-        //context.selectNodes("./outEdges[g:halt(10 > 5)]/inVertex/@age[g:setX(.,'$i')]");
-        //System.out.println("-----------------");
-        //printList(context.selectNodes("$i"));
-
-        //System.out.println("----------");
-
-        //context.iterate("./outEdges[g:doPrint()]");
-
-        //printList(context.selectNodes("./outEdges/inVertex[g:loop()]"));
-    }
 
     public void testHaltCont() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("6");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("6");
         //assertEquals(marko.getProperty("name"), "marko");
         JXPathContext context = JXPathContext.newContext(marko);
         context.setLenient(true);
@@ -88,8 +47,8 @@ public class EvaluatorTest extends BaseTest {
     }
 
     public void testSet() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
         JXPathContext context = JXPathContext.newContext(marko);
         context.setLenient(true);
@@ -109,8 +68,8 @@ public class EvaluatorTest extends BaseTest {
     }
 
     public void testNoop() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
         JXPathContext context = JXPathContext.newContext(marko);
         context.setLenient(true);
@@ -130,8 +89,8 @@ public class EvaluatorTest extends BaseTest {
     }
 
     public void testOneStepTraverseFromMarko() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
 
         JXPathContext context = JXPathContext.newContext(marko);
@@ -156,8 +115,8 @@ public class EvaluatorTest extends BaseTest {
     }
 
     public void testTwoStepTraverseFromMarko() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
 
         JXPathContext context = JXPathContext.newContext(marko);
@@ -175,8 +134,8 @@ public class EvaluatorTest extends BaseTest {
     }
 
     public void testVariableSetting() {
-        TinkerGraph graph = TinkerGraphFactory.createTinkerGraph();
-        TinkerVertex marko = graph.getVertex("1");
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
         JXPathContext context = JXPathContext.newContext(null);
         context.iterate("$x");
         context.iterate("$x = 1");

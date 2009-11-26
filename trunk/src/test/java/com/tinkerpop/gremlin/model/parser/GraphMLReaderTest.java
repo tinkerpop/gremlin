@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.db.tg.TinkerVertex;
 import com.tinkerpop.gremlin.model.parser.GraphMLReader;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 
 import java.io.InputStream;
 
@@ -14,14 +15,14 @@ import java.io.InputStream;
  */
 public class GraphMLReaderTest extends BaseTest {
 
-    public void testParsingForTinkerGraph() throws Exception {
+    public void testReadingForTinkerGraph() throws Exception {
         InputStream stream = TinkerGraph.class.getResourceAsStream("graph-example-1.xml");
         TinkerGraph g = new TinkerGraph();
         GraphMLReader.inputGraph(g, stream);
         assertEquals(g.getVertex("1").getOutEdges().size(), 3);
         assertEquals(g.getVertex("1").getBothEdges().size(), 3);
         assertEquals(g.getVertex("1").getInEdges().size(), 0);
-        TinkerVertex marko = g.getVertex("1");
+        Vertex marko = g.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
         assertEquals(marko.getProperty("age"), 29);
         int counter = 0;
@@ -47,7 +48,7 @@ public class GraphMLReaderTest extends BaseTest {
         assertEquals(g.getVertex("4").getOutEdges().size(), 2);
         assertEquals(g.getVertex("4").getBothEdges().size(), 3);
         assertEquals(g.getVertex("4").getInEdges().size(), 1);
-        TinkerVertex josh = g.getVertex("4");
+        Vertex josh = g.getVertex("4");
         assertEquals(josh.getProperty("name"), "josh");
         assertEquals(josh.getProperty("age"), 32);
         for(Edge e : g.getVertex("4").getOutEdges()) {

@@ -10,6 +10,8 @@ import org.neo4j.api.core.Relationship;
 import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.LuceneIndexService;
 
+import java.util.Iterator;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
@@ -37,6 +39,10 @@ public class NeoGraph implements Graph {
         } else {
             return null;
         }
+    }
+
+    public Iterable<Vertex> getVertices() {
+        return null;
     }
 
     public void removeVertex(Vertex vertex) {

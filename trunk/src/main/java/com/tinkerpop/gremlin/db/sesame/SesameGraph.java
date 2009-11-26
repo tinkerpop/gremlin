@@ -53,6 +53,10 @@ public class SesameGraph implements Graph {
         return new SesameVertex(new URIImpl((String) id), this.sailConnection);
     }
 
+    public Iterable<Vertex> getVertices() {
+        return null;
+    }
+
     public void removeVertex(Vertex vertex) {
         // TODO: what about value vertices?
         URIImpl uri = new URIImpl((String) vertex.getId());
