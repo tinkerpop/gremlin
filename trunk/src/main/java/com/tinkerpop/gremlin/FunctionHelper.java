@@ -20,14 +20,11 @@ public class FunctionHelper {
         return (GremlinPathContext) context.getJXPathContext();
     }
 
-    public static List<Object> asValue(List<Pointer> nodePointers) {
+    public static List<Object> asObject(List<Pointer> nodePointers) {
         List<Object> nodeValues = new ArrayList<Object>();
         for (Pointer p : nodePointers) {
             nodeValues.add(p.getValue());
         }
         return nodeValues;
     }
-    
-
-
 }

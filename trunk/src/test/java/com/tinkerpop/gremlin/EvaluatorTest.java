@@ -72,7 +72,7 @@ public class EvaluatorTest extends BaseTest {
         context.setLenient(true);
 
         FunctionLibrary library = new FunctionLibrary();
-        library.addFunctions(new ClassFunctions(GremlinFunctions.class, "g"));
+        library.addFunctions(new ClassFunctions(GremlinClassFunctions.class, "g"));
         library.addFunctions(context.getFunctions());
         context.setFunctions(library);
 
@@ -95,7 +95,7 @@ public class EvaluatorTest extends BaseTest {
         context.setLenient(true);
 
         FunctionLibrary library = new FunctionLibrary();
-        library.addFunctions(new ClassFunctions(GremlinFunctions.class, "g"));
+        library.addFunctions(new ClassFunctions(GremlinClassFunctions.class, "g"));
         library.addFunctions(context.getFunctions());
         context.setFunctions(library);
 
@@ -116,7 +116,7 @@ public class EvaluatorTest extends BaseTest {
         context.setLenient(true);
 
         FunctionLibrary library = new FunctionLibrary();
-        library.addFunctions(new ClassFunctions(GremlinFunctions.class, "g"));
+        library.addFunctions(new ClassFunctions(GremlinClassFunctions.class, "g"));
         library.addFunctions(context.getFunctions());
         context.setFunctions(library);
 

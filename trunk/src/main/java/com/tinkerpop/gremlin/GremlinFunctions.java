@@ -1,7 +1,9 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.model.Graph;
+import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.JXPathFunctionNotFoundException;
 
 import java.util.*;
 
@@ -9,226 +11,186 @@ import java.util.*;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class GremlinFunctions {
+public class GremlinFunctions extends ClassFunctions {
 
     public static final String NAMESPACE_PREFIX = "g";
-    private static final Random RANDOM = new Random();
-    private static final String HASHSET = "hashset";
-    private static final String ARRAYLIST = "arraylist";
-    private static final String UNMODIFIABLE = "unmodifiablerandomaccesslist";
-    private static final String SET = "assign";
-    private static final String LIST = "list";
 
-    /*
-        public static Integer sum(Integer... a) {
-        int total = 0;
-        for(Integer i : a) {
-            total = total + i;
+
+    private static final String APPEND = "append";
+    private static final String REMOVE = "remove";
+
+    private static final String UNION = "union";
+    private static final String INTERSECT = "intersect";
+    private static final String DIFFERENCE = "difference";
+
+    private static final String RETAIN = "retain";
+    private static final String EXCEPT = "except";
+
+
+    private static final Map<String, Function> functionMap = new HashMap<String, Function>();
+
+    static {
+        functionMap.put(APPEND, new AppendFunction());
+        functionMap.put(REMOVE, new RemoveFunction());
+        functionMap.put(UNION, new UnionFunction());
+        functionMap.put(INTERSECT, new IntersectFunction());
+        functionMap.put(DIFFERENCE, new DifferenceFunction());
+        functionMap.put(RETAIN, new RetainFunction());
+        functionMap.put(EXCEPT, new ExceptFunction());
+
+    }
+
+    public GremlinFunctions(String namespace) {
+        super(GremlinClassFunctions.class, namespace);
+    }
+
+    public Function getFunction(String namespace, String name, Object[] parameters) throws JXPathFunctionNotFoundException {
+        Function function = functionMap.get(name);
+        if (null != function && parameters.length > 0)
+            return function;
+
+        try {
+            function = super.getFunction(namespace, name, parameters);
+        } catch (NoClassDefFoundError e) {
+            throw new JXPathFunctionNotFoundException("Undefined function: " + namespace + ":" + name);
         }
-        return total;
-    }
-     */
-
-    public static Object get_vertex(Graph graph, Object indexKey) {
-        if (graph == null)
-            return null;
+        if (null != function)
+            return function;
         else
-            return (graph.getVertex(indexKey));
+            throw new JXPathFunctionNotFoundException("Undefined function: " + namespace + ":" + name);
+
+
     }
 
+    public static class AppendFunction implements Function {
 
-    public static Object assign(ExpressionContext context, String variable, Object value) {
-        if (FunctionHelper.isLastInContext(context))
-            FunctionHelper.getGremlin(context).setVariable(variable, value);
-        return value;
-    }
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            List list = new ArrayList();
+            for (Object object : parameters) {
+                if (object instanceof Collection)
+                    list.addAll((Collection) object);
+                else
+                    list.add(object);
 
-    public static Boolean assign(ExpressionContext context, String variable) {
-        if (FunctionHelper.isLastInContext(context))
-            FunctionHelper.getGremlin(context).setVariable(variable, FunctionHelper.asValue(context.getContextNodeList()));
-        return Boolean.TRUE;
-    }
-
-    public static Boolean unassign(ExpressionContext context, String variable) {
-        FunctionHelper.getGremlin(context).removeVariable(variable);
-        return Boolean.TRUE;
-    }
-
-    public static Boolean cont(boolean cont) {
-       return cont;
-    }
-
-    public static Boolean halt(boolean halt) {
-        return !halt;
-    }
-
-    public static Boolean noop() {
-        return Boolean.TRUE;
-    }
-
-    public static Boolean print(ExpressionContext context) {
-        GremlinFunctions.print(context.getContextNodePointer().getValue());
-        return Boolean.TRUE;
-    }
-
-    public static Object print(Object object) {
-        System.out.println(object);
-        return object;
-    }
-
-    public static Integer random(Integer value) {
-        return RANDOM.nextInt(value)+1;
-    }
-
-    public static Integer random(ExpressionContext context) {
-        return RANDOM.nextInt(context.getContextNodeList().size())+1;
-    }
-
-    public static Boolean coin() {
-        return RANDOM.nextBoolean();
-    }
-
-    public static List make_list() {
-        return new ArrayList();
-    }
-
-    public static Set make_set() {
-        return new HashSet();
-    }
-
-    public static Map make_map() {
-        return new HashMap();
-    }
-
-    public static Object get_value(Map map, Object key) {
-        return map.get(key);
-    }
-
-    public static Object set_value(Map map, Object key, Object value) {
-        map.put(key, value);
-        return null;
-    }
-
-    public static Collection get_values(Map map) {
-        return map.values();
-    }
-
-    public static Set get_keys(Map map) {
-        return map.keySet();
-    }
-
-    public static List as_list(Object a) {
-        if(a instanceof Collection)
-            return new ArrayList((Collection)a);
-        else {
-            List b = new ArrayList();
-            b.add(a);
-            return b;
+            }
+            return list;
         }
     }
 
-    public static Set as_set(Object a) {
-        if(a instanceof Collection)
-            return new HashSet((Collection)a);
-        else {
-            Set b = new HashSet();
-            b.add(a);
-            return b;
+    public static class RemoveFunction implements Function {
+
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            List list = new ArrayList();
+            if (parameters[0] instanceof Collection)
+                list.addAll((Collection) parameters[0]);
+            else
+                list.add(parameters[0]);
+
+            for (int i = 1; i < parameters.length; i++) {
+                Object object = parameters[i];
+                if (object instanceof Collection)
+                    list.removeAll((Collection) object);
+                else
+                    list.remove(object);
+                if (list.size() == 0)
+                    return list;
+            }
+            return list;
         }
     }
 
-    public static List append(Object a, Object b) {
-        List c = new ArrayList();
-        if(a instanceof Collection)
-            c.addAll((Collection)a);
-        else
-            c.add(a);
-        if(b instanceof Collection)
-            c.addAll((Collection)b);
-        else
-            c.add(b);
-        return c;
+    public static class UnionFunction implements Function {
+
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            Set set = new HashSet();
+            for (Object object : parameters) {
+                if (object instanceof Collection)
+                    set.addAll((Collection) object);
+                else
+                    set.add(object);
+
+            }
+            return set;
+        }
     }
 
-    public static Set union(Object a, Object b) {
-        Set c = new HashSet();
-        if(a instanceof Collection)
-            c.addAll((Collection)a);
-        else
-            c.add(a);
-        if(b instanceof Collection)
-            c.addAll((Collection)b);
-        else
-            c.add(b);
-        return c;
+    public static class IntersectFunction implements Function {
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            Set set = new HashSet();
+            if (parameters[0] instanceof Collection)
+                set.addAll((Collection) parameters[0]);
+            else
+                set.add(parameters[0]);
 
+            for (int i = 1; i < parameters.length; i++) {
+                Object object = parameters[i];
+                if (object instanceof Collection)
+                    set.retainAll((Collection) object);
+                else {
+                    Set tempSet = new HashSet();
+                    tempSet.add(object);
+                    set.retainAll(tempSet);
+                }
+                if (set.size() == 0)
+                    return set;
+            }
+            return set;
+        }
     }
 
-    public static Set intersect(Object a, Object b) {
-        Set c = new HashSet();
-        Set d = new HashSet();
-        if(a instanceof Collection)
-            c.addAll((Collection)a);
-        else
-            c.add(a);
-        if(b instanceof Collection)
-            d.addAll((Collection)b);
-        else
-            d.add(b);
-        
-        c.retainAll(d);
-        return c;
+    public static class DifferenceFunction implements Function {
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            Set set = new HashSet();
+            if (parameters[0] instanceof Collection)
+                set.addAll((Collection) parameters[0]);
+            else
+                set.add(parameters[0]);
+
+            for (int i = 1; i < parameters.length; i++) {
+                Object object = parameters[i];
+                if (object instanceof Collection)
+                    set.removeAll((Collection) object);
+                else {
+                    set.remove(object);
+                }
+                if (set.size() == 0)
+                    return set;
+            }
+            return set;
+        }
     }
 
-    public static Set difference(Object a, Object b) {
-        Set c = new HashSet();
-        Set d = new HashSet();
-        if(a instanceof Collection)
-            c.addAll((Collection)a);
-        else
-            c.add(a);
-        if(b instanceof Collection)
-            d.addAll((Collection)b);
-        else
-            d.add(b);
+    public static class RetainFunction implements Function {
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            Set setA = new HashSet();
+            for (Object object : parameters) {
+                if (object instanceof Collection)
+                    setA.addAll((Collection) object);
+                else
+                    setA.add(object);
 
-        c.removeAll(d);
-        return c;
+            }
+            Set setB = new HashSet();
+            setB.add(context.getContextNodePointer().getValue());
+            setA.retainAll(setB);
+            return setA.size() > 0;
+        }
     }
 
-    public static Boolean retain(ExpressionContext context, Object a) {
-        Set b = new HashSet();
-        if(a instanceof Collection)
-            b.addAll((Collection)a);
-        else
-            b.add(a);
+    public static class ExceptFunction implements Function {
+        public Object invoke(ExpressionContext context, Object[] parameters) {
+            Set setA = new HashSet();
+            for (Object object : parameters) {
+                if (object instanceof Collection)
+                    setA.addAll((Collection) object);
+                else
+                    setA.add(object);
 
-        Set c = new HashSet();
-        c.add(context.getContextNodePointer().getValue());
-        b.retainAll(c);
-        return b.size() > 0;
-    }
-
-
-    public static Boolean except(ExpressionContext context, Object a) {
-        Set b = new HashSet();
-        if(a instanceof Collection)
-            b.addAll((Collection)a);
-        else
-            b.add(a);
-
-        Set c = new HashSet();
-        c.add(context.getContextNodePointer().getValue());
-        c.removeAll(b);
-        return c.size() > 0;
-    }
-
-    public static String type(Object object) {
-        String type = object.getClass().getSimpleName().toLowerCase();
-        if (type.equals(HASHSET))
-            type = SET;
-        else if (type.equals(ARRAYLIST))
-            type = LIST;
-        return type;
+            }
+            Set setB = new HashSet();
+            setB.add(context.getContextNodePointer().getValue());
+            setB.removeAll(setA);
+            return setB.size() > 0;
+        }
     }
 }

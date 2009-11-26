@@ -69,6 +69,8 @@ public class Console {
                     System.out.println(e.getMessage());
                 } catch (EvaluationErrorException e) {
                     System.out.println(e.getMessage());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }

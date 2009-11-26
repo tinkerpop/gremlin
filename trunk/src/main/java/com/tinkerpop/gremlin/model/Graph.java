@@ -6,7 +6,7 @@ package com.tinkerpop.gremlin.model;
  */
 public interface Graph {
 
-    public Vertex getVertex(Object indexKey);
+    public Vertex getVertex(Object id);
 
     public void removeVertex(Object id);
     // public void addVertex(Vertex vertex) TODO what is the best model?

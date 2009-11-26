@@ -28,6 +28,7 @@ public class NeoElement implements Element {
     }
 
     public Set<String> getPropertyKeys() {
+
         Set<String> keys = new HashSet<String>();
         for (String key : this.element.getPropertyKeys()) {
             keys.add(key);
