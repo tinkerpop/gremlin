@@ -15,7 +15,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     protected Set<Edge> outEdges = new HashSet<Edge>();
     protected Set<Edge> inEdges = new HashSet<Edge>();
 
-    public TinkerVertex(String id) {
+    protected TinkerVertex(String id) {
         super(id);
     }
 
@@ -28,59 +28,18 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     }
 
     public Set<Edge> getBothEdges() {
-         Set<Edge> bothEdges = new HashSet<Edge>();
-            bothEdges.addAll(outEdges);
-            bothEdges.addAll(inEdges);
-            return bothEdges;
-    }
-
-    public void removeEdge(Edge edge) {
-        this.outEdges.remove(edge);
-        this.inEdges.remove(edge);
-    }
-
-    public void removeOutEdge(TinkerVertex inVertex, String label) {
-        Set<Edge> toRemove = new HashSet<Edge>();
-        for (Edge edge : this.outEdges) {
-            if (edge.getInVertex().equals(inVertex) && (edge.getLabel().equals(label) || label == null)) {
-                toRemove.add(edge);
-                inVertex.removeEdge(edge);
-            }
-        }
-        this.outEdges.removeAll(toRemove);
-    }
-
-    public void removeInEdge(TinkerVertex outVertex, String label) {
-        Set<Edge> toRemove = new HashSet<Edge>();
-        for (Edge edge : this.outEdges) {
-            if (edge.getOutVertex().equals(outVertex) && (edge.getLabel().equals(label) || label == null)) {
-                toRemove.add(edge);
-                outVertex.removeEdge(edge);
-            }
-        }
-        this.inEdges.removeAll(toRemove);
-    }
-
-    public TinkerEdge createOutEdge(String edgeId, TinkerVertex inVertex, String label) {
-        TinkerEdge edge = new TinkerEdge(edgeId, this, inVertex, label);
-        this.outEdges.add(edge);
-        inVertex.inEdges.add(edge);
-        return edge;
-    }
-
-    public TinkerEdge createInEdge(String edgeId, TinkerVertex outVertex, String label) {
-        TinkerEdge edge = new TinkerEdge(edgeId, outVertex, this, label);
-        this.inEdges.add(edge);
-        outVertex.outEdges.add(edge);
-        return edge;
+        Set<Edge> bothEdges = new HashSet<Edge>();
+        bothEdges.addAll(outEdges);
+        bothEdges.addAll(inEdges);
+        return bothEdges;
     }
 
     public String toString() {
-        return "v[" + id + "]";
+        return "v[" + this.id + "]";
     }
 
     public boolean equals(Object object) {
-        if (object instanceof TinkerEdge)
+        if (object instanceof TinkerVertex)
             return object.hashCode() == this.hashCode();
         else
             return false;

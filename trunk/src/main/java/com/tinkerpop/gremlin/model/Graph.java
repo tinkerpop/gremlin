@@ -6,10 +6,15 @@ package com.tinkerpop.gremlin.model;
  */
 public interface Graph {
 
+    public Vertex addVertex(Object id);
+
     public Vertex getVertex(Object id);
 
-    public void removeVertex(Object id);
-    // public void addVertex(Vertex vertex) TODO what is the best model?
+    public void removeVertex(Vertex vertex);
+
+    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label);
+
+    public void removeEdge(Edge edge);
 
     public void shutdown();
 }

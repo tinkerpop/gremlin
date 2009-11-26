@@ -33,29 +33,23 @@
             <data key="name">peter</data>
             <data key="age">35</data>
         </node>
-        <edge id="7" source="1" target="2">
+        <edge id="7" source="1" target="2" label="knows">
             <data key="weight">0.5</data>
-            <data key="label">knows</data>
         </edge>
-        <edge id="8" source="1" target="4">
+        <edge id="8" source="1" target="4" label="knows" >
             <data key="weight">1.0</data>
-            <data key="label">knows</data>
         </edge>
-        <edge id="9" source="1" target="3">
+        <edge id="9" source="1" target="3" label="created">
             <data key="weight">0.4</data>
-            <data key="label">created</data>
         </edge>
-        <edge id="10" source="4" target="5">
+        <edge id="10" source="4" target="5" label="created">
             <data key="weight">1.0</data>
-            <data key="label">created</data>
         </edge>
-        <edge id="11" source="4" target="3">
+        <edge id="11" source="4" target="3" label="created">
             <data key="weight">0.4</data>
-            <data key="label">created</data>
         </edge>
-        <edge id="12" source="6" target="3">
+        <edge id="12" source="6" target="3" label="created">
             <data key="weight">0.2</data>
-            <data key="label">created</data>
         </edge>
     </graph>
 </graphml>

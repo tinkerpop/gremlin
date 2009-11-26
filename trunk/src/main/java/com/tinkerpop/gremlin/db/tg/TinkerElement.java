@@ -14,9 +14,9 @@ import java.util.UUID;
 public class TinkerElement implements Element {
 
     protected Map<String, Object> properties = new HashMap<String, Object>();
-    protected String id;
+    protected final String id;
 
-    public TinkerElement(String id) {
+    protected TinkerElement(String id) {
         if (null == id)
             this.id = UUID.randomUUID().toString();
         else

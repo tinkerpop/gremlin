@@ -1,14 +1,11 @@
 package com.tinkerpop.gremlin;
 
-import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
-
-import java.util.*;
-
+import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.model.Edge;
+import org.apache.commons.jxpath.ExpressionContext;
+
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -35,10 +32,10 @@ public class GremlinClassFunctions {
     }
 
     public static Object assign(ExpressionContext context, String variable, Object value) {
-            if (FunctionHelper.isLastInContext(context))
-                FunctionHelper.getGremlin(context).setVariable(variable, value);
-            return value;
-        }
+        if (FunctionHelper.isLastInContext(context))
+            FunctionHelper.getGremlin(context).setVariable(variable, value);
+        return value;
+    }
 
     public static Boolean assign(ExpressionContext context, String variable) {
         if (FunctionHelper.isLastInContext(context))
@@ -52,7 +49,7 @@ public class GremlinClassFunctions {
     }
 
     public static Boolean cont(Boolean cont) {
-       return cont;
+        return cont;
     }
 
     public static Boolean halt(Boolean halt) {
@@ -65,11 +62,11 @@ public class GremlinClassFunctions {
     }
 
     public static Integer random(Integer value) {
-        return RANDOM.nextInt(value)+1;
+        return RANDOM.nextInt(value) + 1;
     }
 
     public static Integer random(ExpressionContext context) {
-        return RANDOM.nextInt(context.getContextNodeList().size())+1;
+        return RANDOM.nextInt(context.getContextNodeList().size()) + 1;
     }
 
     public static Boolean coin() {
@@ -111,8 +108,8 @@ public class GremlinClassFunctions {
     }
 
     public static List as_list(Object a) {
-        if(a instanceof Collection)
-            return new ArrayList((Collection)a);
+        if (a instanceof Collection)
+            return new ArrayList((Collection) a);
         else {
             List b = new ArrayList();
             b.add(a);
@@ -121,8 +118,8 @@ public class GremlinClassFunctions {
     }
 
     public static Set as_set(Object a) {
-        if(a instanceof Collection)
-            return new HashSet((Collection)a);
+        if (a instanceof Collection)
+            return new HashSet((Collection) a);
         else {
             Set b = new HashSet();
             b.add(a);
@@ -133,26 +130,26 @@ public class GremlinClassFunctions {
     public static String type(Object object) {
         String type = object.getClass().getSimpleName().toLowerCase();
         if (type.equals(UNMODIFIABLE)) {
-            List list = (List)object;
-            if(list.size() == 1)
+            List list = (List) object;
+            if (list.size() == 1)
                 return type(list.get(0));
             else
                 return LIST;
         }
 
-        if(object instanceof Set)
+        if (object instanceof Set)
             return SET;
-        else if(object instanceof List)
+        else if (object instanceof List)
             return LIST;
-        else if(object instanceof Edge)
+        else if (object instanceof Edge)
             return EDGE;
-        else if(object instanceof Vertex)
+        else if (object instanceof Vertex)
             return VERTEX;
-        else if(object instanceof Graph)
+        else if (object instanceof Graph)
             return GRAPH;
-        else if(object instanceof Map)
+        else if (object instanceof Map)
             return MAP;
-        else if(object instanceof Double || object instanceof Integer)
+        else if (object instanceof Double || object instanceof Integer)
             return NUMBER;
         else
             return type; // handles string or others.

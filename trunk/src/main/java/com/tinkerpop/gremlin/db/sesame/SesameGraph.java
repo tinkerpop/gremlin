@@ -1,9 +1,11 @@
 package com.tinkerpop.gremlin.db.sesame;
 
+import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Namespace;
+import org.openrdf.model.Statement;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
@@ -39,16 +41,40 @@ public class SesameGraph implements Graph {
         this.sailConnection = sail.getConnection();
     }
 
-    public Vertex getVertex(Object id) {
+    public Vertex addVertex(Object id) {
+        // TODO: what about value vertices?
         id = prefixToNamespace((String) id, this.sailConnection);
         return new SesameVertex(new URIImpl((String) id), this.sailConnection);
     }
 
-    public void removeVertex(Object id) {
-        URIImpl uri = new URIImpl((String) id);
+    public Vertex getVertex(Object id) {
+        // TODO: what about value vertices?
+        id = prefixToNamespace((String) id, this.sailConnection);
+        return new SesameVertex(new URIImpl((String) id), this.sailConnection);
+    }
+
+    public void removeVertex(Vertex vertex) {
+        // TODO: what about value vertices?
+        URIImpl uri = new URIImpl((String) vertex.getId());
         try {
             this.sailConnection.removeStatements(uri, null, null);
             this.sailConnection.removeStatements(null, null, uri);
+        } catch (SailException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+        return null;
+    }
+
+    public void removeEdge(Edge edge) {
+        Statement statement = ((SesameEdge)edge).getRawStatement();
+        try {
+            if(null != statement.getContext())
+                this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
+            else
+                this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject());
         } catch (SailException e) {
             e.printStackTrace();
         }
@@ -127,13 +153,13 @@ public class SesameGraph implements Graph {
         else {
             try {
                 Class c = Class.forName(className);
-                if(c == String.class) {
+                if (c == String.class) {
                     return literalValue;
-                } else if(c == Float.class) {
+                } else if (c == Float.class) {
                     return Float.valueOf(literalValue);
-                } else if(c == Integer.class) {
+                } else if (c == Integer.class) {
                     return Integer.valueOf(literalValue);
-                } else  if(c == Double.class) {
+                } else if (c == Double.class) {
                     return Double.valueOf(literalValue);
                 } else {
                     return literalValue;

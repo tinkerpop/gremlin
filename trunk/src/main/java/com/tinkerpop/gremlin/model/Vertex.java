@@ -13,6 +13,5 @@ public interface Vertex extends Element {
     public Set<Edge> getInEdges();
 
     public Set<Edge> getBothEdges();
-    // public void removeEdge(Edge edge)
-    // public void addEdge(Edge edge)
+
 }

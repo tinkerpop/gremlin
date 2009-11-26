@@ -67,6 +67,10 @@ public class SesameEdge extends SesameElement implements Edge {
         return new SesameVertex(this.statement.getSubject(), this.sailConnection);
     }
 
+    public Statement getRawStatement() {
+        return this.statement;
+    }
+
     public String toString() {
         //return this.statement.toString();
         return SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection) +

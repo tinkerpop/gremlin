@@ -1,9 +1,9 @@
-package com.tinkerpop.gremlin.db.tg.parser;
+package com.tinkerpop.gremlin.model.parser;
 
 import com.tinkerpop.gremlin.db.tg.TinkerGraph;
 import com.tinkerpop.gremlin.db.tg.TinkerVertex;
+import com.tinkerpop.gremlin.model.parser.GraphMLReader;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Edge;
 
 import java.io.InputStream;
@@ -12,11 +12,12 @@ import java.io.InputStream;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class TinkerGraphMLTest extends BaseTest {
+public class GraphMLReaderTest extends BaseTest {
 
-    public void testParsing() throws Exception {
+    public void testParsingForTinkerGraph() throws Exception {
         InputStream stream = TinkerGraph.class.getResourceAsStream("graph-example-1.xml");
-        TinkerGraph g = TinkerGraphML.generateGraph(stream);
+        TinkerGraph g = new TinkerGraph();
+        GraphMLReader.inputGraph(g, stream);
         assertEquals(g.getVertex("1").getOutEdges().size(), 3);
         assertEquals(g.getVertex("1").getBothEdges().size(), 3);
         assertEquals(g.getVertex("1").getInEdges().size(), 0);

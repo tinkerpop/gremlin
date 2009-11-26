@@ -9,11 +9,11 @@ import com.tinkerpop.gremlin.model.Vertex;
  */
 public class TinkerEdge extends TinkerElement implements Edge {
 
-    protected String label;
-    protected Vertex inVertex;
-    protected Vertex outVertex;
+    private final String label;
+    private final Vertex inVertex;
+    private final Vertex outVertex;
 
-    public TinkerEdge(String id, Vertex outVertex, Vertex inVertex, String label) {
+    protected TinkerEdge(String id, Vertex outVertex, Vertex inVertex, String label) {
         super(id);
         this.label = label;
         this.outVertex = outVertex;
@@ -22,10 +22,6 @@ public class TinkerEdge extends TinkerElement implements Edge {
 
     public String getLabel() {
         return this.label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
     }
 
     public Vertex getOutVertex() {
