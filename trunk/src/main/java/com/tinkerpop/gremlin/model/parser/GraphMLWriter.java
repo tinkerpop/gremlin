@@ -8,6 +8,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -23,7 +24,10 @@ public class GraphMLWriter {
 
         writer.writeStartDocument();
         writer.writeStartElement(GraphMLTokens.GRAPHML);
-        for (Vertex vertex : graph.getVertices()) {
+        writer.writeStartElement(GraphMLTokens.GRAPH);
+        Iterator<Vertex> itty = graph.getVertices();
+        while (itty.hasNext()) {
+            Vertex vertex = itty.next();
             writer.writeStartElement(GraphMLTokens.NODE);
             writer.writeAttribute(GraphMLTokens.ID, vertex.getId().toString());
             for (String key : vertex.getPropertyKeys()) {
@@ -50,7 +54,8 @@ public class GraphMLWriter {
             }
 
         }
-        writer.writeEndElement();
+        writer.writeEndElement(); // graph
+        writer.writeEndElement(); // graphml
         writer.writeEndDocument();
 
         writer.flush();

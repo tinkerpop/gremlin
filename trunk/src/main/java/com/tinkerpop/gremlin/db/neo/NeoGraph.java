@@ -3,10 +3,7 @@ package com.tinkerpop.gremlin.db.neo;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
+import org.neo4j.api.core.*;
 import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.LuceneIndexService;
 
@@ -41,12 +38,16 @@ public class NeoGraph implements Graph {
         }
     }
 
-    public Iterable<Vertex> getVertices() {
-        return null;
+    public Iterator<Vertex> getVertices() {
+        return new NeoVertexIterator(this.neo.getAllNodes().iterator());
+    }
+
+    public Iterator<Edge> getEdges() {
+        return new NeoEdgeIterator(this.neo.getAllNodes().iterator());
     }
 
     public void removeVertex(Vertex vertex) {
-        Long id = (Long)vertex.getId();
+        Long id = (Long) vertex.getId();
         Node node = neo.getNodeById(id);
         if (null != node) {
             this.index.removeIndex(node, this.indexKey, node.getProperty(this.indexKey));
@@ -59,11 +60,67 @@ public class NeoGraph implements Graph {
     }
 
     public void removeEdge(Edge edge) {
-        ((Relationship)((NeoEdge)edge).getRawElement()).delete();
+        ((Relationship) ((NeoEdge) edge).getRawElement()).delete();
     }
 
     public void shutdown() {
         this.neo.shutdown();
         this.index.shutdown();
+    }
+
+    private class NeoVertexIterator implements Iterator<Vertex> {
+
+        Iterator<Node> nodes;
+
+        public NeoVertexIterator(Iterator<Node> nodes) {
+            this.nodes = nodes;
+        }
+
+        public void remove() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
+        }
+
+        public Vertex next() {
+            return new NeoVertex(this.nodes.next());
+        }
+
+        public boolean hasNext() {
+            return this.nodes.hasNext();
+        }
+    }
+
+    private class NeoEdgeIterator implements Iterator<Edge> {
+
+        Iterator<Node> nodes;
+        Iterator<Relationship> relationshipIterator;
+
+
+        public NeoEdgeIterator(Iterator<Node> nodes) {
+            this.nodes = nodes;
+        }
+
+        public void remove() throws UnsupportedOperationException {
+            throw new UnsupportedOperationException();
+        }
+
+        public Edge next() {
+            if (null != relationshipIterator && relationshipIterator.hasNext())
+                return new NeoEdge(relationshipIterator.next());
+            else if(this.nodes.hasNext()) {
+                Node node = nodes.next();
+                relationshipIterator = node.getRelationships(Direction.OUTGOING).iterator();
+                return next();
+            } else {
+                return null;
+            }
+        }
+
+        public boolean hasNext() {
+            if(!this.nodes.hasNext() && (null == this.relationshipIterator || !this.relationshipIterator.hasNext()))
+                return false;
+            else
+                return true;
+        }
+
     }
 }

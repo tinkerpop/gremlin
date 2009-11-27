@@ -28,8 +28,12 @@ public class TinkerGraph implements Graph {
         return this.vertices.get((String) id);
     }
 
-    public Iterable<Vertex> getVertices() {
-        return vertices.values();
+    public Iterator<Vertex> getVertices() {
+        return vertices.values().iterator();
+    }
+
+    public Iterator<Edge> getEdges() {
+        return new TinkerEdgeIterator(this.getVertices());
     }
 
     public void removeVertex(Vertex vertex) {
@@ -60,6 +64,44 @@ public class TinkerGraph implements Graph {
     }
 
     public void shutdown() {
+    }
+
+    private class TinkerEdgeIterator implements Iterator<Edge> {
+
+        private Iterator<Vertex> vertices;
+        private Edge[] currentEdges;
+        private int currentIndex;
+
+        public TinkerEdgeIterator(Iterator<Vertex> vertices) {
+            this.vertices = vertices;
+            this.currentIndex = -1;
+        }
+
+        public Edge next() {
+            if(currentIndex != -1) {
+                if(currentIndex >= currentEdges.length - 1) {
+                    currentIndex = -1;
+                }
+                return currentEdges[currentIndex];
+            } else {
+                if(vertices.hasNext()) {
+                    currentEdges = (Edge[]) vertices.next().getOutEdges().toArray();
+                    currentIndex = 0;
+                    return next();
+                } else {
+                    return null;
+                }
+            }
+        }
+
+        public boolean hasNext() {
+            return !(this.currentIndex == -1);
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
     }
 
 }

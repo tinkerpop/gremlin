@@ -10,6 +10,7 @@ public class GraphMLTokens {
     static final String ID = "id";
     static final String ATTR_NAME = "attr.name";
     static final String ATTR_TYPE = "attr.type";
+    static final String GRAPH = "graph";
     static final String NODE = "node";
     static final String EDGE = "edge";
     static final String SOURCE = "source";

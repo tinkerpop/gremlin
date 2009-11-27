@@ -12,6 +12,7 @@ import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -53,8 +54,17 @@ public class SesameGraph implements Graph {
         return new SesameVertex(new URIImpl((String) id), this.sailConnection);
     }
 
-    public Iterable<Vertex> getVertices() {
+    public Iterator<Vertex> getVertices() {
         return null;
+    }
+
+    public Iterator<Edge> getEdges() {
+        try {
+            return new SesameEdgeIterator(this.sailConnection.getStatements(null, null, null, false), this.sailConnection);
+        } catch (SailException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void removeVertex(Vertex vertex) {
@@ -73,9 +83,9 @@ public class SesameGraph implements Graph {
     }
 
     public void removeEdge(Edge edge) {
-        Statement statement = ((SesameEdge)edge).getRawStatement();
+        Statement statement = ((SesameEdge) edge).getRawStatement();
         try {
-            if(null != statement.getContext())
+            if (null != statement.getContext())
                 this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
             else
                 this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject());
@@ -173,6 +183,41 @@ public class SesameGraph implements Graph {
                 return literalValue;
             }
         }
+    }
+
+    private class SesameEdgeIterator implements Iterator {
+
+        private CloseableIteration<? extends Statement, SailException> edges;
+        private SailConnection sailConnection;
+
+        public SesameEdgeIterator(CloseableIteration<? extends Statement, SailException> edges, SailConnection sailConnection) {
+            this.edges = edges;
+            this.sailConnection = sailConnection;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        public boolean hasNext() {
+            try {
+                return edges.hasNext();
+            } catch (SailException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        public Edge next() {
+            try {
+                return new SesameEdge(edges.next(), this.sailConnection);
+            } catch (SailException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+
     }
 
 
