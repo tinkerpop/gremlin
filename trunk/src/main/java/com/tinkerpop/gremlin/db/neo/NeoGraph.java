@@ -25,6 +25,10 @@ public class NeoGraph implements Graph {
         this.indexKey = indexKey;
     }
 
+    public NeoGraph(NeoService neo) {
+        this.neo = neo;
+    }
+
     public Vertex addVertex(Object id) {
         return new NeoVertex(neo.createNode());
     }
@@ -92,11 +96,14 @@ public class NeoGraph implements Graph {
     private class NeoEdgeIterator implements Iterator<Edge> {
 
         Iterator<Node> nodes;
-        Iterator<Relationship> relationshipIterator;
+        Iterator<Relationship> nodeRelationships;
 
 
         public NeoEdgeIterator(Iterator<Node> nodes) {
             this.nodes = nodes;
+            if(this.nodes.hasNext()) {
+                this.nodeRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
+            }
         }
 
         public void remove() throws UnsupportedOperationException {
@@ -104,11 +111,10 @@ public class NeoGraph implements Graph {
         }
 
         public Edge next() {
-            if (null != relationshipIterator && relationshipIterator.hasNext())
-                return new NeoEdge(relationshipIterator.next());
+            if (nodeRelationships.hasNext())
+                return new NeoEdge(nodeRelationships.next());
             else if(this.nodes.hasNext()) {
-                Node node = nodes.next();
-                relationshipIterator = node.getRelationships(Direction.OUTGOING).iterator();
+                this.nodeRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
                 return next();
             } else {
                 return null;
@@ -116,7 +122,7 @@ public class NeoGraph implements Graph {
         }
 
         public boolean hasNext() {
-            if(!this.nodes.hasNext() && (null == this.relationshipIterator || !this.relationshipIterator.hasNext()))
+            if(!this.nodes.hasNext() && !this.nodeRelationships.hasNext())
                 return false;
             else
                 return true;

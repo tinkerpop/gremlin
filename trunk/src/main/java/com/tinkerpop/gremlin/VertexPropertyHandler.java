@@ -38,6 +38,8 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
             return vertex.getInEdges();
         } else if (key.equals(Tokens.BOTH_EDGES)) {
             return vertex.getBothEdges();
+        } else if (key.equals(Tokens.ID)) {
+            return vertex.getId();
         } else {
             return vertex.getProperty(key);
         }

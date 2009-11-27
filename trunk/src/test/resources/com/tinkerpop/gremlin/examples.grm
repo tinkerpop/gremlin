@@ -1,2 +1,2 @@
-tg:open_tg("graph-example-1.xml")[g:set('$x')]
-g:get_v($x, '1')[g:set_root()]
+$g := tg:open_tg('src/test/resources/com/tinkerpop/gremlin/model/parser/graph-example-2.xml')
+$_ := g:get_vertex($g, 'DARK_STAR')

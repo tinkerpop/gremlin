@@ -37,14 +37,14 @@ public class TinkerGraphFactory {
         peter.setProperty("name", "peter");
         peter.setProperty("age", 35);
 
-        graph.addEdge("7", marko, vadas, "knows").setProperty("weight", 0.5);
-        graph.addEdge("8", marko, josh, "knows").setProperty("weight", 1.0);
-        graph.addEdge("9", marko, lop, "created").setProperty("weight", 0.4);
+        graph.addEdge("7", marko, vadas, "knows").setProperty("weight", 0.5f);
+        graph.addEdge("8", marko, josh, "knows").setProperty("weight", 1.0f);
+        graph.addEdge("9", marko, lop, "created").setProperty("weight", 0.4f);
 
-        graph.addEdge("10", josh, ripple, "created").setProperty("weight", 1.0);
-        graph.addEdge("11", josh, lop, "created").setProperty("weight", 0.4);
+        graph.addEdge("10", josh, ripple, "created").setProperty("weight", 1.0f);
+        graph.addEdge("11", josh, lop, "created").setProperty("weight", 0.4f);
         
-        graph.addEdge("12", peter, lop, "created").setProperty("weight", 0.2);
+        graph.addEdge("12", peter, lop, "created").setProperty("weight", 0.2f);
 
         return graph;
 

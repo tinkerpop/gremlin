@@ -14,7 +14,7 @@ public class GraphMLWriterTest extends BaseTest {
 
     public void testWritingForTinkerGraph() throws Exception {
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        GraphMLWriter.outputGraph(g, new FileOutputStream("/Users/marko/Desktop/THE_TEST.txt"));
+        GraphMLWriter.outputGraph(g, new FileOutputStream("/Users/marko/Desktop/THE_TEST.xml"));
     }
 
 }

@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class GraphMLReaderTest extends BaseTest {
 
     public void testReadingForTinkerGraph() throws Exception {
-        InputStream stream = TinkerGraph.class.getResourceAsStream("graph-example-1.xml");
+        InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
         TinkerGraph g = new TinkerGraph();
         GraphMLReader.inputGraph(g, stream);
         assertEquals(g.getVertex("1").getOutEdges().size(), 3);

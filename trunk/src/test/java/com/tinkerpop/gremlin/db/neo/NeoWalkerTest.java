@@ -14,39 +14,10 @@ import org.neo4j.util.index.IndexService;
  */
 public class NeoWalkerTest extends TestCase {
 
-    public void testJXPath() {
+    public void testJXPath() throws Exception {
         GratefulNeoGraph gng = new GratefulNeoGraph();
-        //gng.loadGratefulDeadGraph();
-        IndexService index = gng.getIndex();
-        NeoService neo = gng.getNeo();
+        gng.loadGratefulDeadGraph();
 
-        Transaction tx = neo.beginTx();
-        try {
-
-            Node node = index.getSingleNode(GratefulNeoGraph.NAME, "DARK STAR");
-            System.out.println(node);
-            Vertex vertex = new NeoVertex(node);
-            System.out.println("Outedges size: " + vertex.getOutEdges().size());
-            //Evaluator eval = new Evaluator();
-            //Iterator itty = eval.evaluate(vertex, "./outEdges[@label = 'SUNG_BY']/outVertex/inEdges[@label='WRITTEN_BY'][g:random(last())]/inVertex/@name");
-            //Iterator itty = eval.evaluate(vertex, "./outEdges[@label='FOLLOWED_BY'][g:random(last())]/outVertex/name");
-
-            /*int counter = 0;
-            while (itty.hasNext()) {
-                Object obj = itty.next();
-                System.out.println(obj + "---" + obj.getClass());
-                counter++;
-            }
-            System.out.println("Counter: " + counter);*/
-
-
-            tx.success();
-
-        } finally {
-            tx.finish();
-        }
-        index.shutdown();
-        neo.shutdown();
 
     }
 

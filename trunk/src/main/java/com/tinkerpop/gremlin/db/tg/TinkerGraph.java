@@ -63,6 +63,10 @@ public class TinkerGraph implements Graph {
         inVertex.inEdges.remove(edge);
     }
 
+    public String toString() {
+        return "tinkergraph[vertices:" + this.vertices.size() + "]";
+    }
+
     public void shutdown() {
     }
 

@@ -23,7 +23,7 @@ public class GraphMLReader {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = inputFactory.createXMLStreamReader(graphMLInputStream);
 
-        Map<String, String> dataTypeMap = new HashMap<String, String>();
+        Map<String, String> keyTypes = new HashMap<String, String>();
         Vertex currentVertex = null;
         Edge currentEdge = null;
 
@@ -35,16 +35,20 @@ public class GraphMLReader {
                 if (elementName.equals(GraphMLTokens.KEY)) {
                     String attributeName = reader.getAttributeValue(null, GraphMLTokens.ATTR_NAME);
                     String attributeType = reader.getAttributeValue(null, GraphMLTokens.ATTR_TYPE);
-                    dataTypeMap.put(attributeName, attributeType);
+                    keyTypes.put(attributeName, attributeType);
                 } else if (elementName.equals(GraphMLTokens.NODE)) {
                     String vertexId = reader.getAttributeValue(null, GraphMLTokens.ID);
-                    currentVertex = graph.addVertex(vertexId);
+                    currentVertex = graph.getVertex(vertexId);
+                    if(null == currentVertex)
+                        currentVertex = graph.addVertex(vertexId);
 
                 } else if (elementName.equals(GraphMLTokens.EDGE)) {
                     String edgeId = reader.getAttributeValue(null, GraphMLTokens.ID);
                     String edgeLabel = reader.getAttributeValue(null, GraphMLTokens.LABEL);
                     String outId = reader.getAttributeValue(null, GraphMLTokens.SOURCE);
                     String inId = reader.getAttributeValue(null, GraphMLTokens.TARGET);
+
+                    // TODO: current edge get by id first?
 
                     Vertex outVertex = graph.getVertex(outId);
                     Vertex inVertex = graph.getVertex(inId);
@@ -59,9 +63,9 @@ public class GraphMLReader {
                     String key = reader.getAttributeValue(null, GraphMLTokens.KEY);
                     String value = reader.getElementText();
                     if (currentVertex != null) {
-                        currentVertex.setProperty(key, typeCastValue(key, value, dataTypeMap));
+                        currentVertex.setProperty(key, typeCastValue(key, value, keyTypes));
                     } else if (currentEdge != null) {
-                        currentEdge.setProperty(key, typeCastValue(key, value, dataTypeMap));
+                        currentEdge.setProperty(key, typeCastValue(key, value, keyTypes));
                     }
                 }
             } else if (eventType.equals(XMLEvent.END_ELEMENT)) {
@@ -76,18 +80,21 @@ public class GraphMLReader {
         reader.close();
     }
 
-    public static Object typeCastValue(String key, String value, Map<String, String> dataTypeMap) {
-        String type = dataTypeMap.get(key);
-        if (type.equals(GraphMLTokens.STRING)) {
+    public static Object typeCastValue(String key, String value, Map<String, String> keyTypes) {
+        String type = keyTypes.get(key);
+        if (null == type || type.equals(GraphMLTokens.STRING))
             return value;
-        } else if (type.equals(GraphMLTokens.FLOAT)) {
+        else if (type.equals(GraphMLTokens.FLOAT))
             return Float.valueOf(value);
-        } else if (type.equals(GraphMLTokens.INT)) {
+        else if (type.equals(GraphMLTokens.INT))
             return Integer.valueOf(value);
-        } else if (type.equals(GraphMLTokens.DOUBLE)) {
+        else if (type.equals(GraphMLTokens.DOUBLE))
             return Double.valueOf(value);
-        } else {
+        else if (type.equals(GraphMLTokens.BOOLEAN))
+            return Boolean.valueOf(value);
+        else if (type.equals(GraphMLTokens.LONG))
+            return Long.valueOf(value);
+        else
             return value;
-        }
     }
 }
