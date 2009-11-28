@@ -69,6 +69,12 @@ public class GremlinClassFunctions {
         return RANDOM.nextInt(context.getContextNodeList().size()) + 1;
     }
 
+    /*public static Boolean prob_dist(ExpressionContext context, String weightLabel) {
+        if(FunctionHelper.isFirstInContext(context)) {
+
+        }
+    }*/
+
     public static Boolean coin(Float bias) {
         Float r = RANDOM.nextFloat();
         return r > bias;      
@@ -91,28 +97,9 @@ public class GremlinClassFunctions {
         return object;
     }
 
-    public static Object get_value(Map map, Object key) {
-        return map.get(key);
-    }
-
-    public static Object set_value(Map map, Object key, Object value) {
-        map.put(key, value);
-        return map;
-    }
-
     public static Boolean set_value(ExpressionContext context, Map map, Object value) {
         map.put(context.getContextNodePointer().getValue(), value);
         return Boolean.TRUE;
-    }
-
-    public static Object incr_value(Map map, Object key, Double incr) {
-        Object value = map.get(key);
-        if(null == value)
-            map.put(key, incr);
-        else {
-            map.put(key, Double.valueOf(value.toString()) + incr);
-        }
-        return map;
     }
 
     public static Boolean incr_value(ExpressionContext context, Map map, Double incr) {
@@ -126,8 +113,10 @@ public class GremlinClassFunctions {
         return Boolean.TRUE;  
     }
 
-    public static Collection get_values(Map map) {
-        return map.values();
+    public static List get_values(Map map) {
+        List list = new ArrayList();
+        list.addAll(map.values());
+        return list;
     }
 
     public static Set get_keys(Map map) {

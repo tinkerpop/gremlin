@@ -18,6 +18,7 @@ public class GremlinFunctions extends ClassFunctions {
 
     private static final String APPEND = "append";
     private static final String REMOVE = "remove";
+    private static final String REMOVE_I = "remove_i";
 
     private static final String UNION = "union";
     private static final String INTERSECT = "intersect";
@@ -32,6 +33,7 @@ public class GremlinFunctions extends ClassFunctions {
     static {
         functionMap.put(APPEND, new AppendFunction());
         functionMap.put(REMOVE, new RemoveFunction());
+        functionMap.put(REMOVE_I, new RemoveIFunction());
         functionMap.put(UNION, new UnionFunction());
         functionMap.put(INTERSECT, new IntersectFunction());
         functionMap.put(DIFFERENCE, new DifferenceFunction());
@@ -64,7 +66,7 @@ public class GremlinFunctions extends ClassFunctions {
 
     public static class AppendFunction implements Function {
 
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+        public List invoke(ExpressionContext context, Object[] parameters) {
             List list = new ArrayList();
             for (Object object : parameters) {
                 if (object instanceof Collection)
@@ -79,7 +81,7 @@ public class GremlinFunctions extends ClassFunctions {
 
     public static class RemoveFunction implements Function {
 
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+        public List invoke(ExpressionContext context, Object[] parameters) {
             List list = new ArrayList();
             if (parameters[0] instanceof Collection)
                 list.addAll((Collection) parameters[0]);
@@ -99,9 +101,23 @@ public class GremlinFunctions extends ClassFunctions {
         }
     }
 
+    public static class RemoveIFunction implements Function {
+
+        public List invoke(ExpressionContext context, Object[] parameters) {
+            List list = new ArrayList();
+            if (parameters[0] instanceof Collection)
+                list.addAll((Collection) parameters[0]);
+            else
+                list.add(parameters[0]);
+
+            list.remove(Float.valueOf(parameters[1].toString()).intValue()+1);
+            return list;
+        }
+    }
+
     public static class UnionFunction implements Function {
 
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+        public Set invoke(ExpressionContext context, Object[] parameters) {
             Set set = new HashSet();
             for (Object object : parameters) {
                 if (object instanceof Collection)
@@ -115,7 +131,8 @@ public class GremlinFunctions extends ClassFunctions {
     }
 
     public static class IntersectFunction implements Function {
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+
+        public Set invoke(ExpressionContext context, Object[] parameters) {
             Set set = new HashSet();
             if (parameters[0] instanceof Collection)
                 set.addAll((Collection) parameters[0]);
@@ -139,7 +156,8 @@ public class GremlinFunctions extends ClassFunctions {
     }
 
     public static class DifferenceFunction implements Function {
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+
+        public Set invoke(ExpressionContext context, Object[] parameters) {
             Set set = new HashSet();
             if (parameters[0] instanceof Collection)
                 set.addAll((Collection) parameters[0]);
@@ -161,7 +179,8 @@ public class GremlinFunctions extends ClassFunctions {
     }
 
     public static class RetainFunction implements Function {
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+
+        public Boolean invoke(ExpressionContext context, Object[] parameters) {
             Set setA = new HashSet();
             for (Object object : parameters) {
                 if (object instanceof Collection)
@@ -178,7 +197,8 @@ public class GremlinFunctions extends ClassFunctions {
     }
 
     public static class ExceptFunction implements Function {
-        public Object invoke(ExpressionContext context, Object[] parameters) {
+
+        public Boolean invoke(ExpressionContext context, Object[] parameters) {
             Set setA = new HashSet();
             for (Object object : parameters) {
                 if (object instanceof Collection)

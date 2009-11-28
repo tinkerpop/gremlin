@@ -8,9 +8,11 @@ import com.tinkerpop.gremlin.model.Vertex;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.util.TypeUtils;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -19,10 +21,14 @@ import java.util.List;
 public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     private boolean newRoot = false;
+    private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
+
 
     static {
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
+        //TypeUtils.setTypeConverter(new GremlinTypeConverter());
+        
     }
 
     public GremlinPathContext(GremlinPathContext parentContext, Object element) {
@@ -73,7 +79,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             }
             this.setRoot(value);
         }
-        this.getVariables().declareVariable(GremlinPathContext.cleanVariable(variable), value);
+        if(variablePattern.matcher(variable).matches())
+            this.getVariables().declareVariable(GremlinPathContext.cleanVariable(variable), value);
+        else
+            this.setValue(variable, value);
+
     }
 
     public Object getVariable(String variable) {
@@ -86,6 +96,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     public void removeVariable(String variable) {
         this.getVariables().undeclareVariable(GremlinPathContext.cleanVariable(variable));
+
     }
 
     private static String cleanVariable(String variable) {

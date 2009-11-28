@@ -16,6 +16,10 @@ public class FunctionHelper {
         return (context.getContextNodeList().size() == context.getPosition()) || (context.getPosition() == 0);
     }
 
+    public static boolean isFirstInContext(ExpressionContext context) {
+        return context.getPosition() == 1;
+    }
+
     public static GremlinPathContext getGremlin(ExpressionContext context) {
         return (GremlinPathContext) context.getJXPathContext();
     }

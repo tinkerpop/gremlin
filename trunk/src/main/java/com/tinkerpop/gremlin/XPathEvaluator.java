@@ -45,6 +45,10 @@ public class XPathEvaluator {
         return results;
     }
 
+    public void setValue(String xPathLocation, Object xPathValue) {
+        this.baseContext.setValue(xPathLocation, xPathValue);
+    }
+
     public void setVariable(String variable, Object value) {
         this.baseContext.setVariable(variable, value);
     }

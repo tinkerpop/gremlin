@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.lang;
 
-import java.util.regex.Pattern;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
@@ -23,14 +21,15 @@ public class Tokens {
     public static final String AT_VARIABLE = "$_";
     public static final String LAST_VARIABLE = "$_last";
 
-    protected static final String NEWLINE = "\n";
-    protected static final String WHITESPACE_REGEX = "[' '\t]+";
-    protected static final String ZEROPLUS_WHITESPACE_REGEX = "[' '\t]*";
-    protected static final String VARIABLE_REGEX = "[$][a-zA-Z'_'][a-zA-Z'_'0-9'.']*";
-    protected static final String NONWHITESPACE_REGEX = "[^' '\t]";
+    public static final String NEWLINE = "\n";
+    public static final String WHITESPACE_REGEX = "[' '\t]+";
+    public static final String ZEROPLUS_WHITESPACE_REGEX = "[' '\t]*";
+    public static final String VARIABLE_REGEX = "[$][a-zA-Z'_'][a-zA-Z'_'0-9'.']*";
+    public static final String NONWHITESPACE_REGEX = "[^' '\t]";
+    public static final String VARIABLE_PATH_REGEX = VARIABLE_REGEX + NONWHITESPACE_REGEX + "+";
 
-    protected static final String SINGLESPACE = " ";
-    protected static final String FORWARD_SLASH = "/";
+    public static final String SINGLESPACE = " ";
+    public static final String FORWARD_SLASH = "/";
 
     public static final String OUT_EDGES = "outEdges";
     public static final String IN_EDGES = "inEdges";
