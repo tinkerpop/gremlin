@@ -69,8 +69,9 @@ public class GremlinClassFunctions {
         return RANDOM.nextInt(context.getContextNodeList().size()) + 1;
     }
 
-    public static Boolean coin() {
-        return RANDOM.nextBoolean();
+    public static Boolean coin(Float bias) {
+        Float r = RANDOM.nextFloat();
+        return r > bias;      
     }
 
     public static List make_list() {
@@ -96,7 +97,33 @@ public class GremlinClassFunctions {
 
     public static Object set_value(Map map, Object key, Object value) {
         map.put(key, value);
-        return null;
+        return map;
+    }
+
+    public static Boolean set_value(ExpressionContext context, Map map, Object value) {
+        map.put(context.getContextNodePointer().getValue(), value);
+        return Boolean.TRUE;
+    }
+
+    public static Object incr_value(Map map, Object key, Double incr) {
+        Object value = map.get(key);
+        if(null == value)
+            map.put(key, incr);
+        else {
+            map.put(key, Double.valueOf(value.toString()) + incr);
+        }
+        return map;
+    }
+
+    public static Boolean incr_value(ExpressionContext context, Map map, Double incr) {
+        Object key = context.getContextNodePointer().getValue();
+        Object value = map.get(key);
+        if(null == value)
+            map.put(key, incr);
+        else {
+            map.put(key, Double.valueOf(value.toString()) + incr);
+        }
+        return Boolean.TRUE;  
     }
 
     public static Collection get_values(Map map) {

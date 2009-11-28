@@ -23,6 +23,7 @@ public class GratefulNeoGraph {
     public static final String NEO_DIRECTORY = "/tmp/grateful_neo_graph";
     public static final String NAME = "name";
     public static final String TYPE = "type";
+    public static final String SONG_TYPE = "song_type";
     public static final String PERFORMANCES = "performances";
     public static final String WEIGHT = "weight";
 
@@ -46,7 +47,7 @@ public class GratefulNeoGraph {
         // LOAD SONG FOLLOWS GRAPH
         Transaction tx = neo.beginTx();
         try {
-            BufferedReader input = new BufferedReader(new InputStreamReader(GratefulNeoGraph.class.getResourceAsStream("../../song-follows-net.txt")));
+            BufferedReader input = new BufferedReader(new InputStreamReader(GratefulNeoGraph.class.getResourceAsStream("../../model/parser/raw/song-follows-net.txt")));
             String line = input.readLine();
             while (line != null) {
                 String[] edge = line.split("\t");
@@ -54,6 +55,7 @@ public class GratefulNeoGraph {
                 if (null == startSong) {
                     startSong = neo.createNode();
                     startSong.setProperty(NAME, edge[0]);
+                    startSong.setProperty(TYPE, "song");
                     index.index(startSong, NAME, edge[0]);
                 }
 
@@ -61,7 +63,9 @@ public class GratefulNeoGraph {
                 if (null == endSong) {
                     endSong = neo.createNode();
                     endSong.setProperty(NAME, edge[1]);
+                    endSong.setProperty(TYPE, "song");
                     index.index(endSong, NAME, edge[1]);
+
                 }
                 if (!startSong.getProperty(NAME).equals(endSong.getProperty(NAME))) {
                     System.out.println(startSong.getProperty(NAME) + "--FOLLOWED_BY[" + new Float(edge[2]).intValue() + "]-->" + endSong.getProperty(NAME));
@@ -82,7 +86,7 @@ public class GratefulNeoGraph {
         // LOAD SONG AUTHOR/SINGER NETWORK
         tx = neo.beginTx();
         try {
-            BufferedReader input = new BufferedReader(new InputStreamReader(GratefulNeoGraph.class.getResourceAsStream("../../author-singer-net.txt")));
+            BufferedReader input = new BufferedReader(new InputStreamReader(GratefulNeoGraph.class.getResourceAsStream("../../model/parser/raw/author-singer-net.txt")));
             input.readLine();
             String line = input.readLine();
             while (line != null) {
@@ -92,18 +96,21 @@ public class GratefulNeoGraph {
                     song = neo.createNode();
                     song.setProperty(NAME, data[0]);
                     song.setProperty(PERFORMANCES, new Integer(data[3]));
-                    song.setProperty(TYPE, data[4]);
+                    song.setProperty(SONG_TYPE, data[4]);
+                    song.setProperty(TYPE, "song");
                     index.index(song, NAME, data[0]);
                 } else {
                     //System.out.println(data[3]);
                     song.setProperty(PERFORMANCES, new Integer(data[3]));
-                    song.setProperty(TYPE, data[4]);
+                    song.setProperty(SONG_TYPE, data[4]);
+                    song.setProperty(TYPE, "song");
                 }
 
                 Node author = index.getSingleNode(NAME, data[1]);
                 if (null == author) {
                     author = neo.createNode();
                     author.setProperty(NAME, data[1]);
+                    author.setProperty(TYPE, "artist");
                     index.index(author, NAME, data[1]);
                 }
 
@@ -111,6 +118,7 @@ public class GratefulNeoGraph {
                 if (null == singer) {
                     singer = neo.createNode();
                     singer.setProperty(NAME, data[2]);
+                    singer.setProperty(TYPE, "artist");
                     index.index(singer, NAME, data[2]);
                 }
 
