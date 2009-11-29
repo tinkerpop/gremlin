@@ -9,6 +9,7 @@ import org.apache.commons.jxpath.JXPathException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -21,6 +22,7 @@ public class Console {
     private static final String PRINT_RETURN = "==>";
     private static final String NULL_RESULT = "null";
     private static final String EMPTY_RESULT = "[]";
+    private static final String EMPTY_MAP = "{}";
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
     private static final String SINGLE_SPACE = " ";
@@ -56,9 +58,22 @@ public class Console {
                     List results = gremlinEvaluator.evaluate(line);
                     if (null != results) {
                         if (results.size() > 0) {
+
                             for (Object o : results) {
-                                System.out.println(PRINT_RETURN + o);
+                                if (o instanceof Map) {
+                                    Map map = (Map) o;
+                                    if (map.size() == 0) {
+                                        System.out.println(PRINT_RETURN + EMPTY_MAP);
+                                    } else {
+                                        for (Object key : map.keySet()) {
+                                            System.out.println(PRINT_RETURN + key + "=" + map.get(key));
+                                        }
+                                    }
+                                } else {
+                                    System.out.println(PRINT_RETURN + o);
+                                }
                             }
+
                         } else {
                             System.out.println(PRINT_RETURN + EMPTY_RESULT);
                         }

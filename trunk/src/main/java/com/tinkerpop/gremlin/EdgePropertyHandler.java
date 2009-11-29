@@ -26,9 +26,10 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
     }
 
     public void setProperty(Object edgeObject, String key, Object value) {
-        // if key does not equal in or out vertex.
-        Edge edge = (Edge) edgeObject;
-        edge.setProperty(key, value);
+        if (!key.equals(Tokens.OUT_VERTEX) && !key.equals(Tokens.IN_VERTEX) && !key.equals(Tokens.LABEL) && !key.equals(Tokens.ID)) {
+            Edge edge = (Edge) edgeObject;
+            edge.setProperty(key, value);
+        }
     }
 
     public Object getProperty(Object edgeObject, String key) {

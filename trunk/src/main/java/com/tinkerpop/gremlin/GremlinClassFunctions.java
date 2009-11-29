@@ -31,23 +31,6 @@ public class GremlinClassFunctions {
             return (graph.getVertex(indexKey));
     }
 
-    public static Object assign(ExpressionContext context, String variable, Object value) {
-        if (FunctionHelper.isLastInContext(context))
-            FunctionHelper.getGremlin(context).setVariable(variable, value);
-        return value;
-    }
-
-    public static Boolean assign(ExpressionContext context, String variable) {
-        if (FunctionHelper.isLastInContext(context))
-            FunctionHelper.getGremlin(context).setVariable(variable, FunctionHelper.asObject(context.getContextNodeList()));
-        return Boolean.TRUE;
-    }
-
-    public static Boolean unassign(ExpressionContext context, String variable) {
-        FunctionHelper.getGremlin(context).removeVariable(variable);
-        return Boolean.TRUE;
-    }
-
     public static Boolean cont(Boolean cont) {
         return cont;
     }
@@ -77,18 +60,10 @@ public class GremlinClassFunctions {
 
     public static Boolean coin(Float bias) {
         Float r = RANDOM.nextFloat();
-        return r > bias;      
+        return r < bias;      
     }
 
-    public static List make_list() {
-        return new ArrayList();
-    }
-
-    public static Set make_set() {
-        return new HashSet();
-    }
-
-    public static Map make_map() {
+    public static Map as_map() {
         return new HashMap();
     }
 
@@ -97,11 +72,7 @@ public class GremlinClassFunctions {
         return object;
     }
 
-    public static Boolean set_value(ExpressionContext context, Map map, Object value) {
-        map.put(context.getContextNodePointer().getValue(), value);
-        return Boolean.TRUE;
-    }
-
+    // TODO make this an incr assign?
     public static Boolean incr_value(ExpressionContext context, Map map, Double incr) {
         Object key = context.getContextNodePointer().getValue();
         Object value = map.get(key);
@@ -113,34 +84,14 @@ public class GremlinClassFunctions {
         return Boolean.TRUE;  
     }
 
-    public static List get_values(Map map) {
+    public static List values(Map map) {
         List list = new ArrayList();
         list.addAll(map.values());
         return list;
     }
 
-    public static Set get_keys(Map map) {
+    public static Set keys(Map map) {
         return map.keySet();
-    }
-
-    public static List as_list(Object a) {
-        if (a instanceof Collection)
-            return new ArrayList((Collection) a);
-        else {
-            List b = new ArrayList();
-            b.add(a);
-            return b;
-        }
-    }
-
-    public static Set as_set(Object a) {
-        if (a instanceof Collection)
-            return new HashSet((Collection) a);
-        else {
-            Set b = new HashSet();
-            b.add(a);
-            return b;
-        }
     }
 
     public static String type(Object object) {

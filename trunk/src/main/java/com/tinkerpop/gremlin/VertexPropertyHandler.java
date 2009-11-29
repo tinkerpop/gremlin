@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.lang.Tokens;
-import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Vertex;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
@@ -22,12 +21,15 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
         list.add(Tokens.OUT_EDGES);
         list.add(Tokens.IN_EDGES);
         list.add(Tokens.BOTH_EDGES);
+        list.add(Tokens.ID);
         return list.toArray(new String[list.size()]);
     }
 
     public void setProperty(Object vertexObject, String key, Object value) {
-        Vertex vertex = (Vertex) vertexObject;
-        vertex.setProperty(key, value);
+        if (!key.equals(Tokens.OUT_EDGES) && !key.equals(Tokens.IN_EDGES) && !key.equals(Tokens.BOTH_EDGES) && !key.equals(Tokens.ID)) {
+            Vertex vertex = (Vertex) vertexObject;
+            vertex.setProperty(key, value);
+        }
     }
 
     public Object getProperty(Object vertexObject, String key) {
