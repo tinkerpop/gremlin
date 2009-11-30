@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.lang.Tokens;
+import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.model.Vertex;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 

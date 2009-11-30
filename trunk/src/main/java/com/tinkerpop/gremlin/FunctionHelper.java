@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin;
 
 import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
 import java.util.ArrayList;
@@ -30,5 +31,42 @@ public class FunctionHelper {
             nodeValues.add(p.getValue());
         }
         return nodeValues;
+    }
+
+    public static boolean isUnmodifiable(Object object) {
+        if (object instanceof List) {
+            try {
+                ((List) object).remove(-1);
+            } catch (UnsupportedOperationException e) {
+                return true;
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static Object nodeSetConversion(Object object) {
+        if (object instanceof NodeSet) {
+            List list = new ArrayList(((NodeSet) object).getValues());
+            if (list.size() == 1)
+                return list.get(0);
+            else
+                return list;
+        } else {
+            return object;
+        }
+    }
+
+    public static Object[] nodeSetConversion(Object[] objects) {
+        if (null != objects) {
+            Object[] converts = new Object[objects.length];
+            for(int i=0; i<objects.length; i++) {
+                converts[i] = nodeSetConversion(objects[i]);
+            }
+            return converts;
+        } else {
+            return null;
+        }
     }
 }

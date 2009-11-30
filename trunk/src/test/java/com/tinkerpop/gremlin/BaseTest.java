@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -33,18 +34,17 @@ public class BaseTest extends TestCase {
         return counter;
     }
 
-    public static void sweep(Iterator itty) {
-        while (itty.hasNext()) {
-            itty.next();
-        }
-    }
-
     public static List asList(Object x, int times) {
         List list = new ArrayList();
         for(int i=0; i<times; i++) {
             list.add(x);
         }
         return list;
+    }
+
+    public void testUnmodifiableListChecker() {
+        assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
+        assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));
     }
 
 }

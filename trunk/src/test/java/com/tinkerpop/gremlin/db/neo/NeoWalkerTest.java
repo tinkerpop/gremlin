@@ -16,7 +16,7 @@ public class NeoWalkerTest extends TestCase {
 
     public void testJXPath() throws Exception {
         GratefulNeoGraph gng = new GratefulNeoGraph();
-        gng.loadGratefulDeadGraph();
+        //gng.loadGratefulDeadGraph();
 
 
     }

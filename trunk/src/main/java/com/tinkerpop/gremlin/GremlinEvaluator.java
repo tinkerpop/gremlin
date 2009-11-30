@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.lang.*;
+import com.tinkerpop.gremlin.statements.*;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 

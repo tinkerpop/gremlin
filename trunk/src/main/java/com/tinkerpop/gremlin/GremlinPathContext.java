@@ -2,16 +2,16 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.lang.Tokens;
+import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
-import org.apache.commons.jxpath.util.TypeUtils;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -27,8 +27,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     static {
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
-        //TypeUtils.setTypeConverter(new GremlinTypeConverter());
-        
     }
 
     public GremlinPathContext(GremlinPathContext parentContext, Object element) {
@@ -71,35 +69,41 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
     public void setVariable(String variable, Object value) {
-        if (variable.equals(Tokens.AT_VARIABLE)) {
-            if (value instanceof List) {
-                if (((List) value).size() == 1) {
-                    value = ((List) value).get(0);
-                }
+
+        if (variablePattern.matcher(variable).matches()) {
+            // $i := ././././
+            if (variable.equals(Tokens.AT_VARIABLE)) {
+                this.setRoot(value);
             }
-            this.setRoot(value);
+            this.getVariables().declareVariable(GremlinPathContext.removeVariableDollarSign(variable), value);
+        } else {
+            // $i[1] := ././././
+            // $i/@key := ././././
+            if (!(value instanceof Collection) && !(value instanceof Map)) {
+                this.setValue(variable, value);
+            } else {
+                throw new RuntimeException("A collection or map can not be the element of a collection or map.");
+            }
         }
-        if(variablePattern.matcher(variable).matches())
-            this.getVariables().declareVariable(GremlinPathContext.cleanVariable(variable), value);
-        else
-            this.setValue(variable, value);
 
     }
 
     public Object getVariable(String variable) {
         try {
-            return this.getVariables().getVariable(GremlinPathContext.cleanVariable(variable));
+            return this.getVariables().getVariable(GremlinPathContext.removeVariableDollarSign(variable));
         } catch (Exception e) {
             return null;
         }
     }
 
     public void removeVariable(String variable) {
-        this.getVariables().undeclareVariable(GremlinPathContext.cleanVariable(variable));
+        // TODO fix this hack
+        this.getVariables().declareVariable(GremlinPathContext.removeVariableDollarSign(variable), null);
+        this.getVariables().undeclareVariable(GremlinPathContext.removeVariableDollarSign(variable));
 
     }
 
-    private static String cleanVariable(String variable) {
+    private static String removeVariableDollarSign(String variable) {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
 }

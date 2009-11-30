@@ -1,10 +1,8 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.lang.EvaluationErrorException;
-import com.tinkerpop.gremlin.lang.SyntaxErrorException;
-import jline.ArgumentCompletor;
+import com.tinkerpop.gremlin.statements.EvaluationErrorException;
+import com.tinkerpop.gremlin.statements.SyntaxErrorException;
 import jline.ConsoleReader;
-import jline.SimpleCompletor;
 import org.apache.commons.jxpath.JXPathException;
 
 import java.io.IOException;
@@ -20,7 +18,6 @@ public class Console {
     private static final String INDENT = "         ";
     private static final int TAB_LENGTH = 2;
     private static final String PRINT_RETURN = "==>";
-    private static final String NULL_RESULT = "null";
     private static final String EMPTY_RESULT = "[]";
     private static final String EMPTY_MAP = "{}";
     private static final String PROMPT = "gremlin> ";
@@ -33,11 +30,8 @@ public class Console {
         ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
         reader.setUseHistory(true);
-        reader.addCompletor(new ArgumentCompletor(
-                new SimpleCompletor(new String[]{"outEdges", "inEdges", "bothEdges",
-                        "outVertex", "inVertex", "bothVertex"})));
-
         GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
+
         String line = "";
         System.out.println();
         System.out.println("         \\,,,/");
@@ -58,7 +52,6 @@ public class Console {
                     List results = gremlinEvaluator.evaluate(line);
                     if (null != results) {
                         if (results.size() > 0) {
-
                             for (Object o : results) {
                                 if (o instanceof Map) {
                                     Map map = (Map) o;

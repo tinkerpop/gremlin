@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.lang.Tokens;
+import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.util.List;
 
@@ -9,10 +9,6 @@ import java.util.List;
  * @version 0.1
  */
 public class XPathEvaluator {
-
-    /*static {
-        System.setProperty("org.apache.commons.jxpath.JXPathContextFactory", "com.tinkerpop.gremlin.GremlinPathContextFactory");
-    }*/
 
     protected int codeDepth = 0;
 
@@ -43,10 +39,6 @@ public class XPathEvaluator {
         List results = this.baseContext.selectNodes(xPathString);
         this.setVariable(Tokens.LAST_VARIABLE, results);
         return results;
-    }
-
-    public void setValue(String xPathLocation, Object xPathValue) {
-        this.baseContext.setValue(xPathLocation, xPathValue);
     }
 
     public void setVariable(String variable, Object value) {
