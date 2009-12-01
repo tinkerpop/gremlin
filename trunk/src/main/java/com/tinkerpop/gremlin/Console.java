@@ -18,8 +18,6 @@ public class Console {
     private static final String INDENT = "         ";
     private static final int TAB_LENGTH = 2;
     private static final String PRINT_RETURN = "==>";
-    private static final String EMPTY_RESULT = "[]";
-    private static final String EMPTY_MAP = "{}";
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
     private static final String SINGLE_SPACE = " ";
@@ -55,9 +53,7 @@ public class Console {
                             for (Object o : results) {
                                 if (o instanceof Map) {
                                     Map map = (Map) o;
-                                    if (map.size() == 0) {
-                                        System.out.println(PRINT_RETURN + EMPTY_MAP);
-                                    } else {
+                                    if (map.size() > 0) {
                                         for (Object key : map.keySet()) {
                                             System.out.println(PRINT_RETURN + key + "=" + map.get(key));
                                         }
@@ -68,7 +64,7 @@ public class Console {
                             }
 
                         } //else {
-                            //System.out.println(PRINT_RETURN + EMPTY_RESULT);
+                        //System.out.println(PRINT_RETURN + EMPTY_RESULT);
                         //}
                     }
                 } catch (JXPathException e) {

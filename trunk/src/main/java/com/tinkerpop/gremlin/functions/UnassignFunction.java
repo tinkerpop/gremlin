@@ -16,30 +16,28 @@ public class UnassignFunction implements Function {
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 
         if (null != objects) {
-            if (parameters.length == 1) {
-                // $i
+            if (parameters.length == 1 && parameters[0] instanceof String) {
                 FunctionHelper.getGremlin(context).removeVariable(objects[0].toString());
                 return Boolean.TRUE;
             } else if (parameters.length == 2) {
-                if (objects[0] instanceof List) {
+                if (objects[0] instanceof List && objects[1] instanceof Number) {
                     // $i[index]
-                    return removeListIndex((List) objects[0], Double.valueOf(objects[1].toString()).intValue() - 1);
+                    return removeListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1);
                 } else if (objects[0] instanceof Map) {
                     // $i/@key
                     return removeMapKey((Map) objects[0], objects[1]);
                 }
             }
         }
+
         throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " does not support provided parameters.");
     }
 
-    private static List removeListIndex(List list, Integer index) {
-        list.remove(index.intValue());
-        return list;
+    private static Object removeListIndex(List list, Integer index) {
+        return list.remove(index.intValue());
     }
 
-    private static Map removeMapKey(Map map, Object key) {
-        map.remove(key);
-        return map;
+    private static Object removeMapKey(Map map, Object key) {
+        return map.remove(key);
     }
 }

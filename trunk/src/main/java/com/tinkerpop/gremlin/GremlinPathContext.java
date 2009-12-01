@@ -79,7 +79,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         } else {
             // $i[1] := ././././
             // $i/@key := ././././
-            if (!(value instanceof Collection && value instanceof Map)) {
+            if (!(value instanceof Collection || value instanceof Map)) {
                 this.setValue(variable, value);
             } else {
                 throw new RuntimeException("A collection or map can not be the element of a collection or map.");

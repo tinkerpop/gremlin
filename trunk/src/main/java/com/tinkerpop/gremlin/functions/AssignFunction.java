@@ -6,9 +6,9 @@ import com.tinkerpop.gremlin.statements.EvaluationErrorException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 
 public class AssignFunction implements Function {
 
@@ -22,16 +22,16 @@ public class AssignFunction implements Function {
             if (objects.length == 1 && objects[0] instanceof String) {
                 // ../..[g:assign('$i')]
                 if (FunctionHelper.isLastInContext(context))
-                    FunctionHelper.getGremlin(context).setVariable((String)objects[0], FunctionHelper.asObject(context.getContextNodeList()));
+                    FunctionHelper.getGremlin(context).setVariable((String) objects[0], FunctionHelper.asObject(context.getContextNodeList()));
                 return Boolean.TRUE;
             } else if (objects.length == 2) {
                 if (objects[0] instanceof String) {
                     // g:assign('$i', value)
-                    FunctionHelper.getGremlin(context).setVariable((String)objects[0], objects[1]);
+                    FunctionHelper.getGremlin(context).setVariable((String) objects[0], objects[1]);
                     return objects[1];
                 } else if (objects[0] instanceof List && objects[1] instanceof Number) {
                     // ../..[g:assign(list,index)]
-                    setListIndex((List) objects[0], ((Number)objects[1]).intValue() - 1, context.getContextNodePointer().getValue());
+                    setListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1, context.getContextNodePointer().getValue());
                     return Boolean.TRUE;
                 } else if (objects[0] instanceof Map && !(objects[1] instanceof Collection && objects[1] instanceof Map)) {
                     // ../..[g:assign(map,key)]
@@ -39,10 +39,10 @@ public class AssignFunction implements Function {
                     return Boolean.TRUE;
                 }
             } else if (objects.length == 3) {
-                if (objects[0] instanceof List && !(objects[2] instanceof Collection && objects[2] instanceof Map)) {
+                if (objects[0] instanceof List && !(objects[2] instanceof Collection || objects[2] instanceof Map)) {
                     // g:assign(list,index,value)
-                    return setListIndex((List) objects[0], ((Number)objects[1]).intValue() - 1, objects[2]);
-                } else if (objects[0] instanceof Map && !(objects[2] instanceof Collection && objects[2] instanceof Map)) {
+                    return setListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1, objects[2]);
+                } else if (objects[0] instanceof Map && !(objects[2] instanceof Collection || objects[2] instanceof Map)) {
                     // g:assign(map,key,value)
                     return setMapKey((Map) objects[0], objects[1], objects[2]);
                 }

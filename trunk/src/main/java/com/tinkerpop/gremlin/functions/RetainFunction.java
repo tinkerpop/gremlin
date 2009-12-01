@@ -16,8 +16,8 @@ public class RetainFunction implements Function {
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
-        Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-        if (null != objects) {
+        if (null != parameters) {
+            Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             Set setA = new HashSet();
             for (Object object : objects) {
                 if (object instanceof Collection)
