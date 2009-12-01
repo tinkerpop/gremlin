@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class AsSetFunction implements Function {
+
     public static final String FUNCTION_NAME = "as_set";
 
     public Set invoke(ExpressionContext context, Object[] parameters) {

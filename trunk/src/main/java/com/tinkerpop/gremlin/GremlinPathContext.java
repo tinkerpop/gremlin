@@ -2,9 +2,9 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
@@ -33,7 +33,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         super(parentContext, element);
         if (null == parentContext) {
             FunctionLibrary library = new FunctionLibrary();
-            library.addFunctions(new GremlinFunctions(GremlinFunctions.NAMESPACE_PREFIX));
+            library.addFunctions(new GremlinFunctions());
             library.addFunctions(new ClassFunctions(TinkerFunctions.class, TinkerFunctions.NAMESPACE_PREFIX));
             library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
             library.addFunctions(this.getFunctions());
@@ -79,7 +79,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         } else {
             // $i[1] := ././././
             // $i/@key := ././././
-            if (!(value instanceof Collection) && !(value instanceof Map)) {
+            if (!(value instanceof Collection && value instanceof Map)) {
                 this.setValue(variable, value);
             } else {
                 throw new RuntimeException("A collection or map can not be the element of a collection or map.");

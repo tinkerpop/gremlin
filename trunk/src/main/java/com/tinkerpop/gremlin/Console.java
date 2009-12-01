@@ -67,9 +67,9 @@ public class Console {
                                 }
                             }
 
-                        } else {
-                            System.out.println(PRINT_RETURN + EMPTY_RESULT);
-                        }
+                        } //else {
+                            //System.out.println(PRINT_RETURN + EMPTY_RESULT);
+                        //}
                     }
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());

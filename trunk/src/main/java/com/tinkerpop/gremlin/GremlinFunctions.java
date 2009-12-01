@@ -2,23 +2,27 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.functions.*;
 import com.tinkerpop.gremlin.statements.EvaluationErrorException;
-import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.Functions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class GremlinFunctions extends ClassFunctions {
+public class GremlinFunctions implements Functions {
 
     public static final String NAMESPACE_PREFIX = "g";
 
+    private static Set<String> namespaces = new HashSet<String>();
     private static final Map<String, Function> functionMap = new HashMap<String, Function>();
 
     static {
+        namespaces.add(NAMESPACE_PREFIX);
         functionMap.put(AssignFunction.FUNCTION_NAME, new AssignFunction());
         functionMap.put(UnassignFunction.FUNCTION_NAME, new UnassignFunction());
         functionMap.put(AsListFunction.FUNCTION_NAME, new AsListFunction());
@@ -34,11 +38,11 @@ public class GremlinFunctions extends ClassFunctions {
         functionMap.put(TypeFunction.FUNCTION_NAME, new TypeFunction());
         functionMap.put(HaltFunction.FUNCTION_NAME, new HaltFunction());
         functionMap.put(ContinueFunction.FUNCTION_NAME, new ContinueFunction());
-
-    }
-
-    public GremlinFunctions(String namespace) {
-        super(GremlinClassFunctions.class, namespace);
+        functionMap.put(KeysFunction.FUNCTION_NAME, new KeysFunction());
+        functionMap.put(ValuesFunction.FUNCTION_NAME, new ValuesFunction());
+        functionMap.put(IdFunction.FUNCTION_NAME, new IdFunction());
+        functionMap.put(RandomRealFunction.FUNCTION_NAME, new RandomRealFunction());
+        functionMap.put(RandomNaturalFunction.FUNCTION_NAME, new RandomNaturalFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {
@@ -46,16 +50,11 @@ public class GremlinFunctions extends ClassFunctions {
         if (null != function)
             return function;
 
-        try {
-            function = super.getFunction(namespace, name, parameters);
-        } catch (NoClassDefFoundError e) {
-            throw new EvaluationErrorException("Function " + namespace + ":" + name + " does not exist.");
-        }
-        if (null != function)
-            return function;
-        else
-            throw new EvaluationErrorException("Function " + namespace + ":" + name + " does not exist.");
 
+        throw new EvaluationErrorException("Function " + namespace + ":" + name + " does not exist.");
+    }
 
+    public Set getUsedNamespaces() {
+        return namespaces;
     }
 }
