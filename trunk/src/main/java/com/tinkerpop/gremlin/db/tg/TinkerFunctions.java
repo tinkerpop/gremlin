@@ -14,22 +14,25 @@ public class TinkerFunctions {
 
     public static final String NAMESPACE_PREFIX = "tg";
 
-
+    public static TinkerGraph open_tg() {
+        //this returns the hardcoded graph-example-1 graph until I can implement a tinker graph serialization
+        return TinkerGraphFactory.createTinkerGraph();
+    }
+        
     public static TinkerGraph open_tg(String graphFile) {
-        // this returns the hardcoded graph-example-1 graph until I can implement a tinker graph serialization
-        //return TinkerGraphFactory.createTinkerGraph();
         try {
             TinkerGraph graph = new TinkerGraph();
             GraphMLReader.inputGraph(graph, new FileInputStream(graphFile));
             return graph;
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch(XMLStreamException e) {
+        } catch (XMLStreamException e) {
             e.printStackTrace();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
 }
