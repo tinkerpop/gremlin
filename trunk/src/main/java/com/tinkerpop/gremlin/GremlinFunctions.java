@@ -29,18 +29,18 @@ public class GremlinFunctions implements Functions {
         // graphs
         functionMap.put(IdFunction.FUNCTION_NAME, new IdFunction());
         // sets
-        functionMap.put(AsSetFunction.FUNCTION_NAME, new AsSetFunction());
+        functionMap.put(SetFunction.FUNCTION_NAME, new SetFunction());
         functionMap.put(UnionFunction.FUNCTION_NAME, new UnionFunction());
         functionMap.put(IntersectFunction.FUNCTION_NAME, new IntersectFunction());
         functionMap.put(DifferenceFunction.FUNCTION_NAME, new DifferenceFunction());
         functionMap.put(RetainFunction.FUNCTION_NAME, new RetainFunction());
         functionMap.put(ExceptFunction.FUNCTION_NAME, new ExceptFunction());
         // lists
-        functionMap.put(AsListFunction.FUNCTION_NAME, new AsListFunction());
+        functionMap.put(ListFunction.FUNCTION_NAME, new ListFunction());
         functionMap.put(AppendFunction.FUNCTION_NAME, new AppendFunction());
         functionMap.put(RemoveFunction.FUNCTION_NAME, new RemoveFunction());
         // maps
-        functionMap.put(AsMapFunction.FUNCTION_NAME, new AsMapFunction());
+        functionMap.put(MapFunction.FUNCTION_NAME, new MapFunction());
         functionMap.put(KeysFunction.FUNCTION_NAME, new KeysFunction());
         functionMap.put(ValuesFunction.FUNCTION_NAME, new ValuesFunction());
         // lists and maps

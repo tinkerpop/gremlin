@@ -6,27 +6,26 @@ import com.tinkerpop.gremlin.statements.EvaluationErrorException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-public class AsSetFunction implements Function {
+public class ListFunction implements Function {
+    public static final String FUNCTION_NAME = "list";
 
-    public static final String FUNCTION_NAME = "as_set";
-
-    public Set invoke(ExpressionContext context, Object[] parameters) {
+    public List invoke(ExpressionContext context, Object[] parameters) {
         if (null == parameters) {
-            return new HashSet();
+            return new ArrayList();
         } else if (parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
 
             if (object instanceof Collection)
-                return new HashSet((Collection) object);
+                return new ArrayList((Collection) object);
             else if (object instanceof Map) {
                 throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " does not support provided parameters.");
             } else {
-                Set b = new HashSet();
+                List b = new ArrayList();
                 b.add(object);
                 return b;
             }

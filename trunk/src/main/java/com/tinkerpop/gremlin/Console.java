@@ -53,19 +53,14 @@ public class Console {
                             for (Object o : results) {
                                 if (o instanceof Map) {
                                     Map map = (Map) o;
-                                    if (map.size() > 0) {
-                                        for (Object key : map.keySet()) {
-                                            System.out.println(PRINT_RETURN + key + "=" + map.get(key));
-                                        }
+                                    for (Object key : map.keySet()) {
+                                        System.out.println(PRINT_RETURN + key + "=" + map.get(key));
                                     }
                                 } else {
                                     System.out.println(PRINT_RETURN + o);
                                 }
                             }
-
-                        } //else {
-                        //System.out.println(PRINT_RETURN + EMPTY_RESULT);
-                        //}
+                        }
                     }
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());

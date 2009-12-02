@@ -12,9 +12,9 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class AsMapFunction implements Function {
+public class MapFunction implements Function {
 
-    public static final String FUNCTION_NAME = "as_map";
+    public static final String FUNCTION_NAME = "map";
 
     public Map invoke(ExpressionContext context, Object[] parameters) {
         if (null == parameters) {
