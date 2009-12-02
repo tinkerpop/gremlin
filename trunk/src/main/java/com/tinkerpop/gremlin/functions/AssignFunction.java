@@ -53,11 +53,20 @@ public class AssignFunction implements Function {
     }
 
     private static Object setListIndex(List list, Integer index, Object value) {
+        if (list.size() < index + 1)
+            throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " index size is greater than the list size.");
+        if (value instanceof Collection || value instanceof Map)
+            throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " a collection or map can not be the element of a collection or map.");
+
         list.set(index, value);
         return value;
     }
 
     private static Object setMapKey(Map map, Object key, Object value) {
+        if (value instanceof Collection || value instanceof Map)
+            throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " a collection or map can not be the element of a collection or map.");
+
+
         map.put(key, value);
         return value;
     }
