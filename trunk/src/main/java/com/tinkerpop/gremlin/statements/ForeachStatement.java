@@ -28,14 +28,14 @@ public class ForeachStatement extends CompoundStatement {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) throws SyntaxErrorException {
+    public void compileTokens(String line) throws SyntaxException {
         super.compileTokens(line);
         if (variable == null && null == loopSet) {
 
             String[] parts = line.split(Tokens.WHITESPACE_REGEX);
 
             if (parts.length < 4)
-                throw new SyntaxErrorException(this.toString());
+                throw new SyntaxException(this.toString());
 
             this.variable = parts[1];
 
@@ -45,14 +45,14 @@ public class ForeachStatement extends CompoundStatement {
                 xPathStatement.compileTokens(line.substring(matcher.end() - 1));
                 this.loopSet = xPathStatement;
             } else {
-                throw new SyntaxErrorException(this.toString());
+                throw new SyntaxException(this.toString());
             }
         } else {
             this.updateStatementList(line);
         }
     }
 
-    public List evaluate() throws EvaluationErrorException {
+    public List evaluate() throws EvaluationException {
         List results = null;
         try {
             List set = this.loopSet.evaluate();
@@ -63,7 +63,7 @@ public class ForeachStatement extends CompoundStatement {
                 }
             }
         } catch (Exception e) {
-            throw new EvaluationErrorException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return results;
     }

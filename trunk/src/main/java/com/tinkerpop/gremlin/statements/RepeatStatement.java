@@ -35,14 +35,14 @@ public class RepeatStatement extends CompoundStatement {
                 xPathStatement.compileTokens(line.substring(matcher.end() - 1));
                 this.times = xPathStatement;
             } else {
-                throw new SyntaxErrorException(this.toString());
+                throw new SyntaxException(this.toString());
             }
         } else {
             this.updateStatementList(line);
         }
     }
 
-    public List evaluate() throws EvaluationErrorException {
+    public List evaluate() throws EvaluationException {
         List results = null;
         try {
             int numberOfTimes = Float.valueOf(times.evaluate().get(0).toString()).intValue();
@@ -52,7 +52,7 @@ public class RepeatStatement extends CompoundStatement {
                 }
             }
         } catch (Exception e) {
-            throw new EvaluationErrorException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return results;
     }

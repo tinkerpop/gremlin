@@ -40,7 +40,7 @@ public class IfElseStatement extends CompoundStatement {
 
     }
 
-    public void compileTokens(String line) throws SyntaxErrorException {
+    public void compileTokens(String line) throws SyntaxException {
         super.compileTokens(line);
         if (condition == null) {
             Matcher matcher = ifPattern.matcher(line);
@@ -49,7 +49,7 @@ public class IfElseStatement extends CompoundStatement {
                 xPathStatement.compileTokens(line.substring(matcher.end() - 1));
                 this.condition = xPathStatement;
             } else {
-                throw new SyntaxErrorException(this.toString());
+                throw new SyntaxException(this.toString());
             }
         } else if (this.ifElseStatementsAreComplete() && elsePattern.matcher(line).find()) {
             this.inElse = true;
@@ -60,7 +60,7 @@ public class IfElseStatement extends CompoundStatement {
         }
     }
 
-    public List evaluate() throws EvaluationErrorException {
+    public List evaluate() throws EvaluationException {
         List results = null;
         try {
             if ((Boolean) condition.evaluate().get(0)) {
@@ -73,7 +73,7 @@ public class IfElseStatement extends CompoundStatement {
                 }
             }
         } catch (Exception e) {
-            throw new EvaluationErrorException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return results;
     }

@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.functions;
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Element;
-import com.tinkerpop.gremlin.statements.EvaluationErrorException;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
@@ -29,6 +29,7 @@ public class KeysFunction implements Function {
             }
         }
 
-        throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " does not support provided parameters.");
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+
     }
 }

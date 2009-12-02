@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
@@ -34,7 +35,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         if (null == parentContext) {
             FunctionLibrary library = new FunctionLibrary();
             library.addFunctions(new GremlinFunctions());
-            library.addFunctions(new ClassFunctions(TinkerFunctions.class, TinkerFunctions.NAMESPACE_PREFIX));
+            library.addFunctions(new TinkerFunctions());
             library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
             library.addFunctions(this.getFunctions());
             this.setFunctions(library);
@@ -82,7 +83,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             if (!(value instanceof Collection || value instanceof Map)) {
                 this.setValue(variable, value);
             } else {
-                throw new RuntimeException("A collection or map can not be the element of a collection or map.");
+                throw EvaluationException.createException(EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
             }
         }
 

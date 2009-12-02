@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.statements.EvaluationErrorException;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.*;
 
@@ -41,7 +41,7 @@ public class AssignFunctionTest extends BaseTest {
         try {
             xe.evaluate("g:assign($i,3,3000.0)");
             assertTrue(false);
-        } catch (EvaluationErrorException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
         assertEquals(xe.evaluate("(1+2)[g:assign($i,1)]").get(0), 3.0);
@@ -51,7 +51,7 @@ public class AssignFunctionTest extends BaseTest {
         try {
             xe.evaluate("g:assign($i,2,$i)");
             assertTrue(false);
-        } catch (EvaluationErrorException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
     }

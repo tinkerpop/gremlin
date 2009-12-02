@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
-import com.tinkerpop.gremlin.statements.EvaluationErrorException;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
@@ -49,14 +49,15 @@ public class AssignFunction implements Function {
             }
         }
 
-        throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " does not support provided parameters.");
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
     }
 
     private static Object setListIndex(List list, Integer index, Object value) {
         if (list.size() < index + 1)
-            throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " index size is greater than the list size.");
+            throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.INDEX_BOUNDS);
+
         if (value instanceof Collection || value instanceof Map)
-            throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " a collection or map can not be the element of a collection or map.");
+            throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
 
         list.set(index, value);
         return value;
@@ -64,7 +65,7 @@ public class AssignFunction implements Function {
 
     private static Object setMapKey(Map map, Object key, Object value) {
         if (value instanceof Collection || value instanceof Map)
-            throw new EvaluationErrorException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " a collection or map can not be the element of a collection or map.");
+            throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
 
 
         map.put(key, value);

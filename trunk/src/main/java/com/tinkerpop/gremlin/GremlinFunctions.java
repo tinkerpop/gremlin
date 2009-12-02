@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.functions.*;
-import com.tinkerpop.gremlin.statements.EvaluationErrorException;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 
@@ -60,8 +60,7 @@ public class GremlinFunctions implements Functions {
         if (null != function)
             return function;
 
-
-        throw new EvaluationErrorException("Function " + namespace + ":" + name + " does not exist.");
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(namespace, name), EvaluationException.EvaluationErrorType.NO_FUNCTION);
     }
 
     public Set getUsedNamespaces() {

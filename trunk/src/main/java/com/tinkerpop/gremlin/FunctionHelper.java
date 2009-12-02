@@ -33,6 +33,10 @@ public class FunctionHelper {
         return nodeValues;
     }
 
+    public static String makeFunctionName(String namespace, String name) {
+        return namespace + ":" + name;
+    }
+
     public static boolean isUnmodifiable(Object object) {
         if (object instanceof List) {
             try {

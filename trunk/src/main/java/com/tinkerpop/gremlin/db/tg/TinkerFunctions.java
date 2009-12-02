@@ -1,38 +1,41 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import com.tinkerpop.gremlin.model.parser.GraphMLReader;
+import com.tinkerpop.gremlin.db.tg.functions.OpenTinkerGraphFunction;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.Functions;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class TinkerFunctions {
+public class TinkerFunctions implements Functions {
 
     public static final String NAMESPACE_PREFIX = "tg";
 
-    public static TinkerGraph open_tg() {
-        //this returns the hardcoded graph-example-1 graph until I can implement a tinker graph serialization
-        return TinkerGraphFactory.createTinkerGraph();
-    }
-        
-    public static TinkerGraph open_tg(String graphFile) {
-        try {
-            TinkerGraph graph = new TinkerGraph();
-            GraphMLReader.inputGraph(graph, new FileInputStream(graphFile));
-            return graph;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private static Set<String> namespaces = new HashSet<String>();
+    private static final Map<String, Function> functionMap = new HashMap<String, Function>();
+
+    static {
+        namespaces.add(NAMESPACE_PREFIX);
+        functionMap.put(OpenTinkerGraphFunction.FUNCTION_NAME, new OpenTinkerGraphFunction());
     }
 
+    public Function getFunction(String namespace, String name, Object[] parameters) {
+        Function function = functionMap.get(name);
+        if (null != function)
+            return function;
 
+
+        throw new EvaluationException("Function " + namespace + ":" + name + " does not exist.");
+    }
+
+    public Set getUsedNamespaces() {
+        return namespaces;
+    }
 }

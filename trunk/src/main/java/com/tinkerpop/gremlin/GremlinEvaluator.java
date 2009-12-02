@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.statements.*;
-import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Statement;
+import com.tinkerpop.gremlin.statements.StatementGenerator;
+import com.tinkerpop.gremlin.statements.SyntaxException;
 
 import java.util.List;
 
@@ -26,13 +26,13 @@ public class GremlinEvaluator {
         return this.xPathEvaluator.getDepth();
     }
 
-    public List evaluate(String line) throws SyntaxErrorException, EvaluationErrorException, JXPathException {
+    public List evaluate(String line) throws SyntaxException, EvaluationException {
         line = line.trim();
 
         try {
             if (null == this.currentStatement) {
                 this.currentStatement = StatementGenerator.generateStatement(line, xPathEvaluator);
-                this.currentStatement.compileTokens(line);                   
+                this.currentStatement.compileTokens(line);
             } else {
                 this.currentStatement.compileTokens(line);
             }
@@ -44,14 +44,10 @@ public class GremlinEvaluator {
             } else {
                 return null;
             }
-
-        } catch (JXPathInvalidSyntaxException e) {
-            this.currentStatement = null;
-            throw new SyntaxErrorException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
-        } catch (SyntaxErrorException e) {
+        } catch (EvaluationException e) {
             this.currentStatement = null;
             throw e;
-        } catch (EvaluationErrorException e) {
+        } catch (SyntaxException e) {
             this.currentStatement = null;
             throw e;
         }

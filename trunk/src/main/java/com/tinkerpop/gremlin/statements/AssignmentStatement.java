@@ -31,7 +31,7 @@ public class AssignmentStatement extends SimpleStatement {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) throws SyntaxErrorException {
+    public void compileTokens(String line) throws SyntaxException {
         super.compileTokens(line);
         String[] parts = line.split(Tokens.ASSIGNMENT);
         this.variable = parts[0].trim();
@@ -41,17 +41,17 @@ public class AssignmentStatement extends SimpleStatement {
             xPathStatement.compileTokens(line.substring(matcher.end() - 2));
             this.assignmentBody = xPathStatement;
         } else {
-            throw new SyntaxErrorException(this.toString());
+            throw new SyntaxException(this.toString());
         }
     }
 
-    public List evaluate() throws EvaluationErrorException {
+    public List evaluate() throws EvaluationException {
         List results;
         try {
             // TODO better escaping of string quotes
             results = this.xPathEvaluator.evaluate("g:assign(\"" + this.variable + "\"," + this.assignmentBody.toString() + ")");
         } catch (Exception e) {
-            throw new EvaluationErrorException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return results;
     }

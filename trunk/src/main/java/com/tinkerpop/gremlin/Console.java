@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.statements.EvaluationErrorException;
-import com.tinkerpop.gremlin.statements.SyntaxErrorException;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.SyntaxException;
 import jline.ConsoleReader;
 import org.apache.commons.jxpath.JXPathException;
 
@@ -64,9 +64,9 @@ public class Console {
                     }
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());
-                } catch (SyntaxErrorException e) {
+                } catch (SyntaxException e) {
                     System.out.println(e.getMessage());
-                } catch (EvaluationErrorException e) {
+                } catch (EvaluationException e) {
                     System.out.println(e.getMessage());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());

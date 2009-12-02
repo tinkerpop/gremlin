@@ -35,7 +35,7 @@ public class WhileStatement extends CompoundStatement {
                 xPathStatement.compileTokens(line.substring(matcher.end() - 1));
                 this.condition = xPathStatement;
             } else {
-                throw new SyntaxErrorException(this.toString());
+                throw new SyntaxException(this.toString());
             }
         } else {
             this.updateStatementList(line);
@@ -43,7 +43,7 @@ public class WhileStatement extends CompoundStatement {
     }
 
 
-    public List evaluate() throws EvaluationErrorException {
+    public List evaluate() throws EvaluationException {
         List results = null;
         try {
             while ((Boolean) condition.evaluate().get(0)) {
@@ -53,7 +53,7 @@ public class WhileStatement extends CompoundStatement {
             }
         }
         catch (Exception e) {
-            throw new EvaluationErrorException(e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
         return results;
     }
