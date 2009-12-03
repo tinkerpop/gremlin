@@ -18,7 +18,7 @@ import java.io.FileInputStream;
  */
 public class OpenTinkerGraphFunction implements Function {
 
-    public static final String FUNCTION_NAME = "open_tg";
+    public static final String FUNCTION_NAME = "open-tg";
 
     public Graph invoke(ExpressionContext context, Object[] parameters) {
 

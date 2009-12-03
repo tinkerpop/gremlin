@@ -14,18 +14,18 @@ import java.util.Random;
  */
 public class RandomNaturalFunction implements Function {
 
-    public static final String FUNCTION_NAME = "rand_nat";
+    public static final String FUNCTION_NAME = "rand-nat";
     private static final Random random = new Random();
 
 
     public Number invoke(ExpressionContext context, Object[] parameters) {
 
         if (null == parameters) {
-            return random.nextInt(context.getContextNodeList().size()+1);
+            return random.nextInt(context.getContextNodeList().size())+1;
         } else if(parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if(object instanceof Number) {
-                return random.nextInt(((Number)object).intValue()+1);
+                return random.nextInt(((Number)object).intValue())+1;
             }
         }
 

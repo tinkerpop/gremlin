@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class RandomRealFunction implements Function {
 
-    public static final String FUNCTION_NAME = "rand_real";
+    public static final String FUNCTION_NAME = "rand-real";
     private static final Random random = new Random();
 
 
