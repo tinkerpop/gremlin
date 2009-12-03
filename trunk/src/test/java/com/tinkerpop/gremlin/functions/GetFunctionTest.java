@@ -47,5 +47,11 @@ public class GetFunctionTest extends BaseTest {
         } catch(EvaluationException e) {
             assertTrue(true);
         }
+         try {
+            xe.evaluate("g:get($l,0)");
+            assertTrue(false);
+        } catch(EvaluationException e) {
+            assertTrue(true);
+        }
     }
 }

@@ -28,7 +28,7 @@ public class AssignFunctionTest extends BaseTest {
         //assertEquals(xe.getVariable("j"), 3.0);
     }
 
-    public void testAssignFunctionList() {
+    /*public void testAssignFunctionList() {
         XPathEvaluator xe = new XPathEvaluator();
         List list = new ArrayList();
         list.add(1);
@@ -68,5 +68,5 @@ public class AssignFunctionTest extends BaseTest {
         assertEquals(xe.evaluate("$i/@peter").get(0), 3.0);
         assertEquals(xe.evaluate("(1+2)[g:assign($i,'marko')]").get(0), 3.0);
         assertEquals(xe.evaluate("$i/@marko").get(0), 3.0);
-    }
+    }*/
 }

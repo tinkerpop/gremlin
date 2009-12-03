@@ -45,6 +45,8 @@ public class GremlinFunctions implements Functions {
         functionMap.put(ValuesFunction.FUNCTION_NAME, new ValuesFunction());
         // lists and maps
         functionMap.put(GetFunction.FUNCTION_NAME, new GetFunction());
+        functionMap.put(SortFunction.FUNCTION_NAME, new SortFunction());
+        functionMap.put(IncrementValueFunction.FUNCTION_NAME, new IncrementValueFunction());
         // numbers
         functionMap.put(RandomRealFunction.FUNCTION_NAME, new RandomRealFunction());
         functionMap.put(RandomNaturalFunction.FUNCTION_NAME, new RandomNaturalFunction());

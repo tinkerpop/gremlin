@@ -13,6 +13,9 @@ import java.util.*;
 public class TinkerGraph implements Graph {
 
     protected Map<String, Vertex> vertices;
+    // TODO indicies for all properties on vertices and implement the key() function
+    protected Set<Map<String, Set<Vertex>>> indices;
+
 
     public TinkerGraph() {
         this.vertices = new HashMap<String, Vertex>();
