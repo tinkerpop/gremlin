@@ -19,7 +19,7 @@ public class IncrementValueFunction implements Function {
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
         if (null != objects && objects.length == 2 && objects[0] instanceof Map && objects[1] instanceof Number) {
-            System.out.println(context.getContextNodePointer().getValue());
+            //System.out.println(context.getContextNodePointer().getValue());
             incrValue((Map) objects[0], context.getContextNodePointer().getValue(), (Number) objects[1]);
             return Boolean.TRUE;
 
