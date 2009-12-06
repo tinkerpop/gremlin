@@ -28,7 +28,7 @@ public class AssignFunctionTest extends BaseTest {
         //assertEquals(xe.getVariable("j"), 3.0);
     }
 
-    /*public void testAssignFunctionList() {
+    public void testAssignFunctionList() {
         XPathEvaluator xe = new XPathEvaluator();
         List list = new ArrayList();
         list.add(1);
@@ -44,10 +44,6 @@ public class AssignFunctionTest extends BaseTest {
         } catch (EvaluationException e) {
             assertTrue(true);
         }
-        assertEquals(xe.evaluate("(1+2)[g:assign($i,1)]").get(0), 3.0);
-        assertEquals(list.size(), 2);
-        assertEquals(list.get(0), 3.0);
-        assertEquals(list.get(1), 2000.0);
         try {
             xe.evaluate("g:assign($i,2,$i)");
             assertTrue(false);
@@ -66,7 +62,5 @@ public class AssignFunctionTest extends BaseTest {
         assertEquals(xe.evaluate("g:assign($i,'marko','jen')").get(0), "jen");
         assertEquals(xe.evaluate("$i/@marko").get(0), "jen");
         assertEquals(xe.evaluate("$i/@peter").get(0), 3.0);
-        assertEquals(xe.evaluate("(1+2)[g:assign($i,'marko')]").get(0), 3.0);
-        assertEquals(xe.evaluate("$i/@marko").get(0), 3.0);
-    }*/
+    }
 }

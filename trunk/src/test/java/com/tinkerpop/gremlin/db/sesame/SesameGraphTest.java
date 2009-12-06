@@ -33,7 +33,7 @@ public class SesameGraphTest extends BaseTest {
         return sail;
     }
 
-    public void testGraphExample1() throws Exception {
+    /*public void testGraphExample1() throws Exception {
         MemoryStore sail = loadMemoryStore("graph-example-1.ntriple", RDFFormat.NTRIPLES);
         SailConnection sc = sail.getConnection();
         CloseableIteration<? extends Statement, SailException> results = sc.getStatements(null, null, null, false);
@@ -58,7 +58,7 @@ public class SesameGraphTest extends BaseTest {
         assertEquals(evaluator.evaluate("./@tg:age[g:assign('$x')]/../outEdges[@label='tg:knows']/inVertex[@tg:name='josh'][@tg:age > $x]").get(0).toString(), "http://tinkerpop.com#4");
         //System.out.println(evaluator.evaluate(".[name()]"));
         graph.shutdown();
-    }
+    }*/
 
     public void testTypeConversion() {
         assertEquals(SesameGraph.castLiteral("marko", "http://www.w3.org/2001/XMLSchema#string").getClass(), String.class);

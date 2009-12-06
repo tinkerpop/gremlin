@@ -35,7 +35,7 @@ public class AssignFunction implements Function {
                     if (objects[1] instanceof Number) {
                         // g:assign(list,index,value)
                         return setListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1, objects[2]);
-                    } else if (objects[1] instanceof String) {
+                    } /*else if (objects[1] instanceof String) {
                         if (objects[1].equals("index")) {
                             setListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1, context.getContextNodePointer().getValue());
 
@@ -43,18 +43,18 @@ public class AssignFunction implements Function {
                             setListIndex((List) objects[0], ((Number) context.getContextNodePointer().getValue()).intValue() - 1, objects[1]);
                         }
                         return Boolean.TRUE;
-                    }
+                    }*/
                 } else if (objects[0] instanceof Map && !(objects[1] instanceof Collection || objects[1] instanceof Map) && !(objects[2] instanceof Collection || objects[2] instanceof Map)) {
-                    if (objects[1] instanceof String && (objects[1].equals("key") || objects[1].equals("value"))) {
+                    /*if (objects[1] instanceof String && (objects[1].equals("key") || objects[1].equals("value"))) {
                         if (objects[1].equals("value"))
                             setMapKey((Map) objects[0], context.getContextNodePointer().getValue(), objects[2]);
                         else
                             setMapKey((Map) objects[0], objects[2], context.getContextNodePointer().getValue());
                         return Boolean.TRUE;
-                    } else {
+                    } else {*/
                         // g:assign(map,key,value)
                         return setMapKey((Map) objects[0], objects[1], objects[2]);
-                    }
+                    /*}*/
                 }
             }
         }

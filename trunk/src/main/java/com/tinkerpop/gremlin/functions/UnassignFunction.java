@@ -16,15 +16,32 @@ public class UnassignFunction implements Function {
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 
         if (null != objects) {
-            if (parameters.length == 1 && parameters[0] instanceof String) {
+            if (objects.length == 1 && objects[0] instanceof String) {
+                // g:unassign('variable')
+                Object value = FunctionHelper.getGremlin(context).getVariable(objects[0].toString());
                 FunctionHelper.getGremlin(context).removeVariable(objects[0].toString());
-                return Boolean.TRUE;
-            } else if (parameters.length == 2) {
+                return value;
+            } else if (objects.length == 1 && (objects[0] instanceof Map || objects[0] instanceof List)) {
+                if (objects[0] instanceof Map) {
+                    // key[g:unassign(map)]
+                    removeMapKey((Map) objects[0], context.getContextNodePointer().getValue());
+                    return Boolean.TRUE;
+                } else if (objects[0] instanceof List) {
+                    // index[g:unassign(list)]
+                    Object index = context.getContextNodePointer().getValue();
+                    if (index instanceof Number) {
+                        removeListIndex((List) objects[0], ((Number) index).intValue() - 1);
+                        return Boolean.TRUE;
+                    }
+                }
+            } else if (objects.length == 2) {
                 if (objects[0] instanceof List && objects[1] instanceof Number) {
                     // $i[index]
+                    // g:unassign(list,index)
                     return removeListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1);
                 } else if (objects[0] instanceof Map) {
                     // $i/@key
+                    // g:unassign(map,key)
                     return removeMapKey((Map) objects[0], objects[1]);
                 }
             }

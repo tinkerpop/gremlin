@@ -13,6 +13,8 @@ import java.util.Collections;
  */
 public class BaseTest extends TestCase {
 
+    long timer = -1l;
+
     public static void printList(List list) {
         for (Object o : list) {
             System.out.println(o);
@@ -45,6 +47,20 @@ public class BaseTest extends TestCase {
     public void testUnmodifiableListChecker() {
         assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
         assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));
+    }
+
+    public double stopWatch() {
+        if(this.timer == -1l) {
+            this.timer = System.currentTimeMillis();
+            return -1.0d;
+        } else {
+
+            double temp = ((double) System.currentTimeMillis() - (double)this.timer) /  1000.0d;
+            this.timer = -1l;
+            return temp;
+        }
+
+
     }
 
 }

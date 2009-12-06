@@ -22,6 +22,9 @@ public class Console {
     private static final String QUIT = "quit";
     private static final String SINGLE_SPACE = " ";
     private static final String EMPTY_STRING = "";
+    private static final String SYNTAX_ERROR = "Syntax error: ";
+    private static final String EVALUATION_ERROR = "Evaluation error: ";
+
 
     public static void main(String[] args) throws IOException {
 
@@ -65,9 +68,9 @@ public class Console {
                 } catch (JXPathException e) {
                     System.out.println(e.getMessage());
                 } catch (SyntaxException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(SYNTAX_ERROR + e.getMessage());
                 } catch (EvaluationException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(EVALUATION_ERROR + e.getMessage());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

@@ -39,14 +39,17 @@ public class GremlinFunctions implements Functions {
         functionMap.put(ListFunction.FUNCTION_NAME, new ListFunction());
         functionMap.put(AppendFunction.FUNCTION_NAME, new AppendFunction());
         functionMap.put(RemoveFunction.FUNCTION_NAME, new RemoveFunction());
+        functionMap.put(AssignIndexFunction.FUNCTION_NAME, new AssignIndexFunction());
         // maps
         functionMap.put(MapFunction.FUNCTION_NAME, new MapFunction());
         functionMap.put(KeysFunction.FUNCTION_NAME, new KeysFunction());
         functionMap.put(ValuesFunction.FUNCTION_NAME, new ValuesFunction());
+        functionMap.put(AssignKeyFunction.FUNCTION_NAME, new AssignKeyFunction());
         // lists and maps
         functionMap.put(GetFunction.FUNCTION_NAME, new GetFunction());
         functionMap.put(SortFunction.FUNCTION_NAME, new SortFunction());
         functionMap.put(IncrementValueFunction.FUNCTION_NAME, new IncrementValueFunction());
+        functionMap.put(AssignValueFunction.FUNCTION_NAME, new AssignValueFunction());
         // numbers
         functionMap.put(RandomRealFunction.FUNCTION_NAME, new RandomRealFunction());
         functionMap.put(RandomNaturalFunction.FUNCTION_NAME, new RandomNaturalFunction());
@@ -55,6 +58,8 @@ public class GremlinFunctions implements Functions {
         functionMap.put(ContinueFunction.FUNCTION_NAME, new ContinueFunction());
         // utilities
         functionMap.put(TypeFunction.FUNCTION_NAME, new TypeFunction());
+        functionMap.put(PrintFunction.FUNCTION_NAME, new PrintFunction());
+        functionMap.put(TimeFunction.FUNCTION_NAME, new TimeFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {

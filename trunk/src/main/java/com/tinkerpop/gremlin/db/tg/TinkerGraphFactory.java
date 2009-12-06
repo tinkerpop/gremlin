@@ -1,6 +1,10 @@
 package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.parser.GraphMLReader;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -48,6 +52,12 @@ public class TinkerGraphFactory {
 
         return graph;
 
+    }
+
+    public static TinkerGraph createGratefulGraph()  throws XMLStreamException {
+        TinkerGraph graph = new TinkerGraph();
+        GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-2.xml"));
+        return graph;
     }
 
 }

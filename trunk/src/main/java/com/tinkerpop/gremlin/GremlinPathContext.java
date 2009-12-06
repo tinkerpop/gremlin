@@ -4,14 +4,15 @@ import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -30,8 +31,8 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
     }
 
-    public GremlinPathContext(GremlinPathContext parentContext, Object element) {
-        super(parentContext, element);
+    public GremlinPathContext(GremlinPathContext parentContext, Object object) {
+        super(parentContext, object);
         if (null == parentContext) {
             FunctionLibrary library = new FunctionLibrary();
             library.addFunctions(new GremlinFunctions());
@@ -39,7 +40,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
             library.addFunctions(this.getFunctions());
             this.setFunctions(library);
-            this.getVariables().declareVariable(Tokens.LAST_VARIABLE, element);
+            // TODO why does this not work?
+            if (object instanceof List && ((List) object).size() == 1)
+                this.setVariable(Tokens.LAST_VARIABLE, ((List) object).get(0));
+            else
+                this.setVariable(Tokens.LAST_VARIABLE, object);
         }
     }
 

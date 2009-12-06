@@ -21,7 +21,6 @@ public class XPathEvaluator {
     public XPathEvaluator() {
         this.baseContext = GremlinPathContext.newContext(null);
         this.baseContext.setLenient(false);
-
     }
 
     public void incrDepth() {
@@ -47,13 +46,13 @@ public class XPathEvaluator {
         } catch (JXPathInvalidSyntaxException e) {
             throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
         } catch (JXPathException e) {
-            throw new EvaluationException(EvaluationException.MESSAGE_HEADER + e.getMessage().replace("Undefined variable: ", "undefined variable $").replace("Undefined function:", "undefined function"));
+            throw new EvaluationException(e.getMessage().replace("Undefined variable: ", "undefined variable $").replace("Undefined function:", "undefined function"));
         } catch (SyntaxException e) {
-            throw e;
+            throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
         } catch (EvaluationException e) {
             throw e;
         } catch (Exception e) {
-            throw new EvaluationException(EvaluationException.MESSAGE_HEADER + e.getMessage());
+            throw new EvaluationException(e.getMessage());
         }
     }
 
@@ -65,11 +64,19 @@ public class XPathEvaluator {
         return this.baseContext.getVariable(variable);
     }
 
+    public void removeVariable(String variable) {
+        this.baseContext.removeVariable(variable);
+    }
+
     public void setRoot(Object root) {
         this.baseContext.setRoot(root);
     }
 
     public Object getRoot() {
+        return this.baseContext;
+    }
+
+    public GremlinPathContext getGremlinPathContext() {
         return this.baseContext;
     }
 }

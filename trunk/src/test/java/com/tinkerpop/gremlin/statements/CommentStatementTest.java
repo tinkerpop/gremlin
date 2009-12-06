@@ -14,6 +14,7 @@ public class CommentStatementTest extends BaseTest {
         assertTrue(CommentStatement.isStatement("#"));
         assertTrue(CommentStatement.isStatement("     #"));
         assertTrue(CommentStatement.isStatement("  # a comment"));
+        assertTrue(CommentStatement.isStatement("#$a comment"));
         assertFalse(CommentStatement.isStatement("the # a comment"));
         assertFalse(CommentStatement.isStatement(""));
         assertFalse(CommentStatement.isStatement("comment"));

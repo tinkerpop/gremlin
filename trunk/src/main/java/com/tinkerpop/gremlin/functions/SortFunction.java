@@ -21,12 +21,14 @@ public class SortFunction implements Function {
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects.length == 3 && objects[0] instanceof Map && objects[1] instanceof String && objects[2] instanceof Boolean) {
+                // g:sort(map, 'key' | 'value', reverse?)
                 if (objects[1].equals("value")) {
                     return sortByValue((Map) objects[0], (Boolean) objects[2]);
                 } else if (objects[1].equals("key")) {
                     return sortByKey((Map) objects[0]);
                 }
             } else if(objects.length == 2 && objects[0] instanceof List && objects[1] instanceof Boolean) {
+                // g:sort(list, reverse?)
                 List list = (List)objects[1];
                 Collections.sort(list);
                 if((Boolean)objects[1])
@@ -40,6 +42,7 @@ public class SortFunction implements Function {
     }
 
     private static Map sortByValue(Map map, boolean reverse) {
+        // TODO: augment original map with new values
         List mapKeys = new ArrayList(map.keySet());
         List mapValues = new ArrayList(map.values());
         Collections.sort(mapKeys);
@@ -70,6 +73,7 @@ public class SortFunction implements Function {
     }
 
     private static Map sortByKey(Map map) {
+        // TODO: add reverse sort
         map = new TreeMap(map);
         return map;
     }
