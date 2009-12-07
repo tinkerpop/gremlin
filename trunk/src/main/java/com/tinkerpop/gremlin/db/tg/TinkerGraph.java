@@ -47,21 +47,21 @@ public class TinkerGraph implements Graph {
             TinkerVertex vOut = (TinkerVertex) edge.getOutVertex();
             vOut.outEdges.remove(edge);
         }
-        this.vertices.remove((String)vertex.getId());
+        this.vertices.remove((String) vertex.getId());
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
-        TinkerVertex out = (TinkerVertex)outVertex;
-        TinkerVertex in = (TinkerVertex)inVertex;
-        TinkerEdge edge = new TinkerEdge((String)id, outVertex, inVertex, label);
+        TinkerVertex out = (TinkerVertex) outVertex;
+        TinkerVertex in = (TinkerVertex) inVertex;
+        TinkerEdge edge = new TinkerEdge((String) id, outVertex, inVertex, label);
         out.outEdges.add(edge);
         in.inEdges.add(edge);
         return edge;
     }
 
     public void removeEdge(Edge edge) {
-        TinkerVertex outVertex = (TinkerVertex)edge.getOutVertex();
-        TinkerVertex inVertex = (TinkerVertex)edge.getInVertex();
+        TinkerVertex outVertex = (TinkerVertex) edge.getOutVertex();
+        TinkerVertex inVertex = (TinkerVertex) edge.getInVertex();
         outVertex.outEdges.remove(edge);
         inVertex.inEdges.remove(edge);
     }
@@ -76,39 +76,53 @@ public class TinkerGraph implements Graph {
     private class TinkerEdgeIterator implements Iterator<Edge> {
 
         private Iterator<Vertex> vertices;
-        private Edge[] currentEdges;
-        private int currentIndex;
+        private List<Edge> currentEdges;
+        private int currentIndex = -1;
+        private boolean complete = false;
 
         public TinkerEdgeIterator(Iterator<Vertex> vertices) {
             this.vertices = vertices;
-            this.currentIndex = -1;
+            this.complete = this.goToNextEdge();
+
         }
 
         public Edge next() {
-            if(currentIndex != -1) {
-                if(currentIndex >= currentEdges.length - 1) {
-                    currentIndex = -1;
-                }
-                return currentEdges[currentIndex];
-            } else {
-                if(vertices.hasNext()) {
-                    currentEdges = (Edge[]) vertices.next().getOutEdges().toArray();
-                    currentIndex = 0;
-                    return next();
-                } else {
-                    return null;
-                }
-            }
+            Edge edge = currentEdges.get(currentIndex);
+            this.complete = this.goToNextEdge();
+            return edge;
         }
 
         public boolean hasNext() {
-            return !(this.currentIndex == -1);
+            return !complete;
         }
 
         public void remove() {
             throw new UnsupportedOperationException();
         }
 
-    }
+        private boolean goToNextEdge() {
+            if (this.currentIndex == -1) {
+                if (vertices.hasNext()) {
+                    this.currentEdges = new ArrayList<Edge>(vertices.next().getOutEdges());
+                    if (this.currentEdges.size() > 0) {
+                        this.currentIndex = 0;
+                        return false;
+                    } else {
+                        return this.goToNextEdge();
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                if (this.currentIndex < this.currentEdges.size()-1) {
+                    this.currentIndex++;
+                    return false;
+                } else {
+                    this.currentIndex = -1;
+                    return this.goToNextEdge();
+                }
+            }
 
+        }
+    }
 }
