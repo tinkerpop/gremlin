@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.neo;
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
 import org.neo4j.api.core.Node;
+import org.neo4j.api.core.NotFoundException;
 import org.neo4j.api.core.PropertyContainer;
 import org.neo4j.api.core.Relationship;
 
@@ -23,7 +24,10 @@ public class NeoElement implements Element {
     }
 
     public void setProperty(String key, Object value) {
-        this.index.remove(key, this.getProperty(key), this);
+        try {
+            this.index.remove(key, this.getProperty(key), this);
+        } catch (NotFoundException e) {
+        }
         this.element.setProperty(key, value);
         this.index.put(key, value, this);
     }
@@ -41,9 +45,20 @@ public class NeoElement implements Element {
         return keys;
     }
 
+    public Object removeProperty(String key) {
+        try {
+            this.index.remove(key, this.getProperty(key), this);
+            Object value = this.element.removeProperty(key);
+            return value;
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
     public int hashCode() {
         return this.element.hashCode();
     }
+
 
     public PropertyContainer getRawElement() {
         return this.element;

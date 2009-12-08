@@ -23,7 +23,9 @@ public class GraphMLReader {
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = inputFactory.createXMLStreamReader(graphMLInputStream);
 
-        Map<String, String> keyTypes = new HashMap<String, String>();
+        Map<String, String> keyTypesMaps = new HashMap<String, String>();
+        Map<String, Object> vertexIdMap = new HashMap<String, Object>();
+
         Vertex currentVertex = null;
         Edge currentEdge = null;
 
@@ -35,37 +37,54 @@ public class GraphMLReader {
                 if (elementName.equals(GraphMLTokens.KEY)) {
                     String attributeName = reader.getAttributeValue(null, GraphMLTokens.ATTR_NAME);
                     String attributeType = reader.getAttributeValue(null, GraphMLTokens.ATTR_TYPE);
-                    keyTypes.put(attributeName, attributeType);
+                    keyTypesMaps.put(attributeName, attributeType);
                 } else if (elementName.equals(GraphMLTokens.NODE)) {
-                    String vertexId = reader.getAttributeValue(null, GraphMLTokens.ID);
-                    currentVertex = graph.getVertex(vertexId);
-                    if(null == currentVertex)
-                        currentVertex = graph.addVertex(vertexId);
+                    String vertexStringId = reader.getAttributeValue(null, GraphMLTokens.ID);
+
+                    Object vertexObjectId = vertexIdMap.get(vertexStringId);
+                    if(vertexObjectId != null)
+                        currentVertex = graph.getVertex(vertexObjectId);
+
+                    if(null == currentVertex) {
+                        currentVertex = graph.addVertex(vertexStringId);
+                        vertexIdMap.put(vertexStringId, currentVertex.getId());
+                    }
 
                 } else if (elementName.equals(GraphMLTokens.EDGE)) {
                     String edgeId = reader.getAttributeValue(null, GraphMLTokens.ID);
                     String edgeLabel = reader.getAttributeValue(null, GraphMLTokens.LABEL);
-                    String outId = reader.getAttributeValue(null, GraphMLTokens.SOURCE);
-                    String inId = reader.getAttributeValue(null, GraphMLTokens.TARGET);
+                    String outStringId = reader.getAttributeValue(null, GraphMLTokens.SOURCE);
+                    String inStringId = reader.getAttributeValue(null, GraphMLTokens.TARGET);
 
                     // TODO: current edge get by id first?
+                    Object outObjectId = vertexIdMap.get(outStringId);
+                    Object inObjectId = vertexIdMap.get(inStringId);
 
-                    Vertex outVertex = graph.getVertex(outId);
-                    Vertex inVertex = graph.getVertex(inId);
+                    Vertex outVertex = null;
+                    if(null != outObjectId)
+                        outVertex = graph.getVertex(outObjectId);
+
+                    Vertex inVertex = null;
+                    if(null != inObjectId)
+                        inVertex = graph.getVertex(inStringId);
+                    
                     if (null == outVertex) {
-                        outVertex = graph.addVertex(outId);
+                        outVertex = graph.addVertex(outStringId);
+                        vertexIdMap.put(outStringId, outVertex.getId());
                     }
                     if (null == inVertex) {
-                        inVertex = graph.addVertex(inId);
+                        inVertex = graph.addVertex(inStringId);
+                        vertexIdMap.put(inStringId, inVertex.getId());
                     }
                     currentEdge = graph.addEdge(edgeId, outVertex, inVertex, edgeLabel);
+
                 } else if (elementName.equals(GraphMLTokens.DATA)) {
                     String key = reader.getAttributeValue(null, GraphMLTokens.KEY);
                     String value = reader.getElementText();
                     if (currentVertex != null) {
-                        currentVertex.setProperty(key, typeCastValue(key, value, keyTypes));
+                        currentVertex.setProperty(key, typeCastValue(key, value, keyTypesMaps));
                     } else if (currentEdge != null) {
-                        currentEdge.setProperty(key, typeCastValue(key, value, keyTypes));
+                        currentEdge.setProperty(key, typeCastValue(key, value, keyTypesMaps));
                     }
                 }
             } else if (eventType.equals(XMLEvent.END_ELEMENT)) {

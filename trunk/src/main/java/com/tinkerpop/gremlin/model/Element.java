@@ -14,6 +14,8 @@ public interface Element {
 
     public void setProperty(String key, Object value);
 
+    public Object removeProperty(String key);
+
     public Object getId();
 
 }

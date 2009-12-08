@@ -1,8 +1,5 @@
 package com.tinkerpop.gremlin.model;
 
-import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.parser.GraphMLReader;
 
 import java.util.HashSet;
@@ -87,7 +84,7 @@ public class EdgeTestSuite extends ModelTestSuite {
         Edge e1 = graph.addEdge(null, v1, v2, "test");
         Edge e2 = graph.addEdge(null, v2, v3, "test");
         Edge e3 = graph.addEdge(null, v3, v1, "test");
-        
+
         assertEquals(countIterator(graph.getVertices()), 3);
         assertEquals(countIterator(graph.getEdges()), 3);
 
@@ -99,13 +96,13 @@ public class EdgeTestSuite extends ModelTestSuite {
             Edge e = edges.next();
             edgeIds.add(e.getId().toString());
             assertEquals(e.getLabel(), "test");
-            if(e.getId().toString().equals(e1.getId().toString())) {
+            if (e.getId().toString().equals(e1.getId().toString())) {
                 assertEquals(e.getOutVertex(), v1);
                 assertEquals(e.getInVertex(), v2);
-            } else if(e.getId().toString().equals(e2.getId().toString())) {
+            } else if (e.getId().toString().equals(e2.getId().toString())) {
                 assertEquals(e.getOutVertex(), v2);
                 assertEquals(e.getInVertex(), v3);
-            } else if(e.getId().toString().equals(e3.getId().toString())) {
+            } else if (e.getId().toString().equals(e3.getId().toString())) {
                 assertEquals(e.getOutVertex(), v3);
                 assertEquals(e.getInVertex(), v1);
             } else {

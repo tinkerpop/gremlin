@@ -15,6 +15,10 @@ public class BaseTest extends TestCase {
 
     long timer = -1l;
 
+    public void testTrue() {
+        assertTrue(true);
+    }
+
     public static void printList(List list) {
         for (Object o : list) {
             System.out.println(o);
@@ -42,11 +46,6 @@ public class BaseTest extends TestCase {
             list.add(x);
         }
         return list;
-    }
-
-    public void testUnmodifiableListChecker() {
-        assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
-        assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));
     }
 
     public double stopWatch() {

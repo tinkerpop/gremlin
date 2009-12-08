@@ -45,4 +45,8 @@ public class NeoVertex extends NeoElement implements Vertex {
         return edges;
     }
 
+    public String toString() {
+        return "v[" + this.getId() + "]";
+    }
+
 }

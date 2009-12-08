@@ -40,6 +40,11 @@ public class TinkerElement implements Element {
         return this.properties.get(key);
     }
 
+    public Object removeProperty(String key) {
+        this.index.remove(key, this.getProperty(key), this);
+        return this.properties.remove(key);
+    }
+
     public String getId() {
         return this.id;
     }

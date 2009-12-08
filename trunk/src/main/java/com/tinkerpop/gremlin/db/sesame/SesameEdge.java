@@ -59,6 +59,10 @@ public class SesameEdge extends SesameElement implements Edge {
         }
     }
 
+    public Object removeProperty(String key) {
+        return null;
+    }
+
     public Vertex getInVertex() {
         return new SesameVertex(this.statement.getObject(), this.sailConnection);
     }

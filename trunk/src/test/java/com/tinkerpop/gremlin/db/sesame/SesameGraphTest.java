@@ -82,6 +82,10 @@ public class SesameGraphTest extends BaseTest {
 
     }
 
+    public void testURIs() {
+        new URIImpl("http://1");
+    }
+
     public static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {
         int counter = 0;
         while (itty.hasNext()) {

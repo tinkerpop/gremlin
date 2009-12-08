@@ -7,4 +7,8 @@ import com.tinkerpop.gremlin.BaseTest;
  * @version 0.1
  */
 public class ModelTestSuite extends BaseTest {
+
+    public void testTrue() {
+        assertTrue(true);
+    }
 }

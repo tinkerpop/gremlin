@@ -31,6 +31,11 @@ public class SesameVertex extends SesameElement implements Vertex {
         System.out.println("setProperty() is not implemented yet.");
     }
 
+    public Object removeProperty(String key) {
+        System.out.println("removeProperty() is not implemented yet.");
+        return null;
+    }
+
     public Object getProperty(String key) {
         if (this.value instanceof Resource) {
             key = SesameGraph.prefixToNamespace(key, this.sailConnection);
