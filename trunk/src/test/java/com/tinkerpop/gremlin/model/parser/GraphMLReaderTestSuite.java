@@ -9,11 +9,13 @@ import com.tinkerpop.gremlin.model.Vertex;
 
 import java.io.InputStream;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class GraphMLReaderTest extends BaseTest {
+public class GraphMLReaderTestSuite extends TestCase {
 
     public void testReadingForTinkerGraph() throws Exception {
         InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
