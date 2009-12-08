@@ -16,8 +16,8 @@ import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
  */
 public class XPathStatement extends SimpleStatement {
 
-   //private String xPath;
-   private CompiledExpression compiledXPath;
+   private String xPath;
+   //private CompiledExpression compiledXPath;
 
     public XPathStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -25,21 +25,21 @@ public class XPathStatement extends SimpleStatement {
 
     public void compileTokens(String line) {
         super.compileTokens(line);
-        //this.xPath = line;
-        try {
+        this.xPath = line;
+        /*try {
         this.compiledXPath = JXPathContext.compile(line);
         } catch(JXPathInvalidSyntaxException e) {
              throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
-        }
+        }*/
     }
 
     public List evaluate() {
-        //return this.xPathEvaluator.evaluate(this.xPath);
-        List list = new ArrayList();
+        return this.xPathEvaluator.evaluate(this.xPath);
+        /*List list = new ArrayList();
         Iterator itty = this.compiledXPath.iterate(this.xPathEvaluator.getGremlinPathContext());
         while(itty.hasNext()) {
             list.add(itty.next());
         }
-        return list;
+        return list;*/
     }
 }

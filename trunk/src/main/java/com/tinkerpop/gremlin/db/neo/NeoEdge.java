@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Index;
 import org.neo4j.api.core.Relationship;
 
 /**
@@ -10,8 +11,8 @@ import org.neo4j.api.core.Relationship;
  */
 public class NeoEdge extends NeoElement implements Edge {
 
-    public NeoEdge(Relationship relationship) {
-        super(relationship.getId());
+    public NeoEdge(Relationship relationship, Index index) {
+        super(index);
         this.element = relationship;
     }
 
@@ -20,10 +21,10 @@ public class NeoEdge extends NeoElement implements Edge {
     }
 
     public Vertex getOutVertex() {
-        return new NeoVertex(((Relationship) this.element).getStartNode());
+        return new NeoVertex(((Relationship) this.element).getStartNode(), this.index);
     }
 
     public Vertex getInVertex() {
-        return new NeoVertex(((Relationship) this.element).getEndNode());
+        return new NeoVertex(((Relationship) this.element).getEndNode(), this.index);
     }
 }

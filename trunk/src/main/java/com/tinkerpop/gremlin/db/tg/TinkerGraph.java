@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.tg;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Index;
 
 import java.util.*;
 
@@ -12,23 +13,24 @@ import java.util.*;
  */
 public class TinkerGraph implements Graph {
 
-    protected Map<String, Vertex> vertices;
-    // TODO indicies for all properties on vertices and implement the key() function
-    protected Set<Map<String, Set<Vertex>>> indices;
-
-
-    public TinkerGraph() {
-        this.vertices = new HashMap<String, Vertex>();
-    }
+    protected Map<String, Vertex> vertices = new HashMap<String, Vertex>();
+    //protected Map<String, Edge> edges = new HashMap<String, Edge>();
+    private TinkerIndex index = new TinkerIndex();
 
     public Vertex addVertex(Object id) {
-        TinkerVertex vertex = new TinkerVertex((String) id);
-        this.vertices.put(vertex.getId(), vertex);
-        return vertex;
+
+        Vertex vertex = this.vertices.get(id);
+        if (null != vertex)
+            return vertex;
+        else {
+            vertex = new TinkerVertex((String)id, this.index);
+            this.vertices.put((String)vertex.getId(), vertex);
+            return vertex;
+        }
     }
 
     public Vertex getVertex(Object id) {
-        return this.vertices.get((String) id);
+        return this.vertices.get(id);
     }
 
     public Iterator<Vertex> getVertices() {
@@ -42,20 +44,21 @@ public class TinkerGraph implements Graph {
     public void removeVertex(Vertex vertex) {
         Set<Edge> edges = vertex.getBothEdges();
         for (Edge edge : edges) {
-            TinkerVertex vIn = (TinkerVertex) edge.getInVertex();
-            vIn.inEdges.remove(edge);
-            TinkerVertex vOut = (TinkerVertex) edge.getOutVertex();
-            vOut.outEdges.remove(edge);
+            this.removeEdge(edge);
         }
-        this.vertices.remove((String) vertex.getId());
+        for (String key : vertex.getPropertyKeys()) {
+                this.index.remove(key, vertex.getProperty(key), vertex);
+        }
+        this.vertices.remove(vertex.getId());
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
         TinkerVertex out = (TinkerVertex) outVertex;
         TinkerVertex in = (TinkerVertex) inVertex;
-        TinkerEdge edge = new TinkerEdge((String) id, outVertex, inVertex, label);
+        TinkerEdge edge = new TinkerEdge((String)id, outVertex, inVertex, label, this.index);
         out.outEdges.add(edge);
         in.inEdges.add(edge);
+        //this.edges.put(edge.getId(), edge);
         return edge;
     }
 
@@ -64,6 +67,11 @@ public class TinkerGraph implements Graph {
         TinkerVertex inVertex = (TinkerVertex) edge.getInVertex();
         outVertex.outEdges.remove(edge);
         inVertex.inEdges.remove(edge);
+        //this.edges.remove(edge.getId());
+    }
+
+    public Index getIndex() {
+        return this.index;
     }
 
     public String toString() {
@@ -71,6 +79,7 @@ public class TinkerGraph implements Graph {
     }
 
     public void shutdown() {
+
     }
 
     private class TinkerEdgeIterator implements Iterator<Edge> {
@@ -114,7 +123,7 @@ public class TinkerGraph implements Graph {
                     return true;
                 }
             } else {
-                if (this.currentIndex < this.currentEdges.size()-1) {
+                if (this.currentIndex < this.currentEdges.size() - 1) {
                     this.currentIndex++;
                     return false;
                 } else {

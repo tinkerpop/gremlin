@@ -15,8 +15,8 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     protected Set<Edge> outEdges = new HashSet<Edge>();
     protected Set<Edge> inEdges = new HashSet<Edge>();
 
-    protected TinkerVertex(String id) {
-        super(id);
+    protected TinkerVertex(String id, TinkerIndex index) {
+        super(id, index);
     }
 
     public Set<Edge> getOutEdges() {

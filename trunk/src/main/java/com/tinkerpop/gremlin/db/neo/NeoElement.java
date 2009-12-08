@@ -1,7 +1,10 @@
 package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.model.Element;
+import com.tinkerpop.gremlin.model.Index;
+import org.neo4j.api.core.Node;
 import org.neo4j.api.core.PropertyContainer;
+import org.neo4j.api.core.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,14 +16,16 @@ import java.util.Set;
 public class NeoElement implements Element {
 
     protected PropertyContainer element;
-    protected long id;
+    protected final Index index;
 
-    public NeoElement(long id) {
-        this.id = id;
+    public NeoElement(Index index) {
+        this.index = index;
     }
 
     public void setProperty(String key, Object value) {
+        this.index.remove(key, this.getProperty(key), this);
         this.element.setProperty(key, value);
+        this.index.put(key, value, this);
     }
 
     public Object getProperty(String key) {
@@ -59,6 +64,10 @@ public class NeoElement implements Element {
     }
 
     public Object getId() {
-        return id;
+        if (this.element instanceof Node) {
+            return ((Node) this.element).getId();
+        } else { //if(this.element instanceof Relationship) {
+            return ((Relationship) this.element).getId();
+        }
     }
 }

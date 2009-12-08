@@ -15,12 +15,15 @@ public class TinkerElement implements Element {
 
     protected Map<String, Object> properties = new HashMap<String, Object>();
     protected final String id;
+    protected final TinkerIndex index;
 
-    protected TinkerElement(String id) {
+    protected TinkerElement(String id, TinkerIndex index) {
         if (null == id)
             this.id = UUID.randomUUID().toString();
         else
             this.id = id;
+
+        this.index = index;
     }
 
     public Set<String> getPropertyKeys() {
@@ -28,7 +31,9 @@ public class TinkerElement implements Element {
     }
 
     public void setProperty(String key, Object value) {
+        this.index.remove(key, this.getProperty(key), this);
         this.properties.put(key, value);
+        this.index.put(key, value, this);
     }
 
     public Object getProperty(String key) {

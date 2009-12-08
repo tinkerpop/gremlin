@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.sesame;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Index;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Namespace;
 import org.openrdf.model.Statement;
@@ -36,6 +37,9 @@ public class SesameGraph implements Graph {
         dataTypeToClass.put(XSD_NS + "double", "java.lang.Double");
     }
 
+    public Index getIndex() {
+        return null;
+    }
 
     public SesameGraph(Sail sail) throws SailException {
         this.sail = sail;

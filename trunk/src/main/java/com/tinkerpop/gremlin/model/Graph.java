@@ -22,5 +22,7 @@ public interface Graph {
 
     public void removeEdge(Edge edge);
 
+    public Index getIndex();
+
     public void shutdown();
 }

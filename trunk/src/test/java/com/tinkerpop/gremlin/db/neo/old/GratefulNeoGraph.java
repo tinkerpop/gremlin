@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo.old;
 
 import com.tinkerpop.gremlin.model.parser.GraphMLWriter;
 import org.neo4j.api.core.*;
@@ -40,7 +40,7 @@ public class GratefulNeoGraph {
         return this.index;
     }
 
-    public void loadGratefulDeadGraph() throws Exception {
+   /* public void loadGratefulDeadGraph() throws Exception {
         deleteGraphDirectory(new File(NEO_DIRECTORY));
         neo = new EmbeddedNeo(NEO_DIRECTORY);
         index = new LuceneIndexService(neo);
@@ -142,7 +142,7 @@ public class GratefulNeoGraph {
         tx = neo.beginTx();
         try {
 
-                    NeoGraph g = new NeoGraph(neo);
+            NeoGraph g = new NeoGraph(neo);
             GraphMLWriter.outputGraph(g, new FileOutputStream("/Users/marko/software/gremlin/trunk/src/test/resources/com/tinkerpop/gremlin/model/parser/graph-example-2.xml"));
             tx.success();
         } finally {
@@ -163,8 +163,8 @@ public class GratefulNeoGraph {
 
         } finally {
             tx.finish();
-        }*/
-    }
+        }
+    } */
 
     public void shutdown() {
         neo.shutdown();

@@ -2,9 +2,10 @@ package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.api.core.*;
-import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.LuceneIndexService;
 
 import java.util.Iterator;
@@ -16,29 +17,52 @@ import java.util.Iterator;
 public class NeoGraph implements Graph {
 
     private NeoService neo;
-    private IndexService index;
-    private String indexKey;
+    private NeoIndex index;
+    private Transaction tx;
 
-    public NeoGraph(String directory, String indexKey) {
+    public NeoGraph(String directory) {
         this.neo = new EmbeddedNeo(directory);
-        this.index = new LuceneIndexService(neo);
-        this.indexKey = indexKey;
+        this.index = new NeoIndex(new LuceneIndexService(neo));
+
+        tx = neo.beginTx();
+        try {
+            Node referenceNode = this.neo.getReferenceNode();
+            referenceNode.delete();
+            this.stopStartTransaction();
+        } catch (NotFoundException e) {
+        }
     }
 
-    public NeoGraph(NeoService neo) {
-        this.neo = neo;
+    public Index getIndex() {
+        return this.index;
     }
 
     public Vertex addVertex(Object id) {
-        return new NeoVertex(neo.createNode());
+        try {
+            if (null != id) {
+                Long longId = Double.valueOf(id.toString()).longValue();
+                return new NeoVertex(this.neo.getNodeById(longId), this.index);
+            } else {
+                throw new NotFoundException();
+            }
+        } catch (NotFoundException e) {
+            Vertex vertex = new NeoVertex(neo.createNode(), this.index);
+            this.stopStartTransaction();
+            return vertex;
+        } catch (NumberFormatException e) {
+            throw new EvaluationException("Neo vertex ids must be convertible to a long value.");
+        }
     }
 
     public Vertex getVertex(Object id) {
-        Node node = this.index.getSingleNode(this.indexKey, id);
-        if (null != node) {
-            return new NeoVertex(node);
-        } else {
+        try {
+            Long longId = Double.valueOf(id.toString()).longValue();
+            Node node = this.neo.getNodeById(longId);
+            return new NeoVertex(node, this.index);
+        } catch (NotFoundException e) {
             return null;
+        } catch (NumberFormatException e) {
+            throw new EvaluationException("Neo vertex ids must be convertible to a long value.");
         }
     }
 
@@ -54,22 +78,42 @@ public class NeoGraph implements Graph {
         Long id = (Long) vertex.getId();
         Node node = neo.getNodeById(id);
         if (null != node) {
-            this.index.removeIndex(node, this.indexKey, node.getProperty(this.indexKey));
+            for (String key : vertex.getPropertyKeys()) {
+                this.index.remove(key, vertex.getProperty(key), vertex);
+            }
+            for(Edge edge : vertex.getBothEdges()) {
+                this.removeEdge(edge);
+            }
             node.delete();
+            this.stopStartTransaction();
         }
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
-        return null;
+        Node outNode = (Node)((NeoVertex)outVertex).getRawElement();
+        Node inNode = (Node)((NeoVertex)inVertex).getRawElement();
+        Relationship relationship = outNode.createRelationshipTo(inNode, DynamicRelationshipType.withName(label));
+        this.stopStartTransaction();
+        return new NeoEdge(relationship, this.index);
     }
 
     public void removeEdge(Edge edge) {
         ((Relationship) ((NeoEdge) edge).getRawElement()).delete();
+        this.stopStartTransaction();
+    }
+
+    private void stopStartTransaction() {
+        tx.success();
+        tx.finish();
+        tx = neo.beginTx();
     }
 
     public void shutdown() {
+        this.tx.success();
+        this.tx.finish();
         this.neo.shutdown();
         this.index.shutdown();
+
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
@@ -85,7 +129,7 @@ public class NeoGraph implements Graph {
         }
 
         public Vertex next() {
-            return new NeoVertex(this.nodes.next());
+            return new NeoVertex(this.nodes.next(), index);
         }
 
         public boolean hasNext() {
@@ -101,7 +145,7 @@ public class NeoGraph implements Graph {
 
         public NeoEdgeIterator(Iterator<Node> nodes) {
             this.nodes = nodes;
-            if(this.nodes.hasNext()) {
+            if (this.nodes.hasNext()) {
                 this.nodeRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
             }
         }
@@ -112,8 +156,8 @@ public class NeoGraph implements Graph {
 
         public Edge next() {
             if (nodeRelationships.hasNext())
-                return new NeoEdge(nodeRelationships.next());
-            else if(this.nodes.hasNext()) {
+                return new NeoEdge(nodeRelationships.next(), index);
+            else if (this.nodes.hasNext()) {
                 this.nodeRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
                 return next();
             } else {
@@ -122,7 +166,7 @@ public class NeoGraph implements Graph {
         }
 
         public boolean hasNext() {
-            if(!this.nodes.hasNext() && !this.nodeRelationships.hasNext())
+            if (!this.nodes.hasNext() && !this.nodeRelationships.hasNext())
                 return false;
             else
                 return true;
