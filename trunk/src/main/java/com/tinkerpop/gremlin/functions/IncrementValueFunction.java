@@ -17,17 +17,31 @@ public class IncrementValueFunction implements Function {
 
     public static final String FUNCTION_NAME = "incr-value";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    //TODO allow it to take a set of indices or keys
+    public Object invoke(ExpressionContext context, Object[] parameters) {
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-        if (null != objects && objects.length == 2) {
-            if (objects[0] instanceof Map && objects[1] instanceof Number) {
-                incrValue((Map) objects[0], context.getContextNodePointer().getValue(), (Number) objects[1]);
-                return Boolean.TRUE;
-            } else if (objects[0] instanceof List && objects[1] instanceof Number) {
-                Object index = context.getContextNodePointer().getValue();
-                if (index instanceof Number) {
-                    incrValue((List) objects[0], ((Number) index).intValue() - 1, (Number) objects[1]);
+        if (null != objects) {
+            if (objects.length == 2) {
+                if (objects[0] instanceof Map && objects[1] instanceof Number) {
+                    incrValue((Map) objects[0], context.getContextNodePointer().getValue(), (Number) objects[1]);
                     return Boolean.TRUE;
+                } else if (objects[0] instanceof List && objects[1] instanceof Number) {
+                    Object index = context.getContextNodePointer().getValue();
+                    if (index instanceof Number) {
+                        incrValue((List) objects[0], ((Number) index).intValue() - 1, (Number) objects[1]);
+                        return Boolean.TRUE;
+                    }
+                }
+            } else if (objects.length == 3) {
+                if (objects[0] instanceof Map && objects[2] instanceof Number) {
+                    Map map = (Map) objects[0];
+                    incrValue(map, objects[1], (Number) objects[2]);
+                    return map.get(objects[1]);
+                } else if (objects[0] instanceof List && objects[1] instanceof Number && objects[2] instanceof Number) {
+                    Integer index = ((Number) objects[1]).intValue() - 1;
+                    List list = (List)objects[0];
+                    incrValue(list, index, (Number) objects[2]);
+                    return list.get(index);
                 }
             }
 
