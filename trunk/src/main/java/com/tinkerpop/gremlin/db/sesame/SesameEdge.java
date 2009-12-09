@@ -10,7 +10,9 @@ import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -73,7 +75,7 @@ public class SesameEdge extends SesameElement implements Edge {
                 this.statement = newStatement;
                 return ng;
             } catch (SailException e) {
-               throw new EvaluationException(e.getMessage());
+                throw new EvaluationException(e.getMessage());
             }
         }
         return null;
@@ -85,6 +87,13 @@ public class SesameEdge extends SesameElement implements Edge {
 
     public Vertex getOutVertex() {
         return new SesameVertex(this.statement.getSubject(), this.sailConnection);
+    }
+
+    public List<Vertex> getBothVertices() {
+        List<Vertex> bothVertices = new ArrayList<Vertex>();
+        bothVertices.add(this.getOutVertex());
+        bothVertices.add(this.getInVertex());
+        return bothVertices;
     }
 
     public Statement getRawStatement() {

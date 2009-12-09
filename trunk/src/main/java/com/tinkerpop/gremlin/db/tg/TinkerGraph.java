@@ -18,19 +18,20 @@ public class TinkerGraph implements Graph {
     private TinkerIndex index = new TinkerIndex();
 
     public Vertex addVertex(Object id) {
-
-        Vertex vertex = this.vertices.get(id);
+        String idString = id.toString();
+        Vertex vertex = this.vertices.get(idString);
         if (null != vertex)
             return vertex;
         else {
-            vertex = new TinkerVertex((String)id, this.index);
-            this.vertices.put((String)vertex.getId(), vertex);
+            vertex = new TinkerVertex(idString, this.index);
+            this.vertices.put(idString, vertex);
             return vertex;
         }
     }
 
     public Vertex getVertex(Object id) {
-        return this.vertices.get(id);
+        String idString = id.toString();
+        return this.vertices.get(idString);
     }
 
     public Iterator<Vertex> getVertices() {
@@ -49,13 +50,14 @@ public class TinkerGraph implements Graph {
         for (String key : vertex.getPropertyKeys()) {
                 this.index.remove(key, vertex.getProperty(key), vertex);
         }
-        this.vertices.remove(vertex.getId());
+        this.vertices.remove(vertex.getId().toString());
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+        String idString = id.toString();
         TinkerVertex out = (TinkerVertex) outVertex;
         TinkerVertex in = (TinkerVertex) inVertex;
-        TinkerEdge edge = new TinkerEdge((String)id, outVertex, inVertex, label, this.index);
+        TinkerEdge edge = new TinkerEdge(idString, outVertex, inVertex, label, this.index);
         out.outEdges.add(edge);
         in.inEdges.add(edge);
         //this.edges.put(edge.getId(), edge);
