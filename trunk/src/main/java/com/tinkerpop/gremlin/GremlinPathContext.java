@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.db.neo.NeoFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.model.Edge;
@@ -8,12 +9,14 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -24,21 +27,22 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     private boolean newRoot = false;
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
-
+    private static final FunctionLibrary library = new FunctionLibrary();
 
     static {
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
+
+        library.addFunctions(new GremlinFunctions());
+        library.addFunctions(new TinkerFunctions());
+        library.addFunctions(new NeoFunctions());
+        library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
+        library.addFunctions(JXPathContext.newContext(null).getFunctions());
     }
 
     public GremlinPathContext(GremlinPathContext parentContext, Object object) {
         super(parentContext, object);
         if (null == parentContext) {
-            FunctionLibrary library = new FunctionLibrary();
-            library.addFunctions(new GremlinFunctions());
-            library.addFunctions(new TinkerFunctions());
-            library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
-            library.addFunctions(this.getFunctions());
             this.setFunctions(library);
             // TODO why does this not work?
             if (object instanceof List && ((List) object).size() == 1)
@@ -79,7 +83,20 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         if (variablePattern.matcher(variable).matches()) {
             // $i := ././././
             if (variable.equals(Tokens.AT_VARIABLE)) {
-                this.setRoot(value);
+                // this is to semi-solve the null pointer exception from backtracking using element collections
+                if (value instanceof Collection) {
+                    if (value instanceof Set) {
+                        if (((Set) value).size() == 1) {
+                            this.setRoot(((Set) value).iterator().next());
+                        }
+                    } else if (value instanceof List) {
+                        if (((List) value).size() == 1) {
+                            this.setRoot(((List) value).get(0));
+                        }
+                    }
+                } else {
+                    this.setRoot(value);
+                }
             }
             this.getVariables().declareVariable(GremlinPathContext.removeVariableDollarSign(variable), value);
         } else {
@@ -91,7 +108,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
                 throw EvaluationException.createException(EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
             }
         }
-
     }
 
     public Object getVariable(String variable) {

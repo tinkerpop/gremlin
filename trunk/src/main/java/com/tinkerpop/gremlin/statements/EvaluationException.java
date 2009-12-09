@@ -28,7 +28,7 @@ public class EvaluationException extends RuntimeException {
         else if(type == EvaluationErrorType.NO_FUNCTION)
             return new EvaluationException(NO_FUNCTION_MESSAGE + " " + functionName);
         else
-            return new EvaluationException("Evaluation error.");
+            return new EvaluationException("Evaluation error");
 
     }
 
@@ -40,6 +40,6 @@ public class EvaluationException extends RuntimeException {
         else if(type == EvaluationErrorType.INDEX_BOUNDS)
             return new EvaluationException(INDEX_BOUND_MESSAGE);
         else
-            return new EvaluationException("Evaluation error.");
+            return new EvaluationException("Evaluation error");
     }
 }

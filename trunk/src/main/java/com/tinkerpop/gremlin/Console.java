@@ -6,6 +6,7 @@ import jline.ConsoleReader;
 import org.apache.commons.jxpath.JXPathException;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ public class Console {
     private static final String INDENT = "         ";
     private static final int TAB_LENGTH = 2;
     private static final String PRINT_RETURN = "==>";
+    private static final String MAP_EQUALS = "=";
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
     private static final String SINGLE_SPACE = " ";
@@ -28,19 +30,21 @@ public class Console {
 
     public static void main(String[] args) throws IOException {
 
+        PrintStream output = System.out;
+
         ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
         reader.setUseHistory(true);
         GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
 
         String line = "";
-        System.out.println();
-        System.out.println("         \\,,,/");
-        System.out.println("         (o o)");
-        System.out.println("-----oOOo-(_)-oOOo-----");
+        output.println();
+        output.println("         \\,,,/");
+        output.println("         (o o)");
+        output.println("-----oOOo-(_)-oOOo-----");
 
         while (line != null) {
-            //System.out.println("DEPTH: " + gremlinEvaluator.getDepth());
+            //ouput.println("DEPTH: " + gremlinEvaluator.getDepth());
             if (gremlinEvaluator.inStatement())
                 line = reader.readLine(INDENT + generateIndentation(gremlinEvaluator.getDepth() * TAB_LENGTH));
             else {
@@ -57,22 +61,22 @@ public class Console {
                                 if (o instanceof Map) {
                                     Map map = (Map) o;
                                     for (Object key : map.keySet()) {
-                                        System.out.println(PRINT_RETURN + key + "=" + map.get(key));
+                                        output.println(PRINT_RETURN + key + MAP_EQUALS + map.get(key));
                                     }
                                 } else {
-                                    System.out.println(PRINT_RETURN + o);
+                                    output.println(PRINT_RETURN + o);
                                 }
                             }
                         }
                     }
                 } catch (JXPathException e) {
-                    System.out.println(e.getMessage());
+                    output.println(e.getMessage());
                 } catch (SyntaxException e) {
-                    System.out.println(SYNTAX_ERROR + e.getMessage());
+                    output.println(SYNTAX_ERROR + e.getMessage());
                 } catch (EvaluationException e) {
-                    System.out.println(EVALUATION_ERROR + e.getMessage());
+                    output.println(EVALUATION_ERROR + e.getMessage());
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    output.println(e.getMessage());
                 }
             }
         }

@@ -29,6 +29,11 @@ public class GremlinFunctions implements Functions {
         // graphs
         functionMap.put(IdFunction.FUNCTION_NAME, new IdFunction());
         functionMap.put(KeyFunction.FUNCTION_NAME, new KeyFunction());
+        functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
+        functionMap.put(AddVertexFunction.FUNCTION_NAME, new AddVertexFunction());
+        functionMap.put(AddEdgeFunction.FUNCTION_NAME, new AddEdgeFunction());
+        functionMap.put(RemoveVertexEdgeFunction.FUNCTION_NAME, new RemoveVertexEdgeFunction());
+        functionMap.put(ShutdownFunction.FUNCTION_NAME, new ShutdownFunction());
         // sets
         functionMap.put(SetFunction.FUNCTION_NAME, new SetFunction());
         functionMap.put(UnionFunction.FUNCTION_NAME, new UnionFunction());

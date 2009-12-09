@@ -17,11 +17,13 @@ import java.util.Iterator;
 public class NeoGraph implements Graph {
 
     private NeoService neo;
+    private String directory;
     private NeoIndex index;
     private Transaction tx;
 
     public NeoGraph(String directory) {
-        this.neo = new EmbeddedNeo(directory);
+        this.directory = directory;
+        this.neo = new EmbeddedNeo(this.directory);
         this.index = new NeoIndex(new LuceneIndexService(neo));
 
         tx = neo.beginTx();
@@ -114,6 +116,11 @@ public class NeoGraph implements Graph {
         this.neo.shutdown();
         this.index.shutdown();
 
+    }
+
+
+    public String toString() {
+         return "neograph[" + this.directory + "]";
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
