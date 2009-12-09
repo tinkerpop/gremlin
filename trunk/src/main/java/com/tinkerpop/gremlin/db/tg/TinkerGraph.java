@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Index;
+import com.tinkerpop.gremlin.model.Vertex;
 
 import java.util.*;
 
@@ -13,20 +13,30 @@ import java.util.*;
  */
 public class TinkerGraph implements Graph {
 
+    private Long currentId = 0l;
     protected Map<String, Vertex> vertices = new HashMap<String, Vertex>();
     //protected Map<String, Edge> edges = new HashMap<String, Edge>();
     private TinkerIndex index = new TinkerIndex();
 
     public Vertex addVertex(Object id) {
-        String idString = id.toString();
+        String idString;
+        if (null != id) {
+            idString = id.toString();
+        } else {
+            idString = this.currentId.toString();
+            this.currentId++;
+        }
+
         Vertex vertex = this.vertices.get(idString);
+
         if (null != vertex)
             return vertex;
         else {
             vertex = new TinkerVertex(idString, this.index);
-            this.vertices.put(idString, vertex);
+            this.vertices.put(vertex.getId().toString(), vertex);
             return vertex;
         }
+
     }
 
     public Vertex getVertex(Object id) {
@@ -48,13 +58,20 @@ public class TinkerGraph implements Graph {
             this.removeEdge(edge);
         }
         for (String key : vertex.getPropertyKeys()) {
-                this.index.remove(key, vertex.getProperty(key), vertex);
+            this.index.remove(key, vertex.getProperty(key), vertex);
         }
         this.vertices.remove(vertex.getId().toString());
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
-        String idString = id.toString();
+        String idString;
+        if (null != id) {
+            idString = id.toString();
+        } else {
+            idString = this.currentId.toString();
+            this.currentId++;
+        }
+
         TinkerVertex out = (TinkerVertex) outVertex;
         TinkerVertex in = (TinkerVertex) inVertex;
         TinkerEdge edge = new TinkerEdge(idString, outVertex, inVertex, label, this.index);

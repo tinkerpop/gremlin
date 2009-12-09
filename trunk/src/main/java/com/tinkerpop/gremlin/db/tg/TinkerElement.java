@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.model.Element;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -18,12 +17,8 @@ public class TinkerElement implements Element {
     protected final TinkerIndex index;
 
     protected TinkerElement(String id, TinkerIndex index) {
-        if (null == id)
-            this.id = UUID.randomUUID().toString();
-        else
-            this.id = id;
-
         this.index = index;
+        this.id = id;
     }
 
     public Set<String> getPropertyKeys() {
