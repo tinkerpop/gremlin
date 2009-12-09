@@ -2,9 +2,11 @@ package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.ContextStatementImpl;
+import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
@@ -19,7 +21,7 @@ public class SesameEdge extends SesameElement implements Edge {
 
     Statement statement;
 
-    protected final static String NAMED_GRAPH = "named_graph";
+    protected final static String NAMED_GRAPH = "ng";
     protected static Set<String> keys = new HashSet<String>();
 
     static {
@@ -27,7 +29,7 @@ public class SesameEdge extends SesameElement implements Edge {
     }
 
     public SesameEdge(Statement statement, SailConnection sailConnection) {
-        super(statement.toString(), sailConnection);
+        super(sailConnection);
         this.statement = statement;
     }
 
@@ -52,14 +54,28 @@ public class SesameEdge extends SesameElement implements Edge {
                 sailConnection.removeStatements(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
                 Statement newStatement = new ContextStatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), (Resource) value);
                 sailConnection.addStatement(newStatement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
+                this.sailConnection.commit();
                 this.statement = newStatement;
             } catch (SailException e) {
-                e.printStackTrace();
+                throw new EvaluationException(e.getMessage());
             }
         }
     }
 
     public Object removeProperty(String key) {
+        if (key.equals(NAMED_GRAPH)) {
+            try {
+                Resource ng = this.statement.getContext();
+                sailConnection.removeStatements(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
+                Statement newStatement = new StatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject());
+                sailConnection.addStatement(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject());
+                this.sailConnection.commit();
+                this.statement = newStatement;
+                return ng;
+            } catch (SailException e) {
+               throw new EvaluationException(e.getMessage());
+            }
+        }
         return null;
     }
 
@@ -87,9 +103,10 @@ public class SesameEdge extends SesameElement implements Edge {
     }
 
     public boolean equals(Object object) {
-        if (object instanceof SesameEdge)
-            return object.hashCode() == this.hashCode();
-        else
-            return false;
+        return object instanceof SesameEdge && object.hashCode() == this.hashCode();
+    }
+
+    public Object getId() {
+        return this.statement;
     }
 }

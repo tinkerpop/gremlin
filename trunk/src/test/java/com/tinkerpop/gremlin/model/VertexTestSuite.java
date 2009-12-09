@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.model;
 
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.parser.GraphMLReader;
 
 import java.util.HashSet;
@@ -63,6 +61,13 @@ public class VertexTestSuite extends ModelTestSuite {
         }
         assertEquals(countIterator(graph.getVertices()), 0);
 
+    }
+
+    public static void testVertexIterator(Graph graph) {
+        for (int i = 0; i < 1000; i++) {
+            graph.addVertex(null);
+        }
+        assertEquals(countIterator(graph.getVertices()), 1000);
     }
 
     public static void testAddVertexProperties(Graph graph) {

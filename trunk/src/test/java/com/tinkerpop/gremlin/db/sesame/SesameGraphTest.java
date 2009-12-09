@@ -5,7 +5,11 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 import com.tinkerpop.gremlin.model.Vertex;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Statement;
+import org.openrdf.model.Literal;
+import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.sail.SailRepository;
@@ -13,6 +17,9 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
+
+import java.util.regex.Matcher;
+
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -55,8 +62,6 @@ public class SesameGraphTest extends BaseTest {
         assertTrue((Boolean) evaluator.evaluate("@tg:name='marko'").get(0));
         assertTrue((Boolean) evaluator.evaluate("@tg:age='29'").get(0));
 
-        assertEquals(evaluator.evaluate("./@tg:age[g:assign('$x')]/../outEdges[@label='tg:knows']/inVertex[@tg:name='josh'][@tg:age > $x]").get(0).toString(), "http://tinkerpop.com#4");
-        //System.out.println(evaluator.evaluate(".[name()]"));
         graph.shutdown();
     }*/
 
@@ -82,8 +87,29 @@ public class SesameGraphTest extends BaseTest {
 
     }
 
+    public void testBNodes() {
+        assertTrue(SesameGraph.isBNode("_:1234"));
+        assertTrue(SesameGraph.isBNode("_:abcdefghijklmnopqrstuvwxyz"));
+        assertFalse(SesameGraph.isBNode("_:"));
+    }
+
+    public void testLiterals() {
+        assertTrue(SesameGraph.isLiteral("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>"));
+        assertFalse(SesameGraph.isLiteral("http://www.w3.org/2001/XMLSchema#string"));
+        assertFalse(SesameGraph.isLiteral("^^<http://www.w3.org/2001/XMLSchema#string>"));
+        assertTrue(SesameGraph.isLiteral("\"\"^^<http://www.w3.org/2001/XMLSchema#string>"));
+
+        Matcher matcher = SesameGraph.literalPattern.matcher("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>");
+        matcher.matches();
+        assertEquals(matcher.group(1), "java");
+        assertEquals(matcher.group(2), "http://www.w3.org/2001/XMLSchema#string");
+    }
+
     public void testURIs() {
-        new URIImpl("http://1");
+        assertFalse(SesameGraph.isURI("_:1234"));
+        assertFalse(SesameGraph.isURI("_:abcdefghijklmnopqrstuvwxyz"));
+        assertTrue(SesameGraph.isURI("http://marko"));
+        assertTrue(SesameGraph.isURI("http://www.w3.org/2001/XMLSchema#string"));
     }
 
     public static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {

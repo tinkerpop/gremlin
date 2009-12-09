@@ -2,12 +2,12 @@ package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
 import org.openrdf.model.Value;
-import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
@@ -23,8 +23,12 @@ public class SesameVertex extends SesameElement implements Vertex {
     Value value;
 
     public SesameVertex(Value value, SailConnection sailConnection) {
-        super(value.stringValue(), sailConnection);
+        super(sailConnection);
         this.value = value;
+    }
+
+    public Value getRawValue() {
+        return this.value;
     }
 
     public void setProperty(String key, Object value) {
@@ -37,57 +41,29 @@ public class SesameVertex extends SesameElement implements Vertex {
     }
 
     public Object getProperty(String key) {
-        if (this.value instanceof Resource) {
-            key = SesameGraph.prefixToNamespace(key, this.sailConnection);
-            Set<Object> values = new HashSet<Object>();
-            try {
-                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, new URIImpl(key), null, false);
-                while (results.hasNext()) {
-                    Statement s = results.next();
-                    Value value = s.getObject();
-                    if (value instanceof Literal) {
-                        String dataType = ((Literal) value).getDatatype().stringValue();
-                        String literalValue = ((Literal) value).getLabel();
-                        values.add(SesameGraph.castLiteral(literalValue, dataType));
-                    }
-                }
-                results.close();
-            } catch (SailException e) {
-                e.printStackTrace();
+        if (value instanceof Literal) {
+            Literal literal = (Literal) value;
+            if (key.equals("datatype")) {
+                return literal.getDatatype();
+            } else if (key.equals("language")) {
+                return literal.getLanguage();
             }
-            int size = values.size();
-            if (size == 0)
-                return null;
-            else if (size == 1)
-                return values.iterator().next();
-            else
-                return values;
-        } else {
-            return null;
         }
-
+        return null;
     }
 
     public Set<String> getPropertyKeys() {
-        if (this.value instanceof Resource) {
+        if (value instanceof Literal) {
             Set<String> keys = new HashSet<String>();
-            try {
-                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, null, null, false);
-                while (results.hasNext()) {
-                    Statement s = results.next();
-                    Value value = s.getObject();
-                    if (value instanceof Literal) {
-                        keys.add(SesameGraph.namespaceToPrefix(s.getPredicate().stringValue(), this.sailConnection));
-                    }
-                }
-                results.close();
-            } catch (SailException e) {
-                e.printStackTrace();
+            if (null != this.getProperty("datatype")) {
+                keys.add("datatype");
+            } else if (null != this.getProperty("language")) {
+                keys.add("language");
             }
-            return keys;
-        } else {
-            return null;
+            if (keys.size() > 0)
+                return keys;
         }
+        return null;
     }
 
     public Set<Edge> getOutEdges() {
@@ -101,7 +77,7 @@ public class SesameVertex extends SesameElement implements Vertex {
                 results.close();
 
             } catch (SailException e) {
-                e.printStackTrace();
+                throw new EvaluationException(e.getMessage());
             }
             return edges;
         } else {
@@ -118,14 +94,12 @@ public class SesameVertex extends SesameElement implements Vertex {
             }
             results.close();
         } catch (SailException e) {
-            e.printStackTrace();
+            throw new EvaluationException(e.getMessage());
         }
         return edges;
     }
 
     public Set<Edge> getBothEdges() {
-
-
         Set<Edge> bothEdges = new HashSet<Edge>();
         bothEdges.addAll(this.getInEdges());
         if (!(this.value instanceof Resource)) {
@@ -143,9 +117,10 @@ public class SesameVertex extends SesameElement implements Vertex {
     }
 
     public boolean equals(Object object) {
-        if (object instanceof SesameVertex)
-            return object.hashCode() == this.hashCode();
-        else
-            return false;
+        return object instanceof SesameVertex && object.hashCode() == this.hashCode();
+    }
+
+    public Object getId() {
+        return this.value;
     }
 }
