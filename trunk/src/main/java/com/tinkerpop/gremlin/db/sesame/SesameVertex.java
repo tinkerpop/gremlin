@@ -18,13 +18,14 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameVertex extends SesameElement implements Vertex {
+public class SesameVertex implements Vertex {
 
-    Value value;
+    protected Value value;
+    protected SailConnection sailConnection;
 
     public SesameVertex(Value value, SailConnection sailConnection) {
-        super(sailConnection);
         this.value = value;
+        this.sailConnection = sailConnection;
     }
 
     public Value getRawValue() {
@@ -32,16 +33,24 @@ public class SesameVertex extends SesameElement implements Vertex {
     }
 
     public void setProperty(String key, Object value) {
-        System.out.println("setProperty() is not implemented yet.");
+        if (this.value instanceof Resource) {
+            throw new EvaluationException("RDF graph resource vertices can not have properties");
+        } else {
+            // TODO: implement;
+        }
     }
 
     public Object removeProperty(String key) {
-        System.out.println("removeProperty() is not implemented yet.");
-        return null;
+        if (this.value instanceof Resource) {
+            throw new EvaluationException("RDF graph resource vertices can not have properties");
+        } else {
+            // TODO: implement;
+            return null;
+        }
     }
 
     public Object getProperty(String key) {
-        if (value instanceof Literal) {
+        if (this.value instanceof Literal) {
             Literal literal = (Literal) value;
             if (key.equals("datatype")) {
                 return literal.getDatatype();
@@ -53,29 +62,26 @@ public class SesameVertex extends SesameElement implements Vertex {
     }
 
     public Set<String> getPropertyKeys() {
-        if (value instanceof Literal) {
-            Set<String> keys = new HashSet<String>();
+        Set<String> keys = new HashSet<String>();
+        if (this.value instanceof Literal) {
             if (null != this.getProperty("datatype")) {
                 keys.add("datatype");
             } else if (null != this.getProperty("language")) {
                 keys.add("language");
             }
-            if (keys.size() > 0)
-                return keys;
         }
-        return null;
+        return keys;
     }
 
     public Set<Edge> getOutEdges() {
         if (this.value instanceof Resource) {
             Set<Edge> edges = new HashSet<Edge>();
             try {
-                CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements((Resource) this.value, null, null, false);
+                CloseableIteration<? extends Statement, SailException> results = this.sailConnection.getStatements((Resource) this.value, null, null, false);
                 while (results.hasNext()) {
                     edges.add(new SesameEdge(results.next(), this.sailConnection));
                 }
                 results.close();
-
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }

@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import com.tinkerpop.gremlin.db.tg.functions.OpenTinkerGraphFunction;
+import com.tinkerpop.gremlin.db.tg.functions.OpenFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.FunctionHelper;
 import org.apache.commons.jxpath.Function;
@@ -24,7 +24,7 @@ public class TinkerFunctions implements Functions {
 
     static {
         namespaces.add(NAMESPACE_PREFIX);
-        functionMap.put(OpenTinkerGraphFunction.FUNCTION_NAME, new OpenTinkerGraphFunction());
+        functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {

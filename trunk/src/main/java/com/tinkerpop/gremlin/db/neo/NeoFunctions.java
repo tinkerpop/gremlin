@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.neo.functions.OpenNeoFunction;
+import com.tinkerpop.gremlin.db.neo.functions.OpenFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -24,7 +24,7 @@ public class NeoFunctions implements Functions {
 
     static {
         namespaces.add(NAMESPACE_PREFIX);
-        functionMap.put(OpenNeoFunction.FUNCTION_NAME, new OpenNeoFunction());
+        functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {

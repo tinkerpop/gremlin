@@ -5,8 +5,10 @@ import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
+import org.openrdf.model.URI;
 import org.openrdf.model.impl.ContextStatementImpl;
 import org.openrdf.model.impl.StatementImpl;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
@@ -19,9 +21,10 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameEdge extends SesameElement implements Edge {
+public class SesameEdge implements Edge {
 
-    Statement statement;
+    protected Statement statement;
+    protected SailConnection sailConnection;
 
     protected final static String NAMED_GRAPH = "ng";
     protected static Set<String> keys = new HashSet<String>();
@@ -31,12 +34,12 @@ public class SesameEdge extends SesameElement implements Edge {
     }
 
     public SesameEdge(Statement statement, SailConnection sailConnection) {
-        super(sailConnection);
         this.statement = statement;
+        this.sailConnection = sailConnection;
     }
 
     public String getLabel() {
-        return SesameGraph.namespaceToPrefix(this.statement.getPredicate().stringValue(), this.sailConnection);
+        return SesameGraph.prefixToNamespace(this.statement.getPredicate().stringValue(), this.sailConnection);
     }
 
     public Set<String> getPropertyKeys() {
@@ -53,14 +56,17 @@ public class SesameEdge extends SesameElement implements Edge {
     public void setProperty(String key, Object value) {
         if (key.equals(NAMED_GRAPH)) {
             try {
+                URI namedGraph = new URIImpl(SesameGraph.prefixToNamespace(value.toString(), this.sailConnection));
                 sailConnection.removeStatements(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
-                Statement newStatement = new ContextStatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), (Resource) value);
+                Statement newStatement = new ContextStatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), namedGraph);
                 sailConnection.addStatement(newStatement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
                 this.sailConnection.commit();
                 this.statement = newStatement;
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }
+        } else {
+            throw new EvaluationException("RDF graph edges can only have named graph (ng) properties");
         }
     }
 
@@ -77,8 +83,9 @@ public class SesameEdge extends SesameElement implements Edge {
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }
+        } else {
+            throw new EvaluationException("RDF graph edges can only have named graph (ng) properties");
         }
-        return null;
     }
 
     public Vertex getInVertex() {
@@ -102,9 +109,13 @@ public class SesameEdge extends SesameElement implements Edge {
 
     public String toString() {
         //return this.statement.toString();
-        return SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection) +
-                "--" + this.getLabel() + "-->" +
+        String edgeString = SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection) +
+                "--" + SesameGraph.namespaceToPrefix(this.getLabel(), this.sailConnection) + "-->" +
                 SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
+        if (null != this.statement.getContext()) {
+            edgeString = edgeString + " [" + SesameGraph.namespaceToPrefix(this.statement.getContext().stringValue(), this.sailConnection) + "]";
+        }
+        return edgeString;
     }
 
     public int hashCode() {

@@ -12,7 +12,7 @@ import org.apache.commons.jxpath.Function;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class OpenNeoFunction implements Function {
+public class OpenFunction implements Function {
 
     public static final String FUNCTION_NAME = "open";
 
@@ -21,11 +21,7 @@ public class OpenNeoFunction implements Function {
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof String) {
-                try {
-                    return new NeoGraph((String) object);
-                } catch (Exception e) {
-                    throw new EvaluationException(NeoFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
-                }
+                return new NeoGraph((String) object);
             }
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(NeoFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);

@@ -1,41 +1,47 @@
 package com.tinkerpop.gremlin.db.sesame;
 
-import com.tinkerpop.gremlin.model.Graph;
-import org.apache.commons.jxpath.ExpressionContext;
-import org.openrdf.sail.SailException;
-import org.openrdf.sail.memory.MemoryStore;
-import org.openrdf.sail.nativerdf.NativeStore;
+import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.db.sesame.functions.OpenFunction;
+import com.tinkerpop.gremlin.db.sesame.functions.RegisterNamespaceFunction;
+import com.tinkerpop.gremlin.db.sesame.functions.NamespacesFunction;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.Functions;
 
-import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameFunctions {
+public class SesameFunctions implements Functions {
 
     public static final String NAMESPACE_PREFIX = "sail";
 
-    public static SesameGraph open_native(String directory) throws SailException {
-        NativeStore sail = new NativeStore(new File(directory));
-        sail.initialize();
-        return new SesameGraph(sail);
+    private static Set<String> namespaces = new HashSet<String>();
+    private static final Map<String, Function> functionMap = new HashMap<String, Function>();
+
+    static {
+        namespaces.add(NAMESPACE_PREFIX);
+        functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
+        functionMap.put(RegisterNamespaceFunction.FUNCTION_NAME, new RegisterNamespaceFunction());
+        functionMap.put(NamespacesFunction.FUNCTION_NAME, new NamespacesFunction());
     }
 
-    public static SesameGraph open_memory() throws SailException {
-        MemoryStore sail = new MemoryStore();
-        sail.initialize();
-        return new SesameGraph(sail);
+    public Function getFunction(String namespace, String name, Object[] parameters) {
+        Function function = functionMap.get(name);
+        if (null != function)
+            return function;
+
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(namespace, name), EvaluationException.EvaluationErrorType.NO_FUNCTION);
     }
 
-    public static Boolean register_ns(SesameGraph graph, String prefix, String namespace) throws SailException {
-        graph.registerNamespace(prefix, namespace);
-        return Boolean.TRUE;
+    public Set getUsedNamespaces() {
+        return namespaces;
     }
 
-    public static Boolean close(SesameGraph graph) {
-        graph.shutdown();
-        return Boolean.TRUE;
-    }
 
 }

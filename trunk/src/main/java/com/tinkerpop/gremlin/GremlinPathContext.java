@@ -36,7 +36,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         library.addFunctions(new GremlinFunctions());
         library.addFunctions(new TinkerFunctions());
         library.addFunctions(new NeoFunctions());
-        library.addFunctions(new ClassFunctions(SesameFunctions.class, SesameFunctions.NAMESPACE_PREFIX));
+        library.addFunctions(new SesameFunctions());
         library.addFunctions(JXPathContext.newContext(null).getFunctions());
     }
 
