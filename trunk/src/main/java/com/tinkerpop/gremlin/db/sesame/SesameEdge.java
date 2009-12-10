@@ -108,13 +108,19 @@ public class SesameEdge implements Edge {
     }
 
     public String toString() {
-        //return this.statement.toString();
-        String edgeString = SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection) +
-                "--" + SesameGraph.namespaceToPrefix(this.getLabel(), this.sailConnection) + "-->" +
-                SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
+        String outVertex = SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection);
+        String edgeLabel = SesameGraph.namespaceToPrefix(this.statement.getPredicate().stringValue(), this.sailConnection);
+        String inVertex = SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
+        String namedGraph = null;
         if (null != this.statement.getContext()) {
-            edgeString = edgeString + " [" + SesameGraph.namespaceToPrefix(this.statement.getContext().stringValue(), this.sailConnection) + "]";
+            namedGraph = SesameGraph.namespaceToPrefix(this.statement.getContext().stringValue(), this.sailConnection);
         }
+
+        String edgeString = "e[" + outVertex + "-" + edgeLabel + "->" + inVertex + "]";
+        if(null != namedGraph) {
+            edgeString = edgeString + "<" + namedGraph + ">";
+        }
+
         return edgeString;
     }
 

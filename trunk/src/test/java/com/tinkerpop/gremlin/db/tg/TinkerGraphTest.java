@@ -1,14 +1,10 @@
 package com.tinkerpop.gremlin.db.tg;
 
-import com.tinkerpop.gremlin.model.EdgeTestSuite;
-import com.tinkerpop.gremlin.model.IndexTestSuite;
-import com.tinkerpop.gremlin.model.ModelTestSuite;
-import com.tinkerpop.gremlin.model.VertexTestSuite;
+import com.tinkerpop.gremlin.model.*;
 import com.tinkerpop.gremlin.model.parser.GraphMLReaderTestSuite;
+import junit.framework.TestCase;
 
 import java.lang.reflect.Method;
-
-import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,21 +12,32 @@ import junit.framework.TestCase;
  */
 public class TinkerGraphTest extends TestCase {
 
+    private static final SuiteConfiguration config = new SuiteConfiguration();
+
+    static {
+        config.allowsDuplicateEdges = true;
+        config.allowsSelfLoops = true;
+        config.requiresRDFIds = false;
+        config.isRDFModel = false;
+        config.supportsEdgeIteration = true;
+        config.supportsVertexIteration = true;
+    }
+
     public void testVertexSuite() throws Exception {
-        doSuiteTest(new VertexTestSuite());
+        doSuiteTest(new VertexTestSuite(config));
     }
 
     public void testIndexSuite() throws Exception {
-        doSuiteTest(new IndexTestSuite());
+        doSuiteTest(new IndexTestSuite(config));
     }
 
 
     public void testEdgeSuite() throws Exception {
-        doSuiteTest(new EdgeTestSuite());
+        doSuiteTest(new EdgeTestSuite(config));
     }
 
     public void testGraphMLReaderSuite() throws Exception {
-        doSuiteTest(new GraphMLReaderTestSuite());
+        doSuiteTest(new GraphMLReaderTestSuite(config));
     }
 
 

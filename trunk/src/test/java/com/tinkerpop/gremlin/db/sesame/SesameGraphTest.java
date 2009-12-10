@@ -1,23 +1,21 @@
 package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.EdgeTestSuite;
+import com.tinkerpop.gremlin.model.ModelTestSuite;
+import com.tinkerpop.gremlin.model.SuiteConfiguration;
+import com.tinkerpop.gremlin.model.VertexTestSuite;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Statement;
-import org.openrdf.model.Literal;
-import org.openrdf.model.URI;
 import org.openrdf.model.impl.URIImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.BNodeImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
-import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 
+import java.lang.reflect.Method;
 import java.util.regex.Matcher;
 
 
@@ -28,6 +26,17 @@ import java.util.regex.Matcher;
 public class SesameGraphTest extends BaseTest {
 
     public static final String TP_NS = "http://tinkerpop.com#";
+    private static final SuiteConfiguration config = new SuiteConfiguration();
+
+    static {
+        config.allowsDuplicateEdges = false;
+        config.allowsSelfLoops = true;
+        config.requiresRDFIds = true;
+        config.isRDFModel = true;
+        config.supportsEdgeIteration = true;
+        config.supportsVertexIteration = false;
+    }
+
 
     public static MemoryStore loadMemoryStore(String tripleFile, RDFFormat tripleFileFormat) throws Exception {
         MemoryStore sail = new MemoryStore();
@@ -75,12 +84,11 @@ public class SesameGraphTest extends BaseTest {
 
     public void testNamespaceConversion() throws Exception {
         MemoryStore sail = new MemoryStore();
-        sail.initialize();
         SesameGraph graph = new SesameGraph(sail);
         graph.registerNamespace("tg", "http://tinkerpop.com#");
         graph.registerNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-        assertEquals(SesameGraph.prefixToNamespace("tg:name", graph.getSailConnection()),"http://tinkerpop.com#name");
-        assertEquals(SesameGraph.prefixToNamespace("rdf:label", graph.getSailConnection()),"http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
+        assertEquals(SesameGraph.prefixToNamespace("tg:name", graph.getSailConnection()), "http://tinkerpop.com#name");
+        assertEquals(SesameGraph.prefixToNamespace("rdf:label", graph.getSailConnection()), "http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
         assertEquals(SesameGraph.namespaceToPrefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#label", graph.getSailConnection()), "rdf:label");
         assertEquals(SesameGraph.namespaceToPrefix("http://tinkerpop.com#name", graph.getSailConnection()), "tg:name");
         graph.shutdown();
@@ -101,8 +109,17 @@ public class SesameGraphTest extends BaseTest {
 
         Matcher matcher = SesameGraph.literalPattern.matcher("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>");
         matcher.matches();
+        assertNull(matcher.group(6));
         assertEquals(matcher.group(1), "java");
-        assertEquals(matcher.group(2), "http://www.w3.org/2001/XMLSchema#string");
+        assertEquals(matcher.group(4), "http://www.w3.org/2001/XMLSchema#string");
+
+        matcher = SesameGraph.literalPattern.matcher("\"java\"@en");
+        matcher.matches();
+        assertNull(matcher.group(4));
+        assertEquals(matcher.group(1), "java");
+        assertEquals(matcher.group(6), "en");
+
+
     }
 
     public void testURIs() {
@@ -111,6 +128,26 @@ public class SesameGraphTest extends BaseTest {
         assertTrue(SesameGraph.isURI("http://marko"));
         assertTrue(SesameGraph.isURI("http://www.w3.org/2001/XMLSchema#string"));
     }
+
+    public void testVertexSuite() throws Exception {
+        doSuiteTest(new VertexTestSuite(config));
+    }
+
+    public void testEdgeSuite() throws Exception {
+        doSuiteTest(new EdgeTestSuite(config));
+    }
+
+    private static void doSuiteTest(ModelTestSuite suite) throws Exception {
+        for (Method method : suite.getClass().getDeclaredMethods()) {
+            if (method.getName().startsWith("test")) {
+                System.out.println("Testing " + method.getName() + "...");
+                SesameGraph graph = new SesameGraph(new MemoryStore());
+                method.invoke(suite, graph);
+                graph.shutdown();
+            }
+        }
+    }
+
 
     public static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {
         int counter = 0;
@@ -123,4 +160,5 @@ public class SesameGraphTest extends BaseTest {
         itty.close();
         return counter;
     }
+
 }

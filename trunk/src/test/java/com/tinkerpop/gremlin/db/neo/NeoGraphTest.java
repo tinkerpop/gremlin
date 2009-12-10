@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.model.*;
-import com.tinkerpop.gremlin.model.parser.GraphMLReaderTestSuite;
 import junit.framework.TestCase;
 
 import java.io.File;
@@ -14,17 +13,27 @@ import java.lang.reflect.Method;
 public class NeoGraphTest extends TestCase {
 
     private static final String NEO_TEST_DIRECTORY = "/tmp/neo-tests";
+    private static final SuiteConfiguration config = new SuiteConfiguration();
+
+    static {
+        config.allowsDuplicateEdges = true;
+        config.allowsSelfLoops = false;
+        config.requiresRDFIds = false;
+        config.isRDFModel = false;
+        config.supportsEdgeIteration = true;
+        config.supportsVertexIteration = true;
+    }
 
     public void testVertexSuite() throws Exception {
-        doSuiteTest(new VertexTestSuite());
+        doSuiteTest(new VertexTestSuite(config));
     }
 
     public void testEdgeSuite() throws Exception {
-        doSuiteTest(new EdgeTestSuite());
+        doSuiteTest(new EdgeTestSuite(config));
     }
 
     public void testIndexSuite() throws Exception {
-        doSuiteTest(new IndexTestSuite());
+        doSuiteTest(new IndexTestSuite(config));
     }
 
     /*public void testGraphMLReaderSuite() throws Exception {

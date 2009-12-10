@@ -36,7 +36,7 @@ public class SesameVertex implements Vertex {
         if (this.value instanceof Resource) {
             throw new EvaluationException("RDF graph resource vertices can not have properties");
         } else {
-            // TODO: implement;
+           System.out.println("this is a Literal");
         }
     }
 
@@ -53,7 +53,10 @@ public class SesameVertex implements Vertex {
         if (this.value instanceof Literal) {
             Literal literal = (Literal) value;
             if (key.equals("datatype")) {
-                return literal.getDatatype();
+                if(null != literal.getDatatype())
+                    return literal.getDatatype().stringValue();
+                else
+                    return null;
             } else if (key.equals("language")) {
                 return literal.getLanguage();
             }
@@ -115,7 +118,7 @@ public class SesameVertex implements Vertex {
     }
 
     public String toString() {
-        return this.value.stringValue();
+        return "v[" + this.value.stringValue() + "]";
     }
 
     public int hashCode() {

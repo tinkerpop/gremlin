@@ -9,6 +9,11 @@ import com.tinkerpop.gremlin.model.Vertex;
  */
 public class IndexTestSuite extends ModelTestSuite {
 
+    public IndexTestSuite(SuiteConfiguration config) {
+        super(config);
+    }
+
+
     public void testVertexIndex(Graph graph) {
         Vertex v1 = graph.addVertex("1");
         Vertex v2 = graph.addVertex("2");

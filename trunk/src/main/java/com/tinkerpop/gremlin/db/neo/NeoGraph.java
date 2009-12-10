@@ -83,7 +83,7 @@ public class NeoGraph implements Graph {
             for (String key : vertex.getPropertyKeys()) {
                 this.index.remove(key, vertex.getProperty(key), vertex);
             }
-            for(Edge edge : vertex.getBothEdges()) {
+            for (Edge edge : vertex.getBothEdges()) {
                 this.removeEdge(edge);
             }
             node.delete();
@@ -92,8 +92,8 @@ public class NeoGraph implements Graph {
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
-        Node outNode = (Node)((NeoVertex)outVertex).getRawElement();
-        Node inNode = (Node)((NeoVertex)inVertex).getRawElement();
+        Node outNode = (Node) ((NeoVertex) outVertex).getRawElement();
+        Node inNode = (Node) ((NeoVertex) inVertex).getRawElement();
         Relationship relationship = outNode.createRelationshipTo(inNode, DynamicRelationshipType.withName(label));
         this.stopStartTransaction();
         return new NeoEdge(relationship, this.index);
@@ -120,7 +120,7 @@ public class NeoGraph implements Graph {
 
 
     public String toString() {
-         return "neograph[" + this.directory + "]";
+        return "neograph[" + this.directory + "]";
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
@@ -144,7 +144,7 @@ public class NeoGraph implements Graph {
         }
     }
 
-    private class NeoEdgeIterator implements Iterator<Edge> {
+    /*private class NeoEdgeIterator implements Iterator<Edge> {
 
         Iterator<Node> nodes;
         Iterator<Relationship> nodeRelationships;
@@ -179,5 +179,54 @@ public class NeoGraph implements Graph {
                 return true;
         }
 
+    }*/
+
+    private class NeoEdgeIterator implements Iterator<Edge> {
+
+        private Iterator<Node> nodes;
+        private Iterator<Relationship> currentRelationships;
+        private boolean complete = false;
+
+        public NeoEdgeIterator(Iterator<Node> nodes) {
+            this.nodes = nodes;
+            this.complete = this.goToNextEdge();
+
+        }
+
+        public Edge next() {
+            Edge edge = new NeoEdge(currentRelationships.next(), index);
+            this.complete = this.goToNextEdge();
+            return edge;
+        }
+
+        public boolean hasNext() {
+            return !complete;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        private boolean goToNextEdge() {
+            if (this.currentRelationships == null || !this.currentRelationships.hasNext()) {
+                if (nodes.hasNext()) {
+                    this.currentRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
+                    if (this.currentRelationships.hasNext()) {
+                        return false;
+                    } else {
+                        return this.goToNextEdge();
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                if (this.currentRelationships.hasNext()) {
+                    return false;
+                } else {
+                    return this.goToNextEdge();
+                }
+            }
+
+        }
     }
 }

@@ -7,17 +7,16 @@ import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.*;
-import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.model.impl.StatementImpl;
-import org.openrdf.model.impl.URIImpl;
+import org.openrdf.model.impl.*;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +43,7 @@ public class SesameGraph implements Graph {
 
     private static final String BLANK_NODE_PREFIX = "_:";
 
-    private static final Map<String, String> namespaces = new HashMap<String, String>();
+   /* private static final Map<String, String> namespaces = new HashMap<String, String>();
 
     static {
         namespaces.put(RDF_PREFIX, RDF_NS);
@@ -52,9 +51,9 @@ public class SesameGraph implements Graph {
         namespaces.put(OWL_PREFIX, OWL_NS);
         namespaces.put(XSD_PREFIX, XSD_NS);
         namespaces.put(FOAF_PREFIX, FOAF_NS);
-    }
+    }*/
 
-    public static final Pattern literalPattern = Pattern.compile("^\"(.*?)\"\\^\\^<(.+?)>$");
+    public static final Pattern literalPattern = Pattern.compile("^\"(.*?)\"((\\^\\^<(.+?)>)$|(@(.{2}))$)");
 
 
     static {
@@ -76,7 +75,10 @@ public class SesameGraph implements Graph {
     protected Literal makeLiteral(String resource) {
         Matcher matcher = literalPattern.matcher(resource);
         matcher.matches();
-        return new LiteralImpl(matcher.group(1), new URIImpl(prefixToNamespace(matcher.group(2), this.sailConnection)));
+        if(null != matcher.group(4))
+            return new LiteralImpl(matcher.group(1), new URIImpl(prefixToNamespace(matcher.group(4), this.sailConnection)));
+        else
+            return new LiteralImpl(matcher.group(1), matcher.group(6));
     }
 
     protected static boolean isURI(String resource) {
@@ -97,6 +99,7 @@ public class SesameGraph implements Graph {
     }
 
     public SesameGraph(Sail sail) {
+        PropertyConfigurator.configure(SesameGraph.class.getResource("log4j.properties"));
         try {
             this.sail = sail;
             this.sail.initialize();
@@ -112,6 +115,9 @@ public class SesameGraph implements Graph {
     }
 
     public Vertex addVertex(Object id) {
+        if(null == id)
+            id = "urn:uuid:" + UUID.randomUUID().toString();
+
         return createVertex(id.toString());
     }
 
@@ -153,7 +159,7 @@ public class SesameGraph implements Graph {
             }
 
             URI labelURI = new URIImpl(prefixToNamespace(label, this.sailConnection));
-            Statement statement = new StatementImpl((Resource) outVertexValue, labelURI, inVertexValue);
+            Statement statement = new ContextStatementImpl((Resource) outVertexValue, labelURI, inVertexValue, null);
             this.sailConnection.addStatement(statement.getSubject(), statement.getPredicate(), statement.getObject());
             this.sailConnection.commit();
             return new SesameEdge(statement, this.sailConnection);
@@ -229,7 +235,7 @@ public class SesameGraph implements Graph {
 
     public String toString() {
         String type = this.sail.getClass().getSimpleName().toLowerCase();
-        return "sesamegraph[type:" + type + "]";
+        return "sesamegraph[" + type + "]";
     }
 
     public static String prefixToNamespace(String uri, SailConnection sailConnection) {
@@ -329,7 +335,7 @@ public class SesameGraph implements Graph {
 
         public boolean hasNext() {
             try {
-                return edges.hasNext();
+                return this.edges != null && this.edges.hasNext();
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }
@@ -337,7 +343,12 @@ public class SesameGraph implements Graph {
 
         public Edge next() {
             try {
-                return new SesameEdge(edges.next(), this.sailConnection);
+                Edge edge = new SesameEdge(edges.next(), this.sailConnection);
+                if(!this.edges.hasNext()) {
+                    this.edges.close();
+                    this.edges = null;
+                }
+                return edge;
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }

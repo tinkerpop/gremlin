@@ -8,6 +8,20 @@ import com.tinkerpop.gremlin.BaseTest;
  */
 public class ModelTestSuite extends BaseTest {
 
+    protected SuiteConfiguration config;
+
+    public ModelTestSuite(SuiteConfiguration config) {
+        this.config = config;
+    }
+
+    protected String convertId(String id) {
+        if (this.config.requiresRDFIds) {
+            return "http://" + id;
+        } else {
+            return id;
+        }
+    }
+
     public void testTrue() {
         assertTrue(true);
     }

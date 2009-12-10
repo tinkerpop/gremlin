@@ -1,18 +1,21 @@
 package com.tinkerpop.gremlin.model.parser;
 
-import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.model.ModelTestSuite;
-import junit.framework.TestCase;
+import com.tinkerpop.gremlin.model.*;
 
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
 public class GraphMLReaderTestSuite extends ModelTestSuite {
+
+    public GraphMLReaderTestSuite(SuiteConfiguration config) {
+        super(config);
+    }
 
     public static void testReadingTinkerGraph(Graph graph) throws Exception {
 
@@ -66,5 +69,68 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
 
         assertEquals(counter, 5);
 
+    }
+
+    public void testTinkerGraphEdges(Graph graph) throws Exception {
+        GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
+        Iterator<Edge> edges = graph.getEdges();
+        Set<String> edgeIds = new HashSet<String>();
+        Set<String> edgeKeys = new HashSet<String>();
+        Set<String> edgeValues = new HashSet<String>();
+        int count = 0;
+        while (edges.hasNext()) {
+            count++;
+            Edge e = edges.next();
+            edgeIds.add(e.getId().toString());
+            for (String key : e.getPropertyKeys()) {
+                edgeKeys.add(key);
+                edgeValues.add(e.getProperty(key).toString());
+            }
+        }
+        assertEquals(count, 6);
+        assertEquals(edgeIds.size(), 6);
+        assertEquals(edgeKeys.size(), 1);
+        assertEquals(edgeValues.size(), 4);
+    }
+
+    public static void testTinkerGraphVertices(Graph graph) throws Exception {
+        GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
+        Iterator<Vertex> vertices = graph.getVertices();
+        Set<String> vertexNames = new HashSet<String>();
+        int count = 0;
+        while (vertices.hasNext()) {
+            count++;
+            Vertex v = vertices.next();
+            vertexNames.add(v.getProperty("name").toString());
+            //System.out.println(v);
+        }
+        assertEquals(count, 6);
+        assertEquals(vertexNames.size(), 6);
+        assertTrue(vertexNames.contains("marko"));
+        assertTrue(vertexNames.contains("josh"));
+        assertTrue(vertexNames.contains("peter"));
+        assertTrue(vertexNames.contains("vadas"));
+        assertTrue(vertexNames.contains("ripple"));
+        assertTrue(vertexNames.contains("lop"));
+    }
+
+    public static void testTinkerGraphSoftwareVertices(Graph graph) throws Exception {
+        GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
+        Iterator<Vertex> vertices = graph.getVertices();
+        Set<Vertex> softwareVertices = new HashSet<Vertex>();
+        int count = 0;
+        while (vertices.hasNext()) {
+            count++;
+            Vertex v = vertices.next();
+            String name = v.getProperty("name").toString();
+            if (name.equals("lop") || name.equals("ripple")) {
+                softwareVertices.add(v);
+            }
+        }
+        assertEquals(count, 6);
+        assertEquals(softwareVertices.size(), 2);
+        for (Vertex v : softwareVertices) {
+            assertEquals(v.getProperty("lang"), "java");
+        }
     }
 }
