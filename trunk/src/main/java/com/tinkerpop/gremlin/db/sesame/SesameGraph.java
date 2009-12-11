@@ -6,12 +6,15 @@ import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import info.aduna.iteration.CloseableIteration;
+import org.apache.log4j.PropertyConfigurator;
 import org.openrdf.model.*;
-import org.openrdf.model.impl.*;
+import org.openrdf.model.impl.BNodeImpl;
+import org.openrdf.model.impl.ContextStatementImpl;
+import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,69 +31,45 @@ public class SesameGraph implements Graph {
 
     private Sail sail;
     private SailConnection sailConnection;
-    private static Map<String, String> dataTypeToClass = new HashMap<String, String>();
-    private static final String NAMESPACE_SEPARATOR = ":";
-    private static final String XSD_PREFIX = "xsd";
-    private static final String XSD_NS = "http://www.w3.org/2001/XMLSchema#";
-    private static final String RDF_PREFIX = "rdf";
-    private static final String RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-    private static final String RDFS_PREFIX = "rdfs";
-    private static final String RDFS_NS = "http://www.w3.org/2000/01/rdf-schema#";
-    private static final String OWL_PREFIX = "owl";
-    private static final String OWL_NS = "http://www.w3.org/2002/07/owl#";
-    private static final String FOAF_PREFIX = "foaf";
-    private static final String FOAF_NS = "http://xmlns.com/foaf/0.1/";
-
-    private static final String BLANK_NODE_PREFIX = "_:";
-
-   /* private static final Map<String, String> namespaces = new HashMap<String, String>();
-
-    static {
-        namespaces.put(RDF_PREFIX, RDF_NS);
-        namespaces.put(RDFS_PREFIX, RDFS_NS);
-        namespaces.put(OWL_PREFIX, OWL_NS);
-        namespaces.put(XSD_PREFIX, XSD_NS);
-        namespaces.put(FOAF_PREFIX, FOAF_NS);
-    }*/
 
     public static final Pattern literalPattern = Pattern.compile("^\"(.*?)\"((\\^\\^<(.+?)>)$|(@(.{2}))$)");
+    private static final String LOG4J_PROPERTIES = "log4j.properties";
 
-
-    static {
-        dataTypeToClass.put(XSD_NS + "string", "java.lang.String");
-        dataTypeToClass.put(XSD_NS + "int", "java.lang.Integer");
-        dataTypeToClass.put(XSD_NS + "integer", "java.lang.Integer");
-        dataTypeToClass.put(XSD_NS + "float", "java.lang.Float");
-        dataTypeToClass.put(XSD_NS + "double", "java.lang.Double");
+    public static boolean isBNode(String resource) {
+        return resource.length() > 2 && resource.startsWith(SesameTokens.BLANK_NODE_PREFIX);
     }
 
-    protected static boolean isBNode(String resource) {
-        return resource.length() > 2 && resource.startsWith(BLANK_NODE_PREFIX);
+    public static boolean isLiteral(String resource) {
+        return (literalPattern.matcher(resource).matches() || (resource.startsWith("\"") && resource.endsWith("\"") && resource.length() > 1));
     }
 
-    protected static boolean isLiteral(String resource) {
-        return literalPattern.matcher(resource).matches();
+    public static boolean isURI(String resource) {
+        return !isBNode(resource) && !isLiteral(resource) && (resource.contains(":") || resource.contains("/") || resource.contains("#"));
     }
 
     protected Literal makeLiteral(String resource) {
         Matcher matcher = literalPattern.matcher(resource);
-        matcher.matches();
-        if(null != matcher.group(4))
-            return new LiteralImpl(matcher.group(1), new URIImpl(prefixToNamespace(matcher.group(4), this.sailConnection)));
-        else
-            return new LiteralImpl(matcher.group(1), matcher.group(6));
-    }
-
-    protected static boolean isURI(String resource) {
-        return !isBNode(resource) && !isLiteral(resource) && (resource.contains(":") || resource.contains("/") || resource.contains("#"));
+        if (matcher.matches()) {
+            if (null != matcher.group(4))
+                return new LiteralImpl(matcher.group(1), new URIImpl(prefixToNamespace(matcher.group(4), this.sailConnection)));
+            else
+                return new LiteralImpl(matcher.group(1), matcher.group(6));
+        } else {
+            if(resource.startsWith("\"") && resource.endsWith("\"") && resource.length() > 1) {
+                return new LiteralImpl(resource.substring(1, resource.length()-1));
+            } else {
+                return null;
+            }
+        }
     }
 
     protected Vertex createVertex(String resource) {
+        Literal literal;
         if (isBNode(resource)) {
             return new SesameVertex(new BNodeImpl(resource), this.sailConnection);
-        } else if (isLiteral(resource)) {
-            return new SesameVertex(makeLiteral(resource), this.sailConnection);
-        } else if (isURI(resource)) {
+        } else if ((literal = makeLiteral(resource)) != null) {
+            return new SesameVertex(literal, this.sailConnection);
+        } else if (resource.contains(":") || resource.contains("/") || resource.contains("#")) {
             resource = prefixToNamespace(resource, this.sailConnection);
             return new SesameVertex(new URIImpl(resource), this.sailConnection);
         } else {
@@ -99,24 +78,27 @@ public class SesameGraph implements Graph {
     }
 
     public SesameGraph(Sail sail) {
-        PropertyConfigurator.configure(SesameGraph.class.getResource("log4j.properties"));
+        try {
+            PropertyConfigurator.configure(SesameGraph.class.getResource(LOG4J_PROPERTIES));
+        } catch (Exception e) {
+        }
         try {
             this.sail = sail;
             this.sail.initialize();
             this.sailConnection = sail.getConnection();
-            this.registerNamespace(RDF_PREFIX, RDF_NS);
-            this.registerNamespace(RDFS_PREFIX, RDFS_NS);
-            this.registerNamespace(OWL_PREFIX, OWL_NS);
-            this.registerNamespace(XSD_PREFIX, XSD_NS);
-            this.registerNamespace(FOAF_PREFIX, FOAF_NS);
+            this.registerNamespace(SesameTokens.RDF_PREFIX, SesameTokens.RDF_NS);
+            this.registerNamespace(SesameTokens.RDFS_PREFIX, SesameTokens.RDFS_NS);
+            this.registerNamespace(SesameTokens.OWL_PREFIX, SesameTokens.OWL_NS);
+            this.registerNamespace(SesameTokens.XSD_PREFIX, SesameTokens.XSD_NS);
+            this.registerNamespace(SesameTokens.FOAF_PREFIX, SesameTokens.FOAF_NS);
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
     }
 
     public Vertex addVertex(Object id) {
-        if(null == id)
-            id = "urn:uuid:" + UUID.randomUUID().toString();
+        if (null == id)
+            id = SesameTokens.URN_UUID_PREFIX + UUID.randomUUID().toString();
 
         return createVertex(id.toString());
     }
@@ -171,10 +153,7 @@ public class SesameGraph implements Graph {
     public void removeEdge(Edge edge) {
         Statement statement = ((SesameEdge) edge).getRawStatement();
         try {
-            if (null != statement.getContext())
-                this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
-            else
-                this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject());
+            this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
             this.sailConnection.commit();
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
@@ -185,6 +164,10 @@ public class SesameGraph implements Graph {
         return this.sailConnection;
     }
 
+    public Sail getSail() {
+        return this.sail;
+    }
+
     public void registerNamespace(String prefix, String namespace) {
         try {
             this.sailConnection.setNamespace(prefix, namespace);
@@ -193,10 +176,6 @@ public class SesameGraph implements Graph {
             throw new EvaluationException(e.getMessage());
         }
     }
-
-    /*public void registerNamespace(String prefix, String namespace) {
-        this.namespaces.put(prefix, namespace);
-    }*/
 
     public Map<String, String> getNamespaces() {
         Map<String, String> namespaces = new HashMap<String, String>();
@@ -211,14 +190,6 @@ public class SesameGraph implements Graph {
         }
         return namespaces;
     }
-
-    /*public Map<String, String> getNamespaces() {
-        return namespaces;
-    }*/
-
-    /*public static String getNamespace(String prefix) {
-        return namespaces.get(prefix);
-    }*/
 
     public Index getIndex() {
         return null;
@@ -240,39 +211,16 @@ public class SesameGraph implements Graph {
 
     public static String prefixToNamespace(String uri, SailConnection sailConnection) {
         try {
-            if (uri.contains(NAMESPACE_SEPARATOR)) {
-                String namespace = sailConnection.getNamespace(uri.substring(0, uri.indexOf(NAMESPACE_SEPARATOR)));
+            if (uri.contains(SesameTokens.NAMESPACE_SEPARATOR)) {
+                String namespace = sailConnection.getNamespace(uri.substring(0, uri.indexOf(SesameTokens.NAMESPACE_SEPARATOR)));
                 if (null != namespace)
-                    uri = namespace + uri.substring(uri.indexOf(NAMESPACE_SEPARATOR) + 1);
+                    uri = namespace + uri.substring(uri.indexOf(SesameTokens.NAMESPACE_SEPARATOR) + 1);
             }
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
         return uri;
     }
-
-    /*public static String prefixToNamespace(String uri, SailConnection sailConnection) {
-
-        if (uri.contains(NAMESPACE_SEPARATOR)) {
-            String namespace = getNamespace(uri.substring(0, uri.indexOf(NAMESPACE_SEPARATOR)));
-            if (null != namespace)
-                uri = namespace + uri.substring(uri.indexOf(NAMESPACE_SEPARATOR) + 1);
-        }
-        System.out.println("!" + uri + "!");
-        return uri;
-    }*/
-
-    /*public static String namespaceToPrefix(String uri, SailConnection sailConnection) {
-
-        for (String prefix : namespaces.keySet()) {
-            String namespace = namespaces.get(prefix);
-            if (uri.contains(namespace))
-                return uri.replace(namespace, prefix + NAMESPACE_SEPARATOR);
-        }
-
-        return uri;
-    }*/
-
 
     public static String namespaceToPrefix(String uri, SailConnection sailConnection) {
 
@@ -281,42 +229,12 @@ public class SesameGraph implements Graph {
             while (namespaces.hasNext()) {
                 Namespace namespace = namespaces.next();
                 if (uri.contains(namespace.getName()))
-                    uri = uri.replace(namespace.getName(), namespace.getPrefix() + NAMESPACE_SEPARATOR);
+                    uri = uri.replace(namespace.getName(), namespace.getPrefix() + SesameTokens.NAMESPACE_SEPARATOR);
             }
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
         return uri;
-    }
-
-
-    /*public void registerCastType(String dataType, String className) {
-        this.dataTypeToClass.put(dataType, className);
-    }*/
-
-    public static Object castLiteral(String literalValue, String dataType) {
-        String className = dataTypeToClass.get(dataType);
-        if (null == className)
-            return literalValue;
-        else {
-            try {
-                Class c = Class.forName(className);
-                if (c == String.class) {
-                    return literalValue;
-                } else if (c == Float.class) {
-                    return Float.valueOf(literalValue);
-                } else if (c == Integer.class) {
-                    return Integer.valueOf(literalValue);
-                } else if (c == Double.class) {
-                    return Double.valueOf(literalValue);
-                } else {
-                    return literalValue;
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return literalValue;
-            }
-        }
     }
 
     private class SesameEdgeIterator implements Iterator<Edge> {
@@ -344,7 +262,7 @@ public class SesameGraph implements Graph {
         public Edge next() {
             try {
                 Edge edge = new SesameEdge(edges.next(), this.sailConnection);
-                if(!this.edges.hasNext()) {
+                if (!this.edges.hasNext()) {
                     this.edges.close();
                     this.edges = null;
                 }

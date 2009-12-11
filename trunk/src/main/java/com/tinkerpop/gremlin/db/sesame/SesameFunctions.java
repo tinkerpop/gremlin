@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.sesame.functions.OpenFunction;
 import com.tinkerpop.gremlin.db.sesame.functions.RegisterNamespaceFunction;
 import com.tinkerpop.gremlin.db.sesame.functions.NamespacesFunction;
+import com.tinkerpop.gremlin.db.sesame.functions.LoadFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -29,6 +30,7 @@ public class SesameFunctions implements Functions {
         functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
         functionMap.put(RegisterNamespaceFunction.FUNCTION_NAME, new RegisterNamespaceFunction());
         functionMap.put(NamespacesFunction.FUNCTION_NAME, new NamespacesFunction());
+        functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {
