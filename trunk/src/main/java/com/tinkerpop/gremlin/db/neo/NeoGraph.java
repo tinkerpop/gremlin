@@ -40,20 +40,9 @@ public class NeoGraph implements Graph {
     }
 
     public Vertex addVertex(Object id) {
-        try {
-            if (null != id) {
-                Long longId = Double.valueOf(id.toString()).longValue();
-                return new NeoVertex(this.neo.getNodeById(longId), this.index);
-            } else {
-                throw new NotFoundException();
-            }
-        } catch (NotFoundException e) {
-            Vertex vertex = new NeoVertex(neo.createNode(), this.index);
-            this.stopStartTransaction();
-            return vertex;
-        } catch (NumberFormatException e) {
-            throw new EvaluationException("Neo vertex ids must be convertible to a long value.");
-        }
+        Vertex vertex = new NeoVertex(neo.createNode(), this.index);
+        this.stopStartTransaction();
+        return vertex;
     }
 
     public Vertex getVertex(Object id) {
@@ -143,43 +132,6 @@ public class NeoGraph implements Graph {
             return this.nodes.hasNext();
         }
     }
-
-    /*private class NeoEdgeIterator implements Iterator<Edge> {
-
-        Iterator<Node> nodes;
-        Iterator<Relationship> nodeRelationships;
-
-
-        public NeoEdgeIterator(Iterator<Node> nodes) {
-            this.nodes = nodes;
-            if (this.nodes.hasNext()) {
-                this.nodeRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
-            }
-        }
-
-        public void remove() throws UnsupportedOperationException {
-            throw new UnsupportedOperationException();
-        }
-
-        public Edge next() {
-            if (nodeRelationships.hasNext())
-                return new NeoEdge(nodeRelationships.next(), index);
-            else if (this.nodes.hasNext()) {
-                this.nodeRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
-                return next();
-            } else {
-                return null;
-            }
-        }
-
-        public boolean hasNext() {
-            if (!this.nodes.hasNext() && !this.nodeRelationships.hasNext())
-                return false;
-            else
-                return true;
-        }
-
-    }*/
 
     private class NeoEdgeIterator implements Iterator<Edge> {
 

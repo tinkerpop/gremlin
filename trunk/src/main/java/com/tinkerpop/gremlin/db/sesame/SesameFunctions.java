@@ -1,10 +1,7 @@
 package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.sesame.functions.OpenFunction;
-import com.tinkerpop.gremlin.db.sesame.functions.RegisterNamespaceFunction;
-import com.tinkerpop.gremlin.db.sesame.functions.NamespacesFunction;
-import com.tinkerpop.gremlin.db.sesame.functions.LoadFunction;
+import com.tinkerpop.gremlin.db.sesame.functions.*;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -28,8 +25,9 @@ public class SesameFunctions implements Functions {
     static {
         namespaces.add(NAMESPACE_PREFIX);
         functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
-        functionMap.put(RegisterNamespaceFunction.FUNCTION_NAME, new RegisterNamespaceFunction());
-        functionMap.put(NamespacesFunction.FUNCTION_NAME, new NamespacesFunction());
+        functionMap.put(AddNamespaceFunction.FUNCTION_NAME, new AddNamespaceFunction());
+        functionMap.put(RemoveNamespaceFunction.FUNCTION_NAME, new RemoveNamespaceFunction());
+        functionMap.put(GetNamespacesFunction.FUNCTION_NAME, new GetNamespacesFunction());
         functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
     }
 

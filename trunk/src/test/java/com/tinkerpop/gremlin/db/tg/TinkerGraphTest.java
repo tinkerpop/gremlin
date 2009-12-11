@@ -21,6 +21,7 @@ public class TinkerGraphTest extends TestCase {
         config.isRDFModel = false;
         config.supportsEdgeIteration = true;
         config.supportsVertexIteration = true;
+        config.supportsVertexIndex = true;
     }
 
     public void testVertexSuite() throws Exception {

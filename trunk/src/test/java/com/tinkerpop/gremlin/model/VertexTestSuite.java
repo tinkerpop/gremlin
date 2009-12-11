@@ -12,25 +12,30 @@ import java.util.UUID;
  */
 public class VertexTestSuite extends ModelTestSuite {
 
+    public VertexTestSuite() {}
+
     public VertexTestSuite(SuiteConfiguration config) {
         super(config);
     }
 
     public void testAddVertex(Graph graph) {
         if (config.supportsVertexIteration) {
-            Vertex v1 = graph.addVertex(convertId("1"));
-            Vertex v2 = graph.addVertex(convertId("2"));
+            graph.addVertex(convertId("1"));
+            graph.addVertex(convertId("2"));
             assertEquals(countIterator(graph.getVertices()), 2);
-            graph.addVertex(v1.getId());
-            assertEquals(countIterator(graph.getVertices()), 2);
-            Vertex v3 = graph.addVertex(convertId("3"));
+            graph.addVertex(convertId("3"));
             assertEquals(countIterator(graph.getVertices()), 3);
-            graph.addVertex(v2.getId());
-            assertEquals(countIterator(graph.getVertices()), 3);
-            graph.addVertex(v2.getId());
-            assertEquals(countIterator(graph.getVertices()), 3);
-            graph.addVertex(v3.getId());
-            assertEquals(countIterator(graph.getVertices()), 3);
+        }
+
+        if(config.isRDFModel && config.requiresRDFIds) {
+            Vertex v1 = graph.addVertex("http://tinkerpop.com#marko");
+            assertEquals(v1.getId(), "http://tinkerpop.com#marko");
+            Vertex v2 = graph.addVertex("\"1\"^^<datatype:int>");
+            assertEquals(v2.getId(), "\"1\"^^<datatype:int>");
+            Vertex v3 = graph.addVertex("_:ABLANKNODE");
+            assertEquals(v3.getId(), "_:ABLANKNODE");
+            Vertex v4 = graph.addVertex("\"2.24\"^^<xsd:double>");
+            assertEquals(v4.getId(), "\"2.24\"^^<http://www.w3.org/2001/XMLSchema#double>");
         }
     }
 

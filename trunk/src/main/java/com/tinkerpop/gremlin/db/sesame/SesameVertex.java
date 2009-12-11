@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.sesame;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.*;
 import org.openrdf.model.impl.LiteralImpl;
@@ -54,7 +55,7 @@ public class SesameVertex implements Vertex {
             results.close();
             this.sailConnection.removeStatements(null, null, oldLiteral);
             for (Statement statement : statements) {
-                this.sailConnection.addStatement(statement.getSubject(), statement.getPredicate(), newLiteral, statement.getContext());
+                SesameHelper.addStatement(statement.getSubject(), statement.getPredicate(), newLiteral, statement.getContext(), this.sailConnection);
             }
             this.sailConnection.commit();
 
@@ -71,7 +72,7 @@ public class SesameVertex implements Vertex {
             boolean update = false;
             Literal oldLiteral = (Literal) this.value;
             if (key.equals(SesameTokens.DATATYPE)) {
-                this.value = new LiteralImpl(oldLiteral.getLabel(), new URIImpl(value.toString()));
+                this.value = new LiteralImpl(oldLiteral.getLabel(), new URIImpl(SesameGraph.prefixToNamespace(value.toString(), this.sailConnection)));
                 update = true;
             } else if (key.equals(SesameTokens.LANGUAGE)) {
                 this.value = new LiteralImpl(oldLiteral.getLabel(), value.toString());
@@ -173,20 +174,7 @@ public class SesameVertex implements Vertex {
     }
 
     public String toString() {
-        if (this.value instanceof Resource)
-            return "v[" + this.value.stringValue() + "]";
-        else {
-            String language = ((Literal) this.value).getLanguage();
-            URI datatype = ((Literal) this.value).getDatatype();
-            if (null != language) {
-                return "v[\"" + this.value.stringValue() + "\"@" + language + "]";
-            } else if (null != datatype) {
-                return "v[\"" + this.value.stringValue() + "\"^^<" + datatype.stringValue() + ">]";
-            } else {
-                return "v[\"" + this.value.stringValue() + "\"]";
-            }
-
-        }
+        return "v[" + this.value.toString() + "]";
     }
 
     protected static Object castLiteral(Literal literal) {
@@ -227,6 +215,8 @@ public class SesameVertex implements Vertex {
     }
 
     public Object getId() {
-        return this.value;
+        //return this.value.toString();
+        return SesameGraph.namespaceToPrefix(this.value.toString(), this.sailConnection);
+
     }
 }

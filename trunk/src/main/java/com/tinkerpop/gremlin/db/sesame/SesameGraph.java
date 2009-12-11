@@ -9,8 +9,8 @@ import info.aduna.iteration.CloseableIteration;
 import org.apache.log4j.PropertyConfigurator;
 import org.openrdf.model.*;
 import org.openrdf.model.impl.BNodeImpl;
-import org.openrdf.model.impl.ContextStatementImpl;
 import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.model.impl.StatementImpl;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.Sail;
 import org.openrdf.sail.SailConnection;
@@ -31,6 +31,8 @@ public class SesameGraph implements Graph {
 
     private Sail sail;
     private SailConnection sailConnection;
+
+    private static final String UNSUPPORTED_OPERATION = "This operation is not supported";
 
     public static final Pattern literalPattern = Pattern.compile("^\"(.*?)\"((\\^\\^<(.+?)>)$|(@(.{2}))$)");
     private static final String LOG4J_PROPERTIES = "log4j.properties";
@@ -55,8 +57,8 @@ public class SesameGraph implements Graph {
             else
                 return new LiteralImpl(matcher.group(1), matcher.group(6));
         } else {
-            if(resource.startsWith("\"") && resource.endsWith("\"") && resource.length() > 1) {
-                return new LiteralImpl(resource.substring(1, resource.length()-1));
+            if (resource.startsWith("\"") && resource.endsWith("\"") && resource.length() > 1) {
+                return new LiteralImpl(resource.substring(1, resource.length() - 1));
             } else {
                 return null;
             }
@@ -66,7 +68,7 @@ public class SesameGraph implements Graph {
     protected Vertex createVertex(String resource) {
         Literal literal;
         if (isBNode(resource)) {
-            return new SesameVertex(new BNodeImpl(resource), this.sailConnection);
+            return new SesameVertex(new BNodeImpl(resource.substring(2)), this.sailConnection);
         } else if ((literal = makeLiteral(resource)) != null) {
             return new SesameVertex(literal, this.sailConnection);
         } else if (resource.contains(":") || resource.contains("/") || resource.contains("#")) {
@@ -86,11 +88,11 @@ public class SesameGraph implements Graph {
             this.sail = sail;
             this.sail.initialize();
             this.sailConnection = sail.getConnection();
-            this.registerNamespace(SesameTokens.RDF_PREFIX, SesameTokens.RDF_NS);
-            this.registerNamespace(SesameTokens.RDFS_PREFIX, SesameTokens.RDFS_NS);
-            this.registerNamespace(SesameTokens.OWL_PREFIX, SesameTokens.OWL_NS);
-            this.registerNamespace(SesameTokens.XSD_PREFIX, SesameTokens.XSD_NS);
-            this.registerNamespace(SesameTokens.FOAF_PREFIX, SesameTokens.FOAF_NS);
+            this.addNamespace(SesameTokens.RDF_PREFIX, SesameTokens.RDF_NS);
+            this.addNamespace(SesameTokens.RDFS_PREFIX, SesameTokens.RDFS_NS);
+            this.addNamespace(SesameTokens.OWL_PREFIX, SesameTokens.OWL_NS);
+            this.addNamespace(SesameTokens.XSD_PREFIX, SesameTokens.XSD_NS);
+            this.addNamespace(SesameTokens.FOAF_PREFIX, SesameTokens.FOAF_NS);
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
@@ -108,7 +110,7 @@ public class SesameGraph implements Graph {
     }
 
     public Iterator<Vertex> getVertices() {
-        throw new EvaluationException("This operation is not supported by sail.");
+        throw new EvaluationException(UNSUPPORTED_OPERATION);
     }
 
     public Iterator<Edge> getEdges() {
@@ -141,8 +143,8 @@ public class SesameGraph implements Graph {
             }
 
             URI labelURI = new URIImpl(prefixToNamespace(label, this.sailConnection));
-            Statement statement = new ContextStatementImpl((Resource) outVertexValue, labelURI, inVertexValue, null);
-            this.sailConnection.addStatement(statement.getSubject(), statement.getPredicate(), statement.getObject());
+            Statement statement = new StatementImpl((Resource) outVertexValue, labelURI, inVertexValue);
+            SesameHelper.addStatement(statement, this.sailConnection);
             this.sailConnection.commit();
             return new SesameEdge(statement, this.sailConnection);
         } catch (SailException e) {
@@ -153,7 +155,7 @@ public class SesameGraph implements Graph {
     public void removeEdge(Edge edge) {
         Statement statement = ((SesameEdge) edge).getRawStatement();
         try {
-            this.sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
+            SesameHelper.removeStatement(statement, this.sailConnection);
             this.sailConnection.commit();
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
@@ -168,7 +170,7 @@ public class SesameGraph implements Graph {
         return this.sail;
     }
 
-    public void registerNamespace(String prefix, String namespace) {
+    public void addNamespace(String prefix, String namespace) {
         try {
             this.sailConnection.setNamespace(prefix, namespace);
             this.sailConnection.commit();
@@ -177,14 +179,23 @@ public class SesameGraph implements Graph {
         }
     }
 
+    public void removeNamespace(String prefix) {
+        try {
+            this.sailConnection.removeNamespace(prefix);
+        } catch (SailException e) {
+            throw new EvaluationException(e.getMessage());
+        }
+    }
+
     public Map<String, String> getNamespaces() {
         Map<String, String> namespaces = new HashMap<String, String>();
         try {
-            CloseableIteration<? extends Namespace, SailException> results = sailConnection.getNamespaces();
+            CloseableIteration<? extends Namespace, SailException> results = this.sailConnection.getNamespaces();
             while (results.hasNext()) {
                 Namespace namespace = results.next();
                 namespaces.put(namespace.getPrefix(), namespace.getName());
             }
+            results.close();
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
@@ -192,7 +203,7 @@ public class SesameGraph implements Graph {
     }
 
     public Index getIndex() {
-        return null;
+        throw new EvaluationException(UNSUPPORTED_OPERATION);
     }
 
     public void shutdown() {
@@ -202,11 +213,6 @@ public class SesameGraph implements Graph {
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
-    }
-
-    public String toString() {
-        String type = this.sail.getClass().getSimpleName().toLowerCase();
-        return "sesamegraph[" + type + "]";
     }
 
     public static String prefixToNamespace(String uri, SailConnection sailConnection) {
@@ -231,19 +237,26 @@ public class SesameGraph implements Graph {
                 if (uri.contains(namespace.getName()))
                     uri = uri.replace(namespace.getName(), namespace.getPrefix() + SesameTokens.NAMESPACE_SEPARATOR);
             }
+            namespaces.close();
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
         return uri;
     }
 
+
+    public String toString() {
+        String type = this.sail.getClass().getSimpleName().toLowerCase();
+        return "sesamegraph[" + type + "]";
+    }
+
     private class SesameEdgeIterator implements Iterator<Edge> {
 
-        private CloseableIteration<? extends Statement, SailException> edges;
+        private CloseableIteration<? extends Statement, SailException> statements;
         private SailConnection sailConnection;
 
-        public SesameEdgeIterator(CloseableIteration<? extends Statement, SailException> edges, SailConnection sailConnection) {
-            this.edges = edges;
+        public SesameEdgeIterator(CloseableIteration<? extends Statement, SailException> statements, SailConnection sailConnection) {
+            this.statements = statements;
             this.sailConnection = sailConnection;
         }
 
@@ -253,7 +266,7 @@ public class SesameGraph implements Graph {
 
         public boolean hasNext() {
             try {
-                return this.edges != null && this.edges.hasNext();
+                return this.statements != null && this.statements.hasNext();
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }
@@ -261,10 +274,10 @@ public class SesameGraph implements Graph {
 
         public Edge next() {
             try {
-                Edge edge = new SesameEdge(edges.next(), this.sailConnection);
-                if (!this.edges.hasNext()) {
-                    this.edges.close();
-                    this.edges = null;
+                Edge edge = new SesameEdge(this.statements.next(), this.sailConnection);
+                if (!this.statements.hasNext()) {
+                    this.statements.close();
+                    this.statements = null;
                 }
                 return edge;
             } catch (SailException e) {

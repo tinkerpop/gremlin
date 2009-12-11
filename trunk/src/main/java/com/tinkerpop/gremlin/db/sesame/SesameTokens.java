@@ -1,5 +1,11 @@
 package com.tinkerpop.gremlin.db.sesame;
 
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import org.openrdf.rio.RDFFormat;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
@@ -22,4 +28,25 @@ public class SesameTokens {
     public static final String DATATYPE = "type";
     public static final String LANGUAGE = "lang";
     public static final String VALUE = "value";
+
+    public static final Map<String, RDFFormat> formats = new HashMap<String, RDFFormat>();
+
+    static {
+        formats.put("rdf-xml", RDFFormat.RDFXML);
+        formats.put("n-triples", RDFFormat.NTRIPLES);
+        formats.put("turtle", RDFFormat.TURTLE);
+        formats.put("n3", RDFFormat.N3);
+        formats.put("trix", RDFFormat.TRIX);
+        formats.put("trig", RDFFormat.TRIG);
+
+    }
+
+    public static RDFFormat getFormat(String format) {
+        RDFFormat ret = formats.get(format);
+        if (null == ret)
+            throw new EvaluationException(format + " is an unsupported RDF file format. Use rdf-xml, n-triples, turtle, n3, trix, or trig");
+        else
+            return ret;
+    }
+
 }

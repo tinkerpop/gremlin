@@ -6,9 +6,11 @@ import com.tinkerpop.gremlin.BaseTest;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class ModelTestSuite extends BaseTest {
+public abstract class ModelTestSuite extends BaseTest {
 
     protected SuiteConfiguration config;
+
+    public ModelTestSuite() {}
 
     public ModelTestSuite(SuiteConfiguration config) {
         this.config = config;

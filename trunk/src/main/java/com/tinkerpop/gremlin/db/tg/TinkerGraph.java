@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.*;
 
@@ -15,7 +16,6 @@ public class TinkerGraph implements Graph {
 
     private Long currentId = 0l;
     protected Map<String, Vertex> vertices = new HashMap<String, Vertex>();
-    //protected Map<String, Edge> edges = new HashMap<String, Edge>();
     private TinkerIndex index = new TinkerIndex();
 
     public Vertex addVertex(Object id) {
@@ -30,7 +30,7 @@ public class TinkerGraph implements Graph {
         Vertex vertex = this.vertices.get(idString);
 
         if (null != vertex)
-            return vertex;
+            throw new EvaluationException("Vertex " + idString + " already exists");
         else {
             vertex = new TinkerVertex(idString, this.index);
             this.vertices.put(vertex.getId().toString(), vertex);

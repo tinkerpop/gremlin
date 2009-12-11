@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.sesame.functions;
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.db.sesame.SesameTokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -48,9 +49,9 @@ public class LoadFunction implements Function {
 
             RepositoryConnection connection = repo.getConnection();
             if (null != baseGraph)
-                connection.add(new File(file), null, RDFFormat.valueOf(format), new URIImpl(baseGraph));
+                connection.add(new File(file), null, SesameTokens.getFormat(format), new URIImpl(baseGraph));
             else
-                connection.add(new File(file), null, RDFFormat.valueOf(format));
+                connection.add(new File(file), null, SesameTokens.getFormat(format));
 
             connection.commit();
             connection.close();

@@ -1,18 +1,11 @@
 package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.model.EdgeTestSuite;
-import com.tinkerpop.gremlin.model.ModelTestSuite;
-import com.tinkerpop.gremlin.model.SuiteConfiguration;
-import com.tinkerpop.gremlin.model.VertexTestSuite;
+import com.tinkerpop.gremlin.model.*;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Statement;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.impl.LiteralImpl;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFFormat;
 import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 
@@ -36,6 +29,7 @@ public class SesameGraphTest extends BaseTest {
         config.isRDFModel = true;
         config.supportsEdgeIteration = true;
         config.supportsVertexIteration = false;
+        config.supportsVertexIndex = false;
     }
 
     public void testTypeConversion() {
@@ -50,20 +44,13 @@ public class SesameGraphTest extends BaseTest {
     public void testNamespaceConversion() throws Exception {
         MemoryStore sail = new MemoryStore();
         SesameGraph graph = new SesameGraph(sail);
-        graph.registerNamespace("tg", "http://tinkerpop.com#");
-        graph.registerNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+        graph.addNamespace("tg", "http://tinkerpop.com#");
+        graph.addNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
         assertEquals(SesameGraph.prefixToNamespace("tg:name", graph.getSailConnection()), "http://tinkerpop.com#name");
         assertEquals(SesameGraph.prefixToNamespace("rdf:label", graph.getSailConnection()), "http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
         assertEquals(SesameGraph.namespaceToPrefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#label", graph.getSailConnection()), "rdf:label");
         assertEquals(SesameGraph.namespaceToPrefix("http://tinkerpop.com#name", graph.getSailConnection()), "tg:name");
         graph.shutdown();
-
-    }
-
-    public void testFormats() {
-        for(RDFFormat format : RDFFormat.values()) {
-            System.out.println(format.getName());
-        }
 
     }
 
@@ -111,6 +98,10 @@ public class SesameGraphTest extends BaseTest {
 
     public void testEdgeSuite() throws Exception {
         doSuiteTest(new EdgeTestSuite(config));
+    }
+
+    public void testIndexSuite() throws Exception {
+        doSuiteTest(new IndexTestSuite(config));
     }
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {

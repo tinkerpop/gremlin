@@ -60,11 +60,10 @@ public class SesameEdge implements Edge {
         if (key.equals(NAMED_GRAPH)) {
             try {
                 URI namedGraph = new URIImpl(SesameGraph.prefixToNamespace(value.toString(), this.sailConnection));
-                sailConnection.removeStatements(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
-                Statement newStatement = new ContextStatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), namedGraph);
-                sailConnection.addStatement(newStatement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
+                SesameHelper.removeStatement(this.statement, this.sailConnection);
+                this.statement = new ContextStatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), namedGraph);
+                SesameHelper.addStatement(this.statement, this.sailConnection);
                 this.sailConnection.commit();
-                this.statement = newStatement;
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
             }
@@ -77,11 +76,10 @@ public class SesameEdge implements Edge {
         if (key.equals(NAMED_GRAPH)) {
             try {
                 Resource ng = this.statement.getContext();
-                sailConnection.removeStatements(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), this.statement.getContext());
-                Statement newStatement = new StatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject());
-                sailConnection.addStatement(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject());
+                SesameHelper.removeStatement(this.statement, this.sailConnection);
+                this.statement = new StatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject());
+                SesameHelper.addStatement(this.statement, this.sailConnection);
                 this.sailConnection.commit();
-                this.statement = newStatement;
                 return ng;
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
@@ -117,7 +115,7 @@ public class SesameEdge implements Edge {
         if (this.statement.getObject() instanceof Resource)
             inVertex = SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
         else
-            inVertex = literalString((Literal)this.statement.getObject());
+            inVertex = literalString((Literal) this.statement.getObject());
 
         String namedGraph = null;
         if (null != this.statement.getContext()) {
@@ -153,6 +151,10 @@ public class SesameEdge implements Edge {
     }
 
     public Object getId() {
-        return this.statement;
+        //return this.statement.hashCode();
+        if(null != this.statement.getContext())
+            return "(" + this.statement.getSubject() + ", " + this.statement.getPredicate() + ", " + this.statement.getObject() +") [" + this.statement.getContext() + "]";
+        else
+            return "(" + this.statement.getSubject() + ", " + this.statement.getPredicate() + ", " + this.statement.getObject() +")";
     }
 }

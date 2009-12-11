@@ -13,9 +13,9 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NamespacesFunction implements Function {
+public class GetNamespacesFunction implements Function {
 
-    public static final String FUNCTION_NAME = "namespaces";
+    public static final String FUNCTION_NAME = "get-ns";
 
     public Map invoke(ExpressionContext context, Object[] parameters) {
 

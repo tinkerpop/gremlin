@@ -11,6 +11,8 @@ import java.util.UUID;
  */
 public class EdgeTestSuite extends ModelTestSuite {
 
+    public EdgeTestSuite() {}
+
     public EdgeTestSuite(SuiteConfiguration config) {
         super(config);
     }
@@ -31,7 +33,7 @@ public class EdgeTestSuite extends ModelTestSuite {
     }
 
     public void testAddManyEdges(Graph graph) {
-        long counter = 200000l;
+        long counter = 0l;
         for (int i = 0; i < 1000; i++) {
             Vertex out = graph.addVertex(convertId("" + counter++));
             Vertex in = graph.addVertex(convertId("" + counter++));

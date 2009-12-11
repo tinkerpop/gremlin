@@ -12,5 +12,6 @@ public class SuiteConfiguration {
     public boolean allowsDuplicateEdges;
     public boolean supportsEdgeIteration;
     public boolean supportsVertexIteration;
+    public boolean supportsVertexIndex;
 
 }
