@@ -88,10 +88,14 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
                     if (value instanceof Set) {
                         if (((Set) value).size() == 1) {
                             this.setRoot(((Set) value).iterator().next());
+                        } else {
+                            this.setRoot(value);
                         }
                     } else if (value instanceof List) {
                         if (((List) value).size() == 1) {
                             this.setRoot(((List) value).get(0));
+                        } else {
+                            this.setRoot(value);
                         }
                     }
                 } else {

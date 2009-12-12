@@ -17,7 +17,7 @@ import java.util.Set;
  */
 public class NeoFunctions implements Functions {
 
-    public static final String NAMESPACE_PREFIX = "neo";
+    public static final String NAMESPACE_PREFIX = "neo4j";
 
     private static Set<String> namespaces = new HashSet<String>();
     private static final Map<String, Function> functionMap = new HashMap<String, Function>();

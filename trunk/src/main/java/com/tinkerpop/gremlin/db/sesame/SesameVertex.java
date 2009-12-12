@@ -215,8 +215,8 @@ public class SesameVertex implements Vertex {
     }
 
     public Object getId() {
-        //return this.value.toString();
-        return SesameGraph.namespaceToPrefix(this.value.toString(), this.sailConnection);
+        return this.value.toString();
+        //return SesameGraph.namespaceToPrefix(this.value.toString(), this.sailConnection);
 
     }
 }
