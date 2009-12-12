@@ -13,4 +13,10 @@ public interface Index {
     public Set<Element> get(String key, Object value);
 
     public void remove(String key, Object value, Element element);
+
+    public void indexAll(boolean indexAll);
+
+    public void addIndexKey(String key);
+
+    public void removeIndexKey(String key);
 }

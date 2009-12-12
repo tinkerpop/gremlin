@@ -202,6 +202,14 @@ public class SesameGraph implements Graph {
         return namespaces;
     }
 
+    public String expandPrefix(String uri) {
+        return SesameGraph.prefixToNamespace(uri, this.sailConnection);
+    }
+
+    public String prefixNamespace(String uri) {
+        return SesameGraph.namespaceToPrefix(uri, this.sailConnection);
+    }
+
     public Index getIndex() {
         throw new EvaluationException(UNSUPPORTED_OPERATION);
     }

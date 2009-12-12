@@ -75,6 +75,7 @@ public class SortFunction implements Function {
     private static Map sortByKey(Map map) {
         // TODO: add reverse sort
         map = new TreeMap(map);
+        //TODO: ((TreeMap)map). decending map?
         return map;
     }
 }

@@ -13,9 +13,9 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class IncrementValueFunction implements Function {
+public class AddValueFunction implements Function {
 
-    public static final String FUNCTION_NAME = "incr-value";
+    public static final String FUNCTION_NAME = "add-value";
 
     //TODO allow it to take a set of indices or keys
     public Object invoke(ExpressionContext context, Object[] parameters) {

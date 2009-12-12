@@ -33,6 +33,8 @@ public class GremlinFunctions implements Functions {
         functionMap.put(AddVertexFunction.FUNCTION_NAME, new AddVertexFunction());
         functionMap.put(AddEdgeFunction.FUNCTION_NAME, new AddEdgeFunction());
         functionMap.put(RemoveVertexEdgeFunction.FUNCTION_NAME, new RemoveVertexEdgeFunction());
+        functionMap.put(AddIndexFunction.FUNCTION_NAME, new AddIndexFunction());
+        functionMap.put(RemoveIndexFunction.FUNCTION_NAME, new RemoveIndexFunction());
         functionMap.put(ShutdownFunction.FUNCTION_NAME, new ShutdownFunction());
         // sets
         functionMap.put(SetFunction.FUNCTION_NAME, new SetFunction());
@@ -54,7 +56,7 @@ public class GremlinFunctions implements Functions {
         // lists and maps
         functionMap.put(GetFunction.FUNCTION_NAME, new GetFunction());
         functionMap.put(SortFunction.FUNCTION_NAME, new SortFunction());
-        functionMap.put(IncrementValueFunction.FUNCTION_NAME, new IncrementValueFunction());
+        functionMap.put(AddValueFunction.FUNCTION_NAME, new AddValueFunction());
         functionMap.put(AssignValueFunction.FUNCTION_NAME, new AssignValueFunction());
         // numbers
         functionMap.put(RandomRealFunction.FUNCTION_NAME, new RandomRealFunction());

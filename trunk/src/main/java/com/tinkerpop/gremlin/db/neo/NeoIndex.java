@@ -16,9 +16,22 @@ import java.util.Set;
 public class NeoIndex implements Index {
 
     private IndexService index;
+    public Set<String> indexKeys;
+    public boolean indexAll = true;
+
 
     public NeoIndex(IndexService index) {
         this.index = index;
+        this.indexKeys = new HashSet<String>();
+    }
+
+    public void put(String key, Object value, Element element) {
+        if (this.indexAll || this.indexKeys.contains(key)) {
+            if (element instanceof NeoVertex) {
+                Node node = (Node) ((NeoVertex) element).getRawElement();
+                this.index.index(node, key, value);
+            }
+        }
     }
 
     public Set<Element> get(String key, Object value) {
@@ -36,18 +49,23 @@ public class NeoIndex implements Index {
         return null;
     }
 
-    public void put(String key, Object value, Element element) {
-        if (element instanceof NeoVertex) {
-            Node node = (Node) ((NeoVertex) element).getRawElement();
-            this.index.index(node, key, value);
-        }
-    }
-
     public void remove(String key, Object value, Element element) {
         if (element instanceof NeoVertex) {
             Node node = (Node) ((NeoVertex) element).getRawElement();
             this.index.removeIndex(node, key, value);
         }
+    }
+
+    public void indexAll(boolean indexAll) {
+        this.indexAll = indexAll;
+    }
+
+    public void addIndexKey(String key) {
+        this.indexKeys.add(key);
+    }
+
+    public void removeIndexKey(String key) {
+        this.indexKeys.remove(key);
     }
 
     protected void shutdown() {

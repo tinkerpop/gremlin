@@ -15,19 +15,24 @@ import java.util.Set;
 public class TinkerIndex implements Index {
 
     private Map<String, Map<Object, Set<Element>>> indices = new HashMap<String, Map<Object, Set<Element>>>();
+    private boolean indexAll = true;
+    private Set<String> indexKeys = new HashSet<String>();
 
     public void put(String key, Object value, Element element) {
-        Map<Object, Set<Element>> keyMap = this.indices.get(key);
-        if (keyMap == null) {
-            keyMap = new HashMap<Object, Set<Element>>();
-            this.indices.put(key, keyMap);
+        if (this.indexAll || indexKeys.contains(key)) {
+
+            Map<Object, Set<Element>> keyMap = this.indices.get(key);
+            if (keyMap == null) {
+                keyMap = new HashMap<Object, Set<Element>>();
+                this.indices.put(key, keyMap);
+            }
+            Set<Element> elements = keyMap.get(value);
+            if (null == elements) {
+                elements = new HashSet<Element>();
+                keyMap.put(value, elements);
+            }
+            elements.add(element);
         }
-        Set<Element> elements = keyMap.get(value);
-        if (null == elements) {
-            elements = new HashSet<Element>();
-            keyMap.put(value, elements);
-        }
-        elements.add(element);
     }
 
     public Set<Element> get(String key, Object value) {
@@ -46,20 +51,24 @@ public class TinkerIndex implements Index {
             Set<Element> elements = keyMap.get(value);
             if (null != elements) {
                 elements.remove(element);
-                if(elements.size() == 0) {
+                if (elements.size() == 0) {
                     keyMap.remove(value);
                 }
             }
         }
     }
 
-    /*public void remove(String key) {
-
+    public void indexAll(boolean indexAll) {
+        this.indexAll = indexAll;
     }
 
-    public void remove(String key, Object value) {
+    public void addIndexKey(String key) {
+        indexKeys.add(key);
+    }
 
-    }*/
+    public void removeIndexKey(String key) {
+        indexKeys.remove(key);
+    }
 
     public String toString() {
         return indices.toString();

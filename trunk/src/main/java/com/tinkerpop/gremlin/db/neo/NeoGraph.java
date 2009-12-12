@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.api.core.*;
 import org.neo4j.util.index.LuceneIndexService;
+import org.neo4j.util.index.Isolation;
 
 import java.util.Iterator;
 
@@ -24,7 +25,9 @@ public class NeoGraph implements Graph {
     public NeoGraph(String directory) {
         this.directory = directory;
         this.neo = new EmbeddedNeo(this.directory);
-        this.index = new NeoIndex(new LuceneIndexService(neo));
+        LuceneIndexService indexService = new LuceneIndexService(neo);
+        indexService.setIsolation(Isolation.SAME_TX);
+        this.index = new NeoIndex(indexService);
 
         tx = neo.beginTx();
         try {

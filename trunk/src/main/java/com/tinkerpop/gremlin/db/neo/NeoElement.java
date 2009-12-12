@@ -25,11 +25,13 @@ public class NeoElement implements Element {
 
     public void setProperty(String key, Object value) {
         try {
-            this.index.remove(key, this.getProperty(key), this);
+            if (this instanceof NeoVertex)
+                this.index.remove(key, this.getProperty(key), this);
         } catch (NotFoundException e) {
         }
         this.element.setProperty(key, value);
-        this.index.put(key, value, this);
+        if (this instanceof NeoVertex)
+            this.index.put(key, value, this);
     }
 
     public Object getProperty(String key) {
@@ -47,7 +49,8 @@ public class NeoElement implements Element {
 
     public Object removeProperty(String key) {
         try {
-            this.index.remove(key, this.getProperty(key), this);
+            if (this instanceof NeoVertex)
+                this.index.remove(key, this.getProperty(key), this);
             Object value = this.element.removeProperty(key);
             return value;
         } catch (NotFoundException e) {
