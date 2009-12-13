@@ -29,7 +29,7 @@ public class SortFunction implements Function {
                 }
             } else if(objects.length == 2 && objects[0] instanceof List && objects[1] instanceof Boolean) {
                 // g:sort(list, reverse?)
-                List list = (List)objects[1];
+                List list = (List)objects[0];
                 Collections.sort(list);
                 if((Boolean)objects[1])
                     Collections.reverse(list);
