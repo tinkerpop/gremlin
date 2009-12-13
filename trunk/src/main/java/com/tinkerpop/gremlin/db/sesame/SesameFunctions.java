@@ -30,7 +30,7 @@ public class SesameFunctions implements Functions {
         functionMap.put(GetNamespacesFunction.FUNCTION_NAME, new GetNamespacesFunction());
         functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
         functionMap.put(PrefixFunction.FUNCTION_NAME , new PrefixFunction());
-        functionMap.put(ExpandFunction.FUNCTION_NAME, new ExpandFunction());
+        functionMap.put(NamespaceFunction.FUNCTION_NAME, new NamespaceFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {

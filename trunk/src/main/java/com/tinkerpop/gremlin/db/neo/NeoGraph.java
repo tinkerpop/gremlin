@@ -28,14 +28,7 @@ public class NeoGraph implements Graph {
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
         this.index = new NeoIndex(indexService);
-
-        tx = neo.beginTx();
-        try {
-            Node referenceNode = this.neo.getReferenceNode();
-            referenceNode.delete();
-            this.stopStartTransaction();
-        } catch (NotFoundException e) {
-        }
+        tx = neo.beginTx();  
     }
 
     public Index getIndex() {

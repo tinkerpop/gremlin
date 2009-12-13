@@ -13,7 +13,7 @@ import org.apache.commons.jxpath.Function;
  */
 public class NamespaceFunction implements Function {
 
-    public static final String FUNCTION_NAME = "expand";
+    public static final String FUNCTION_NAME = "ns";
 
     public String invoke(ExpressionContext context, Object[] parameters) {
 

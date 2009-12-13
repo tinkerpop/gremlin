@@ -47,6 +47,7 @@ public class NeoGraphTest extends TestCase {
             deleteGraphDirectory(new File(NEO_TEST_DIRECTORY));
             if (method.getName().startsWith("test")) {
                 Graph graph = new NeoGraph(NEO_TEST_DIRECTORY);
+                graph.removeVertex(graph.getVertex(0));
                 System.out.println("Testing " + method.getName() + "...");
                 method.invoke(suite, graph);
                 graph.shutdown();
