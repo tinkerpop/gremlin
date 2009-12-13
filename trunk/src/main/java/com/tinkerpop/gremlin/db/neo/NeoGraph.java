@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.api.core.*;
+import org.neo4j.impl.core.NodeManager;
 import org.neo4j.util.index.LuceneIndexService;
 import org.neo4j.util.index.Isolation;
 
@@ -105,7 +106,9 @@ public class NeoGraph implements Graph {
 
 
     public String toString() {
-        return "neograph[" + this.directory + "]";
+        EmbeddedNeo embeddedNeo = (EmbeddedNeo)neo;
+		NodeManager nodeManager = embeddedNeo.getConfig().getNeoModule().getNodeManager();
+		return "neograph[" + this.directory + "] " + nodeManager.getNumberOfIdsInUse(Node.class) + " nodes, " + nodeManager.getNumberOfIdsInUse(Relationship.class) + " relationships.";
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
