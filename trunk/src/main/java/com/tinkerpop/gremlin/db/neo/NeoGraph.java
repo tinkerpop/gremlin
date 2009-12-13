@@ -28,7 +28,7 @@ public class NeoGraph implements Graph {
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
         this.index = new NeoIndex(indexService);
-        tx = neo.beginTx();  
+        this.tx = neo.beginTx();
     }
 
     public Index getIndex() {
@@ -90,9 +90,9 @@ public class NeoGraph implements Graph {
     }
 
     private void stopStartTransaction() {
-        tx.success();
-        tx.finish();
-        tx = neo.beginTx();
+        this.tx.success();
+        this.tx.finish();
+        this.tx = neo.beginTx();
     }
 
     public void shutdown() {

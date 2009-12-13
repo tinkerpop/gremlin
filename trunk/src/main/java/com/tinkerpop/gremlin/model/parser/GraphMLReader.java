@@ -42,10 +42,9 @@ public class GraphMLReader {
                     String vertexStringId = reader.getAttributeValue(null, GraphMLTokens.ID);
 
                     Object vertexObjectId = vertexIdMap.get(vertexStringId);
-                    if(vertexObjectId != null)
+                    if (vertexObjectId != null)
                         currentVertex = graph.getVertex(vertexObjectId);
-
-                    if(null == currentVertex) {
+                    else {
                         currentVertex = graph.addVertex(vertexStringId);
                         vertexIdMap.put(vertexStringId, currentVertex.getId());
                     }
@@ -61,13 +60,13 @@ public class GraphMLReader {
                     Object inObjectId = vertexIdMap.get(inStringId);
 
                     Vertex outVertex = null;
-                    if(null != outObjectId)
+                    if (null != outObjectId)
                         outVertex = graph.getVertex(outObjectId);
 
                     Vertex inVertex = null;
-                    if(null != inObjectId)
+                    if (null != inObjectId)
                         inVertex = graph.getVertex(inStringId);
-                    
+
                     if (null == outVertex) {
                         outVertex = graph.addVertex(outStringId);
                         vertexIdMap.put(outStringId, outVertex.getId());
@@ -76,7 +75,9 @@ public class GraphMLReader {
                         inVertex = graph.addVertex(inStringId);
                         vertexIdMap.put(inStringId, inVertex.getId());
                     }
+                    try {
                     currentEdge = graph.addEdge(edgeId, outVertex, inVertex, edgeLabel);
+                    } catch(Exception e) {}
 
                 } else if (elementName.equals(GraphMLTokens.DATA)) {
                     String key = reader.getAttributeValue(null, GraphMLTokens.KEY);
