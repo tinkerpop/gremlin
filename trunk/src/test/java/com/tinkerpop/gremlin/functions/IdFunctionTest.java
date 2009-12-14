@@ -4,12 +4,13 @@ import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class IdFunctionTest extends BaseTest {
+public class IdFunctionTest extends TestCase {
 
     public void testIdFunction() {
         XPathEvaluator xe = new XPathEvaluator();

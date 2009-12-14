@@ -2,12 +2,13 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class DifferenceFunctionTest extends BaseTest {
+public class DifferenceFunctionTest extends TestCase {
 
     public void testDifferenceFunction() {
         XPathEvaluator xe = new XPathEvaluator();

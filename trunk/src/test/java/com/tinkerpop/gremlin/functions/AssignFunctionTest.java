@@ -6,11 +6,13 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.*;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class AssignFunctionTest extends BaseTest {
+public class AssignFunctionTest extends TestCase {
 
     public void testAssignFunctionVariable() {
         XPathEvaluator xe = new XPathEvaluator();

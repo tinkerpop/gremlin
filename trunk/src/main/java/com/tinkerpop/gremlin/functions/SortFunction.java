@@ -16,24 +16,28 @@ public class SortFunction implements Function {
 
     public static final String FUNCTION_NAME = "sort";
 
+    private static final String VALUE = "value";
+    private static final String KEY = "key";
+
     public Object invoke(ExpressionContext context, Object[] parameters) {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects.length == 3 && objects[0] instanceof Map && objects[1] instanceof String && objects[2] instanceof Boolean) {
                 // g:sort(map, 'key' | 'value', reverse?)
-                if (objects[1].equals("value")) {
+                if (objects[1].equals(VALUE)) {
                     return sortByValue((Map) objects[0], (Boolean) objects[2]);
-                } else if (objects[1].equals("key")) {
-                    return sortByKey((Map) objects[0]);
+                } else if (objects[1].equals(KEY)) {
+                    return sortByKey((Map) objects[0], (Boolean) objects[2]);
                 }
-            } else if(objects.length == 2 && objects[0] instanceof List && objects[1] instanceof Boolean) {
+            } else if (objects.length == 2 && objects[0] instanceof List && objects[1] instanceof Boolean) {
                 // g:sort(list, reverse?)
-                List list = (List)objects[0];
-                Collections.sort(list);
-                if((Boolean)objects[1])
-                    Collections.reverse(list);
-                return list;
+                List list = (List) objects[0];
+                List sortedList = new ArrayList(list);
+                Collections.sort(sortedList);
+                if ((Boolean) objects[1])
+                    Collections.reverse(sortedList);
+                return sortedList;
 
             }
         }
@@ -42,7 +46,6 @@ public class SortFunction implements Function {
     }
 
     private static Map sortByValue(Map map, boolean reverse) {
-        // TODO: augment original map with new values
         List mapKeys = new ArrayList(map.keySet());
         List mapValues = new ArrayList(map.values());
         Collections.sort(mapKeys);
@@ -52,6 +55,7 @@ public class SortFunction implements Function {
             Collections.reverse(mapValues);
 
         LinkedHashMap sortedMap = new LinkedHashMap();
+        HashMap oldMap = new HashMap(map);
 
         Iterator ittyValue = mapValues.iterator();
         while (ittyValue.hasNext()) {
@@ -69,13 +73,15 @@ public class SortFunction implements Function {
                 }
             }
         }
+
+        map.putAll(oldMap);
         return sortedMap;
     }
 
-    private static Map sortByKey(Map map) {
-        // TODO: add reverse sort
+    private static Map sortByKey(Map map, boolean reverse) {
         map = new TreeMap(map);
-        //TODO: ((TreeMap)map). decending map?
+        if (reverse)
+            map = ((TreeMap) map).descendingMap();
         return map;
     }
 }

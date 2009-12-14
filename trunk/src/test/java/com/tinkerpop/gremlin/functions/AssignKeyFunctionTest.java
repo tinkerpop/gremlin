@@ -6,11 +6,13 @@ import com.tinkerpop.gremlin.XPathEvaluator;
 import java.util.Map;
 import java.util.HashMap;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class AssignKeyFunctionTest extends BaseTest {
+public class AssignKeyFunctionTest extends TestCase {
 
     public void testAssignKeyFunction() {
          XPathEvaluator xe = new XPathEvaluator();

@@ -58,7 +58,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         ge.evaluate("$m := g:map()");
         stopWatch();
         for (int i = 0; i < 20000; i++) {
-            ge.evaluate("'marko'[g:incr-value($m, 1)]");
+            ge.evaluate("'marko'[g:add-value($m, 1)]");
         }
         System.out.println(stopWatch());
 

@@ -13,6 +13,8 @@ import java.util.Set;
  */
 public class GraphMLReaderTestSuite extends ModelTestSuite {
 
+    public GraphMLReaderTestSuite() {}
+
     public GraphMLReaderTestSuite(SuiteConfiguration config) {
         super(config);
     }

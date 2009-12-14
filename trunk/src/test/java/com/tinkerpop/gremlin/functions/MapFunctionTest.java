@@ -9,11 +9,13 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.Map;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class MapFunctionTest extends BaseTest {
+public class MapFunctionTest extends TestCase {
 
     public void testMapFunction() {
         XPathEvaluator xe = new XPathEvaluator();

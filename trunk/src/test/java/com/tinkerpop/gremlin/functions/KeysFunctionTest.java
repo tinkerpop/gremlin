@@ -8,11 +8,13 @@ import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class KeysFunctionTest extends BaseTest {
+public class KeysFunctionTest extends TestCase {
 
     public void testKeysFunctionMap() {
         XPathEvaluator xe = new XPathEvaluator();

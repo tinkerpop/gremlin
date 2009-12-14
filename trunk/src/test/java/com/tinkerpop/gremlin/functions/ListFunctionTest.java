@@ -3,12 +3,13 @@ package com.tinkerpop.gremlin.functions;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class ListFunctionTest extends BaseTest {
+public class ListFunctionTest extends TestCase {
 
     public void testListFunction() {
         XPathEvaluator xe = new XPathEvaluator();

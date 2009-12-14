@@ -2,12 +2,13 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class IntersectFunctionTest extends BaseTest {
+public class IntersectFunctionTest extends TestCase {
 
     public void testIntersectFunction() {
         XPathEvaluator xe = new XPathEvaluator();

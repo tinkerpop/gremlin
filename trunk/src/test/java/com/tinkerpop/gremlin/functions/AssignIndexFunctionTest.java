@@ -7,11 +7,13 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import java.util.List;
 import java.util.ArrayList;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class AssignIndexFunctionTest extends BaseTest {
+public class AssignIndexFunctionTest extends TestCase {
 
     public void testAssignFunctionList() {
         XPathEvaluator xe = new XPathEvaluator();

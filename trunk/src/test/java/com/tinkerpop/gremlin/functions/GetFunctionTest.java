@@ -9,11 +9,13 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class GetFunctionTest extends BaseTest {
+public class GetFunctionTest extends TestCase {
 
     public void testGetFunctionMap() {
         XPathEvaluator xe = new XPathEvaluator();

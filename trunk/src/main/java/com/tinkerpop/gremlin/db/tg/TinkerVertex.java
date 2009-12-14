@@ -36,7 +36,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
 
     public String toString() {
         return "v[" + this.id + "]";
-    }
+    }  
 
     public boolean equals(Object object) {
         if (object instanceof TinkerVertex)
