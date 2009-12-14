@@ -108,7 +108,7 @@ public class NeoGraph implements Graph {
     public String toString() {
         EmbeddedNeo embeddedNeo = (EmbeddedNeo)neo;
 		NodeManager nodeManager = embeddedNeo.getConfig().getNeoModule().getNodeManager();
-		return "neograph[" + this.directory + "] " + nodeManager.getNumberOfIdsInUse(Node.class) + " nodes, " + nodeManager.getNumberOfIdsInUse(Relationship.class) + " relationships.";
+		return "neograph[db:" + this.directory + " -- edges:" + nodeManager.getNumberOfIdsInUse(Node.class) + " -- vertices:" + nodeManager.getNumberOfIdsInUse(Relationship.class) + "]";
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
