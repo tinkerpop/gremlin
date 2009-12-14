@@ -16,4 +16,16 @@ public class XPathEvaluatorTest extends BaseTest {
         xe.removeVariable("$i");
         assertNull(xe.getVariable("$i"));
     }
+
+    public void testLastVariable() {
+        XPathEvaluator xe = new XPathEvaluator();
+        xe.evaluate("1+2");
+        assertEquals(xe.getVariable("$_last"), 3.0);
+        xe.evaluate("1+2");
+        assertEquals(xe.evaluate("g:type($_last)").get(0), "number");
+        xe.evaluate("g:append(1,2,3)");
+        assertEquals(xe.evaluate("g:type($_last)").get(0), "list");
+
+
+    }
 }

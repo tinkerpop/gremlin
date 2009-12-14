@@ -11,12 +11,14 @@ import java.util.Map;
  */
 public class GremlinEvaluatorTest extends BaseTest {
 
+    private int MAP_ITERATIONS = 10000;
+
     public void testMapTimes() {
 
         // WARM UP THE PROCESSOR
         GremlinEvaluator ge = new GremlinEvaluator();
         ge.evaluate("$m := g:map()");
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             ge.evaluate("$m[@name='marko'] := $m[@name='marko'] + 1");
         }
         //System.out.println(stopWatch());
@@ -24,7 +26,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         ge = new GremlinEvaluator();
         ge.evaluate("$m := g:map()");
         stopWatch();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             ge.evaluate("$n := 'marko'");
             ge.evaluate("$m[@name=$n] := $m[@name=$n] + 1");
         }
@@ -33,7 +35,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         ge = new GremlinEvaluator();
         ge.evaluate("$m := g:map()");
         stopWatch();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             ge.evaluate("$m[@name='marko'] := $m[@name='marko'] + 1");
         }
         System.out.println(stopWatch());
@@ -41,7 +43,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         ge = new GremlinEvaluator();
         ge.evaluate("$m := g:map()");
         stopWatch();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             ge.evaluate("$m/@marko := $m/@marko + 1");
         }
         System.out.println(stopWatch());
@@ -49,7 +51,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         ge = new GremlinEvaluator();
         ge.evaluate("$m := g:map()");
         stopWatch();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             ge.evaluate("g:assign($m, 'marko', $m/@marko + 1)");
         }
         System.out.println(stopWatch());
@@ -57,7 +59,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         ge = new GremlinEvaluator();
         ge.evaluate("$m := g:map()");
         stopWatch();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             ge.evaluate("'marko'[g:add-value($m, 1)]");
         }
         System.out.println(stopWatch());
@@ -65,7 +67,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         Map map = new HashMap();
         map.put("marko", 0);
         stopWatch();
-        for (int i = 0; i < 20000; i++) {
+        for (int i = 0; i < MAP_ITERATIONS; i++) {
             map.put("marko", (Integer) map.get("marko") + 1);
         }
         System.out.println(stopWatch());

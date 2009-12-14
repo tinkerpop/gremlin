@@ -41,7 +41,10 @@ public class XPathEvaluator {
                 this.baseContext = GremlinPathContext.newContext(this.baseContext, this.baseContext.getRoot());
             }
             List results = this.baseContext.selectNodes(xPathString);
-            this.setVariable(Tokens.LAST_VARIABLE, results);
+            if(results.size() == 1)
+                this.setVariable(Tokens.LAST_VARIABLE, results.get(0));
+            else
+                this.setVariable(Tokens.LAST_VARIABLE, results);
             return results;
         } catch (JXPathInvalidSyntaxException e) {
             throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));

@@ -44,11 +44,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         super(parentContext, object);
         if (null == parentContext) {
             this.setFunctions(library);
-            // TODO why does this not work?
-            if (object instanceof List && ((List) object).size() == 1)
-                this.setVariable(Tokens.LAST_VARIABLE, ((List) object).get(0));
-            else
-                this.setVariable(Tokens.LAST_VARIABLE, object);
         }
     }
 

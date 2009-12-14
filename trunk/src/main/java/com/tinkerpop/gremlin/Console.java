@@ -3,8 +3,10 @@ package com.tinkerpop.gremlin;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import jline.ConsoleReader;
+import jline.History;
 import org.apache.commons.jxpath.JXPathException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
@@ -32,9 +34,17 @@ public class Console {
 
         PrintStream output = System.out;
 
+
         ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
         reader.setUseHistory(true);
+
+        try {
+            History history = new History();
+            history.setHistoryFile(new File(".gremlin_history"));
+            reader.setHistory(history);
+        } catch (IOException e) {}
+
         GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
 
         String line = "";
@@ -80,6 +90,7 @@ public class Console {
                 }
             }
         }
+
     }
 
     private static String generateIndentation(int spaces) {
