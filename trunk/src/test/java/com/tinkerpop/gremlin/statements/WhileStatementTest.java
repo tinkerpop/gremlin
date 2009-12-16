@@ -1,6 +1,9 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -8,7 +11,7 @@ import com.tinkerpop.gremlin.BaseTest;
  */
 public class WhileStatementTest extends BaseTest {
 
-    public void testIsStatement() {
+    public void testWhileStatementSyntax() {
         assertTrue(WhileStatement.isStatement("while $i"));
         assertTrue(WhileStatement.isStatement("while ./././././././"));
         assertTrue(WhileStatement.isStatement("while true()"));
@@ -17,5 +20,18 @@ public class WhileStatementTest extends BaseTest {
         assertFalse(WhileStatement.isStatement("while"));
         assertFalse(WhileStatement.isStatement("while     "));
         assertTrue(WhileStatement.isStatement("while false()/outEdges/inVertex"));
+    }
+
+    public void testWhileStatementEvaluation() throws Exception {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        String sb = "$i := 0\nwhile $i < 10\n$i := $i + 1.0\nend\n";
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 10.0);
+
+        sb = "while $i < null()\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+        sb = "while null()\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+        sb = "while false()\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
     }
 }

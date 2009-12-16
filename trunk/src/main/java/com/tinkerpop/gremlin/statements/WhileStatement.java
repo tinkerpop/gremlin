@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin.statements;
 import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -17,10 +17,10 @@ public class WhileStatement extends CompoundStatement {
     private static final Pattern whilePattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX + Tokens.WHILE +
             Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
 
-     /* while ./././
-         ./././
-         end
-     */
+    /* while ./././
+        ./././
+        end
+    */
 
     public WhileStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -46,9 +46,18 @@ public class WhileStatement extends CompoundStatement {
     public List evaluate() throws EvaluationException {
         List results = null;
         try {
-            while ((Boolean) condition.evaluate().get(0)) {
-                for (Statement statement : this.statementList) {
-                    results = statement.evaluate();
+            while (true) {
+                List conditionList = condition.evaluate();
+                if (null != conditionList && conditionList.size() > 0) {
+                    if ((Boolean) conditionList.get(0)) {
+                        for (Statement statement : this.statementList) {
+                            results = statement.evaluate();
+                        }
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
                 }
             }
         }

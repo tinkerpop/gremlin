@@ -63,13 +63,16 @@ public class IfElseStatement extends CompoundStatement {
     public List evaluate() throws EvaluationException {
         List results = null;
         try {
-            if ((Boolean) condition.evaluate().get(0)) {
-                for (Statement statement : this.statementList) {
-                    results = statement.evaluate();
-                }
-            } else {
-                for (Statement statement : this.elseStatementList) {
-                    results = statement.evaluate();
+            List conditionList = condition.evaluate();
+            if (conditionList != null && conditionList.size() > 0) {
+                if ((Boolean) condition.evaluate().get(0)) {
+                    for (Statement statement : this.statementList) {
+                        results = statement.evaluate();
+                    }
+                } else {
+                    for (Statement statement : this.elseStatementList) {
+                        results = statement.evaluate();
+                    }
                 }
             }
         } catch (Exception e) {
@@ -84,11 +87,11 @@ public class IfElseStatement extends CompoundStatement {
 
     private boolean ifElseStatementsAreComplete() {
         Statement currentIfStatement = this.getCurrentStatement();
-        Statement currentElseStatement  = this.getCurrentElseStatement();
-        if(currentIfStatement != null && currentIfStatement.isComplete()) {
-           if(currentElseStatement == null || currentElseStatement.isComplete()) {
-               return true;
-           }
+        Statement currentElseStatement = this.getCurrentElseStatement();
+        if (currentIfStatement != null && currentIfStatement.isComplete()) {
+            if (currentElseStatement == null || currentElseStatement.isComplete()) {
+                return true;
+            }
         }
         return false;
     }

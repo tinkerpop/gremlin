@@ -36,5 +36,8 @@ public class RepeatStatementTest extends TestCase {
         sb = "repeat 0\n1.0\nend\n";
         assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
 
+        sb = "repeat null()\n1+2\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+
     }
 }

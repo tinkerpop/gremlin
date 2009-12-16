@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.util.List;
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class ForeachStatementTest extends BaseTest {
 
-    public void testIsStatement() {
+    public void testForeachStatementSyntax() {
         assertTrue(ForeachStatement.isStatement("foreach $i in 123"));
         assertTrue(ForeachStatement.isStatement("foreach $_ in ./outEdges/inVertex"));
         assertTrue(ForeachStatement.isStatement("   foreach $abc in function()"));
@@ -20,7 +21,7 @@ public class ForeachStatementTest extends BaseTest {
         assertTrue(ForeachStatement.isStatement("  foreach $i in 1 | 2 | 3 | 4"));
     }
 
-    public void testForEachNull() {
+    public void testForeachStatementEvaluation() throws Exception {
         List x = null;
         try {
             for (Object o : x) {
@@ -32,8 +33,7 @@ public class ForeachStatementTest extends BaseTest {
         }
 
         GremlinEvaluator ge = new GremlinEvaluator();
-        ge.evaluate("foreach $i in null()");
-        ge.evaluate("end");
-        assertTrue(true);
+        String sb = "foreach $i in null()\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
     }
 }

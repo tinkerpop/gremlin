@@ -1,6 +1,9 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -8,7 +11,7 @@ import com.tinkerpop.gremlin.BaseTest;
  */
 public class AssignmentStatementTest extends BaseTest {
 
-    public void testIsStatement() {
+    public void testAssignmentStatementSyntax() {
         assertTrue(AssignmentStatement.isStatement("$i := 1"));
         assertTrue(AssignmentStatement.isStatement("   $i := 1"));
         assertTrue(AssignmentStatement.isStatement("   $i :=     1"));
@@ -21,5 +24,17 @@ public class AssignmentStatementTest extends BaseTest {
         assertTrue(AssignmentStatement.isStatement("$i[1] := 1234"));
         assertTrue(AssignmentStatement.isStatement("$i/@marko   :=   1234"));
         assertTrue(AssignmentStatement.isStatement("  $i/marko   :=    1234"));
+    }
+
+    public void testCommentStatementEvaluation() throws Exception {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        String sb = "$i := 2";
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 2.0);
+        sb = "$i := 'marko'";
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), "marko");
+        // TODO null() handling
+        //sb = "$i := null()";
+        //assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+        
     }
 }

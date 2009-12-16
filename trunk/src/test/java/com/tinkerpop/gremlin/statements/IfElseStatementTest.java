@@ -29,6 +29,11 @@ public class IfElseStatementTest extends BaseTest {
         assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 1.0);
         assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 1.0);
 
+        sb = "if null()\n1.0\nelse\n2.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+        sb = "if false()\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+
     }
 
 }

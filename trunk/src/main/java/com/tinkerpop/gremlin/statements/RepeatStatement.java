@@ -17,10 +17,10 @@ public class RepeatStatement extends CompoundStatement {
     private static final Pattern repeatPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX + Tokens.REPEAT +
             Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
 
-     /* repeat ./././
-         ./././
-         end
-     */
+    /* repeat ./././
+        ./././
+        end
+    */
 
     public RepeatStatement(XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
@@ -45,10 +45,13 @@ public class RepeatStatement extends CompoundStatement {
     public List evaluate() throws EvaluationException {
         List results = null;
         try {
-            int numberOfTimes = Float.valueOf(times.evaluate().get(0).toString()).intValue();
-            for (int i = 0; i < numberOfTimes; i++) {
-                for (Statement statement : this.statementList) {
-                    results = statement.evaluate();
+            List timesList = times.evaluate();
+            if (timesList != null && timesList.size() > 0) {
+                int numberOfTimes = Double.valueOf(timesList.get(0).toString()).intValue();
+                for (int i = 0; i < numberOfTimes; i++) {
+                    for (Statement statement : this.statementList) {
+                        results = statement.evaluate();
+                    }
                 }
             }
         } catch (Exception e) {

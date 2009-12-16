@@ -34,7 +34,6 @@ public class Console {
 
         PrintStream output = System.out;
 
-
         ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
         reader.setUseHistory(true);
