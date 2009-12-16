@@ -37,8 +37,8 @@ public class ValuesFunction implements Function {
         List list = new ArrayList();
         for(String key : keys) {
             Object object = element.getProperty(key);
-            if(object instanceof Collection) {
-                list.addAll((Collection)object);
+            if(object instanceof List) {
+                list.addAll((List)object);
             } else if(!(object instanceof Map)) {
                 list.add(object);
             }

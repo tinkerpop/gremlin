@@ -12,6 +12,7 @@ import org.apache.commons.jxpath.Function;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -47,8 +48,8 @@ public class RemoveVertexEdgeFunction implements Function {
                             vertices.add((Vertex) objects[i]);
                         } else if (objects[i] instanceof Edge) {
                             edges.add((Edge) objects[i]);
-                        } else if (objects[i] instanceof Collection) {
-                            for (Object o : ((Collection) objects[i])) {
+                        } else if (objects[i] instanceof List) {
+                            for (Object o : ((List) objects[i])) {
                                 if (o instanceof Vertex) {
                                     vertices.add((Vertex) o);
                                 } else if (o instanceof Edge) {

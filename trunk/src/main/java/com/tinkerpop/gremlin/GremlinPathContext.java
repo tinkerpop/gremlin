@@ -7,9 +7,7 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import org.apache.commons.jxpath.ClassFunctions;
 import org.apache.commons.jxpath.FunctionLibrary;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
@@ -33,11 +31,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
 
-        library.addFunctions(new GremlinFunctions());
         library.addFunctions(new TinkerFunctions());
         library.addFunctions(new NeoFunctions());
         library.addFunctions(new SesameFunctions());
-        library.addFunctions(JXPathContext.newContext(null).getFunctions());
+        library.addFunctions(new GremlinFunctions());
+        library.addFunctions(new CoreFunctions());
     }
 
     public GremlinPathContext(GremlinPathContext parentContext, Object object) {

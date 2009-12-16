@@ -17,7 +17,7 @@ public class MultiplyValueFunction implements Function {
 
     public static final String FUNCTION_NAME = "mult-value";
 
-    //TODO allow it to take a set of indices or keys
+    //TODO allow it to take a set of indices or keys ?
     public Object invoke(ExpressionContext context, Object[] parameters) {
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
         if (null != objects) {

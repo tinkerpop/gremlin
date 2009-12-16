@@ -6,10 +6,7 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RetainFunction implements Function {
     public static final String FUNCTION_NAME = "retain";
@@ -20,8 +17,8 @@ public class RetainFunction implements Function {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             Set setA = new HashSet();
             for (Object object : objects) {
-                if (object instanceof Collection)
-                    setA.addAll((Collection) object);
+                if (object instanceof List)
+                    setA.addAll((List) object);
                 else if (!(object instanceof Map))
                     setA.add(object);
 

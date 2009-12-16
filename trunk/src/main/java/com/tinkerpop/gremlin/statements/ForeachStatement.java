@@ -55,11 +55,13 @@ public class ForeachStatement extends CompoundStatement {
     public List evaluate() throws EvaluationException {
         List results = null;
         try {
-            List set = this.loopSet.evaluate();
-            for (Object item : set) {
-                xPathEvaluator.setVariable(this.variable, item);
-                for (Statement statement : this.statementList) {
-                    results = statement.evaluate();
+            List loopSet = this.loopSet.evaluate();
+            if (null != loopSet) {
+                for (Object item : loopSet) {
+                    xPathEvaluator.setVariable(this.variable, item);
+                    for (Statement statement : this.statementList) {
+                        results = statement.evaluate();
+                    }
                 }
             }
         } catch (Exception e) {

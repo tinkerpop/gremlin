@@ -10,8 +10,9 @@ public class EvaluationException extends RuntimeException {
     private static final String UNSUPPORTED_PARAMETERS_MESSAGE = "does not support provided parameters";
     private static final String INDEX_BOUND_MESSAGE = "index out of bounds of collection";
     private static final String NO_FUNCTION_MESSAGE = "undefined function";
+    private static final String USE_OTHER_MESSAGE = "use the nearly equivalent function in the g namespace";
 
-    public enum EvaluationErrorType {UNSUPPORTED_PARAMETERS, EMBEDDED_COLLECTIONS, INDEX_BOUNDS, NO_FUNCTION}
+    public enum EvaluationErrorType {UNSUPPORTED_PARAMETERS, EMBEDDED_COLLECTIONS, INDEX_BOUNDS, NO_FUNCTION, USE_OTHER}
 
 
     public EvaluationException(String message) {
@@ -27,6 +28,8 @@ public class EvaluationException extends RuntimeException {
             return new EvaluationException(functionName + " " + INDEX_BOUND_MESSAGE);
         else if(type == EvaluationErrorType.NO_FUNCTION)
             return new EvaluationException(NO_FUNCTION_MESSAGE + " " + functionName);
+        else if(type == EvaluationErrorType.USE_OTHER)
+            return new EvaluationException(USE_OTHER_MESSAGE);
         else
             return new EvaluationException("Evaluation error");
 

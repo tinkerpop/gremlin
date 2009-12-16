@@ -1,6 +1,9 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,5 +18,22 @@ public class ForeachStatementTest extends BaseTest {
         assertFalse(ForeachStatement.isStatement("for each $i in 123"));
         assertFalse(ForeachStatement.isStatement("foreach $i in "));
         assertTrue(ForeachStatement.isStatement("  foreach $i in 1 | 2 | 3 | 4"));
+    }
+
+    public void testForEachNull() {
+        List x = null;
+        try {
+            for (Object o : x) {
+                assertFalse(true);
+            }
+        }
+        catch (NullPointerException e) {
+            assertTrue(true);
+        }
+
+        GremlinEvaluator ge = new GremlinEvaluator();
+        ge.evaluate("foreach $i in null()");
+        ge.evaluate("end");
+        assertTrue(true);
     }
 }

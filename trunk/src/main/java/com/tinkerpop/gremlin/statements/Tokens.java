@@ -34,13 +34,11 @@ public class Tokens {
     public static final String OUT_EDGES = "outE";
     public static final String IN_EDGES = "inE";
     public static final String BOTH_EDGES = "bothE";
+    public static final String LABEL = "label";
 
     public static final String OUT_VERTEX = "outV";
     public static final String IN_VERTEX = "inV";
     public static final String BOTH_VERTICES = "bothV";
-    public static final String LABEL = "label";
 
     public static final String ID = "id";
-
-
 }

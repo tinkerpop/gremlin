@@ -20,14 +20,14 @@ public class RemoveFunction implements Function {
         
         if (null != objects && objects.length > 1) {
             List list = new ArrayList();
-            if (objects[0] instanceof Collection)
-                list.addAll((Collection) objects[0]);
+            if (objects[0] instanceof List)
+                list.addAll((List) objects[0]);
             else if (!(objects[0] instanceof Map))
                 list.add(objects[0]);
 
             for (int i = 1; i < objects.length; i++) {
-                if (objects[i] instanceof Collection)
-                    list.removeAll((Collection) objects[i]);
+                if (objects[i] instanceof List)
+                    list.removeAll((List) objects[i]);
                 else if (!(objects[i] instanceof Map))
                     list.remove(objects[i]);
                 if (list.size() == 0)

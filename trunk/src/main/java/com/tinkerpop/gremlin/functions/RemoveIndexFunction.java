@@ -9,6 +9,7 @@ import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -31,8 +32,8 @@ public class RemoveIndexFunction implements Function {
                 } else if (objects.length == 2 && objects[1] instanceof String) {
                     index.removeIndexKey((String) objects[1]);
                     return Boolean.TRUE;
-                } else if (objects.length == 2 && objects[1] instanceof Collection) {
-                    for (Object o : (Collection) objects[1]) {
+                } else if (objects.length == 2 && objects[1] instanceof List) {
+                    for (Object o : (List) objects[1]) {
                         if (o instanceof String) {
                             index.removeIndexKey((String) o);
                         }

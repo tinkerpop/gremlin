@@ -37,7 +37,7 @@ public class GremlinFunctions implements Functions {
         functionMap.put(RemoveIndexFunction.FUNCTION_NAME, new RemoveIndexFunction());
         functionMap.put(ShutdownFunction.FUNCTION_NAME, new ShutdownFunction());
         // sets
-        functionMap.put(SetFunction.FUNCTION_NAME, new SetFunction());
+        functionMap.put(DeduplicateFunction.FUNCTION_NAME, new DeduplicateFunction());
         functionMap.put(UnionFunction.FUNCTION_NAME, new UnionFunction());
         functionMap.put(IntersectFunction.FUNCTION_NAME, new IntersectFunction());
         functionMap.put(DifferenceFunction.FUNCTION_NAME, new DifferenceFunction());

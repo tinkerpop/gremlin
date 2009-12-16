@@ -20,8 +20,8 @@ public class ListFunction implements Function {
         } else if (parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
 
-            if (object instanceof Collection)
-                return new ArrayList((Collection) object);
+            if (object instanceof List)
+                return new ArrayList((List) object);
             else if (object instanceof Map) {
                 throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
                 
