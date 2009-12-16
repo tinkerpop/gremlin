@@ -64,6 +64,7 @@ public class SortFunctionTest extends TestCase {
         assertEquals(sortedList.get(0), 3);
         assertEquals(sortedList.get(1), 2);
         assertEquals(sortedList.get(2), 1);
+
         sortedList = xe.evaluate("g:sort($i, false())");
         assertEquals(sortedList.get(0), 1);
         assertEquals(sortedList.get(1), 2);

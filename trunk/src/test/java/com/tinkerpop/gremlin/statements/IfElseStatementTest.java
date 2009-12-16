@@ -1,6 +1,9 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -8,7 +11,7 @@ import com.tinkerpop.gremlin.BaseTest;
  */
 public class IfElseStatementTest extends BaseTest {
 
-    public void testIsStatement() {
+    public void testIfElseStatementSyntax() {
         assertTrue(IfElseStatement.isStatement("if true()"));
         assertTrue(IfElseStatement.isStatement("   if false()     "));
         assertTrue(IfElseStatement.isStatement("   if 1"));
@@ -17,6 +20,15 @@ public class IfElseStatementTest extends BaseTest {
         assertFalse(IfElseStatement.isStatement("iftrue()"));
         assertFalse(IfElseStatement.isStatement("if"));
         assertFalse(IfElseStatement.isStatement("     if"));
+    }
+
+    public void testIfElseStatementEvaluation() throws Exception{
+        GremlinEvaluator ge = new GremlinEvaluator();
+        String sb = "if true()\n1.0\nelse\n2.0\nend\n";
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).size(), 1);
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 1.0);
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 1.0);
+
     }
 
 }

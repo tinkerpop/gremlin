@@ -1,15 +1,13 @@
 package com.tinkerpop.gremlin.functions;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import junit.framework.TestCase;
 
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -28,8 +26,6 @@ public class MapFunctionTest extends TestCase {
         } catch (EvaluationException e) {
             assertTrue(true);
         }
-
-
     }
 
     public void testMapFunctionElement() {
@@ -38,11 +34,11 @@ public class MapFunctionTest extends TestCase {
         Edge edge = TinkerGraphFactory.createTinkerGraph().getVertex("1").getOutEdges().iterator().next();
         xe.setVariable("$v", marko);
         xe.setVariable("$e", edge);
-        assertEquals(((Map)(xe.evaluate("g:map($v)")).get(0)).keySet().size(), 2);
-        assertTrue(((Map)(xe.evaluate("g:map($v)")).get(0)).keySet().contains("age"));
-        assertTrue(((Map)(xe.evaluate("g:map($v)")).get(0)).keySet().contains("name"));
-        assertEquals(((Map)(xe.evaluate("g:map($e)")).get(0)).keySet().size(), 1);
-        assertTrue(((Map)(xe.evaluate("g:map($e)")).get(0)).keySet().contains("weight"));
+        assertEquals(((Map) (xe.evaluate("g:map($v)")).get(0)).keySet().size(), 2);
+        assertTrue(((Map) (xe.evaluate("g:map($v)")).get(0)).keySet().contains("age"));
+        assertTrue(((Map) (xe.evaluate("g:map($v)")).get(0)).keySet().contains("name"));
+        assertEquals(((Map) (xe.evaluate("g:map($e)")).get(0)).keySet().size(), 1);
+        assertTrue(((Map) (xe.evaluate("g:map($e)")).get(0)).keySet().contains("weight"));
     }
 
 }

@@ -1,14 +1,19 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
+import java.io.ByteArrayInputStream;
+
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class RepeatStatementTest extends BaseTest {
+public class RepeatStatementTest extends TestCase {
 
-    public void testIsStatement() {
+    public void testRepeatStatementSyntax() {
         assertTrue(RepeatStatement.isStatement("repeat $i"));
         assertTrue(RepeatStatement.isStatement("repeat ./././././././"));
         assertTrue(RepeatStatement.isStatement("repeat 135"));
@@ -18,5 +23,18 @@ public class RepeatStatementTest extends BaseTest {
         assertFalse(RepeatStatement.isStatement("repeat "));
         assertFalse(RepeatStatement.isStatement("repeat"));
         assertTrue(RepeatStatement.isStatement("repeat 1 | 2 | 3 | 4"));
+    }
+
+    public void testRepeatStatementEvaluation() throws Exception {
+
+        GremlinEvaluator ge = new GremlinEvaluator();
+        String sb = "repeat 10\n1.0\nend\n";
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).size(), 1);
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 1.0);
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 1.0);
+
+        sb = "repeat 0\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+
     }
 }

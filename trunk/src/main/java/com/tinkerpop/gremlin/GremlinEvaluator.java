@@ -29,7 +29,7 @@ public class GremlinEvaluator {
     public int getDepth() {
         return this.xPathEvaluator.getDepth();
     }
-
+    
     public List evaluate(String line) throws SyntaxException, EvaluationException {
         line = line.trim();
         if (line.length() > 0) {
@@ -76,11 +76,10 @@ public class GremlinEvaluator {
 
     public List evaluate(InputStream input) throws IOException, SyntaxException, EvaluationException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        String line = reader.readLine();
+        String line;
         List result = null;
-        while (line != null) {
+        while ((line = reader.readLine()) != null) {
             result = this.evaluate(line);
-            line = reader.readLine();
         }
         return result;
     }
