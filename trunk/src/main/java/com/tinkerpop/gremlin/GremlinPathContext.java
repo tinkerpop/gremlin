@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.FunctionLibrary;
@@ -28,6 +29,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     private static final FunctionLibrary library = new FunctionLibrary();
 
     static {
+        JXPathIntrospector.registerDynamicClass(Graph.class, GraphPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
 
