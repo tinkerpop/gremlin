@@ -12,13 +12,13 @@ public interface Graph {
 
     public Vertex getVertex(Object id);
 
-    public Iterator<Vertex> getVertices();
+    public Iterable<Vertex> getVertices();
 
     public void removeVertex(Vertex vertex);
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label);
 
-    public Iterator<Edge> getEdges();
+    public Iterable<Edge> getEdges();
 
     public void removeEdge(Edge edge);
 

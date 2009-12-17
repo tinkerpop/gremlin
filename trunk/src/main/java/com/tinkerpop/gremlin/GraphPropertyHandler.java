@@ -1,12 +1,11 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,8 +16,8 @@ public class GraphPropertyHandler implements DynamicPropertyHandler {
 
     public String[] getPropertyNames(Object graphObject) {
         List<String> list = new ArrayList<String>();
-        list.add("V");
-        list.add("E");
+        list.add(Tokens.VERTICES);
+        list.add(Tokens.EDGES);
         return list.toArray(new String[list.size()]);
     }
 
@@ -26,31 +25,27 @@ public class GraphPropertyHandler implements DynamicPropertyHandler {
     }
 
     public Object getProperty(Object graphObject, String key) {
-        if(key.equals("V")) {
-            return getVertexList((Graph)graphObject);
-        } else if(key.equals("E")) {
-            return getEdgeList((Graph)graphObject);
+        Graph graph = (Graph) graphObject;
+        if (key.equals(Tokens.VERTICES)) {
+            return GraphPropertyHandler.createListFromIterable(graph.getVertices());
+        } else if (key.equals(Tokens.EDGES)) {
+            return GraphPropertyHandler.createListFromIterable(graph.getEdges());
         } else {
             return null;
         }
     }
 
-    private List<Vertex> getVertexList(Graph graph) {
-        List<Vertex> vertices = new ArrayList<Vertex>();
-        Iterator<Vertex> itty = graph.getVertices();
-        while (itty.hasNext()) {
-            vertices.add(itty.next());
+    private static Collection createListFromIterable(Iterable itty) {
+        if (itty instanceof Collection) {
+            // TODO: this is odd, inefficient behavior System.out.println("HERE!");
+            return (Collection) itty;
         }
-        return vertices;
-    }
-
-    private List<Edge> getEdgeList(Graph graph) {
-        List<Edge> edges = new ArrayList<Edge>();
-        Iterator<Edge> itty = graph.getEdges();
-        while (itty.hasNext()) {
-            edges.add(itty.next());
+        else {
+            List list = new ArrayList();
+            for (Object o : itty) {
+                list.add(o);
+            }
+            return list;
         }
-        return edges;
     }
-
 }

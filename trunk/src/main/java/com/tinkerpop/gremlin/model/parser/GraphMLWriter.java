@@ -49,9 +49,7 @@ public class GraphMLWriter {
         writer.writeAttribute(GraphMLTokens.ID, GraphMLTokens.G);
         writer.writeAttribute(GraphMLTokens.EDGEDEFAULT, GraphMLTokens.DIRECTED);
 
-        Iterator<Vertex> itty = graph.getVertices();
-        while (itty.hasNext()) {
-            Vertex vertex = itty.next();
+        for (Vertex vertex : graph.getVertices()) {
             writer.writeStartElement(GraphMLTokens.NODE);
             writer.writeAttribute(GraphMLTokens.ID, vertex.getId().toString());
             for (String key : vertex.getPropertyKeys()) {
@@ -91,9 +89,7 @@ public class GraphMLWriter {
         Map<String, String> vertexKeyTypes = new HashMap<String, String>();
         Map<String, String> edgeKeyTypes = new HashMap<String, String>();
 
-        Iterator<Vertex> itty = graph.getVertices();
-        while (itty.hasNext()) {
-            Vertex vertex = itty.next();
+       for (Vertex vertex : graph.getVertices()) {
             for (String key : vertex.getPropertyKeys()) {
                 if (!vertexKeyTypes.containsKey(key)) {
                     vertexKeyTypes.put(key, GraphMLWriter.getStringType(vertex.getProperty(key)));

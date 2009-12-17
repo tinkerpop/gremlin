@@ -109,13 +109,13 @@ public class SesameGraph implements Graph {
         return createVertex(id.toString());
     }
 
-    public Iterator<Vertex> getVertices() {
+    public Iterable<Vertex> getVertices() {
         throw new EvaluationException(UNSUPPORTED_OPERATION);
     }
 
-    public Iterator<Edge> getEdges() {
+    public Iterable<Edge> getEdges() {
         try {
-            return new SesameEdgeIterator(this.sailConnection.getStatements(null, null, null, false), this.sailConnection);
+            return new SesameEdgeIterable(this.sailConnection.getStatements(null, null, null, false), this.sailConnection);
         } catch (SailException e) {
             throw new EvaluationException(e.getMessage());
         }
@@ -256,6 +256,22 @@ public class SesameGraph implements Graph {
     public String toString() {
         String type = this.sail.getClass().getSimpleName().toLowerCase();
         return "sesamegraph[" + type + "]";
+    }
+
+    private class SesameEdgeIterable implements Iterable<Edge> {
+
+        private CloseableIteration<? extends Statement, SailException> statements;
+        private SailConnection sailConnection;
+
+        public SesameEdgeIterable(CloseableIteration<? extends Statement, SailException> statements, SailConnection sailConnection) {
+            this.statements = statements;
+            this.sailConnection = sailConnection;
+        }
+
+        public Iterator<Edge> iterator() {
+            return new SesameEdgeIterator(statements, sailConnection);
+        }
+
     }
 
     private class SesameEdgeIterator implements Iterator<Edge> {

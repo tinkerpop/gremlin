@@ -7,8 +7,8 @@ import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.api.core.*;
 import org.neo4j.impl.core.NodeManager;
-import org.neo4j.util.index.LuceneIndexService;
 import org.neo4j.util.index.Isolation;
+import org.neo4j.util.index.LuceneIndexService;
 
 import java.util.Iterator;
 
@@ -54,12 +54,12 @@ public class NeoGraph implements Graph {
         }
     }
 
-    public Iterator<Vertex> getVertices() {
-        return new NeoVertexIterator(this.neo.getAllNodes().iterator());
+    public Iterable<Vertex> getVertices() {
+        return new NeoVertexIterable(this.neo.getAllNodes());
     }
 
-    public Iterator<Edge> getEdges() {
-        return new NeoEdgeIterator(this.neo.getAllNodes().iterator());
+    public Iterable<Edge> getEdges() {
+        return new NeoEdgeIterable(this.neo.getAllNodes());
     }
 
     public void removeVertex(Vertex vertex) {
@@ -106,17 +106,30 @@ public class NeoGraph implements Graph {
 
 
     public String toString() {
-        EmbeddedNeo embeddedNeo = (EmbeddedNeo)neo;
-		NodeManager nodeManager = embeddedNeo.getConfig().getNeoModule().getNodeManager();
-		return "neograph[db:" + this.directory + ", vertices:" + nodeManager.getNumberOfIdsInUse(Node.class) + ", edges:" + nodeManager.getNumberOfIdsInUse(Relationship.class) + "]";
+        EmbeddedNeo embeddedNeo = (EmbeddedNeo) neo;
+        NodeManager nodeManager = embeddedNeo.getConfig().getNeoModule().getNodeManager();
+        return "neograph[db:" + this.directory + ", vertices:" + nodeManager.getNumberOfIdsInUse(Node.class) + ", edges:" + nodeManager.getNumberOfIdsInUse(Relationship.class) + "]";
+    }
+
+    private class NeoVertexIterable implements Iterable<Vertex> {
+
+        Iterable<Node> nodes;
+
+        public NeoVertexIterable(Iterable<Node> nodes) {
+            this.nodes = nodes;
+        }
+
+        public Iterator<Vertex> iterator() {
+            return new NeoVertexIterator(this.nodes);
+        }
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
 
         Iterator<Node> nodes;
 
-        public NeoVertexIterator(Iterator<Node> nodes) {
-            this.nodes = nodes;
+        public NeoVertexIterator(Iterable<Node> nodes) {
+            this.nodes = nodes.iterator();
         }
 
         public void remove() throws UnsupportedOperationException {
@@ -130,6 +143,20 @@ public class NeoGraph implements Graph {
         public boolean hasNext() {
             return this.nodes.hasNext();
         }
+
+    }
+
+    private class NeoEdgeIterable implements Iterable<Edge> {
+
+        Iterable<Node> nodes;
+
+        public NeoEdgeIterable(Iterable<Node> nodes) {
+            this.nodes = nodes;
+        }
+
+        public Iterator<Edge> iterator() {
+            return new NeoEdgeIterator(this.nodes);
+        }
     }
 
     private class NeoEdgeIterator implements Iterator<Edge> {
@@ -138,8 +165,8 @@ public class NeoGraph implements Graph {
         private Iterator<Relationship> currentRelationships;
         private boolean complete = false;
 
-        public NeoEdgeIterator(Iterator<Node> nodes) {
-            this.nodes = nodes;
+        public NeoEdgeIterator(Iterable<Node> nodes) {
+            this.nodes = nodes.iterator();
             this.complete = this.goToNextEdge();
 
         }

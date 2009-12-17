@@ -6,7 +6,10 @@ import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -44,12 +47,12 @@ public class TinkerGraph implements Graph {
         return this.vertices.get(idString);
     }
 
-    public Iterator<Vertex> getVertices() {
-        return vertices.values().iterator();
+    public Iterable<Vertex> getVertices() {
+        return vertices.values();
     }
 
-    public Iterator<Edge> getEdges() {
-        return new TinkerEdgeIterator(this.getVertices());
+    public Iterable<Edge> getEdges() {
+        return new TinkerEdgeIterable(this.getVertices());
     }
 
     public void removeVertex(Vertex vertex) {
@@ -101,11 +104,23 @@ public class TinkerGraph implements Graph {
 
     }
 
+    private class TinkerEdgeIterable implements Iterable<Edge> {
+
+        private Iterable<Vertex> vertices;
+
+        public TinkerEdgeIterable(Iterable<Vertex> vertices) {
+            this.vertices = vertices;
+        }
+
+        public Iterator<Edge> iterator() {
+            return new TinkerEdgeIterator(this.vertices.iterator());
+        }
+    }
+
     private class TinkerEdgeIterator implements Iterator<Edge> {
 
         private Iterator<Vertex> vertices;
-        private List<Edge> currentEdges;
-        private int currentIndex = -1;
+        private Iterator<Edge> currentEdges;
         private boolean complete = false;
 
         public TinkerEdgeIterator(Iterator<Vertex> vertices) {
@@ -115,7 +130,7 @@ public class TinkerGraph implements Graph {
         }
 
         public Edge next() {
-            Edge edge = currentEdges.get(currentIndex);
+            Edge edge = currentEdges.next();
             this.complete = this.goToNextEdge();
             return edge;
         }
@@ -129,11 +144,10 @@ public class TinkerGraph implements Graph {
         }
 
         private boolean goToNextEdge() {
-            if (this.currentIndex == -1) {
+            if (this.currentEdges == null || !this.currentEdges.hasNext()) {
                 if (vertices.hasNext()) {
-                    this.currentEdges = new ArrayList<Edge>(vertices.next().getOutEdges());
-                    if (this.currentEdges.size() > 0) {
-                        this.currentIndex = 0;
+                    this.currentEdges = vertices.next().getOutEdges().iterator();
+                    if (this.currentEdges.hasNext()) {
                         return false;
                     } else {
                         return this.goToNextEdge();
@@ -142,15 +156,12 @@ public class TinkerGraph implements Graph {
                     return true;
                 }
             } else {
-                if (this.currentIndex < this.currentEdges.size() - 1) {
-                    this.currentIndex++;
+                if (this.currentEdges.hasNext()) {
                     return false;
                 } else {
-                    this.currentIndex = -1;
                     return this.goToNextEdge();
                 }
             }
-
         }
     }
 }
