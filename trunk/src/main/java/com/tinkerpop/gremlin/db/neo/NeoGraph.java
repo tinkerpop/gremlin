@@ -189,22 +189,16 @@ public class NeoGraph implements Graph {
             if (this.currentRelationships == null || !this.currentRelationships.hasNext()) {
                 if (nodes.hasNext()) {
                     this.currentRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
-                    if (this.currentRelationships.hasNext()) {
-                        return false;
-                    } else {
-                        return this.goToNextEdge();
-                    }
                 } else {
                     return true;
                 }
-            } else {
-                if (this.currentRelationships.hasNext()) {
-                    return false;
-                } else {
-                    return this.goToNextEdge();
-                }
             }
 
+            if (this.currentRelationships.hasNext()) {
+                return false;
+            } else {
+                return this.goToNextEdge();
+            }
         }
     }
 }

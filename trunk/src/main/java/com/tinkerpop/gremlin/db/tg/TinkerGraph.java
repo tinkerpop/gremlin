@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,20 +25,18 @@ public class TinkerGraph implements Graph {
         if (null != id) {
             idString = id.toString();
         } else {
-            idString = this.currentId.toString();
-            this.currentId++;
+            idString = this.getNextId();
         }
 
         Vertex vertex = this.vertices.get(idString);
 
-        if (null != vertex)
-            throw new EvaluationException("Vertex " + idString + " already exists");
-        else {
+        if (null != vertex) {
+            return vertex;
+        } else {
             vertex = new TinkerVertex(idString, this.index);
             this.vertices.put(vertex.getId().toString(), vertex);
             return vertex;
         }
-
     }
 
     public Vertex getVertex(Object id) {
@@ -71,8 +68,7 @@ public class TinkerGraph implements Graph {
         if (null != id) {
             idString = id.toString();
         } else {
-            idString = this.currentId.toString();
-            this.currentId++;
+            idString = this.getNextId();
         }
 
         TinkerVertex out = (TinkerVertex) outVertex;
@@ -102,6 +98,17 @@ public class TinkerGraph implements Graph {
 
     public void shutdown() {
 
+    }
+
+    private String getNextId() {
+        String idString;
+        while (true) {
+            idString = this.currentId.toString();
+            this.currentId++;
+            if (null == this.vertices.get(idString) || this.currentId == Long.MAX_VALUE)
+                break;
+        }
+        return idString;
     }
 
     private class TinkerEdgeIterable implements Iterable<Edge> {
@@ -147,21 +154,18 @@ public class TinkerGraph implements Graph {
             if (this.currentEdges == null || !this.currentEdges.hasNext()) {
                 if (vertices.hasNext()) {
                     this.currentEdges = vertices.next().getOutEdges().iterator();
-                    if (this.currentEdges.hasNext()) {
-                        return false;
-                    } else {
-                        return this.goToNextEdge();
-                    }
+
                 } else {
                     return true;
                 }
-            } else {
-                if (this.currentEdges.hasNext()) {
-                    return false;
-                } else {
-                    return this.goToNextEdge();
-                }
             }
+
+            if (this.currentEdges.hasNext()) {
+                return false;
+            } else {
+                return this.goToNextEdge();
+            }
+
         }
     }
 }
