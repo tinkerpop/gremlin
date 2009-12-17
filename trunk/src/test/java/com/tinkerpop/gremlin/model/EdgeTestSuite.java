@@ -11,7 +11,8 @@ import java.util.UUID;
  */
 public class EdgeTestSuite extends ModelTestSuite {
 
-    public EdgeTestSuite() {}
+    public EdgeTestSuite() {
+    }
 
     public EdgeTestSuite(SuiteConfiguration config) {
         super(config);
@@ -43,9 +44,7 @@ public class EdgeTestSuite extends ModelTestSuite {
             assertEquals(countIterator(graph.getEdges()), 1000);
         if (config.supportsVertexIteration) {
             assertEquals(countIterator(graph.getVertices()), 2000);
-            Iterator<Vertex> vertices = graph.getVertices();
-            while (vertices.hasNext()) {
-                Vertex vertex = vertices.next();
+            for (Vertex vertex : graph.getVertices()) {
                 if (vertex.getOutEdges().size() > 0) {
                     assertEquals(vertex.getOutEdges().size(), 1);
                     assertFalse(vertex.getInEdges().size() > 0);
@@ -81,9 +80,8 @@ public class EdgeTestSuite extends ModelTestSuite {
                 assertEquals(countIterator(graph.getEdges()), i);
                 if (config.supportsVertexIteration) {
                     int x = 0;
-                    Iterator<Vertex> vertices = graph.getVertices();
-                    while (vertices.hasNext()) {
-                        Vertex vertex = vertices.next();
+                    for (Vertex vertex : graph.getVertices()) {
+
                         if (vertex.getOutEdges().size() > 0) {
                             assertEquals(vertex.getOutEdges().size(), 1);
                             assertFalse(vertex.getInEdges().size() > 0);
@@ -221,10 +219,8 @@ public class EdgeTestSuite extends ModelTestSuite {
                 assertEquals(countIterator(graph.getVertices()), 3);
             if (config.supportsEdgeIteration) {
                 assertEquals(countIterator(graph.getEdges()), 3);
-                Iterator<Edge> itty = graph.getEdges();
                 int counter = 0;
-                while (itty.hasNext()) {
-                    Edge edge = itty.next();
+                for (Edge edge : graph.getEdges()) {
                     counter++;
                     assertEquals(edge.getInVertex(), edge.getOutVertex());
                     assertEquals(edge.getInVertex().getId(), edge.getOutVertex().getId());
@@ -249,12 +245,10 @@ public class EdgeTestSuite extends ModelTestSuite {
             if (config.supportsEdgeIteration)
                 assertEquals(countIterator(graph.getEdges()), 3);
 
-            Iterator<Edge> edges = graph.getEdges();
             Set<String> edgeIds = new HashSet<String>();
             int count = 0;
-            while (edges.hasNext()) {
+            for (Edge e : graph.getEdges()) {
                 count++;
-                Edge e = edges.next();
                 edgeIds.add(e.getId().toString());
                 assertEquals(e.getLabel(), convertId("test"));
                 if (e.getId().toString().equals(e1.getId().toString())) {

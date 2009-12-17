@@ -75,14 +75,12 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
 
     public void testTinkerGraphEdges(Graph graph) throws Exception {
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
-        Iterator<Edge> edges = graph.getEdges();
         Set<String> edgeIds = new HashSet<String>();
         Set<String> edgeKeys = new HashSet<String>();
         Set<String> edgeValues = new HashSet<String>();
         int count = 0;
-        while (edges.hasNext()) {
+        for (Edge e : graph.getEdges()) {
             count++;
-            Edge e = edges.next();
             edgeIds.add(e.getId().toString());
             for (String key : e.getPropertyKeys()) {
                 edgeKeys.add(key);
@@ -97,12 +95,10 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
 
     public static void testTinkerGraphVertices(Graph graph) throws Exception {
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
-        Iterator<Vertex> vertices = graph.getVertices();
         Set<String> vertexNames = new HashSet<String>();
         int count = 0;
-        while (vertices.hasNext()) {
+        for(Vertex v : graph.getVertices()) {
             count++;
-            Vertex v = vertices.next();
             vertexNames.add(v.getProperty("name").toString());
             //System.out.println(v);
         }
@@ -118,12 +114,10 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
 
     public static void testTinkerGraphSoftwareVertices(Graph graph) throws Exception {
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
-        Iterator<Vertex> vertices = graph.getVertices();
         Set<Vertex> softwareVertices = new HashSet<Vertex>();
         int count = 0;
-        while (vertices.hasNext()) {
+        for(Vertex v : graph.getVertices()) {
             count++;
-            Vertex v = vertices.next();
             String name = v.getProperty("name").toString();
             if (name.equals("lop") || name.equals("ripple")) {
                 softwareVertices.add(v);

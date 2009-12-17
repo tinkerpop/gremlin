@@ -40,6 +40,10 @@ public class BaseTest extends TestCase {
         return counter;
     }
 
+    public static int countIterator(Iterable itty) {
+        return countIterator(itty.iterator());
+    }
+
     public static List asList(Object x, int times) {
         List list = new ArrayList();
         for(int i=0; i<times; i++) {
