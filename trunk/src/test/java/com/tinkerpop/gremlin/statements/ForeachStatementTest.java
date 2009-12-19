@@ -35,5 +35,9 @@ public class ForeachStatementTest extends BaseTest {
         GremlinEvaluator ge = new GremlinEvaluator();
         String sb = "foreach $i in null()\n1.0\nend\n";
         assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
+        sb = "$x := 0\nforeach $i in g:append(1,2,3,4,5)\n$x := $x + $i\nend\n";
+        assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 15.0);
+
+
     }
 }

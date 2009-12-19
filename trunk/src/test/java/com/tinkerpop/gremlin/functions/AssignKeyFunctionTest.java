@@ -20,12 +20,12 @@ public class AssignKeyFunctionTest extends TestCase {
         map.put("marko", 1.0);
         map.put("jen", 2.0);
         xe.setVariable("$i", map);
-        assertEquals(xe.evaluate("$i/@marko").get(0), 1.0);
-        assertEquals(xe.evaluate("$i/@jen").get(0), 2.0);
-        assertEquals(xe.evaluate("(1+2)[g:assign-key($i,'marko')]").get(0), 3.0);
-        assertEquals(xe.evaluate("$i/@marko").get(0), 3.0);
-        assertEquals(xe.evaluate("$i/@jen").get(0), 2.0);
-        assertEquals(xe.evaluate("(1000)[g:assign-key($i,'peter')]").get(0), 1000.0);
-        assertEquals(xe.evaluate("$i/@peter").get(0), 1000.0);
+        assertEquals(xe.evaluateList("$i/@marko").get(0), 1.0);
+        assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
+        assertEquals(xe.evaluateList("(1+2)[g:assign-key($i,'marko')]").get(0), 3.0);
+        assertEquals(xe.evaluateList("$i/@marko").get(0), 3.0);
+        assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
+        assertEquals(xe.evaluateList("(1000)[g:assign-key($i,'peter')]").get(0), 1000.0);
+        assertEquals(xe.evaluateList("$i/@peter").get(0), 1000.0);
     }
 }

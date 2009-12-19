@@ -13,17 +13,17 @@ public class RandomRealFunctionTest extends TestCase {
 
     public void testRandomNaturalFunction() {
         XPathEvaluator xe = new XPathEvaluator();
-        assertEquals(xe.evaluate("g:rand-real()").size(), 1);
-        assertEquals(xe.evaluate("g:type(g:rand-real())").get(0), "number");
-        assertTrue(((Double)xe.evaluate("g:rand-real()").get(0)) < 1.00001d);
+        assertEquals(xe.evaluateList("g:rand-real()").size(), 1);
+        assertEquals(xe.evaluateList("g:type(g:rand-real())").get(0), "number");
+        assertTrue(((Double)xe.evaluateList("g:rand-real()").get(0)) < 1.00001d);
         try {
-            xe.evaluate("g:rand-real('marko')");
+            xe.evaluateList("g:rand-real('marko')");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
         }
         try {
-            xe.evaluate("g:rand-real(1000)");
+            xe.evaluateList("g:rand-real(1000)");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);

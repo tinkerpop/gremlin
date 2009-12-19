@@ -17,11 +17,11 @@ public class MapFunctionTest extends TestCase {
 
     public void testMapFunction() {
         XPathEvaluator xe = new XPathEvaluator();
-        assertEquals(xe.evaluate("g:map()").size(), 1);
-        assertEquals(xe.evaluate("g:type(g:map())").get(0), "map");
+        assertEquals(xe.evaluateList("g:map()").size(), 1);
+        assertEquals(xe.evaluateList("g:type(g:map())").get(0), "map");
 
         try {
-            xe.evaluate("g:map(1)");
+            xe.evaluateList("g:map(1)");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
@@ -34,11 +34,11 @@ public class MapFunctionTest extends TestCase {
         Edge edge = TinkerGraphFactory.createTinkerGraph().getVertex("1").getOutEdges().iterator().next();
         xe.setVariable("$v", marko);
         xe.setVariable("$e", edge);
-        assertEquals(((Map) (xe.evaluate("g:map($v)")).get(0)).keySet().size(), 2);
-        assertTrue(((Map) (xe.evaluate("g:map($v)")).get(0)).keySet().contains("age"));
-        assertTrue(((Map) (xe.evaluate("g:map($v)")).get(0)).keySet().contains("name"));
-        assertEquals(((Map) (xe.evaluate("g:map($e)")).get(0)).keySet().size(), 1);
-        assertTrue(((Map) (xe.evaluate("g:map($e)")).get(0)).keySet().contains("weight"));
+        assertEquals(((Map) (xe.evaluateList("g:map($v)")).get(0)).keySet().size(), 2);
+        assertTrue(((Map) (xe.evaluateList("g:map($v)")).get(0)).keySet().contains("age"));
+        assertTrue(((Map) (xe.evaluateList("g:map($v)")).get(0)).keySet().contains("name"));
+        assertEquals(((Map) (xe.evaluateList("g:map($e)")).get(0)).keySet().size(), 1);
+        assertTrue(((Map) (xe.evaluateList("g:map($e)")).get(0)).keySet().contains("weight"));
     }
 
 }

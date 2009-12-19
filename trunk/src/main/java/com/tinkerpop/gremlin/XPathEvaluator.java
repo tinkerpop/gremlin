@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,6 +18,10 @@ public class XPathEvaluator {
     protected int codeDepth = 0;
 
     private GremlinPathContext baseContext;
+
+    private enum ReturnType {
+        LIST, ITERATOR
+    }
 
     public XPathEvaluator() {
         this.baseContext = GremlinPathContext.newContext(null);
@@ -35,17 +40,21 @@ public class XPathEvaluator {
         return this.codeDepth;
     }
 
-    public List evaluate(String xPathString) throws SyntaxException, EvaluationException {
+    private Object evaluate(String xPathString, ReturnType type) throws SyntaxException, EvaluationException {
         try {
             if (this.baseContext.rootChanged()) {
                 this.baseContext = GremlinPathContext.newContext(this.baseContext, this.baseContext.getRoot());
             }
-            List results = this.baseContext.selectNodes(xPathString);
-            if(results.size() == 1)
-                this.setVariable(Tokens.LAST_VARIABLE, results.get(0));
-            else
-                this.setVariable(Tokens.LAST_VARIABLE, results);
-            return results;
+            if (type == ReturnType.LIST) {
+                List results = this.baseContext.selectNodes(xPathString);
+                if (results.size() == 1)
+                    this.setVariable(Tokens.LAST_VARIABLE, results.get(0));
+                else
+                    this.setVariable(Tokens.LAST_VARIABLE, results);
+                return results;
+            } else {
+                return this.baseContext.iterate(xPathString);
+            }
         } catch (JXPathInvalidSyntaxException e) {
             throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
         } catch (JXPathException e) {
@@ -57,6 +66,14 @@ public class XPathEvaluator {
         } catch (Exception e) {
             throw new EvaluationException(e.getMessage());
         }
+    }
+
+    public List evaluateList(String xPathString) throws SyntaxException, EvaluationException {
+        return (List) this.evaluate(xPathString, ReturnType.LIST);
+    }
+
+    public Iterator evaluateIterator(String xPathString) throws SyntaxException, EvaluationException {
+        return (Iterator) this.evaluate(xPathString, ReturnType.ITERATOR);
     }
 
     public void setVariable(String variable, Object value) {

@@ -16,11 +16,11 @@ public class IdFunctionTest extends TestCase {
         XPathEvaluator xe = new XPathEvaluator();
         Graph graph =  TinkerGraphFactory.createTinkerGraph();
         xe.setVariable("$g", graph);
-        assertEquals(xe.evaluate("g:id($g, '1')").size(), 1);
-        assertEquals(xe.evaluate("g:id($g, '1')").get(0), graph.getVertex("1"));
-        assertEquals(xe.evaluate("g:id($g, '2')").size(), 1);
-        assertEquals(xe.evaluate("g:id($g, '2')").get(0), graph.getVertex("2"));
-        assertEquals(xe.evaluate("g:id($g, '1000')").size(), 0);
+        assertEquals(xe.evaluateList("g:id($g, '1')").size(), 1);
+        assertEquals(xe.evaluateList("g:id($g, '1')").get(0), graph.getVertex("1"));
+        assertEquals(xe.evaluateList("g:id($g, '2')").size(), 1);
+        assertEquals(xe.evaluateList("g:id($g, '2')").get(0), graph.getVertex("2"));
+        assertEquals(xe.evaluateList("g:id($g, '1000')").size(), 0);
 
     }
 }

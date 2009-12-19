@@ -12,11 +12,11 @@ public class ContinueFunctionTest extends TestCase {
 
     public void testContinueFunction() {
         XPathEvaluator xe = new XPathEvaluator();
-        assertTrue((Boolean)xe.evaluate("g:cont(true())").get(0));
-        assertFalse((Boolean)xe.evaluate("g:cont(false())").get(0));
+        assertTrue((Boolean)xe.evaluateList("g:cont(true())").get(0));
+        assertFalse((Boolean)xe.evaluateList("g:cont(false())").get(0));
 
-        assertEquals(xe.evaluate("(1+2)[g:cont(true())]").get(0), 3.0);
-        assertEquals(xe.evaluate("(1+2)[g:cont(false())]").size(), 0);
+        assertEquals(xe.evaluateList("(1+2)[g:cont(true())]").get(0), 3.0);
+        assertEquals(xe.evaluateList("(1+2)[g:cont(false())]").size(), 0);
 
     }
 }

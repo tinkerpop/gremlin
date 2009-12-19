@@ -21,7 +21,7 @@ public class SortFunctionTest extends TestCase {
         map.put("peter", 3);
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$m", map);
-        Map sortedMap = (Map) xe.evaluate("g:sort($m, 'value', true())").get(0);
+        Map sortedMap = (Map) xe.evaluateList("g:sort($m, 'value', true())").get(0);
         assertEquals(map.get("marko"), 2);
         assertEquals(map.get("josh"), 1);
         assertEquals(map.get("peter"), 3);
@@ -30,19 +30,19 @@ public class SortFunctionTest extends TestCase {
         assertEquals(values.get(1), 2);
         assertEquals(values.get(2), 1);
 
-        sortedMap = (Map) xe.evaluate("g:sort($m, 'value', false())").get(0);
+        sortedMap = (Map) xe.evaluateList("g:sort($m, 'value', false())").get(0);
         values = new ArrayList(sortedMap.values());
         assertEquals(values.get(0), 1);
         assertEquals(values.get(1), 2);
         assertEquals(values.get(2), 3);
 
-        sortedMap = (Map) xe.evaluate("g:sort($m, 'key', true())").get(0);
+        sortedMap = (Map) xe.evaluateList("g:sort($m, 'key', true())").get(0);
         List keys = new ArrayList(sortedMap.keySet());
         assertEquals(keys.get(0), "peter");
         assertEquals(keys.get(1), "marko");
         assertEquals(keys.get(2), "josh");
 
-        sortedMap = (Map) xe.evaluate("g:sort($m, 'key', false())").get(0);
+        sortedMap = (Map) xe.evaluateList("g:sort($m, 'key', false())").get(0);
         keys = new ArrayList(sortedMap.keySet());
         assertEquals(keys.get(0), "josh");
         assertEquals(keys.get(1), "marko");
@@ -60,12 +60,12 @@ public class SortFunctionTest extends TestCase {
         list.add(3);
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$i", list);
-        List sortedList = xe.evaluate("g:sort($i, true())");
+        List sortedList = xe.evaluateList("g:sort($i, true())");
         assertEquals(sortedList.get(0), 3);
         assertEquals(sortedList.get(1), 2);
         assertEquals(sortedList.get(2), 1);
 
-        sortedList = xe.evaluate("g:sort($i, false())");
+        sortedList = xe.evaluateList("g:sort($i, false())");
         assertEquals(sortedList.get(0), 1);
         assertEquals(sortedList.get(1), 2);
         assertEquals(sortedList.get(2), 3);

@@ -16,15 +16,15 @@ public class AssignFunctionTest extends TestCase {
 
     public void testAssignFunctionVariable() {
         XPathEvaluator xe = new XPathEvaluator();
-        assertEquals(xe.evaluate("g:assign('$i',2)").size(), 1);
-        assertEquals(xe.evaluate("g:assign('$i',2)").get(0), 2.0);
+        assertEquals(xe.evaluateList("g:assign('$i',2)").size(), 1);
+        assertEquals(xe.evaluateList("g:assign('$i',2)").get(0), 2.0);
         assertEquals(xe.getVariable("i"), 2.0);
-        assertEquals(xe.evaluate("g:assign('$i', g:append(1,2,3))").size(), 3);
+        assertEquals(xe.evaluateList("g:assign('$i', g:append(1,2,3))").size(), 3);
         assertEquals(xe.getVariable("i").getClass(), ArrayList.class);
 
-        assertEquals(xe.evaluate("(1+2)[g:assign('$i')]").size(), 1);
-        assertEquals(xe.evaluate("(1+2)[g:assign('$i')]").get(0), 3.0);
-        assertEquals(xe.evaluate("$i[g:assign('$j')]").get(0), 3.0);
+        assertEquals(xe.evaluateList("(1+2)[g:assign('$i')]").size(), 1);
+        assertEquals(xe.evaluateList("(1+2)[g:assign('$i')]").get(0), 3.0);
+        assertEquals(xe.evaluateList("$i[g:assign('$j')]").get(0), 3.0);
         // TODO LIST OR OBJECT?
         //assertEquals(xe.getVariable("i"), 3.0);
         //assertEquals(xe.getVariable("j"), 3.0);
@@ -36,18 +36,18 @@ public class AssignFunctionTest extends TestCase {
         list.add(1);
         list.add(2);
         xe.setVariable("$i", list);
-        assertEquals(xe.evaluate("g:assign($i,1,1000.0)").get(0), 1000.0);
-        assertEquals(xe.evaluate("g:assign($i,2,2000.0)").get(0), 2000.0);
-        assertEquals(xe.evaluate("$i[1]").get(0), 1000.0);
-        assertEquals(xe.evaluate("$i[2]").get(0), 2000.0);
+        assertEquals(xe.evaluateList("g:assign($i,1,1000.0)").get(0), 1000.0);
+        assertEquals(xe.evaluateList("g:assign($i,2,2000.0)").get(0), 2000.0);
+        assertEquals(xe.evaluateList("$i[1]").get(0), 1000.0);
+        assertEquals(xe.evaluateList("$i[2]").get(0), 2000.0);
         try {
-            xe.evaluate("g:assign($i,3,3000.0)");
+            xe.evaluateList("g:assign($i,3,3000.0)");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
         }
         try {
-            xe.evaluate("g:assign($i,2,$i)");
+            xe.evaluateList("g:assign($i,2,$i)");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
@@ -60,9 +60,9 @@ public class AssignFunctionTest extends TestCase {
         map.put("marko", 1);
         map.put("jen", 2);
         xe.setVariable("$i", map);
-        assertEquals(xe.evaluate("g:assign($i,'peter',3)").get(0), 3.0);
-        assertEquals(xe.evaluate("g:assign($i,'marko','jen')").get(0), "jen");
-        assertEquals(xe.evaluate("$i/@marko").get(0), "jen");
-        assertEquals(xe.evaluate("$i/@peter").get(0), 3.0);
+        assertEquals(xe.evaluateList("g:assign($i,'peter',3)").get(0), 3.0);
+        assertEquals(xe.evaluateList("g:assign($i,'marko','jen')").get(0), "jen");
+        assertEquals(xe.evaluateList("$i/@marko").get(0), "jen");
+        assertEquals(xe.evaluateList("$i/@peter").get(0), 3.0);
     }
 }

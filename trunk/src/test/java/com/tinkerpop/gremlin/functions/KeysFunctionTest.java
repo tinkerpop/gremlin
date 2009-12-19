@@ -23,22 +23,22 @@ public class KeysFunctionTest extends TestCase {
         map.put("josh", 2);
         map.put(3, "peter");
         xe.setVariable("$m", map);
-        assertEquals(xe.evaluate("g:keys($m)").size(), 3);
-        assertTrue(xe.evaluate("g:keys($m)").contains("marko"));
-        assertTrue(xe.evaluate("g:keys($m)").contains("josh"));
-        assertTrue(xe.evaluate("g:keys($m)").contains(3));
-        assertFalse(xe.evaluate("g:keys($m)").contains("peter"));
+        assertEquals(xe.evaluateList("g:keys($m)").size(), 3);
+        assertTrue(xe.evaluateList("g:keys($m)").contains("marko"));
+        assertTrue(xe.evaluateList("g:keys($m)").contains("josh"));
+        assertTrue(xe.evaluateList("g:keys($m)").contains(3));
+        assertFalse(xe.evaluateList("g:keys($m)").contains("peter"));
     }
 
     public void testKeysFunctionElement() {
         XPathEvaluator xe = new XPathEvaluator();
         Vertex marko = TinkerGraphFactory.createTinkerGraph().getVertex("1");
         xe.setVariable("$v", marko);
-        assertEquals(xe.evaluate("g:keys($v)").size(), 2);
-        assertTrue(xe.evaluate("g:keys($v)").contains("age"));
-        assertTrue(xe.evaluate("g:keys($v)").contains("name"));
-        assertFalse(xe.evaluate("g:keys($v)").contains(3));
-        assertFalse(xe.evaluate("g:keys($v)").contains("marko"));
+        assertEquals(xe.evaluateList("g:keys($v)").size(), 2);
+        assertTrue(xe.evaluateList("g:keys($v)").contains("age"));
+        assertTrue(xe.evaluateList("g:keys($v)").contains("name"));
+        assertFalse(xe.evaluateList("g:keys($v)").contains(3));
+        assertFalse(xe.evaluateList("g:keys($v)").contains("marko"));
     }
 
 

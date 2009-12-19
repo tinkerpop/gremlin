@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,9 +56,10 @@ public class ForeachStatement extends CompoundStatement {
     public List evaluate() throws EvaluationException {
         List results = null;
         try {
-            List list = this.loopList.evaluate();
-            if (null != list) {
-                for (Object item : list) {
+            Iterator itty = this.loopList.evaluateIterator();
+            if (itty != null) {
+                while (itty.hasNext()) {
+                    Object item = itty.next();
                     xPathEvaluator.setVariable(this.variable, item);
                     for (Statement statement : this.statementList) {
                         results = statement.evaluate();

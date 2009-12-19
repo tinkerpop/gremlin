@@ -34,12 +34,16 @@ public class XPathStatement extends SimpleStatement {
     }
 
     public List evaluate() {
-        return this.xPathEvaluator.evaluate(this.xPath);
+        return this.xPathEvaluator.evaluateList(this.xPath);
         /*List list = new ArrayList();
         Iterator itty = this.compiledXPath.iterate(this.xPathEvaluator.getGremlinPathContext());
         while(itty.hasNext()) {
             list.add(itty.next());
         }
         return list;*/
+    }
+
+    public Iterator evaluateIterator() {
+        return this.xPathEvaluator.evaluateIterator(this.xPath);
     }
 }

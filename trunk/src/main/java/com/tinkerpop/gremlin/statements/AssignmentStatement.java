@@ -49,7 +49,7 @@ public class AssignmentStatement extends SimpleStatement {
         List results;
         try {
             // TODO better escaping of string quotes
-            results = this.xPathEvaluator.evaluate("g:assign(\"" + this.variable + "\"," + this.assignmentBody.toString() + ")");
+            results = this.xPathEvaluator.evaluateList("g:assign(\"" + this.variable + "\"," + this.assignmentBody.toString() + ")");
         } catch (Exception e) {
             throw new EvaluationException(e.getMessage());
         }

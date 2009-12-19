@@ -21,18 +21,18 @@ public class AssignIndexFunctionTest extends TestCase {
         list.add(1.0);
         list.add(2.0);
         xe.setVariable("$i", list);
-        assertEquals(xe.evaluate("(1+2)[g:assign-index($i,1)]").get(0), 3.0);
+        assertEquals(xe.evaluateList("(1+2)[g:assign-index($i,1)]").get(0), 3.0);
         assertEquals(list.size(), 2);
         assertEquals(list.get(0), 3.0);
         assertEquals(list.get(1), 2.0);
         try {
-            xe.evaluate("(10+1)[g:assign-index($i,3)]");
+            xe.evaluateList("(10+1)[g:assign-index($i,3)]");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
         }
         try {
-            xe.evaluate("g:map()[g:assign-index($i,2)]");
+            xe.evaluateList("g:map()[g:assign-index($i,2)]");
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
