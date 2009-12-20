@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -17,34 +18,24 @@ public class MultiplyValueFunction implements Function {
 
     public static final String FUNCTION_NAME = "mult-value";
 
-    //TODO allow it to take a set of indices or keys ?
     public Object invoke(ExpressionContext context, Object[] parameters) {
-        Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-        if (null != objects) {
-            if (objects.length == 2) {
-                if (objects[0] instanceof Map && objects[1] instanceof Number) {
-                    multValue((Map) objects[0], context.getContextNodePointer().getValue(), (Number) objects[1]);
-                    return Boolean.TRUE;
-                } else if (objects[0] instanceof List && objects[1] instanceof Number) {
-                    Object index = context.getContextNodePointer().getValue();
-                    if (index instanceof Number) {
-                        multValue((List) objects[0], ((Number) index).intValue() - 1, (Number) objects[1]);
-                        return Boolean.TRUE;
-                    }
-                }
-            } else if (objects.length == 3) {
-                if (objects[0] instanceof Map && objects[2] instanceof Number) {
-                    Map map = (Map) objects[0];
-                    multValue(map, objects[1], (Number) objects[2]);
-                    return map.get(objects[1]);
-                } else if (objects[0] instanceof List && objects[1] instanceof Number && objects[2] instanceof Number) {
-                    Integer index = ((Number) objects[1]).intValue() - 1;
-                    List list = (List) objects[0];
-                    multValue(list, index, (Number) objects[2]);
-                    return list.get(index);
-                }
-            }
+        if (parameters != null && parameters.length == 3) {
+            Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 
+            if (objects[0] instanceof Map && objects[2] instanceof Number) {
+                Map map = (Map) objects[0];
+                multValue(map, objects[1], (Number) objects[2]);
+                return map.get(objects[1]);
+            } else if (objects[0] instanceof List && objects[1] instanceof Number && objects[2] instanceof Number) {
+                Integer index = ((Number) objects[1]).intValue() - 1;
+                List list = (List) objects[0];
+                multValue(list, index, (Number) objects[2]);
+                return list.get(index);
+            } else if (objects[0] instanceof Element && objects[2] instanceof Number) {
+                Element element = (Element) objects[0];
+                multValue(element, objects[1].toString(), (Number) objects[2]);
+                return element.getProperty(objects[1].toString());
+            }
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
@@ -56,6 +47,15 @@ public class MultiplyValueFunction implements Function {
             map.put(key, ((Number) value).doubleValue() * amount.doubleValue());
         } else {
             map.put(key, amount.doubleValue());
+        }
+    }
+
+    private static void multValue(Element element, String key, Number amount) {
+        Object value = element.getProperty(key);
+        if (value != null && value instanceof Number) {
+            element.setProperty(key, ((Number) value).doubleValue() * amount.doubleValue());
+        } else {
+            element.setProperty(key, amount.doubleValue());
         }
     }
 

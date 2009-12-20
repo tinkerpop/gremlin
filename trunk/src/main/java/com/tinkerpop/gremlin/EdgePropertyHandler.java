@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
         if (!key.equals(Tokens.OUT_VERTEX) && !key.equals(Tokens.IN_VERTEX) && !key.equals(Tokens.LABEL) && !key.equals(Tokens.ID)) {
             Edge edge = (Edge) edgeObject;
             edge.setProperty(key, value);
+        } else {
+            throw new EvaluationException(key + " cannot be set as a property.");
         }
     }
 

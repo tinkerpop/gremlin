@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
@@ -14,15 +16,15 @@ public class PrintFunction implements Function {
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
-        if (null == parameters) {
-            System.out.println(context.getContextNodePointer().getValue());
-            return Boolean.TRUE;
-        } else {
+        if (null != parameters && parameters.length > 0) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             for (Object o : objects) {
                 System.out.println(o);
             }
             return Boolean.TRUE;
         }
+
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        
     }
 }

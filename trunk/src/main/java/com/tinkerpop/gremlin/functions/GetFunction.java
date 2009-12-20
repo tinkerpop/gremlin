@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -25,6 +26,8 @@ public class GetFunction implements Function {
                 return ((Map) objects[0]).get(objects[1]);
             } else if (objects[0] instanceof List && objects[1] instanceof Number) {
                 return ((List) objects[0]).get(((Number) objects[1]).intValue()-1);
+            }  else if (objects[0] instanceof Element && objects[1] instanceof String) {
+                return ((Element) objects[0]).getProperty((String)objects[1]);
             }
         }
 

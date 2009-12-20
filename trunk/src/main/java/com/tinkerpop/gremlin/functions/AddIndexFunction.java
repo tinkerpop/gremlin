@@ -21,7 +21,7 @@ public class AddIndexFunction implements Function {
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
-        if (parameters != null) {
+        if (parameters != null && parameters.length > 0) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects[0] instanceof Graph) {
                 Graph graph = ((Graph) objects[0]);
@@ -31,13 +31,6 @@ public class AddIndexFunction implements Function {
                     return Boolean.TRUE;
                 } else if (objects.length == 2 && objects[1] instanceof String) {
                     index.addIndexKey((String) objects[1]);
-                    return Boolean.TRUE;
-                } else if (objects.length == 2 && objects[1] instanceof List) {
-                    for (Object o : (List) objects[1]) {
-                        if (o instanceof String) {
-                            index.addIndexKey((String) o);
-                        }
-                    }
                     return Boolean.TRUE;
                 }
             }

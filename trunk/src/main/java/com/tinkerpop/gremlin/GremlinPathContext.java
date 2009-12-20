@@ -4,18 +4,16 @@ import com.tinkerpop.gremlin.db.neo.NeoFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -79,19 +77,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
             // $i := ././././
             if (variable.equals(Tokens.AT_VARIABLE)) {
                 // this is to semi-solve the null pointer exception from backtracking using element collections
-                if (value instanceof Collection) {
-                    if (value instanceof Set) {
-                        if (((Set) value).size() == 1) {
-                            this.setRoot(((Set) value).iterator().next());
-                        } else {
-                            this.setRoot(value);
-                        }
-                    } else if (value instanceof List) {
-                        if (((List) value).size() == 1) {
-                            this.setRoot(((List) value).get(0));
-                        } else {
-                            this.setRoot(value);
-                        }
+                if (value instanceof List) {
+                    if (((List) value).size() == 1) {
+                        this.setRoot(((List) value).get(0));
+                    } else {
+                        this.setRoot(value);
                     }
                 } else {
                     this.setRoot(value);
@@ -101,10 +91,14 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         } else {
             // $i[1] := ././././
             // $i/@key := ././././
-            if (!(value instanceof Collection || value instanceof Map)) {
+            if (!(value instanceof List || value instanceof Map)) {
                 this.setValue(variable, value);
             } else {
-                throw EvaluationException.createException(EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
+                if (value instanceof List && ((List) value).size() == 0) {
+                    this.setValue(variable, null);
+                } else {
+                    throw EvaluationException.createException(EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
+                }
             }
         }
     }
