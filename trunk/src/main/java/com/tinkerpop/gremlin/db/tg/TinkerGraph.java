@@ -81,10 +81,13 @@ public class TinkerGraph implements Graph {
     }
 
     public void removeEdge(Edge edge) {
+        // TODO: handle nulls from $g/V[g:remove-ve($g,.)
         TinkerVertex outVertex = (TinkerVertex) edge.getOutVertex();
         TinkerVertex inVertex = (TinkerVertex) edge.getInVertex();
-        outVertex.outEdges.remove(edge);
-        inVertex.inEdges.remove(edge);
+        if(null != outVertex && null != outVertex.outEdges)
+            outVertex.outEdges.remove(edge);
+        if(null != inVertex && null != inVertex.inEdges)
+            inVertex.inEdges.remove(edge);
         //this.edges.remove(edge.getId());
     }
 
@@ -154,7 +157,6 @@ public class TinkerGraph implements Graph {
             if (this.currentEdges == null || !this.currentEdges.hasNext()) {
                 if (vertices.hasNext()) {
                     this.currentEdges = vertices.next().getOutEdges().iterator();
-
                 } else {
                     return true;
                 }

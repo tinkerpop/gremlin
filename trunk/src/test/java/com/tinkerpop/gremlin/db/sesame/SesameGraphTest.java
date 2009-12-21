@@ -115,7 +115,7 @@ public class SesameGraphTest extends BaseTest {
         }
     }
 
-    public static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {
+    private static int countStatements(CloseableIteration<? extends Statement, SailException> itty, boolean print) throws SailException {
         int counter = 0;
         while (itty.hasNext()) {
             Statement s = itty.next();

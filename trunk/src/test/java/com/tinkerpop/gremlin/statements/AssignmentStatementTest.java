@@ -32,7 +32,7 @@ public class AssignmentStatementTest extends BaseTest {
         assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), 2.0);
         sb = "$i := 'marko'";
         assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).get(0), "marko");
-        // TODO null() handling
+        // TODO null() handling ?
         //sb = "$i := null()";
         //assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
         

@@ -84,10 +84,13 @@ public class VertexTestSuite extends ModelTestSuite {
 
     public void testVertexIterator(Graph graph) {
         if (config.supportsVertexIteration) {
+            Set ids = new HashSet();
             for (int i = 0; i < 1000; i++) {
-                graph.addVertex(null);
+                ids.add(graph.addVertex(null).getId());
             }
             assertEquals(countIterator(graph.getVertices()), 1000);
+            // must create unique ids
+            assertEquals(ids.size(), 1000);
         }
     }
 
