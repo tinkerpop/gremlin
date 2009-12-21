@@ -30,6 +30,7 @@ public class GremlinFunctions implements Functions {
         functionMap.put(IdFunction.FUNCTION_NAME, new IdFunction());
         functionMap.put(KeyFunction.FUNCTION_NAME, new KeyFunction());
         functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
+        functionMap.put(SaveFunction.FUNCTION_NAME, new SaveFunction());
         functionMap.put(AddVertexFunction.FUNCTION_NAME, new AddVertexFunction());
         functionMap.put(AddEdgeFunction.FUNCTION_NAME, new AddEdgeFunction());
         functionMap.put(RemoveVertexEdgeFunction.FUNCTION_NAME, new RemoveVertexEdgeFunction());

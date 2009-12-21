@@ -18,7 +18,7 @@ public abstract class ModelTestSuite extends BaseTest {
 
     protected String convertId(String id) {
         if (this.config.requiresRDFIds) {
-            return "http://" + id;
+            return "tg:" + id;
         } else {
             return id;
         }

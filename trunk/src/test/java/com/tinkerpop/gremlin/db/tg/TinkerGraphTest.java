@@ -28,9 +28,12 @@ public class TinkerGraphTest extends TestCase {
         doSuiteTest(new VertexTestSuite(config));
     }
 
-
     public void testEdgeSuite() throws Exception {
         doSuiteTest(new EdgeTestSuite(config));
+    }
+
+    public void testGraphSuite() throws Exception {
+        doSuiteTest(new GraphTestSuite(config));
     }
 
     public void testIndexSuite() throws Exception {

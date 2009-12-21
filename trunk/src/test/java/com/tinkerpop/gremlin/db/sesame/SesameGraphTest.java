@@ -4,8 +4,8 @@ import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.model.*;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Statement;
-import org.openrdf.model.impl.URIImpl;
 import org.openrdf.model.impl.LiteralImpl;
+import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.SailException;
 import org.openrdf.sail.memory.MemoryStore;
 
@@ -98,6 +98,10 @@ public class SesameGraphTest extends BaseTest {
 
     public void testEdgeSuite() throws Exception {
         doSuiteTest(new EdgeTestSuite(config));
+    }
+
+    public void testGraphSuite() throws Exception {
+        doSuiteTest(new GraphTestSuite(config));
     }
 
     public void testIndexSuite() throws Exception {

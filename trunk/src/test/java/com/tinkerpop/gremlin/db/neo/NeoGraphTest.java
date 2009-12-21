@@ -33,6 +33,10 @@ public class NeoGraphTest extends TestCase {
         doSuiteTest(new EdgeTestSuite(config));
     }
 
+    public void testGraphSuite() throws Exception {
+        doSuiteTest(new GraphTestSuite(config));
+    }
+
     public void testIndexSuite() throws Exception {
         doSuiteTest(new IndexTestSuite(config));
     }
