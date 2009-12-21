@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -38,7 +39,6 @@ public class SortFunction implements Function {
                 if ((Boolean) objects[1])
                     Collections.reverse(sortedList);
                 return sortedList;
-
             }
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);

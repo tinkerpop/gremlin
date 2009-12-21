@@ -14,6 +14,4 @@ public class PathFunction implements Function {
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
         return Boolean.TRUE;
     }
-
-
 }

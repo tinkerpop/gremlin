@@ -54,8 +54,7 @@ public class GremlinFunctions implements Functions {
         // lists and maps and elements
         functionMap.put(GetFunction.FUNCTION_NAME, new GetFunction());
         functionMap.put(SortFunction.FUNCTION_NAME, new SortFunction());
-        functionMap.put(AddValueFunction.FUNCTION_NAME, new AddValueFunction());
-        functionMap.put(MultiplyValueFunction.FUNCTION_NAME, new MultiplyValueFunction());
+        functionMap.put(OperateValueFunction.FUNCTION_NAME, new OperateValueFunction());
         // numbers
         functionMap.put(RandomRealFunction.FUNCTION_NAME, new RandomRealFunction());
         functionMap.put(RandomNaturalFunction.FUNCTION_NAME, new RandomNaturalFunction());
@@ -66,6 +65,7 @@ public class GremlinFunctions implements Functions {
         functionMap.put(TypeFunction.FUNCTION_NAME, new TypeFunction());
         functionMap.put(PrintFunction.FUNCTION_NAME, new PrintFunction());
         functionMap.put(TimeFunction.FUNCTION_NAME, new TimeFunction());
+        functionMap.put(ContextCountFunction.FUNCTION_NAME, new ContextCountFunction());
         functionMap.put(PathFunction.FUNCTION_NAME, new PathFunction());
     }
 

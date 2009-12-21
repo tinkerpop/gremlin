@@ -31,6 +31,13 @@ public class MapFunction implements Function {
                 }
                 return map;
             }
+        } else if(parameters.length % 2 == 0) {
+            Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+            Map map = new HashMap();
+            for(int i=0; i<objects.length; i=i+2) {
+                map.put(objects[i], objects[i+1]);
+            }
+            return map;
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 

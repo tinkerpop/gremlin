@@ -16,9 +16,9 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class AddValueFunctionTest extends TestCase {
+public class OperateValueFunctionTest extends TestCase {
 
-    public void testAddValueFunctionMap() {
+    public void testOperateValueFunctionAddMap() {
         XPathEvaluator xe = new XPathEvaluator();
         Map map = new HashMap();
         map.put("marko", 1.0);
@@ -26,10 +26,10 @@ public class AddValueFunctionTest extends TestCase {
         xe.setVariable("$i", map);
         assertEquals(xe.evaluateList("$i/@marko").get(0), 1.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
-        assertEquals(xe.evaluateList("'marko'[g:p(g:add-value($i,.,10))]").get(0), "marko");
+        assertEquals(xe.evaluateList("'marko'[g:p(g:op-value('+',$i,.,10))]").get(0), "marko");
         assertEquals(xe.evaluateList("$i/@marko").get(0), 11.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
-        assertEquals(xe.evaluateList("'peter'[g:p(g:add-value($i, .,1000))]").get(0), "peter");
+        assertEquals(xe.evaluateList("'peter'[g:p(g:op-value('+',$i, .,1000))]").get(0), "peter");
         assertEquals(xe.evaluateList("$i/@peter").get(0), 1000.0);
         try {
             xe.evaluateList("'marko'[g:add-value($i,'10')]").get(0);
@@ -39,7 +39,7 @@ public class AddValueFunctionTest extends TestCase {
         }
     }
 
-    public void testAddValueFunctionList() {
+    public void testOperateValueFunctionAddList() {
         XPathEvaluator xe = new XPathEvaluator();
         List list = new ArrayList();
         list.add(1.0);
@@ -47,10 +47,10 @@ public class AddValueFunctionTest extends TestCase {
         xe.setVariable("$i", list);
         assertEquals(xe.evaluateList("$i[1]").get(0), 1.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 2.0);
-        assertEquals(xe.evaluateList("1[g:p(g:add-value($i,.,10))]").get(0), 1.0);
+        assertEquals(xe.evaluateList("1[g:p(g:op-value('+',$i,.,10))]").get(0), 1.0);
         assertEquals(xe.evaluateList("$i[1]").get(0), 11.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 2.0);
-        xe.evaluateList("g:append(1,2)[g:p(g:add-value($i,.,1000))]");
+        xe.evaluateList("g:append(1,2)[g:p(g:op-value('+',$i,.,1000))]");
         assertEquals(xe.evaluateList("$i[1]").get(0), 1011.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 1002.0);
         try {
@@ -61,7 +61,7 @@ public class AddValueFunctionTest extends TestCase {
         }
     }
 
-    public void testAddValueFunctionElement() {
+    public void testOperateValueFunctionAddElement() {
         XPathEvaluator xe = new XPathEvaluator();
         Graph graph = new TinkerGraph();
         Vertex vertex = graph.addVertex("1");
@@ -70,15 +70,15 @@ public class AddValueFunctionTest extends TestCase {
         xe.setVariable("$i", vertex);
         assertEquals(xe.evaluateList("$i/@marko").get(0), 1.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
-        assertEquals(xe.evaluateList("'marko'[g:p(g:add-value($i,.,10))]").get(0), "marko");
+        assertEquals(xe.evaluateList("'marko'[g:p(g:op-value('+',$i,.,10))]").get(0), "marko");
         assertEquals(xe.evaluateList("$i/@marko").get(0), 11.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
-        assertEquals(xe.evaluateList("'peter'[g:p(g:add-value($i,.,1000))]").get(0), "peter");
+        assertEquals(xe.evaluateList("'peter'[g:p(g:op-value('+',$i,.,1000))]").get(0), "peter");
         assertEquals(xe.evaluateList("$i/@peter").get(0), 1000.0);
-        assertEquals(xe.evaluateList("$i[g:p(g:add-value(.,'test',1000))]").get(0), vertex);
+        assertEquals(xe.evaluateList("$i[g:p(g:op-value('+',.,'test',1000))]").get(0), vertex);
         assertEquals(xe.evaluateList("$i/@test").get(0), 1000.0);
         try {
-            xe.evaluateList("'marko'[g:add-value($i,.,'10')]").get(0);
+            xe.evaluateList("'marko'[g:op-value('+',$i,.,'10')]").get(0);
             assertTrue(false);
         } catch (EvaluationException e) {
             assertTrue(true);
