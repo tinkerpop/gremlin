@@ -66,7 +66,6 @@ public class GremlinFunctions implements Functions {
         functionMap.put(TypeFunction.FUNCTION_NAME, new TypeFunction());
         functionMap.put(PrintFunction.FUNCTION_NAME, new PrintFunction());
         functionMap.put(TimeFunction.FUNCTION_NAME, new TimeFunction());
-        functionMap.put(ContextCountFunction.FUNCTION_NAME, new ContextCountFunction());
         functionMap.put(PathFunction.FUNCTION_NAME, new PathFunction());
     }
 

@@ -19,8 +19,9 @@ public class PrintFunction implements Function {
         if (null != parameters && parameters.length > 0) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             for (Object o : objects) {
-                System.out.println(o);
+                System.out.print(o);
             }
+            System.out.println();
             return Boolean.TRUE;
         }
 
