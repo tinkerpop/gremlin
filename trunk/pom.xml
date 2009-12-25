@@ -118,11 +118,11 @@
             <type>jar</type>
         </dependency>
         <!-- MONGODB SUPPORT -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>1.0</version>
-        </dependency>-->
+        </dependency>
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
