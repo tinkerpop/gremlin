@@ -7,8 +7,42 @@
     <artifactId>gremlin</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
-    <name>Gremlin: A Graph Walker Language</name>
-
+    <url>http://gremlin.tinkerpop.com</url>
+    <name>Gremlin: A Graph Programming Language</name>
+    <description>Gremlin is a Turing-complete, graph-based programming language developed in Java 1.6+ for
+        key/value-pair multi-relational graphs called property graphs. Gremlin makes extensive use of the XPath 1.0
+        language to support complex graph traversals. This language has applications in the areas of graph query,
+        analysis, and manipulation. Connectors exist for the Neo4j graph database, Sesame 2.0 compliant RDF stores, and
+        TinkerGraph.
+    </description>
+    <developers>
+        <developer>
+            <name>Marko A. Rodriguez</name>
+            <email>marko@markorodriguez.com</email>
+            <url>http://markorodriguez.com</url>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Peter Neubauer</name>
+            <email>peter.neubauer@neotechnology.com</email>
+            <url>http://www.linkedin.com/in/neubauer</url>
+        </contributor>
+        <contributor>
+            <name>Joshua Shinavier</name>
+            <email>josh@fortytwo.net</email>
+            <url>http://fortytwo.net</url>
+        </contributor>
+    </contributors>
+    <mailingLists>
+        <mailingList>
+            <name>Gremlin Users</name>
+            <subscribe>http://groups.google.com/group/gremlin-users</subscribe>
+            <unsubscribe>http://groups.google.com/group/gremlin-users</unsubscribe>
+            <archive>http://groups.google.com/group/gremlin-users/topics</archive>
+        </mailingList>
+    </mailingLists>
+    <inceptionYear>2009</inceptionYear>
     <dependencies>
         <dependency>
             <groupId>commons-jxpath</groupId>
@@ -84,11 +118,11 @@
             <type>jar</type>
         </dependency>
         <!-- MONGODB SUPPORT -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency>-->
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -127,7 +161,6 @@
             </snapshots>
         </repository>
     </repositories>
-
     <build>
         <directory>${basedir}/target</directory>
         <finalName>${artifactId}-${version}
@@ -174,7 +207,7 @@
                 <configuration>
                     <descriptors>
                         <descriptor>src/assembly/standalone.xml</descriptor>
-                        <!--<descriptor>src/assembly/distribution.xml</descriptor>-->
+                        <descriptor>src/assembly/distribution.xml</descriptor>
                     </descriptors>
                     <finalName>gremlin-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
@@ -189,5 +222,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
