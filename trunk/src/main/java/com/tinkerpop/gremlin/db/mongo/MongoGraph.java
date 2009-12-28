@@ -1,10 +1,7 @@
 package com.tinkerpop.gremlin.db.mongo;
 
 import com.mongodb.*;
-import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Index;
-import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.*;
 
 import java.net.UnknownHostException;
 import java.util.Iterator;
@@ -16,12 +13,19 @@ import java.util.UUID;
  */
 public class MongoGraph implements Graph {
 
-    private Mongo mongo;
     private DB database;
-    private static final String VERTICES = "vertices";
-    private static final String EDGES = "edges";
-    private static final String VERTEX = "vertex";
-    private static final String EDGE = "edge";
+    public static final String VERTICES = "vertices";
+    public static final String EDGES = "edges";
+    public static final String VERTEX = "vertex";
+    public static final String EDGE = "edge";
+    public static final String ID = "_id";
+    public static final String PROPERTIES = "properties";
+    public static final String OUT_VERTEX = "outVertex";
+    public static final String IN_VERTEX = "inVertex";
+    public static final String OUT_EDGES = "outEdges";
+    public static final String IN_EDGES = "inEdges";
+    public static final String LABEL = "label";
+
     private DBCollection edgeCollection;
     private DBCollection vertexCollection;
     private long currentId = 0l;
@@ -40,11 +44,10 @@ public class MongoGraph implements Graph {
 
 
     public MongoGraph(String ipAddress, int port, String database) throws UnknownHostException {
-        this.mongo = new Mongo(ipAddress, port);
-        this.database = this.mongo.getDB(database);
+        Mongo mongo = new Mongo(ipAddress, port);
+        this.database = mongo.getDB(database);
         this.vertexCollection = this.database.getCollection(VERTICES);
         this.edgeCollection = this.database.getCollection(EDGES);
-
     }
 
     public void dropCollections() {
@@ -52,22 +55,32 @@ public class MongoGraph implements Graph {
         this.edgeCollection.drop();
     }
 
+    public DBCollection getVertexCollection() {
+        return this.vertexCollection;
+    }
+
+    public DBCollection getEdgeCollection() {
+        return this.edgeCollection;
+    }
+
     public Vertex addVertex(Object id) {
         BasicDBObject vertexObject = new BasicDBObject();
         if (null == id)
             id = UUID.randomUUID().toString();
-        vertexObject.put("_id", id.toString());
-        vertexObject.put("type", VERTEX);
-        vertexObject.put("properties", new BasicDBObject());
+        vertexObject.put(MongoGraph.ID, id.toString());
+        vertexObject.put(MongoGraph.PROPERTIES, new BasicDBObject());
         this.vertexCollection.insert(vertexObject);
         return new MongoVertex(vertexObject, this);
     }
 
     public Vertex getVertex(Object id) {
         DBObject queryObject = new BasicDBObject();
-        queryObject.put("_id", id);
+        queryObject.put(MongoGraph.ID, id);
         DBObject vertexObject = this.vertexCollection.findOne(queryObject);
-        return new MongoVertex(vertexObject, this);
+        if(null == vertexObject)
+            return null;
+        else
+            return new MongoVertex(vertexObject, this);
     }
 
     public void removeVertex(Vertex vertex) {
@@ -76,7 +89,7 @@ public class MongoGraph implements Graph {
         }
 
         DBObject queryObject = new BasicDBObject();
-        queryObject.put("_id", vertex.getId());
+        queryObject.put(MongoGraph.ID, vertex.getId());
         this.vertexCollection.remove(queryObject);
     }
 
@@ -89,16 +102,15 @@ public class MongoGraph implements Graph {
         BasicDBObject edgeObject = new BasicDBObject();
         if (null == id)
             id = UUID.randomUUID().toString();
-        edgeObject.put("_id", id.toString());
-        edgeObject.put("type", EDGE);
-        edgeObject.put("outVertex", outVertex.getId());
-        edgeObject.put("inVertex", inVertex.getId());
-        edgeObject.put("label", label);
-        edgeObject.put("properties", new BasicDBObject());
+        edgeObject.put(MongoGraph.ID, id.toString());
+        edgeObject.put(MongoGraph.OUT_VERTEX, outVertex.getId());
+        edgeObject.put(MongoGraph.IN_VERTEX, inVertex.getId());
+        edgeObject.put(MongoGraph.LABEL, label);
+        edgeObject.put(MongoGraph.PROPERTIES, new BasicDBObject());
         this.edgeCollection.insert(edgeObject);
 
-        ((MongoVertex)outVertex).addEdge(id, "outEdges");
-        ((MongoVertex)inVertex).addEdge(id, "inEdges");
+        ((MongoVertex)outVertex).addEdge(id, MongoGraph.OUT_EDGES);
+        ((MongoVertex)inVertex).addEdge(id, MongoGraph.IN_EDGES);
 
        
         return new MongoEdge(edgeObject, this);
@@ -106,19 +118,22 @@ public class MongoGraph implements Graph {
 
     public void removeEdge(Edge edge) {
         DBObject queryObject = new BasicDBObject();
-        queryObject.put("_id", edge.getId());
+        queryObject.put(MongoGraph.ID, edge.getId());
 
-        ((MongoVertex)edge.getOutVertex()).removeEdge(edge.getId(), "outEdges");
-        ((MongoVertex)edge.getInVertex()).removeEdge(edge.getId(), "inEdges");
+        ((MongoVertex)edge.getOutVertex()).removeEdge(edge.getId(), MongoGraph.OUT_EDGES);
+        ((MongoVertex)edge.getInVertex()).removeEdge(edge.getId(), MongoGraph.IN_EDGES);
 
         this.edgeCollection.remove(queryObject);
     }
 
     protected Edge getEdge(Object id) {
         DBObject queryObject = new BasicDBObject();
-        queryObject.put("_id", id);
+        queryObject.put(MongoGraph.ID, id);
         DBObject edgeObject = this.edgeCollection.findOne(queryObject);
-        return new MongoEdge(edgeObject, this);
+        if(null == edgeObject)
+            return null;
+        else
+            return new MongoEdge(edgeObject, this);
     }
 
     public Iterable<Edge> getEdges() {
@@ -129,16 +144,9 @@ public class MongoGraph implements Graph {
         return null;
     }
 
-    protected void saveDBObject(DBObject dbObject, String collection) {
-        if(collection.equals(EDGES))
-            edgeCollection.save(dbObject);
-        else
-            vertexCollection.save(dbObject);
-    }
-
-
     public void shutdown() {
-        // todo: how do you shutdown MongoDB?
+        // todo: is this really necessary?
+        this.database.requestDone();
     }
 
     private class MongoIterable<T> implements Iterable<T> {

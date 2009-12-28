@@ -20,7 +20,8 @@ public class MongoVertex extends MongoElement implements Vertex {
     }
 
     public Set<Edge> getInEdges() {
-        List inEdgeIds = (List) this.dbObject.get("inEdges");
+        this.refreshDbObject();
+        List inEdgeIds = (List) this.dbObject.get(MongoGraph.IN_EDGES);
         Set<Edge> inEdges = new HashSet<Edge>();
         if (null != inEdgeIds) {
             for (Object id : inEdgeIds) {
@@ -31,7 +32,8 @@ public class MongoVertex extends MongoElement implements Vertex {
     }
 
     public Set<Edge> getOutEdges() {
-        List outEdgeIds = (List) this.dbObject.get("outEdges");
+        this.refreshDbObject();
+        List outEdgeIds = (List) this.dbObject.get(MongoGraph.OUT_EDGES);
         Set<Edge> outEdges = new HashSet<Edge>();
         if (null != outEdgeIds) {
             for (Object id : outEdgeIds) {
@@ -56,7 +58,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         }
         edgeIds.add(id);
         vertexObject.put(type, edgeIds);
-        this.graph.saveDBObject(vertexObject, "vertices");
+        this.saveDbObject();
     }
 
     protected void removeEdge(Object id, String type) {
@@ -66,12 +68,20 @@ public class MongoVertex extends MongoElement implements Vertex {
         if (null != edgeIds) {
             edgeIds.remove(id);
             vertexObject.put(type, edgeIds);
-            this.graph.saveDBObject(vertexObject, "vertices");
+            this.saveDbObject();
         }
 
     }
 
     public String toString() {
         return "v[" + this.getId() + "]";
+    }
+
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
+    public boolean equals(Object object) {
+        return object instanceof MongoVertex && object.hashCode() == this.hashCode();
     }
 }

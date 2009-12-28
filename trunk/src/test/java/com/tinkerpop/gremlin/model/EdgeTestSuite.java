@@ -32,7 +32,7 @@ public class EdgeTestSuite extends ModelTestSuite {
         assertEquals(v2.getInEdges().size(), 1);
         assertEquals(v3.getInEdges().size(), 2);
     }
-
+    
     public void testAddManyEdges(Graph graph) {
         long counter = 0l;
         for (int i = 0; i < 1000; i++) {
@@ -63,7 +63,7 @@ public class EdgeTestSuite extends ModelTestSuite {
         for (int i = 0; i < 1000; i++) {
             Vertex out = graph.addVertex(convertId("" + counter++));
             Vertex in = graph.addVertex(convertId("" + counter++));
-            edges.add(graph.addEdge(null, out, in, convertId(UUID.randomUUID().toString())));
+            edges.add(graph.addEdge(null, out, in, convertId("a" + UUID.randomUUID().toString())));
         }
         assertEquals(edges.size(), 1000);
 

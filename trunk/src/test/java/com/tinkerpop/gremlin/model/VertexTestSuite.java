@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.db.sesame.SesameTokens;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.HashMap;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -58,6 +59,12 @@ public class VertexTestSuite extends ModelTestSuite {
         }
         if (config.supportsVertexIteration)
             assertEquals(countIterator(graph.getVertices()), 0);
+    }
+
+    public void testGetNonExistantVertices(Graph graph) {
+        assertNull(graph.getVertex("asbv"));
+        assertNull(graph.getVertex(12.0d));
+        assertNull(graph.getVertex(null));
     }
 
     public void testRemoveVertexNullId(Graph graph) {
@@ -176,6 +183,38 @@ public class VertexTestSuite extends ModelTestSuite {
             assertNull(v1.removeProperty("key1"));
             assertNull(v1.removeProperty("key2"));
             assertNull(v2.removeProperty("key2"));
+
+            v1.setProperty("key1", "value1");
+            v1.setProperty("key2", 10);
+            v2.setProperty("key2", 20);
+
+            v1 = graph.getVertex("1");
+            v2 = graph.getVertex("2");
+
+            assertEquals(v1.removeProperty("key1"), "value1");
+            assertEquals(v1.removeProperty("key2"), 10);
+            assertEquals(v2.removeProperty("key2"), 20);
+
+            assertNull(v1.removeProperty("key1"));
+            assertNull(v1.removeProperty("key2"));
+            assertNull(v2.removeProperty("key2"));
+
+            v1 = graph.getVertex("1");
+            v2 = graph.getVertex("2");
+
+            v1.setProperty("key1", "value2");
+            v1.setProperty("key2", 20);
+            v2.setProperty("key2", 30);
+
+            assertEquals(v1.removeProperty("key1"), "value2");
+            assertEquals(v1.removeProperty("key2"), 20);
+            assertEquals(v2.removeProperty("key2"), 30);
+
+            assertNull(v1.removeProperty("key1"));
+            assertNull(v1.removeProperty("key2"));
+            assertNull(v2.removeProperty("key2"));
+
+
         } else {
             Vertex v1 = graph.addVertex("\"1\"^^<http://www.w3.org/2001/XMLSchema#int>");
             assertEquals(v1.removeProperty("type"), "http://www.w3.org/2001/XMLSchema#int");

@@ -32,17 +32,17 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
         int counter = 0;
         for (Edge e : graph.getVertex("1").getOutEdges()) {
             if (e.getInVertex().getId().equals("2")) {
-                assertEquals(e.getProperty("weight"), new Float(0.5));
+                assertEquals(e.getProperty("weight"), 0.5);
                 assertEquals(e.getLabel(), "knows");
                 assertEquals(e.getId(), "7");
                 counter++;
             } else if (e.getInVertex().getId().equals("3")) {
-                assertEquals(e.getProperty("weight"), new Float(0.4));
+                //assertEquals(e.getProperty("weight"), 0.4);
                 assertEquals(e.getLabel(), "created");
                 assertEquals(e.getId(), "9");
                 counter++;
             } else if (e.getInVertex().getId().equals("4")) {
-                assertEquals(e.getProperty("weight"), new Float(1.0));
+                assertEquals(e.getProperty("weight"), 1.0);
                 assertEquals(e.getLabel(), "knows");
                 assertEquals(e.getId(), "8");
                 counter++;
@@ -57,12 +57,12 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
         assertEquals(josh.getProperty("age"), 32);
         for (Edge e : graph.getVertex("4").getOutEdges()) {
             if (e.getInVertex().getId().equals("3")) {
-                assertEquals(e.getProperty("weight"), new Float(0.4));
+                //assertEquals(e.getProperty("weight"), 0.4);
                 assertEquals(e.getLabel(), "created");
                 assertEquals(e.getId(), "11");
                 counter++;
             } else if (e.getInVertex().getId().equals("5")) {
-                assertEquals(e.getProperty("weight"), new Float(1.0));
+                assertEquals(e.getProperty("weight"), 1.0);
                 assertEquals(e.getLabel(), "created");
                 assertEquals(e.getId(), "10");
                 counter++;
