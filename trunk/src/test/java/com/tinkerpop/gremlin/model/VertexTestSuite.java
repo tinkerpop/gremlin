@@ -1,11 +1,11 @@
 package com.tinkerpop.gremlin.model;
 
 import com.tinkerpop.gremlin.db.sesame.SesameTokens;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.HashMap;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -13,7 +13,8 @@ import java.util.HashMap;
  */
 public class VertexTestSuite extends ModelTestSuite {
 
-    public VertexTestSuite() {}
+    public VertexTestSuite() {
+    }
 
     public VertexTestSuite(SuiteConfiguration config) {
         super(config);
@@ -28,7 +29,7 @@ public class VertexTestSuite extends ModelTestSuite {
             assertEquals(countIterator(graph.getVertices()), 3);
         }
 
-        if(config.isRDFModel && config.requiresRDFIds) {
+        if (config.isRDFModel && config.requiresRDFIds) {
             Vertex v1 = graph.addVertex("http://tinkerpop.com#marko");
             assertEquals(v1.getId(), "http://tinkerpop.com#marko");
             Vertex v2 = graph.addVertex("\"1\"^^<datatype:int>");
@@ -62,9 +63,13 @@ public class VertexTestSuite extends ModelTestSuite {
     }
 
     public void testGetNonExistantVertices(Graph graph) {
-        assertNull(graph.getVertex("asbv"));
-        assertNull(graph.getVertex(12.0d));
-        assertNull(graph.getVertex(null));
+        try {
+            assertNull(graph.getVertex("asbv"));
+            assertNull(graph.getVertex(12.0d));
+            assertNull(graph.getVertex(null));
+        } catch (EvaluationException e) {
+            assertTrue(true);
+        }
     }
 
     public void testRemoveVertexNullId(Graph graph) {
@@ -134,30 +139,30 @@ public class VertexTestSuite extends ModelTestSuite {
             Set<Vertex> vertices = new HashSet<Vertex>();
             for (int i = 0; i < 50; i++) {
                 Vertex vertex = graph.addVertex(null);
-                for(int j=0; j < 15; j++) {
+                for (int j = 0; j < 15; j++) {
                     vertex.setProperty(UUID.randomUUID().toString(), UUID.randomUUID().toString());
                 }
                 vertices.add(vertex);
             }
-            if(config.supportsVertexIteration)
+            if (config.supportsVertexIteration)
                 assertEquals(countIterator(graph.getVertices()), 50);
             assertEquals(vertices.size(), 50);
-            for(Vertex vertex : vertices) {
+            for (Vertex vertex : vertices) {
                 assertEquals(vertex.getPropertyKeys().size(), 15);
             }
         } else {
             Set<Vertex> vertices = new HashSet<Vertex>();
             for (int i = 0; i < 50; i++) {
-                Vertex vertex = graph.addVertex("\"" + UUID.randomUUID().toString() +"\"");
-                for(int j=0; j < 15; j++) {
+                Vertex vertex = graph.addVertex("\"" + UUID.randomUUID().toString() + "\"");
+                for (int j = 0; j < 15; j++) {
                     vertex.setProperty(SesameTokens.DATATYPE, "http://www.w3.org/2001/XMLSchema#anyURI");
                 }
                 vertices.add(vertex);
             }
-            if(config.supportsVertexIteration)
+            if (config.supportsVertexIteration)
                 assertEquals(countIterator(graph.getVertices()), 50);
             assertEquals(vertices.size(), 50);
-            for(Vertex vertex : vertices) {
+            for (Vertex vertex : vertices) {
                 assertEquals(vertex.getPropertyKeys().size(), 2);
                 assertTrue(vertex.getPropertyKeys().contains(SesameTokens.DATATYPE));
                 assertEquals(vertex.getProperty(SesameTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#anyURI");

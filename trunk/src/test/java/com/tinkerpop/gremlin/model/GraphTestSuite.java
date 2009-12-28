@@ -1,9 +1,6 @@
 package com.tinkerpop.gremlin.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -102,9 +99,75 @@ public class GraphTestSuite extends ModelTestSuite {
             if (config.supportsVertexIteration) {
                 assertEquals(countIterator(graph.getVertices()), vertices.size() - counter);
             }
+        }
+    }
 
+    public void testConnectivityPatterns(Graph graph) {
+        Vertex a = graph.addVertex(convertId("1"));
+        Vertex b = graph.addVertex(convertId("2"));
+        Vertex c = graph.addVertex(convertId("3"));
+        Vertex d = graph.addVertex(convertId("4"));
+
+        if (config.supportsVertexIteration)
+            assertEquals(countIterator(graph.getVertices()), 4);
+
+        Edge e = graph.addEdge(null, a, b, convertId("knows"));
+        Edge f = graph.addEdge(null, b, c, convertId("knows"));
+        Edge g = graph.addEdge(null, c, d, convertId("knows"));
+        Edge h = graph.addEdge(null, d, a, convertId("knows"));
+
+        if (config.supportsEdgeIteration)
+            assertEquals(countIterator(graph.getEdges()), 4);
+
+        if (config.supportsVertexIteration) {
+            for (Vertex v : graph.getVertices()) {
+                assertEquals(v.getOutEdges().size(), 1);
+                assertEquals(v.getInEdges().size(), 1);
+            }
         }
 
+        if (config.supportsEdgeIteration) {
+            for (Edge x : graph.getEdges()) {
+                assertEquals(x.getLabel(), convertId("knows"));
+            }
+        }
+
+        a = graph.getVertex(convertId("1"));
+        b = graph.getVertex(convertId("2"));
+        c = graph.getVertex(convertId("3"));
+        d = graph.getVertex(convertId("4"));
+
+        assertEquals(a.getBothEdges().size(), 2);
+        assertEquals(b.getBothEdges().size(), 2);
+        assertEquals(c.getBothEdges().size(), 2);
+        assertEquals(d.getBothEdges().size(), 2);
+
+        Edge i = graph.addEdge(null, a, b, convertId("hates"));
+
+        assertEquals(a.getBothEdges().size(), 3);
+        assertEquals(b.getBothEdges().size(), 3);
+        assertEquals(c.getBothEdges().size(), 2);
+        assertEquals(d.getBothEdges().size(), 2);
+
+        assertEquals(a.getInEdges().size(), 1);
+        assertEquals(a.getOutEdges().size(), 2);
+        for (Edge x : a.getOutEdges()) {
+            assertTrue(x.getLabel().equals(convertId("knows")) || x.getLabel().equals(convertId("hates")));
+        }
+        assertEquals(i.getLabel(), convertId("hates"));
+        assertEquals(i.getInVertex().getId().toString(), convertId("2"));
+        assertEquals(i.getOutVertex().getId().toString(), convertId("1"));
+
+        Set<Object> vertexIds = new HashSet<Object>();
+        vertexIds.add(a.getId());
+        vertexIds.add(a.getId());
+        vertexIds.add(b.getId());
+        vertexIds.add(b.getId());
+        vertexIds.add(c.getId());
+        vertexIds.add(d.getId());
+        vertexIds.add(d.getId());
+        vertexIds.add(d.getId());
+        assertEquals(vertexIds.size(), 4);
 
     }
 }

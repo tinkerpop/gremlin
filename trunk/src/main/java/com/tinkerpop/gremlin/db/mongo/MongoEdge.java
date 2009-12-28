@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.db.mongo;
 
 import com.mongodb.DBObject;
+import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 
@@ -49,6 +50,6 @@ public class MongoEdge extends MongoElement implements Edge {
     }
 
     public String toString() {
-        return "e[" + this.getId() + "][" + this.getOutVertex().getId() + "-" + this.getLabel() + "->" + this.getInVertex().getId() + "]";
+        return StringFactory.edgeString(this);
     }
 }

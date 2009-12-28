@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.mongo;
 import com.mongodb.DBObject;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.db.StringFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         this.refreshDbObject();
         List inEdgeIds = (List) this.dbObject.get(MongoGraph.IN_EDGES);
         Set<Edge> inEdges = new HashSet<Edge>();
-        if (null != inEdgeIds) {
+        if (null != inEdgeIds && inEdgeIds.size() > 0) {
             for (Object id : inEdgeIds) {
                 inEdges.add(this.graph.getEdge(id));
             }
@@ -35,7 +36,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         this.refreshDbObject();
         List outEdgeIds = (List) this.dbObject.get(MongoGraph.OUT_EDGES);
         Set<Edge> outEdges = new HashSet<Edge>();
-        if (null != outEdgeIds) {
+        if (null != outEdgeIds && outEdgeIds.size() > 0) {
             for (Object id : outEdgeIds) {
                 outEdges.add(this.graph.getEdge(id));
             }
@@ -50,31 +51,27 @@ public class MongoVertex extends MongoElement implements Vertex {
         return bothEdges;
     }
 
-    protected void addEdge(Object id, String type) {
-        DBObject vertexObject = this.getRawObject();
-        List edgeIds = (List) vertexObject.get(type);
+    protected void addEdgeId(Object id, String type) {
+        List edgeIds = (List) this.dbObject.get(type);
         if (null == edgeIds) {
             edgeIds = new ArrayList();
         }
         edgeIds.add(id);
-        vertexObject.put(type, edgeIds);
+        this.dbObject.put(type, edgeIds);
         this.saveDbObject();
     }
 
-    protected void removeEdge(Object id, String type) {
-        DBObject vertexObject = this.getRawObject();
-        List edgeIds = (List) vertexObject.get(type);
-
+    protected void removeEdgeId(Object id, String type) {
+        List edgeIds = (List) this.dbObject.get(type);
         if (null != edgeIds) {
             edgeIds.remove(id);
-            vertexObject.put(type, edgeIds);
+            this.dbObject.put(type, edgeIds);
             this.saveDbObject();
         }
-
     }
 
     public String toString() {
-        return "v[" + this.getId() + "]";
+        return StringFactory.vertexString(this);
     }
 
     public int hashCode() {

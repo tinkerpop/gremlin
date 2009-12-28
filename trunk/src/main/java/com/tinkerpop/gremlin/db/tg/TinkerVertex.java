@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.db.StringFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +36,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     }
 
     public String toString() {
-        return "v[" + this.id + "]";
+        return StringFactory.vertexString(this);
     }  
 
     public boolean equals(Object object) {

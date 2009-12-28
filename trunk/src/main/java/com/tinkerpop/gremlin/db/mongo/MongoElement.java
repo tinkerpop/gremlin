@@ -31,7 +31,7 @@ public class MongoElement implements Element {
 
     public void refreshDbObject() {
         DBObject queryObject = new BasicDBObject();
-        queryObject.put("_id", this.getId());
+        queryObject.put(MongoGraph.ID, this.getId());
         if (this instanceof MongoVertex)
             this.dbObject = this.graph.getVertexCollection().findOne(queryObject);
         else

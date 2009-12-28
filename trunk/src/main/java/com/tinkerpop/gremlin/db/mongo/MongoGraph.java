@@ -36,7 +36,6 @@ public class MongoGraph implements Graph {
     /*
 {
   _id: "1",
-  type: "vertex",
   properties: {
     name : "marko",
     age : 29
@@ -53,12 +52,12 @@ public class MongoGraph implements Graph {
         this.edgeCollection = this.database.getCollection(EDGES);
     }
 
-    public void dropCollections() {
+    protected void dropCollections() {
         this.vertexCollection.drop();
         this.edgeCollection.drop();
     }
 
-    public DBCollection getVertexCollection() {
+    protected DBCollection getVertexCollection() {
         return this.vertexCollection;
     }
 
@@ -87,13 +86,17 @@ public class MongoGraph implements Graph {
     }
 
     public void removeVertex(Vertex vertex) {
+        Object vertexId = vertex.getId();
         for (Edge edge : vertex.getBothEdges()) {
-            this.removeEdge(edge);
+            Object inVertexId = edge.getInVertex().getId();
+            Object outVertexId = edge.getOutVertex().getId();
+            if(!inVertexId.equals(vertexId)) {
+                ((MongoVertex)edge.getInVertex()).removeEdgeId(edge.getId(), IN_EDGES);
+            } else if(!outVertexId.equals(vertexId)) {
+                ((MongoVertex)edge.getOutVertex()).removeEdgeId(edge.getId(), OUT_EDGES);
+            }
         }
-
-        DBObject queryObject = new BasicDBObject();
-        queryObject.put(MongoGraph.ID, vertex.getId());
-        this.vertexCollection.remove(queryObject);
+        this.vertexCollection.remove(((MongoVertex)vertex).getRawObject());
     }
 
     public Iterable<Vertex> getVertices() {
@@ -112,21 +115,16 @@ public class MongoGraph implements Graph {
         edgeObject.put(MongoGraph.PROPERTIES, new BasicDBObject());
         this.edgeCollection.insert(edgeObject);
 
-        ((MongoVertex) outVertex).addEdge(id, MongoGraph.OUT_EDGES);
-        ((MongoVertex) inVertex).addEdge(id, MongoGraph.IN_EDGES);
-
+        ((MongoVertex) outVertex).addEdgeId(id, MongoGraph.OUT_EDGES);
+        ((MongoVertex) inVertex).addEdgeId(id, MongoGraph.IN_EDGES);
 
         return new MongoEdge(edgeObject, this);
     }
 
     public void removeEdge(Edge edge) {
-        DBObject queryObject = new BasicDBObject();
-        queryObject.put(MongoGraph.ID, edge.getId());
-
-        ((MongoVertex) edge.getOutVertex()).removeEdge(edge.getId(), MongoGraph.OUT_EDGES);
-        ((MongoVertex) edge.getInVertex()).removeEdge(edge.getId(), MongoGraph.IN_EDGES);
-
-        this.edgeCollection.remove(queryObject);
+        ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), MongoGraph.OUT_EDGES);
+        ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), MongoGraph.IN_EDGES);
+        this.edgeCollection.remove(((MongoEdge)edge).getRawObject());
     }
 
     protected Edge getEdge(Object id) {

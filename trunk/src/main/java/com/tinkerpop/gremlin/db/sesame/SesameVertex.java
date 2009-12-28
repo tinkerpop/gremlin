@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.db.StringFactory;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.*;
 import org.openrdf.model.impl.LiteralImpl;
@@ -167,14 +168,14 @@ public class SesameVertex implements Vertex {
     public Set<Edge> getBothEdges() {
         Set<Edge> bothEdges = new HashSet<Edge>();
         bothEdges.addAll(this.getInEdges());
-        if (!(this.value instanceof Resource)) {
+        if (this.value instanceof Resource) {
             bothEdges.addAll(this.getOutEdges());
         }
         return bothEdges;
     }
 
     public String toString() {
-        return "v[" + this.value.toString() + "]";
+        return StringFactory.vertexString(this);
     }
 
     protected static Object castLiteral(Literal literal) {

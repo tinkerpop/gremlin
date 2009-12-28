@@ -40,8 +40,12 @@ public class TinkerGraph implements Graph {
     }
 
     public Vertex getVertex(Object id) {
-        String idString = id.toString();
-        return this.vertices.get(idString);
+        if (null == id)
+            return null;
+        else {
+            String idString = id.toString();
+            return this.vertices.get(idString);
+        }
     }
 
     public Iterable<Vertex> getVertices() {
@@ -84,9 +88,9 @@ public class TinkerGraph implements Graph {
         // TODO: handle nulls from $g/V[g:remove-ve($g,.)
         TinkerVertex outVertex = (TinkerVertex) edge.getOutVertex();
         TinkerVertex inVertex = (TinkerVertex) edge.getInVertex();
-        if(null != outVertex && null != outVertex.outEdges)
+        if (null != outVertex && null != outVertex.outEdges)
             outVertex.outEdges.remove(edge);
-        if(null != inVertex && null != inVertex.inEdges)
+        if (null != inVertex && null != inVertex.inEdges)
             inVertex.inEdges.remove(edge);
         //this.edges.remove(edge.getId());
     }

@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.model;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,7 +31,7 @@ public class EdgeTestSuite extends ModelTestSuite {
         assertEquals(v2.getInEdges().size(), 1);
         assertEquals(v3.getInEdges().size(), 2);
     }
-    
+
     public void testAddManyEdges(Graph graph) {
         long counter = 0l;
         for (int i = 0; i < 1000; i++) {
@@ -85,7 +84,6 @@ public class EdgeTestSuite extends ModelTestSuite {
                         if (vertex.getOutEdges().size() > 0) {
                             assertEquals(vertex.getOutEdges().size(), 1);
                             assertFalse(vertex.getInEdges().size() > 0);
-
                         } else if (vertex.getInEdges().size() > 0) {
                             assertEquals(vertex.getInEdges().size(), 1);
                             assertFalse(vertex.getOutEdges().size() > 0);
@@ -150,18 +148,34 @@ public class EdgeTestSuite extends ModelTestSuite {
         graph.addEdge(null, v2, v3, convertId("pets"));
         graph.addEdge(null, v2, v3, convertId("pets"));
 
+        assertEquals(v1.getInEdges().size(), 0);
+        assertEquals(v1.getOutEdges().size(), 1);
+        assertEquals(v2.getInEdges().size(), 1);
+        assertEquals(v3.getOutEdges().size(), 0);
+
+        v1 = graph.getVertex(convertId("1"));
+        v2 = graph.getVertex(convertId("2"));
+        v3 = graph.getVertex(convertId("3"));
+
+        assertEquals(v1.getInEdges().size(), 0);
+        assertEquals(v1.getOutEdges().size(), 1);
+        assertEquals(v2.getInEdges().size(), 1);
+        assertEquals(v3.getOutEdges().size(), 0);
+
         if (config.supportsVertexIteration)
             assertEquals(countIterator(graph.getVertices()), 3);
+
         graph.removeVertex(v1);
+
         if (config.supportsVertexIteration)
             assertEquals(countIterator(graph.getVertices()), 2);
+
         if (config.allowsDuplicateEdges)
             assertEquals(v2.getOutEdges().size(), 2);
         else
             assertEquals(v2.getOutEdges().size(), 1);
 
         assertEquals(v3.getOutEdges().size(), 0);
-
         assertEquals(v2.getInEdges().size(), 0);
 
         if (config.allowsDuplicateEdges)
@@ -189,6 +203,16 @@ public class EdgeTestSuite extends ModelTestSuite {
         assertEquals(v1.getInEdges().size(), 0);
         assertEquals(v2.getInEdges().size(), 0);
         assertEquals(v3.getInEdges().size(), 2);
+        v1 = graph.getVertex(convertId("1"));
+        v2 = graph.getVertex(convertId("2"));
+        v3 = graph.getVertex(convertId("3"));
+        assertEquals(v1.getOutEdges().size(), 0);
+        assertEquals(v2.getOutEdges().size(), 2);
+        assertEquals(v3.getOutEdges().size(), 0);
+        assertEquals(v1.getInEdges().size(), 0);
+        assertEquals(v2.getInEdges().size(), 0);
+        assertEquals(v3.getInEdges().size(), 2);
+
         graph.removeEdge(e2);
         assertEquals(v1.getOutEdges().size(), 0);
         assertEquals(v2.getOutEdges().size(), 1);
@@ -196,7 +220,26 @@ public class EdgeTestSuite extends ModelTestSuite {
         assertEquals(v1.getInEdges().size(), 0);
         assertEquals(v2.getInEdges().size(), 0);
         assertEquals(v3.getInEdges().size(), 1);
+        v1 = graph.getVertex(convertId("1"));
+        v2 = graph.getVertex(convertId("2"));
+        v3 = graph.getVertex(convertId("3"));
+        assertEquals(v1.getOutEdges().size(), 0);
+        assertEquals(v2.getOutEdges().size(), 1);
+        assertEquals(v3.getOutEdges().size(), 0);
+        assertEquals(v1.getInEdges().size(), 0);
+        assertEquals(v2.getInEdges().size(), 0);
+        assertEquals(v3.getInEdges().size(), 1);
+
         graph.removeEdge(e3);
+        assertEquals(v1.getOutEdges().size(), 0);
+        assertEquals(v2.getOutEdges().size(), 0);
+        assertEquals(v3.getOutEdges().size(), 0);
+        assertEquals(v1.getInEdges().size(), 0);
+        assertEquals(v2.getInEdges().size(), 0);
+        assertEquals(v3.getInEdges().size(), 0);
+        v1 = graph.getVertex(convertId("1"));
+        v2 = graph.getVertex(convertId("2"));
+        v3 = graph.getVertex(convertId("3"));
         assertEquals(v1.getOutEdges().size(), 0);
         assertEquals(v2.getOutEdges().size(), 0);
         assertEquals(v3.getOutEdges().size(), 0);
@@ -271,5 +314,26 @@ public class EdgeTestSuite extends ModelTestSuite {
             assertTrue(edgeIds.contains(e2.getId().toString()));
             assertTrue(edgeIds.contains(e3.getId().toString()));
         }
+    }
+
+    public void testBothEdges(Graph graph) {
+        Vertex a = graph.addVertex(convertId("1"));
+        Vertex b = graph.addVertex(convertId("2"));
+        Vertex c = graph.addVertex(convertId("3"));
+        Vertex d = graph.addVertex(convertId("4"));
+        graph.addEdge(null, a, b, convertId("test1"));
+        assertEquals(a.getOutEdges().size(), 1);
+        assertEquals(a.getBothEdges().size(), 1);
+        graph.addEdge(null, a, c, convertId("test2"));
+        assertEquals(a.getOutEdges().size(), 2);
+        assertEquals(a.getBothEdges().size(), 2);
+        graph.addEdge(null, a, d, convertId("test3"));
+        assertEquals(a.getOutEdges().size(), 3);
+        assertEquals(a.getBothEdges().size(), 3);
+        graph.addEdge(null, b, a, convertId("test4"));
+        assertEquals(a.getOutEdges().size(), 3);
+        assertEquals(a.getBothEdges().size(), 4);
+
+
     }
 }

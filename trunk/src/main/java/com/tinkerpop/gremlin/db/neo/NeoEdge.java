@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.db.neo;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.db.StringFactory;
 import org.neo4j.api.core.Relationship;
 
 import java.util.ArrayList;
@@ -39,6 +40,6 @@ public class NeoEdge extends NeoElement implements Edge {
     }
 
     public String toString() {
-        return "e[" + this.getId() + "][" + this.getOutVertex().getId() + "-" + this.getLabel() + "->" + this.getInVertex().getId() + "]";
+       return StringFactory.edgeString(this);
     }
 }

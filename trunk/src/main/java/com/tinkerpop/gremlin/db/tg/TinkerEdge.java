@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.db.StringFactory;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
     }
 
     public String toString() {
-        return "e[" + this.id + "][" + this.outVertex.getId() + "-" + this.label + "->" + this.inVertex.getId() + "]";
+        return StringFactory.edgeString(this);
     }
 
     public boolean equals(Object object) {

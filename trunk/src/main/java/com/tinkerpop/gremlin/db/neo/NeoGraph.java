@@ -43,6 +43,9 @@ public class NeoGraph implements Graph {
     }
 
     public Vertex getVertex(Object id) {
+        if(null == id)
+            return null;
+        
         try {
             Long longId = Double.valueOf(id.toString()).longValue();
             Node node = this.neo.getNodeById(longId);
