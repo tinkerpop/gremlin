@@ -95,6 +95,7 @@ public class MongoGraph implements Graph {
             } else if(!outVertexId.equals(vertexId)) {
                 ((MongoVertex)edge.getOutVertex()).removeEdgeId(edge.getId(), OUT_EDGES);
             }
+            this.edgeCollection.remove(((MongoEdge)edge).getRawObject());
         }
         this.vertexCollection.remove(((MongoVertex)vertex).getRawObject());
     }
