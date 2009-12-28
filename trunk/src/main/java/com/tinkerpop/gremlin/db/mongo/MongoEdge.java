@@ -47,4 +47,8 @@ public class MongoEdge extends MongoElement implements Edge {
     public boolean equals(Object object) {
         return object instanceof MongoEdge && object.hashCode() == this.hashCode();
     }
+
+    public String toString() {
+        return "e[" + this.getId() + "][" + this.getOutVertex().getId() + "-" + this.getLabel() + "->" + this.getInVertex().getId() + "]";
+    }
 }

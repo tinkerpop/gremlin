@@ -1,7 +1,10 @@
 package com.tinkerpop.gremlin.db.mongo;
 
 import com.mongodb.*;
-import com.tinkerpop.gremlin.model.*;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.model.Index;
+import com.tinkerpop.gremlin.model.Vertex;
 
 import java.net.UnknownHostException;
 import java.util.Iterator;
@@ -77,14 +80,14 @@ public class MongoGraph implements Graph {
         DBObject queryObject = new BasicDBObject();
         queryObject.put(MongoGraph.ID, id);
         DBObject vertexObject = this.vertexCollection.findOne(queryObject);
-        if(null == vertexObject)
+        if (null == vertexObject)
             return null;
         else
             return new MongoVertex(vertexObject, this);
     }
 
     public void removeVertex(Vertex vertex) {
-        for(Edge edge : vertex.getBothEdges()) {
+        for (Edge edge : vertex.getBothEdges()) {
             this.removeEdge(edge);
         }
 
@@ -109,10 +112,10 @@ public class MongoGraph implements Graph {
         edgeObject.put(MongoGraph.PROPERTIES, new BasicDBObject());
         this.edgeCollection.insert(edgeObject);
 
-        ((MongoVertex)outVertex).addEdge(id, MongoGraph.OUT_EDGES);
-        ((MongoVertex)inVertex).addEdge(id, MongoGraph.IN_EDGES);
+        ((MongoVertex) outVertex).addEdge(id, MongoGraph.OUT_EDGES);
+        ((MongoVertex) inVertex).addEdge(id, MongoGraph.IN_EDGES);
 
-       
+
         return new MongoEdge(edgeObject, this);
     }
 
@@ -120,8 +123,8 @@ public class MongoGraph implements Graph {
         DBObject queryObject = new BasicDBObject();
         queryObject.put(MongoGraph.ID, edge.getId());
 
-        ((MongoVertex)edge.getOutVertex()).removeEdge(edge.getId(), MongoGraph.OUT_EDGES);
-        ((MongoVertex)edge.getInVertex()).removeEdge(edge.getId(), MongoGraph.IN_EDGES);
+        ((MongoVertex) edge.getOutVertex()).removeEdge(edge.getId(), MongoGraph.OUT_EDGES);
+        ((MongoVertex) edge.getInVertex()).removeEdge(edge.getId(), MongoGraph.IN_EDGES);
 
         this.edgeCollection.remove(queryObject);
     }
@@ -130,7 +133,7 @@ public class MongoGraph implements Graph {
         DBObject queryObject = new BasicDBObject();
         queryObject.put(MongoGraph.ID, id);
         DBObject edgeObject = this.edgeCollection.findOne(queryObject);
-        if(null == edgeObject)
+        if (null == edgeObject)
             return null;
         else
             return new MongoEdge(edgeObject, this);
@@ -147,6 +150,11 @@ public class MongoGraph implements Graph {
     public void shutdown() {
         // todo: is this really necessary?
         this.database.requestDone();
+    }
+
+
+    public String toString() {
+        return "mongograph[db:" + this.database.getName() + "]";
     }
 
     private class MongoIterable<T> implements Iterable<T> {
