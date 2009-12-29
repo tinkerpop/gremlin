@@ -90,14 +90,14 @@ public class MongoGraph implements Graph {
         for (Edge edge : vertex.getBothEdges()) {
             Object inVertexId = edge.getInVertex().getId();
             Object outVertexId = edge.getOutVertex().getId();
-            if(!inVertexId.equals(vertexId)) {
-                ((MongoVertex)edge.getInVertex()).removeEdgeId(edge.getId(), IN_EDGES);
-            } else if(!outVertexId.equals(vertexId)) {
-                ((MongoVertex)edge.getOutVertex()).removeEdgeId(edge.getId(), OUT_EDGES);
+            if (!inVertexId.equals(vertexId)) {
+                ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), IN_EDGES);
+            } else if (!outVertexId.equals(vertexId)) {
+                ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), OUT_EDGES);
             }
-            this.edgeCollection.remove(((MongoEdge)edge).getRawObject());
+            this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
         }
-        this.vertexCollection.remove(((MongoVertex)vertex).getRawObject());
+        this.vertexCollection.remove(((MongoVertex) vertex).getRawObject());
     }
 
     public Iterable<Vertex> getVertices() {
@@ -125,7 +125,7 @@ public class MongoGraph implements Graph {
     public void removeEdge(Edge edge) {
         ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), MongoGraph.OUT_EDGES);
         ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), MongoGraph.IN_EDGES);
-        this.edgeCollection.remove(((MongoEdge)edge).getRawObject());
+        this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
     }
 
     protected Edge getEdge(Object id) {
@@ -153,7 +153,7 @@ public class MongoGraph implements Graph {
 
 
     public String toString() {
-        return "mongograph[db:" + this.database.getName() + "]";
+        return "mongograph[db:" + this.database.getName() + ", vertices:" + vertexCollection.getCount() + ", edges:" + edgeCollection.getCount() + "]";
     }
 
     private class MongoIterable<T> implements Iterable<T> {
