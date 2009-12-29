@@ -15,6 +15,32 @@ public class GraphTestSuite extends ModelTestSuite {
         super(config);
     }
 
+    public void testClear(Graph graph) {
+        if(config.supportsVertexIteration)
+            assertEquals(countIterator(graph.getVertices()), 0);
+        if(config.supportsEdgeIteration)
+            assertEquals(countIterator(graph.getEdges()), 0);
+
+        for(int i=0; i<25; i++) {
+            Vertex a = graph.addVertex(null);
+            Vertex b = graph.addVertex(null);
+            graph.addEdge(null, a, b, convertId("knows"));
+        }
+
+        if(config.supportsVertexIteration)
+            assertEquals(countIterator(graph.getVertices()), 50);
+        if(config.supportsEdgeIteration)
+            assertEquals(countIterator(graph.getEdges()), 25);
+
+        graph.clear();
+
+        if(config.supportsVertexIteration)
+            assertEquals(countIterator(graph.getVertices()), 0);
+        if(config.supportsEdgeIteration)
+            assertEquals(countIterator(graph.getEdges()), 0);
+
+    }
+
     public void testAddingVerticesAndEdges(Graph graph) {
         Vertex a = graph.addVertex(null);
         Vertex b = graph.addVertex(null);

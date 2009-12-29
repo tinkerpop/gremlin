@@ -103,6 +103,10 @@ public class TinkerGraph implements Graph {
         return "tinkergraph[vertices:" + this.vertices.size() + "]";
     }
 
+    public void clear() {
+        this.vertices.clear();    
+    }
+
     public void shutdown() {
 
     }

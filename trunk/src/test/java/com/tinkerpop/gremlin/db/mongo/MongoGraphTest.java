@@ -49,18 +49,18 @@ public class MongoGraphTest extends BaseTest {
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
         for (Method method : suite.getClass().getDeclaredMethods()) {
             if (method.getName().startsWith("test")) {
-
                 System.out.println("Testing " + method.getName() + "...");
                 MongoGraph graph = new MongoGraph("127.0.0.1", 27017, "mongo_test");
-                graph.dropCollections();
+                graph.clear();
                 method.invoke(suite, graph);
+                graph.clear();
             }
         }
     }
 
     public void testPlay() throws Exception {
         MongoGraph graph = new MongoGraph("127.0.0.1", 27017, "mongo_test");
-        graph.dropCollections();
+        graph.clear();
         Vertex a = graph.addVertex("1");
         Vertex b = graph.addVertex("2");
         Edge e = graph.addEdge("3",a,b,"knows");

@@ -214,6 +214,14 @@ public class SesameGraph implements Graph {
         throw new EvaluationException(UNSUPPORTED_OPERATION);
     }
 
+    public void clear() {
+        try {
+            this.sailConnection.clear();
+        } catch (SailException e) {
+            throw new EvaluationException(e.getMessage());
+        }
+    }
+
     public void shutdown() {
         try {
             this.sailConnection.close();

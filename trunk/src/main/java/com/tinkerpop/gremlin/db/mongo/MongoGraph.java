@@ -34,14 +34,25 @@ public class MongoGraph implements Graph {
     private long currentId = 0l;
 
     /*
-{
-  _id: "1",
-  properties: {
-    name : "marko",
-    age : 29
-  },
-  outEdges : ["7","8","9"]
-}
+        {
+          _id: "1",
+          properties: {
+            name : "marko",
+            age : 29
+          },
+          outEdges : ["7","8","9"]
+        }
+
+
+        {
+          _id: "7",
+          label: "knows",
+          properties: {
+            weight : 0.5
+          },
+          outVertex : "1",
+          inVertex : "2"
+        }
      */
 
 
@@ -50,9 +61,11 @@ public class MongoGraph implements Graph {
         this.database = mongo.getDB(database);
         this.vertexCollection = this.database.getCollection(VERTICES);
         this.edgeCollection = this.database.getCollection(EDGES);
+        this.vertexCollection.ensureIDIndex();
+        this.edgeCollection.ensureIDIndex();
     }
 
-    protected void dropCollections() {
+    public void clear() {
         this.vertexCollection.drop();
         this.edgeCollection.drop();
     }
@@ -143,7 +156,7 @@ public class MongoGraph implements Graph {
     }
 
     public Index getIndex() {
-        return null;
+        return new MongoIndex(this);
     }
 
     public void shutdown() {

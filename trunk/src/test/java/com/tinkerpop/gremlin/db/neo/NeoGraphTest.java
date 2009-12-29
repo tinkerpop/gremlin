@@ -48,12 +48,12 @@ public class NeoGraphTest extends TestCase {
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
         for (Method method : suite.getClass().getDeclaredMethods()) {
-            deleteGraphDirectory(new File(NEO_TEST_DIRECTORY));
             if (method.getName().startsWith("test")) {
                 Graph graph = new NeoGraph(NEO_TEST_DIRECTORY);
-                graph.removeVertex(graph.getVertex(0));
+                graph.clear();
                 System.out.println("Testing " + method.getName() + "...");
                 method.invoke(suite, graph);
+                graph.clear();
                 graph.shutdown();
             }
         }
@@ -92,7 +92,7 @@ public class NeoGraphTest extends TestCase {
 
     }
 
-    private static void deleteGraphDirectory(File directory) {
+    /*private static void deleteGraphDirectory(File directory) {
         if (directory.exists()) {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
@@ -102,5 +102,5 @@ public class NeoGraphTest extends TestCase {
                 }
             }
         }
-    }
+    }*/
 }

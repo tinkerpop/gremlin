@@ -11,6 +11,7 @@ import org.neo4j.util.index.Isolation;
 import org.neo4j.util.index.LuceneIndexService;
 
 import java.util.Iterator;
+import java.io.File;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -105,6 +106,30 @@ public class NeoGraph implements Graph {
         this.neo.shutdown();
         this.index.shutdown();
 
+    }
+
+    public void clear() {
+        this.shutdown();
+        deleteGraphDirectory(new File(this.directory));
+        this.neo = new EmbeddedNeo(this.directory);
+        LuceneIndexService indexService = new LuceneIndexService(neo);
+        indexService.setIsolation(Isolation.SAME_TX);
+        this.index = new NeoIndex(indexService);
+        this.tx = neo.beginTx();
+        this.removeVertex(this.getVertex(0));
+        this.stopStartTransaction();
+    }
+
+    private static void deleteGraphDirectory(File directory) {
+        if (directory.exists()) {
+            for (File file : directory.listFiles()) {
+                if (file.isDirectory()) {
+                    deleteGraphDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
     }
 
 

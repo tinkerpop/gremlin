@@ -24,5 +24,7 @@ public interface Graph {
 
     public Index getIndex();
 
+    public void clear();
+
     public void shutdown();
 }
