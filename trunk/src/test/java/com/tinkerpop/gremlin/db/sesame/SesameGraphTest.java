@@ -27,9 +27,10 @@ public class SesameGraphTest extends BaseTest {
         config.allowsSelfLoops = true;
         config.requiresRDFIds = true;
         config.isRDFModel = true;
-        config.supportsEdgeIteration = true;
         config.supportsVertexIteration = false;
+        config.supportsEdgeIteration = true;
         config.supportsVertexIndex = false;
+        config.supportsEdgeIndex = false;
     }
 
     public void testTypeConversion() {

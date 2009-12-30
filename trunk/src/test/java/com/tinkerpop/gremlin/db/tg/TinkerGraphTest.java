@@ -19,9 +19,10 @@ public class TinkerGraphTest extends TestCase {
         config.allowsSelfLoops = true;
         config.requiresRDFIds = false;
         config.isRDFModel = false;
-        config.supportsEdgeIteration = true;
         config.supportsVertexIteration = true;
+        config.supportsEdgeIteration = true;
         config.supportsVertexIndex = true;
+        config.supportsEdgeIndex = false;
     }
 
     public void testVertexSuite() throws Exception {

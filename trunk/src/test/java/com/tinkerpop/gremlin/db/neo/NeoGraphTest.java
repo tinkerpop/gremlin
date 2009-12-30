@@ -20,9 +20,10 @@ public class NeoGraphTest extends TestCase {
         config.allowsSelfLoops = false;
         config.requiresRDFIds = false;
         config.isRDFModel = false;
-        config.supportsEdgeIteration = true;
         config.supportsVertexIteration = true;
+        config.supportsEdgeIteration = true; 
         config.supportsVertexIndex = true;
+        config.supportsEdgeIndex = false;
     }
 
     public void testVertexSuite() throws Exception {
@@ -53,8 +54,8 @@ public class NeoGraphTest extends TestCase {
                 graph.clear();
                 System.out.println("Testing " + method.getName() + "...");
                 method.invoke(suite, graph);
-                graph.clear();
                 graph.shutdown();
+                deleteGraphDirectory(new File(NEO_TEST_DIRECTORY));
             }
         }
     }
@@ -92,7 +93,7 @@ public class NeoGraphTest extends TestCase {
 
     }
 
-    /*private static void deleteGraphDirectory(File directory) {
+    private static void deleteGraphDirectory(File directory) {
         if (directory.exists()) {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
@@ -101,6 +102,7 @@ public class NeoGraphTest extends TestCase {
                     file.delete();
                 }
             }
+            directory.delete();
         }
-    }*/
+    }
 }

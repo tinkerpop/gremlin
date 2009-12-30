@@ -15,13 +15,13 @@ import java.util.Set;
  */
 public class NeoIndex implements Index {
 
-    private IndexService index;
+    private IndexService indexService;
     public Set<String> indexKeys;
     public boolean indexAll = true;
 
 
-    public NeoIndex(IndexService index) {
-        this.index = index;
+    public NeoIndex(IndexService indexService) {
+        this.indexService = indexService;
         this.indexKeys = new HashSet<String>();
     }
 
@@ -29,13 +29,13 @@ public class NeoIndex implements Index {
         if (this.indexAll || this.indexKeys.contains(key)) {
             if (element instanceof NeoVertex) {
                 Node node = (Node) ((NeoVertex) element).getRawElement();
-                this.index.index(node, key, value);
+                this.indexService.index(node, key, value);
             }
         }
     }
 
     public Set<Element> get(String key, Object value) {
-        Iterable<Node> itty = this.index.getNodes(key, value);
+        Iterable<Node> itty = this.indexService.getNodes(key, value);
         if (null != itty) {
             Iterator<Node> itty2 = itty.iterator();
             if (itty2.hasNext()) {
@@ -52,7 +52,7 @@ public class NeoIndex implements Index {
     public void remove(String key, Object value, Element element) {
         if (element instanceof NeoVertex) {
             Node node = (Node) ((NeoVertex) element).getRawElement();
-            this.index.removeIndex(node, key, value);
+            this.indexService.removeIndex(node, key, value);
         }
     }
 
@@ -69,6 +69,6 @@ public class NeoIndex implements Index {
     }
 
     protected void shutdown() {
-        index.shutdown();
+        indexService.shutdown();
     }
 }

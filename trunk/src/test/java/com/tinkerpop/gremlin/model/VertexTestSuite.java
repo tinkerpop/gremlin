@@ -235,4 +235,26 @@ public class VertexTestSuite extends ModelTestSuite {
         }
     }
 
+    public void testVertexPropertyInconsistency(Graph graph) {
+        if (!config.isRDFModel) {
+            Vertex v1 = graph.addVertex(convertId("1"));
+            v1.setProperty("key1", "value1");
+            if (config.supportsVertexIteration) {
+                assertEquals(countIterator(graph.getVertices()), 1);
+            }
+            assertEquals(v1.getProperty("key1"), "value1");
+
+            Vertex v2 = graph.getVertex(convertId("1"));
+            assertEquals(v2.getProperty("key1"), "value1");
+
+            v1.setProperty("key1", "value111");
+            assertEquals(v1.getProperty("key1"), "value111");
+            assertEquals(v2.getProperty("key1"), "value111");
+
+            assertEquals(v2.removeProperty("key1"), "value111");
+            assertNull(v2.getProperty("key1"));
+            assertNull(v1.getProperty("key1"));   
+        }
+    }
+
 }

@@ -7,11 +7,12 @@ import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.api.core.*;
 import org.neo4j.impl.core.NodeManager;
+import org.neo4j.impl.transaction.TransactionFailureException;
 import org.neo4j.util.index.Isolation;
 import org.neo4j.util.index.LuceneIndexService;
 
-import java.util.Iterator;
 import java.io.File;
+import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -44,9 +45,9 @@ public class NeoGraph implements Graph {
     }
 
     public Vertex getVertex(Object id) {
-        if(null == id)
+        if (null == id)
             return null;
-        
+
         try {
             Long longId = Double.valueOf(id.toString()).longValue();
             Node node = this.neo.getNodeById(longId);
@@ -101,8 +102,10 @@ public class NeoGraph implements Graph {
     }
 
     public void shutdown() {
-        this.tx.success();
-        this.tx.finish();
+        try {
+            this.tx.success();
+            this.tx.finish();
+        } catch (TransactionFailureException e) {}
         this.neo.shutdown();
         this.index.shutdown();
 
@@ -125,6 +128,7 @@ public class NeoGraph implements Graph {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
                     deleteGraphDirectory(file);
+                    file.delete();
                 } else {
                     file.delete();
                 }

@@ -10,8 +10,9 @@ public class SuiteConfiguration {
     public boolean isRDFModel;
     public boolean allowsSelfLoops;
     public boolean allowsDuplicateEdges;
-    public boolean supportsEdgeIteration;
     public boolean supportsVertexIteration;
+    public boolean supportsEdgeIteration;
     public boolean supportsVertexIndex;
+    public boolean supportsEdgeIndex;
 
 }

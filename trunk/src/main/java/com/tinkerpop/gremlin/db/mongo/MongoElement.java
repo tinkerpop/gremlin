@@ -43,6 +43,7 @@ public class MongoElement implements Element {
     }
 
     public Set<String> getPropertyKeys() {
+        this.refreshDbObject();
         Set<String> keys = new HashSet<String>();
         DBObject properties = (DBObject) this.dbObject.get(MongoGraph.PROPERTIES);
         keys.addAll(properties.keySet());
@@ -50,6 +51,7 @@ public class MongoElement implements Element {
     }
 
     public Object getProperty(String key) {
+        this.refreshDbObject();
         return ((DBObject) this.dbObject.get(MongoGraph.PROPERTIES)).get(key);
     }
 
@@ -64,6 +66,7 @@ public class MongoElement implements Element {
         properties.put(key, value);
         this.dbObject.put(MongoGraph.PROPERTIES, properties);
         this.saveDbObject();
+        this.graph.getIndex().put(key, value, this);
     }
 
     public DBObject getRawObject() {

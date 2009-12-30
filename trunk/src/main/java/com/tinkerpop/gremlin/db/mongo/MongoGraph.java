@@ -17,6 +17,8 @@ import java.util.UUID;
 public class MongoGraph implements Graph {
 
     private DB database;
+    private MongoIndex index;
+
     public static final String VERTICES = "vertices";
     public static final String EDGES = "edges";
     public static final String VERTEX = "vertex";
@@ -63,6 +65,7 @@ public class MongoGraph implements Graph {
         this.edgeCollection = this.database.getCollection(EDGES);
         this.vertexCollection.ensureIDIndex();
         this.edgeCollection.ensureIDIndex();
+        this.index = new MongoIndex(this);
     }
 
     public void clear() {
@@ -111,6 +114,7 @@ public class MongoGraph implements Graph {
             this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
         }
         this.vertexCollection.remove(((MongoVertex) vertex).getRawObject());
+        
     }
 
     public Iterable<Vertex> getVertices() {
@@ -156,12 +160,11 @@ public class MongoGraph implements Graph {
     }
 
     public Index getIndex() {
-        return new MongoIndex(this);
+        return this.index;
     }
 
     public void shutdown() {
-        // todo: is this really necessary?
-        this.database.requestDone();
+        // todo: is there a proper way to shutdown a mongodb connection?
     }
 
 

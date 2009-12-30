@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -17,55 +18,74 @@ public class MongoIndex implements Index {
 
     MongoGraph graph;
     boolean indexAll = true;
+    private static final String NAME = "name";
+    private static final String PERIOD = ".";
+    private Set<String> indexNames = new HashSet<String>();
+
 
     public MongoIndex(MongoGraph graph) {
         this.graph = graph;
+        this.refreshIndexNames();
     }
 
     public Set<Element> get(String key, Object value) {
-        DBObject query = new BasicDBObject();
-        DBObject properties = new BasicDBObject();
-        properties.put(key, value);
-        query.put(MongoGraph.PROPERTIES, properties);
-        Set<Element> retElements = new HashSet<Element>();
-        DBCursor cursor = this.graph.getVertexCollection().find(query);
-        if (null != cursor) {
-            while (cursor.hasNext()) {
-                retElements.add(new MongoVertex(cursor.next(), this.graph));
+        if (this.indexNames.contains(key)) {
+            DBObject query = new BasicDBObject();
+            query.put(MongoGraph.PROPERTIES + PERIOD + key, value);
+            Set<Element> retElements = new HashSet<Element>();
+            DBCursor cursor = this.graph.getVertexCollection().find(query);
+            if (null != cursor) {
+                while (cursor.hasNext()) {
+                    retElements.add(new MongoVertex(cursor.next(), this.graph));
+                }
             }
-        }
-        cursor = this.graph.getEdgeCollection().find(query);
-        if (null != cursor) {
-            while (cursor.hasNext()) {
-                retElements.add(new MongoEdge(cursor.next(), this.graph));
+            cursor = this.graph.getEdgeCollection().find(query);
+            if (null != cursor) {
+                while (cursor.hasNext()) {
+                    retElements.add(new MongoEdge(cursor.next(), this.graph));
+                }
             }
-        }
-        if (retElements.size() == 0)
+            if (retElements.size() == 0)
+                return null;
+            else
+                return retElements;
+        } else {
             return null;
-        else
-            return retElements;
+        }
     }
 
     public void put(String key, Object value, Element element) {
-
+        if (this.indexAll && !this.indexNames.contains(key)) {
+            this.addIndexKey(key);
+        } else if (!this.indexNames.contains(key)) {
+            this.addIndexKey(key);
+        }
     }
 
     public void remove(String key, Object value, Element element) {
 
     }
 
+    private void refreshIndexNames() {
+        this.indexNames.clear();
+        List<DBObject> indexInfos = this.graph.getVertexCollection().getIndexInfo();
+        for (DBObject indexInfo : indexInfos) {
+            this.indexNames.add(indexInfo.get(NAME).toString());
+        }
+    }
+
     public void addIndexKey(String key) {
-        DBObject object = new BasicDBObject();
-        DBObject properties = new BasicDBObject();
-        properties.put(key, 1);
-        object.put(MongoGraph.PROPERTIES, properties);
-        this.graph.getVertexCollection().ensureIndex(object);
-        this.graph.getEdgeCollection().ensureIndex(object);
+        DBObject index = new BasicDBObject();
+        index.put(MongoGraph.PROPERTIES + PERIOD + key, 1);
+        this.graph.getVertexCollection().ensureIndex(index, key);
+        this.graph.getEdgeCollection().ensureIndex(index, key);
+        this.refreshIndexNames();
     }
 
     public void removeIndexKey(String key) {
-        this.graph.getVertexCollection().dropIndex(key + "_1");
-        this.graph.getEdgeCollection().dropIndex(key + "_1");
+        this.graph.getVertexCollection().dropIndex(key);
+        this.graph.getEdgeCollection().dropIndex(key);
+        this.refreshIndexNames();
     }
 
     public void indexAll(boolean indexAll) {

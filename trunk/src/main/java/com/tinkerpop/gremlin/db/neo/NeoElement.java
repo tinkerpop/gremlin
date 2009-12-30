@@ -24,22 +24,25 @@ public class NeoElement implements Element {
     }
 
     public void setProperty(String key, Object value) {
-        try {
-            if (this instanceof NeoVertex)
-                this.index.remove(key, this.getProperty(key), this);
-        } catch (NotFoundException e) {
+        if (this instanceof NeoVertex) {
+            Object value2 = this.getProperty(key);
+            if (null != value2)
+                this.index.remove(key, value2, this);
         }
+
         this.element.setProperty(key, value);
         if (this instanceof NeoVertex)
             this.index.put(key, value, this);
     }
 
     public Object getProperty(String key) {
-        return this.element.getProperty(key);
+        if (this.element.hasProperty(key))
+            return this.element.getProperty(key);
+        else
+            return null;
     }
 
     public Set<String> getPropertyKeys() {
-
         Set<String> keys = new HashSet<String>();
         for (String key : this.element.getPropertyKeys()) {
             keys.add(key);
@@ -49,8 +52,11 @@ public class NeoElement implements Element {
 
     public Object removeProperty(String key) {
         try {
-            if (this instanceof NeoVertex)
-                this.index.remove(key, this.getProperty(key), this);
+            if (this instanceof NeoVertex) {
+                Object value2 = this.getProperty(key);
+                if (null != value2)
+                    this.index.remove(key, value2, this);
+            }
             Object value = this.element.removeProperty(key);
             return value;
         } catch (NotFoundException e) {
@@ -62,7 +68,6 @@ public class NeoElement implements Element {
         return this.element.hashCode();
     }
 
-
     public PropertyContainer getRawElement() {
         return this.element;
     }
@@ -72,13 +77,6 @@ public class NeoElement implements Element {
             return this.hashCode() == object.hashCode();
         else
             return false;
-    }
-
-    public String toString() {
-        if (null == this.element)
-            return null;
-        else
-            return this.element.toString();
     }
 
     public Object getId() {
