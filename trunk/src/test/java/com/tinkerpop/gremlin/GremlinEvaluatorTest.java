@@ -1,5 +1,10 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.db.tg.TinkerGraph;
+import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,6 +76,26 @@ public class GremlinEvaluatorTest extends BaseTest {
             map.put("marko", (Integer) map.get("marko") + 1);
         }
         System.out.println(stopWatch());
+
+    }
+
+    public void testSettingGraphVariable() {
+        Graph graph = new TinkerGraph();
+        GremlinEvaluator ge = new GremlinEvaluator();
+        ge.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        assertTrue(true);
+        try {
+            ge.setVariable(Tokens.GRAPH_VARIABLE, new ArrayList());
+            assertFalse(true);
+        } catch(EvaluationException e) {
+            assertTrue(true);
+        }
+        try {
+            ge.setVariable(Tokens.GRAPH_VARIABLE, "a graph");
+            assertFalse(true);
+        } catch(EvaluationException e) {
+            assertTrue(true);
+        }
 
     }
 

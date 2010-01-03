@@ -16,12 +16,15 @@ public class ClearFunction implements Function {
      public static final String FUNCTION_NAME = "clear";
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
-        if (null != parameters && parameters.length == 1) {
+        if (null != parameters) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof Graph) {
                 ((Graph)object).clear();
                 return Boolean.TRUE;
             }    
+        } else {
+            FunctionHelper.getGraph(context).clear();
+            return Boolean.TRUE;
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 

@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.db.mongo.MongoFunctions;
 import com.tinkerpop.gremlin.db.neo.NeoFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.db.mongo.MongoFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -46,6 +46,13 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         super(parentContext, object);
         if (null == parentContext) {
             this.setFunctions(library);
+        } else {
+            // TODO: why is this needed? figure it out and make it more general.
+            // TODO: Creates a new JXPathContext with the specified bean as the root node
+            // TODO: and the specified parent context. Variables defined in a parent context can be referenced in
+            // TODO: XPaths passed to the child context. 
+            if (parentContext.hasVariable(Tokens.GRAPH_VARIABLE))
+                this.setVariable(Tokens.GRAPH_VARIABLE, parentContext.getVariable(Tokens.GRAPH_VARIABLE));
         }
     }
 
@@ -90,6 +97,10 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
                 } else {
                     this.setRoot(value);
                 }
+            } else if (variable.equals(Tokens.GRAPH_VARIABLE)) {
+                if (!(value instanceof Graph)) {
+                    throw new EvaluationException(Tokens.GRAPH_VARIABLE + " can only reference a graph");
+                }
             }
             this.getVariables().declareVariable(GremlinPathContext.removeVariableDollarSign(variable), value);
         } else {
@@ -107,10 +118,15 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         }
     }
 
+    public boolean hasVariable(String variable) {
+        return this.getVariables().isDeclaredVariable(GremlinPathContext.removeVariableDollarSign(variable));
+    }
+
     public Object getVariable(String variable) {
         try {
             return this.getVariables().getVariable(GremlinPathContext.removeVariableDollarSign(variable));
         } catch (Exception e) {
+            System.out.println(e);
             return null;
         }
     }

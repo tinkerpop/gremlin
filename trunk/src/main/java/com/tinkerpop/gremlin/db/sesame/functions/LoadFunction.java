@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
 import com.tinkerpop.gremlin.db.sesame.SesameTokens;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -11,7 +12,6 @@ import org.openrdf.model.impl.URIImpl;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.sail.SailRepository;
-import org.openrdf.rio.RDFFormat;
 
 import java.io.File;
 
@@ -27,18 +27,29 @@ public class LoadFunction implements Function {
 
         if (null != parameters && parameters.length > 2) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects.length == 3) {
-                if (objects[0] instanceof SesameGraph && objects[1] instanceof String && objects[2] instanceof String) {
+            if (objects[0] instanceof SesameGraph && objects.length == 3) {
+                if (objects[1] instanceof String && objects[2] instanceof String) {
                     insertRDF((SesameGraph) objects[0], (String) objects[1], (String) objects[2], null);
                     return Boolean.TRUE;
                 }
-            } else if (objects.length == 4) {
+            } else if (objects[0] instanceof SesameGraph && objects.length == 4) {
                 if (objects[0] instanceof SesameGraph && objects[1] instanceof String && objects[2] instanceof String && objects[3] instanceof String) {
                     insertRDF((SesameGraph) objects[0], (String) objects[1], (String) objects[2], (String) objects[3]);
                     return Boolean.TRUE;
                 }
+            } else if (objects.length == 3) {
+                Graph graph = FunctionHelper.getGraph(context);
+                if (graph instanceof SesameGraph && objects[0] instanceof String && objects[1] instanceof String) {
+                    insertRDF((SesameGraph) graph, (String) objects[0], (String) objects[1], null);
+                    return Boolean.TRUE;
+                }
+            } else if (objects.length == 4) {
+                Graph graph = FunctionHelper.getGraph(context);
+                if (graph instanceof SesameGraph && objects[0] instanceof String && objects[1] instanceof String && objects[2] instanceof String) {
+                    insertRDF((SesameGraph) graph, (String) objects[0], (String) objects[1], (String) objects[2]);
+                    return Boolean.TRUE;
+                }
             }
-
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(SesameFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
     }

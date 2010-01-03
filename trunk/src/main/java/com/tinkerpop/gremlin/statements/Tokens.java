@@ -20,6 +20,7 @@ public class Tokens {
     public static final String EMPTY_STRING = "";
     public static final String AT_VARIABLE = "$_";
     public static final String LAST_VARIABLE = "$_last";
+    public static final String GRAPH_VARIABLE = "$_g";
 
     public static final String NEWLINE = "\n";
     public static final String WHITESPACE_REGEX = "[' '\t]+";

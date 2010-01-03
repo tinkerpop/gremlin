@@ -22,14 +22,13 @@ public class LoadFunction implements Function {
 
         if (parameters != null) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects.length == 1) {
-                if(objects[0] instanceof String) {
-                    String name = (String)objects[0];
-                    if(name.equals("tinkerpop")) {
-                        // TODO: is this worth it?
-                    } else if(name.equals("gratefuldead")) {
-                        // TODO: is this worth it?
-                    }
+            if (objects.length == 1 && objects[0] instanceof String) {
+                try {
+                    Graph graph = FunctionHelper.getGraph(context);
+                    GraphMLReader.inputGraph(graph, new FileInputStream((String) objects[0]));
+                    return Boolean.TRUE;
+                } catch (Exception e) {
+                    throw new EvaluationException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
                 }
             } else if (objects.length == 2) {
                 if (objects[0] instanceof Graph && objects[1] instanceof String) {

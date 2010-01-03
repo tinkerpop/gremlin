@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.db.sesame.functions;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
+import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import org.openrdf.sail.memory.MemoryStore;
@@ -21,5 +22,15 @@ public class AddNamespaceFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("sail:ns($g, 'tg:marko')").get(0), "http://tinkerpop.com#marko");
         graph.shutdown();
 
+    }
+
+    public void testAddNamespaceFunctionGraphVariable() {
+        Graph graph = new SesameGraph(new MemoryStore());
+        XPathEvaluator xe = new XPathEvaluator();
+        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        assertEquals(xe.evaluateList("sail:ns('tg:marko')").get(0), "tg:marko");
+        assertTrue((Boolean)xe.evaluateList("sail:add-ns('tg','http://tinkerpop.com#')").get(0));
+        assertEquals(xe.evaluateList("sail:ns('tg:marko')").get(0), "http://tinkerpop.com#marko");
+        graph.shutdown();
     }
 }

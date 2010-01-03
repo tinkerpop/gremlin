@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.db.sesame.functions;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
+import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import junit.framework.TestCase;
@@ -28,6 +29,22 @@ public class PrefixFunctionTest extends TestCase {
         graph.shutdown();
     }
 
+     public void testPrefixFunctionGraphVariable() {
+        Graph graph = new SesameGraph(new MemoryStore());
+        XPathEvaluator xe = new XPathEvaluator();
+        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')").get(0), "rdf:type");
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/1999/02/22-rdf-syntax-ns#label')").get(0), "rdf:label");
+        assertEquals(xe.evaluateList("sail:prefix('dag:type')").get(0), "dag:type");
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/2000/01/rdf-schema#subClassOf')").get(0), "rdfs:subClassOf");
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/2000/01/rdf-schema#subPropertyOf')").get(0), "rdfs:subPropertyOf");
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/2000/01/rdf-schema#Resource')").get(0), "rdfs:Resource");
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/2002/07/owl#Thing')").get(0), "owl:Thing");
+        assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/2002/07/owl#inverseOf')").get(0), "owl:inverseOf");
+        assertEquals(xe.evaluateList("sail:prefix('owl2:Thing')").get(0), "owl2:Thing");
+        graph.shutdown();
+    }
+
     public void testPrefixNamespaceFunction() {
         Graph graph = new SesameGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
@@ -37,5 +54,4 @@ public class PrefixFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("sail:prefix($g, sail:ns($g, sail:prefix($g, sail:ns($g, 'rdf:label'))))").get(0), "rdf:label");
         graph.shutdown();
     }
-
 }

@@ -20,14 +20,21 @@ public class RemoveVertexEdgeFunction implements Function {
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
-        if (parameters != null && parameters.length == 2) {
+        if (parameters != null) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects[0] instanceof Graph && objects[1] instanceof Element) {
+            if (objects.length == 2 && objects[0] instanceof Graph && objects[1] instanceof Element) {
                 Graph graph = (Graph) objects[0];
                 if (objects[1] instanceof Vertex)
                     graph.removeVertex((Vertex) objects[1]);
                 else
                     graph.removeEdge((Edge) objects[1]);
+                return Boolean.TRUE;
+            } else if(objects.length == 1 && objects[0] instanceof Element) {
+                Graph graph = FunctionHelper.getGraph(context);
+                if (objects[0] instanceof Vertex)
+                    graph.removeVertex((Vertex) objects[0]);
+                else
+                    graph.removeEdge((Edge) objects[0]);
                 return Boolean.TRUE;
             }
         }

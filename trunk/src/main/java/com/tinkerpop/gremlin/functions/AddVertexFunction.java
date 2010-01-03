@@ -8,8 +8,6 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
-import java.util.List;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
@@ -34,14 +32,29 @@ public class AddVertexFunction implements Function {
                             u.setProperty(key, v.getProperty(key));
                         }
                         return u;
-                    } else if (objects[1] instanceof List) {
-                      // TODO : add a list of numbers or vertices?
                     } else {
                         return ((Graph) objects[0]).addVertex(objects[1]);
                     }
                 }
+            } else {
+                if (objects.length == 1) {
+                    Graph graph = FunctionHelper.getGraph(context);
+                    if (objects[0] instanceof Vertex) {
+                        Vertex v = (Vertex) objects[0];
+                        Vertex u = graph.addVertex(v.getId());
+                        for (String key : v.getPropertyKeys()) {
+                            u.setProperty(key, v.getProperty(key));
+                        }
+                        return u;
+                    } else {
+                        return graph.addVertex(objects[0]);
+                    }
+                }
             }
+        } else {
+            return FunctionHelper.getGraph(context).addVertex(null);
         }
+
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }

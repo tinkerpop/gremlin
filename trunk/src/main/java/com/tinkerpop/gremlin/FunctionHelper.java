@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.model.Graph;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -27,6 +29,15 @@ public class FunctionHelper {
 
     public static GremlinPathContext getGremlin(ExpressionContext context) {
         return (GremlinPathContext) context.getJXPathContext();
+    }
+
+    public static Graph getGraph(ExpressionContext context) {
+        Object graph = FunctionHelper.getGremlin(context).getVariable(Tokens.GRAPH_VARIABLE);
+        if(null != graph && graph instanceof Graph)
+            return (Graph)graph;
+        else
+            throw new EvaluationException(Tokens.GRAPH_VARIABLE + " does not reference a graph");
+
     }
 
     public static List<Object> asObject(List<Pointer> nodePointers) {

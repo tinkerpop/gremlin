@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.db.sesame.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
@@ -17,10 +18,17 @@ public class NamespaceFunction implements Function {
 
     public String invoke(ExpressionContext context, Object[] parameters) {
 
-        if (parameters.length == 2) {
+        if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects[0] instanceof SesameGraph && objects[1] instanceof String) {
-                return ((SesameGraph) objects[0]).expandPrefix((String) objects[1]);
+            if (parameters.length == 2) {
+                if (objects[0] instanceof SesameGraph && objects[1] instanceof String) {
+                    return ((SesameGraph) objects[0]).expandPrefix((String) objects[1]);
+                }
+            } else if (parameters.length == 1) {
+                Graph graph = FunctionHelper.getGraph(context);
+                if(graph instanceof SesameGraph&& objects[0] instanceof String) {
+                    return ((SesameGraph)graph).expandPrefix((String) objects[0]);
+                }
             }
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(SesameFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);

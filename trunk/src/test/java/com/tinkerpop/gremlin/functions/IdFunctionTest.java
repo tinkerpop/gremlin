@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
@@ -21,6 +22,18 @@ public class IdFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("g:id($g, '2')").size(), 1);
         assertEquals(xe.evaluateList("g:id($g, '2')").get(0), graph.getVertex("2"));
         assertEquals(xe.evaluateList("g:id($g, '1000')").size(), 0);
+
+    }
+
+    public void testIdFunctionGraphVariable() {
+        XPathEvaluator xe = new XPathEvaluator();
+        Graph graph =  TinkerGraphFactory.createTinkerGraph();
+        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        assertEquals(xe.evaluateList("g:id('1')").size(), 1);
+        assertEquals(xe.evaluateList("g:id('1')").get(0), graph.getVertex("1"));
+        assertEquals(xe.evaluateList("g:id('2')").size(), 1);
+        assertEquals(xe.evaluateList("g:id('2')").get(0), graph.getVertex("2"));
+        assertEquals(xe.evaluateList("g:id('1000')").size(), 0);
 
     }
 }
