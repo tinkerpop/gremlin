@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
 import org.neo4j.api.core.Node;
 import org.neo4j.util.index.IndexService;
+import org.neo4j.util.index.LuceneIndexService;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,6 +67,7 @@ public class NeoIndex implements Index {
 
     public void removeIndexKey(String key) {
         this.indexKeys.remove(key);
+        // TODO: drop index in LuceneIndexService
     }
 
     protected void shutdown() {

@@ -20,6 +20,7 @@ public class MongoIndex implements Index {
     boolean indexAll = true;
     private static final String NAME = "name";
     private static final String PERIOD = ".";
+    private static final String PROPERTIES_PERIOD = MongoGraph.PROPERTIES + PERIOD;
     private Set<String> indexNames = new HashSet<String>();
 
 
@@ -31,7 +32,7 @@ public class MongoIndex implements Index {
     public Set<Element> get(String key, Object value) {
         if (this.indexNames.contains(key)) {
             DBObject query = new BasicDBObject();
-            query.put(MongoGraph.PROPERTIES + PERIOD + key, value);
+            query.put(PROPERTIES_PERIOD + key, value);
             Set<Element> retElements = new HashSet<Element>();
             DBCursor cursor = this.graph.getVertexCollection().find(query);
             if (null != cursor) {
@@ -76,7 +77,7 @@ public class MongoIndex implements Index {
 
     public void addIndexKey(String key) {
         DBObject index = new BasicDBObject();
-        index.put(MongoGraph.PROPERTIES + PERIOD + key, 1);
+        index.put(PROPERTIES_PERIOD + key, 1);
         this.graph.getVertexCollection().ensureIndex(index, key);
         this.graph.getEdgeCollection().ensureIndex(index, key);
         this.refreshIndexNames();

@@ -1,6 +1,17 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.functions.*;
+import com.tinkerpop.gremlin.functions.flow.ContinueFunction;
+import com.tinkerpop.gremlin.functions.flow.HaltFunction;
+import com.tinkerpop.gremlin.functions.graph.*;
+import com.tinkerpop.gremlin.functions.lme.*;
+import com.tinkerpop.gremlin.functions.number.RandomNaturalFunction;
+import com.tinkerpop.gremlin.functions.number.RandomRealFunction;
+import com.tinkerpop.gremlin.functions.util.PathFunction;
+import com.tinkerpop.gremlin.functions.util.PrintFunction;
+import com.tinkerpop.gremlin.functions.util.TimeFunction;
+import com.tinkerpop.gremlin.functions.util.TypeFunction;
+import com.tinkerpop.gremlin.functions.var.AssignFunction;
+import com.tinkerpop.gremlin.functions.var.UnassignFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -38,17 +49,16 @@ public class GremlinFunctions implements Functions {
         functionMap.put(RemoveIndexFunction.FUNCTION_NAME, new RemoveIndexFunction());
         functionMap.put(ClearFunction.FUNCTION_NAME, new ClearFunction());
         functionMap.put(ShutdownFunction.FUNCTION_NAME, new ShutdownFunction());
-        // sets
+        // lists
+        functionMap.put(ListFunction.FUNCTION_NAME, new ListFunction());
+        functionMap.put(AppendFunction.FUNCTION_NAME, new AppendFunction());
+        functionMap.put(RemoveFunction.FUNCTION_NAME, new RemoveFunction());
         functionMap.put(DeduplicateFunction.FUNCTION_NAME, new DeduplicateFunction());
         functionMap.put(UnionFunction.FUNCTION_NAME, new UnionFunction());
         functionMap.put(IntersectFunction.FUNCTION_NAME, new IntersectFunction());
         functionMap.put(DifferenceFunction.FUNCTION_NAME, new DifferenceFunction());
         functionMap.put(RetainFunction.FUNCTION_NAME, new RetainFunction());
         functionMap.put(ExceptFunction.FUNCTION_NAME, new ExceptFunction());
-        // lists
-        functionMap.put(ListFunction.FUNCTION_NAME, new ListFunction());
-        functionMap.put(AppendFunction.FUNCTION_NAME, new AppendFunction());
-        functionMap.put(RemoveFunction.FUNCTION_NAME, new RemoveFunction());
         // maps and elements
         functionMap.put(MapFunction.FUNCTION_NAME, new MapFunction());
         functionMap.put(KeysFunction.FUNCTION_NAME, new KeysFunction());
