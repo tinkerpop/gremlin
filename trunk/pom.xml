@@ -238,7 +238,7 @@
                         </property>
                         <property>
                             <name>neo4jDirectory</name>
-                            <value>/tmp/neo-tests</value>
+                            <value>/tmp/gremlin_test</value>
                         </property>
                         <!-- SESAME TEST PROPERTIES -->
                         <property>

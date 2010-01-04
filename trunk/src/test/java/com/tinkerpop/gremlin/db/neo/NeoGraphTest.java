@@ -51,7 +51,7 @@ public class NeoGraphTest extends TestCase {
         if (doTest == null || doTest.equals("true")) {
             String directory = System.getProperty("neo4jDirectory");
             if(directory == null)
-                directory = "/tmp/neo-tests";
+                directory = "/tmp/gremlin_test";
             for (Method method : suite.getClass().getDeclaredMethods()) {
                 if (method.getName().startsWith("test")) {
                     Graph graph = new NeoGraph(directory);
