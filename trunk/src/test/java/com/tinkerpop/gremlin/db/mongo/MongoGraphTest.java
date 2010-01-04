@@ -46,13 +46,28 @@ public class MongoGraphTest extends BaseTest {
     }
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
-        for (Method method : suite.getClass().getDeclaredMethods()) {
-            if (method.getName().startsWith("test")) {
-                System.out.println("Testing " + method.getName() + "...");
-                MongoGraph graph = new MongoGraph("127.0.0.1", 27017, "mongo_test");
-                graph.clear();
-                method.invoke(suite, graph);
-                graph.clear();
+        String doTest = System.getProperty("testMongoDB");
+        if (doTest == null || doTest.equals("true")) {
+
+            String mongoIP = System.getProperty("mongoIP");
+            String mongoPort = System.getProperty("mongoPort");
+            String mongoDatabase = System.getProperty("mongoDatabase");
+
+            if(null == mongoIP)
+                mongoIP = "127.0.0.1";
+            if(null == mongoPort)
+                mongoPort = "27017";
+            if(null == mongoDatabase)
+                mongoDatabase = "gremlin_test";
+
+            for (Method method : suite.getClass().getDeclaredMethods()) {
+                if (method.getName().startsWith("test")) {
+                    System.out.println("Testing " + method.getName() + "...");
+                    MongoGraph graph = new MongoGraph(mongoIP, Integer.valueOf(mongoPort), mongoDatabase);
+                    graph.clear();
+                    method.invoke(suite, graph);
+                    graph.clear();
+                }
             }
         }
     }

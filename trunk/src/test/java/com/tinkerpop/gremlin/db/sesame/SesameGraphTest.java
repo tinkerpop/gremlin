@@ -110,12 +110,15 @@ public class SesameGraphTest extends BaseTest {
     }
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
-        for (Method method : suite.getClass().getDeclaredMethods()) {
-            if (method.getName().startsWith("test")) {
-                System.out.println("Testing " + method.getName() + "...");
-                SesameGraph graph = new SesameGraph(new MemoryStore());
-                method.invoke(suite, graph);
-                graph.shutdown();
+        String doTest = System.getProperty("testSesame");
+        if (doTest == null || doTest.equals("true")) {
+            for (Method method : suite.getClass().getDeclaredMethods()) {
+                if (method.getName().startsWith("test")) {
+                    System.out.println("Testing " + method.getName() + "...");
+                    SesameGraph graph = new SesameGraph(new MemoryStore());
+                    method.invoke(suite, graph);
+                    graph.shutdown();
+                }
             }
         }
     }

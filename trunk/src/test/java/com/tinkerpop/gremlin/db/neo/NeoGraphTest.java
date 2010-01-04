@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
  */
 public class NeoGraphTest extends TestCase {
 
-    private static final String NEO_TEST_DIRECTORY = "/tmp/neo-tests";
     private static final SuiteConfiguration config = new SuiteConfiguration();
 
     static {
@@ -21,7 +20,7 @@ public class NeoGraphTest extends TestCase {
         config.requiresRDFIds = false;
         config.isRDFModel = false;
         config.supportsVertexIteration = true;
-        config.supportsEdgeIteration = true; 
+        config.supportsEdgeIteration = true;
         config.supportsVertexIndex = true;
         config.supportsEdgeIndex = false;
     }
@@ -48,14 +47,20 @@ public class NeoGraphTest extends TestCase {
 
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
-        for (Method method : suite.getClass().getDeclaredMethods()) {
-            if (method.getName().startsWith("test")) {
-                Graph graph = new NeoGraph(NEO_TEST_DIRECTORY);
-                graph.clear();
-                System.out.println("Testing " + method.getName() + "...");
-                method.invoke(suite, graph);
-                graph.shutdown();
-                deleteGraphDirectory(new File(NEO_TEST_DIRECTORY));
+        String doTest = System.getProperty("testNeo4j");
+        if (doTest == null || doTest.equals("true")) {
+            String directory = System.getProperty("neo4jDirectory");
+            if(directory == null)
+                directory = "/tmp/neo-tests";
+            for (Method method : suite.getClass().getDeclaredMethods()) {
+                if (method.getName().startsWith("test")) {
+                    Graph graph = new NeoGraph(directory);
+                    graph.clear();
+                    System.out.println("Testing " + method.getName() + "...");
+                    method.invoke(suite, graph);
+                    graph.shutdown();
+                    deleteGraphDirectory(new File(directory));
+                }
             }
         }
     }

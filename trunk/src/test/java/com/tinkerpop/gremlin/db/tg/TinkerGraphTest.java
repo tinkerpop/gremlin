@@ -47,10 +47,13 @@ public class TinkerGraphTest extends TestCase {
 
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
-        for (Method method : suite.getClass().getDeclaredMethods()) {
-            if (method.getName().startsWith("test")) {
-                System.out.println("Testing " + method.getName() + "...");
-                method.invoke(suite, new TinkerGraph());
+        String doTest = System.getProperty("testTinkerGraph");
+        if (doTest == null || doTest.equals("true")) {
+            for (Method method : suite.getClass().getDeclaredMethods()) {
+                if (method.getName().startsWith("test")) {
+                    System.out.println("Testing " + method.getName() + "...");
+                    method.invoke(suite, new TinkerGraph());
+                }
             }
         }
     }

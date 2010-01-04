@@ -220,6 +220,52 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.2</version>
+                <configuration>
+                    <systemProperties>
+                        <!-- TINKERGRAPH TEST PROPERTIES -->
+                        <property>
+                            <name>testTinkerGraph</name>
+                            <value>true</value>
+                        </property>
+                        <!-- NEO4J TEST PROPERTIES -->
+                        <property>
+                            <name>testNeo4j</name>
+                            <value>true</value>
+                        </property>
+                        <property>
+                            <name>neo4jDirectory</name>
+                            <value>/tmp/neo-tests</value>
+                        </property>
+                        <!-- SESAME TEST PROPERTIES -->
+                        <property>
+                            <name>testSesame</name>
+                            <value>true</value>
+                        </property>
+                        <!-- MONGODB TEST PROPERTIES -->
+                        <property>
+                            <name>testMongoDB</name>
+                            <value>true</value>
+                        </property>
+                        <property>
+                            <name>mongoIP</name>
+                            <value>127.0.0.1</value>
+                        </property>
+                        <property>
+                            <name>mongoPort</name>
+                            <value>27017</value>
+                        </property>
+                        <property>
+                            <name>mongoDatabase</name>
+                            <value>gremlin_test</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
