@@ -126,7 +126,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         try {
             return this.getVariables().getVariable(GremlinPathContext.removeVariableDollarSign(variable));
         } catch (Exception e) {
-            System.out.println(e);
             return null;
         }
     }

@@ -19,15 +19,4 @@ public class GraphFunctionHelper {
         }
         return FunctionHelper.getGraph(context);
     }
-
-    public static boolean graphProvided(Object[] parameters) {
-        if (null != parameters && parameters.length > 0) {
-            Object object = FunctionHelper.nodeSetConversion(parameters[0]);
-            if (object instanceof Graph) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
 }
