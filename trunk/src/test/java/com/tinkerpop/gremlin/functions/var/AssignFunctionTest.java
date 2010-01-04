@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.functions;
+package com.tinkerpop.gremlin.functions.var;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;

@@ -22,6 +22,7 @@ public class SaveFunction implements Function {
 
         if (parameters != null) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+            Graph graph = GraphFunctionHelper.getGraph(context, parameters);
             if (objects.length == 1 && objects[0] instanceof String) {
                   try {
                     GraphMLWriter.outputGraph(FunctionHelper.getGraph(context), new FileOutputStream((String) objects[0]));

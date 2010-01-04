@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.functions;
+package com.tinkerpop.gremlin.functions.lme;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;

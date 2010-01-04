@@ -1,11 +1,11 @@
 package com.tinkerpop.gremlin.functions.graph;
 
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.ExpressionContext;
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.Function;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -13,20 +13,16 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
  */
 public class ClearFunction implements Function {
 
-     public static final String FUNCTION_NAME = "clear";
+    public static final String FUNCTION_NAME = "clear";
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
-        if (null != parameters) {
-            Object object = FunctionHelper.nodeSetConversion(parameters[0]);
-            if (object instanceof Graph) {
-                ((Graph)object).clear();
-                return Boolean.TRUE;
-            }    
-        } else {
-            FunctionHelper.getGraph(context).clear();
+        Graph graph = GraphFunctionHelper.getGraph(context, parameters);
+        Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+        if (null == objects || (objects.length == 1 && objects[0] instanceof Graph)) {
+            graph.clear();
             return Boolean.TRUE;
-        }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        } 
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 }

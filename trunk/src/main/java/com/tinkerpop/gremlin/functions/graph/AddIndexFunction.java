@@ -18,32 +18,18 @@ public class AddIndexFunction implements Function {
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
-        if (parameters != null && parameters.length > 0) {
+        if (parameters != null) {
+            Graph graph = GraphFunctionHelper.getGraph(context, parameters);
+            Index index = graph.getIndex();
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects[0] instanceof Graph) {
-                Graph graph = ((Graph) objects[0]);
-                Index index = graph.getIndex();
-                if (objects.length == 1) {
-                    index.indexAll(true);
-                    return Boolean.TRUE;
-                } else if (objects.length == 2 && objects[1] instanceof String) {
-                    index.addIndexKey((String) objects[1]);
-                    return Boolean.TRUE;
-                }
+            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, String.class})) {
+                index.addIndexKey((String) objects[1]);
+                return Boolean.TRUE;
             } else if (objects.length == 1 && objects[0] instanceof String) {
-                Graph graph = FunctionHelper.getGraph(context);
-                Index index = graph.getIndex();
                 index.addIndexKey((String) objects[0]);
                 return Boolean.TRUE;
-
             }
-        } else {
-            Graph graph = FunctionHelper.getGraph(context);
-            Index index = graph.getIndex();
-            index.indexAll(true);
-            return Boolean.TRUE;
         }
-
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }

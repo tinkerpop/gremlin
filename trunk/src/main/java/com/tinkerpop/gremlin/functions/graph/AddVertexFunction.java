@@ -18,41 +18,31 @@ public class AddVertexFunction implements Function {
 
     public Vertex invoke(ExpressionContext context, Object[] parameters) {
 
-        if (parameters != null) {
-            Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects[0] instanceof Graph) {
-                if (objects.length == 1) {
-                    return ((Graph) objects[0]).addVertex(null);
-                } else if (objects.length == 2) {
-                    if (objects[1] instanceof Vertex) {
-                        Graph graph = (Graph) objects[0];
-                        Vertex v = (Vertex) objects[1];
-                        Vertex u = graph.addVertex(v.getId());
-                        for (String key : v.getPropertyKeys()) {
-                            u.setProperty(key, v.getProperty(key));
-                        }
-                        return u;
-                    } else {
-                        return ((Graph) objects[0]).addVertex(objects[1]);
-                    }
-                }
-            } else {
-                if (objects.length == 1) {
-                    Graph graph = FunctionHelper.getGraph(context);
-                    if (objects[0] instanceof Vertex) {
-                        Vertex v = (Vertex) objects[0];
-                        Vertex u = graph.addVertex(v.getId());
-                        for (String key : v.getPropertyKeys()) {
-                            u.setProperty(key, v.getProperty(key));
-                        }
-                        return u;
-                    } else {
-                        return graph.addVertex(objects[0]);
-                    }
-                }
+
+        Graph graph = GraphFunctionHelper.getGraph(context, parameters);
+        Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+
+        if (null == objects || (objects.length == 1 && objects[0] instanceof Graph)) {
+            return graph.addVertex(null);
+        } else if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, Vertex.class})) {
+            Vertex v = (Vertex) objects[1];
+            Vertex u = graph.addVertex(v.getId());
+            for (String key : v.getPropertyKeys()) {
+                u.setProperty(key, v.getProperty(key));
             }
-        } else {
-            return FunctionHelper.getGraph(context).addVertex(null);
+            return u;
+        } else if (objects.length == 2 && objects[0] instanceof Graph) {
+            return graph.addVertex(objects[1]);
+        } else if (objects.length == 1 && objects[0] instanceof Vertex) {
+            Vertex v = (Vertex) objects[0];
+            Vertex u = graph.addVertex(v.getId());
+            for (String key : v.getPropertyKeys()) {
+                u.setProperty(key, v.getProperty(key));
+            }
+            return u;
+
+        } else if (objects.length == 1) {
+            return graph.addVertex(objects[0]);
         }
 
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);

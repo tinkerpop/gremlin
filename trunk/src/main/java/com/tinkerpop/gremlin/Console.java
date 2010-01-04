@@ -28,6 +28,7 @@ public class Console {
     private static final String EMPTY_STRING = "";
     private static final String SYNTAX_ERROR = "Syntax error: ";
     private static final String EVALUATION_ERROR = "Evaluation error: ";
+    //private static final String GREMLIN_VERSION = "0.1";
 
 
     public static void main(String[] args) throws IOException {
@@ -51,9 +52,9 @@ public class Console {
         output.println("         \\,,,/");
         output.println("         (o o)");
         output.println("-----oOOo-(_)-oOOo-----");
+        //output.println("     Gremlin v" + GREMLIN_VERSION);
 
         while (line != null) {
-            //ouput.println("DEPTH: " + gremlinEvaluator.getDepth());
             if (gremlinEvaluator.inStatement())
                 line = reader.readLine(INDENT + generateIndentation(gremlinEvaluator.getDepth() * TAB_LENGTH));
             else {
@@ -89,7 +90,6 @@ public class Console {
                 }
             }
         }
-
     }
 
     private static String generateIndentation(int spaces) {

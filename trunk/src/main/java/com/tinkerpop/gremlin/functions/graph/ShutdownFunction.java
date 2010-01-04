@@ -17,24 +17,13 @@ public class ShutdownFunction implements Function {
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
-        if (null != parameters && parameters.length == 1) {
-            Object object = FunctionHelper.nodeSetConversion(parameters[0]);
-            if (object instanceof Graph) {
-                try {
-                    ((Graph) object).shutdown();
-                    return Boolean.TRUE;
-                } catch (Exception e) {
-                    throw new EvaluationException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
-                }
-            }
-        } else if (null == parameters) {
-            try {
-                FunctionHelper.getGraph(context).shutdown();
-                return Boolean.TRUE;
-            } catch (Exception e) {
-                throw new EvaluationException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
-            }
+        Graph graph = GraphFunctionHelper.getGraph(context, parameters);
+        Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+        if (null == objects || (objects.length == 1 && objects[0] instanceof Graph)) {
+            graph.shutdown();
+            return Boolean.TRUE;
         }
+
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }

@@ -17,16 +17,16 @@ public class KeyFunction implements Function {
 
     public Object invoke(ExpressionContext context, Object[] parameters) {
 
-        Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-        if (null != objects) {
-            if (objects.length == 2 && objects[0] instanceof String) {
-                Graph graph = FunctionHelper.getGraph(context);
+        if (null != parameters) {
+            Graph graph = GraphFunctionHelper.getGraph(context, parameters);
+            Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+
+            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{String.class, Object.class})) {
                 return graph.getIndex().get((String) objects[0], objects[1]);
-            } else if (objects.length == 3 && objects[0] instanceof Graph && objects[1] instanceof String) {
+            } else if (objects.length == 3 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, String.class, Object.class})) {
                 return ((Graph) objects[0]).getIndex().get((String) objects[1], objects[2]);
             }
         }
-
 
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 

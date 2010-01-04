@@ -1,23 +1,28 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collection;
-import java.util.Map;
-
-import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.model.Graph;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
 public class FunctionHelper {
+
+    public static boolean assertTypes(Object[] objects, Class[] types) {
+        for (int i = 0; i < objects.length; i++) {
+            if (!types[i].isInstance(objects[i]))
+                return false;
+        }
+        return true;
+    }
 
     public static boolean isLastInContext(ExpressionContext context) {
         return (context.getContextNodeList().size() == context.getPosition()) || (context.getPosition() == 0);
@@ -33,8 +38,8 @@ public class FunctionHelper {
 
     public static Graph getGraph(ExpressionContext context) {
         Object graph = FunctionHelper.getGremlin(context).getVariable(Tokens.GRAPH_VARIABLE);
-        if(null != graph && graph instanceof Graph)
-            return (Graph)graph;
+        if (null != graph && graph instanceof Graph)
+            return (Graph) graph;
         else
             throw new EvaluationException(Tokens.GRAPH_VARIABLE + " does not reference a graph");
 
@@ -80,7 +85,7 @@ public class FunctionHelper {
     public static Object[] nodeSetConversion(Object[] objects) {
         if (null != objects) {
             Object[] converts = new Object[objects.length];
-            for(int i=0; i<objects.length; i++) {
+            for (int i = 0; i < objects.length; i++) {
                 converts[i] = nodeSetConversion(objects[i]);
             }
             return converts;

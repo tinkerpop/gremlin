@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.functions;
+package com.tinkerpop.gremlin.functions.util;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 import junit.framework.TestCase;
