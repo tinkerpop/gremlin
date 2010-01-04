@@ -20,11 +20,9 @@ public class PrefixFunction implements Function {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (parameters.length == 2) {
-                if (objects[0] instanceof SesameGraph && objects[1] instanceof String) {
+            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[] {SesameGraph.class, String.class})) {
                     return ((SesameGraph) objects[0]).prefixNamespace((String) objects[1]);
-                }
-            } else if (parameters.length == 1) {
+            } else if (objects.length == 1) {
                 Graph graph = FunctionHelper.getGraph(context);
                 if (graph instanceof SesameGraph && objects[0] instanceof String) {
                     return ((SesameGraph) graph).prefixNamespace((String) objects[0]);

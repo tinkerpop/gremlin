@@ -19,13 +19,10 @@ public class RemoveNamespaceFunction implements Function {
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (parameters.length == 2) {
-
-                if (objects[0] instanceof SesameGraph && objects[1] instanceof String) {
-                    ((SesameGraph) objects[0]).removeNamespace((String) objects[1]);
-                    return Boolean.TRUE;
-                }
-            } else if (parameters.length == 1) {
+            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{SesameGraph.class, String.class})) {
+                ((SesameGraph) objects[0]).removeNamespace((String) objects[1]);
+                return Boolean.TRUE;
+            } else if (objects.length == 1) {
                 Graph graph = FunctionHelper.getGraph(context);
                 if (graph instanceof SesameGraph && objects[0] instanceof String) {
                     ((SesameGraph) graph).removeNamespace((String) objects[0]);

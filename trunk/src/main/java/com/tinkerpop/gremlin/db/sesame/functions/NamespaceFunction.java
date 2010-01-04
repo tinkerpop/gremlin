@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.db.sesame.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -20,14 +20,12 @@ public class NamespaceFunction implements Function {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (parameters.length == 2) {
-                if (objects[0] instanceof SesameGraph && objects[1] instanceof String) {
-                    return ((SesameGraph) objects[0]).expandPrefix((String) objects[1]);
-                }
-            } else if (parameters.length == 1) {
+            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{SesameGraph.class, String.class})) {
+                return ((SesameGraph) objects[0]).expandPrefix((String) objects[1]);
+            } else if (objects.length == 1) {
                 Graph graph = FunctionHelper.getGraph(context);
-                if(graph instanceof SesameGraph&& objects[0] instanceof String) {
-                    return ((SesameGraph)graph).expandPrefix((String) objects[0]);
+                if (graph instanceof SesameGraph && objects[0] instanceof String) {
+                    return ((SesameGraph) graph).expandPrefix((String) objects[0]);
                 }
             }
         }

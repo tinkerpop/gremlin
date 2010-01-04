@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.db.sesame.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
 import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -20,14 +20,13 @@ public class AddNamespaceFunction implements Function {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (parameters.length == 3) {
-                if (objects[0] instanceof SesameGraph && objects[1] instanceof String && objects[2] instanceof String) {
-                    ((SesameGraph) objects[0]).addNamespace((String) objects[1], (String) objects[2]);
-                    return Boolean.TRUE;
-                }
-            } else if (parameters.length == 2) {
+            if (objects.length == 3 && FunctionHelper.assertTypes(objects, new Class[]{SesameGraph.class, String.class, String.class})) {
+                ((SesameGraph) objects[0]).addNamespace((String) objects[1], (String) objects[2]);
+                return Boolean.TRUE;
+
+            } else if (parameters.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{String.class, String.class})) {
                 Graph graph = FunctionHelper.getGraph(context);
-                if(graph instanceof SesameGraph) {
+                if (graph instanceof SesameGraph) {
                     ((SesameGraph) graph).addNamespace((String) objects[0], (String) objects[1]);
                     return Boolean.TRUE;
                 }
