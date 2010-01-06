@@ -7,6 +7,9 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
@@ -20,11 +23,18 @@ public class KeyFunction implements Function {
         if (null != parameters) {
             Graph graph = GraphFunctionHelper.getGraph(context, parameters);
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-
             if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{String.class, Object.class})) {
-                return graph.getIndex().get((String) objects[0], objects[1]);
+                Set results = graph.getIndex().get((String) objects[0], objects[1]);
+                if (null != results)
+                    return new ArrayList(results);
+                else
+                    return null;
             } else if (objects.length == 3 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, String.class, Object.class})) {
-                return ((Graph) objects[0]).getIndex().get((String) objects[1], objects[2]);
+                Set results = ((Graph) objects[0]).getIndex().get((String) objects[1], objects[2]);
+                if (null != results)
+                    return new ArrayList(results);
+                else
+                    return null;
             }
         }
 

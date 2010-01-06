@@ -70,6 +70,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
     public void setRoot(Object root) {
+        if (null != root && root instanceof List) {
+            List rootList = (List) root;
+            if (rootList.size() == 1)
+                root = rootList.get(0);
+        }
         this.contextBean = root;
         this.newRoot = true;
     }
@@ -87,17 +92,10 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         if (variablePattern.matcher(variable).matches()) {
             // $i := ././././
             if (variable.equals(Tokens.AT_VARIABLE)) {
-                // this is to semi-solve the null pointer exception from backtracking using element collections
-                if (value instanceof List) {
-                    if (((List) value).size() == 1) {
-                        this.setRoot(((List) value).get(0));
-                    } else {
-                        this.setRoot(value);
-                    }
-                } else {
-                    this.setRoot(value);
-                }
+                // $_ := ./././
+                this.setRoot(value);
             } else if (variable.equals(Tokens.GRAPH_VARIABLE)) {
+                // $_g := ./././
                 if (!(value instanceof Graph)) {
                     throw new EvaluationException(Tokens.GRAPH_VARIABLE + " can only reference a graph");
                 }

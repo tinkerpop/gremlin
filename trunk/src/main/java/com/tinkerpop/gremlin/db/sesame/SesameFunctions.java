@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.db.sesame;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.sesame.functions.*;
+import com.tinkerpop.gremlin.db.sesame.functions.lod.OpenLinkedDataFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -31,6 +32,8 @@ public class SesameFunctions implements Functions {
         functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
         functionMap.put(PrefixFunction.FUNCTION_NAME , new PrefixFunction());
         functionMap.put(NamespaceFunction.FUNCTION_NAME, new NamespaceFunction());
+        // Linked Data
+        //Todo: functionMap.put(OpenLinkedDataFunction.FUNCTION_NAME, new OpenLinkedDataFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {
