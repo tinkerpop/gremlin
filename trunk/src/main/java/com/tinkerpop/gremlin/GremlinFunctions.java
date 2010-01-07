@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.functions.graph.*;
 import com.tinkerpop.gremlin.functions.lme.*;
 import com.tinkerpop.gremlin.functions.number.RandomNaturalFunction;
 import com.tinkerpop.gremlin.functions.number.RandomRealFunction;
+import com.tinkerpop.gremlin.functions.number.ProbabilityFunction;
 import com.tinkerpop.gremlin.functions.util.PathFunction;
 import com.tinkerpop.gremlin.functions.util.PrintFunction;
 import com.tinkerpop.gremlin.functions.util.TimeFunction;
@@ -69,6 +70,7 @@ public class GremlinFunctions implements Functions {
         functionMap.put(SortFunction.FUNCTION_NAME, new SortFunction());
         functionMap.put(OperateValueFunction.FUNCTION_NAME, new OperateValueFunction());
         // numbers
+        functionMap.put(ProbabilityFunction.FUNCTION_NAME, new ProbabilityFunction());
         functionMap.put(RandomRealFunction.FUNCTION_NAME, new RandomRealFunction());
         functionMap.put(RandomNaturalFunction.FUNCTION_NAME, new RandomNaturalFunction());
         // flow control

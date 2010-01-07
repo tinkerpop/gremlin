@@ -70,6 +70,10 @@ public class GremlinEvaluator {
         this.xPathEvaluator.setVariable(variable, value);
     }
 
+    public void getVariable(String variable) {
+        this.xPathEvaluator.getVariable(variable);
+    }
+
     public void setRoot(Object root) {
         this.xPathEvaluator.setRoot(root);
     }
