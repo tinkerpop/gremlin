@@ -1,9 +1,6 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.statements.Statement;
-import com.tinkerpop.gremlin.statements.StatementGenerator;
-import com.tinkerpop.gremlin.statements.SyntaxException;
+import com.tinkerpop.gremlin.statements.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,16 +23,15 @@ public class GremlinEvaluator {
         this.currentStatement = null;
     }
 
-    public int getDepth() {
-        return this.xPathEvaluator.getDepth();
-    }
-    
     public List evaluate(String line) throws SyntaxException, EvaluationException {
         line = line.trim();
         if (line.length() > 0) {
             try {
                 if (null == this.currentStatement) {
                     this.currentStatement = StatementGenerator.generateStatement(line, xPathEvaluator);
+                    if (this.currentStatement instanceof ScriptStatement) {
+                        ((ScriptStatement) this.currentStatement).setGremlinEvaluator(this);
+                    }
                     this.currentStatement.compileTokens(line);
                 } else {
                     this.currentStatement.compileTokens(line);
@@ -62,22 +58,6 @@ public class GremlinEvaluator {
         return null;
     }
 
-    public boolean inStatement() {
-        return null != this.currentStatement;
-    }
-
-    public void setVariable(String variable, Object value) {
-        this.xPathEvaluator.setVariable(variable, value);
-    }
-
-    public void getVariable(String variable) {
-        this.xPathEvaluator.getVariable(variable);
-    }
-
-    public void setRoot(Object root) {
-        this.xPathEvaluator.setRoot(root);
-    }
-
     public List evaluate(InputStream input) throws IOException, SyntaxException, EvaluationException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String line;
@@ -87,4 +67,25 @@ public class GremlinEvaluator {
         }
         return result;
     }
+
+    public void setVariable(String variable, Object value) {
+        this.xPathEvaluator.setVariable(variable, value);
+    }
+
+    public Object getVariable(String variable) {
+        return this.xPathEvaluator.getVariable(variable);
+    }
+
+    public void removeVariable(String variable) {
+        this.xPathEvaluator.removeVariable(variable);
+    }
+
+    protected boolean inStatement() {
+        return null != this.currentStatement;
+    }
+
+    protected int getDepth() {
+        return this.xPathEvaluator.getDepth();
+    }
+
 }

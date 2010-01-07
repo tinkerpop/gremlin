@@ -20,7 +20,7 @@ public class RootStatement extends SimpleStatement {
             Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
 
     /*
-    rt 1 2 '3' $four
+    root 1 2 '3' $four
     */
 
     public RootStatement(XPathEvaluator xPathEvaluator) {
@@ -29,7 +29,7 @@ public class RootStatement extends SimpleStatement {
 
     public void compileTokens(String line) throws SyntaxException {
         super.compileTokens(line);
-        line = line.substring(3);
+        line = line.substring(Tokens.ROOT.length() + 1);
         String[] tempRoots = line.split(Tokens.SINGLESPACE);
         for (String tempRoot : tempRoots) {
             if (tempRoot.length() > 0) {

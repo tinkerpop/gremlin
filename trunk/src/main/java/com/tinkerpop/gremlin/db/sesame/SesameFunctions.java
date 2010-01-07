@@ -33,7 +33,7 @@ public class SesameFunctions implements Functions {
         functionMap.put(PrefixFunction.FUNCTION_NAME , new PrefixFunction());
         functionMap.put(NamespaceFunction.FUNCTION_NAME, new NamespaceFunction());
         // Linked Data
-        //Todo: functionMap.put(OpenLinkedDataFunction.FUNCTION_NAME, new OpenLinkedDataFunction());
+        functionMap.put(OpenLinkedDataFunction.FUNCTION_NAME, new OpenLinkedDataFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {

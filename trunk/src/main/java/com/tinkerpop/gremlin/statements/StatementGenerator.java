@@ -9,9 +9,10 @@ import com.tinkerpop.gremlin.XPathEvaluator;
 public class StatementGenerator {
 
     public static Statement generateStatement(String line, XPathEvaluator xPathEvaluator) {
+
         if (CommentStatement.isStatement(line)) {
             return new CommentStatement(xPathEvaluator);
-        } else if(RootStatement.isStatement(line)) {
+        } else if (RootStatement.isStatement(line)) {
             return new RootStatement(xPathEvaluator);
         } else if (IfElseStatement.isStatement(line)) {
             return new IfElseStatement(xPathEvaluator);
@@ -23,6 +24,8 @@ public class StatementGenerator {
             return new WhileStatement(xPathEvaluator);
         } else if (RepeatStatement.isStatement(line)) {
             return new RepeatStatement(xPathEvaluator);
+        } else if (ScriptStatement.isStatement(line)) {
+            return new ScriptStatement(xPathEvaluator);
         } else {
             return new XPathStatement(xPathEvaluator);
         }

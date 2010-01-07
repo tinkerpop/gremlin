@@ -12,12 +12,12 @@ import java.io.ByteArrayInputStream;
 public class RootStatementTest extends TestCase {
 
     public void testRootStatementSyntax() {
-        assertTrue(RootStatement.isStatement("rt 1 2 3 4"));
-        assertTrue(RootStatement.isStatement("rt '1' 2 $g 'a'        "));
-        assertTrue(RootStatement.isStatement("   rt $abc 2 1"));
-        assertFalse(RootStatement.isStatement("rt"));
-        assertFalse(RootStatement.isStatement("rt "));
-        assertFalse(RootStatement.isStatement("rt       "));
+        assertTrue(RootStatement.isStatement("root 1 2 3 4"));
+        assertTrue(RootStatement.isStatement("root '1' 2 $g 'a'        "));
+        assertTrue(RootStatement.isStatement("   root $abc 2 1"));
+        assertFalse(RootStatement.isStatement("root"));
+        assertFalse(RootStatement.isStatement("root "));
+        assertFalse(RootStatement.isStatement("root       "));
     }
 
     public void testRootStatementEvaluation() throws Exception {

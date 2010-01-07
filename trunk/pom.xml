@@ -63,13 +63,13 @@
             <type>pom</type>
         </dependency>
         <!-- SESAME SUPPORT -->
-        <!-- LINKED DATA SUPPORT
+        <!-- LINKED DATA SUPPORT -->
         <dependency>
             <groupId>net.fortytwo</groupId>
             <artifactId>linked-data-sail</artifactId>
             <version>0.5</version>
         </dependency>
-        LINKED DATA SUPPORT -->
+        <!-- LINKED DATA SUPPORT -->
         <dependency>
             <groupId>org.openrdf.sesame</groupId>
             <artifactId>sesame</artifactId>
