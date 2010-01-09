@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class GremlinEvaluator {
 
-    private static final String COMMENT = "#";
 	private Statement currentStatement;
     private XPathEvaluator xPathEvaluator;
 
@@ -64,9 +63,7 @@ public class GremlinEvaluator {
         String line;
         List result = null;
         while ((line = reader.readLine()) != null) {
-        	if(!line.startsWith(COMMENT)){
-        		result = this.evaluate(line);
-        	}
+            result = this.evaluate(line);
         }
         return result;
     }
