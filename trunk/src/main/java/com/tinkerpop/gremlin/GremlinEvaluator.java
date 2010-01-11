@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.*;
 
+import javax.script.ScriptEngine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,10 +6,6 @@ import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,15 +17,15 @@ public class XPathEvaluator {
 
     protected int codeDepth = 0;
 
-    private GremlinPathContext baseContext;
+    private GremlinPathContext gremlinPathContext;
 
     private enum ReturnType {
         LIST, ITERATOR
     }
 
     public XPathEvaluator() {
-        this.baseContext = GremlinPathContext.newContext(null);
-        this.baseContext.setLenient(false);
+        this.gremlinPathContext = GremlinPathContext.newContext(null);
+        this.gremlinPathContext.setLenient(false);
     }
 
     public void incrDepth() {
@@ -46,18 +42,18 @@ public class XPathEvaluator {
 
     private Object evaluate(String xPathString, ReturnType type) throws SyntaxException, EvaluationException {
         try {
-            if (this.baseContext.rootChanged()) {
-                this.baseContext = GremlinPathContext.newContext(this.baseContext, this.baseContext.getRoot());
+            if (this.gremlinPathContext.rootChanged()) {
+                this.gremlinPathContext = GremlinPathContext.newContext(this.gremlinPathContext, this.gremlinPathContext.getRoot());
             }
             if (type == ReturnType.LIST) {
-                List results = this.baseContext.selectNodes(xPathString);
+                List results = this.gremlinPathContext.selectNodes(xPathString);
                 if (results.size() == 1)
                     this.setVariable(Tokens.LAST_VARIABLE, results.get(0));
                 else
                     this.setVariable(Tokens.LAST_VARIABLE, results);
                 return results;
             } else {
-                return this.baseContext.iterate(xPathString);
+                return this.gremlinPathContext.iterate(xPathString);
             }
         } catch (JXPathInvalidSyntaxException e) {
             throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
@@ -81,26 +77,26 @@ public class XPathEvaluator {
     }
 
     public void setVariable(String variable, Object value) {
-        this.baseContext.setVariable(variable, value);
+        this.gremlinPathContext.setVariable(variable, value);
     }
 
     public Object getVariable(String variable) {
-        return this.baseContext.getVariable(variable);
+        return this.gremlinPathContext.getVariable(variable);
     }
 
     public void removeVariable(String variable) {
-        this.baseContext.removeVariable(variable);
+        this.gremlinPathContext.removeVariable(variable);
     }
 
     public void setRoot(Object root) {
-        this.baseContext.setRoot(root);
+        this.gremlinPathContext.setRoot(root);
     }
 
     public Object getRoot() {
-        return this.baseContext;
+        return this.gremlinPathContext;
     }
 
     public GremlinPathContext getGremlinPathContext() {
-        return this.baseContext;
+        return this.gremlinPathContext;
     }
 }
