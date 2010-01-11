@@ -12,8 +12,8 @@
     <description>Gremlin is a Turing-complete, graph-based programming language developed in Java 1.6+ for
         key/value-pair multi-relational graphs called property graphs. Gremlin makes extensive use of the XPath 1.0
         language to support complex graph traversals. This language has applications in the areas of graph query,
-        analysis, and manipulation. Connectors exist for the Neo4j graph database, Sesame 2.0 compliant RDF stores, and
-        TinkerGraph.
+        analysis, and manipulation. Connectors exist for the TinkerGraph, Neo4j graph database, Sesame 2.0 compliant
+        RDF stores, and MongoDB.
     </description>
     <developers>
         <developer>

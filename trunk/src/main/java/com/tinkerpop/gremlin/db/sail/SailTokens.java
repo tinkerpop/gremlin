@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.sesame;
+package com.tinkerpop.gremlin.db.sail;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.openrdf.rio.RDFFormat;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameTokens {
+public class SailTokens {
     public static final String NAMESPACE_SEPARATOR = ":";
     public static final String XSD_PREFIX = "xsd";
     public static final String XSD_NS = "http://www.w3.org/2001/XMLSchema#";

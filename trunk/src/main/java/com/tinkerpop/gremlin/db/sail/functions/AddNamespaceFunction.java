@@ -1,8 +1,8 @@
-package com.tinkerpop.gremlin.db.sesame.functions;
+package com.tinkerpop.gremlin.db.sail.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
-import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.db.sail.SailFunctions;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -20,19 +20,19 @@ public class AddNamespaceFunction implements Function {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects.length == 3 && FunctionHelper.assertTypes(objects, new Class[]{SesameGraph.class, String.class, String.class})) {
-                ((SesameGraph) objects[0]).addNamespace((String) objects[1], (String) objects[2]);
+            if (objects.length == 3 && FunctionHelper.assertTypes(objects, new Class[]{SailGraph.class, String.class, String.class})) {
+                ((SailGraph) objects[0]).addNamespace((String) objects[1], (String) objects[2]);
                 return Boolean.TRUE;
 
             } else if (parameters.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{String.class, String.class})) {
                 Graph graph = FunctionHelper.getGraph(context);
-                if (graph instanceof SesameGraph) {
-                    ((SesameGraph) graph).addNamespace((String) objects[0], (String) objects[1]);
+                if (graph instanceof SailGraph) {
+                    ((SailGraph) graph).addNamespace((String) objects[0], (String) objects[1]);
                     return Boolean.TRUE;
                 }
             }
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(SesameFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(SailFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
     }
 
 }

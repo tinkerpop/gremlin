@@ -1,8 +1,8 @@
-package com.tinkerpop.gremlin.db.sesame.functions;
+package com.tinkerpop.gremlin.db.sail.functions;
 
 import junit.framework.TestCase;
 import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.openrdf.sail.memory.MemoryStore;
@@ -17,7 +17,7 @@ public class GetNamespacesFunctionTest extends TestCase {
 
     public void testGetNamespacesFunction() {
 
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$g", graph);
         assertTrue(xe.evaluateList("sail:get-ns($g)").get(0) instanceof Map);
@@ -53,7 +53,7 @@ public class GetNamespacesFunctionTest extends TestCase {
 
      public void testGetNamespacesFunctionGraphVariable() {
 
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
         assertTrue(xe.evaluateList("sail:get-ns()").get(0) instanceof Map);

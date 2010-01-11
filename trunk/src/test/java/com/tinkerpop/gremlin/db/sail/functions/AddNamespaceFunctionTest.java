@@ -1,8 +1,8 @@
-package com.tinkerpop.gremlin.db.sesame.functions;
+package com.tinkerpop.gremlin.db.sail.functions;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import org.openrdf.sail.memory.MemoryStore;
 import junit.framework.TestCase;
@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 public class AddNamespaceFunctionTest extends TestCase {
 
     public void testAddNamespaceFunction() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:ns($g, 'tg:marko')").get(0), "tg:marko");
@@ -25,7 +25,7 @@ public class AddNamespaceFunctionTest extends TestCase {
     }
 
     public void testAddNamespaceFunctionGraphVariable() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:ns('tg:marko')").get(0), "tg:marko");

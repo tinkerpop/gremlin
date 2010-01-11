@@ -1,9 +1,8 @@
-package com.tinkerpop.gremlin.db.sesame.functions;
+package com.tinkerpop.gremlin.db.sail.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.neo.NeoFunctions;
-import com.tinkerpop.gremlin.db.sesame.SesameGraph;
-import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
+import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -24,14 +23,14 @@ public class OpenFunction implements Function {
     public Graph invoke(ExpressionContext context, Object[] parameters) {
 
         if (null == parameters) {
-            return new SesameGraph(new MemoryStore());
+            return new SailGraph(new MemoryStore());
         } else if (parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof String) {
-                return new SesameGraph(new NativeStore(new File((String) object)));
+                return new SailGraph(new NativeStore(new File((String) object)));
             }
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(SesameFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(SailFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 }

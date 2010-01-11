@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.sesame;
+package com.tinkerpop.gremlin.db.sail;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.model.*;
@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameGraphTest extends BaseTest {
+public class SailGraphTest extends BaseTest {
 
     public static final String TP_NS = "http://tinkerpop.com#";
     private static final SuiteConfiguration config = new SuiteConfiguration();
@@ -34,52 +34,52 @@ public class SesameGraphTest extends BaseTest {
     }
 
     public void testTypeConversion() {
-        assertEquals(SesameVertex.castLiteral(new LiteralImpl("marko", new URIImpl("http://www.w3.org/2001/XMLSchema#string"))).getClass(), String.class);
-        assertEquals(SesameVertex.castLiteral(new LiteralImpl("marko")).getClass(), String.class);
-        assertEquals(SesameVertex.castLiteral(new LiteralImpl("27", new URIImpl("http://www.w3.org/2001/XMLSchema#int"))).getClass(), Integer.class);
-        assertEquals(SesameVertex.castLiteral(new LiteralImpl("27", new URIImpl("http://www.w3.org/2001/XMLSchema#float"))).getClass(), Float.class);
-        assertEquals(SesameVertex.castLiteral(new LiteralImpl("27.0134", new URIImpl("http://www.w3.org/2001/XMLSchema#double"))).getClass(), Double.class);
-        assertEquals(SesameVertex.castLiteral(new LiteralImpl("hello", "en")), "hello");
+        assertEquals(SailVertex.castLiteral(new LiteralImpl("marko", new URIImpl("http://www.w3.org/2001/XMLSchema#string"))).getClass(), String.class);
+        assertEquals(SailVertex.castLiteral(new LiteralImpl("marko")).getClass(), String.class);
+        assertEquals(SailVertex.castLiteral(new LiteralImpl("27", new URIImpl("http://www.w3.org/2001/XMLSchema#int"))).getClass(), Integer.class);
+        assertEquals(SailVertex.castLiteral(new LiteralImpl("27", new URIImpl("http://www.w3.org/2001/XMLSchema#float"))).getClass(), Float.class);
+        assertEquals(SailVertex.castLiteral(new LiteralImpl("27.0134", new URIImpl("http://www.w3.org/2001/XMLSchema#double"))).getClass(), Double.class);
+        assertEquals(SailVertex.castLiteral(new LiteralImpl("hello", "en")), "hello");
     }
 
     public void testNamespaceConversion() throws Exception {
         MemoryStore sail = new MemoryStore();
-        SesameGraph graph = new SesameGraph(sail);
+        SailGraph graph = new SailGraph(sail);
         graph.addNamespace("tg", "http://tinkerpop.com#");
         graph.addNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-        assertEquals(SesameGraph.prefixToNamespace("tg:name", graph.getSailConnection()), "http://tinkerpop.com#name");
-        assertEquals(SesameGraph.prefixToNamespace("rdf:label", graph.getSailConnection()), "http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
-        assertEquals(SesameGraph.namespaceToPrefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#label", graph.getSailConnection()), "rdf:label");
-        assertEquals(SesameGraph.namespaceToPrefix("http://tinkerpop.com#name", graph.getSailConnection()), "tg:name");
+        assertEquals(SailGraph.prefixToNamespace("tg:name", graph.getSailConnection()), "http://tinkerpop.com#name");
+        assertEquals(SailGraph.prefixToNamespace("rdf:label", graph.getSailConnection()), "http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
+        assertEquals(SailGraph.namespaceToPrefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#label", graph.getSailConnection()), "rdf:label");
+        assertEquals(SailGraph.namespaceToPrefix("http://tinkerpop.com#name", graph.getSailConnection()), "tg:name");
         graph.shutdown();
 
     }
 
     public void testBNodes() {
-        assertTrue(SesameGraph.isBNode("_:1234"));
-        assertTrue(SesameGraph.isBNode("_:abcdefghijklmnopqrstuvwxyz"));
-        assertFalse(SesameGraph.isBNode("_:"));
+        assertTrue(SailGraph.isBNode("_:1234"));
+        assertTrue(SailGraph.isBNode("_:abcdefghijklmnopqrstuvwxyz"));
+        assertFalse(SailGraph.isBNode("_:"));
     }
 
     public void testLiterals() {
-        assertTrue(SesameGraph.isLiteral("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>"));
-        assertFalse(SesameGraph.isLiteral("http://www.w3.org/2001/XMLSchema#string"));
-        assertFalse(SesameGraph.isLiteral("^^<http://www.w3.org/2001/XMLSchema#string>"));
-        assertTrue(SesameGraph.isLiteral("\"\"^^<http://www.w3.org/2001/XMLSchema#string>"));
-        assertTrue(SesameGraph.isLiteral("\"\""));
-        assertTrue(SesameGraph.isLiteral("\"marko\""));
-        assertFalse(SesameGraph.isLiteral("\"marko\"marko"));
-        assertFalse(SesameGraph.isLiteral("\""));
+        assertTrue(SailGraph.isLiteral("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>"));
+        assertFalse(SailGraph.isLiteral("http://www.w3.org/2001/XMLSchema#string"));
+        assertFalse(SailGraph.isLiteral("^^<http://www.w3.org/2001/XMLSchema#string>"));
+        assertTrue(SailGraph.isLiteral("\"\"^^<http://www.w3.org/2001/XMLSchema#string>"));
+        assertTrue(SailGraph.isLiteral("\"\""));
+        assertTrue(SailGraph.isLiteral("\"marko\""));
+        assertFalse(SailGraph.isLiteral("\"marko\"marko"));
+        assertFalse(SailGraph.isLiteral("\""));
         // TODO: make this true assertFalse(SesameGraph.isLiteral("\"marko\"marko\""));
 
 
-        Matcher matcher = SesameGraph.literalPattern.matcher("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>");
+        Matcher matcher = SailGraph.literalPattern.matcher("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>");
         matcher.matches();
         assertNull(matcher.group(6));
         assertEquals(matcher.group(1), "java");
         assertEquals(matcher.group(4), "http://www.w3.org/2001/XMLSchema#string");
 
-        matcher = SesameGraph.literalPattern.matcher("\"java\"@en");
+        matcher = SailGraph.literalPattern.matcher("\"java\"@en");
         matcher.matches();
         assertNull(matcher.group(4));
         assertEquals(matcher.group(1), "java");
@@ -87,10 +87,10 @@ public class SesameGraphTest extends BaseTest {
     }
 
     public void testURIs() {
-        assertFalse(SesameGraph.isURI("_:1234"));
-        assertFalse(SesameGraph.isURI("_:abcdefghijklmnopqrstuvwxyz"));
-        assertTrue(SesameGraph.isURI("http://marko"));
-        assertTrue(SesameGraph.isURI("http://www.w3.org/2001/XMLSchema#string"));
+        assertFalse(SailGraph.isURI("_:1234"));
+        assertFalse(SailGraph.isURI("_:abcdefghijklmnopqrstuvwxyz"));
+        assertTrue(SailGraph.isURI("http://marko"));
+        assertTrue(SailGraph.isURI("http://www.w3.org/2001/XMLSchema#string"));
     }
 
     public void testVertexSuite() throws Exception {
@@ -115,7 +115,7 @@ public class SesameGraphTest extends BaseTest {
             for (Method method : suite.getClass().getDeclaredMethods()) {
                 if (method.getName().startsWith("test")) {
                     System.out.println("Testing " + method.getName() + "...");
-                    SesameGraph graph = new SesameGraph(new MemoryStore());
+                    SailGraph graph = new SailGraph(new MemoryStore());
                     method.invoke(suite, graph);
                     graph.shutdown();
                 }

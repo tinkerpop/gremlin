@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.sesame;
+package com.tinkerpop.gremlin.db.sail;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -22,7 +22,7 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameEdge implements Edge {
+public class SailEdge implements Edge {
 
     protected Statement statement;
     protected SailConnection sailConnection;
@@ -36,7 +36,7 @@ public class SesameEdge implements Edge {
         keys.add(NAMED_GRAPH);
     }
 
-    public SesameEdge(Statement statement, SailConnection sailConnection) {
+    public SailEdge(Statement statement, SailConnection sailConnection) {
         this.statement = statement;
         this.sailConnection = sailConnection;
     }
@@ -59,10 +59,10 @@ public class SesameEdge implements Edge {
     public void setProperty(String key, Object value) {
         if (key.equals(NAMED_GRAPH)) {
             try {
-                URI namedGraph = new URIImpl(SesameGraph.prefixToNamespace(value.toString(), this.sailConnection));
-                SesameHelper.removeStatement(this.statement, this.sailConnection);
+                URI namedGraph = new URIImpl(SailGraph.prefixToNamespace(value.toString(), this.sailConnection));
+                SailHelper.removeStatement(this.statement, this.sailConnection);
                 this.statement = new ContextStatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject(), namedGraph);
-                SesameHelper.addStatement(this.statement, this.sailConnection);
+                SailHelper.addStatement(this.statement, this.sailConnection);
                 this.sailConnection.commit();
             } catch (SailException e) {
                 throw new EvaluationException(e.getMessage());
@@ -76,9 +76,9 @@ public class SesameEdge implements Edge {
         if (key.equals(NAMED_GRAPH)) {
             try {
                 Resource ng = this.statement.getContext();
-                SesameHelper.removeStatement(this.statement, this.sailConnection);
+                SailHelper.removeStatement(this.statement, this.sailConnection);
                 this.statement = new StatementImpl(this.statement.getSubject(), this.statement.getPredicate(), this.statement.getObject());
-                SesameHelper.addStatement(this.statement, this.sailConnection);
+                SailHelper.addStatement(this.statement, this.sailConnection);
                 this.sailConnection.commit();
                 return ng;
             } catch (SailException e) {
@@ -90,11 +90,11 @@ public class SesameEdge implements Edge {
     }
 
     public Vertex getInVertex() {
-        return new SesameVertex(this.statement.getObject(), this.sailConnection);
+        return new SailVertex(this.statement.getObject(), this.sailConnection);
     }
 
     public Vertex getOutVertex() {
-        return new SesameVertex(this.statement.getSubject(), this.sailConnection);
+        return new SailVertex(this.statement.getSubject(), this.sailConnection);
     }
 
     public List<Vertex> getBothVertices() {
@@ -109,20 +109,20 @@ public class SesameEdge implements Edge {
     }
 
     public String toString() {
-        String outVertex = SesameGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection);
-        String edgeLabel = SesameGraph.namespaceToPrefix(this.statement.getPredicate().stringValue(), this.sailConnection);
+        String outVertex = SailGraph.namespaceToPrefix(this.statement.getSubject().stringValue(), this.sailConnection);
+        String edgeLabel = SailGraph.namespaceToPrefix(this.statement.getPredicate().stringValue(), this.sailConnection);
         String inVertex;
         if (this.statement.getObject() instanceof Resource)
-            inVertex = SesameGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
+            inVertex = SailGraph.namespaceToPrefix(this.statement.getObject().stringValue(), this.sailConnection);
         else
             inVertex = literalString((Literal) this.statement.getObject());
 
         String namedGraph = null;
         if (null != this.statement.getContext()) {
-            namedGraph = SesameGraph.namespaceToPrefix(this.statement.getContext().stringValue(), this.sailConnection);
+            namedGraph = SailGraph.namespaceToPrefix(this.statement.getContext().stringValue(), this.sailConnection);
         }
 
-        String edgeString = "e[" + outVertex + "-" + edgeLabel + "->" + inVertex + "]";
+        String edgeString = "e[" + outVertex + " - " + edgeLabel + " -> " + inVertex + "]";
         if (null != namedGraph) {
             edgeString = edgeString + "<" + namedGraph + ">";
         }
@@ -134,7 +134,7 @@ public class SesameEdge implements Edge {
         String language = literal.getLanguage();
         URI datatype = literal.getDatatype();
         if (null != datatype) {
-            return "\"" + literal.getLabel() + "\"^^<" + SesameGraph.namespaceToPrefix(datatype.stringValue(), this.sailConnection) + ">";
+            return "\"" + literal.getLabel() + "\"^^<" + SailGraph.namespaceToPrefix(datatype.stringValue(), this.sailConnection) + ">";
         } else if (null != language) {
             return "\"" + literal.getLabel() + "\"@" + language;
         } else {
@@ -147,7 +147,7 @@ public class SesameEdge implements Edge {
     }
 
     public boolean equals(Object object) {
-        return object instanceof SesameEdge && object.hashCode() == this.hashCode();
+        return object instanceof SailEdge && object.hashCode() == this.hashCode();
     }
 
     public Object getId() {

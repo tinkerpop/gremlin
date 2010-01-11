@@ -2,7 +2,8 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.db.mongo.MongoFunctions;
 import com.tinkerpop.gremlin.db.neo.NeoFunctions;
-import com.tinkerpop.gremlin.db.sesame.SesameFunctions;
+import com.tinkerpop.gremlin.db.sail.SailFunctions;
+import com.tinkerpop.gremlin.db.sail.lds.LinkedDataSailFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
@@ -37,7 +38,8 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         ///
         library.addFunctions(new TinkerFunctions());
         library.addFunctions(new NeoFunctions());
-        library.addFunctions(new SesameFunctions());
+        library.addFunctions(new SailFunctions());
+        library.addFunctions(new LinkedDataSailFunctions());
         library.addFunctions(new MongoFunctions());
 
     }

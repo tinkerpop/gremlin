@@ -1,8 +1,8 @@
-package com.tinkerpop.gremlin.db.sesame.functions;
+package com.tinkerpop.gremlin.db.sail.functions;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import junit.framework.TestCase;
 import org.openrdf.sail.memory.MemoryStore;
@@ -14,7 +14,7 @@ import org.openrdf.sail.memory.MemoryStore;
 public class PrefixFunctionTest extends TestCase {
 
     public void testPrefixFunction() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:prefix($g, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type')").get(0), "rdf:type");
@@ -30,7 +30,7 @@ public class PrefixFunctionTest extends TestCase {
     }
 
      public void testPrefixFunctionGraphVariable() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')").get(0), "rdf:type");
@@ -46,7 +46,7 @@ public class PrefixFunctionTest extends TestCase {
     }
 
     public void testPrefixNamespaceFunction() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:prefix($g, sail:ns($g, 'rdf:type'))").get(0), "rdf:type");

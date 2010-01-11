@@ -1,8 +1,8 @@
-package com.tinkerpop.gremlin.db.sesame.functions;
+package com.tinkerpop.gremlin.db.sail.functions;
 
 import junit.framework.TestCase;
 import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.db.sesame.SesameGraph;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.openrdf.sail.memory.MemoryStore;
@@ -14,7 +14,7 @@ import org.openrdf.sail.memory.MemoryStore;
 public class RemoveNamespaceFunctionTest extends TestCase {
 
     public void testRemoveNamespaceFunction() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:ns($g, 'rdf:type')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
@@ -37,7 +37,7 @@ public class RemoveNamespaceFunctionTest extends TestCase {
     }
 
     public void testRemoveNamespaceFunctionGraphVariable() {
-        Graph graph = new SesameGraph(new MemoryStore());
+        Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:ns('rdf:type')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");

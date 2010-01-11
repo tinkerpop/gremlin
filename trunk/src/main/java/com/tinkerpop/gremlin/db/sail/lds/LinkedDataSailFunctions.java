@@ -1,8 +1,7 @@
-package com.tinkerpop.gremlin.db.sesame;
+package com.tinkerpop.gremlin.db.sail.lds;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.sesame.functions.*;
-import com.tinkerpop.gremlin.db.sesame.functions.lod.OpenLinkedDataFunction;
+import com.tinkerpop.gremlin.db.sail.lds.functions.OpenFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -16,9 +15,9 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class SesameFunctions implements Functions {
+public class LinkedDataSailFunctions implements Functions {
 
-    public static final String NAMESPACE_PREFIX = "sail";
+    public static final String NAMESPACE_PREFIX = "lds";
 
     private static Set<String> namespaces = new HashSet<String>();
     private static final Map<String, Function> functionMap = new HashMap<String, Function>();
@@ -26,14 +25,6 @@ public class SesameFunctions implements Functions {
     static {
         namespaces.add(NAMESPACE_PREFIX);
         functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
-        functionMap.put(AddNamespaceFunction.FUNCTION_NAME, new AddNamespaceFunction());
-        functionMap.put(RemoveNamespaceFunction.FUNCTION_NAME, new RemoveNamespaceFunction());
-        functionMap.put(GetNamespacesFunction.FUNCTION_NAME, new GetNamespacesFunction());
-        functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
-        functionMap.put(PrefixFunction.FUNCTION_NAME , new PrefixFunction());
-        functionMap.put(NamespaceFunction.FUNCTION_NAME, new NamespaceFunction());
-        // Linked Data
-        functionMap.put(OpenLinkedDataFunction.FUNCTION_NAME, new OpenLinkedDataFunction());
     }
 
     public Function getFunction(String namespace, String name, Object[] parameters) {
@@ -47,6 +38,4 @@ public class SesameFunctions implements Functions {
     public Set getUsedNamespaces() {
         return namespaces;
     }
-
-
 }

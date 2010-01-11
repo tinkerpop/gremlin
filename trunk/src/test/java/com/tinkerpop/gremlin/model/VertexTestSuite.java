@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.model;
 
-import com.tinkerpop.gremlin.db.sesame.SesameTokens;
+import com.tinkerpop.gremlin.db.sail.SailTokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import java.util.HashSet;
@@ -121,15 +121,15 @@ public class VertexTestSuite extends ModelTestSuite {
 
         } else {
             Vertex v1 = graph.addVertex("\"1\"^^<http://www.w3.org/2001/XMLSchema#int>");
-            assertEquals(v1.getProperty(SesameTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#int");
-            assertEquals(v1.getProperty(SesameTokens.VALUE), 1);
-            assertNull(v1.getProperty(SesameTokens.LANGUAGE));
+            assertEquals(v1.getProperty(SailTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#int");
+            assertEquals(v1.getProperty(SailTokens.VALUE), 1);
+            assertNull(v1.getProperty(SailTokens.LANGUAGE));
             assertNull(v1.getProperty("random something"));
 
             Vertex v2 = graph.addVertex("\"hello\"@en");
-            assertEquals(v2.getProperty(SesameTokens.LANGUAGE), "en");
-            assertEquals(v2.getProperty(SesameTokens.VALUE), "hello");
-            assertNull(v2.getProperty(SesameTokens.DATATYPE));
+            assertEquals(v2.getProperty(SailTokens.LANGUAGE), "en");
+            assertEquals(v2.getProperty(SailTokens.VALUE), "hello");
+            assertNull(v2.getProperty(SailTokens.DATATYPE));
             assertNull(v2.getProperty("random something"));
         }
     }
@@ -155,7 +155,7 @@ public class VertexTestSuite extends ModelTestSuite {
             for (int i = 0; i < 50; i++) {
                 Vertex vertex = graph.addVertex("\"" + UUID.randomUUID().toString() + "\"");
                 for (int j = 0; j < 15; j++) {
-                    vertex.setProperty(SesameTokens.DATATYPE, "http://www.w3.org/2001/XMLSchema#anyURI");
+                    vertex.setProperty(SailTokens.DATATYPE, "http://www.w3.org/2001/XMLSchema#anyURI");
                 }
                 vertices.add(vertex);
             }
@@ -164,9 +164,9 @@ public class VertexTestSuite extends ModelTestSuite {
             assertEquals(vertices.size(), 50);
             for (Vertex vertex : vertices) {
                 assertEquals(vertex.getPropertyKeys().size(), 2);
-                assertTrue(vertex.getPropertyKeys().contains(SesameTokens.DATATYPE));
-                assertEquals(vertex.getProperty(SesameTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#anyURI");
-                assertTrue(vertex.getPropertyKeys().contains(SesameTokens.VALUE));
+                assertTrue(vertex.getPropertyKeys().contains(SailTokens.DATATYPE));
+                assertEquals(vertex.getProperty(SailTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#anyURI");
+                assertTrue(vertex.getPropertyKeys().contains(SailTokens.VALUE));
 
             }
         }
