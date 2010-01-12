@@ -50,7 +50,7 @@ public class GremlinFunctions implements Functions {
         functionMap.put(IndexAllFunction.FUNCTION_NAME, new IndexAllFunction());
         functionMap.put(RemoveIndexFunction.FUNCTION_NAME, new RemoveIndexFunction());
         functionMap.put(ClearFunction.FUNCTION_NAME, new ClearFunction());
-        functionMap.put(ShutdownFunction.FUNCTION_NAME, new ShutdownFunction());
+        functionMap.put(CloseFunction.FUNCTION_NAME, new CloseFunction());
         // lists
         functionMap.put(ListFunction.FUNCTION_NAME, new ListFunction());
         functionMap.put(AppendFunction.FUNCTION_NAME, new AppendFunction());

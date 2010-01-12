@@ -1,0 +1,24 @@
+package com.tinkerpop.gremlin.functions.util;
+
+import junit.framework.TestCase;
+import com.tinkerpop.gremlin.XPathEvaluator;
+
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ * @version 0.1
+ */
+public class PathFunctionTest extends TestCase {
+
+    public void testPathFunction() {
+        XPathEvaluator xe = new XPathEvaluator();
+
+        assertEquals(xe.evaluateList("g:p(1+2)").size(), 1);
+        assertTrue((Boolean)xe.evaluateList("g:p(1+2)").get(0));
+
+        assertEquals(xe.evaluateList("g:p(false())").size(), 1);
+        assertTrue((Boolean)xe.evaluateList("g:p(false())").get(0));
+
+        assertEquals(xe.evaluateList("g:p(g:p())").size(), 1);
+        assertTrue((Boolean)xe.evaluateList("g:p(g:p())").get(0));
+    }
+}

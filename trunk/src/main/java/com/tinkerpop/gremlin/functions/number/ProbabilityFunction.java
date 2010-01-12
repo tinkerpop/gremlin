@@ -55,7 +55,7 @@ public class ProbabilityFunction implements Function {
             }
             counter++;
         }
-        // this should not happen
+        // this should not happen todo: remove this
         System.out.println("it happened!");
         return -1;
     }

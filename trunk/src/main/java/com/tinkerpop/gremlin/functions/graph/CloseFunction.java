@@ -11,9 +11,9 @@ import org.apache.commons.jxpath.Function;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class ShutdownFunction implements Function {
+public class CloseFunction implements Function {
 
-    public static final String FUNCTION_NAME = "shutdown";
+    public static final String FUNCTION_NAME = "close";
 
     public Boolean invoke(ExpressionContext context, Object[] parameters) {
 
