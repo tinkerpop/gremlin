@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
@@ -13,22 +13,22 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoIndex implements Index {
+public class Neo4jIndex implements Index {
 
     private IndexService indexService;
     public Set<String> indexKeys;
     public boolean indexAll = true;
 
 
-    public NeoIndex(IndexService indexService) {
+    public Neo4jIndex(IndexService indexService) {
         this.indexService = indexService;
         this.indexKeys = new HashSet<String>();
     }
 
     public void put(String key, Object value, Element element) {
         if (this.indexAll || this.indexKeys.contains(key)) {
-            if (element instanceof NeoVertex) {
-                Node node = (Node) ((NeoVertex) element).getRawElement();
+            if (element instanceof Neo4jVertex) {
+                Node node = (Node) ((Neo4jVertex) element).getRawElement();
                 this.indexService.index(node, key, value);
             }
         }
@@ -41,7 +41,7 @@ public class NeoIndex implements Index {
             if (itty2.hasNext()) {
                 Set<Element> elements = new HashSet<Element>();
                 while (itty2.hasNext()) {
-                    elements.add(new NeoVertex(itty2.next(), this));
+                    elements.add(new Neo4jVertex(itty2.next(), this));
                 }
                 return elements;
             }
@@ -50,8 +50,8 @@ public class NeoIndex implements Index {
     }
 
     public void remove(String key, Object value, Element element) {
-        if (element instanceof NeoVertex) {
-            Node node = (Node) ((NeoVertex) element).getRawElement();
+        if (element instanceof Neo4jVertex) {
+            Node node = (Node) ((Neo4jVertex) element).getRawElement();
             this.indexService.removeIndex(node, key, value);
         }
     }

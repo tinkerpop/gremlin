@@ -1,7 +1,7 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.neo.functions.OpenFunction;
+import com.tinkerpop.gremlin.db.neo4j.functions.OpenFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -15,7 +15,7 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoFunctions implements Functions {
+public class Neo4jFunctions implements Functions {
 
     public static final String NAMESPACE_PREFIX = "neo4j";
 

@@ -1,8 +1,8 @@
-package com.tinkerpop.gremlin.db.neo.functions;
+package com.tinkerpop.gremlin.db.neo4j.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.neo.NeoFunctions;
-import com.tinkerpop.gremlin.db.neo.NeoGraph;
+import com.tinkerpop.gremlin.db.neo4j.Neo4jFunctions;
+import com.tinkerpop.gremlin.db.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -21,10 +21,10 @@ public class OpenFunction implements Function {
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof String) {
-                return new NeoGraph((String) object);
+                return new Neo4jGraph((String) object);
             }
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(NeoFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(Neo4jFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 }

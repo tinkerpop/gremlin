@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
@@ -15,24 +15,24 @@ import org.neo4j.graphdb.Relationship;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public abstract class NeoElement implements Element {
+public abstract class Neo4jElement implements Element {
 
     protected PropertyContainer element;
     protected final Index index;
 
-    public NeoElement(Index index) {
+    public Neo4jElement(Index index) {
         this.index = index;
     }
 
     public void setProperty(String key, Object value) {
-        if (this instanceof NeoVertex) {
+        if (this instanceof Neo4jVertex) {
             Object value2 = this.getProperty(key);
             if (null != value2)
                 this.index.remove(key, value2, this);
         }
 
         this.element.setProperty(key, value);
-        if (this instanceof NeoVertex)
+        if (this instanceof Neo4jVertex)
             this.index.put(key, value, this);
     }
 
@@ -53,7 +53,7 @@ public abstract class NeoElement implements Element {
 
     public Object removeProperty(String key) {
         try {
-            if (this instanceof NeoVertex) {
+            if (this instanceof Neo4jVertex) {
                 Object value2 = this.getProperty(key);
                 if (null != value2)
                     this.index.remove(key, value2, this);

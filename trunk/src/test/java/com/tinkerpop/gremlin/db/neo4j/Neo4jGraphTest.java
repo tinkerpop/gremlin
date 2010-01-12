@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.*;
 import junit.framework.TestCase;
@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoGraphTest extends TestCase {
+public class Neo4jGraphTest extends TestCase {
 
     private static final SuiteConfiguration config = new SuiteConfiguration();
 
@@ -54,7 +54,7 @@ public class NeoGraphTest extends TestCase {
                 directory = "/tmp/gremlin_test";
             for (Method method : suite.getClass().getDeclaredMethods()) {
                 if (method.getName().startsWith("test")) {
-                    Graph graph = new NeoGraph(directory);
+                    Graph graph = new Neo4jGraph(directory);
                     graph.clear();
                     System.out.println("Testing " + method.getName() + "...");
                     method.invoke(suite, graph);

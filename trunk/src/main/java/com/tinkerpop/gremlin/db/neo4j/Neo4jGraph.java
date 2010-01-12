@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
@@ -20,19 +20,19 @@ import java.util.Iterator;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoGraph implements Graph {
+public class Neo4jGraph implements Graph {
 
     private GraphDatabaseService neo;
     private String directory;
-    private NeoIndex index;
+    private Neo4jIndex index;
     private Transaction tx;
 
-    public NeoGraph(String directory) {
+    public Neo4jGraph(String directory) {
         this.directory = directory;
         this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
-        this.index = new NeoIndex(indexService);
+        this.index = new Neo4jIndex(indexService);
         this.tx = neo.beginTx();
     }
 
@@ -41,7 +41,7 @@ public class NeoGraph implements Graph {
     }
 
     public Vertex addVertex(Object id) {
-        Vertex vertex = new NeoVertex(neo.createNode(), this.index);
+        Vertex vertex = new Neo4jVertex(neo.createNode(), this.index);
         this.stopStartTransaction();
         return vertex;
     }
@@ -53,7 +53,7 @@ public class NeoGraph implements Graph {
         try {
             Long longId = Double.valueOf(id.toString()).longValue();
             Node node = this.neo.getNodeById(longId);
-            return new NeoVertex(node, this.index);
+            return new Neo4jVertex(node, this.index);
         } catch (NotFoundException e) {
             return null;
         } catch (NumberFormatException e) {
@@ -85,15 +85,15 @@ public class NeoGraph implements Graph {
     }
 
     public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
-        Node outNode = (Node) ((NeoVertex) outVertex).getRawElement();
-        Node inNode = (Node) ((NeoVertex) inVertex).getRawElement();
+        Node outNode = (Node) ((Neo4jVertex) outVertex).getRawElement();
+        Node inNode = (Node) ((Neo4jVertex) inVertex).getRawElement();
         Relationship relationship = outNode.createRelationshipTo(inNode, DynamicRelationshipType.withName(label));
         this.stopStartTransaction();
-        return new NeoEdge(relationship, this.index);
+        return new Neo4jEdge(relationship, this.index);
     }
 
     public void removeEdge(Edge edge) {
-        ((Relationship) ((NeoEdge) edge).getRawElement()).delete();
+        ((Relationship) ((Neo4jEdge) edge).getRawElement()).delete();
         this.stopStartTransaction();
     }
 
@@ -120,7 +120,7 @@ public class NeoGraph implements Graph {
         this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
-        this.index = new NeoIndex(indexService);
+        this.index = new Neo4jIndex(indexService);
         this.tx = neo.beginTx();
         this.removeVertex(this.getVertex(0));
         this.stopStartTransaction();
@@ -170,7 +170,7 @@ public class NeoGraph implements Graph {
         }
 
         public Vertex next() {
-            return new NeoVertex(this.nodes.next(), index);
+            return new Neo4jVertex(this.nodes.next(), index);
         }
 
         public boolean hasNext() {
@@ -205,7 +205,7 @@ public class NeoGraph implements Graph {
         }
 
         public Edge next() {
-            Edge edge = new NeoEdge(currentRelationships.next(), index);
+            Edge edge = new Neo4jEdge(currentRelationships.next(), index);
             this.complete = this.goToNextEdge();
             return edge;
         }

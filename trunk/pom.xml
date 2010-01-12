@@ -66,7 +66,7 @@
             <artifactId>neo4j-index</artifactId>
             <version>1.0-b1</version>
         </dependency>
-        <!-- LINKED DATA SUPPORT -->
+        <!-- LINKED DATA SAIL SUPPORT -->
         <dependency>
             <groupId>net.fortytwo</groupId>
             <artifactId>linked-data-sail</artifactId>

@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Index;
@@ -14,9 +14,9 @@ import org.neo4j.graphdb.Relationship;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoEdge extends NeoElement implements Edge {
+public class Neo4jEdge extends Neo4jElement implements Edge {
 
-    public NeoEdge(Relationship relationship, Index index) {
+    public Neo4jEdge(Relationship relationship, Index index) {
         super(index);
         this.element = relationship;
     }
@@ -26,11 +26,11 @@ public class NeoEdge extends NeoElement implements Edge {
     }
 
     public Vertex getOutVertex() {
-        return new NeoVertex(((Relationship) this.element).getStartNode(), this.index);
+        return new Neo4jVertex(((Relationship) this.element).getStartNode(), this.index);
     }
 
     public Vertex getInVertex() {
-        return new NeoVertex(((Relationship) this.element).getEndNode(), this.index);
+        return new Neo4jVertex(((Relationship) this.element).getEndNode(), this.index);
     }
 
     public List<Vertex> getBothVertices() {

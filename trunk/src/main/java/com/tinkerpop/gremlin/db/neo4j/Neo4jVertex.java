@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.neo;
+package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -16,9 +16,9 @@ import org.neo4j.graphdb.Direction;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoVertex extends NeoElement implements Vertex {
+public class Neo4jVertex extends Neo4jElement implements Vertex {
 
-    public NeoVertex(Node node, Index index) {
+    public Neo4jVertex(Node node, Index index) {
         super(index);
         this.element = node;
     }
@@ -26,7 +26,7 @@ public class NeoVertex extends NeoElement implements Vertex {
     public Set<Edge> getOutEdges() {
         Set<Edge> outEdges = new HashSet<Edge>();
         for (Relationship r : ((Node) this.element).getRelationships(Direction.OUTGOING)) {
-            outEdges.add(new NeoEdge(r, this.index));
+            outEdges.add(new Neo4jEdge(r, this.index));
         }
         return outEdges;
     }
@@ -34,7 +34,7 @@ public class NeoVertex extends NeoElement implements Vertex {
     public Set<Edge> getInEdges() {
         Set<Edge> inEdges = new HashSet<Edge>();
         for (Relationship r : ((Node) this.element).getRelationships(Direction.INCOMING)) {
-            inEdges.add(new NeoEdge(r, this.index));
+            inEdges.add(new Neo4jEdge(r, this.index));
         }
         return inEdges;
     }
@@ -42,7 +42,7 @@ public class NeoVertex extends NeoElement implements Vertex {
     public Set<Edge> getBothEdges() {
         Set<Edge> bothEdges = new HashSet<Edge>();
         for (Relationship r : ((Node) this.element).getRelationships(Direction.BOTH)) {
-            bothEdges.add(new NeoEdge(r, this.index));
+            bothEdges.add(new Neo4jEdge(r, this.index));
         }
         return bothEdges;
     }
