@@ -2,9 +2,8 @@ package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
-import org.neo4j.api.core.Node;
-import org.neo4j.util.index.IndexService;
-import org.neo4j.util.index.LuceneIndexService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.index.IndexService;
 
 import java.util.HashSet;
 import java.util.Iterator;

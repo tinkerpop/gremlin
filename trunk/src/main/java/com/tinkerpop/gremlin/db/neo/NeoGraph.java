@@ -5,11 +5,13 @@ import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import org.neo4j.api.core.*;
-import org.neo4j.impl.core.NodeManager;
-import org.neo4j.impl.transaction.TransactionFailureException;
-import org.neo4j.util.index.Isolation;
-import org.neo4j.util.index.LuceneIndexService;
+import org.neo4j.graphdb.*;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.kernel.impl.core.NodeManager;
+import org.neo4j.kernel.impl.transaction.TransactionFailureException;
+import org.neo4j.index.lucene.LuceneIndexService;
+import org.neo4j.index.Isolation;
+
 
 import java.io.File;
 import java.util.Iterator;
@@ -20,14 +22,14 @@ import java.util.Iterator;
  */
 public class NeoGraph implements Graph {
 
-    private NeoService neo;
+    private GraphDatabaseService neo;
     private String directory;
     private NeoIndex index;
     private Transaction tx;
 
     public NeoGraph(String directory) {
         this.directory = directory;
-        this.neo = new EmbeddedNeo(this.directory);
+        this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
         this.index = new NeoIndex(indexService);
@@ -105,7 +107,8 @@ public class NeoGraph implements Graph {
         try {
             this.tx.success();
             this.tx.finish();
-        } catch (TransactionFailureException e) {}
+        } catch (TransactionFailureException e) {
+        }
         this.neo.shutdown();
         this.index.shutdown();
 
@@ -114,7 +117,7 @@ public class NeoGraph implements Graph {
     public void clear() {
         this.shutdown();
         deleteGraphDirectory(new File(this.directory));
-        this.neo = new EmbeddedNeo(this.directory);
+        this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
         this.index = new NeoIndex(indexService);
@@ -128,17 +131,15 @@ public class NeoGraph implements Graph {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
                     deleteGraphDirectory(file);
-                    file.delete();
-                } else {
-                    file.delete();
                 }
+                file.delete();
             }
         }
     }
 
 
     public String toString() {
-        EmbeddedNeo embeddedNeo = (EmbeddedNeo) neo;
+        EmbeddedGraphDatabase embeddedNeo = (EmbeddedGraphDatabase) neo;
         NodeManager nodeManager = embeddedNeo.getConfig().getNeoModule().getNodeManager();
         return "neograph[db:" + this.directory + ", vertices:" + nodeManager.getNumberOfIdsInUse(Node.class) + ", edges:" + nodeManager.getNumberOfIdsInUse(Relationship.class) + "]";
     }

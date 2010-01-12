@@ -4,10 +4,11 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.db.StringFactory;
-import org.neo4j.api.core.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.neo4j.graphdb.Relationship;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

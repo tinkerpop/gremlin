@@ -58,9 +58,13 @@
         <!-- NEO4J SUPPORT -->
         <dependency>
             <groupId>org.neo4j</groupId>
-            <artifactId>apoc</artifactId>
-            <version>0.4</version>
-            <type>pom</type>
+            <artifactId>neo4j-kernel</artifactId>
+            <version>1.0-rc</version>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-index</artifactId>
+            <version>1.0-b1</version>
         </dependency>
         <!-- SESAME SUPPORT -->
         <!-- LINKED DATA SUPPORT -->

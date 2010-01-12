@@ -2,13 +2,14 @@ package com.tinkerpop.gremlin.db.neo;
 
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Index;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.NotFoundException;
-import org.neo4j.api.core.PropertyContainer;
-import org.neo4j.api.core.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import org.neo4j.graphdb.PropertyContainer;
+import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
