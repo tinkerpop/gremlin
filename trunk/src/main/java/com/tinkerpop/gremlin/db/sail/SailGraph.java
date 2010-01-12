@@ -108,7 +108,7 @@ public class SailGraph implements Graph {
     public Vertex getVertex(Object id) {
         return createVertex(id.toString());
     }
-
+                                                                    
     public Iterable<Vertex> getVertices() {
         throw new EvaluationException(UNSUPPORTED_OPERATION);
     }

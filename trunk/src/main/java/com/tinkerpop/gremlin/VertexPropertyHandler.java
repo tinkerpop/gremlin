@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
@@ -13,15 +13,21 @@ import java.util.List;
  */
 public class VertexPropertyHandler implements DynamicPropertyHandler {
 
+    private static final List<String> staticProperties = new ArrayList<String>();
+
+    static {
+        staticProperties.add(Tokens.OUT_EDGES);
+        staticProperties.add(Tokens.IN_EDGES);
+        staticProperties.add(Tokens.BOTH_EDGES);
+        staticProperties.add(Tokens.ID);
+    }
+
 
     public String[] getPropertyNames(Object vertexObject) {
         Vertex vertex = (Vertex) vertexObject;
         List<String> list = new ArrayList<String>();
         list.addAll(vertex.getPropertyKeys());
-        list.add(Tokens.OUT_EDGES);
-        list.add(Tokens.IN_EDGES);
-        list.add(Tokens.BOTH_EDGES);
-        list.add(Tokens.ID);
+        list.addAll(staticProperties);
         return list.toArray(new String[list.size()]);
     }
 

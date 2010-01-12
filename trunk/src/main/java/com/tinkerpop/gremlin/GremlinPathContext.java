@@ -44,8 +44,8 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     }
 
-    public GremlinPathContext(GremlinPathContext parentContext, Object object) {
-        super(parentContext, object);
+    public GremlinPathContext(GremlinPathContext parentContext, Object root) {
+        super(parentContext, root);
         if (null == parentContext) {
             this.setFunctions(library);
         } else {
@@ -59,16 +59,16 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
 
-    public GremlinPathContext(Object element) {
-        this(null, element);
+    public GremlinPathContext(Object root) {
+        this(null, root);
     }
 
-    public static GremlinPathContext newContext(GremlinPathContext parentContext, Object element) {
-        return new GremlinPathContext(parentContext, element);
+    public static GremlinPathContext newContext(GremlinPathContext parentContext, Object root) {
+        return new GremlinPathContext(parentContext, root);
     }
 
-    public static GremlinPathContext newContext(Object element) {
-        return GremlinPathContext.newContext(null, element);
+    public static GremlinPathContext newContext(Object root) {
+        return GremlinPathContext.newContext(null, root);
     }
 
     public void setRoot(Object root) {

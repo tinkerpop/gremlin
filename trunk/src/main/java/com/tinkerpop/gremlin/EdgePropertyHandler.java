@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
@@ -15,16 +14,21 @@ import java.util.List;
  */
 public class EdgePropertyHandler implements DynamicPropertyHandler {
 
+     private static final List<String> staticProperties = new ArrayList<String>();
+
+    static {
+        staticProperties.add(Tokens.OUT_VERTEX);
+        staticProperties.add(Tokens.IN_VERTEX);
+        staticProperties.add(Tokens.BOTH_VERTICES);
+        staticProperties.add(Tokens.LABEL);
+        staticProperties.add(Tokens.ID);
+    }
 
     public String[] getPropertyNames(Object edgeObject) {
         Edge edge = (Edge) edgeObject;
         List<String> list = new ArrayList<String>();
         list.addAll(edge.getPropertyKeys());
-        list.add(Tokens.OUT_VERTEX);
-        list.add(Tokens.IN_VERTEX);
-        list.add(Tokens.BOTH_VERTICES);
-        list.add(Tokens.LABEL);
-        list.add(Tokens.ID);
+        list.addAll(staticProperties);
         return list.toArray(new String[list.size()]);
     }
 

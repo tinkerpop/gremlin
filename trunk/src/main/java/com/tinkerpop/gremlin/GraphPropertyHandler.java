@@ -14,11 +14,10 @@ import java.util.List;
  */
 public class GraphPropertyHandler implements DynamicPropertyHandler {
 
+    private static final String[] properties = new String[] {Tokens.VERTICES, Tokens.EDGES};
+
     public String[] getPropertyNames(Object graphObject) {
-        List<String> list = new ArrayList<String>();
-        list.add(Tokens.VERTICES);
-        list.add(Tokens.EDGES);
-        return list.toArray(new String[list.size()]);
+        return properties;
     }
 
     public void setProperty(Object graphObject, String key, Object value) {
