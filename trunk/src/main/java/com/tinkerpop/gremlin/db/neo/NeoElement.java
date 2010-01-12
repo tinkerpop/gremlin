@@ -15,7 +15,7 @@ import org.neo4j.graphdb.Relationship;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class NeoElement implements Element {
+public abstract class NeoElement implements Element {
 
     protected PropertyContainer element;
     protected final Index index;

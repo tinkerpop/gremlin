@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class TinkerElement implements Element {
+public abstract class TinkerElement implements Element {
 
     protected Map<String, Object> properties = new HashMap<String, Object>();
     protected final String id;

@@ -66,14 +66,13 @@
             <artifactId>neo4j-index</artifactId>
             <version>1.0-b1</version>
         </dependency>
-        <!-- SESAME SUPPORT -->
         <!-- LINKED DATA SUPPORT -->
         <dependency>
             <groupId>net.fortytwo</groupId>
             <artifactId>linked-data-sail</artifactId>
             <version>0.5</version>
         </dependency>
-        <!-- LINKED DATA SUPPORT -->
+        <!-- SESAME SUPPORT -->
         <dependency>
             <groupId>org.openrdf.sesame</groupId>
             <artifactId>sesame</artifactId>

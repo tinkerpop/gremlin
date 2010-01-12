@@ -11,7 +11,7 @@ import java.util.Set;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  * @version 0.1
  */
-public class MongoElement implements Element {
+public abstract class MongoElement implements Element {
 
     DBObject dbObject;
     MongoGraph graph;
