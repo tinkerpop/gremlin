@@ -23,7 +23,11 @@ public class ProbabilityFunction implements Function {
 
         List objects = null;
         if (null == parameters) {
-            objects = FunctionHelper.asObject(context.getContextNodeList());
+            if (FunctionHelper.isLastInContext(context)) {
+                objects = FunctionHelper.asObject(context.getContextNodeList());
+            } else {
+                return null;
+            }
         } else if (parameters.length == 1) {
             Object temp = FunctionHelper.nodeSetConversion(parameters[0]);
             if (temp instanceof List) {
@@ -31,7 +35,7 @@ public class ProbabilityFunction implements Function {
             }
         }
 
-        if (null == objects)
+        if (null == objects || objects.size() == 0)
             throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
         Double total = 0.0;
