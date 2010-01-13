@@ -24,11 +24,11 @@ public class ScriptStatement extends SimpleStatement {
     script ./././
     */
 
-    public ScriptStatement(XPathEvaluator xPathEvaluator) {
+    public ScriptStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) throws SyntaxException {
+    public void compileTokens(final String line) throws SyntaxException {
         super.compileTokens(line);
         this.fileNameExpression = line.substring(Tokens.SCRIPT.length() + 1);
     }
@@ -47,11 +47,11 @@ public class ScriptStatement extends SimpleStatement {
         }
     }
 
-    public void setGremlinEvaluator(GremlinEvaluator gremlinEvaluator) {
+    public void setGremlinEvaluator(final GremlinEvaluator gremlinEvaluator) {
         this.gremlinEvaluator = gremlinEvaluator;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return scriptPattern.matcher(firstLine).find();
     }
 }

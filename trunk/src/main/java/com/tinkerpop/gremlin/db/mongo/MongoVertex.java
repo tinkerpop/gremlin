@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class MongoVertex extends MongoElement implements Vertex {
 
-    public MongoVertex(DBObject vertexObject, MongoGraph graph) {
+    public MongoVertex(final DBObject vertexObject, final MongoGraph graph) {
         super(vertexObject, graph);
     }
 
@@ -51,7 +51,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         return bothEdges;
     }
 
-    protected void addEdgeId(Object id, String type) {
+    protected void addEdgeId(final Object id, final String type) {
         List edgeIds = (List) this.dbObject.get(type);
         if (null == edgeIds) {
             edgeIds = new ArrayList();
@@ -61,7 +61,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         this.saveDbObject();
     }
 
-    protected void removeEdgeId(Object id, String type) {
+    protected void removeEdgeId(final Object id, final String type) {
         List edgeIds = (List) this.dbObject.get(type);
         if (null != edgeIds) {
             edgeIds.remove(id);
@@ -78,7 +78,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         return this.getId().hashCode();
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         return object instanceof MongoVertex && object.hashCode() == this.hashCode();
     }
 }

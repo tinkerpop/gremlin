@@ -36,7 +36,7 @@ public class SailEdge implements Edge {
         keys.add(NAMED_GRAPH);
     }
 
-    public SailEdge(Statement statement, SailConnection sailConnection) {
+    public SailEdge(final Statement statement, final SailConnection sailConnection) {
         this.statement = statement;
         this.sailConnection = sailConnection;
     }
@@ -49,14 +49,14 @@ public class SailEdge implements Edge {
         return keys;
     }
 
-    public Object getProperty(String key) {
+    public Object getProperty(final String key) {
         if (key.equals(NAMED_GRAPH))
             return this.statement.getContext().stringValue();
         else
             return null;
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(final String key, final Object value) {
         if (key.equals(NAMED_GRAPH)) {
             try {
                 URI namedGraph = new URIImpl(SailGraph.prefixToNamespace(value.toString(), this.sailConnection));
@@ -72,7 +72,7 @@ public class SailEdge implements Edge {
         }
     }
 
-    public Object removeProperty(String key) {
+    public Object removeProperty(final String key) {
         if (key.equals(NAMED_GRAPH)) {
             try {
                 Resource ng = this.statement.getContext();
@@ -130,7 +130,7 @@ public class SailEdge implements Edge {
         return edgeString;
     }
 
-    private String literalString(Literal literal) {
+    private String literalString(final Literal literal) {
         String language = literal.getLanguage();
         URI datatype = literal.getDatatype();
         if (null != datatype) {
@@ -146,7 +146,7 @@ public class SailEdge implements Edge {
         return this.statement.hashCode();
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         return object instanceof SailEdge && object.hashCode() == this.hashCode();
     }
 

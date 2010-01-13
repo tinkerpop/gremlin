@@ -20,12 +20,12 @@ public class Neo4jIndex implements Index {
     public boolean indexAll = true;
 
 
-    public Neo4jIndex(IndexService indexService) {
+    public Neo4jIndex(final IndexService indexService) {
         this.indexService = indexService;
         this.indexKeys = new HashSet<String>();
     }
 
-    public void put(String key, Object value, Element element) {
+    public void put(final String key, final Object value, final Element element) {
         if (this.indexAll || this.indexKeys.contains(key)) {
             if (element instanceof Neo4jVertex) {
                 Node node = (Node) ((Neo4jVertex) element).getRawElement();
@@ -34,7 +34,7 @@ public class Neo4jIndex implements Index {
         }
     }
 
-    public Set<Element> get(String key, Object value) {
+    public Set<Element> get(final String key, final Object value) {
         Iterable<Node> itty = this.indexService.getNodes(key, value);
         if (null != itty) {
             Iterator<Node> itty2 = itty.iterator();
@@ -49,22 +49,22 @@ public class Neo4jIndex implements Index {
         return null;
     }
 
-    public void remove(String key, Object value, Element element) {
+    public void remove(final String key, final Object value, final Element element) {
         if (element instanceof Neo4jVertex) {
             Node node = (Node) ((Neo4jVertex) element).getRawElement();
             this.indexService.removeIndex(node, key, value);
         }
     }
 
-    public void indexAll(boolean indexAll) {
+    public void indexAll(final boolean indexAll) {
         this.indexAll = indexAll;
     }
 
-    public void addIndexKey(String key) {
+    public void addIndexKey(final String key) {
         this.indexKeys.add(key);
     }
 
-    public void removeIndexKey(String key) {
+    public void removeIndexKey(final String key) {
         this.indexKeys.remove(key);
         // TODO: drop index in LuceneIndexService
     }

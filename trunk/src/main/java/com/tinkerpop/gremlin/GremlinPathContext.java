@@ -44,7 +44,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     }
 
-    public GremlinPathContext(GremlinPathContext parentContext, Object root) {
+    public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {
         super(parentContext, root);
         if (null == parentContext) {
             this.setFunctions(library);
@@ -59,15 +59,15 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
 
-    public GremlinPathContext(Object root) {
+    public GremlinPathContext(final Object root) {
         this(null, root);
     }
 
-    public static GremlinPathContext newContext(GremlinPathContext parentContext, Object root) {
+    public static GremlinPathContext newContext(final GremlinPathContext parentContext, final Object root) {
         return new GremlinPathContext(parentContext, root);
     }
 
-    public static GremlinPathContext newContext(Object root) {
+    public static GremlinPathContext newContext(final Object root) {
         return GremlinPathContext.newContext(null, root);
     }
 
@@ -89,7 +89,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return this.newRoot;
     }
 
-    public void setVariable(String variable, Object value) {
+    public void setVariable(final String variable, final Object value) {
 
         if (variablePattern.matcher(variable).matches()) {
             // $i := ././././
@@ -118,11 +118,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         }
     }
 
-    public boolean hasVariable(String variable) {
+    public boolean hasVariable(final String variable) {
         return this.getVariables().isDeclaredVariable(GremlinPathContext.removeVariableDollarSign(variable));
     }
 
-    public Object getVariable(String variable) {
+    public Object getVariable(final String variable) {
         try {
             return this.getVariables().getVariable(GremlinPathContext.removeVariableDollarSign(variable));
         } catch (Exception e) {
@@ -130,14 +130,14 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         }
     }
 
-    public void removeVariable(String variable) {
+    public void removeVariable(final String variable) {
         // TODO fix this hack
         this.getVariables().declareVariable(GremlinPathContext.removeVariableDollarSign(variable), null);
         this.getVariables().undeclareVariable(GremlinPathContext.removeVariableDollarSign(variable));
 
     }
 
-    private static String removeVariableDollarSign(String variable) {
+    private static String removeVariableDollarSign(final String variable) {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
 }

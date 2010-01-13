@@ -18,7 +18,7 @@ public class KeyFunction implements Function {
 
     public static final String FUNCTION_NAME = "key";
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    public Object invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters) {
             Graph graph = GraphFunctionHelper.getGraph(context, parameters);

@@ -19,7 +19,7 @@ public class EvaluationException extends RuntimeException {
         super(message);
     }
 
-    public static EvaluationException createException(String functionName, EvaluationErrorType type) {
+    public static EvaluationException createException(final String functionName, final EvaluationErrorType type) {
         if(type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
             return new EvaluationException(functionName + " " + UNSUPPORTED_PARAMETERS_MESSAGE);
         else if(type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
@@ -35,7 +35,7 @@ public class EvaluationException extends RuntimeException {
 
     }
 
-    public static EvaluationException createException(EvaluationErrorType type) {
+    public static EvaluationException createException(final EvaluationErrorType type) {
         if(type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
             return new EvaluationException(UNSUPPORTED_PARAMETERS_MESSAGE);
         else if(type == EvaluationErrorType.EMBEDDED_COLLECTIONS)

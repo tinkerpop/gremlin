@@ -18,7 +18,7 @@ public class OpenFunction implements Function {
 
     public static final String FUNCTION_NAME = "open";
 
-    public Graph invoke(ExpressionContext context, Object[] parameters) {
+    public Graph invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters && parameters.length == 3) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);

@@ -12,7 +12,7 @@ public class DeduplicateFunction implements Function {
 
     public static final String FUNCTION_NAME = "dedup";
 
-    public List invoke(ExpressionContext context, Object[] parameters) {
+    public List invoke(final ExpressionContext context, final Object[] parameters) {
         if (parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof List)

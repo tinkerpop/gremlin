@@ -16,7 +16,7 @@ public class AddVertexFunction implements Function {
 
     public static final String FUNCTION_NAME = "add-v";
 
-    public Vertex invoke(ExpressionContext context, Object[] parameters) {
+    public Vertex invoke(final ExpressionContext context, final Object[] parameters) {
 
 
         Graph graph = GraphFunctionHelper.getGraph(context, parameters);

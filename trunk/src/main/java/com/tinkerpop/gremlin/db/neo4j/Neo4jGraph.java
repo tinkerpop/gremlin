@@ -27,7 +27,7 @@ public class Neo4jGraph implements Graph {
     private Neo4jIndex index;
     private Transaction tx;
 
-    public Neo4jGraph(String directory) {
+    public Neo4jGraph(final String directory) {
         this.directory = directory;
         this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
@@ -40,13 +40,13 @@ public class Neo4jGraph implements Graph {
         return this.index;
     }
 
-    public Vertex addVertex(Object id) {
+    public Vertex addVertex(final Object id) {
         Vertex vertex = new Neo4jVertex(neo.createNode(), this.index);
         this.stopStartTransaction();
         return vertex;
     }
 
-    public Vertex getVertex(Object id) {
+    public Vertex getVertex(final Object id) {
         if (null == id)
             return null;
 
@@ -69,7 +69,7 @@ public class Neo4jGraph implements Graph {
         return new NeoEdgeIterable(this.neo.getAllNodes());
     }
 
-    public void removeVertex(Vertex vertex) {
+    public void removeVertex(final Vertex vertex) {
         Long id = (Long) vertex.getId();
         Node node = neo.getNodeById(id);
         if (null != node) {
@@ -84,7 +84,7 @@ public class Neo4jGraph implements Graph {
         }
     }
 
-    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+    public Edge addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label) {
         Node outNode = (Node) ((Neo4jVertex) outVertex).getRawElement();
         Node inNode = (Node) ((Neo4jVertex) inVertex).getRawElement();
         Relationship relationship = outNode.createRelationshipTo(inNode, DynamicRelationshipType.withName(label));
@@ -126,7 +126,7 @@ public class Neo4jGraph implements Graph {
         this.stopStartTransaction();
     }
 
-    private static void deleteGraphDirectory(File directory) {
+    private static void deleteGraphDirectory(final File directory) {
         if (directory.exists()) {
             for (File file : directory.listFiles()) {
                 if (file.isDirectory()) {
@@ -148,7 +148,7 @@ public class Neo4jGraph implements Graph {
 
         Iterable<Node> nodes;
 
-        public NeoVertexIterable(Iterable<Node> nodes) {
+        public NeoVertexIterable(final Iterable<Node> nodes) {
             this.nodes = nodes;
         }
 
@@ -161,7 +161,7 @@ public class Neo4jGraph implements Graph {
 
         Iterator<Node> nodes;
 
-        public NeoVertexIterator(Iterable<Node> nodes) {
+        public NeoVertexIterator(final Iterable<Node> nodes) {
             this.nodes = nodes.iterator();
         }
 
@@ -183,7 +183,7 @@ public class Neo4jGraph implements Graph {
 
         Iterable<Node> nodes;
 
-        public NeoEdgeIterable(Iterable<Node> nodes) {
+        public NeoEdgeIterable(final Iterable<Node> nodes) {
             this.nodes = nodes;
         }
 
@@ -198,7 +198,7 @@ public class Neo4jGraph implements Graph {
         private Iterator<Relationship> currentRelationships;
         private boolean complete = false;
 
-        public NeoEdgeIterator(Iterable<Node> nodes) {
+        public NeoEdgeIterator(final Iterable<Node> nodes) {
             this.nodes = nodes.iterator();
             this.complete = this.goToNextEdge();
 

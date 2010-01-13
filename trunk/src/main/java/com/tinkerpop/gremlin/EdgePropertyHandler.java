@@ -24,7 +24,7 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
         staticProperties.add(Tokens.ID);
     }
 
-    public String[] getPropertyNames(Object edgeObject) {
+    public String[] getPropertyNames(final Object edgeObject) {
         Edge edge = (Edge) edgeObject;
         List<String> list = new ArrayList<String>();
         list.addAll(edge.getPropertyKeys());
@@ -32,7 +32,7 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
         return list.toArray(new String[list.size()]);
     }
 
-    public void setProperty(Object edgeObject, String key, Object value) {
+    public void setProperty(final Object edgeObject, final String key, final Object value) {
         if (!key.equals(Tokens.OUT_VERTEX) && !key.equals(Tokens.IN_VERTEX) && !key.equals(Tokens.LABEL) && !key.equals(Tokens.ID)) {
             Edge edge = (Edge) edgeObject;
             edge.setProperty(key, value);
@@ -41,7 +41,7 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
         }
     }
 
-    public Object getProperty(Object edgeObject, String key) {
+    public Object getProperty(final Object edgeObject, final String key) {
         Edge edge = (Edge) edgeObject;
         if (key.equals(Tokens.OUT_VERTEX)) {
             return edge.getOutVertex();

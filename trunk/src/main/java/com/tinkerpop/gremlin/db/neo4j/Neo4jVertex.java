@@ -18,7 +18,7 @@ import org.neo4j.graphdb.Direction;
  */
 public class Neo4jVertex extends Neo4jElement implements Vertex {
 
-    public Neo4jVertex(Node node, Index index) {
+    public Neo4jVertex(final Node node, final Index index) {
         super(index);
         this.element = node;
     }

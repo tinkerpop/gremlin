@@ -18,7 +18,7 @@ public class OperateValueFunction implements Function {
 
     public static final String FUNCTION_NAME = "op-value";
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    public Object invoke(final ExpressionContext context, final Object[] parameters) {
         if (parameters != null && parameters.length == 4) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects[0] instanceof String) {
@@ -46,7 +46,7 @@ public class OperateValueFunction implements Function {
 
     }
 
-    private static void opValue(String operation, Map map, Object key, Number amount) {
+    private static void opValue(final String operation, final Map map, final Object key, final Number amount) {
         Object object = map.get(key);
         Number value;
         if (object == null || !(object instanceof Number))
@@ -68,7 +68,7 @@ public class OperateValueFunction implements Function {
 
     }
 
-    private static void opValue(String operation, Element element, String key, Number amount) {
+    private static void opValue(final String operation, final Element element, final String key, final Number amount) {
         Object object = element.getProperty(key);
         Number value;
         if (object == null || !(object instanceof Number))
@@ -89,7 +89,7 @@ public class OperateValueFunction implements Function {
         }
     }
 
-    private static void opValue(String operation, List list, Integer index, Number amount) {
+    private static void opValue(final String operation, final List list, final Integer index, final Number amount) {
         if (list.size() < index + 1)
             throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.INDEX_BOUNDS);
 

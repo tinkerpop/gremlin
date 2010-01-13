@@ -35,12 +35,12 @@ public class IfElseStatement extends CompoundStatement {
     */
 
 
-    public IfElseStatement(XPathEvaluator xPathEvaluator) {
+    public IfElseStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
 
     }
 
-    public void compileTokens(String line) throws SyntaxException {
+    public void compileTokens(final String line) throws SyntaxException {
         super.compileTokens(line);
         if (condition == null) {
             Matcher matcher = ifPattern.matcher(line);
@@ -81,7 +81,7 @@ public class IfElseStatement extends CompoundStatement {
         return results;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return ifPattern.matcher(firstLine).find();
     }
 
@@ -96,7 +96,7 @@ public class IfElseStatement extends CompoundStatement {
         return false;
     }
 
-    private void updateElseStatementList(String line) {
+    private void updateElseStatementList(final String line) {
         Statement currentElseStatement = this.getCurrentElseStatement();
         if (null != currentElseStatement && !currentElseStatement.isComplete()) {
             currentElseStatement.compileTokens(line);

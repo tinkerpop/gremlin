@@ -31,7 +31,7 @@ public class Console {
     //private static final String GREMLIN_VERSION = "0.1";
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
 
         PrintStream output = System.out;
 
@@ -92,7 +92,7 @@ public class Console {
         }
     }
 
-    private static String generateIndentation(int spaces) {
+    private static String generateIndentation(final int spaces) {
         String spaceString = EMPTY_STRING;
         for (int i = 0; i < spaces; i++) {
             spaceString = spaceString + SINGLE_SPACE;

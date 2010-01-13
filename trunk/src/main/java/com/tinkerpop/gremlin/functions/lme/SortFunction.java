@@ -20,7 +20,7 @@ public class SortFunction implements Function {
     private static final String VALUE = "value";
     private static final String KEY = "key";
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    public Object invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
@@ -45,7 +45,7 @@ public class SortFunction implements Function {
 
     }
 
-    private static Map sortByValue(Map map, boolean reverse) {
+    private static Map sortByValue(final Map map, final boolean reverse) {
         List mapKeys = new ArrayList(map.keySet());
         List mapValues = new ArrayList(map.values());
         Collections.sort(mapKeys);
@@ -78,7 +78,7 @@ public class SortFunction implements Function {
         return sortedMap;
     }
 
-    private static Map sortByKey(Map map, boolean reverse) {
+    private static Map sortByKey(Map map, final boolean reverse) {
         map = new TreeMap(map);
         if (reverse)
             map = ((TreeMap) map).descendingMap();

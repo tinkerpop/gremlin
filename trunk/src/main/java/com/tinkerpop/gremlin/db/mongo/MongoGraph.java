@@ -58,7 +58,7 @@ public class MongoGraph implements Graph {
      */
 
 
-    public MongoGraph(String ipAddress, int port, String database) throws UnknownHostException {
+    public MongoGraph(final String ipAddress, final int port, final String database) throws UnknownHostException {
         Mongo mongo = new Mongo(ipAddress, port);
         this.database = mongo.getDB(database);
         this.vertexCollection = this.database.getCollection(VERTICES);
@@ -91,7 +91,7 @@ public class MongoGraph implements Graph {
         return new MongoVertex(vertexObject, this);
     }
 
-    public Vertex getVertex(Object id) {
+    public Vertex getVertex(final Object id) {
         DBObject queryObject = new BasicDBObject();
         queryObject.put(MongoGraph.ID, id);
         DBObject vertexObject = this.vertexCollection.findOne(queryObject);
@@ -101,7 +101,7 @@ public class MongoGraph implements Graph {
             return new MongoVertex(vertexObject, this);
     }
 
-    public void removeVertex(Vertex vertex) {
+    public void removeVertex(final Vertex vertex) {
         Object vertexId = vertex.getId();
         for (Edge edge : vertex.getBothEdges()) {
             Object inVertexId = edge.getInVertex().getId();
@@ -122,7 +122,7 @@ public class MongoGraph implements Graph {
     }
 
 
-    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+    public Edge addEdge(Object id, final Vertex outVertex, final Vertex inVertex, final String label) {
         BasicDBObject edgeObject = new BasicDBObject();
         if (null == id)
             id = UUID.randomUUID().toString();
@@ -139,13 +139,13 @@ public class MongoGraph implements Graph {
         return new MongoEdge(edgeObject, this);
     }
 
-    public void removeEdge(Edge edge) {
+    public void removeEdge(final Edge edge) {
         ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), MongoGraph.OUT_EDGES);
         ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), MongoGraph.IN_EDGES);
         this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
     }
 
-    protected Edge getEdge(Object id) {
+    protected Edge getEdge(final Object id) {
         DBObject queryObject = new BasicDBObject();
         queryObject.put(MongoGraph.ID, id);
         DBObject edgeObject = this.edgeCollection.findOne(queryObject);
@@ -204,7 +204,7 @@ public class MongoGraph implements Graph {
     private abstract class MongoIterator<T> implements Iterator<T> {
         private DBCursor cursor;
 
-        public MongoIterator(DBCursor vertexCursor) {
+        public MongoIterator(final DBCursor vertexCursor) {
             this.cursor = vertexCursor;
         }
 

@@ -22,11 +22,11 @@ public class RepeatStatement extends CompoundStatement {
         end
     */
 
-    public RepeatStatement(XPathEvaluator xPathEvaluator) {
+    public RepeatStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) {
+    public void compileTokens(final String line) {
         super.compileTokens(line);
         if (times == null) {
             Matcher matcher = repeatPattern.matcher(line);
@@ -60,7 +60,7 @@ public class RepeatStatement extends CompoundStatement {
         return results;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return repeatPattern.matcher(firstLine).find();
     }
 }

@@ -19,7 +19,7 @@ public class ProbabilityFunction implements Function {
     private static final Random random = new Random();
 
 
-    public Number invoke(ExpressionContext context, Object[] parameters) {
+    public Number invoke(final ExpressionContext context, final Object[] parameters) {
 
         List objects = null;
         if (null == parameters) {

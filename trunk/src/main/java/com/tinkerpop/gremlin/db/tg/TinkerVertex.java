@@ -16,7 +16,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     protected Set<Edge> outEdges = new HashSet<Edge>();
     protected Set<Edge> inEdges = new HashSet<Edge>();
 
-    protected TinkerVertex(String id, TinkerIndex index) {
+    protected TinkerVertex(final String id, final TinkerIndex index) {
         super(id, index);
     }
 
@@ -39,7 +39,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
         return StringFactory.vertexString(this);
     }  
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (object instanceof TinkerVertex)
             return object.hashCode() == this.hashCode();
         else

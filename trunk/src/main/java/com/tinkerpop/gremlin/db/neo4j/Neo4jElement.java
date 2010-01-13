@@ -20,11 +20,11 @@ public abstract class Neo4jElement implements Element {
     protected PropertyContainer element;
     protected final Index index;
 
-    public Neo4jElement(Index index) {
+    public Neo4jElement(final Index index) {
         this.index = index;
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(final String key, final Object value) {
         if (this instanceof Neo4jVertex) {
             Object value2 = this.getProperty(key);
             if (null != value2)
@@ -36,7 +36,7 @@ public abstract class Neo4jElement implements Element {
             this.index.put(key, value, this);
     }
 
-    public Object getProperty(String key) {
+    public Object getProperty(final String key) {
         if (this.element.hasProperty(key))
             return this.element.getProperty(key);
         else
@@ -51,7 +51,7 @@ public abstract class Neo4jElement implements Element {
         return keys;
     }
 
-    public Object removeProperty(String key) {
+    public Object removeProperty(final String key) {
         try {
             if (this instanceof Neo4jVertex) {
                 Object value2 = this.getProperty(key);
@@ -73,7 +73,7 @@ public abstract class Neo4jElement implements Element {
         return this.element;
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if (object instanceof Element)
             return this.hashCode() == object.hashCode();
         else

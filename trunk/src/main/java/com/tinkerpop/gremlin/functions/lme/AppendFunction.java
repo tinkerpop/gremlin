@@ -15,7 +15,7 @@ public class AppendFunction implements Function {
 
     public static final String FUNCTION_NAME = "append";
 
-    public List invoke(ExpressionContext context, Object[] parameters) {
+    public List invoke(final ExpressionContext context, final Object[] parameters) {
         // TODO: handle null() like an object or just exclude it?
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 

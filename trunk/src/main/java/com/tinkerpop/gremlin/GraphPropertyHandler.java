@@ -16,14 +16,14 @@ public class GraphPropertyHandler implements DynamicPropertyHandler {
 
     private static final String[] properties = new String[] {Tokens.VERTICES, Tokens.EDGES};
 
-    public String[] getPropertyNames(Object graphObject) {
+    public String[] getPropertyNames(final Object graphObject) {
         return properties;
     }
 
-    public void setProperty(Object graphObject, String key, Object value) {
+    public void setProperty(final Object graphObject, final String key, final Object value) {
     }
 
-    public Object getProperty(Object graphObject, String key) {
+    public Object getProperty(final Object graphObject, final String key) {
         Graph graph = (Graph) graphObject;
         if (key.equals(Tokens.VERTICES)) {
             return GraphPropertyHandler.createListFromIterable(graph.getVertices());
@@ -34,7 +34,7 @@ public class GraphPropertyHandler implements DynamicPropertyHandler {
         }
     }
 
-    private static Collection createListFromIterable(Iterable itty) {
+    private static Collection createListFromIterable(final Iterable itty) {
         if (itty instanceof Collection) {
             // TODO: this is odd, inefficient behavior System.out.println("HERE!");
             return (Collection) itty;

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class GraphMLReader {
 
-    public static void inputGraph(Graph graph, InputStream graphMLInputStream) throws XMLStreamException {
+    public static void inputGraph(final Graph graph, final InputStream graphMLInputStream) throws XMLStreamException {
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = inputFactory.createXMLStreamReader(graphMLInputStream);

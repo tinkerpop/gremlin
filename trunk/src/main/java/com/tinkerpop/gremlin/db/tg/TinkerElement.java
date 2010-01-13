@@ -16,7 +16,7 @@ public abstract class TinkerElement implements Element {
     protected final String id;
     protected final TinkerIndex index;
 
-    protected TinkerElement(String id, TinkerIndex index) {
+    protected TinkerElement(final String id, final TinkerIndex index) {
         this.index = index;
         this.id = id;
     }
@@ -25,17 +25,17 @@ public abstract class TinkerElement implements Element {
         return this.properties.keySet();
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(final String key, final Object value) {
         this.index.remove(key, this.getProperty(key), this);
         this.properties.put(key, value);
         this.index.put(key, value, this);
     }
 
-    public Object getProperty(String key) {
+    public Object getProperty(final String key) {
         return this.properties.get(key);
     }
 
-    public Object removeProperty(String key) {
+    public Object removeProperty(final String key) {
         this.index.remove(key, this.getProperty(key), this);
         return this.properties.remove(key);
     }

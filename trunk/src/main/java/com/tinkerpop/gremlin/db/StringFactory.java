@@ -16,11 +16,11 @@ public class StringFactory {
     private static final String DASH = "-";
     private static final String ARROW = "->";
 
-    public static String vertexString(Vertex vertex) {
+    public static String vertexString(final Vertex vertex) {
         return V + L_BRACKET + vertex.getId() + R_BRACKET;
     }
 
-    public static String edgeString(Edge edge) {
+    public static String edgeString(final Edge edge) {
          return E + L_BRACKET + edge.getId() + R_BRACKET + L_BRACKET + edge.getOutVertex().getId() + DASH + edge.getLabel() + ARROW + edge.getInVertex().getId() + R_BRACKET;
     }
 }

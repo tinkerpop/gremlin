@@ -16,7 +16,7 @@ public class RemoveIndexFunction implements Function {
 
     public static final String FUNCTION_NAME = "remove-idx";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (parameters != null) {
 

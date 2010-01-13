@@ -15,13 +15,12 @@ public abstract class Statement {
     protected boolean complete = false;
     private String rawStatement = new String();
 
-    public Statement(XPathEvaluator xPathEvaluator) {
+    public Statement(final XPathEvaluator xPathEvaluator) {
         this.xPathEvaluator = xPathEvaluator;
     }
 
-    public void compileTokens(String line) {
-        line = line.trim();
-        this.rawStatement = this.rawStatement + Tokens.SINGLESPACE + line;
+    public void compileTokens(final String line) {
+        this.rawStatement = this.rawStatement + Tokens.SINGLESPACE + line.trim();
     }
 
     public abstract List evaluate();

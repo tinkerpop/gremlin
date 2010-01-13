@@ -80,7 +80,7 @@ public class GremlinFunctions implements Functions {
         functionMap.put(PathFunction.FUNCTION_NAME, new PathFunction());
     }
 
-    public Function getFunction(String namespace, String name, Object[] parameters) {
+    public Function getFunction(final String namespace, final String name, final Object[] parameters) {
         Function function = functionMap.get(name);
         if (null != function)
             return function;

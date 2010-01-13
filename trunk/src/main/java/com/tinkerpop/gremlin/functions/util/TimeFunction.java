@@ -14,7 +14,7 @@ public class TimeFunction implements Function {
 
     public static final String FUNCTION_NAME = "time";
 
-    public Double invoke(ExpressionContext context, Object[] parameters) {
+    public Double invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null == parameters) {
             return new Long(System.currentTimeMillis()).doubleValue();

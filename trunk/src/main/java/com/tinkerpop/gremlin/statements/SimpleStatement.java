@@ -8,11 +8,11 @@ import com.tinkerpop.gremlin.XPathEvaluator;
  */
 public abstract class SimpleStatement extends Statement {
 
-    public SimpleStatement(XPathEvaluator xPathEvaluator) {
+    public SimpleStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) {
+    public void compileTokens(final String line) {
         super.compileTokens(line);
         this.complete = true;
     }

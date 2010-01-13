@@ -13,7 +13,7 @@ import java.util.Map;
 public class UnassignFunction implements Function {
     public static final String FUNCTION_NAME = "unassign";
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    public Object invoke(final ExpressionContext context, final Object[] parameters) {
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 
         if (null != objects) {
@@ -40,18 +40,18 @@ public class UnassignFunction implements Function {
 
     }
 
-    private static Object removeListIndex(List list, Integer index) {
+    private static Object removeListIndex(final List list, final Integer index) {
         if (list.size() < index + 1)
             throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.INDEX_BOUNDS);
 
         return list.remove(index.intValue());
     }
 
-    private static Object removeMapKey(Map map, Object key) {
+    private static Object removeMapKey(final Map map, final Object key) {
         return map.remove(key);
     }
 
-    private static Object removeElementKey(Element element, String key) {
+    private static Object removeElementKey(final Element element, final String key) {
         return element.removeProperty(key);
     }
 }

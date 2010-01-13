@@ -31,14 +31,12 @@ public class TypeFunction implements Function {
     private static final String BOOLEAN = "boolean";
 
 
-    public String invoke(ExpressionContext context, Object[] parameters) {
+    public String invoke(final ExpressionContext context, final Object[] parameters) {
         if (null != parameters && parameters.length == 1) {
 
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
 
-            if (object instanceof Set)
-                return SET;
-            else if (object instanceof List)
+            if (object instanceof List)
                 return LIST;
             else if (object instanceof Edge)
                 return EDGE;

@@ -18,7 +18,7 @@ public class GetFunction implements Function {
 
     public static final String FUNCTION_NAME = "get";
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    public Object invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters && parameters.length == 2) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);

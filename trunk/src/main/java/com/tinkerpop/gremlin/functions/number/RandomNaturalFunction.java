@@ -18,7 +18,7 @@ public class RandomNaturalFunction implements Function {
     private static final Random random = new Random();
 
 
-    public Number invoke(ExpressionContext context, Object[] parameters) {
+    public Number invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null == parameters) {
             return random.nextInt(context.getContextNodeList().size())+1;

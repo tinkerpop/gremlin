@@ -17,7 +17,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
     private final Vertex inVertex;
     private final Vertex outVertex;
 
-    protected TinkerEdge(String id, Vertex outVertex, Vertex inVertex, String label, TinkerIndex index) {
+    protected TinkerEdge(final String id, final Vertex outVertex, final Vertex inVertex, final String label, final TinkerIndex index) {
         super(id, index);
         this.label = label;
         this.outVertex = outVertex;
@@ -47,7 +47,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
         return StringFactory.edgeString(this);
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         if(object instanceof TinkerEdge)
             return object.hashCode() == this.hashCode();
         else

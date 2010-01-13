@@ -24,12 +24,12 @@ public class MongoIndex implements Index {
     private Set<String> indexNames = new HashSet<String>();
 
 
-    public MongoIndex(MongoGraph graph) {
+    public MongoIndex(final MongoGraph graph) {
         this.graph = graph;
         this.refreshIndexNames();
     }
 
-    public Set<Element> get(String key, Object value) {
+    public Set<Element> get(final String key, final Object value) {
         if (this.indexNames.contains(key)) {
             DBObject query = new BasicDBObject();
             query.put(PROPERTIES_PERIOD + key, value);
@@ -55,7 +55,7 @@ public class MongoIndex implements Index {
         }
     }
 
-    public void put(String key, Object value, Element element) {
+    public void put(final String key, final Object value, final Element element) {
         if (this.indexAll && !this.indexNames.contains(key)) {
             this.addIndexKey(key);
         } else if (!this.indexNames.contains(key)) {
@@ -63,7 +63,7 @@ public class MongoIndex implements Index {
         }
     }
 
-    public void remove(String key, Object value, Element element) {
+    public void remove(final String key, final Object value, final Element element) {
 
     }
 
@@ -75,7 +75,7 @@ public class MongoIndex implements Index {
         }
     }
 
-    public void addIndexKey(String key) {
+    public void addIndexKey(final String key) {
         DBObject index = new BasicDBObject();
         index.put(PROPERTIES_PERIOD + key, 1);
         this.graph.getVertexCollection().ensureIndex(index, key);
@@ -83,13 +83,13 @@ public class MongoIndex implements Index {
         this.refreshIndexNames();
     }
 
-    public void removeIndexKey(String key) {
+    public void removeIndexKey(final String key) {
         this.graph.getVertexCollection().dropIndex(key);
         this.graph.getEdgeCollection().dropIndex(key);
         this.refreshIndexNames();
     }
 
-    public void indexAll(boolean indexAll) {
+    public void indexAll(final boolean indexAll) {
         this.indexAll = true;
     }
 }

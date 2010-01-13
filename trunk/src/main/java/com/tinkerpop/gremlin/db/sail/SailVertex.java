@@ -36,7 +36,7 @@ public class SailVertex implements Vertex {
         dataTypeToClass.put(SailTokens.XSD_NS + "double", "java.lang.Double");
     }
 
-    public SailVertex(Value value, SailConnection sailConnection) {
+    public SailVertex(final Value value, final SailConnection sailConnection) {
         this.value = value;
         this.sailConnection = sailConnection;
     }
@@ -45,7 +45,7 @@ public class SailVertex implements Vertex {
         return this.value;
     }
 
-    private void updateLiteral(Literal oldLiteral, Literal newLiteral) {
+    private void updateLiteral(final Literal oldLiteral, final Literal newLiteral) {
         try {
             Set<Statement> statements = new HashSet<Statement>();
             CloseableIteration<? extends Statement, SailException> results = this.sailConnection.getStatements(null, null, oldLiteral, false);
@@ -65,7 +65,7 @@ public class SailVertex implements Vertex {
         }
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(final String key, final Object value) {
         if (this.value instanceof Resource) {
             throw new EvaluationException(URI_BLANK_NODE_PROPERTIES);
         } else {
@@ -84,7 +84,7 @@ public class SailVertex implements Vertex {
         }
     }
 
-    public Object removeProperty(String key) {
+    public Object removeProperty(final String key) {
         if (this.value instanceof Resource) {
             throw new EvaluationException(URI_BLANK_NODE_PROPERTIES);
         } else {
@@ -102,7 +102,7 @@ public class SailVertex implements Vertex {
         return null;
     }
 
-    public Object getProperty(String key) {
+    public Object getProperty(final String key) {
         if (this.value instanceof Literal) {
             Literal literal = (Literal) value;
             if (key.equals(SailTokens.DATATYPE)) {
@@ -177,7 +177,7 @@ public class SailVertex implements Vertex {
         return StringFactory.vertexString(this);
     }
 
-    protected static Object castLiteral(Literal literal) {
+    protected static Object castLiteral(final Literal literal) {
         if (null != literal.getDatatype()) {
             String className = dataTypeToClass.get(literal.getDatatype().stringValue());
             if (null == className)
@@ -210,7 +210,7 @@ public class SailVertex implements Vertex {
         return this.value.hashCode();
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         return object instanceof SailVertex && object.hashCode() == this.hashCode();
     }
 

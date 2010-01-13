@@ -15,7 +15,7 @@ import java.util.List;
 public class MongoEdge extends MongoElement implements Edge {
 
 
-    public MongoEdge(DBObject dbObject, MongoGraph graph) {
+    public MongoEdge(final DBObject dbObject, final MongoGraph graph) {
         super(dbObject, graph);
     }
 
@@ -45,7 +45,7 @@ public class MongoEdge extends MongoElement implements Edge {
         return this.getId().hashCode();
     }
 
-    public boolean equals(Object object) {
+    public boolean equals(final Object object) {
         return object instanceof MongoEdge && object.hashCode() == this.hashCode();
     }
 

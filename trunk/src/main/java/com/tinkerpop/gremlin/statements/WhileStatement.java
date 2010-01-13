@@ -22,11 +22,11 @@ public class WhileStatement extends CompoundStatement {
         end
     */
 
-    public WhileStatement(XPathEvaluator xPathEvaluator) {
+    public WhileStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) {
+    public void compileTokens(final String line) {
         super.compileTokens(line);
         if (condition == null) {
             Matcher matcher = whilePattern.matcher(line);
@@ -67,7 +67,7 @@ public class WhileStatement extends CompoundStatement {
         return results;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return whilePattern.matcher(firstLine).find();
     }
 }

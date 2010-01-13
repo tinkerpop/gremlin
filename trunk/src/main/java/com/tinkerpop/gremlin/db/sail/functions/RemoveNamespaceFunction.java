@@ -16,7 +16,7 @@ public class RemoveNamespaceFunction implements Function {
 
     public static final String FUNCTION_NAME = "remove-ns";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{SailGraph.class, String.class})) {

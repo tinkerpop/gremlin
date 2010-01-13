@@ -11,7 +11,7 @@ import java.util.*;
 public class RetainFunction implements Function {
     public static final String FUNCTION_NAME = "retain";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);

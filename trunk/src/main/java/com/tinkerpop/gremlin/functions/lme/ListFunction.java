@@ -14,7 +14,7 @@ import java.util.Map;
 public class ListFunction implements Function {
     public static final String FUNCTION_NAME = "list";
 
-    public List invoke(ExpressionContext context, Object[] parameters) {
+    public List invoke(final ExpressionContext context, final Object[] parameters) {
         if (null == parameters) {
             return new ArrayList();
         } else if (parameters.length == 1) {

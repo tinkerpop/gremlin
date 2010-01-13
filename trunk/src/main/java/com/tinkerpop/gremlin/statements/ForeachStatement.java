@@ -25,11 +25,11 @@ public class ForeachStatement extends CompoundStatement {
          end
      */
 
-    public ForeachStatement(XPathEvaluator xPathEvaluator) {
+    public ForeachStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) throws SyntaxException {
+    public void compileTokens(final String line) throws SyntaxException {
         super.compileTokens(line);
         if (variable == null && null == loopList) {
 
@@ -72,7 +72,7 @@ public class ForeachStatement extends CompoundStatement {
         return results;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return foreachPattern.matcher(firstLine).find();
     }
 

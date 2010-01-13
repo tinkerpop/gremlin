@@ -18,7 +18,7 @@ public class KeysFunction implements Function {
 
     public static final String FUNCTION_NAME = "keys";
 
-    public Set invoke(ExpressionContext context, Object[] parameters) {
+    public Set invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);

@@ -19,11 +19,11 @@ public class XPathStatement extends SimpleStatement {
    private String xPath;
    //private CompiledExpression compiledXPath;
 
-    public XPathStatement(XPathEvaluator xPathEvaluator) {
+    public XPathStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) {
+    public void compileTokens(final String line) {
         super.compileTokens(line);
         this.xPath = line;
         /*try {

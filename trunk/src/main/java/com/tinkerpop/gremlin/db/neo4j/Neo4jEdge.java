@@ -16,7 +16,7 @@ import org.neo4j.graphdb.Relationship;
  */
 public class Neo4jEdge extends Neo4jElement implements Edge {
 
-    public Neo4jEdge(Relationship relationship, Index index) {
+    public Neo4jEdge(final Relationship relationship, final Index index) {
         super(index);
         this.element = relationship;
     }

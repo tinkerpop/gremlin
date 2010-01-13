@@ -16,7 +16,7 @@ public class AddNamespaceFunction implements Function {
 
     public static final String FUNCTION_NAME = "add-ns";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);

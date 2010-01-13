@@ -14,7 +14,7 @@ public class HaltFunction implements Function {
 
     public static final String FUNCTION_NAME = "halt";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof Boolean)

@@ -37,19 +37,19 @@ public class SailGraph implements Graph {
     public static final Pattern literalPattern = Pattern.compile("^\"(.*?)\"((\\^\\^<(.+?)>)$|(@(.{2}))$)");
     private static final String LOG4J_PROPERTIES = "log4j.properties";
 
-    public static boolean isBNode(String resource) {
+    public static boolean isBNode(final String resource) {
         return resource.length() > 2 && resource.startsWith(SailTokens.BLANK_NODE_PREFIX);
     }
 
-    public static boolean isLiteral(String resource) {
+    public static boolean isLiteral(final String resource) {
         return (literalPattern.matcher(resource).matches() || (resource.startsWith("\"") && resource.endsWith("\"") && resource.length() > 1));
     }
 
-    public static boolean isURI(String resource) {
+    public static boolean isURI(final String resource) {
         return !isBNode(resource) && !isLiteral(resource) && (resource.contains(":") || resource.contains("/") || resource.contains("#"));
     }
 
-    protected Literal makeLiteral(String resource) {
+    protected Literal makeLiteral(final String resource) {
         Matcher matcher = literalPattern.matcher(resource);
         if (matcher.matches()) {
             if (null != matcher.group(4))
@@ -79,7 +79,7 @@ public class SailGraph implements Graph {
         }
     }
 
-    public SailGraph(Sail sail) {
+    public SailGraph(final Sail sail) {
         try {
             PropertyConfigurator.configure(SailGraph.class.getResource(LOG4J_PROPERTIES));
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class SailGraph implements Graph {
         }
     }
 
-    public void removeVertex(Vertex vertex) {
+    public void removeVertex(final Vertex vertex) {
         Value vertexValue = ((SailVertex) vertex).getRawValue();
         try {
             if (vertexValue instanceof Resource) {
@@ -133,7 +133,7 @@ public class SailGraph implements Graph {
         }
     }
 
-    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+    public Edge addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label) {
         try {
             Value outVertexValue = ((SailVertex) outVertex).getRawValue();
             Value inVertexValue = ((SailVertex) inVertex).getRawValue();
@@ -152,7 +152,7 @@ public class SailGraph implements Graph {
         }
     }
 
-    public void removeEdge(Edge edge) {
+    public void removeEdge(final Edge edge) {
         Statement statement = ((SailEdge) edge).getRawStatement();
         try {
             SailHelper.removeStatement(statement, this.sailConnection);
@@ -170,7 +170,7 @@ public class SailGraph implements Graph {
         return this.sail;
     }
 
-    public void addNamespace(String prefix, String namespace) {
+    public void addNamespace(final String prefix, final String namespace) {
         try {
             this.sailConnection.setNamespace(prefix, namespace);
             this.sailConnection.commit();
@@ -179,7 +179,7 @@ public class SailGraph implements Graph {
         }
     }
 
-    public void removeNamespace(String prefix) {
+    public void removeNamespace(final String prefix) {
         try {
             this.sailConnection.removeNamespace(prefix);
             this.sailConnection.commit();
@@ -203,11 +203,11 @@ public class SailGraph implements Graph {
         return namespaces;
     }
 
-    public String expandPrefix(String uri) {
+    public String expandPrefix(final String uri) {
         return SailGraph.prefixToNamespace(uri, this.sailConnection);
     }
 
-    public String prefixNamespace(String uri) {
+    public String prefixNamespace(final String uri) {
         return SailGraph.namespaceToPrefix(uri, this.sailConnection);
     }
 
@@ -233,7 +233,7 @@ public class SailGraph implements Graph {
         }
     }
 
-    public static String prefixToNamespace(String uri, SailConnection sailConnection) {
+    public static String prefixToNamespace(String uri, final SailConnection sailConnection) {
         try {
             if (uri.contains(SailTokens.NAMESPACE_SEPARATOR)) {
                 String namespace = sailConnection.getNamespace(uri.substring(0, uri.indexOf(SailTokens.NAMESPACE_SEPARATOR)));
@@ -246,7 +246,7 @@ public class SailGraph implements Graph {
         return uri;
     }
 
-    public static String namespaceToPrefix(String uri, SailConnection sailConnection) {
+    public static String namespaceToPrefix(String uri, final SailConnection sailConnection) {
 
         try {
             CloseableIteration<? extends Namespace, SailException> namespaces = sailConnection.getNamespaces();
@@ -273,7 +273,7 @@ public class SailGraph implements Graph {
         private CloseableIteration<? extends Statement, SailException> statements;
         private SailConnection sailConnection;
 
-        public SesameEdgeIterable(CloseableIteration<? extends Statement, SailException> statements, SailConnection sailConnection) {
+        public SesameEdgeIterable(final CloseableIteration<? extends Statement, SailException> statements, final SailConnection sailConnection) {
             this.statements = statements;
             this.sailConnection = sailConnection;
         }
@@ -289,7 +289,7 @@ public class SailGraph implements Graph {
         private CloseableIteration<? extends Statement, SailException> statements;
         private SailConnection sailConnection;
 
-        public SesameEdgeIterator(CloseableIteration<? extends Statement, SailException> statements, SailConnection sailConnection) {
+        public SesameEdgeIterator(final CloseableIteration<? extends Statement, SailException> statements, final SailConnection sailConnection) {
             this.statements = statements;
             this.sailConnection = sailConnection;
         }

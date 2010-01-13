@@ -16,7 +16,7 @@ public class AddIndexFunction implements Function {
 
     public static final String FUNCTION_NAME = "add-idx";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (parameters != null) {
             Graph graph = GraphFunctionHelper.getGraph(context, parameters);

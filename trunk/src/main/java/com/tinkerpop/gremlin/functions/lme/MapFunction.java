@@ -18,7 +18,7 @@ public class MapFunction implements Function {
 
     public static final String FUNCTION_NAME = "map";
 
-    public Map invoke(ExpressionContext context, Object[] parameters) {
+    public Map invoke(final ExpressionContext context, final Object[] parameters) {
         if (null == parameters) {
             return new HashMap();
         } if(parameters.length == 1) {

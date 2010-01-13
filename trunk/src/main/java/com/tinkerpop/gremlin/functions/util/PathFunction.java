@@ -11,7 +11,7 @@ public class PathFunction implements Function {
 
     public static final String FUNCTION_NAME = "p";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
         return Boolean.TRUE;
     }
 }

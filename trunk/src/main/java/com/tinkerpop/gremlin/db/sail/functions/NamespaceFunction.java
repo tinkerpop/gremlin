@@ -16,7 +16,7 @@ public class NamespaceFunction implements Function {
 
     public static final String FUNCTION_NAME = "ns";
 
-    public String invoke(ExpressionContext context, Object[] parameters) {
+    public String invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);

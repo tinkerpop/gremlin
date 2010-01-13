@@ -40,7 +40,7 @@ public class XPathEvaluator {
         return this.codeDepth;
     }
 
-    private Object evaluate(String xPathString, ReturnType type) throws SyntaxException, EvaluationException {
+    private Object evaluate(final String xPathString, final ReturnType type) throws SyntaxException, EvaluationException {
         try {
             if (this.gremlinPathContext.rootChanged()) {
                 this.gremlinPathContext = GremlinPathContext.newContext(this.gremlinPathContext, this.gremlinPathContext.getRoot());
@@ -68,27 +68,27 @@ public class XPathEvaluator {
         }
     }
 
-    public List evaluateList(String xPathString) throws SyntaxException, EvaluationException {
+    public List evaluateList(final String xPathString) throws SyntaxException, EvaluationException {
         return (List) this.evaluate(xPathString, ReturnType.LIST);
     }
 
-    public Iterator evaluateIterator(String xPathString) throws SyntaxException, EvaluationException {
+    public Iterator evaluateIterator(final String xPathString) throws SyntaxException, EvaluationException {
         return (Iterator) this.evaluate(xPathString, ReturnType.ITERATOR);
     }
 
-    public void setVariable(String variable, Object value) {
+    public void setVariable(final String variable, final Object value) {
         this.gremlinPathContext.setVariable(variable, value);
     }
 
-    public Object getVariable(String variable) {
+    public Object getVariable(final String variable) {
         return this.gremlinPathContext.getVariable(variable);
     }
 
-    public void removeVariable(String variable) {
+    public void removeVariable(final String variable) {
         this.gremlinPathContext.removeVariable(variable);
     }
 
-    public void setRoot(Object root) {
+    public void setRoot(final Object root) {
         this.gremlinPathContext.setRoot(root);
     }
 

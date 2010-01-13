@@ -27,11 +27,11 @@ public class AssignmentStatement extends SimpleStatement {
         $i[@name='key with space'] := ./././
      */
 
-    public AssignmentStatement(XPathEvaluator xPathEvaluator) {
+    public AssignmentStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
-    public void compileTokens(String line) throws SyntaxException {
+    public void compileTokens(final String line) throws SyntaxException {
         super.compileTokens(line);
         String[] parts = line.split(Tokens.ASSIGNMENT);
         this.variable = parts[0].trim();
@@ -56,7 +56,7 @@ public class AssignmentStatement extends SimpleStatement {
         return results;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return assignmentPattern.matcher(firstLine).find();
     }
 }

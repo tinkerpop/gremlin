@@ -8,7 +8,7 @@ import com.tinkerpop.gremlin.XPathEvaluator;
  */
 public class StatementGenerator {
 
-    public static Statement generateStatement(String line, XPathEvaluator xPathEvaluator) {
+    public static Statement generateStatement(final String line, final XPathEvaluator xPathEvaluator) {
 
         if (CommentStatement.isStatement(line)) {
             return new CommentStatement(xPathEvaluator);

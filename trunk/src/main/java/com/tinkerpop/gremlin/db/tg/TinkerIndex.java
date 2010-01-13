@@ -18,7 +18,7 @@ public class TinkerIndex implements Index {
     private boolean indexAll = true;
     private Set<String> indexKeys = new HashSet<String>();
 
-    public void put(String key, Object value, Element element) {
+    public void put(final String key, final Object value, final Element element) {
         if (this.indexAll || indexKeys.contains(key)) {
 
             Map<Object, Set<Element>> keyMap = this.indices.get(key);
@@ -35,7 +35,7 @@ public class TinkerIndex implements Index {
         }
     }
 
-    public Set<Element> get(String key, Object value) {
+    public Set<Element> get(final String key, final Object value) {
         Map<Object, Set<Element>> keyMap = this.indices.get(key);
         if (null == keyMap) {
             return null;
@@ -45,7 +45,7 @@ public class TinkerIndex implements Index {
 
     }
 
-    public void remove(String key, Object value, Element element) {
+    public void remove(final String key, final Object value, final Element element) {
         Map<Object, Set<Element>> keyMap = this.indices.get(key);
         if (null != keyMap) {
             Set<Element> elements = keyMap.get(value);
@@ -58,15 +58,15 @@ public class TinkerIndex implements Index {
         }
     }
 
-    public void indexAll(boolean indexAll) {
+    public void indexAll(final boolean indexAll) {
         this.indexAll = indexAll;
     }
 
-    public void addIndexKey(String key) {
+    public void addIndexKey(final String key) {
         indexKeys.add(key);
     }
 
-    public void removeIndexKey(String key) {
+    public void removeIndexKey(final String key) {
         indexKeys.remove(key);
     }
 

@@ -16,7 +16,7 @@ import org.openrdf.sail.SailException;
  */
 public class SailHelper {
 
-    protected static void removeStatement(Statement statement, SailConnection sailConnection) {
+    protected static void removeStatement(final Statement statement, final SailConnection sailConnection) {
         try {
             if (null != statement.getContext()) {
                 sailConnection.removeStatements(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
@@ -30,7 +30,7 @@ public class SailHelper {
         }
     }
 
-    protected static void addStatement(Statement statement, SailConnection sailConnection) {
+    protected static void addStatement(final Statement statement, final SailConnection sailConnection) {
         try {
             if (null != statement.getContext()) {
                 sailConnection.addStatement(statement.getSubject(), statement.getPredicate(), statement.getObject(), statement.getContext());
@@ -44,7 +44,7 @@ public class SailHelper {
         }
     }
 
-    protected static void addStatement(Resource subject, URI predicate, Value object, Resource context, SailConnection sailConnection) {
+    protected static void addStatement(final Resource subject, final URI predicate, final Value object, final Resource context, final SailConnection sailConnection) {
         Statement statement;
         if (null != context) {
             statement = new ContextStatementImpl(subject, predicate, object, context);

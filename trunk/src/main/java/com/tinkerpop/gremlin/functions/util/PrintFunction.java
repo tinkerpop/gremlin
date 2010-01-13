@@ -14,7 +14,7 @@ public class PrintFunction implements Function {
 
     public static final String FUNCTION_NAME = "print";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters && parameters.length > 0) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);

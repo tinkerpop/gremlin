@@ -17,7 +17,7 @@ public class CommentStatement extends SimpleStatement {
     # a comment
     */
 
-    public CommentStatement(XPathEvaluator xPathEvaluator) {
+    public CommentStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
     
@@ -25,7 +25,7 @@ public class CommentStatement extends SimpleStatement {
         return null;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return commentPattern.matcher(firstLine).find();
     }
 }

@@ -23,7 +23,7 @@ public class RootStatement extends SimpleStatement {
     root 1 2 '3' $four
     */
 
-    public RootStatement(XPathEvaluator xPathEvaluator) {
+    public RootStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
 
@@ -69,7 +69,7 @@ public class RootStatement extends SimpleStatement {
         return roots;
     }
 
-    public static boolean isStatement(String firstLine) {
+    public static boolean isStatement(final String firstLine) {
         return rootPattern.matcher(firstLine).find();
     }
 }

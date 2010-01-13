@@ -50,18 +50,18 @@ public abstract class MongoElement implements Element {
         return keys;
     }
 
-    public Object getProperty(String key) {
+    public Object getProperty(final String key) {
         this.refreshDbObject();
         return ((DBObject) this.dbObject.get(MongoGraph.PROPERTIES)).get(key);
     }
 
-    public Object removeProperty(String key) {
+    public Object removeProperty(final String key) {
         Object retObject = ((DBObject) this.dbObject.get(MongoGraph.PROPERTIES)).removeField(key);
         this.saveDbObject();
         return retObject;
     }
 
-    public void setProperty(String key, Object value) {
+    public void setProperty(final String key, final Object value) {
         DBObject properties = (DBObject) this.dbObject.get(MongoGraph.PROPERTIES);
         properties.put(key, value);
         this.dbObject.put(MongoGraph.PROPERTIES, properties);

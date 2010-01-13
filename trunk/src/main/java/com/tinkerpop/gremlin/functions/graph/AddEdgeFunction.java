@@ -17,7 +17,7 @@ public class AddEdgeFunction implements Function {
 
     public static final String FUNCTION_NAME = "add-e";
 
-    public Edge invoke(ExpressionContext context, Object[] parameters) {
+    public Edge invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (parameters != null && parameters.length > 2) {
 

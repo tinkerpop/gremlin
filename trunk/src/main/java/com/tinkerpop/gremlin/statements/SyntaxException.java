@@ -6,7 +6,7 @@ package com.tinkerpop.gremlin.statements;
  */
 public class SyntaxException extends RuntimeException {
 
-    public SyntaxException(String message) {
+    public SyntaxException(final String message) {
         super(message);
     }
 }

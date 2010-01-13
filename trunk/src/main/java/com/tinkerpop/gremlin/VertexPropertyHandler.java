@@ -23,7 +23,7 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
     }
 
 
-    public String[] getPropertyNames(Object vertexObject) {
+    public String[] getPropertyNames(final Object vertexObject) {
         Vertex vertex = (Vertex) vertexObject;
         List<String> list = new ArrayList<String>();
         list.addAll(vertex.getPropertyKeys());
@@ -31,14 +31,14 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
         return list.toArray(new String[list.size()]);
     }
 
-    public void setProperty(Object vertexObject, String key, Object value) {
+    public void setProperty(final Object vertexObject, final String key, final Object value) {
         if (!key.equals(Tokens.OUT_EDGES) && !key.equals(Tokens.IN_EDGES) && !key.equals(Tokens.BOTH_EDGES) && !key.equals(Tokens.ID)) {
             Vertex vertex = (Vertex) vertexObject;
             vertex.setProperty(key, value);
         }
     }
 
-    public Object getProperty(Object vertexObject, String key) {
+    public Object getProperty(final Object vertexObject, final String key) {
         Vertex vertex = (Vertex) vertexObject;
         if (key.equals(Tokens.OUT_EDGES)) {
             return vertex.getOutEdges();

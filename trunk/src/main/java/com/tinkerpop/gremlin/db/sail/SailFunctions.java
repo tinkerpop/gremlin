@@ -31,9 +31,10 @@ public class SailFunctions implements Functions {
         functionMap.put(LoadFunction.FUNCTION_NAME, new LoadFunction());
         functionMap.put(PrefixFunction.FUNCTION_NAME, new PrefixFunction());
         functionMap.put(NamespaceFunction.FUNCTION_NAME, new NamespaceFunction());
+        functionMap.put(SparqlFunction.FUNCTION_NAME, new SparqlFunction());
     }
 
-    public Function getFunction(String namespace, String name, Object[] parameters) {
+    public Function getFunction(final String namespace, final String name, final Object[] parameters) {
         Function function = functionMap.get(name);
         if (null != function)
             return function;

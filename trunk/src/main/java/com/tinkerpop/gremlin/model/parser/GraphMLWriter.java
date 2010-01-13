@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class GraphMLWriter {
 
-    public static void outputGraph(Graph graph, OutputStream graphMLOutputStream, Map<String, String> vertexKeyTypes, Map<String, String> edgeKeyTypes) throws XMLStreamException {
+    public static void outputGraph(final Graph graph, final OutputStream graphMLOutputStream, final Map<String, String> vertexKeyTypes, final Map<String, String> edgeKeyTypes) throws XMLStreamException {
 
         XMLOutputFactory inputFactory = XMLOutputFactory.newInstance();
         XMLStreamWriter writer = inputFactory.createXMLStreamWriter(graphMLOutputStream);
@@ -85,7 +85,7 @@ public class GraphMLWriter {
 
     }
 
-    public static void outputGraph(Graph graph, OutputStream graphMLOutputStream) throws XMLStreamException {
+    public static void outputGraph(final Graph graph, final OutputStream graphMLOutputStream) throws XMLStreamException {
         Map<String, String> vertexKeyTypes = new HashMap<String, String>();
         Map<String, String> edgeKeyTypes = new HashMap<String, String>();
 
@@ -106,7 +106,7 @@ public class GraphMLWriter {
         GraphMLWriter.outputGraph(graph, graphMLOutputStream, vertexKeyTypes, edgeKeyTypes);
     }
 
-    private static String getStringType(Object object) {
+    private static String getStringType(final Object object) {
         if (object instanceof String)
             return GraphMLTokens.STRING;
         else if (object instanceof Integer)

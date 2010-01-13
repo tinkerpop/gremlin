@@ -127,6 +127,12 @@
             <version>2.3-pr1</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-queryparser-sparql</artifactId>
+            <version>2.3-pr1</version>
+            <type>jar</type>
+        </dependency>
         <!-- MONGODB SUPPORT -->
         <dependency>
             <groupId>org.mongodb</groupId>

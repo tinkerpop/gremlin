@@ -15,7 +15,7 @@ public class ClearFunction implements Function {
 
     public static final String FUNCTION_NAME = "clear";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
         Graph graph = GraphFunctionHelper.getGraph(context, parameters);
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
         if (null == objects || (objects.length == 1 && objects[0] instanceof Graph)) {

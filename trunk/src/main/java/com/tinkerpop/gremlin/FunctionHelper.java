@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class FunctionHelper {
 
-    public static boolean assertTypes(Object[] objects, Class[] types) {
+    public static boolean assertTypes(final Object[] objects, final Class[] types) {
         for (int i = 0; i < objects.length; i++) {
             if (!types[i].isInstance(objects[i]))
                 return false;
@@ -24,19 +24,19 @@ public class FunctionHelper {
         return true;
     }
 
-    public static boolean isLastInContext(ExpressionContext context) {
+    public static boolean isLastInContext(final ExpressionContext context) {
         return (context.getContextNodeList().size() == context.getPosition()) || (context.getPosition() == 0);
     }
 
-    public static boolean isFirstInContext(ExpressionContext context) {
+    public static boolean isFirstInContext(final ExpressionContext context) {
         return context.getPosition() == 1;
     }
 
-    public static GremlinPathContext getGremlin(ExpressionContext context) {
+    public static GremlinPathContext getGremlin(final ExpressionContext context) {
         return (GremlinPathContext) context.getJXPathContext();
     }
 
-    public static Graph getGraph(ExpressionContext context) {
+    public static Graph getGraph(final ExpressionContext context) {
         Object graph = FunctionHelper.getGremlin(context).getVariable(Tokens.GRAPH_VARIABLE);
         if (null != graph && graph instanceof Graph)
             return (Graph) graph;
@@ -45,7 +45,7 @@ public class FunctionHelper {
 
     }
 
-    public static List<Object> asObject(List<Pointer> nodePointers) {
+    public static List<Object> asObject(final List<Pointer> nodePointers) {
         List<Object> nodeValues = new ArrayList<Object>();
         for (Pointer p : nodePointers) {
             nodeValues.add(p.getValue());
@@ -53,11 +53,11 @@ public class FunctionHelper {
         return nodeValues;
     }
 
-    public static String makeFunctionName(String namespace, String name) {
+    public static String makeFunctionName(final String namespace, String name) {
         return namespace + ":" + name;
     }
 
-    public static boolean isUnmodifiable(Object object) {
+    public static boolean isUnmodifiable(final Object object) {
         if (object instanceof List) {
             try {
                 ((List) object).remove(-1);
@@ -70,7 +70,7 @@ public class FunctionHelper {
         return false;
     }
 
-    public static Object nodeSetConversion(Object object) {
+    public static Object nodeSetConversion(final Object object) {
         if (object instanceof NodeSet) {
             List list = new ArrayList(((NodeSet) object).getValues());
             if (list.size() == 1)
@@ -82,7 +82,7 @@ public class FunctionHelper {
         }
     }
 
-    public static Object[] nodeSetConversion(Object[] objects) {
+    public static Object[] nodeSetConversion(final Object[] objects) {
         if (null != objects) {
             Object[] converts = new Object[objects.length];
             for (int i = 0; i < objects.length; i++) {

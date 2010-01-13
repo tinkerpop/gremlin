@@ -59,7 +59,7 @@ public class GremlinEvaluator {
         return null;
     }
 
-    public List evaluate(InputStream input) throws IOException, SyntaxException, EvaluationException {
+    public List evaluate(final InputStream input) throws IOException, SyntaxException, EvaluationException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String line;
         List result = null;
@@ -69,15 +69,15 @@ public class GremlinEvaluator {
         return result;
     }
 
-    public void setVariable(String variable, Object value) {
+    public void setVariable(final String variable, final Object value) {
         this.xPathEvaluator.setVariable(variable, value);
     }
 
-    public Object getVariable(String variable) {
+    public Object getVariable(final String variable) {
         return this.xPathEvaluator.getVariable(variable);
     }
 
-    public void removeVariable(String variable) {
+    public void removeVariable(final String variable) {
         this.xPathEvaluator.removeVariable(variable);
     }
 

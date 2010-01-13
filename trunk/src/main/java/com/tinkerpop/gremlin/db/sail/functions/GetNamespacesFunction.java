@@ -18,7 +18,7 @@ public class GetNamespacesFunction implements Function {
 
     public static final String FUNCTION_NAME = "get-ns";
 
-    public Map invoke(ExpressionContext context, Object[] parameters) {
+    public Map invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);

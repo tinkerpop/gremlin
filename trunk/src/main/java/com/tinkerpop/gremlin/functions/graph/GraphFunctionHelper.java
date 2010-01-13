@@ -10,7 +10,7 @@ import org.apache.commons.jxpath.ExpressionContext;
  */
 public class GraphFunctionHelper {
 
-    public static Graph getGraph(ExpressionContext context, Object[] parameters) {
+    public static Graph getGraph(final ExpressionContext context, final Object[] parameters) {
         if (null != parameters && parameters.length > 0) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof Graph) {

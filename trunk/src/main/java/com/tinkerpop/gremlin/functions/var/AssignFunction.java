@@ -14,7 +14,7 @@ public class AssignFunction implements Function {
 
     public static final String FUNCTION_NAME = "assign";
 
-    public Object invoke(ExpressionContext context, Object[] parameters) {
+    public Object invoke(final ExpressionContext context, final Object[] parameters) {
 
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 
@@ -49,7 +49,7 @@ public class AssignFunction implements Function {
     }
 
 
-    private static Object setMapKey(Map map, Object key, Object value) {
+    private static Object setMapKey(final Map map, final Object key, final Object value) {
         if (value instanceof List || value instanceof Map)
             throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
 
@@ -57,7 +57,7 @@ public class AssignFunction implements Function {
         return value;
     }
 
-    private static Object setElementKey(Element element, String key, Object value) {
+    private static Object setElementKey(final Element element, final String key, final Object value) {
         if (value instanceof List || value instanceof Map)
             throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);
 
@@ -66,7 +66,7 @@ public class AssignFunction implements Function {
     }
 
 
-    private static Object setListIndex(List list, Integer index, Object value) {
+    private static Object setListIndex(final List list, final Integer index, final Object value) {
         if (list.size() < index + 1)
             throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.INDEX_BOUNDS);
 

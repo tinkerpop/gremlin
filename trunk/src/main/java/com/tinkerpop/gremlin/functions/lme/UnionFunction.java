@@ -12,7 +12,7 @@ public class UnionFunction implements Function {
 
     public static final String FUNCTION_NAME = "union";
 
-    public List invoke(ExpressionContext context, Object[] parameters) {
+    public List invoke(final ExpressionContext context, final Object[] parameters) {
 
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
         if (null != objects && objects.length > 1) {

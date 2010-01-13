@@ -15,7 +15,7 @@ public class CloseFunction implements Function {
 
     public static final String FUNCTION_NAME = "close";
 
-    public Boolean invoke(ExpressionContext context, Object[] parameters) {
+    public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         Graph graph = GraphFunctionHelper.getGraph(context, parameters);
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);

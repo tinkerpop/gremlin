@@ -20,7 +20,7 @@ public class TinkerGraph implements Graph {
     protected Map<String, Vertex> vertices = new HashMap<String, Vertex>();
     private TinkerIndex index = new TinkerIndex();
 
-    public Vertex addVertex(Object id) {
+    public Vertex addVertex(final Object id) {
         String idString;
         if (null != id) {
             idString = id.toString();
@@ -39,7 +39,7 @@ public class TinkerGraph implements Graph {
         }
     }
 
-    public Vertex getVertex(Object id) {
+    public Vertex getVertex(final Object id) {
         if (null == id)
             return null;
         else {
@@ -56,7 +56,7 @@ public class TinkerGraph implements Graph {
         return new TinkerEdgeIterable(this.getVertices());
     }
 
-    public void removeVertex(Vertex vertex) {
+    public void removeVertex(final Vertex vertex) {
         Set<Edge> edges = vertex.getBothEdges();
         for (Edge edge : edges) {
             this.removeEdge(edge);
@@ -67,7 +67,7 @@ public class TinkerGraph implements Graph {
         this.vertices.remove(vertex.getId().toString());
     }
 
-    public Edge addEdge(Object id, Vertex outVertex, Vertex inVertex, String label) {
+    public Edge addEdge(final Object id, final Vertex outVertex, final Vertex inVertex, final String label) {
         String idString;
         if (null != id) {
             idString = id.toString();
@@ -84,7 +84,7 @@ public class TinkerGraph implements Graph {
         return edge;
     }
 
-    public void removeEdge(Edge edge) {
+    public void removeEdge(final Edge edge) {
         // TODO: handle nulls from $g/V[g:remove-ve($g,.)
         TinkerVertex outVertex = (TinkerVertex) edge.getOutVertex();
         TinkerVertex inVertex = (TinkerVertex) edge.getInVertex();
@@ -141,7 +141,7 @@ public class TinkerGraph implements Graph {
         private Iterator<Edge> currentEdges;
         private boolean complete = false;
 
-        public TinkerEdgeIterator(Iterator<Vertex> vertices) {
+        public TinkerEdgeIterator(final Iterator<Vertex> vertices) {
             this.vertices = vertices;
             this.complete = this.goToNextEdge();
 

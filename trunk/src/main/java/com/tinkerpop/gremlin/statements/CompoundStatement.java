@@ -16,7 +16,7 @@ public abstract class CompoundStatement extends Statement {
 
     protected static final Pattern endPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX + Tokens.END);
 
-    public CompoundStatement(XPathEvaluator xPathEvaluator) {
+    public CompoundStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
         this.statementList = new ArrayList<Statement>();
         this.xPathEvaluator.incrDepth(); // COMPOUND STATEMENT HAS STARTED: INCREMENT THE DEPTH OF THE EVALUATOR
@@ -29,7 +29,7 @@ public abstract class CompoundStatement extends Statement {
             return null;
     }
 
-    protected void updateStatementList(String line) {
+    protected void updateStatementList(final String line) {
         Statement currentStatement = this.getCurrentStatement();
         if (null != currentStatement && !currentStatement.isComplete()) {
             currentStatement.compileTokens(line);
