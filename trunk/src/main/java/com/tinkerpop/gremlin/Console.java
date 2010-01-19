@@ -43,7 +43,8 @@ public class Console {
             History history = new History();
             history.setHistoryFile(new File(".gremlin_history"));
             reader.setHistory(history);
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
 
         GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
 
@@ -59,7 +60,7 @@ public class Console {
                 line = reader.readLine(INDENT + generateIndentation(gremlinEvaluator.getDepth() * TAB_LENGTH));
             else {
                 line = reader.readLine(PROMPT);
-                if (line.equalsIgnoreCase(QUIT))
+                if (null == line || line.equalsIgnoreCase(QUIT))
                     break;
             }
             if (line.length() > 0) {
@@ -67,14 +68,21 @@ public class Console {
                     List results = gremlinEvaluator.evaluate(line);
                     if (null != results) {
                         if (results.size() > 0) {
-                            for (Object o : results) {
-                                if (o instanceof Map) {
-                                    Map map = (Map) o;
-                                    for (Object key : map.keySet()) {
-                                        output.println(PRINT_RETURN + key + MAP_EQUALS + map.get(key));
-                                    }
-                                } else {
+                            if (results.size() == 1 && results.get(0) instanceof Map) {
+                                Map map = (Map) results.get(0);
+                                for (Object key : map.keySet()) {
+                                    output.println(PRINT_RETURN + key + MAP_EQUALS + map.get(key));
+                                }
+                            } else {
+                                for (Object o : results) {
+                                    /*if (o instanceof Map) {
+                                      Map map = (Map) o;
+                                      for (Object key : map.keySet()) {
+                                          output.println(PRINT_RETURN + key + MAP_EQUALS + map.get(key));
+                                      }
+                                  } else {*/
                                     output.println(PRINT_RETURN + o);
+                                    //}
                                 }
                             }
                         }

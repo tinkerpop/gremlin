@@ -6,7 +6,9 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RetainFunction implements Function {
     public static final String FUNCTION_NAME = "retain";
@@ -19,7 +21,7 @@ public class RetainFunction implements Function {
             for (Object object : objects) {
                 if (object instanceof List)
                     setA.addAll((List) object);
-                else if (!(object instanceof Map))
+                else
                     setA.add(object);
 
             }
@@ -28,8 +30,8 @@ public class RetainFunction implements Function {
             setA.retainAll(setB);
             return setA.size() > 0;
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
-        
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+
     }
 
 }

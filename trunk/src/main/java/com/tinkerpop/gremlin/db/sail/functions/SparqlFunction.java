@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import info.aduna.iteration.CloseableIteration;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -14,8 +15,10 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.impl.MapBindingSet;
 import org.openrdf.query.parser.ParsedQuery;
 import org.openrdf.query.parser.sparql.SPARQLParser;
-import org.openrdf.sail.SailConnection;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,13 +38,11 @@ public class SparqlFunction implements Function {
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{SailGraph.class, String.class})) {
-                SparqlFunction.executeSparql((SailGraph) objects[0], (String) objects[1]);
-                return null;
+                return SparqlFunction.executeSparql((SailGraph) objects[0], (String) objects[1]);
             } else if (objects.length == 1) {
                 Graph graph = FunctionHelper.getGraph(context);
                 if (graph instanceof SailGraph && objects[0] instanceof String) {
-                    SparqlFunction.executeSparql((SailGraph) graph, (String) objects[0]);
-                    return null;
+                    return SparqlFunction.executeSparql((SailGraph) graph, (String) objects[0]);
                 }
             }
         }
@@ -59,32 +60,29 @@ public class SparqlFunction implements Function {
         return prefixString;
     }
 
-    private static void executeSparql(final SailGraph graph, String sparqlQuery) {
+    private static List<Map<String, Vertex>> executeSparql(final SailGraph graph, String sparqlQuery) {
         try {
             sparqlQuery = getPrefixes(graph) + sparqlQuery;
-            System.out.println(sparqlQuery);
             SPARQLParser parser = new SPARQLParser();
             ParsedQuery query = parser.parseQuery(sparqlQuery, null);
-            SailConnection sc = graph.getSailConnection();
+            boolean includeInferred = false;
+            CloseableIteration<? extends BindingSet, QueryEvaluationException> results = graph.getSailConnection().evaluate(query.getTupleExpr(), query.getDataset(), new MapBindingSet(), includeInferred);
+            List<Map<String, Vertex>> returnList = new ArrayList<Map<String, Vertex>>();
             try {
-                boolean includeInferred = false;
-                CloseableIteration<? extends BindingSet, QueryEvaluationException> results = sc.evaluate(query.getTupleExpr(), query.getDataset(), new MapBindingSet(), includeInferred);
-                try {
-                    while (results.hasNext()) {
-                        BindingSet bs = results.next();
-                        System.out.println("------");
-                        for (Binding b : bs) {
-                            System.out.println(b.getName() + " " + b.getValue());
-                        }
+                while (results.hasNext()) {
+                    BindingSet bs = results.next();
+                    Map<String, Vertex> returnMap = new HashMap<String, Vertex>();
+                    for (Binding b : bs) {
+                        returnMap.put(b.getName(), graph.getVertex(b.getValue().toString()));
                     }
-                } finally {
-                    results.close();
+                    returnList.add(returnMap);
                 }
             } finally {
-                sc.close();
+                results.close();
             }
+            return returnList;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new EvaluationException(e.getMessage());
         }
     }
 }

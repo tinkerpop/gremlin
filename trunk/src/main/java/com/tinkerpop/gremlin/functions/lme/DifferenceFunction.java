@@ -6,7 +6,10 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class DifferenceFunction implements Function {
 
@@ -21,13 +24,13 @@ public class DifferenceFunction implements Function {
 
             if (objects[0] instanceof List)
                 set.addAll((List) objects[0]);
-            else if (!(objects[0] instanceof Map))
+            else
                 set.add(objects[0]);
 
             for (int i = 1; i < objects.length; i++) {
                 if (objects[i] instanceof List)
                     set.removeAll((List) objects[i]);
-                else if (!(objects[i] instanceof Map)) {
+                else {
                     set.remove(objects[i]);
                 }
                 if (set.size() == 0)
@@ -35,7 +38,7 @@ public class DifferenceFunction implements Function {
             }
             return new ArrayList(set);
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 }

@@ -6,7 +6,7 @@ package com.tinkerpop.gremlin.statements;
  */
 public class EvaluationException extends RuntimeException {
 
-    private static final String EMBEDDED_COLLECTION_MESSAGE = "a collection or map can not be the element of a collection or map";
+    private static final String EMBEDDED_COLLECTION_MESSAGE = "a list can not be the element of a list";
     private static final String UNSUPPORTED_PARAMETERS_MESSAGE = "does not support provided parameters";
     private static final String INDEX_BOUND_MESSAGE = "index out of bounds of collection";
     private static final String NO_FUNCTION_MESSAGE = "undefined function";

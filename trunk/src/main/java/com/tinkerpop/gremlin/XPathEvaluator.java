@@ -47,10 +47,17 @@ public class XPathEvaluator {
             }
             if (type == ReturnType.LIST) {
                 List results = this.gremlinPathContext.selectNodes(xPathString);
-                if (results.size() == 1)
-                    this.setVariable(Tokens.LAST_VARIABLE, results.get(0));
-                else
+                if (results.size() == 1) {
+                    Object x = results.get(0);
+                    this.setVariable(Tokens.LAST_VARIABLE, x);
+                    if(x instanceof List) {
+                        return x;
+                    }
+                }
+                else {
                     this.setVariable(Tokens.LAST_VARIABLE, results);
+                }
+
                 return results;
             } else {
                 return this.gremlinPathContext.iterate(xPathString);

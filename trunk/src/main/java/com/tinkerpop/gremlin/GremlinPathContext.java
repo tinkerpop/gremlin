@@ -106,10 +106,10 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         } else {
             // $i[1] := ././././
             // $i/@key := ././././
-            if (!(value instanceof List || value instanceof Map)) {
+            if (!(value instanceof List)) { //|| (value instanceof Map) {
                 this.setValue(variable, value);
             } else {
-                if (value instanceof List && ((List) value).size() == 0) {
+                if (((List) value).size() == 0) {
                     this.setValue(variable, null);
                 } else {
                     throw EvaluationException.createException(EvaluationException.EvaluationErrorType.EMBEDDED_COLLECTIONS);

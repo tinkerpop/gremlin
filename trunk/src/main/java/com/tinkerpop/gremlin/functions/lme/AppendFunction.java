@@ -9,7 +9,6 @@ import org.apache.commons.jxpath.Function;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class AppendFunction implements Function {
 
@@ -24,12 +23,13 @@ public class AppendFunction implements Function {
             for (Object object : objects) {
                 if (object instanceof Collection)
                     list.addAll((Collection) object);
-                else if (!(object instanceof Map))
+                else {
                     list.add(object);
+                }
 
             }
             return list;
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
     }
 }

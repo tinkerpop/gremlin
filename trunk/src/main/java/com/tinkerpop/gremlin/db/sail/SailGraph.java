@@ -226,6 +226,7 @@ public class SailGraph implements Graph {
 
     public void shutdown() {
         try {
+            this.sailConnection.commit();
             this.sailConnection.close();
             this.sail.shutDown();
         } catch (SailException e) {

@@ -38,7 +38,7 @@ public class AssignFunction implements Function {
                     // g:assign(element,key,value)
                     return setElementKey((Element) objects[0], (String) objects[1], objects[2]);
 
-                } else if (objects[0] instanceof List && objects[1] instanceof Number && !(objects[2] instanceof List || objects[2] instanceof Map)) {
+                } else if (objects[0] instanceof List && objects[1] instanceof Number && !(objects[2] instanceof List)) {
                     // g:assign(list,index,value)
                     return setListIndex((List) objects[0], ((Number) objects[1]).intValue() - 1, objects[2]);
                 }
