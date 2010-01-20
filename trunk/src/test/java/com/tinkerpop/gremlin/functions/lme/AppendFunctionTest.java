@@ -31,5 +31,4 @@ public class AppendFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("g:append(g:append(1,2),g:append(3,4))").get(3), 4.0);
 
     }
-
 }

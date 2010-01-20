@@ -30,11 +30,6 @@ public class SailEdge implements Edge {
     private static final String NAMED_GRAPH_PROPERTY = "RDF graph edges can only have named graph (ng) properties";
 
     protected final static String NAMED_GRAPH = "ng";
-    protected static Set<String> keys = new HashSet<String>();
-
-    static {
-        keys.add(NAMED_GRAPH);
-    }
 
     public SailEdge(final Statement statement, final SailConnection sailConnection) {
         this.statement = statement;
@@ -46,6 +41,9 @@ public class SailEdge implements Edge {
     }
 
     public Set<String> getPropertyKeys() {
+        Set<String> keys = new HashSet<String>();
+        if(null != this.statement.getContext())
+            keys.add(NAMED_GRAPH);
         return keys;
     }
 

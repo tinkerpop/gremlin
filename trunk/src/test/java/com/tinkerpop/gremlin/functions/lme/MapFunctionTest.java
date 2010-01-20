@@ -41,4 +41,11 @@ public class MapFunctionTest extends TestCase {
         assertTrue(((Map) (xe.evaluateList("g:map($e)")).get(0)).keySet().contains("weight"));
     }
 
+    public void testMapEmbeddingFunction() {
+        XPathEvaluator xe = new XPathEvaluator();
+        assertEquals(xe.evaluateList("g:map('key1',g:append(1,2,3))").size(), 1);
+        assertEquals(xe.evaluateList("g:map('key1',g:append(1,2,3),'key2',g:map('key0','value0'))").size(), 1);
+        assertEquals(xe.evaluateList("g:map('key1',g:append(1,2,3),'key2',g:map('key0','value0'),'key3',g:map('key00',g:append(1,2,3)))").size(), 1);
+    }
+
 }

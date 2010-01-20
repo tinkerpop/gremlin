@@ -33,6 +33,8 @@ public class Tokens {
 
     public static final String SINGLESPACE = " ";
     public static final String FORWARD_SLASH = "/";
+    public static final String UNDERSCORE = "_";
+    public static final String UNDERSCORE_2 = "__";
 
     public static final String VERTICES = "V";
     public static final String EDGES = "E";
