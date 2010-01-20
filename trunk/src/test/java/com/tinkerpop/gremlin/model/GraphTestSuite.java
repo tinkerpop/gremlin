@@ -196,4 +196,26 @@ public class GraphTestSuite extends ModelTestSuite {
         assertEquals(vertexIds.size(), 4);
 
     }
+
+    public void testConnectivityPatterns2(Graph graph) {
+        Vertex a = graph.addVertex(convertId("1"));
+        Vertex b = graph.addVertex(convertId("2"));
+        Vertex c = graph.addVertex(convertId("3"));
+        Vertex d = graph.addVertex(convertId("4"));
+
+        if (config.supportsVertexIteration)
+            assertEquals(countIterator(graph.getVertices()), 4);
+
+        Edge e = graph.addEdge(null, a, b, convertId("knows"));
+        Edge f = graph.addEdge(null, b, c, convertId("knows"));
+        Edge g = graph.addEdge(null, b, d, convertId("knows"));
+        Edge h = graph.addEdge(null, d, a, convertId("knows"));
+
+        Set<Edge> aOut = a.getOutEdges();
+        assertEquals(aOut.size(), 1);
+        assertEquals(aOut.iterator().next().getInVertex(), b);
+        Set<Edge> bOut = b.getOutEdges();
+        assertEquals(bOut.size(), 2);
+
+    }
 }

@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.net.UnknownHostException;
 import java.util.Iterator;
@@ -25,15 +26,9 @@ public class MongoGraph implements Graph {
     public static final String EDGE = "edge";
     public static final String ID = "_id";
     public static final String PROPERTIES = "properties";
-    public static final String OUT_VERTEX = "outVertex";
-    public static final String IN_VERTEX = "inVertex";
-    public static final String OUT_EDGES = "outEdges";
-    public static final String IN_EDGES = "inEdges";
-    public static final String LABEL = "label";
 
     private DBCollection edgeCollection;
     private DBCollection vertexCollection;
-    private long currentId = 0l;
 
     /*
         {
@@ -42,7 +37,7 @@ public class MongoGraph implements Graph {
             name : "marko",
             age : 29
           },
-          outEdges : ["7","8","9"]
+          outE : ["7","8","9"]
         }
 
 
@@ -52,8 +47,8 @@ public class MongoGraph implements Graph {
           properties: {
             weight : 0.5
           },
-          outVertex : "1",
-          inVertex : "2"
+          outV : "1",
+          inV : "2"
         }
      */
 
@@ -107,9 +102,9 @@ public class MongoGraph implements Graph {
             Object inVertexId = edge.getInVertex().getId();
             Object outVertexId = edge.getOutVertex().getId();
             if (!inVertexId.equals(vertexId)) {
-                ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), IN_EDGES);
+                ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), Tokens.IN_EDGES);
             } else if (!outVertexId.equals(vertexId)) {
-                ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), OUT_EDGES);
+                ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), Tokens.OUT_EDGES);
             }
             this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
         }
@@ -127,21 +122,21 @@ public class MongoGraph implements Graph {
         if (null == id)
             id = UUID.randomUUID().toString();
         edgeObject.put(MongoGraph.ID, id.toString());
-        edgeObject.put(MongoGraph.OUT_VERTEX, outVertex.getId());
-        edgeObject.put(MongoGraph.IN_VERTEX, inVertex.getId());
-        edgeObject.put(MongoGraph.LABEL, label);
+        edgeObject.put(Tokens.OUT_VERTEX, outVertex.getId());
+        edgeObject.put(Tokens.IN_VERTEX, inVertex.getId());
+        edgeObject.put(Tokens.LABEL, label);
         edgeObject.put(MongoGraph.PROPERTIES, new BasicDBObject());
         this.edgeCollection.insert(edgeObject);
 
-        ((MongoVertex) outVertex).addEdgeId(id, MongoGraph.OUT_EDGES);
-        ((MongoVertex) inVertex).addEdgeId(id, MongoGraph.IN_EDGES);
+        ((MongoVertex) outVertex).addEdgeId(id, Tokens.OUT_EDGES);
+        ((MongoVertex) inVertex).addEdgeId(id, Tokens.IN_EDGES);
 
         return new MongoEdge(edgeObject, this);
     }
 
     public void removeEdge(final Edge edge) {
-        ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), MongoGraph.OUT_EDGES);
-        ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), MongoGraph.IN_EDGES);
+        ((MongoVertex) edge.getOutVertex()).removeEdgeId(edge.getId(), Tokens.OUT_EDGES);
+        ((MongoVertex) edge.getInVertex()).removeEdgeId(edge.getId(), Tokens.IN_EDGES);
         this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
     }
 

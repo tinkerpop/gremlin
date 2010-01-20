@@ -26,10 +26,11 @@ public class ExceptFunction implements Function {
                     setA.add(object);
 
             }
-            Set setB = new HashSet();
+            /*Set setB = new HashSet();
             setB.add(context.getContextNodePointer().getValue());
             setB.removeAll(setA);
-            return setB.size() > 0;
+            return setB.size() > 0;*/
+            return !setA.contains(context.getContextNodePointer().getValue());
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 

@@ -42,7 +42,7 @@ public class SailEdge implements Edge {
 
     public Set<String> getPropertyKeys() {
         Set<String> keys = new HashSet<String>();
-        if(null != this.statement.getContext())
+        if (null != this.statement.getContext())
             keys.add(NAMED_GRAPH);
         return keys;
     }
@@ -140,19 +140,19 @@ public class SailEdge implements Edge {
         }
     }
 
-    public int hashCode() {
-        return this.statement.hashCode();
+    public boolean equals(final Object object) {
+        return object instanceof SailEdge && ((SailEdge) object).getId().equals(this.getId());
     }
 
-    public boolean equals(final Object object) {
-        return object instanceof SailEdge && object.hashCode() == this.hashCode();
+    public int hashCode() {
+        return this.getId().hashCode();
     }
 
     public Object getId() {
         //return this.statement.hashCode();
-        if(null != this.statement.getContext())
-            return "(" + this.statement.getSubject() + ", " + this.statement.getPredicate() + ", " + this.statement.getObject() +") [" + this.statement.getContext() + "]";
+        if (null != this.statement.getContext())
+            return "(" + this.statement.getSubject() + ", " + this.statement.getPredicate() + ", " + this.statement.getObject() + ") [" + this.statement.getContext() + "]";
         else
-            return "(" + this.statement.getSubject() + ", " + this.statement.getPredicate() + ", " + this.statement.getObject() +")";
+            return "(" + this.statement.getSubject() + ", " + this.statement.getPredicate() + ", " + this.statement.getObject() + ")";
     }
 }

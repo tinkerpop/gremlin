@@ -4,6 +4,7 @@ import com.mongodb.DBObject;
 import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +21,17 @@ public class MongoEdge extends MongoElement implements Edge {
     }
 
     public String getLabel() {
-        return this.dbObject.get(MongoGraph.LABEL).toString();
+        return this.dbObject.get(Tokens.LABEL).toString();
     }
 
     public Vertex getOutVertex() {
-        Object id = this.dbObject.get(MongoGraph.OUT_VERTEX);
+        Object id = this.dbObject.get(Tokens.OUT_VERTEX);
         return graph.getVertex(id);
 
     }
 
     public Vertex getInVertex() {
-        Object id = this.dbObject.get(MongoGraph.IN_VERTEX);
+        Object id = this.dbObject.get(Tokens.IN_VERTEX);
         return graph.getVertex(id);
     }
 
@@ -41,12 +42,8 @@ public class MongoEdge extends MongoElement implements Edge {
         return bothVertices;
     }
 
-    public int hashCode() {
-        return this.getId().hashCode();
-    }
-
     public boolean equals(final Object object) {
-        return object instanceof MongoEdge && object.hashCode() == this.hashCode();
+        return object instanceof MongoEdge && ((MongoEdge) object).getId().equals(this.getId());
     }
 
     public String toString() {

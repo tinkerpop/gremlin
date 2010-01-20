@@ -25,10 +25,11 @@ public class RetainFunction implements Function {
                     setA.add(object);
 
             }
-            Set setB = new HashSet();
+            /*Set setB = new HashSet();
             setB.add(context.getContextNodePointer().getValue());
             setA.retainAll(setB);
-            return setA.size() > 0;
+            return setA.size() > 0;*/
+            return setA.contains(context.getContextNodePointer().getValue());
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 

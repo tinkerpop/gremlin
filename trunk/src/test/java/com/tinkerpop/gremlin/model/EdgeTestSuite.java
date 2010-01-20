@@ -17,6 +17,26 @@ public class EdgeTestSuite extends ModelTestSuite {
         super(config);
     }
 
+    public void testEdgeEquality(Graph graph) {
+        Vertex v = graph.addVertex(convertId("1"));
+        Vertex u = graph.addVertex(convertId("2"));
+        Edge e = graph.addEdge(null, v, u, convertId("test_label"));
+        assertTrue(v.getOutEdges().contains(e));
+        assertTrue(u.getInEdges().contains(e));
+        assertEquals(v.getOutEdges().iterator().next(), u.getInEdges().iterator().next());
+        Set<Edge> set = new HashSet<Edge>();
+        set.add(e);
+        set.add(e);
+        set.add(v.getOutEdges().iterator().next());
+        set.add(v.getOutEdges().iterator().next());
+        set.add(u.getInEdges().iterator().next());
+        set.add(u.getInEdges().iterator().next());
+        if(config.supportsEdgeIteration)
+            set.add(graph.getEdges().iterator().next());
+        assertEquals(set.size(), 1);
+
+    }
+
     public void testAddEdges(Graph graph) {
         Vertex v1 = graph.addVertex(convertId("1"));
         Vertex v2 = graph.addVertex(convertId("2"));
