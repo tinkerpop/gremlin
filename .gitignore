@@ -1,0 +1,4 @@
+.gremlin_history
+trunk/target/**
+trunk/gremlin.log
+*.swp

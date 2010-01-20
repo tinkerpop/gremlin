@@ -60,8 +60,12 @@ public class Console {
                 line = reader.readLine(INDENT + generateIndentation(gremlinEvaluator.getDepth() * TAB_LENGTH));
             else {
                 line = reader.readLine(PROMPT);
-                if (null == line || line.equalsIgnoreCase(QUIT))
+                if (null == line || line.equalsIgnoreCase(QUIT)) {
+                    if(null == line) {
+                      System.out.println();
+                    }
                     break;
+                }
             }
             if (line.length() > 0) {
                 try {
