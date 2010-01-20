@@ -1,14 +1,13 @@
 package com.tinkerpop.gremlin.db.neo4j;
 
+import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.db.StringFactory;
+import org.neo4j.graphdb.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.neo4j.graphdb.Relationship;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,8 +15,8 @@ import org.neo4j.graphdb.Relationship;
  */
 public class Neo4jEdge extends Neo4jElement implements Edge {
 
-    public Neo4jEdge(final Relationship relationship, final Index index) {
-        super(index);
+    public Neo4jEdge(final Relationship relationship, final Index index, final Neo4jGraph graph) {
+        super(index, graph);
         this.element = relationship;
     }
 
@@ -26,11 +25,11 @@ public class Neo4jEdge extends Neo4jElement implements Edge {
     }
 
     public Vertex getOutVertex() {
-        return new Neo4jVertex(((Relationship) this.element).getStartNode(), this.index);
+        return new Neo4jVertex(((Relationship) this.element).getStartNode(), this.index, this.graph);
     }
 
     public Vertex getInVertex() {
-        return new Neo4jVertex(((Relationship) this.element).getEndNode(), this.index);
+        return new Neo4jVertex(((Relationship) this.element).getEndNode(), this.index, this.graph);
     }
 
     public List<Vertex> getBothVertices() {
@@ -40,7 +39,11 @@ public class Neo4jEdge extends Neo4jElement implements Edge {
         return bothVertices;
     }
 
+    public boolean equals(final Object object) {
+        return object instanceof Neo4jEdge && ((Neo4jEdge) object).getId().equals(this.getId());
+    }
+
     public String toString() {
-       return StringFactory.edgeString(this);
+        return StringFactory.edgeString(this);
     }
 }

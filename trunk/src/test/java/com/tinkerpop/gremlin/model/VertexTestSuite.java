@@ -20,6 +20,32 @@ public class VertexTestSuite extends ModelTestSuite {
         super(config);
     }
 
+    public void testVertexEquality(Graph graph) {
+        Vertex v = graph.addVertex(convertId("1"));
+        Vertex u = graph.getVertex(convertId("1"));
+        assertEquals(v, u);
+
+        v = graph.addVertex(null);
+        u = graph.getVertex(v.getId());
+        assertEquals(v, u);
+        assertEquals(graph.getVertex(convertId("1")), graph.getVertex(convertId("1")));
+
+        graph.clear();
+        v = graph.addVertex(convertId("1"));
+        u = graph.getVertex(convertId("1"));
+        Set<Vertex> set = new HashSet<Vertex>();
+        set.add(v);
+        set.add(v);
+        set.add(u);
+        set.add(u);
+        set.add(graph.getVertex(convertId("1")));
+        set.add(graph.getVertex(convertId("1")));
+        if (config.supportsVertexIndex)
+            set.add(graph.getVertices().iterator().next());
+
+        assertEquals(set.size(), 1);
+    }
+
     public void testAddVertex(Graph graph) {
         if (config.supportsVertexIteration) {
             graph.addVertex(convertId("1"));
@@ -253,7 +279,7 @@ public class VertexTestSuite extends ModelTestSuite {
 
             assertEquals(v2.removeProperty("key1"), "value111");
             assertNull(v2.getProperty("key1"));
-            assertNull(v1.getProperty("key1"));   
+            assertNull(v1.getProperty("key1"));
         }
     }
 

@@ -16,12 +16,15 @@ import java.util.Set;
 public class Neo4jIndex implements Index {
 
     private IndexService indexService;
+    private Neo4jGraph graph;
     public Set<String> indexKeys;
+
     public boolean indexAll = true;
 
 
-    public Neo4jIndex(final IndexService indexService) {
+    public Neo4jIndex(final IndexService indexService, final Neo4jGraph graph) {
         this.indexService = indexService;
+        this.graph = graph;
         this.indexKeys = new HashSet<String>();
     }
 
@@ -41,7 +44,7 @@ public class Neo4jIndex implements Index {
             if (itty2.hasNext()) {
                 Set<Element> elements = new HashSet<Element>();
                 while (itty2.hasNext()) {
-                    elements.add(new Neo4jVertex(itty2.next(), this));
+                    elements.add(new Neo4jVertex(itty2.next(), this, this.graph));
                 }
                 return elements;
             }

@@ -32,7 +32,7 @@ public class Neo4jGraph implements Graph {
         this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
-        this.index = new Neo4jIndex(indexService);
+        this.index = new Neo4jIndex(indexService, this);
         this.tx = neo.beginTx();
     }
 
@@ -41,7 +41,7 @@ public class Neo4jGraph implements Graph {
     }
 
     public Vertex addVertex(final Object id) {
-        Vertex vertex = new Neo4jVertex(neo.createNode(), this.index);
+        Vertex vertex = new Neo4jVertex(neo.createNode(), this.index, this);
         this.stopStartTransaction();
         return vertex;
     }
@@ -53,7 +53,7 @@ public class Neo4jGraph implements Graph {
         try {
             Long longId = Double.valueOf(id.toString()).longValue();
             Node node = this.neo.getNodeById(longId);
-            return new Neo4jVertex(node, this.index);
+            return new Neo4jVertex(node, this.index, this);
         } catch (NotFoundException e) {
             return null;
         } catch (NumberFormatException e) {
@@ -62,11 +62,11 @@ public class Neo4jGraph implements Graph {
     }
 
     public Iterable<Vertex> getVertices() {
-        return new NeoVertexIterable(this.neo.getAllNodes());
+        return new NeoVertexIterable(this.neo.getAllNodes(), this);
     }
 
     public Iterable<Edge> getEdges() {
-        return new NeoEdgeIterable(this.neo.getAllNodes());
+        return new NeoEdgeIterable(this.neo.getAllNodes(), this);
     }
 
     public void removeVertex(final Vertex vertex) {
@@ -89,7 +89,7 @@ public class Neo4jGraph implements Graph {
         Node inNode = (Node) ((Neo4jVertex) inVertex).getRawElement();
         Relationship relationship = outNode.createRelationshipTo(inNode, DynamicRelationshipType.withName(label));
         this.stopStartTransaction();
-        return new Neo4jEdge(relationship, this.index);
+        return new Neo4jEdge(relationship, this.index, this);
     }
 
     public void removeEdge(Edge edge) {
@@ -97,7 +97,7 @@ public class Neo4jGraph implements Graph {
         this.stopStartTransaction();
     }
 
-    private void stopStartTransaction() {
+    protected void stopStartTransaction() {
         this.tx.success();
         this.tx.finish();
         this.tx = neo.beginTx();
@@ -120,7 +120,7 @@ public class Neo4jGraph implements Graph {
         this.neo = new EmbeddedGraphDatabase(this.directory);
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
-        this.index = new Neo4jIndex(indexService);
+        this.index = new Neo4jIndex(indexService, this);
         this.tx = neo.beginTx();
         this.removeVertex(this.getVertex(0));
         this.stopStartTransaction();
@@ -147,21 +147,25 @@ public class Neo4jGraph implements Graph {
     private class NeoVertexIterable implements Iterable<Vertex> {
 
         Iterable<Node> nodes;
+        Neo4jGraph graph;
 
-        public NeoVertexIterable(final Iterable<Node> nodes) {
+        public NeoVertexIterable(final Iterable<Node> nodes, final Neo4jGraph graph) {
             this.nodes = nodes;
+            this.graph = graph;
         }
 
         public Iterator<Vertex> iterator() {
-            return new NeoVertexIterator(this.nodes);
+            return new NeoVertexIterator(this.nodes, this.graph);
         }
     }
 
     private class NeoVertexIterator implements Iterator<Vertex> {
 
         Iterator<Node> nodes;
+        Neo4jGraph graph;
 
-        public NeoVertexIterator(final Iterable<Node> nodes) {
+        public NeoVertexIterator(final Iterable<Node> nodes, final Neo4jGraph graph) {
+            this.graph = graph;
             this.nodes = nodes.iterator();
         }
 
@@ -170,7 +174,7 @@ public class Neo4jGraph implements Graph {
         }
 
         public Vertex next() {
-            return new Neo4jVertex(this.nodes.next(), index);
+            return new Neo4jVertex(this.nodes.next(), index, this.graph);
         }
 
         public boolean hasNext() {
@@ -182,30 +186,34 @@ public class Neo4jGraph implements Graph {
     private class NeoEdgeIterable implements Iterable<Edge> {
 
         Iterable<Node> nodes;
+        Neo4jGraph graph;
 
-        public NeoEdgeIterable(final Iterable<Node> nodes) {
+        public NeoEdgeIterable(final Iterable<Node> nodes, final Neo4jGraph graph) {
             this.nodes = nodes;
+            this.graph = graph;
         }
 
         public Iterator<Edge> iterator() {
-            return new NeoEdgeIterator(this.nodes);
+            return new NeoEdgeIterator(this.nodes, graph);
         }
     }
 
     private class NeoEdgeIterator implements Iterator<Edge> {
 
+        private Neo4jGraph graph;
         private Iterator<Node> nodes;
         private Iterator<Relationship> currentRelationships;
         private boolean complete = false;
 
-        public NeoEdgeIterator(final Iterable<Node> nodes) {
+        public NeoEdgeIterator(final Iterable<Node> nodes, final Neo4jGraph graph) {
+            this.graph = graph;
             this.nodes = nodes.iterator();
             this.complete = this.goToNextEdge();
 
         }
 
         public Edge next() {
-            Edge edge = new Neo4jEdge(currentRelationships.next(), index);
+            Edge edge = new Neo4jEdge(currentRelationships.next(), index, this.graph);
             this.complete = this.goToNextEdge();
             return edge;
         }

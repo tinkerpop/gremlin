@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 import org.json.simple.JSONArray;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class JsonFunction implements Function {
 
     public static final String FUNCTION_NAME = "json";
+    private static final String ID = "_id";
 
     public String invoke(final ExpressionContext context, final Object[] parameters) {
 
@@ -37,7 +39,7 @@ public class JsonFunction implements Function {
             } else if (object instanceof Element) {
                 JSONObject jsonElement = new JSONObject();
                 Element element = (Element) object;
-                jsonElement.put("_id", element.getId());
+                jsonElement.put(ID, element.getId());
                 for (String key : element.getPropertyKeys()) {
                     jsonElement.put(key, element.getProperty(key));
                 }
@@ -47,20 +49,21 @@ public class JsonFunction implements Function {
                     for (Edge edge : vertex.getOutEdges()) {
                         jsonArrayOut.add(edge.getId());
                     }
-                    jsonElement.put("outEdges", jsonArrayOut);
+                    jsonElement.put(Tokens.OUT_EDGES, jsonArrayOut);
                     JSONArray jsonArrayIn = new JSONArray();
                     for (Edge edge : vertex.getInEdges()) {
                         jsonArrayIn.add(edge.getId());
                     }
-                    jsonElement.put("inEdges", jsonArrayIn);
+                    jsonElement.put(Tokens.IN_EDGES, jsonArrayIn);
                 } else if (object instanceof Edge) {
                     Edge edge = (Edge) element;
-                    jsonElement.put("outVertex", edge.getOutVertex().getId());
-                    jsonElement.put("inVertex", edge.getInVertex().getId());
+                    jsonElement.put(Tokens.OUT_VERTEX, edge.getOutVertex().getId());
+                    jsonElement.put(Tokens.IN_VERTEX, edge.getInVertex().getId());
 
                 }
                 return jsonElement.toJSONString();
-
+            } else {
+                return object.toString();
             }
         }
 

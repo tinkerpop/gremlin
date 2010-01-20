@@ -40,12 +40,11 @@ public abstract class TinkerElement implements Element {
         return this.properties.remove(key);
     }
 
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
     public String getId() {
         return this.id;
     }
-
-    public int hashCode() {
-        return this.id.hashCode();
-    }
-
 }

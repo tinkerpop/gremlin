@@ -1,11 +1,14 @@
 package com.tinkerpop.gremlin.db.sail;
 
+import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.db.StringFactory;
 import info.aduna.iteration.CloseableIteration;
-import org.openrdf.model.*;
+import org.openrdf.model.Literal;
+import org.openrdf.model.Resource;
+import org.openrdf.model.Statement;
+import org.openrdf.model.Value;
 import org.openrdf.model.impl.LiteralImpl;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.SailConnection;
@@ -207,11 +210,11 @@ public class SailVertex implements Vertex {
     }
 
     public int hashCode() {
-        return this.value.hashCode();
+        return this.getId().hashCode();
     }
 
     public boolean equals(final Object object) {
-        return object instanceof SailVertex && object.hashCode() == this.hashCode();
+        return object instanceof SailVertex && ((SailVertex) object).getId().equals(this.getId());
     }
 
     public Object getId() {

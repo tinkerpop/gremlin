@@ -39,7 +39,7 @@ public abstract class MongoElement implements Element {
     }
 
     public Object getId() {
-        return this.dbObject.get(MongoGraph.ID);
+        return this.dbObject.get(MongoGraph.ID).toString();
     }
 
     public Set<String> getPropertyKeys() {
@@ -67,6 +67,10 @@ public abstract class MongoElement implements Element {
         this.dbObject.put(MongoGraph.PROPERTIES, properties);
         this.saveDbObject();
         this.graph.getIndex().put(key, value, this);
+    }
+
+    public int hashCode() {
+        return this.getId().hashCode();
     }
 
     public DBObject getRawObject() {

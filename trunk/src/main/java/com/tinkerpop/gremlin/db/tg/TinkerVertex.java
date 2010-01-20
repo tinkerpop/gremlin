@@ -41,7 +41,7 @@ public class TinkerVertex extends TinkerElement implements Vertex {
 
     public boolean equals(final Object object) {
         if (object instanceof TinkerVertex)
-            return object.hashCode() == this.hashCode();
+            return ((TinkerVertex)object).getId().equals(this.id);
         else
             return false;
     }

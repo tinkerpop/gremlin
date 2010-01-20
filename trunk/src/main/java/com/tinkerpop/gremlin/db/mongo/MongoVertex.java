@@ -4,6 +4,7 @@ import com.mongodb.DBObject;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.db.StringFactory;
+import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public class MongoVertex extends MongoElement implements Vertex {
 
     public Set<Edge> getInEdges() {
         this.refreshDbObject();
-        List inEdgeIds = (List) this.dbObject.get(MongoGraph.IN_EDGES);
+        List inEdgeIds = (List) this.dbObject.get(Tokens.IN_EDGES);
         Set<Edge> inEdges = new HashSet<Edge>();
         if (null != inEdgeIds && inEdgeIds.size() > 0) {
             for (Object id : inEdgeIds) {
@@ -34,7 +35,7 @@ public class MongoVertex extends MongoElement implements Vertex {
 
     public Set<Edge> getOutEdges() {
         this.refreshDbObject();
-        List outEdgeIds = (List) this.dbObject.get(MongoGraph.OUT_EDGES);
+        List outEdgeIds = (List) this.dbObject.get(Tokens.OUT_EDGES);
         Set<Edge> outEdges = new HashSet<Edge>();
         if (null != outEdgeIds && outEdgeIds.size() > 0) {
             for (Object id : outEdgeIds) {
@@ -74,11 +75,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         return StringFactory.vertexString(this);
     }
 
-    public int hashCode() {
-        return this.getId().hashCode();
-    }
-
     public boolean equals(final Object object) {
-        return object instanceof MongoVertex && object.hashCode() == this.hashCode();
+        return object instanceof MongoVertex && ((MongoVertex)object).getId().equals(this.getId());
     }
 }

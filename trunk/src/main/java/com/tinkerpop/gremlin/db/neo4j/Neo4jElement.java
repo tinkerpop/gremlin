@@ -17,11 +17,13 @@ import org.neo4j.graphdb.Relationship;
  */
 public abstract class Neo4jElement implements Element {
 
+    protected Neo4jGraph graph;
     protected PropertyContainer element;
     protected final Index index;
 
-    public Neo4jElement(final Index index) {
+    public Neo4jElement(final Index index, final Neo4jGraph graph) {
         this.index = index;
+        this.graph = graph;
     }
 
     public void setProperty(final String key, final Object value) {
@@ -34,6 +36,8 @@ public abstract class Neo4jElement implements Element {
         this.element.setProperty(key, value);
         if (this instanceof Neo4jVertex)
             this.index.put(key, value, this);
+
+        this.graph.stopStartTransaction();
     }
 
     public Object getProperty(final String key) {
@@ -59,6 +63,7 @@ public abstract class Neo4jElement implements Element {
                     this.index.remove(key, value2, this);
             }
             Object value = this.element.removeProperty(key);
+            this.graph.stopStartTransaction();
             return value;
         } catch (NotFoundException e) {
             return null;
@@ -71,13 +76,6 @@ public abstract class Neo4jElement implements Element {
 
     public PropertyContainer getRawElement() {
         return this.element;
-    }
-
-    public boolean equals(final Object object) {
-        if (object instanceof Element)
-            return this.hashCode() == object.hashCode();
-        else
-            return false;
     }
 
     public Object getId() {

@@ -49,7 +49,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
 
     public boolean equals(final Object object) {
         if(object instanceof TinkerEdge)
-            return object.hashCode() == this.hashCode();
+            return ((TinkerEdge)object).getId().equals(this.id);
         else
             return false;
     }
