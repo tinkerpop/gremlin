@@ -36,9 +36,7 @@ public class JsonFunction implements Function {
             if (object instanceof List) {
                 return createJSONList((List) object).toJSONString();
             } else if (object instanceof Map) {
-                JSONObject jsonMap = new JSONObject();
-                jsonMap.putAll((Map) object);
-                return jsonMap.toJSONString();
+                return createJSONMap((Map)object).toJSONString();
             } else if (object instanceof Element) {
                 return createJSONElement((Element) object).toJSONString();
             } else {
