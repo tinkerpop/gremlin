@@ -71,7 +71,7 @@ public abstract class Neo4jElement implements Element {
     }
 
     public int hashCode() {
-        return this.element.hashCode();
+        return this.getId().hashCode();
     }
 
     public PropertyContainer getRawElement() {
@@ -81,7 +81,7 @@ public abstract class Neo4jElement implements Element {
     public Object getId() {
         if (this.element instanceof Node) {
             return ((Node) this.element).getId();
-        } else { //if(this.element instanceof Relationship) {
+        } else {
             return ((Relationship) this.element).getId();
         }
     }

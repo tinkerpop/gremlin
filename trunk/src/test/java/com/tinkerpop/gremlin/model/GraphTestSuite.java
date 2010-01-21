@@ -16,27 +16,27 @@ public class GraphTestSuite extends ModelTestSuite {
     }
 
     public void testClear(Graph graph) {
-        if(config.supportsVertexIteration)
+        if (config.supportsVertexIteration)
             assertEquals(countIterator(graph.getVertices()), 0);
-        if(config.supportsEdgeIteration)
+        if (config.supportsEdgeIteration)
             assertEquals(countIterator(graph.getEdges()), 0);
 
-        for(int i=0; i<25; i++) {
+        for (int i = 0; i < 25; i++) {
             Vertex a = graph.addVertex(null);
             Vertex b = graph.addVertex(null);
             graph.addEdge(null, a, b, convertId("knows"));
         }
 
-        if(config.supportsVertexIteration)
+        if (config.supportsVertexIteration)
             assertEquals(countIterator(graph.getVertices()), 50);
-        if(config.supportsEdgeIteration)
+        if (config.supportsEdgeIteration)
             assertEquals(countIterator(graph.getEdges()), 25);
 
         graph.clear();
 
-        if(config.supportsVertexIteration)
+        if (config.supportsVertexIteration)
             assertEquals(countIterator(graph.getVertices()), 0);
-        if(config.supportsEdgeIteration)
+        if (config.supportsEdgeIteration)
             assertEquals(countIterator(graph.getEdges()), 0);
 
     }
@@ -197,25 +197,60 @@ public class GraphTestSuite extends ModelTestSuite {
 
     }
 
-    public void testConnectivityPatterns2(Graph graph) {
-        Vertex a = graph.addVertex(convertId("1"));
-        Vertex b = graph.addVertex(convertId("2"));
-        Vertex c = graph.addVertex(convertId("3"));
-        Vertex d = graph.addVertex(convertId("4"));
+    public void testTreeConnectivity(Graph graph) {
+        int branchSize = 11;
+        Vertex start = graph.addVertex(null);
+        for (int i = 0; i < branchSize; i++) {
+            Vertex a = graph.addVertex(null);
+            graph.addEdge(null, start, a, convertId("test1"));
+            for (int j = 0; j < branchSize; j++) {
+                Vertex b = graph.addVertex(null);
+                graph.addEdge(null, a, b, convertId("test2"));
+                for (int k = 0; k < branchSize; k++) {
+                    Vertex c = graph.addVertex(null);
+                    graph.addEdge(null, b, c, convertId("test3"));
+                }
+            }
+        }
 
-        if (config.supportsVertexIteration)
-            assertEquals(countIterator(graph.getVertices()), 4);
+        assertEquals(start.getInEdges().size(), 0);
+        assertEquals(start.getOutEdges().size(), branchSize);
+        for (Edge e : start.getOutEdges()) {
+            assertEquals(e.getLabel(), convertId("test1"));
+            assertEquals(e.getInVertex().getOutEdges().size(), branchSize);
+            assertEquals(e.getInVertex().getInEdges().size(), 1);
+            for (Edge f : e.getInVertex().getOutEdges()) {
+                assertEquals(f.getLabel(), convertId("test2"));
+                assertEquals(f.getInVertex().getOutEdges().size(), branchSize);
+                assertEquals(f.getInVertex().getInEdges().size(), 1);
+                for (Edge g : f.getInVertex().getOutEdges()) {
+                    assertEquals(g.getLabel(), convertId("test3"));
+                    assertEquals(g.getInVertex().getOutEdges().size(), 0);
+                    assertEquals(g.getInVertex().getInEdges().size(), 1);
+                }
+            }
+        }
 
-        Edge e = graph.addEdge(null, a, b, convertId("knows"));
-        Edge f = graph.addEdge(null, b, c, convertId("knows"));
-        Edge g = graph.addEdge(null, b, d, convertId("knows"));
-        Edge h = graph.addEdge(null, d, a, convertId("knows"));
+        int totalVertices = 0;
+        for(int i=0; i<4; i++) {
+            totalVertices = totalVertices + (int)Math.pow(branchSize,i);
+        }
 
-        Set<Edge> aOut = a.getOutEdges();
-        assertEquals(aOut.size(), 1);
-        assertEquals(aOut.iterator().next().getInVertex(), b);
-        Set<Edge> bOut = b.getOutEdges();
-        assertEquals(bOut.size(), 2);
+        if(config.supportsVertexIteration) {
+            Set<Vertex> vertices = new HashSet<Vertex>();
+            for(Vertex v : graph.getVertices()) {
+                vertices.add(v);
+            }
+            assertEquals(vertices.size(), totalVertices);
+        }
+
+        if(config.supportsEdgeIteration) {
+            Set<Edge> edges = new HashSet<Edge>();
+            for(Edge e : graph.getEdges()) {
+                edges.add(e);
+            }
+            assertEquals(edges.size(), totalVertices-1);
+        }
 
     }
 }
