@@ -23,6 +23,9 @@ public class JsonFunction implements Function {
 
     public static final String FUNCTION_NAME = "json";
     private static final String ID = "_id";
+    private static final String TYPE = "type";
+    private static final String EDGE = "edge";
+    private static final String VERTEX = "vertex";
 
     public String invoke(final ExpressionContext context, final Object[] parameters) {
 
@@ -45,6 +48,7 @@ public class JsonFunction implements Function {
                 }
                 if (object instanceof Vertex) {
                     Vertex vertex = (Vertex) element;
+                    jsonElement.put(TYPE, VERTEX);
                     JSONArray jsonArrayOut = new JSONArray();
                     for (Edge edge : vertex.getOutEdges()) {
                         jsonArrayOut.add(edge.getId());
@@ -57,6 +61,7 @@ public class JsonFunction implements Function {
                     jsonElement.put(Tokens.IN_EDGES, jsonArrayIn);
                 } else if (object instanceof Edge) {
                     Edge edge = (Edge) element;
+                    jsonElement.put(TYPE, EDGE);
                     jsonElement.put(Tokens.OUT_VERTEX, edge.getOutVertex().getId());
                     jsonElement.put(Tokens.IN_VERTEX, edge.getInVertex().getId());
 
