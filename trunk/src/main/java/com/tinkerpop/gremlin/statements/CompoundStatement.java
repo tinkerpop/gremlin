@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public abstract class CompoundStatement extends Statement {
 

@@ -9,6 +9,9 @@ import org.apache.commons.jxpath.Function;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 public class RemoveFunction implements Function {
     public static final String FUNCTION_NAME = "remove";
 

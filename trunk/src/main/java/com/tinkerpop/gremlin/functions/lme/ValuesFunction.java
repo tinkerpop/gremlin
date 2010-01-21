@@ -11,7 +11,6 @@ import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class ValuesFunction implements Function {
 

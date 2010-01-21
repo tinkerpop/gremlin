@@ -9,7 +9,6 @@ import java.util.Collections;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class BaseTest extends TestCase {
 

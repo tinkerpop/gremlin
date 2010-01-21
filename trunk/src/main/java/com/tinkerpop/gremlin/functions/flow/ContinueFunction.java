@@ -8,7 +8,6 @@ import org.apache.commons.jxpath.Function;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class ContinueFunction implements Function {
 

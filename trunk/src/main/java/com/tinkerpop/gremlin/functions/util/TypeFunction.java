@@ -19,7 +19,6 @@ import java.util.Set;
 public class TypeFunction implements Function {
     public static final String FUNCTION_NAME = "type";
 
-    private static final String SET = "set";
     private static final String LIST = "list";
     private static final String EDGE = "edge";
     private static final String VERTEX = "vertex";

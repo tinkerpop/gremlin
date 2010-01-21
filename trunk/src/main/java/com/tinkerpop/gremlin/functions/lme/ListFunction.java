@@ -11,6 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 public class ListFunction implements Function {
     public static final String FUNCTION_NAME = "list";
 

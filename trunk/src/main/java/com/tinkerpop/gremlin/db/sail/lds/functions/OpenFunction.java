@@ -16,7 +16,6 @@ import org.openrdf.sail.memory.MemoryStore;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class OpenFunction implements Function {
 

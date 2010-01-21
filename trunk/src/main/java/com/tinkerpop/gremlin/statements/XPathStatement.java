@@ -12,7 +12,6 @@ import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class XPathStatement extends SimpleStatement {
 

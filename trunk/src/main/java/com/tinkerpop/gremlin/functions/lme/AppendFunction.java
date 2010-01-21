@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 public class AppendFunction implements Function {
 
     public static final String FUNCTION_NAME = "append";

@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.FunctionHelper;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class FunctionHelperTest extends TestCase {
 

@@ -9,7 +9,6 @@ import java.util.List;
  * Diagrammatically, outVertex ---label---> inVertex.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public interface Edge extends Element {
 

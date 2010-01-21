@@ -18,7 +18,6 @@ import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class Neo4jGraph implements Graph {
 

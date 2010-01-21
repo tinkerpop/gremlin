@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.BaseTest;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public abstract class ModelTestSuite extends BaseTest {
 

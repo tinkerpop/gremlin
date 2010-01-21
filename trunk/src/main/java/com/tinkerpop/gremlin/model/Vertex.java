@@ -9,7 +9,6 @@ import java.util.Set;
  * Digramatically, ---inEdges---> vertex ---outEdges--->.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public interface Vertex extends Element {
 

@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public abstract class Statement {
 

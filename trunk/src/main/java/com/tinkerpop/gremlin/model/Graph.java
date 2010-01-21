@@ -5,7 +5,6 @@ package com.tinkerpop.gremlin.model;
  * A graph can maintain an index which can be used to index vertices and edges by their key/value properties.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public interface Graph {
 

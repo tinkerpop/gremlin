@@ -8,6 +8,9 @@ import org.apache.commons.jxpath.Function;
 
 import java.util.*;
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 public class DeduplicateFunction implements Function {
 
     public static final String FUNCTION_NAME = "dedup";

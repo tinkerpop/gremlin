@@ -13,7 +13,6 @@ import org.neo4j.graphdb.Relationship;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public abstract class Neo4jElement implements Element {
 

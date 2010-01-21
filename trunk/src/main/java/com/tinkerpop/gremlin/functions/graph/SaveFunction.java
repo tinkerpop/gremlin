@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class SaveFunction implements Function {
 

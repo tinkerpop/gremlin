@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 public class ExceptFunction implements Function {
 
     public static final String FUNCTION_NAME = "except";

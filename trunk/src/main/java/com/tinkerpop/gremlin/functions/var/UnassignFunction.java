@@ -10,6 +10,9 @@ import org.apache.commons.jxpath.Function;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 public class UnassignFunction implements Function {
     public static final String FUNCTION_NAME = "unassign";
 

@@ -15,7 +15,6 @@ import org.neo4j.graphdb.Direction;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class Neo4jVertex extends Neo4jElement implements Vertex {
 

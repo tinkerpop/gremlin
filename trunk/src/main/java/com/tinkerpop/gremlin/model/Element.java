@@ -10,7 +10,6 @@ import java.util.Set;
  * Particular implemenations can reduce the space of objects that can be values.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public abstract interface Element {
 

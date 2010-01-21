@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class RootStatementTest extends TestCase {
 

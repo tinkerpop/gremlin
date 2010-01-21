@@ -10,7 +10,6 @@ import com.tinkerpop.gremlin.statements.Tokens;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class ClearFunctionTest extends BaseTest {
 
