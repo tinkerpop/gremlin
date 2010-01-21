@@ -18,7 +18,6 @@ import java.util.HashMap;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class JsonFunction implements Function {
 
@@ -49,19 +48,19 @@ public class JsonFunction implements Function {
     }
 
     private static JSONArray createJSONList(List list) {
-        JSONArray jsonArray = new JSONArray();
+        JSONArray jsonList = new JSONArray();
         for (Object item : list) {
             if (item instanceof Element) {
-                jsonArray.add(createJSONElement((Element) item));
+                jsonList.add(createJSONElement((Element) item));
             } else if (item instanceof List) {
-                jsonArray.add(createJSONList((List) item));
+                jsonList.add(createJSONList((List) item));
             } else if (item instanceof Map) {
-                jsonArray.add(createJSONMap((Map) item));
+                jsonList.add(createJSONMap((Map) item));
             } else {
-                jsonArray.add(item);
+                jsonList.add(item);
             }
         }
-        return jsonArray;
+        return jsonList;
     }
 
     private static JSONObject createJSONMap(Map map) {

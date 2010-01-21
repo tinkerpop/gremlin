@@ -16,7 +16,12 @@ if [ "$JAVA_OPTIONS" = "" ] ; then
 fi
 
 # Launch the application
-$JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.Console
+if [ "$1" = "-e" ]
+then
+  $JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.ScriptExecutor $2
+else 
+  $JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.Console
+fi
 
 # Return the program's exit code
 exit $?

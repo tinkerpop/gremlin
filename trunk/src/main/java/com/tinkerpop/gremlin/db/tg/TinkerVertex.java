@@ -40,9 +40,6 @@ public class TinkerVertex extends TinkerElement implements Vertex {
     }  
 
     public boolean equals(final Object object) {
-        if (object instanceof TinkerVertex)
-            return ((TinkerVertex)object).getId().equals(this.id);
-        else
-            return false;
+        return object instanceof TinkerVertex && ((TinkerVertex)object).getId().equals(this.getId());
     }
 }

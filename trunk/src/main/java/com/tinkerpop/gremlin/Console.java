@@ -60,8 +60,12 @@ public class Console {
                 line = reader.readLine(INDENT + generateIndentation(gremlinEvaluator.getDepth() * TAB_LENGTH));
             else {
                 line = reader.readLine(PROMPT);
-                if (null == line || line.equalsIgnoreCase(QUIT))
+                if (null == line || line.equalsIgnoreCase(QUIT)) {
+                    if(null == line) {
+                      System.out.println();
+                    }
                     break;
+                }
             }
             if (line.length() > 0) {
                 try {
@@ -75,14 +79,7 @@ public class Console {
                                 }
                             } else {
                                 for (Object o : results) {
-                                    /*if (o instanceof Map) {
-                                      Map map = (Map) o;
-                                      for (Object key : map.keySet()) {
-                                          output.println(PRINT_RETURN + key + MAP_EQUALS + map.get(key));
-                                      }
-                                  } else {*/
                                     output.println(PRINT_RETURN + o);
-                                    //}
                                 }
                             }
                         }

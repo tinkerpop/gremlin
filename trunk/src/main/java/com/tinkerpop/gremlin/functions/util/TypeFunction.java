@@ -15,7 +15,6 @@ import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class TypeFunction implements Function {
     public static final String FUNCTION_NAME = "type";

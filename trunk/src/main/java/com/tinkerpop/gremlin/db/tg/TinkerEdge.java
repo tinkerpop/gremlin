@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class TinkerEdge extends TinkerElement implements Edge {
 
@@ -48,10 +47,7 @@ public class TinkerEdge extends TinkerElement implements Edge {
     }
 
     public boolean equals(final Object object) {
-        if(object instanceof TinkerEdge)
-            return ((TinkerEdge)object).getId().equals(this.id);
-        else
-            return false;
+        return object instanceof TinkerEdge && ((TinkerEdge)object).getId().equals(this.getId());
     }
 
 }

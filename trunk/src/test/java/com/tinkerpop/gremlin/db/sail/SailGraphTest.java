@@ -15,7 +15,6 @@ import java.util.regex.Matcher;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class SailGraphTest extends BaseTest {
 

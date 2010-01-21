@@ -15,8 +15,10 @@ import java.util.List;
  * @version 0.1
  */
 public class GremlinEvaluator {
+  
+    private static final String AT_LINE = " at line ";
 
-	private Statement currentStatement;
+	  private Statement currentStatement;
     private XPathEvaluator xPathEvaluator;
 
     public GremlinEvaluator() {
@@ -63,8 +65,16 @@ public class GremlinEvaluator {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String line;
         List result = null;
+        int lineNumber = 0;
         while ((line = reader.readLine()) != null) {
-            result = this.evaluate(line);
+            try {
+                lineNumber++;
+                result = this.evaluate(line);
+            } catch (SyntaxException e) {
+                throw new SyntaxException(e.getMessage() + AT_LINE + lineNumber);
+            } catch (EvaluationException e) {
+                throw new EvaluationException(e.getMessage() + AT_LINE + lineNumber);
+            }  
         }
         return result;
     }

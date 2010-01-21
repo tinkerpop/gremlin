@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
- * @version 0.1
  */
 public class ForeachStatement extends CompoundStatement {
 
