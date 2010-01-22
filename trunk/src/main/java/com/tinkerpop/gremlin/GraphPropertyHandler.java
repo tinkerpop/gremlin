@@ -14,6 +14,7 @@ import java.util.List;
 public class GraphPropertyHandler implements DynamicPropertyHandler {
 
     private static final String[] properties = new String[] {Tokens.VERTICES, Tokens.EDGES};
+    public static final String CANNOT_BE_SET = " cannot be set as a property.";
 
     public String[] getPropertyNames(final Object graphObject) {
         return properties;

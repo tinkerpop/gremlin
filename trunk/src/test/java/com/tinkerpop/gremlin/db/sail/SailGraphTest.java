@@ -54,6 +54,13 @@ public class SailGraphTest extends BaseTest {
 
     }
 
+    public void testURIs() {
+        assertFalse(SailGraph.isURI("_:1234"));
+        assertFalse(SailGraph.isURI("_:abcdefghijklmnopqrstuvwxyz"));
+        assertTrue(SailGraph.isURI("http://marko"));
+        assertTrue(SailGraph.isURI("http://www.w3.org/2001/XMLSchema#string"));
+    }
+
     public void testBNodes() {
         assertTrue(SailGraph.isBNode("_:1234"));
         assertTrue(SailGraph.isBNode("_:abcdefghijklmnopqrstuvwxyz"));
@@ -85,12 +92,26 @@ public class SailGraphTest extends BaseTest {
         assertEquals(matcher.group(6), "en");
     }
 
-    public void testURIs() {
-        assertFalse(SailGraph.isURI("_:1234"));
-        assertFalse(SailGraph.isURI("_:abcdefghijklmnopqrstuvwxyz"));
-        assertTrue(SailGraph.isURI("http://marko"));
-        assertTrue(SailGraph.isURI("http://www.w3.org/2001/XMLSchema#string"));
+    public void testLiteralProperties() {
+        MemoryStore sail = new MemoryStore();
+        SailGraph graph = new SailGraph(sail);
+        Vertex v = graph.getVertex("\"java\"^^<http://www.w3.org/2001/XMLSchema#string>");
+        assertEquals(v.getProperty(SailTokens.VALUE), "java");
+        assertEquals(v.getProperty(SailTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#string");
+        assertNull(v.getProperty(SailTokens.LANGUAGE));
+
+        v = graph.getVertex("\"10\"^^<http://www.w3.org/2001/XMLSchema#int>");
+        assertEquals(v.getProperty(SailTokens.VALUE), 10);
+        assertEquals(v.getProperty(SailTokens.DATATYPE), "http://www.w3.org/2001/XMLSchema#int");
+        assertNull(v.getProperty(SailTokens.LANGUAGE));
+
+        v = graph.getVertex("\"goodbye\"@en");
+        assertEquals(v.getProperty(SailTokens.VALUE), "goodbye");
+        assertEquals(v.getProperty(SailTokens.LANGUAGE), "en");
+        assertNull(v.getProperty(SailTokens.DATATYPE));
     }
+
+    //// TEST SUITES
 
     public void testVertexSuite() throws Exception {
         doSuiteTest(new VertexTestSuite(config));

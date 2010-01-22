@@ -36,7 +36,7 @@ public class EdgePropertyHandler implements DynamicPropertyHandler {
             Edge edge = (Edge) edgeObject;
             edge.setProperty(key, value);
         } else {
-            throw new EvaluationException(key + " cannot be set as a property.");
+            throw new EvaluationException(key + GraphPropertyHandler.CANNOT_BE_SET);
         }
     }
 
