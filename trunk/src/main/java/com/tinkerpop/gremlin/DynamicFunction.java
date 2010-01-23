@@ -28,16 +28,14 @@ public class DynamicFunction implements Function {
     protected final ArrayList<String> functionBody;
 
     // messages
-    private final String WRONG_ARGS_NUMBER = "wrong number of arguments for ";  
-    private final SyntaxException WrongParamsNumber;
+    private final SyntaxException PARAMETER_SIZE_EXCEPTION;
  
     public DynamicFunction(final FunctionStatement statement) {
         this.namespace = statement.getNamespace();
         this.functionName = statement.getFunctionName();
         this.arguments = statement.getArguments(); 
         this.functionBody = statement.getFunctionBody();
-        this.WrongParamsNumber = 
-            new SyntaxException(WRONG_ARGS_NUMBER + "'" + this.namespace + ":" + this.functionName + "'");
+        this.PARAMETER_SIZE_EXCEPTION = new SyntaxException("Incorrect number of arguments: " + this.namespace + ":" + this.functionName + "()");
     }
 
     public Object invoke(final ExpressionContext context, final Object[] parameters) 
@@ -45,14 +43,13 @@ public class DynamicFunction implements Function {
         
         GremlinEvaluator evaluator = new GremlinEvaluator();
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-        GremlinPathContext gremlinContext = FunctionHelper.getGremlin(context);
 
         if(null == objects) {
             if(this.arguments.size() > 0)
-                throw this.WrongParamsNumber;
+                throw PARAMETER_SIZE_EXCEPTION;
         } else { 
             if(objects.length != this.arguments.size()) 
-                throw this.WrongParamsNumber;
+                throw this.PARAMETER_SIZE_EXCEPTION;
 
             for (int i = 0; i < objects.length; i++) 
                 evaluator.setVariable(this.arguments.get(i), objects[i]);

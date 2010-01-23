@@ -20,7 +20,7 @@ public class DynamicFunctions implements Functions {
 
     public DynamicFunctions(DynamicFunction function) {
         namespaces.add(function.getNamespace());
-        functionMap.put(function.getFunctionName(), (Function) function);
+        functionMap.put(function.getFunctionName(), function);
     }
 
     public Function getFunction(String namespace, String name, Object[] params) {
