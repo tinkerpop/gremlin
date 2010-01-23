@@ -5,10 +5,7 @@ import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -56,7 +53,9 @@ public class TinkerGraph implements Graph {
     }
 
     public void removeVertex(final Vertex vertex) {
-        Set<Edge> edges = vertex.getBothEdges();
+        Set<Edge> edges = new HashSet<Edge>(vertex.getInEdges());
+        edges.addAll(vertex.getOutEdges());
+
         for (Edge edge : edges) {
             this.removeEdge(edge);
         }

@@ -1,12 +1,15 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -49,7 +52,9 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
         } else if (key.equals(Tokens.IN_EDGES)) {
             return vertex.getInEdges();
         } else if (key.equals(Tokens.BOTH_EDGES)) {
-            return vertex.getBothEdges();
+            Set<Edge> bothEdges = new HashSet<Edge>(vertex.getInEdges());
+            bothEdges.addAll(vertex.getOutEdges());
+            return bothEdges;
         } else if (key.equals(Tokens.ID)) {
             return vertex.getId();
         } else {

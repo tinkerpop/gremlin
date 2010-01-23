@@ -8,7 +8,9 @@ import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.net.UnknownHostException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -97,7 +99,9 @@ public class MongoGraph implements Graph {
 
     public void removeVertex(final Vertex vertex) {
         Object vertexId = vertex.getId();
-        for (Edge edge : vertex.getBothEdges()) {
+        Set<Edge> edges = new HashSet<Edge>(vertex.getInEdges());
+        edges.addAll(vertex.getOutEdges());
+        for (Edge edge : edges) {
             Object inVertexId = edge.getInVertex().getId();
             Object outVertexId = edge.getOutVertex().getId();
             if (!inVertexId.equals(vertexId)) {
@@ -108,7 +112,7 @@ public class MongoGraph implements Graph {
             this.edgeCollection.remove(((MongoEdge) edge).getRawObject());
         }
         this.vertexCollection.remove(((MongoVertex) vertex).getRawObject());
-        
+
     }
 
     public Iterable<Vertex> getVertices() {

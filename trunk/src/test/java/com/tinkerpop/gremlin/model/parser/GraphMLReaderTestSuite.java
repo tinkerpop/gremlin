@@ -23,7 +23,6 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
         InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
         GraphMLReader.inputGraph(graph, stream);
         assertEquals(graph.getVertex("1").getOutEdges().size(), 3);
-        assertEquals(graph.getVertex("1").getBothEdges().size(), 3);
         assertEquals(graph.getVertex("1").getInEdges().size(), 0);
         Vertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
@@ -49,7 +48,6 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
         }
 
         assertEquals(graph.getVertex("4").getOutEdges().size(), 2);
-        assertEquals(graph.getVertex("4").getBothEdges().size(), 3);
         assertEquals(graph.getVertex("4").getInEdges().size(), 1);
         Vertex josh = graph.getVertex("4");
         assertEquals(josh.getProperty("name"), "josh");

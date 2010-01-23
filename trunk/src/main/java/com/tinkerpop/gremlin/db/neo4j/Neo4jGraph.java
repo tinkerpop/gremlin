@@ -6,15 +6,16 @@ import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.graphdb.*;
+import org.neo4j.index.Isolation;
+import org.neo4j.index.lucene.LuceneIndexService;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.kernel.impl.core.NodeManager;
 import org.neo4j.kernel.impl.transaction.TransactionFailureException;
-import org.neo4j.index.lucene.LuceneIndexService;
-import org.neo4j.index.Isolation;
-
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -75,7 +76,9 @@ public class Neo4jGraph implements Graph {
             for (String key : vertex.getPropertyKeys()) {
                 this.index.remove(key, vertex.getProperty(key), vertex);
             }
-            for (Edge edge : vertex.getBothEdges()) {
+            Set<Edge> edges = new HashSet<Edge>(vertex.getInEdges());
+            edges.addAll(vertex.getOutEdges());
+            for (Edge edge : edges) {
                 this.removeEdge(edge);
             }
             node.delete();

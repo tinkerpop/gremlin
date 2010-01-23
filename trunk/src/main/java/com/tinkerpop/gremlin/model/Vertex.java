@@ -26,13 +26,4 @@ public interface Vertex extends Element {
      */
     public Set<Edge> getInEdges();
 
-
-    /**
-     * The set of all edges for which the vertex is the head or tail.
-     * This method should return the union of both the inEdges and outEdges of the vertex.
-     *
-     * @return all the edges for which the vertex is the head or tail.
-     */
-    public Set<Edge> getBothEdges();
-
 }

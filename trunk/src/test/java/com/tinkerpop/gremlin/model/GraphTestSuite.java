@@ -162,17 +162,25 @@ public class GraphTestSuite extends ModelTestSuite {
         c = graph.getVertex(convertId("3"));
         d = graph.getVertex(convertId("4"));
 
-        assertEquals(a.getBothEdges().size(), 2);
-        assertEquals(b.getBothEdges().size(), 2);
-        assertEquals(c.getBothEdges().size(), 2);
-        assertEquals(d.getBothEdges().size(), 2);
+        assertEquals(a.getInEdges().size(), 1);
+        assertEquals(a.getOutEdges().size(), 1);
+        assertEquals(b.getInEdges().size(), 1);
+        assertEquals(b.getOutEdges().size(), 1);
+        assertEquals(c.getInEdges().size(), 1);
+        assertEquals(c.getOutEdges().size(), 1);
+        assertEquals(d.getInEdges().size(), 1);
+        assertEquals(d.getOutEdges().size(), 1);
 
         Edge i = graph.addEdge(null, a, b, convertId("hates"));
 
-        assertEquals(a.getBothEdges().size(), 3);
-        assertEquals(b.getBothEdges().size(), 3);
-        assertEquals(c.getBothEdges().size(), 2);
-        assertEquals(d.getBothEdges().size(), 2);
+        assertEquals(a.getInEdges().size(), 1);
+        assertEquals(a.getOutEdges().size(), 2);
+        assertEquals(b.getInEdges().size(), 2);
+        assertEquals(b.getOutEdges().size(), 1);
+        assertEquals(c.getInEdges().size(), 1);
+        assertEquals(c.getOutEdges().size(), 1);
+        assertEquals(d.getInEdges().size(), 1);
+        assertEquals(d.getOutEdges().size(), 1);
 
         assertEquals(a.getInEdges().size(), 1);
         assertEquals(a.getOutEdges().size(), 2);
