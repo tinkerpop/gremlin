@@ -14,11 +14,11 @@ public class FunctionStatementTest extends BaseTest {
     public void testFunctionStatementSyntax() {
         assertTrue(FunctionStatement.isStatement("func test:name()"));
         assertTrue(FunctionStatement.isStatement("func test:name($x)"));
-        assertTrue(FunctionStatement.isStatement("func test:name($x, $y)"));
+        assertTrue(FunctionStatement.isStatement("func test:name( $x, $y)"));
         assertTrue(FunctionStatement.isStatement("func   test:name($x, $y, $z)"));
-        assertTrue(FunctionStatement.isStatement("func test:name ($x, $y, $z, $p)"));
-        assertFalse(FunctionStatement.isStatement("func test : name ($x, $y, $z)"));
-        assertFalse(FunctionStatement.isStatement("func name($x, $y, $z)"));
+        assertTrue(FunctionStatement.isStatement("func test:name ($x, $y,   $z,    $p)"));
+        assertFalse(FunctionStatement.isStatement("func test : name ($x,   $y, $z)"));
+        assertFalse(FunctionStatement.isStatement("func name($x,  $y, $z)"));
 
     }
 
