@@ -10,6 +10,7 @@ import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.DynamicFunction;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
@@ -25,9 +26,11 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     private boolean newRoot = false;
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
-    private static final FunctionLibrary library = new FunctionLibrary();
+    private static FunctionLibrary library;
 
     static {
+        library = new FunctionLibrary();
+
         JXPathIntrospector.registerDynamicClass(Graph.class, GraphPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
@@ -40,7 +43,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         library.addFunctions(new SailFunctions());
         library.addFunctions(new LinkedDataSailFunctions());
         library.addFunctions(new MongoFunctions());
-
     }
 
     public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {
@@ -139,4 +141,9 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     private static String removeVariableDollarSign(final String variable) {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
+
+    public static void registerFunction(final DynamicFunction function) {
+        library.addFunctions(function.getDynamicFunctions());
+    }
+
 }

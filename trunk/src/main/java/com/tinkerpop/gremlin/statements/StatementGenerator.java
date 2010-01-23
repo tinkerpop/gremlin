@@ -25,6 +25,8 @@ public class StatementGenerator {
             return new RepeatStatement(xPathEvaluator);
         } else if (ScriptStatement.isStatement(line)) {
             return new ScriptStatement(xPathEvaluator);
+        } else if (FunctionStatement.isStatement(line)) {
+            return new FunctionStatement(xPathEvaluator);
         } else {
             return new XPathStatement(xPathEvaluator);
         }
