@@ -16,8 +16,8 @@ public class FunctionStatement extends CompoundStatement {
     // instance variables
     private String namespace;
     private String functionName;
-    private ArrayList<String> functionArguments;
-    private ArrayList<String> functionBody; 
+    private List<String> functionArguments;
+    private List<String> functionBody;
    
     // messages
     private static final String ALREADY_DEFINED   = " already defined";
@@ -41,11 +41,11 @@ public class FunctionStatement extends CompoundStatement {
         return this.functionName;
     }
 
-    public ArrayList getArguments() {
+    public List<String> getArguments() {
         return this.functionArguments;
     }
 
-    public ArrayList getFunctionBody() {
+    public List<String> getFunctionBody() {
         return this.functionBody;
     }
 
@@ -56,7 +56,7 @@ public class FunctionStatement extends CompoundStatement {
             Matcher function = functionPattern.matcher(line);
             
             if (function.find()) {
-                // if function definition is not contain func and function name and params
+                // if function definition does not contain func and function name and params
                 if (function.groupCount() < 3) 
                     throw new SyntaxException(BAD_FUNCTION_DEFINITION);
                 
@@ -92,7 +92,7 @@ public class FunctionStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        DynamicFunction.register(this);
+        this.xPathEvaluator.getGremlinPathContext().registerFunction(new DynamicFunction(this));
         return null;
     }
 

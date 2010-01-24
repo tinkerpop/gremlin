@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.DynamicFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -14,7 +13,7 @@ import java.util.Set;
  * @author Pavel A. Yaskevich
  */
 public class DynamicFunctions implements Functions {
-    
+
     private static Set<String> namespaces = new HashSet<String>();
     private static Map<String, Function> functionMap = new HashMap<String, Function>();
 
