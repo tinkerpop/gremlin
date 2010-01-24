@@ -33,6 +33,7 @@ public class XPathStatement extends SimpleStatement {
     }
 
     public List evaluate() {
+        this.xPathEvaluator.setLastStatementLineNumber(this.lineNumber);
         return this.xPathEvaluator.evaluateList(this.xPath);
         /*List list = new ArrayList();
         Iterator itty = this.compiledXPath.iterate(this.xPathEvaluator.getGremlinPathContext());
@@ -43,6 +44,7 @@ public class XPathStatement extends SimpleStatement {
     }
 
     public Iterator evaluateIterator() {
+        this.xPathEvaluator.setLastStatementLineNumber(this.lineNumber);
         return this.xPathEvaluator.evaluateIterator(this.xPath);
     }
 }

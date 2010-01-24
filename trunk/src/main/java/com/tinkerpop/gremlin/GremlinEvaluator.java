@@ -15,8 +15,6 @@ import java.util.List;
  */
 public class GremlinEvaluator {
   
-    private static final String AT_LINE = " at line ";
-
 	  private Statement currentStatement;
     private XPathEvaluator xPathEvaluator;
 
@@ -42,7 +40,8 @@ public class GremlinEvaluator {
                 if (this.currentStatement.isComplete()) {
                     Statement temp = this.currentStatement;
                     this.currentStatement = null;
-                    return temp.evaluate();
+                    List tempResult = temp.evaluate();
+                    return tempResult;
                 } else {
                     return null;
                 }
@@ -64,16 +63,16 @@ public class GremlinEvaluator {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String line;
         List result = null;
-        int lineNumber = 0;
+
         while ((line = reader.readLine()) != null) {
             try {
-                lineNumber++;
+                this.xPathEvaluator.incLineNumber();
                 result = this.evaluate(line);
             } catch (SyntaxException e) {
-                throw new SyntaxException(e.getMessage() + AT_LINE + lineNumber);
+                throw new SyntaxException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
             } catch (EvaluationException e) {
-                throw new EvaluationException(e.getMessage() + AT_LINE + lineNumber);
-            }  
+                throw new EvaluationException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
+            }
         }
         return result;
     }
@@ -98,4 +97,7 @@ public class GremlinEvaluator {
         return this.xPathEvaluator.getDepth();
     }
 
+    public int getLastStatementLineNumber() {
+        return this.xPathEvaluator.getLastStatementLineNumber();
+    }
 }

@@ -47,6 +47,7 @@ public class AssignmentStatement extends SimpleStatement {
     public List evaluate() throws EvaluationException {
         List results;
         try {
+            this.xPathEvaluator.setLastStatementLineNumber(this.lineNumber);
             // TODO better escaping of string quotes
             results = this.xPathEvaluator.evaluateList("g:assign(\"" + this.variable + "\"," + this.assignmentBody.toString() + ")");
         } catch (Exception e) {
