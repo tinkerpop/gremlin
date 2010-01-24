@@ -14,8 +14,6 @@ public class AssignmentStatement extends SimpleStatement {
     private String variable;
     private XPathStatement assignmentBody;
 
-    /*private static final Pattern assignmentPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX +
-             Tokens.VARIABLE_REGEX + "[/[^' '\t]+]*" + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);*/
     private static final Pattern assignmentPattern = Pattern.compile(Tokens.NONWHITESPACE_REGEX + "+" + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
 
     /*

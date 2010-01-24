@@ -13,17 +13,13 @@ import java.util.regex.Pattern;
  */
 public class FunctionStatement extends CompoundStatement {
     
-    // instance variables
     private String namespace;
     private String functionName;
     private List<String> functionArguments;
     private List<String> functionBody;
     private int declarationLine;
 
-    // messages
-    private static final String ALREADY_DEFINED   = " already defined";
     private static final String BAD_FUNCTION_DEFINITION = "bad function definition";
-    // regex
     private static final Pattern functionPattern = Pattern.compile("^func\\s+([\\w-]+):([\\w-]+){1}\\s*\\(([^\\)]*)\\)");
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
      

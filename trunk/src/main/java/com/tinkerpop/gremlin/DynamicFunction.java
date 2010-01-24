@@ -1,33 +1,26 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
-import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 
-import java.util.List;
 import java.io.StringBufferInputStream;
+import java.util.List;
 
 /**
  * @author Pavel A. Yaskevich
  */
 public class DynamicFunction implements Function {
 
-    // attributes
     protected final String namespace;
     protected final String functionName;
     protected final int declarationLine;
     protected final List<String> arguments;
     protected final List<String> functionBody;
-
-    // messages 
-    private final String EXCEPTION_IN_FUNCTION = "Exception in function ";
-
-    // exceptions
-    private final SyntaxException PARAMETER_SIZE_EXCEPTION; 
+    private final SyntaxException PARAMETER_SIZE_EXCEPTION;
 
     public DynamicFunction(final FunctionStatement statement) {
         this.declarationLine = statement.getDeclarationLine();
@@ -54,21 +47,16 @@ public class DynamicFunction implements Function {
         }
 
         Object result = null;
-        
+
         String body = "";
-        for (String line : this.functionBody) 
+        for (String line : this.functionBody)
             body += line + "\n";
 
         try {
             result = evaluator.evaluate(new StringBufferInputStream(body));
-        } catch(Exception e) {
-            String fullname = this.functionNameWithNamespace();
-            int lastLineNumber = evaluator.getLastStatementLineNumber();
-            String line = this.functionBody.get(lastLineNumber - 1); 
-
-            System.out.println(EXCEPTION_IN_FUNCTION+"'"+ fullname +"' (declared at line "+this.declarationLine+")");
-            System.out.println("Line " + lastLineNumber + ": " + line + " - " + e.getMessage());
-            throw new EvaluationException("in '" + fullname + "' function call");
+        } catch (Exception e) {
+            String fullname = FunctionHelper.makeFunctionName(this.namespace, this.functionName);
+            throw new EvaluationException(fullname + "() [declared at line " + this.declarationLine + "]: " + e.getMessage());
         }
 
         if (result instanceof List && ((List) result).size() == 1) {
@@ -89,10 +77,7 @@ public class DynamicFunction implements Function {
     public Functions getDynamicFunctions() {
         return new DynamicFunctions(this);
     }
-
-    public String functionNameWithNamespace() {
-        return this.namespace + ":" + this.functionName;
-    }
 }
+
 
 
