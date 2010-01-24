@@ -13,16 +13,13 @@ import java.util.regex.Pattern;
  */
 public class FunctionStatement extends CompoundStatement {
     
-    // instance variables
     private String namespace;
     private String functionName;
     private List<String> functionArguments;
     private List<String> functionBody;
-   
-    // messages
-    private static final String ALREADY_DEFINED   = " already defined";
+    private int declarationLine;
+
     private static final String BAD_FUNCTION_DEFINITION = "bad function definition";
-    // regex
     private static final Pattern functionPattern = Pattern.compile("^func\\s+([\\w-]+):([\\w-]+){1}\\s*\\(([^\\)]*)\\)");
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
      
@@ -62,7 +59,8 @@ public class FunctionStatement extends CompoundStatement {
                 
                 this.namespace = function.group(1);
                 this.functionName = function.group(2);
-                
+                this.declarationLine = this.xPathEvaluator.getCurrentLineNumber();
+
                 Matcher variable  = variablePattern.matcher(function.group(3));
                 while (variable.find()) 
                     this.functionArguments.add(variable.group());
@@ -100,5 +98,8 @@ public class FunctionStatement extends CompoundStatement {
         return functionPattern.matcher(firstLine).find();
     }
 
+    public int getDeclarationLine() {
+        return this.declarationLine;
+    }
 }
 

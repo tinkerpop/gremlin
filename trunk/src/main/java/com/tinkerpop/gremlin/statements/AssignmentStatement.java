@@ -14,8 +14,6 @@ public class AssignmentStatement extends SimpleStatement {
     private String variable;
     private XPathStatement assignmentBody;
 
-    /*private static final Pattern assignmentPattern = Pattern.compile("^" + Tokens.ZEROPLUS_WHITESPACE_REGEX +
-             Tokens.VARIABLE_REGEX + "[/[^' '\t]+]*" + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);*/
     private static final Pattern assignmentPattern = Pattern.compile(Tokens.NONWHITESPACE_REGEX + "+" + Tokens.WHITESPACE_REGEX + Tokens.ASSIGNMENT + Tokens.WHITESPACE_REGEX + Tokens.NONWHITESPACE_REGEX);
 
     /*
@@ -47,6 +45,7 @@ public class AssignmentStatement extends SimpleStatement {
     public List evaluate() throws EvaluationException {
         List results;
         try {
+            this.xPathEvaluator.setLastStatementLineNumber(this.lineNumber);
             // TODO better escaping of string quotes
             results = this.xPathEvaluator.evaluateList("g:assign(\"" + this.variable + "\"," + this.assignmentBody.toString() + ")");
         } catch (Exception e) {

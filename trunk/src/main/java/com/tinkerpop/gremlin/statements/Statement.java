@@ -9,13 +9,14 @@ import java.util.List;
  */
 public abstract class Statement {
 
-
+    public int lineNumber;
     protected XPathEvaluator xPathEvaluator;
     protected boolean complete = false;
     private String rawStatement = new String();
-
+    
     public Statement(final XPathEvaluator xPathEvaluator) {
         this.xPathEvaluator = xPathEvaluator;
+        this.lineNumber = this.xPathEvaluator.getCurrentLineNumber();
     }
 
     public void compileTokens(final String line) {
