@@ -13,6 +13,7 @@ import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.DynamicFunction;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
@@ -142,8 +143,12 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
 
-    public static void registerFunction(final DynamicFunction function) {
+    public void registerFunction(final DynamicFunction function) {
         library.addFunctions(function.getDynamicFunctions());
     }
+
+    /*public Functions getFunctions(final String namespace) {
+        library.
+    }*/
 
 }
