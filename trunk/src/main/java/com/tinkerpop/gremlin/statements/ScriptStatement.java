@@ -33,6 +33,7 @@ public class ScriptStatement extends SimpleStatement {
     }
 
     public List evaluate() {
+        this.xPathEvaluator.setLastStatementLineNumber(this.lineNumber);
         List result = this.xPathEvaluator.evaluateList(this.fileNameExpression);
         if (result.size() > 0) {
             String fileName = result.get(0).toString();
