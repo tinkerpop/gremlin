@@ -90,7 +90,7 @@ public class FunctionStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        this.xPathEvaluator.getGremlinPathContext().registerFunction(new DynamicFunction(this));
+        this.xPathEvaluator.getGremlinPathContext().getDynamicFunctions().registerFunction(new DynamicFunction(this));
         return null;
     }
 

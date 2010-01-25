@@ -14,30 +14,31 @@ import java.util.Set;
  */
 public class DynamicFunctions implements Functions {
 
-    private static Set<String> namespaces = new HashSet<String>();
-    private static Map<String, Map> namespaceFunctionsMap = new HashMap<String, Map>(); 
+    private Set<String> namespaces = new HashSet<String>();
+    private Map<String, Map<String, Function>> namespaceFunctionsMap = new HashMap<String, Map<String, Function>>();
 
-    public DynamicFunctions(DynamicFunction function) {
-        Map functions;
+
+    public void registerFunction(DynamicFunction function) {
+        Map<String, Function> functions;
         String namespace = function.getNamespace();
 
-        namespaces.add(namespace);
+        this.namespaces.add(namespace);
 
-        if((functions = namespaceFunctionsMap.get(namespace)) != null) {
+        if ((functions = namespaceFunctionsMap.get(namespace)) != null) {
             functions.put(function.getFunctionName(), function);
         } else {
-            functions = new HashMap<String, Map>();
+            functions = new HashMap<String, Function>();
             functions.put(function.getFunctionName(), function);
-            namespaceFunctionsMap.put(namespace, functions); 
+            this.namespaceFunctionsMap.put(namespace, functions);
         }
     }
 
     public Function getFunction(String namespace, String name, Object[] params) {
-        Map functionsByNamespace = namespaceFunctionsMap.get(namespace); 
-        
-        if(functionsByNamespace != null) {
-            Function specificFunction = (Function) functionsByNamespace.get(name);
-            if(specificFunction != null) { 
+        Map<String, Function> functionsByNamespace = namespaceFunctionsMap.get(namespace);
+
+        if (functionsByNamespace != null) {
+            Function specificFunction = functionsByNamespace.get(name);
+            if (specificFunction != null) {
                 return specificFunction;
             }
         }

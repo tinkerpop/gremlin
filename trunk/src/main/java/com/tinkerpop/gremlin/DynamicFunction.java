@@ -5,9 +5,7 @@ import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
-
-import java.io.StringBufferInputStream;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 /**
@@ -53,10 +51,11 @@ public class DynamicFunction implements Function {
             body += line + "\n";
 
         try {
-            result = evaluator.evaluate(new StringBufferInputStream(body));
+            result = evaluator.evaluate(new ByteArrayInputStream(body.getBytes()));
         } catch (Exception e) {
             String fullname = FunctionHelper.makeFunctionName(this.namespace, this.functionName);
-            throw new EvaluationException(fullname + "() [declared at line " + this.declarationLine + "]: " + e.getMessage());
+            String line = this.functionBody.get(evaluator.getLastStatementLineNumber() - 1);
+            throw new EvaluationException(fullname + "() [declared at line " + this.declarationLine + "]: " + e.getMessage() + ": " + line);
         }
 
         if (result instanceof List && ((List) result).size() == 1) {
@@ -72,10 +71,6 @@ public class DynamicFunction implements Function {
 
     public String getNamespace() {
         return this.namespace;
-    }
-
-    public Functions getDynamicFunctions() {
-        return new DynamicFunctions(this);
     }
 }
 
