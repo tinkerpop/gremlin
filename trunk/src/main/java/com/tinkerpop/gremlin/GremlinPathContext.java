@@ -147,8 +147,4 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         library.addFunctions(function.getDynamicFunctions());
     }
 
-    /*public Functions getFunctions(final String namespace) {
-        library.
-    }*/
-
 }

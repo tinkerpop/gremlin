@@ -15,20 +15,34 @@ import java.util.Set;
 public class DynamicFunctions implements Functions {
 
     private static Set<String> namespaces = new HashSet<String>();
-    private static Map<String, Function> functionMap = new HashMap<String, Function>();
+    private static Map<String, Map> namespaceFunctionsMap = new HashMap<String, Map>(); 
 
     public DynamicFunctions(DynamicFunction function) {
-        namespaces.add(function.getNamespace());
-        functionMap.put(function.getFunctionName(), function);
+        Map functions;
+        String namespace = function.getNamespace();
+
+        namespaces.add(namespace);
+
+        if((functions = namespaceFunctionsMap.get(namespace)) != null) {
+            functions.put(function.getFunctionName(), function);
+        } else {
+            functions = new HashMap<String, Map>();
+            functions.put(function.getFunctionName(), function);
+            namespaceFunctionsMap.put(namespace, functions); 
+        }
     }
 
     public Function getFunction(String namespace, String name, Object[] params) {
-        Function function = functionMap.get(name);
-        if (null != function)
-            return function;
+        Map functionsByNamespace = namespaceFunctionsMap.get(namespace); 
+        
+        if(functionsByNamespace != null) {
+            Function specificFunction = (Function) functionsByNamespace.get(name);
+            if(specificFunction != null) { 
+                return specificFunction;
+            }
+        }
 
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(namespace, name), EvaluationException.EvaluationErrorType.NO_FUNCTION);
-
     }
 
     public Set getUsedNamespaces() {
