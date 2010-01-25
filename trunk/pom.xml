@@ -255,7 +255,7 @@
                         <!-- NEO4J TEST PROPERTIES -->
                         <property>
                             <name>testNeo4j</name>
-                            <value>true</value>
+                            <value>false</value>
                         </property>
                         <property>
                             <name>neo4jDirectory</name>
@@ -269,7 +269,7 @@
                         <!-- MONGODB TEST PROPERTIES -->
                         <property>
                             <name>testMongoDB</name>
-                            <value>true</value>
+                            <value>false</value>
                         </property>
                         <property>
                             <name>mongoIP</name>

@@ -19,27 +19,27 @@ public class DynamicFunctions implements Functions {
 
 
     public void registerFunction(DynamicFunction function) {
-        Map<String, Function> functions;
+
         String namespace = function.getNamespace();
+        Map<String, Function> functions = namespaceFunctionsMap.get(namespace);
 
-        this.namespaces.add(namespace);
-
-        if ((functions = namespaceFunctionsMap.get(namespace)) != null) {
+        if (functions != null) {
             functions.put(function.getFunctionName(), function);
         } else {
             functions = new HashMap<String, Function>();
             functions.put(function.getFunctionName(), function);
             this.namespaceFunctionsMap.put(namespace, functions);
+            this.namespaces.add(namespace);
         }
     }
 
     public Function getFunction(String namespace, String name, Object[] params) {
-        Map<String, Function> functionsByNamespace = namespaceFunctionsMap.get(namespace);
+        Map<String, Function> functions = namespaceFunctionsMap.get(namespace);
 
-        if (functionsByNamespace != null) {
-            Function specificFunction = functionsByNamespace.get(name);
-            if (specificFunction != null) {
-                return specificFunction;
+        if (functions != null) {
+            Function function = functions.get(name);
+            if (function != null) {
+                return function;
             }
         }
 

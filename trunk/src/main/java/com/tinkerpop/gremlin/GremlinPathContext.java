@@ -55,12 +55,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         if (null == parentContext) {
             this.setFunctions(library);
         } else {
-            // TODO: why is this needed? figure it out and make it more general.
-            // TODO: Creates a new JXPathContext with the specified bean as the root node
-            // TODO: and the specified parent context. Variables defined in a parent context can be referenced in
-            // TODO: XPaths passed to the child context. 
-            if (parentContext.hasVariable(Tokens.GRAPH_VARIABLE))
-                this.setVariable(Tokens.GRAPH_VARIABLE, parentContext.getVariable(Tokens.GRAPH_VARIABLE));
+            library.addFunctions(parentContext.getDynamicFunctions());
         }
     }
 

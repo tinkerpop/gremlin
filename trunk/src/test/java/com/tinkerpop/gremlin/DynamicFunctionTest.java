@@ -7,11 +7,8 @@ import java.io.ByteArrayInputStream;
 import java.util.Map;
 
 public class DynamicFunctionTest extends TestCase {
-   
-    //private GremlinEvaluator ge = new GremlinEvaluator();
 
-
-    /*public void testFunctionStatements() throws IOException {
+   /* public void testFunctionStatements() throws IOException {
         GremlinEvaluator ge = new GremlinEvaluator();
         InputStream simpleFunc = new ByteArrayInputStream("func x:y($i)\n1 + $i\nend\nx:y(1)\n".getBytes());
         assertEquals(ge.evaluate(simpleFunc).get(0), 2.0);
@@ -57,7 +54,7 @@ public class DynamicFunctionTest extends TestCase {
         assertTrue(result instanceof Map);
         assertEquals(result.size(), 1);
         assertEquals(result.get(1.0), 2.0);
-    }*/
+    } */
 
     public void testTrue() {
         assertTrue(true);
