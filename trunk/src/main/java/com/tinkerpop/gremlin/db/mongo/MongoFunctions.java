@@ -1,21 +1,20 @@
 package com.tinkerpop.gremlin.db.mongo;
 
-import org.apache.commons.jxpath.Functions;
-import org.apache.commons.jxpath.Function;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
-
+import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.mongo.functions.OpenFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.FunctionHelper;
+import org.apache.commons.jxpath.Function;
+import org.apache.commons.jxpath.Functions;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class MongoFunctions  implements Functions {
+public class MongoFunctions implements Functions {
 
     public static final String NAMESPACE_PREFIX = "mongo";
 

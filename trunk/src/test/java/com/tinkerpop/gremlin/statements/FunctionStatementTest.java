@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.statements;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinEvaluator;
 
-import java.util.List;
 import java.io.ByteArrayInputStream;
 
 /**
@@ -23,11 +22,11 @@ public class FunctionStatementTest extends BaseTest {
     }
 
     public void testFunctionStatementEvaluation() throws Exception {
-       GremlinEvaluator ge = new GremlinEvaluator();
-       String funcst = "func x:y()\n1.0\nend\n";
-       assertNull(ge.evaluate(new ByteArrayInputStream(funcst.getBytes())));
-    
-       String funcbigst = "func x:y()\n$x := 1\nrepeat 2\n$x := $x * 2\nend\nend\n";
-       assertNull(ge.evaluate(new ByteArrayInputStream(funcbigst.getBytes())));
+        GremlinEvaluator ge = new GremlinEvaluator();
+        String funcst = "func x:y()\n1.0\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(funcst.getBytes())));
+
+        String funcbigst = "func x:y()\n$x := 1\nrepeat 2\n$x := $x * 2\nend\nend\n";
+        assertNull(ge.evaluate(new ByteArrayInputStream(funcbigst.getBytes())));
     }
 }

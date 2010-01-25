@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.statements.SyntaxException;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
-import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.util.Iterator;
 import java.util.List;
@@ -52,14 +51,13 @@ public class XPathEvaluator {
                 if (results.size() == 1) {
                     Object x = results.get(0);
                     this.setVariable(Tokens.LAST_VARIABLE, x);
-                    if(x instanceof List) {
+                    if (x instanceof List) {
                         return x;
                     }
-                }
-                else {
+                } else {
                     this.setVariable(Tokens.LAST_VARIABLE, results);
                 }
-                
+
                 return results;
             } else {
                 return this.gremlinPathContext.iterate(xPathString);
@@ -110,7 +108,7 @@ public class XPathEvaluator {
     }
 
     public int getCurrentLineNumber() {
-        return this.lineNumber; 
+        return this.lineNumber;
     }
 
     public void incLineNumber() {
@@ -120,7 +118,7 @@ public class XPathEvaluator {
     public void setLastStatementLineNumber(int num) {
         this.lastStatementLineNumber = num;
     }
-    
+
     public int getLastStatementLineNumber() {
         return this.lastStatementLineNumber;
     }

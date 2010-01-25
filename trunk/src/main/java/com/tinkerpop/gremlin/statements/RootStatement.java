@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.model.Graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
@@ -40,7 +39,7 @@ public class RootStatement extends SimpleStatement {
     public List evaluate() {
         List roots = new ArrayList();
         Graph graph;
-        
+
         this.xPathEvaluator.setLastStatementLineNumber(this.lineNumber);
         if (this.rootStrings.size() > 0) {
             Object firstObject = this.xPathEvaluator.evaluateList(rootStrings.get(0)).get(0);

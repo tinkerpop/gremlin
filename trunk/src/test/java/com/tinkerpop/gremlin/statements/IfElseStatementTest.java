@@ -21,7 +21,7 @@ public class IfElseStatementTest extends BaseTest {
         assertFalse(IfElseStatement.isStatement("     if"));
     }
 
-    public void testIfElseStatementEvaluation() throws Exception{
+    public void testIfElseStatementEvaluation() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
         String sb = "if true()\n1.0\nelse\n2.0\nend\n";
         assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).size(), 1);

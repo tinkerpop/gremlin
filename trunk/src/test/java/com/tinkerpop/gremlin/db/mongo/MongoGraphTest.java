@@ -52,11 +52,11 @@ public class MongoGraphTest extends BaseTest {
             String mongoPort = System.getProperty("mongoPort");
             String mongoDatabase = System.getProperty("mongoDatabase");
 
-            if(null == mongoIP)
+            if (null == mongoIP)
                 mongoIP = "127.0.0.1";
-            if(null == mongoPort)
+            if (null == mongoPort)
                 mongoPort = "27017";
-            if(null == mongoDatabase)
+            if (null == mongoDatabase)
                 mongoDatabase = "gremlin_test";
 
             for (Method method : suite.getClass().getDeclaredMethods()) {

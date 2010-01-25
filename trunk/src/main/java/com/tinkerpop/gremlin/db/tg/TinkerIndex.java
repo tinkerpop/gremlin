@@ -34,7 +34,7 @@ public class TinkerIndex implements Index {
         }
     }
 
-    public Set<Element> get(final String key, final Object value) {
+    public Iterable<Element> get(final String key, final Object value) {
         Map<Object, Set<Element>> keyMap = this.indices.get(key);
         if (null == keyMap) {
             return null;

@@ -6,9 +6,6 @@ import com.tinkerpop.gremlin.model.Index;
 import com.tinkerpop.gremlin.model.Vertex;
 import org.neo4j.graphdb.Relationship;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -29,13 +26,6 @@ public class Neo4jEdge extends Neo4jElement implements Edge {
 
     public Vertex getInVertex() {
         return new Neo4jVertex(((Relationship) this.element).getEndNode(), this.index, this.graph);
-    }
-
-    public List<Vertex> getBothVertices() {
-        List<Vertex> bothVertices = new ArrayList<Vertex>();
-        bothVertices.add(this.getOutVertex());
-        bothVertices.add(this.getInVertex());
-        return bothVertices;
     }
 
     public boolean equals(final Object object) {

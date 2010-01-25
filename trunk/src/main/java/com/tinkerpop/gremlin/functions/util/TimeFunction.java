@@ -20,7 +20,7 @@ public class TimeFunction implements Function {
         } else if (parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof Number) {
-                return System.currentTimeMillis() - (Double)object;
+                return System.currentTimeMillis() - (Double) object;
             }
         }
 

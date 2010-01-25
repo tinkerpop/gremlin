@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.db.tg.TinkerGraph;
 import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,13 +86,13 @@ public class GremlinEvaluatorTest extends BaseTest {
         try {
             ge.setVariable(Tokens.GRAPH_VARIABLE, new ArrayList());
             assertFalse(true);
-        } catch(EvaluationException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
         try {
             ge.setVariable(Tokens.GRAPH_VARIABLE, "a graph");
             assertFalse(true);
-        } catch(EvaluationException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
 

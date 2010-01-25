@@ -11,7 +11,9 @@ public class EvaluationException extends RuntimeException {
     private static final String NO_FUNCTION_MESSAGE = "undefined function";
     private static final String USE_OTHER_MESSAGE = "use the nearly equivalent function in the g namespace";
 
-    public enum EvaluationErrorType {UNSUPPORTED_PARAMETERS, EMBEDDED_COLLECTIONS, INDEX_BOUNDS, NO_FUNCTION, USE_OTHER}
+    public enum EvaluationErrorType {
+        UNSUPPORTED_PARAMETERS, EMBEDDED_COLLECTIONS, INDEX_BOUNDS, NO_FUNCTION, USE_OTHER
+    }
 
 
     public EvaluationException(String message) {
@@ -19,15 +21,15 @@ public class EvaluationException extends RuntimeException {
     }
 
     public static EvaluationException createException(final String functionName, final EvaluationErrorType type) {
-        if(type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
+        if (type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
             return new EvaluationException(functionName + " " + UNSUPPORTED_PARAMETERS_MESSAGE);
-        else if(type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
+        else if (type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
             return new EvaluationException(functionName + " " + EMBEDDED_COLLECTION_MESSAGE);
-        else if(type == EvaluationErrorType.INDEX_BOUNDS)
+        else if (type == EvaluationErrorType.INDEX_BOUNDS)
             return new EvaluationException(functionName + " " + INDEX_BOUND_MESSAGE);
-        else if(type == EvaluationErrorType.NO_FUNCTION)
+        else if (type == EvaluationErrorType.NO_FUNCTION)
             return new EvaluationException(NO_FUNCTION_MESSAGE + " " + functionName);
-        else if(type == EvaluationErrorType.USE_OTHER)
+        else if (type == EvaluationErrorType.USE_OTHER)
             return new EvaluationException(USE_OTHER_MESSAGE);
         else
             return new EvaluationException("Evaluation error");
@@ -35,11 +37,11 @@ public class EvaluationException extends RuntimeException {
     }
 
     public static EvaluationException createException(final EvaluationErrorType type) {
-        if(type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
+        if (type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
             return new EvaluationException(UNSUPPORTED_PARAMETERS_MESSAGE);
-        else if(type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
+        else if (type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
             return new EvaluationException(EMBEDDED_COLLECTION_MESSAGE);
-        else if(type == EvaluationErrorType.INDEX_BOUNDS)
+        else if (type == EvaluationErrorType.INDEX_BOUNDS)
             return new EvaluationException(INDEX_BOUND_MESSAGE);
         else
             return new EvaluationException("Evaluation error");

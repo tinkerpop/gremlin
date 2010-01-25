@@ -12,9 +12,9 @@ import org.apache.commons.jxpath.Function;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -35,7 +35,7 @@ public class JsonFunction implements Function {
             if (object instanceof List) {
                 return createJSONList((List) object).toJSONString();
             } else if (object instanceof Map) {
-                return createJSONMap((Map)object).toJSONString();
+                return createJSONMap((Map) object).toJSONString();
             } else if (object instanceof Element) {
                 return createJSONElement((Element) object).toJSONString();
             } else {
@@ -117,7 +117,7 @@ public class JsonFunction implements Function {
 
     private static Map createPropertyMap(Element element) {
         Map map = new HashMap();
-        for(String key : element.getPropertyKeys()) {
+        for (String key : element.getPropertyKeys()) {
             map.put(key, element.getProperty(key));
         }
         return map;

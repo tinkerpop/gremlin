@@ -2,16 +2,15 @@ package com.tinkerpop.gremlin.functions.util;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
-import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -53,8 +52,8 @@ public class TypeFunction implements Function {
             else
                 return object.getClass().getSimpleName().toLowerCase(); // handles others (should not occur).
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
-        
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+
     }
 
 }

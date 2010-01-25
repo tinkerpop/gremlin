@@ -1,8 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

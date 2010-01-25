@@ -99,8 +99,13 @@ public class MongoGraph implements Graph {
 
     public void removeVertex(final Vertex vertex) {
         Object vertexId = vertex.getId();
-        Set<Edge> edges = new HashSet<Edge>(vertex.getInEdges());
-        edges.addAll(vertex.getOutEdges());
+        Set<Edge> edges = new HashSet<Edge>();
+        for (Edge edge : vertex.getInEdges()) {
+            edges.add(edge);
+        }
+        for (Edge edge : vertex.getOutEdges()) {
+            edges.add(edge);
+        }
         for (Edge edge : edges) {
             Object inVertexId = edge.getInVertex().getId();
             Object outVertexId = edge.getOutVertex().getId();

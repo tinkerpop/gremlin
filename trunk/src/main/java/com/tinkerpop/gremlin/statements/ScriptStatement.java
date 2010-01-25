@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.GremlinEvaluator;
+import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.io.FileInputStream;
 import java.io.IOException;

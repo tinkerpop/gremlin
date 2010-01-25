@@ -1,17 +1,12 @@
 package com.tinkerpop.gremlin.db.neo4j;
 
-import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.model.Index;
-import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.db.StringFactory;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
+import com.tinkerpop.gremlin.db.neo4j.util.Neo4jEdgeIterable;
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Index;
+import com.tinkerpop.gremlin.model.Vertex;
 import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -24,37 +19,19 @@ public class Neo4jVertex extends Neo4jElement implements Vertex {
 
     }
 
-    public Set<Edge> getOutEdges() {
-        Set<Edge> outEdges = new HashSet<Edge>();
-        for (Relationship r : ((Node) this.element).getRelationships(Direction.OUTGOING)) {
-            outEdges.add(new Neo4jEdge(r, this.index, this.graph));
-        }
-        return outEdges;
+    public Iterable<Edge> getOutEdges() {
+        return new Neo4jEdgeIterable(((Node) this.element).getRelationships(Direction.OUTGOING), this.graph);
     }
 
-    public Set<Edge> getInEdges() {
-        Set<Edge> inEdges = new HashSet<Edge>();
-        for (Relationship r : ((Node) this.element).getRelationships(Direction.INCOMING)) {
-            inEdges.add(new Neo4jEdge(r, this.index, this.graph));
-        }
-        return inEdges;
-    }
-
-    public Set<Edge> getBothEdges() {
-        Set<Edge> bothEdges = new HashSet<Edge>();
-        for (Relationship r : ((Node) this.element).getRelationships(Direction.BOTH)) {
-            bothEdges.add(new Neo4jEdge(r, this.index, this.graph));
-        }
-        return bothEdges;
+    public Iterable<Edge> getInEdges() {
+        return new Neo4jEdgeIterable(((Node) this.element).getRelationships(Direction.INCOMING), this.graph);
     }
 
     public boolean equals(final Object object) {
-        return object instanceof Neo4jVertex && ((Neo4jVertex)object).getId().equals(this.getId());
+        return object instanceof Neo4jVertex && ((Neo4jVertex) object).getId().equals(this.getId());
     }
-    
 
     public String toString() {
-       return StringFactory.vertexString(this);
+        return StringFactory.vertexString(this);
     }
-
 }

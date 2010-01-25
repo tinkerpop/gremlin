@@ -36,7 +36,7 @@ public class Neo4jIndex implements Index {
         }
     }
 
-    public Set<Element> get(final String key, final Object value) {
+    public Iterable<Element> get(final String key, final Object value) {
         Iterable<Node> itty = this.indexService.getNodes(key, value);
         if (null != itty) {
             Iterator<Node> itty2 = itty.iterator();

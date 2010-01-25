@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.functions.number;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import junit.framework.TestCase;
@@ -21,8 +20,8 @@ public class RandomNaturalFunctionTest extends TestCase {
         } catch (EvaluationException e) {
             assertTrue(true);
         }
-        for(int i=0; i<1000; i++) {
-            assertTrue((Double)(xe.evaluateList("g:append(1,2,3)[g:rand-nat()]").get(0)) > 0.0);
+        for (int i = 0; i < 1000; i++) {
+            assertTrue((Double) (xe.evaluateList("g:append(1,2,3)[g:rand-nat()]").get(0)) > 0.0);
         }
 
     }

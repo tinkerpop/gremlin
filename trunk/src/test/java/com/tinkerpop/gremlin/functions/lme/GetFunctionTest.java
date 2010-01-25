@@ -1,15 +1,13 @@
 package com.tinkerpop.gremlin.functions.lme;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -45,13 +43,13 @@ public class GetFunctionTest extends TestCase {
         try {
             xe.evaluateList("g:get($l,4)");
             assertTrue(false);
-        } catch(EvaluationException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
-         try {
+        try {
             xe.evaluateList("g:get($l,0)");
             assertTrue(false);
-        } catch(EvaluationException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
     }

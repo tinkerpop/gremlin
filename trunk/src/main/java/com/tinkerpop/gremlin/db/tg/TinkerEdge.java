@@ -1,11 +1,8 @@
 package com.tinkerpop.gremlin.db.tg;
 
+import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.db.StringFactory;
-
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -35,19 +32,12 @@ public class TinkerEdge extends TinkerElement implements Edge {
         return this.inVertex;
     }
 
-    public List<Vertex> getBothVertices() {
-        List<Vertex> bothVertices = new ArrayList<Vertex>();
-        bothVertices.add(this.outVertex);
-        bothVertices.add(this.inVertex);
-        return bothVertices;
-    }
-
     public String toString() {
         return StringFactory.edgeString(this);
     }
 
     public boolean equals(final Object object) {
-        return object instanceof TinkerEdge && ((TinkerEdge)object).getId().equals(this.getId());
+        return object instanceof TinkerEdge && ((TinkerEdge) object).getId().equals(this.getId());
     }
 
 }

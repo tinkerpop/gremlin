@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.model;
 
-import java.util.List;
-
 /**
  * An edge links two vertices. Along with its key/value propertiees, an edge has both a directionality and a label.
  * The directionality determines which vertex is the tail vertex (out vertex) and which vertex is the head vertex (in vertex).

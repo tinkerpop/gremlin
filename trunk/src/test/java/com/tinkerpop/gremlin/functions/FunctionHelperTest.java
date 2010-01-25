@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions;
 
-import junit.framework.TestCase;
 import com.tinkerpop.gremlin.FunctionHelper;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.db.sail.functions;
 
-import junit.framework.TestCase;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
+import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.Tokens;
+import junit.framework.TestCase;
 import org.openrdf.sail.memory.MemoryStore;
 
 import java.util.Map;
@@ -50,7 +50,7 @@ public class GetNamespacesFunctionTest extends TestCase {
         assertFalse(map.keySet().contains("tg"));
     }
 
-     public void testGetNamespacesFunctionGraphVariable() {
+    public void testGetNamespacesFunctionGraphVariable() {
 
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
@@ -84,8 +84,6 @@ public class GetNamespacesFunctionTest extends TestCase {
         assertTrue(map.keySet().contains("foaf"));
         assertFalse(map.keySet().contains("xsd"));
         assertFalse(map.keySet().contains("tg"));
-
-
 
 
     }

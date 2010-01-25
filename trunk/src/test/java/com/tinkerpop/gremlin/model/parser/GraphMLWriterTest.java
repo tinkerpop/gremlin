@@ -4,8 +4,6 @@ import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.model.Graph;
 
-import java.io.FileOutputStream;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

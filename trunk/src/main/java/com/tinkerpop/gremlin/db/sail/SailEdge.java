@@ -13,9 +13,7 @@ import org.openrdf.model.impl.URIImpl;
 import org.openrdf.sail.SailConnection;
 import org.openrdf.sail.SailException;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -92,13 +90,6 @@ public class SailEdge implements Edge {
 
     public Vertex getOutVertex() {
         return new SailVertex(this.statement.getSubject(), this.sailConnection);
-    }
-
-    public List<Vertex> getBothVertices() {
-        List<Vertex> bothVertices = new ArrayList<Vertex>();
-        bothVertices.add(this.getOutVertex());
-        bothVertices.add(this.getInVertex());
-        return bothVertices;
     }
 
     public Statement getRawStatement() {

@@ -7,7 +7,7 @@ import junit.framework.TestCase;
  */
 public class ScriptStatementTest extends TestCase {
 
-     public void testScriptStatementSyntax() {
+    public void testScriptStatementSyntax() {
         assertTrue(ScriptStatement.isStatement("script 'filename.grm'"));
         assertTrue(ScriptStatement.isStatement("script $x        "));
         assertTrue(ScriptStatement.isStatement("  script $x/aPath"));

@@ -61,8 +61,8 @@ public class Console {
             else {
                 line = reader.readLine(PROMPT);
                 if (null == line || line.equalsIgnoreCase(QUIT)) {
-                    if(null == line) {
-                      System.out.println();
+                    if (null == line) {
+                        System.out.println();
                     }
                     break;
                 }

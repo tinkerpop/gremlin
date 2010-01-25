@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.db.mongo;
 
 import com.mongodb.DBObject;
+import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         super(vertexObject, graph);
     }
 
-    public Set<Edge> getInEdges() {
+    public Iterable<Edge> getInEdges() {
         this.refreshDbObject();
         List inEdgeIds = (List) this.dbObject.get(Tokens.IN_EDGES);
         Set<Edge> inEdges = new HashSet<Edge>();
@@ -32,7 +32,7 @@ public class MongoVertex extends MongoElement implements Vertex {
         return inEdges;
     }
 
-    public Set<Edge> getOutEdges() {
+    public Iterable<Edge> getOutEdges() {
         this.refreshDbObject();
         List outEdgeIds = (List) this.dbObject.get(Tokens.OUT_EDGES);
         Set<Edge> outEdges = new HashSet<Edge>();
@@ -42,13 +42,6 @@ public class MongoVertex extends MongoElement implements Vertex {
             }
         }
         return outEdges;
-    }
-
-    public Set<Edge> getBothEdges() {
-        Set<Edge> bothEdges = new HashSet<Edge>();
-        bothEdges.addAll(this.getInEdges());
-        bothEdges.addAll(this.getOutEdges());
-        return bothEdges;
     }
 
     protected void addEdgeId(final Object id, final String type) {
@@ -75,6 +68,6 @@ public class MongoVertex extends MongoElement implements Vertex {
     }
 
     public boolean equals(final Object object) {
-        return object instanceof MongoVertex && ((MongoVertex)object).getId().equals(this.getId());
+        return object instanceof MongoVertex && ((MongoVertex) object).getId().equals(this.getId());
     }
 }

@@ -55,5 +55,4 @@ public abstract interface Element {
      * @return the identifier of the element
      */
     public Object getId();
-
 }

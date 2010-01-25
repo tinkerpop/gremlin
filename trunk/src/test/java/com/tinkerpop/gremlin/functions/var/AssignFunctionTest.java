@@ -105,7 +105,7 @@ public class AssignFunctionTest extends TestCase {
         }
     }
 
-     public void testAssignValueFunctionMap() {
+    public void testAssignValueFunctionMap() {
         XPathEvaluator xe = new XPathEvaluator();
         Map map = new HashMap();
         map.put("marko", 1.0);

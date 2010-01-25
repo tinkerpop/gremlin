@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.db.tg;
 
+import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.tg.functions.OpenFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.FunctionHelper;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 

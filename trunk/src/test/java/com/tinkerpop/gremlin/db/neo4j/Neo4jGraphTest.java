@@ -49,7 +49,7 @@ public class Neo4jGraphTest extends TestCase {
         String doTest = System.getProperty("testNeo4j");
         if (doTest == null || doTest.equals("true")) {
             String directory = System.getProperty("neo4jDirectory");
-            if(directory == null)
+            if (directory == null)
                 directory = "/tmp/gremlin_test";
             for (Method method : suite.getClass().getDeclaredMethods()) {
                 if (method.getName().startsWith("test")) {

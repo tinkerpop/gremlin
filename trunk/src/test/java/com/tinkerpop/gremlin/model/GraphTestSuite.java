@@ -16,9 +16,9 @@ public class GraphTestSuite extends ModelTestSuite {
 
     public void testClear(Graph graph) {
         if (config.supportsVertexIteration)
-            assertEquals(countIterator(graph.getVertices()), 0);
+            assertEquals(count(graph.getVertices()), 0);
         if (config.supportsEdgeIteration)
-            assertEquals(countIterator(graph.getEdges()), 0);
+            assertEquals(count(graph.getEdges()), 0);
 
         for (int i = 0; i < 25; i++) {
             Vertex a = graph.addVertex(null);
@@ -27,16 +27,16 @@ public class GraphTestSuite extends ModelTestSuite {
         }
 
         if (config.supportsVertexIteration)
-            assertEquals(countIterator(graph.getVertices()), 50);
+            assertEquals(count(graph.getVertices()), 50);
         if (config.supportsEdgeIteration)
-            assertEquals(countIterator(graph.getEdges()), 25);
+            assertEquals(count(graph.getEdges()), 25);
 
         graph.clear();
 
         if (config.supportsVertexIteration)
-            assertEquals(countIterator(graph.getVertices()), 0);
+            assertEquals(count(graph.getVertices()), 0);
         if (config.supportsEdgeIteration)
-            assertEquals(countIterator(graph.getEdges()), 0);
+            assertEquals(count(graph.getEdges()), 0);
 
     }
 
@@ -45,25 +45,25 @@ public class GraphTestSuite extends ModelTestSuite {
         Vertex b = graph.addVertex(null);
         Edge edge = graph.addEdge(null, a, b, convertId("knows"));
         if (config.supportsEdgeIteration) {
-            assertEquals(countIterator(graph.getEdges()), 1);
+            assertEquals(count(graph.getEdges()), 1);
         }
         if (config.supportsVertexIteration) {
-            assertEquals(countIterator(graph.getVertices()), 2);
+            assertEquals(count(graph.getVertices()), 2);
         }
         graph.removeVertex(a);
         if (config.supportsEdgeIteration) {
-            assertEquals(countIterator(graph.getEdges()), 0);
+            assertEquals(count(graph.getEdges()), 0);
         }
         if (config.supportsVertexIteration) {
-            assertEquals(countIterator(graph.getVertices()), 1);
+            assertEquals(count(graph.getVertices()), 1);
         }
         try {
             graph.removeEdge(edge);
             if (config.supportsEdgeIteration) {
-                assertEquals(countIterator(graph.getEdges()), 0);
+                assertEquals(count(graph.getEdges()), 0);
             }
             if (config.supportsVertexIteration) {
-                assertEquals(countIterator(graph.getVertices()), 1);
+                assertEquals(count(graph.getVertices()), 1);
             }
         } catch (Exception e) {
             assertTrue(true);
@@ -89,10 +89,10 @@ public class GraphTestSuite extends ModelTestSuite {
             counter = counter + 1;
             graph.removeEdge(e);
             if (config.supportsEdgeIteration) {
-                assertEquals(countIterator(graph.getEdges()), edges.size() - counter);
+                assertEquals(count(graph.getEdges()), edges.size() - counter);
             }
             if (config.supportsVertexIteration) {
-                assertEquals(countIterator(graph.getVertices()), vertices.size());
+                assertEquals(count(graph.getVertices()), vertices.size());
             }
         }
 
@@ -117,12 +117,12 @@ public class GraphTestSuite extends ModelTestSuite {
             graph.removeVertex(v);
             if (counter + 1 % 2 == 0) {
                 if (config.supportsEdgeIteration) {
-                    assertEquals(countIterator(graph.getEdges()), edges.size() - counter);
+                    assertEquals(count(graph.getEdges()), edges.size() - counter);
                 }
             }
 
             if (config.supportsVertexIteration) {
-                assertEquals(countIterator(graph.getVertices()), vertices.size() - counter);
+                assertEquals(count(graph.getVertices()), vertices.size() - counter);
             }
         }
     }
@@ -134,7 +134,7 @@ public class GraphTestSuite extends ModelTestSuite {
         Vertex d = graph.addVertex(convertId("4"));
 
         if (config.supportsVertexIteration)
-            assertEquals(countIterator(graph.getVertices()), 4);
+            assertEquals(count(graph.getVertices()), 4);
 
         Edge e = graph.addEdge(null, a, b, convertId("knows"));
         Edge f = graph.addEdge(null, b, c, convertId("knows"));
@@ -142,12 +142,12 @@ public class GraphTestSuite extends ModelTestSuite {
         Edge h = graph.addEdge(null, d, a, convertId("knows"));
 
         if (config.supportsEdgeIteration)
-            assertEquals(countIterator(graph.getEdges()), 4);
+            assertEquals(count(graph.getEdges()), 4);
 
         if (config.supportsVertexIteration) {
             for (Vertex v : graph.getVertices()) {
-                assertEquals(v.getOutEdges().size(), 1);
-                assertEquals(v.getInEdges().size(), 1);
+                assertEquals(count(v.getOutEdges()), 1);
+                assertEquals(count(v.getInEdges()), 1);
             }
         }
 
@@ -162,28 +162,28 @@ public class GraphTestSuite extends ModelTestSuite {
         c = graph.getVertex(convertId("3"));
         d = graph.getVertex(convertId("4"));
 
-        assertEquals(a.getInEdges().size(), 1);
-        assertEquals(a.getOutEdges().size(), 1);
-        assertEquals(b.getInEdges().size(), 1);
-        assertEquals(b.getOutEdges().size(), 1);
-        assertEquals(c.getInEdges().size(), 1);
-        assertEquals(c.getOutEdges().size(), 1);
-        assertEquals(d.getInEdges().size(), 1);
-        assertEquals(d.getOutEdges().size(), 1);
+        assertEquals(count(a.getInEdges()), 1);
+        assertEquals(count(a.getOutEdges()), 1);
+        assertEquals(count(b.getInEdges()), 1);
+        assertEquals(count(b.getOutEdges()), 1);
+        assertEquals(count(c.getInEdges()), 1);
+        assertEquals(count(c.getOutEdges()), 1);
+        assertEquals(count(d.getInEdges()), 1);
+        assertEquals(count(d.getOutEdges()), 1);
 
         Edge i = graph.addEdge(null, a, b, convertId("hates"));
 
-        assertEquals(a.getInEdges().size(), 1);
-        assertEquals(a.getOutEdges().size(), 2);
-        assertEquals(b.getInEdges().size(), 2);
-        assertEquals(b.getOutEdges().size(), 1);
-        assertEquals(c.getInEdges().size(), 1);
-        assertEquals(c.getOutEdges().size(), 1);
-        assertEquals(d.getInEdges().size(), 1);
-        assertEquals(d.getOutEdges().size(), 1);
+        assertEquals(count(a.getInEdges()), 1);
+        assertEquals(count(a.getOutEdges()), 2);
+        assertEquals(count(b.getInEdges()), 2);
+        assertEquals(count(b.getOutEdges()), 1);
+        assertEquals(count(c.getInEdges()), 1);
+        assertEquals(count(c.getOutEdges()), 1);
+        assertEquals(count(d.getInEdges()), 1);
+        assertEquals(count(d.getOutEdges()), 1);
 
-        assertEquals(a.getInEdges().size(), 1);
-        assertEquals(a.getOutEdges().size(), 2);
+        assertEquals(count(a.getInEdges()), 1);
+        assertEquals(count(a.getOutEdges()), 2);
         for (Edge x : a.getOutEdges()) {
             assertTrue(x.getLabel().equals(convertId("knows")) || x.getLabel().equals(convertId("hates")));
         }
@@ -220,43 +220,43 @@ public class GraphTestSuite extends ModelTestSuite {
             }
         }
 
-        assertEquals(start.getInEdges().size(), 0);
-        assertEquals(start.getOutEdges().size(), branchSize);
+        assertEquals(count(start.getInEdges()), 0);
+        assertEquals(count(start.getOutEdges()), branchSize);
         for (Edge e : start.getOutEdges()) {
             assertEquals(e.getLabel(), convertId("test1"));
-            assertEquals(e.getInVertex().getOutEdges().size(), branchSize);
-            assertEquals(e.getInVertex().getInEdges().size(), 1);
+            assertEquals(count(e.getInVertex().getOutEdges()), branchSize);
+            assertEquals(count(e.getInVertex().getInEdges()), 1);
             for (Edge f : e.getInVertex().getOutEdges()) {
                 assertEquals(f.getLabel(), convertId("test2"));
-                assertEquals(f.getInVertex().getOutEdges().size(), branchSize);
-                assertEquals(f.getInVertex().getInEdges().size(), 1);
+                assertEquals(count(f.getInVertex().getOutEdges()), branchSize);
+                assertEquals(count(f.getInVertex().getInEdges()), 1);
                 for (Edge g : f.getInVertex().getOutEdges()) {
                     assertEquals(g.getLabel(), convertId("test3"));
-                    assertEquals(g.getInVertex().getOutEdges().size(), 0);
-                    assertEquals(g.getInVertex().getInEdges().size(), 1);
+                    assertEquals(count(g.getInVertex().getOutEdges()), 0);
+                    assertEquals(count(g.getInVertex().getInEdges()), 1);
                 }
             }
         }
 
         int totalVertices = 0;
-        for(int i=0; i<4; i++) {
-            totalVertices = totalVertices + (int)Math.pow(branchSize,i);
+        for (int i = 0; i < 4; i++) {
+            totalVertices = totalVertices + (int) Math.pow(branchSize, i);
         }
 
-        if(config.supportsVertexIteration) {
+        if (config.supportsVertexIteration) {
             Set<Vertex> vertices = new HashSet<Vertex>();
-            for(Vertex v : graph.getVertices()) {
+            for (Vertex v : graph.getVertices()) {
                 vertices.add(v);
             }
             assertEquals(vertices.size(), totalVertices);
         }
 
-        if(config.supportsEdgeIteration) {
+        if (config.supportsEdgeIteration) {
             Set<Edge> edges = new HashSet<Edge>();
-            for(Edge e : graph.getEdges()) {
+            for (Edge e : graph.getEdges()) {
                 edges.add(e);
             }
-            assertEquals(edges.size(), totalVertices-1);
+            assertEquals(edges.size(), totalVertices - 1);
         }
 
     }

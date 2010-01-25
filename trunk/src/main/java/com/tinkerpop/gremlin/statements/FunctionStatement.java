@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.DynamicFunction;
+import com.tinkerpop.gremlin.XPathEvaluator;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @author Pavel A. Yaskevich
  */
 public class FunctionStatement extends CompoundStatement {
-    
+
     private String namespace;
     private String functionName;
     private List<String> functionArguments;
@@ -22,7 +22,7 @@ public class FunctionStatement extends CompoundStatement {
     private static final String BAD_FUNCTION_DEFINITION = "bad function definition";
     private static final Pattern functionPattern = Pattern.compile("^func\\s+([\\w-]+):([\\w-]+){1}\\s*\\(([^\\)]*)\\)");
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
-     
+
     public FunctionStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
 
@@ -48,21 +48,21 @@ public class FunctionStatement extends CompoundStatement {
 
     public void compileTokens(final String line) throws SyntaxException {
         super.compileTokens(line);
-        
-        if(null == this.functionName) {
+
+        if (null == this.functionName) {
             Matcher function = functionPattern.matcher(line);
-            
+
             if (function.find()) {
                 // if function definition does not contain func and function name and params
-                if (function.groupCount() < 3) 
+                if (function.groupCount() < 3)
                     throw new SyntaxException(BAD_FUNCTION_DEFINITION);
-                
+
                 this.namespace = function.group(1);
                 this.functionName = function.group(2);
                 this.declarationLine = this.xPathEvaluator.getCurrentLineNumber();
 
-                Matcher variable  = variablePattern.matcher(function.group(3));
-                while (variable.find()) 
+                Matcher variable = variablePattern.matcher(function.group(3));
+                while (variable.find())
                     this.functionArguments.add(variable.group());
             } else {
                 throw new SyntaxException(BAD_FUNCTION_DEFINITION);
@@ -80,12 +80,12 @@ public class FunctionStatement extends CompoundStatement {
             if (this.xPathEvaluator.getDepth() == 1) {
                 this.complete = true;
             } else {
-                this.functionBody.add(line); 
+                this.functionBody.add(line);
             }
 
-            this.xPathEvaluator.decrDepth(); 
+            this.xPathEvaluator.decrDepth();
         } else {
-            this.functionBody.add(line); 
+            this.functionBody.add(line);
         }
     }
 

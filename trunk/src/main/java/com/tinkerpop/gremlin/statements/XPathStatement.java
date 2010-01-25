@@ -2,21 +2,16 @@ package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.apache.commons.jxpath.CompiledExpression;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class XPathStatement extends SimpleStatement {
 
-   private String xPath;
-   //private CompiledExpression compiledXPath;
+    private String xPath;
+    //private CompiledExpression compiledXPath;
 
     public XPathStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);

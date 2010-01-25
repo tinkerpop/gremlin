@@ -17,20 +17,20 @@ public class RemoveVertexEdgeFunctionTest extends BaseTest {
         xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
         xe.setVariable("$v", graph.addVertex('1'));
         xe.setVariable("$u", graph.addVertex('2'));
-        assertEquals(countIterator(graph.getVertices()), 2);
-        assertEquals(countIterator(graph.getEdges()), 0);
+        assertEquals(count(graph.getVertices()), 2);
+        assertEquals(count(graph.getEdges()), 0);
         xe.setVariable("$e", graph.addEdge(null, graph.getVertex('1'), graph.getVertex('2'), "knows"));
-        assertEquals(countIterator(graph.getVertices()), 2);
-        assertEquals(countIterator(graph.getEdges()), 1);
+        assertEquals(count(graph.getVertices()), 2);
+        assertEquals(count(graph.getEdges()), 1);
         xe.evaluateList("g:remove-ve($e)");
-        assertEquals(countIterator(graph.getVertices()), 2);
-        assertEquals(countIterator(graph.getEdges()), 0);
+        assertEquals(count(graph.getVertices()), 2);
+        assertEquals(count(graph.getEdges()), 0);
         xe.evaluateList("g:remove-ve($_g, $v)");
-        assertEquals(countIterator(graph.getVertices()), 1);
-        assertEquals(countIterator(graph.getEdges()), 0);
+        assertEquals(count(graph.getVertices()), 1);
+        assertEquals(count(graph.getEdges()), 0);
         xe.evaluateList("g:remove-ve($u)");
-        assertEquals(countIterator(graph.getVertices()), 0);
-        assertEquals(countIterator(graph.getEdges()), 0);
+        assertEquals(count(graph.getVertices()), 0);
+        assertEquals(count(graph.getEdges()), 0);
 
     }
 

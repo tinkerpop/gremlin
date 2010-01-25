@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.functions.lme;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import junit.framework.TestCase;

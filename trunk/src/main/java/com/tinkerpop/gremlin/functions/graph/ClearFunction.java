@@ -20,7 +20,7 @@ public class ClearFunction implements Function {
         if (null == objects || (objects.length == 1 && objects[0] instanceof Graph)) {
             graph.clear();
             return Boolean.TRUE;
-        } 
+        }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }

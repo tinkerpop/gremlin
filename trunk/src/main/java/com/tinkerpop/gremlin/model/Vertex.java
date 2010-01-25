@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.model;
 
-import java.util.Set;
-
 /**
  * A vertex maintains pointers to both a set of incoming and outgoing edges.
  * The outgoing edges are those edges for which the vertex is the tail.
@@ -13,17 +11,17 @@ import java.util.Set;
 public interface Vertex extends Element {
 
     /**
-     * The set of edges emanating from, or leaving, the vertex.
+     * The edges emanating from, or leaving, the vertex.
      *
      * @return the edges for which the vertex is the tail
      */
-    public Set<Edge> getOutEdges();
+    public Iterable<Edge> getOutEdges();
 
     /**
-     * The set of edges incoming to, or arriving at, the vertex.
+     * The edges incoming to, or arriving at, the vertex.
      *
      * @return the edges for which the vertex is the head
      */
-    public Set<Edge> getInEdges();
+    public Iterable<Edge> getInEdges();
 
 }

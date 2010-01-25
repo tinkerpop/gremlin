@@ -28,7 +28,7 @@ public class MongoIndex implements Index {
         this.refreshIndexNames();
     }
 
-    public Set<Element> get(final String key, final Object value) {
+    public Iterable<Element> get(final String key, final Object value) {
         if (this.indexNames.contains(key)) {
             DBObject query = new BasicDBObject();
             query.put(PROPERTIES_PERIOD + key, value);

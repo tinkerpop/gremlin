@@ -1,14 +1,14 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -48,12 +48,12 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
         Vertex vertex = (Vertex) vertexObject;
 
         if (key.equals(Tokens.OUT_EDGES)) {
-            return vertex.getOutEdges();
+            return GraphPropertyHandler.createListFromIterable(vertex.getOutEdges());
         } else if (key.equals(Tokens.IN_EDGES)) {
-            return vertex.getInEdges();
+            return GraphPropertyHandler.createListFromIterable(vertex.getInEdges());
         } else if (key.equals(Tokens.BOTH_EDGES)) {
-            Set<Edge> bothEdges = new HashSet<Edge>(vertex.getInEdges());
-            bothEdges.addAll(vertex.getOutEdges());
+            Set<Edge> bothEdges = new HashSet<Edge>(GraphPropertyHandler.createListFromIterable(vertex.getInEdges()));
+            bothEdges.addAll(GraphPropertyHandler.createListFromIterable(vertex.getOutEdges()));
             return bothEdges;
         } else if (key.equals(Tokens.ID)) {
             return vertex.getId();

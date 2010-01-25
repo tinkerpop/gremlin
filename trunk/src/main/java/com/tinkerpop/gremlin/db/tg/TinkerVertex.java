@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.db.tg;
 
+import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.db.StringFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,26 +20,19 @@ public class TinkerVertex extends TinkerElement implements Vertex {
         super(id, index);
     }
 
-    public Set<Edge> getOutEdges() {
+    public Iterable<Edge> getOutEdges() {
         return this.outEdges;
     }
 
-    public Set<Edge> getInEdges() {
+    public Iterable<Edge> getInEdges() {
         return this.inEdges;
-    }
-
-    public Set<Edge> getBothEdges() {
-        Set<Edge> bothEdges = new HashSet<Edge>();
-        bothEdges.addAll(outEdges);
-        bothEdges.addAll(inEdges);
-        return bothEdges;
     }
 
     public String toString() {
         return StringFactory.vertexString(this);
-    }  
+    }
 
     public boolean equals(final Object object) {
-        return object instanceof TinkerVertex && ((TinkerVertex)object).getId().equals(this.getId());
+        return object instanceof TinkerVertex && ((TinkerVertex) object).getId().equals(this.getId());
     }
 }

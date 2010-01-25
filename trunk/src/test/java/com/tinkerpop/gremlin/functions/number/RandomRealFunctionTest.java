@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.functions.number;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import junit.framework.TestCase;
@@ -14,7 +13,7 @@ public class RandomRealFunctionTest extends TestCase {
         XPathEvaluator xe = new XPathEvaluator();
         assertEquals(xe.evaluateList("g:rand-real()").size(), 1);
         assertEquals(xe.evaluateList("g:type(g:rand-real())").get(0), "number");
-        assertTrue(((Double)xe.evaluateList("g:rand-real()").get(0)) < 1.00001d);
+        assertTrue(((Double) xe.evaluateList("g:rand-real()").get(0)) < 1.00001d);
         try {
             xe.evaluateList("g:rand-real('marko')");
             assertTrue(false);

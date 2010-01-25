@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -88,7 +87,7 @@ public class GraphMLWriter {
         Map<String, String> vertexKeyTypes = new HashMap<String, String>();
         Map<String, String> edgeKeyTypes = new HashMap<String, String>();
 
-       for (Vertex vertex : graph.getVertices()) {
+        for (Vertex vertex : graph.getVertices()) {
             for (String key : vertex.getPropertyKeys()) {
                 if (!vertexKeyTypes.containsKey(key)) {
                     vertexKeyTypes.put(key, GraphMLWriter.getStringType(vertex.getProperty(key)));

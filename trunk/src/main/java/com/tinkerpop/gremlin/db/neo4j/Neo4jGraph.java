@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin.db.neo4j;
 
+import com.tinkerpop.gremlin.db.neo4j.util.Neo4jGraphEdgeIterable;
+import com.tinkerpop.gremlin.db.neo4j.util.Neo4jVertexIterable;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Index;
@@ -13,9 +15,6 @@ import org.neo4j.kernel.impl.core.NodeManager;
 import org.neo4j.kernel.impl.transaction.TransactionFailureException;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -62,11 +61,11 @@ public class Neo4jGraph implements Graph {
     }
 
     public Iterable<Vertex> getVertices() {
-        return new NeoVertexIterable(this.neo.getAllNodes(), this);
+        return new Neo4jVertexIterable(this.neo.getAllNodes(), this);
     }
 
     public Iterable<Edge> getEdges() {
-        return new NeoEdgeIterable(this.neo.getAllNodes(), this);
+        return new Neo4jGraphEdgeIterable(this.neo.getAllNodes(), this);
     }
 
     public void removeVertex(final Vertex vertex) {
@@ -76,9 +75,10 @@ public class Neo4jGraph implements Graph {
             for (String key : vertex.getPropertyKeys()) {
                 this.index.remove(key, vertex.getProperty(key), vertex);
             }
-            Set<Edge> edges = new HashSet<Edge>(vertex.getInEdges());
-            edges.addAll(vertex.getOutEdges());
-            for (Edge edge : edges) {
+            for (Edge edge : vertex.getInEdges()) {
+                this.removeEdge(edge);
+            }
+            for (Edge edge : vertex.getOutEdges()) {
                 this.removeEdge(edge);
             }
             node.delete();
@@ -144,104 +144,5 @@ public class Neo4jGraph implements Graph {
         EmbeddedGraphDatabase embeddedNeo = (EmbeddedGraphDatabase) neo;
         NodeManager nodeManager = embeddedNeo.getConfig().getNeoModule().getNodeManager();
         return "neograph[db:" + this.directory + ", vertices:" + nodeManager.getNumberOfIdsInUse(Node.class) + ", edges:" + nodeManager.getNumberOfIdsInUse(Relationship.class) + "]";
-    }
-
-    private class NeoVertexIterable implements Iterable<Vertex> {
-
-        Iterable<Node> nodes;
-        Neo4jGraph graph;
-
-        public NeoVertexIterable(final Iterable<Node> nodes, final Neo4jGraph graph) {
-            this.nodes = nodes;
-            this.graph = graph;
-        }
-
-        public Iterator<Vertex> iterator() {
-            return new NeoVertexIterator(this.nodes, this.graph);
-        }
-    }
-
-    private class NeoVertexIterator implements Iterator<Vertex> {
-
-        Iterator<Node> nodes;
-        Neo4jGraph graph;
-
-        public NeoVertexIterator(final Iterable<Node> nodes, final Neo4jGraph graph) {
-            this.graph = graph;
-            this.nodes = nodes.iterator();
-        }
-
-        public void remove() throws UnsupportedOperationException {
-            throw new UnsupportedOperationException();
-        }
-
-        public Vertex next() {
-            return new Neo4jVertex(this.nodes.next(), index, this.graph);
-        }
-
-        public boolean hasNext() {
-            return this.nodes.hasNext();
-        }
-
-    }
-
-    private class NeoEdgeIterable implements Iterable<Edge> {
-
-        Iterable<Node> nodes;
-        Neo4jGraph graph;
-
-        public NeoEdgeIterable(final Iterable<Node> nodes, final Neo4jGraph graph) {
-            this.nodes = nodes;
-            this.graph = graph;
-        }
-
-        public Iterator<Edge> iterator() {
-            return new NeoEdgeIterator(this.nodes, graph);
-        }
-    }
-
-    private class NeoEdgeIterator implements Iterator<Edge> {
-
-        private Neo4jGraph graph;
-        private Iterator<Node> nodes;
-        private Iterator<Relationship> currentRelationships;
-        private boolean complete = false;
-
-        public NeoEdgeIterator(final Iterable<Node> nodes, final Neo4jGraph graph) {
-            this.graph = graph;
-            this.nodes = nodes.iterator();
-            this.complete = this.goToNextEdge();
-
-        }
-
-        public Edge next() {
-            Edge edge = new Neo4jEdge(currentRelationships.next(), index, this.graph);
-            this.complete = this.goToNextEdge();
-            return edge;
-        }
-
-        public boolean hasNext() {
-            return !complete;
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-
-        private boolean goToNextEdge() {
-            if (this.currentRelationships == null || !this.currentRelationships.hasNext()) {
-                if (nodes.hasNext()) {
-                    this.currentRelationships = nodes.next().getRelationships(Direction.OUTGOING).iterator();
-                } else {
-                    return true;
-                }
-            }
-
-            if (this.currentRelationships.hasNext()) {
-                return false;
-            } else {
-                return this.goToNextEdge();
-            }
-        }
     }
 }

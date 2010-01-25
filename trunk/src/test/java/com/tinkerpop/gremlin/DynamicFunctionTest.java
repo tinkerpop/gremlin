@@ -1,14 +1,10 @@
 package com.tinkerpop.gremlin;
-import junit.framework.TestCase;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
-import java.util.Map;
+import junit.framework.TestCase;
 
 public class DynamicFunctionTest extends TestCase {
 
-   /* public void testFunctionStatements() throws IOException {
+    /* public void testFunctionStatements() throws IOException {
         GremlinEvaluator ge = new GremlinEvaluator();
         InputStream simpleFunc = new ByteArrayInputStream("func x:y($i)\n1 + $i\nend\nx:y(1)\n".getBytes());
         assertEquals(ge.evaluate(simpleFunc).get(0), 2.0);

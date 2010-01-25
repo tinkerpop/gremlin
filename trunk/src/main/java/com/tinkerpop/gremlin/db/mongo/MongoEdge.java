@@ -6,9 +6,6 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.Tokens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -32,13 +29,6 @@ public class MongoEdge extends MongoElement implements Edge {
     public Vertex getInVertex() {
         Object id = this.dbObject.get(Tokens.IN_VERTEX);
         return graph.getVertex(id);
-    }
-
-    public List<Vertex> getBothVertices() {
-        List<Vertex> bothVertices = new ArrayList<Vertex>();
-        bothVertices.add(this.getOutVertex());
-        bothVertices.add(this.getInVertex());
-        return bothVertices;
     }
 
     public boolean equals(final Object object) {

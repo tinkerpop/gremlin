@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.number;
 
-import com.tinkerpop.gremlin.GremlinFunctions;
 import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.GremlinFunctions;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
@@ -23,7 +23,7 @@ public class RandomRealFunction implements Function {
             return random.nextDouble();
         }
 
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
-        
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+
     }
 }

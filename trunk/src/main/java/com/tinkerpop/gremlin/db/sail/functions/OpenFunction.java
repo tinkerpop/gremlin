@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.db.sail.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
+import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;

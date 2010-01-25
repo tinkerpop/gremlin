@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
-import com.tinkerpop.gremlin.statements.Tokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class EdgePropertyHandler implements DynamicPropertyHandler {
 
-     private static final List<String> staticProperties = new ArrayList<String>();
+    private static final List<String> staticProperties = new ArrayList<String>();
 
     static {
         staticProperties.add(Tokens.OUT_VERTEX);

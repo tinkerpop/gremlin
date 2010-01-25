@@ -15,14 +15,14 @@ public class AddVertexFunctionTest extends BaseTest {
         Graph graph = new TinkerGraph();
         XPathEvaluator xe = new XPathEvaluator();
         xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
-        assertEquals(countIterator(graph.getVertices()), 0);
+        assertEquals(count(graph.getVertices()), 0);
         xe.evaluateList("g:add-v()");
-        assertEquals(countIterator(graph.getVertices()), 1);
+        assertEquals(count(graph.getVertices()), 1);
         xe.evaluateList("g:add-v('11111')");
-        assertEquals(countIterator(graph.getVertices()), 2);
+        assertEquals(count(graph.getVertices()), 2);
         xe.evaluateList("g:add-v($_g)");
-        assertEquals(countIterator(graph.getVertices()), 3);
+        assertEquals(count(graph.getVertices()), 3);
         xe.evaluateList("g:add-v($_g, '22222')");
-        assertEquals(countIterator(graph.getVertices()), 4);
+        assertEquals(count(graph.getVertices()), 4);
     }
 }

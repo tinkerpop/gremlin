@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.db.tg;
 
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.parser.GraphMLReader;
-import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -46,14 +45,14 @@ public class TinkerGraphFactory {
 
         graph.addEdge("10", josh, ripple, "created").setProperty("weight", 1.0f);
         graph.addEdge("11", josh, lop, "created").setProperty("weight", 0.4f);
-        
+
         graph.addEdge("12", peter, lop, "created").setProperty("weight", 0.2f);
 
         return graph;
 
     }
 
-    public static TinkerGraph createGratefulGraph()  throws XMLStreamException {
+    public static TinkerGraph createGratefulGraph() throws XMLStreamException {
         TinkerGraph graph = new TinkerGraph();
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-2.xml"));
         return graph;

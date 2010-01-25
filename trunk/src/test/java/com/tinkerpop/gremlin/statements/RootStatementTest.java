@@ -1,9 +1,7 @@
 package com.tinkerpop.gremlin.statements;
 
-import junit.framework.TestCase;
 import com.tinkerpop.gremlin.GremlinEvaluator;
-
-import java.io.ByteArrayInputStream;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -24,6 +22,6 @@ public class RootStatementTest extends TestCase {
         GremlinEvaluator ge = new GremlinEvaluator();
         String sb = "rt 1 2 3";
         //assertEquals(ge.evaluate(new ByteArrayInputStream(sb.getBytes())).size(), 3);
-        
+
     }
 }

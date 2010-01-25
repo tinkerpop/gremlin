@@ -10,14 +10,11 @@ import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.DynamicFunction;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
-import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**

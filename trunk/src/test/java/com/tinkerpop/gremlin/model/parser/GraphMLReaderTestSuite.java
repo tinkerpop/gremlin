@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.model.*;
 
 import java.io.InputStream;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -12,7 +11,8 @@ import java.util.Set;
  */
 public class GraphMLReaderTestSuite extends ModelTestSuite {
 
-    public GraphMLReaderTestSuite() {}
+    public GraphMLReaderTestSuite() {
+    }
 
     public GraphMLReaderTestSuite(SuiteConfiguration config) {
         super(config);
@@ -22,8 +22,8 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
 
         InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
         GraphMLReader.inputGraph(graph, stream);
-        assertEquals(graph.getVertex("1").getOutEdges().size(), 3);
-        assertEquals(graph.getVertex("1").getInEdges().size(), 0);
+        assertEquals(count(graph.getVertex("1").getOutEdges()), 3);
+        assertEquals(count(graph.getVertex("1").getInEdges()), 0);
         Vertex marko = graph.getVertex("1");
         assertEquals(marko.getProperty("name"), "marko");
         assertEquals(marko.getProperty("age"), 29);
@@ -47,8 +47,8 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
             }
         }
 
-        assertEquals(graph.getVertex("4").getOutEdges().size(), 2);
-        assertEquals(graph.getVertex("4").getInEdges().size(), 1);
+        assertEquals(count(graph.getVertex("4").getOutEdges()), 2);
+        assertEquals(count(graph.getVertex("4").getInEdges()), 1);
         Vertex josh = graph.getVertex("4");
         assertEquals(josh.getProperty("name"), "josh");
         assertEquals(josh.getProperty("age"), 32);
@@ -94,7 +94,7 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
         Set<String> vertexNames = new HashSet<String>();
         int count = 0;
-        for(Vertex v : graph.getVertices()) {
+        for (Vertex v : graph.getVertices()) {
             count++;
             vertexNames.add(v.getProperty("name").toString());
             //System.out.println(v);
@@ -113,7 +113,7 @@ public class GraphMLReaderTestSuite extends ModelTestSuite {
         GraphMLReader.inputGraph(graph, GraphMLReader.class.getResourceAsStream("graph-example-1.xml"));
         Set<Vertex> softwareVertices = new HashSet<Vertex>();
         int count = 0;
-        for(Vertex v : graph.getVertices()) {
+        for (Vertex v : graph.getVertices()) {
             count++;
             String name = v.getProperty("name").toString();
             if (name.equals("lop") || name.equals("ripple")) {

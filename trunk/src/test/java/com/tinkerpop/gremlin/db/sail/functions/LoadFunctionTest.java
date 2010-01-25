@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.db.sail.functions;
 
-import junit.framework.TestCase;
+import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.db.sail.SailGraph;
 import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.XPathEvaluator;
+import junit.framework.TestCase;
 import org.openrdf.sail.memory.MemoryStore;
 
 /**
@@ -16,5 +16,5 @@ public class LoadFunctionTest extends TestCase {
         XPathEvaluator xe = new XPathEvaluator();
         graph.shutdown();
     }
-    
+
 }

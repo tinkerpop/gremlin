@@ -34,6 +34,6 @@ public class AssignmentStatementTest extends BaseTest {
         // TODO null() handling ?
         //sb = "$i := null()";
         //assertNull(ge.evaluate(new ByteArrayInputStream(sb.getBytes())));
-        
+
     }
 }

@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.*;
 
-import javax.script.ScriptEngine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +13,8 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GremlinEvaluator {
-  
-	  private Statement currentStatement;
+
+    private Statement currentStatement;
     private XPathEvaluator xPathEvaluator;
 
     public GremlinEvaluator() {

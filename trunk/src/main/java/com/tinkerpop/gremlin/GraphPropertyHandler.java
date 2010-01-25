@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class GraphPropertyHandler implements DynamicPropertyHandler {
 
-    private static final String[] properties = new String[] {Tokens.VERTICES, Tokens.EDGES};
+    private static final String[] properties = new String[]{Tokens.VERTICES, Tokens.EDGES};
     public static final String CANNOT_BE_SET = " cannot be set as a property.";
 
     public String[] getPropertyNames(final Object graphObject) {
@@ -34,14 +34,13 @@ public class GraphPropertyHandler implements DynamicPropertyHandler {
         }
     }
 
-    private static Collection createListFromIterable(final Iterable itty) {
-        if (itty instanceof Collection) {
+    public static Collection createListFromIterable(final Iterable iterable) {
+        if (iterable instanceof Collection) {
             // TODO: this is odd, inefficient behavior System.out.println("HERE!");
-            return (Collection) itty;
-        }
-        else {
+            return (Collection) iterable;
+        } else {
             List list = new ArrayList();
-            for (Object o : itty) {
+            for (Object o : iterable) {
                 list.add(o);
             }
             return list;

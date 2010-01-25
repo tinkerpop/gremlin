@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.db;
 
-import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -20,6 +20,6 @@ public class StringFactory {
     }
 
     public static String edgeString(final Edge edge) {
-         return E + L_BRACKET + edge.getId() + R_BRACKET + L_BRACKET + edge.getOutVertex().getId() + DASH + edge.getLabel() + ARROW + edge.getInVertex().getId() + R_BRACKET;
+        return E + L_BRACKET + edge.getId() + R_BRACKET + L_BRACKET + edge.getOutVertex().getId() + DASH + edge.getLabel() + ARROW + edge.getInVertex().getId() + R_BRACKET;
     }
 }

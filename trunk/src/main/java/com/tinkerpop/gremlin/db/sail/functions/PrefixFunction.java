@@ -19,8 +19,8 @@ public class PrefixFunction implements Function {
 
         if (null != parameters) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[] {SailGraph.class, String.class})) {
-                    return ((SailGraph) objects[0]).prefixNamespace((String) objects[1]);
+            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{SailGraph.class, String.class})) {
+                return ((SailGraph) objects[0]).prefixNamespace((String) objects[1]);
             } else if (objects.length == 1) {
                 Graph graph = FunctionHelper.getGraph(context);
                 if (graph instanceof SailGraph && objects[0] instanceof String) {

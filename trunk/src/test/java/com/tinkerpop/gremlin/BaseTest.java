@@ -2,10 +2,9 @@ package com.tinkerpop.gremlin;
 
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -30,34 +29,34 @@ public class BaseTest extends TestCase {
         }
     }
 
-    public static int countIterator(Iterator itty) {
+    public static int count(Iterator iterator) {
         int counter = 0;
-        while (itty.hasNext()) {
-            itty.next();
+        while (iterator.hasNext()) {
+            iterator.next();
             counter++;
         }
         return counter;
     }
 
-    public static int countIterator(Iterable itty) {
-        return countIterator(itty.iterator());
+    public static int count(Iterable iterable) {
+        return count(iterable.iterator());
     }
 
     public static List asList(Object x, int times) {
         List list = new ArrayList();
-        for(int i=0; i<times; i++) {
+        for (int i = 0; i < times; i++) {
             list.add(x);
         }
         return list;
     }
 
     public double stopWatch() {
-        if(this.timer == -1l) {
+        if (this.timer == -1l) {
             this.timer = System.currentTimeMillis();
             return -1.0d;
         } else {
 
-            double temp = ((double) System.currentTimeMillis() - (double)this.timer) /  1000.0d;
+            double temp = ((double) System.currentTimeMillis() - (double) this.timer) / 1000.0d;
             this.timer = -1l;
             return temp;
         }

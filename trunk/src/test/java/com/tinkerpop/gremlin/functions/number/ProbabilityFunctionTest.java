@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.number;
 
-import junit.framework.TestCase;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -10,7 +10,7 @@ public class ProbabilityFunctionTest extends TestCase {
 
     public void testProbabilityFunction() {
         XPathEvaluator xe = new XPathEvaluator();
-        for(int i=0; i<100; i++) {
+        for (int i = 0; i < 100; i++) {
             assertEquals(xe.evaluateList("g:prob(g:append(1,2,3,4,5))").size(), 1);
             assertEquals(xe.evaluateList("g:prob(g:append(1,0,0,0,0))").get(0), 1);
             assertEquals(xe.evaluateList("g:prob(g:append(0,1,0,0,0))").get(0), 2);

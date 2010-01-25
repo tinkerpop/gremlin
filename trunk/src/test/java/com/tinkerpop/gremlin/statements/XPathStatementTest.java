@@ -12,7 +12,7 @@ public class XPathStatementTest extends BaseTest {
         XPathEvaluator xPathEvaluator = new XPathEvaluator();
         XPathStatement xPathStatement = new XPathStatement(xPathEvaluator);
         xPathStatement.compileTokens("matches('marko','peter')");
-        assertFalse((Boolean)xPathStatement.evaluate().get(0));
+        assertFalse((Boolean) xPathStatement.evaluate().get(0));
         xPathStatement.compileTokens("(((matches('marko','marko'))))");
         assertTrue((Boolean) xPathStatement.evaluate().get(0));
         xPathStatement.compileTokens("matches(\"marko\",\"marko\")");

@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin.statements;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinEvaluator;
 
-import java.util.List;
 import java.io.ByteArrayInputStream;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

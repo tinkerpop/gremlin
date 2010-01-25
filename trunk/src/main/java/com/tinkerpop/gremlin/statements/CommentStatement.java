@@ -19,7 +19,7 @@ public class CommentStatement extends SimpleStatement {
     public CommentStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
     }
-    
+
     public List evaluate() {
         return null;
     }

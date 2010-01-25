@@ -1,11 +1,11 @@
 package com.tinkerpop.gremlin.functions.lme;
 
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.ExpressionContext;
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import org.apache.commons.jxpath.ExpressionContext;
+import org.apache.commons.jxpath.Function;
 
 import java.util.*;
 
@@ -21,24 +21,24 @@ public class ValuesFunction implements Function {
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof Map) {
-                return ((Map)object).values();
+                return ((Map) object).values();
             } else if (object instanceof Element) {
-                return getElementValues((Element)object);
+                return getElementValues((Element) object);
             }
         }
 
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX,FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
-        
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+
     }
 
     private Collection getElementValues(final Element element) {
         Set<String> keys = element.getPropertyKeys();
         List list = new ArrayList();
-        for(String key : keys) {
+        for (String key : keys) {
             Object object = element.getProperty(key);
-            if(object instanceof List) {
-                list.addAll((List)object);
-            } else if(!(object instanceof Map)) {
+            if (object instanceof List) {
+                list.addAll((List) object);
+            } else if (!(object instanceof Map)) {
                 list.add(object);
             }
         }

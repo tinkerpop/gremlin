@@ -134,7 +134,7 @@ public class SailVertex implements Vertex {
         return keys;
     }
 
-    public Set<Edge> getOutEdges() {
+    public Iterable<Edge> getOutEdges() {
         if (this.value instanceof Resource) {
             Set<Edge> edges = new HashSet<Edge>();
             try {
@@ -152,7 +152,7 @@ public class SailVertex implements Vertex {
         }
     }
 
-    public Set<Edge> getInEdges() {
+    public Iterable<Edge> getInEdges() {
         Set<Edge> edges = new HashSet<Edge>();
         try {
             CloseableIteration<? extends Statement, SailException> results = sailConnection.getStatements(null, null, this.value, false);
@@ -164,15 +164,6 @@ public class SailVertex implements Vertex {
             throw new EvaluationException(e.getMessage());
         }
         return edges;
-    }
-
-    public Set<Edge> getBothEdges() {
-        Set<Edge> bothEdges = new HashSet<Edge>();
-        bothEdges.addAll(this.getInEdges());
-        if (this.value instanceof Resource) {
-            bothEdges.addAll(this.getOutEdges());
-        }
-        return bothEdges;
     }
 
     public String toString() {
