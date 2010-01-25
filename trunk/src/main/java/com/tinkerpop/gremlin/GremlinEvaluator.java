@@ -65,7 +65,7 @@ public class GremlinEvaluator {
 
         while ((line = reader.readLine()) != null) {
             try {
-                this.xPathEvaluator.incLineNumber();
+                this.xPathEvaluator.incrLineNumber();
                 result = this.evaluate(line);
             } catch (SyntaxException e) {
                 throw new SyntaxException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());

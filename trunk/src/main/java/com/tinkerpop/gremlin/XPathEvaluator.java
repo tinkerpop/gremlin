@@ -111,7 +111,7 @@ public class XPathEvaluator {
         return this.lineNumber;
     }
 
-    public void incLineNumber() {
+    public void incrLineNumber() {
         this.lineNumber++;
     }
 
