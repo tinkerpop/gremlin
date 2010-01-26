@@ -132,7 +132,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
 
-    public void registerFunction(final DynamicFunction function) {
+    public static void registerFunction(final DynamicFunction function) {
         library.addFunctions(new DynamicFunctions(function));
     }
 }
