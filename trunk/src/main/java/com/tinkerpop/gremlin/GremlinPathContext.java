@@ -25,11 +25,10 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     private boolean newRoot = false;
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
     private static FunctionLibrary library;
-    private static DynamicFunctions dynamicFunctions;
 
     static {
         library = new FunctionLibrary();
-        dynamicFunctions = new DynamicFunctions();
+        //dynamicFunctions = new DynamicFunctions();
 
         JXPathIntrospector.registerDynamicClass(Graph.class, GraphPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
@@ -44,15 +43,13 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         library.addFunctions(new LinkedDataSailFunctions());
         library.addFunctions(new MongoFunctions());
         //
-        library.addFunctions(dynamicFunctions);
+        //library.addFunctions(dynamicFunctions);
     }
 
     public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {
         super(parentContext, root);
         if (null == parentContext) {
             this.setFunctions(library);
-        } else {
-            library.addFunctions(parentContext.getDynamicFunctions());
         }
     }
 
@@ -139,7 +136,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
 
-    public DynamicFunctions getDynamicFunctions() {
-        return dynamicFunctions;
+    public static void registerFunction(final DynamicFunction function) {
+        library.addFunctions(new DynamicFunctions(function));
     }
 }

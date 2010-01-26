@@ -10,36 +10,35 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Pavel A. Yaskevich
- */
+* @author Pavel A. Yaskevich
+*/
 public class DynamicFunctions implements Functions {
 
-    private Set<String> namespaces = new HashSet<String>();
-    private Map<String, Map<String, Function>> namespaceFunctionsMap = new HashMap<String, Map<String, Function>>();
+    private static Set<String> namespaces = new HashSet<String>();
+    private static Map<String, Map<String, Function>> namespaceFunctionsMap = new HashMap<String, Map<String, Function>>();
 
-
-    public void registerFunction(DynamicFunction function) {
-
+    public DynamicFunctions(DynamicFunction function) {
+        Map<String, Function> functions;
         String namespace = function.getNamespace();
-        Map<String, Function> functions = namespaceFunctionsMap.get(namespace);
 
-        if (functions != null) {
+        namespaces.add(namespace);
+
+        if((functions = namespaceFunctionsMap.get(namespace)) != null) {
             functions.put(function.getFunctionName(), function);
         } else {
             functions = new HashMap<String, Function>();
             functions.put(function.getFunctionName(), function);
-            this.namespaceFunctionsMap.put(namespace, functions);
-            this.namespaces.add(namespace);
+            namespaceFunctionsMap.put(namespace, functions);
         }
     }
 
     public Function getFunction(String namespace, String name, Object[] params) {
-        Map<String, Function> functions = namespaceFunctionsMap.get(namespace);
+        Map functionsByNamespace = namespaceFunctionsMap.get(namespace);
 
-        if (functions != null) {
-            Function function = functions.get(name);
-            if (function != null) {
-                return function;
+        if(functionsByNamespace != null) {
+            Function specificFunction = (Function) functionsByNamespace.get(name);
+            if(specificFunction != null) {
+                return specificFunction;
             }
         }
 
@@ -50,3 +49,4 @@ public class DynamicFunctions implements Functions {
         return namespaces;
     }
 }
+ 

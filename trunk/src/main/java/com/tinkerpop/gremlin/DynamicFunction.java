@@ -5,13 +5,13 @@ import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
-
+import org.apache.commons.jxpath.Functions;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
 /**
- * @author Pavel A. Yaskevich
- */
+* @author Pavel A. Yaskevich
+*/
 public class DynamicFunction implements Function {
 
     protected final String namespace;
@@ -55,8 +55,7 @@ public class DynamicFunction implements Function {
             result = evaluator.evaluate(new ByteArrayInputStream(body.getBytes()));
         } catch (Exception e) {
             String fullname = FunctionHelper.makeFunctionName(this.namespace, this.functionName);
-            String line = this.functionBody.get(evaluator.getLastStatementLineNumber() - 1);
-            throw new EvaluationException(fullname + "() [declared at line " + this.declarationLine + "]: " + e.getMessage() + ": " + line);
+            throw new EvaluationException(fullname + "() [declared at line " + this.declarationLine + "]: " + e.getMessage());
         }
 
         if (result instanceof List && ((List) result).size() == 1) {
@@ -74,6 +73,3 @@ public class DynamicFunction implements Function {
         return this.namespace;
     }
 }
-
-
-
