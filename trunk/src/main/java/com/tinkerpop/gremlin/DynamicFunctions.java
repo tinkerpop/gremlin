@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
-* @author Pavel A. Yaskevich
-*/
+ * @author Pavel A. Yaskevich
+ */
 public class DynamicFunctions implements Functions {
 
     private static Set<String> namespaces = new HashSet<String>();
@@ -23,7 +23,7 @@ public class DynamicFunctions implements Functions {
 
         namespaces.add(namespace);
 
-        if((functions = namespaceFunctionsMap.get(namespace)) != null) {
+        if ((functions = namespaceFunctionsMap.get(namespace)) != null) {
             functions.put(function.getFunctionName(), function);
         } else {
             functions = new HashMap<String, Function>();
@@ -35,9 +35,9 @@ public class DynamicFunctions implements Functions {
     public Function getFunction(String namespace, String name, Object[] params) {
         Map functionsByNamespace = namespaceFunctionsMap.get(namespace);
 
-        if(functionsByNamespace != null) {
+        if (functionsByNamespace != null) {
             Function specificFunction = (Function) functionsByNamespace.get(name);
-            if(specificFunction != null) {
+            if (specificFunction != null) {
                 return specificFunction;
             }
         }

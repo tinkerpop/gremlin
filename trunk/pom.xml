@@ -21,6 +21,11 @@
             <email>marko@markorodriguez.com</email>
             <url>http://markorodriguez.com</url>
         </developer>
+        <developer>
+            <name>Pavel Yaskevich</name>
+            <email>povel.y@gmail.com</email>
+            <url>http://github.com/xedin</url>
+        </developer>
     </developers>
     <contributors>
         <contributor>

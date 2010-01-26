@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 public class DynamicFunctionTest extends TestCase {
@@ -51,7 +51,7 @@ public class DynamicFunctionTest extends TestCase {
         GremlinEvaluator ge = new GremlinEvaluator();
         InputStream funcReturnsMap = new ByteArrayInputStream("func x:y()\ng:map(1, 2)\nend\nx:y()\n".getBytes());
         Map result = (Map) ge.evaluate(funcReturnsMap).get(0);
-        
+
         assertTrue(result instanceof Map);
         assertEquals(result.size(), 1);
         assertEquals(result.get(1.0), 2.0);

@@ -1,16 +1,16 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.DynamicFunction;
+import com.tinkerpop.gremlin.XPathEvaluator;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
-* @author Pavel A. Yaskevich
-*/
+ * @author Pavel A. Yaskevich
+ */
 public class FunctionStatement extends CompoundStatement {
 
     private String namespace;
@@ -49,7 +49,7 @@ public class FunctionStatement extends CompoundStatement {
     public void compileTokens(final String line) throws SyntaxException {
         super.compileTokens(line);
 
-        if(null == this.functionName) {
+        if (null == this.functionName) {
             Matcher function = functionPattern.matcher(line);
 
             if (function.find()) {

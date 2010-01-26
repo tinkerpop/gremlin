@@ -5,13 +5,13 @@ import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
 /**
-* @author Pavel A. Yaskevich
-*/
+ * @author Pavel A. Yaskevich
+ */
 public class DynamicFunction implements Function {
 
     protected final String namespace;
