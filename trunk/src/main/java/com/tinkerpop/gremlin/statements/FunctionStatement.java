@@ -69,23 +69,6 @@ public class FunctionStatement extends CompoundStatement {
         }
     }
 
-
-    /*protected void updateStatementList(final String line) {
-        StatementGenerator.generateStatement(line, this.xPathEvaluator);
-
-        if (endPattern.matcher(line).find()) {
-            if (this.xPathEvaluator.getDepth() == 1) {
-                this.complete = true;
-            } else {
-                this.functionBody.add(line);
-            }
-
-            this.xPathEvaluator.decrDepth();
-        } else {
-            this.functionBody.add(line);
-        }
-    }*/
-
     public List evaluate() throws EvaluationException {
         this.xPathEvaluator.getGremlinPathContext().registerFunction(new DynamicFunction(this));
         return null;

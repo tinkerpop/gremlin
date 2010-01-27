@@ -14,21 +14,11 @@ import java.util.List;
  */
 public class DynamicFunction implements Function {
 
-    //protected final String namespace;
-    //protected final String functionName;
-    //protected final int declarationLine;
-    //protected final List<String> arguments;
-    //protected final List<String> functionBody;
     private final SyntaxException PARAMETER_SIZE_EXCEPTION;
     private final FunctionStatement functionStatement;
 
     public DynamicFunction(final FunctionStatement statement) {
         this.functionStatement = statement;
-        //this.declarationLine = statement.getDeclarationLine();
-        //this.namespace = statement.getNamespace();
-        //this.functionName = statement.getFunctionName();
-        //this.arguments = statement.getArguments();
-        //this.functionBody = statement.getFunctionBody();
         this.PARAMETER_SIZE_EXCEPTION = new SyntaxException("Incorrect number of arguments: " + this.functionStatement.getNamespace() + ":" + this.functionStatement.getFunctionName() + "()");
     }
 
@@ -47,11 +37,6 @@ public class DynamicFunction implements Function {
             for (int i = 0; i < objects.length; i++)
                 evaluator.setVariable(arguments.get(i), objects[i]);
         }
-
-
-        /*String body = "";
-        for (String line : this.functionBody)
-            body += line + "\n";*/
 
         List result;
         try {

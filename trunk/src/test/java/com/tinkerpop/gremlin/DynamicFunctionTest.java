@@ -56,4 +56,28 @@ public class DynamicFunctionTest extends TestCase {
         assertEquals(result.size(), 1);
         assertEquals(result.get(1.0), 2.0);
     }
+
+    public void testFunctionCallFromOtherFunction() throws IOException {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        InputStream funcArgFunc = new ByteArrayInputStream("func x:y($p)\nconcat('hello ', $p)\nend\nfunc y:y()\n'p'\nend\nx:y(y:y())".getBytes());
+        
+        assertEquals(ge.evaluate(funcArgFunc).get(0), "hello p");
+    }
+
+    public void testFunctionInsideXPath() throws IOException {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        InputStream funcInsideXPathReturnsPath = new ByteArrayInputStream("$_g := tg:open()\n$p := g:add-v()\n$m := g:add-v()\ng:add-e($p, 'knows', $m)\ng:add-e($p, 'co-developer', $m)\nfunc x:y($w)\n$w\nend\ng:type($p/outE[x:y(1)])".getBytes());
+       
+        InputStream funcInsideXPathReturnsLabel = new ByteArrayInputStream("$_g := tg:open()\n$p := g:add-v()\n$m := g:add-v()\ng:add-e($p, 'knows', $m)\ng:add-e($p, 'co-developer', $m)\nfunc x:y($w)\n$w\nend\n$p/outE[x:y(1)]/@label".getBytes());
+
+        assertEquals(ge.evaluate(funcInsideXPathReturnsPath).get(0), "edge");
+        assertEquals(ge.evaluate(funcInsideXPathReturnsLabel).get(0), "co-developer");
+    }
+
+    public void testUDFunctionCallFromAnotherUDFunction() throws IOException {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        InputStream funcInsideFuncCall = new ByteArrayInputStream("func x:y($num)\nfunc y:sq($num)\n$num * $num\nend\n$sq := y:sq($num)\n$sq + 6\nend\nx:y(2)".getBytes());
+    
+        assertEquals(ge.evaluate(funcInsideFuncCall).get(0), 10.0);
+    }
 }
