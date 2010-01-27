@@ -69,28 +69,28 @@ public class DynamicPathTest extends TestCase {
 
     }
 
-    public void testOverrideError() throws Exception {
+    public void testOverrideAllowance() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
         InputStream simpleFunc = new ByteArrayInputStream("path outE\nend\n".getBytes());
         try {
             ge.evaluate(simpleFunc);
-            assertTrue(false);
-        } catch (Exception e) {
             assertTrue(true);
+        } catch (Exception e) {
+            assertTrue(false);
         }
         simpleFunc = new ByteArrayInputStream("path inE\nend\n".getBytes());
         try {
             ge.evaluate(simpleFunc);
-            assertTrue(false);
-        } catch (Exception e) {
             assertTrue(true);
+        } catch (Exception e) {
+            assertTrue(false);
         }
         simpleFunc = new ByteArrayInputStream("path bothV\nend\n".getBytes());
         try {
             ge.evaluate(simpleFunc);
-            assertTrue(false);
-        } catch (Exception e) {
             assertTrue(true);
+        } catch (Exception e) {
+            assertTrue(false);
         }
 
     }

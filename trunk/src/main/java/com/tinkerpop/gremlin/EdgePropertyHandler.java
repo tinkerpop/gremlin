@@ -44,7 +44,10 @@ public class EdgePropertyHandler extends ElementPropertyHandler {
 
     public Object getProperty(final Object edgeObject, final String key) {
         Edge edge = (Edge) edgeObject;
-        if (key.equals(Tokens.OUT_VERTEX)) {
+
+        if (super.containsProperty(key)) {
+            return super.getProperty(edgeObject, key);
+        } else if (key.equals(Tokens.OUT_VERTEX)) {
             return edge.getOutVertex();
         } else if (key.equals(Tokens.IN_VERTEX)) {
             return edge.getInVertex();
@@ -57,10 +60,8 @@ public class EdgePropertyHandler extends ElementPropertyHandler {
             return edge.getLabel();
         } else if (key.equals(Tokens.ID)) {
             return edge.getId();
-        } else if (edge.getPropertyKeys().contains(key)) {
-            return edge.getProperty(key);
         } else {
-            return super.getProperty(edgeObject, key);
+            return edge.getProperty(key);
         }
     }
 }

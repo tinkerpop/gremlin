@@ -43,8 +43,9 @@ public class VertexPropertyHandler extends ElementPropertyHandler {
     public Object getProperty(final Object vertexObject, final String key) {
 
         Vertex vertex = (Vertex) vertexObject;
-
-        if (key.equals(Tokens.OUT_EDGES)) {
+        if (super.containsProperty(key)) {
+            return super.getProperty(vertexObject, key);
+        } else if (key.equals(Tokens.OUT_EDGES)) {
             return GraphPropertyHandler.createListFromIterable(vertex.getOutEdges());
         } else if (key.equals(Tokens.IN_EDGES)) {
             return GraphPropertyHandler.createListFromIterable(vertex.getInEdges());
@@ -54,10 +55,8 @@ public class VertexPropertyHandler extends ElementPropertyHandler {
             return bothEdges;
         } else if (key.equals(Tokens.ID)) {
             return vertex.getId();
-        } else if (vertex.getPropertyKeys().contains(key)) {
-            return vertex.getProperty(key);
         } else {
-            return super.getProperty(vertexObject, key);
+            return vertex.getProperty(key);
         }
     }
 }
