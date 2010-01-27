@@ -54,7 +54,7 @@ public class VertexPropertyHandler extends ElementPropertyHandler {
             return bothEdges;
         } else if (key.equals(Tokens.ID)) {
             return vertex.getId();
-        } else if (vertex.getPropertyKeys().contains(key)){
+        } else if (vertex.getPropertyKeys().contains(key)) {
             return vertex.getProperty(key);
         } else {
             return super.getProperty(vertexObject, key);

@@ -1,9 +1,8 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.DynamicPath;
-import com.tinkerpop.gremlin.ElementPropertyHandler;
 import com.tinkerpop.gremlin.GremlinPathContext;
+import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -46,15 +45,9 @@ public class PathStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        List results = null;
-        try {
-            DynamicPath path = new DynamicPath(this);
-            GremlinPathContext.registerPath(path);
-
-        } catch (Exception e) {
-            throw new EvaluationException(e.getMessage());
-        }
-        return results;
+        DynamicPath path = new DynamicPath(this);
+        GremlinPathContext.registerPath(path);
+        return null;
     }
 
     public String getPathName() {

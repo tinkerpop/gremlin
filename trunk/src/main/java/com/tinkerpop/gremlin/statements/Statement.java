@@ -20,7 +20,7 @@ public abstract class Statement {
     }
 
     public void compileTokens(final String line) {
-        if(null == this.rawStatement)
+        if (null == this.rawStatement)
             this.rawStatement = line.trim();
         else
             this.rawStatement = this.rawStatement + Tokens.NEWLINE + line.trim();

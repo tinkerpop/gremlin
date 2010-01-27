@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.statements;
 
-import junit.framework.TestCase;
 import com.tinkerpop.gremlin.GremlinEvaluator;
+import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
 
