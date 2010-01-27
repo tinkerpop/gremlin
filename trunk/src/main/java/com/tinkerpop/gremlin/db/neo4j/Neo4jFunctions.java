@@ -2,6 +2,9 @@ package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.db.neo4j.functions.OpenFunction;
+import com.tinkerpop.gremlin.db.neo4j.functions.StartTransactionFunction;
+import com.tinkerpop.gremlin.db.neo4j.functions.StopTransactionFunction;
+import com.tinkerpop.gremlin.db.neo4j.functions.AutomaticTransactionsFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -24,6 +27,9 @@ public class Neo4jFunctions implements Functions {
     static {
         namespaces.add(NAMESPACE_PREFIX);
         functionMap.put(OpenFunction.FUNCTION_NAME, new OpenFunction());
+        functionMap.put(AutomaticTransactionsFunction.FUNCTION_NAME, new AutomaticTransactionsFunction());
+        functionMap.put(StartTransactionFunction.FUNCTION_NAME, new StartTransactionFunction());
+        functionMap.put(StopTransactionFunction.FUNCTION_NAME, new StopTransactionFunction());
     }
 
     public Function getFunction(final String namespace, final String name, final Object[] parameters) {

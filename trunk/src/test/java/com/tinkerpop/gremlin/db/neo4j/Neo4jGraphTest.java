@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.model.*;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.BaseTest;
 import junit.framework.TestCase;
 
 import java.io.File;
@@ -9,7 +11,7 @@ import java.lang.reflect.Method;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Neo4jGraphTest extends TestCase {
+public class Neo4jGraphTest extends BaseTest {
 
     private static final SuiteConfiguration config = new SuiteConfiguration();
 
@@ -97,6 +99,47 @@ public class Neo4jGraphTest extends TestCase {
 
     }
 
+    public void testTransactions() throws Exception {
+        String doTest = System.getProperty("testNeo4j");
+        if (doTest == null || doTest.equals("true")) {
+            String directory = System.getProperty("neo4jDirectory");
+            if (directory == null) {
+                directory = "/tmp/gremlin_test";
+                deleteGraphDirectory(new File(directory));
+                Neo4jGraph graph = new Neo4jGraph(directory);
+                graph.addVertex(null);
+                graph.setAutoTransactions(false);
+                try {
+                    graph.addVertex(null);
+                    assertTrue(false);
+                } catch (Exception e) {
+                    assertTrue(true);
+                }
+                graph.startTransaction();
+                try {
+                    graph.addVertex(null);
+                    assertTrue(true);
+                } catch (Exception e) {
+                    assertTrue(false);
+                }
+                graph.stopTransaction(false);
+                graph.startTransaction();
+                assertEquals(count(graph.getVertices()), 2);
+                graph.startTransaction();
+                try {
+                    graph.addVertex(null);
+                    assertTrue(true);
+                } catch (Exception e) {
+                    assertTrue(false);
+                }
+                graph.stopTransaction(true);
+                assertEquals(count(graph.getVertices()), 3);
+
+            }
+        }
+    }
+
+
     private static void deleteGraphDirectory(File directory) {
         if (directory.exists()) {
             for (File file : directory.listFiles()) {
@@ -109,4 +152,6 @@ public class Neo4jGraphTest extends TestCase {
             directory.delete();
         }
     }
+
+
 }

@@ -25,6 +25,7 @@ public class Neo4jGraph implements Graph {
     private String directory;
     private Neo4jIndex index;
     private Transaction tx;
+    private boolean automaticTransactions = true;
 
     public Neo4jGraph(final String directory) {
         this.directory = directory;
@@ -32,7 +33,9 @@ public class Neo4jGraph implements Graph {
         LuceneIndexService indexService = new LuceneIndexService(neo);
         indexService.setIsolation(Isolation.SAME_TX);
         this.index = new Neo4jIndex(indexService, this);
-        this.tx = neo.beginTx();
+        if (this.automaticTransactions) {
+            this.tx = neo.beginTx();
+        }
     }
 
     public Index getIndex() {
@@ -69,6 +72,7 @@ public class Neo4jGraph implements Graph {
     }
 
     public void removeVertex(final Vertex vertex) {
+
         Long id = (Long) vertex.getId();
         Node node = neo.getNodeById(id);
         if (null != node) {
@@ -100,16 +104,51 @@ public class Neo4jGraph implements Graph {
     }
 
     protected void stopStartTransaction() {
-        this.tx.success();
-        this.tx.finish();
+        if (this.automaticTransactions) {
+            if (null != tx) {
+                this.tx.success();
+                this.tx.finish();
+                this.tx = neo.beginTx();
+            } else {
+                throw new EvaluationException("There is no active transaction to stop");
+            }
+        }
+    }
+
+    public void startTransaction() {
+        if (this.automaticTransactions)
+            throw new EvaluationException("Turn off automatic transactions to use manual transaction handling");
+
         this.tx = neo.beginTx();
     }
 
-    public void shutdown() {
-        try {
+    public void stopTransaction(boolean success) {
+        if (this.automaticTransactions)
+            throw new EvaluationException("Turn off automatic transactions to use manual transaction handling");
+
+        if (success) {
+            this.tx.success();
+        } else {
+            this.tx.failure();
+        }
+        this.tx.finish();
+    }
+
+    public void setAutoTransactions(boolean automatic) {
+        this.automaticTransactions = automatic;
+        if (null != this.tx) {
             this.tx.success();
             this.tx.finish();
-        } catch (TransactionFailureException e) {
+        }
+    }
+
+    public void shutdown() {
+        if (this.automaticTransactions) {
+            try {
+                this.tx.success();
+                this.tx.finish();
+            } catch (TransactionFailureException e) {
+            }
         }
         this.neo.shutdown();
         this.index.shutdown();
