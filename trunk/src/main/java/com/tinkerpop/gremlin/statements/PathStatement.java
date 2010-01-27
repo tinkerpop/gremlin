@@ -15,7 +15,7 @@ public class PathStatement extends CompoundStatement {
 
     private String pathName;
 
-    private static final Pattern pathPattern = Pattern.compile("^path\\s+([\\w-]+){1}");
+    private static final Pattern pathPattern = Pattern.compile("^path\\s+([\\w-]+\\(\\)$|[\\w-]+$)");
 
     /* path string
         ./././

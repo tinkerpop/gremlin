@@ -15,7 +15,7 @@ public class PathStatementTest extends TestCase {
         assertTrue(PathStatement.isStatement("path   marko"));
         assertTrue(PathStatement.isStatement("path hello()"));
         assertFalse(PathStatement.isStatement("path "));
-        //assertFalse(PathStatement.isStatement("path a space path"));  // TODO: make this assertFalse!
+        assertFalse(PathStatement.isStatement("path a space path"));
         assertFalse(PathStatement.isStatement("path"));
 
     }
