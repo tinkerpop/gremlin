@@ -25,7 +25,9 @@ public class VertexPropertyHandler extends ElementPropertyHandler {
     public String[] getPropertyNames(final Object vertexObject) {
         Vertex vertex = (Vertex) vertexObject;
         List<String> list = new ArrayList<String>();
-        list.addAll(vertex.getPropertyKeys());
+        Set<String> keys = vertex.getPropertyKeys();
+        if(null != keys)
+            list.addAll(vertex.getPropertyKeys());
         list.addAll(staticProperties);
         list.addAll(Arrays.asList(super.getPropertyNames(vertexObject)));
         return list.toArray(new String[list.size()]);

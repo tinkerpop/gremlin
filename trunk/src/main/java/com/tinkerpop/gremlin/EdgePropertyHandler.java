@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.statements.Tokens;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -27,7 +28,9 @@ public class EdgePropertyHandler extends ElementPropertyHandler {
     public String[] getPropertyNames(final Object edgeObject) {
         Edge edge = (Edge) edgeObject;
         List<String> list = new ArrayList<String>();
-        list.addAll(edge.getPropertyKeys());
+        Set<String> keys = edge.getPropertyKeys();
+        if (null != keys)
+            list.addAll(edge.getPropertyKeys());
         list.addAll(staticProperties);
         list.addAll(Arrays.asList(super.getPropertyNames(edgeObject)));
         return list.toArray(new String[list.size()]);

@@ -1,0 +1,24 @@
+import com.tinkerpop.gremlin.model.Edge;
+import com.tinkerpop.gremlin.model.Vertex;
+
+/**
+ * @author <your name here>
+ */
+public class SomeEdge extends SomeElement implements Edge {
+
+    public String getLabel() {
+        return null;
+    }
+
+    public Vertex getInVertex() {
+        return null;
+    }
+
+    public Vertex getOutVertex() {
+        return null;
+    }
+
+    public String toString() {
+        return StringFactory.edgeString(this);
+    }
+}

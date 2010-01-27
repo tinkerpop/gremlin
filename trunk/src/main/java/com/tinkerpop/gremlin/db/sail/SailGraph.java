@@ -31,8 +31,6 @@ public class SailGraph implements Graph {
     private Sail sail;
     private SailConnection sailConnection;
 
-    private static final String UNSUPPORTED_OPERATION = "This operation is not supported";
-
     public static final Pattern literalPattern = Pattern.compile("^\"(.*?)\"((\\^\\^<(.+?)>)$|(@(.{2}))$)");
     private static final String LOG4J_PROPERTIES = "log4j.properties";
 
@@ -109,7 +107,7 @@ public class SailGraph implements Graph {
     }
 
     public Iterable<Vertex> getVertices() {
-        throw new EvaluationException(UNSUPPORTED_OPERATION);
+        throw EvaluationException.createException(EvaluationException.EvaluationErrorType.UNSUPPORTED_OPERATION);
     }
 
     public Iterable<Edge> getEdges() {
@@ -211,7 +209,7 @@ public class SailGraph implements Graph {
     }
 
     public Index getIndex() {
-        throw new EvaluationException(UNSUPPORTED_OPERATION);
+        throw EvaluationException.createException(EvaluationException.EvaluationErrorType.UNSUPPORTED_OPERATION);
     }
 
     public void clear() {
