@@ -43,4 +43,16 @@ public abstract class CompoundStatement extends Statement {
             }
         }
     }
+
+    public List<Statement> getStatementList() {
+        return this.statementList;
+    }
+
+    public String getStatementBody() {
+        String body = new String();
+        for (Statement statement : this.statementList) {
+            body = body + statement.toString() + Tokens.NEWLINE;
+        }
+        return body.trim();
+    }
 }

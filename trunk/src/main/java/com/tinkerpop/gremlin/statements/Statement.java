@@ -12,7 +12,7 @@ public abstract class Statement {
     public int lineNumber;
     protected XPathEvaluator xPathEvaluator;
     protected boolean complete = false;
-    private String rawStatement = new String();
+    private String rawStatement;
 
     public Statement(final XPathEvaluator xPathEvaluator) {
         this.xPathEvaluator = xPathEvaluator;
@@ -20,7 +20,10 @@ public abstract class Statement {
     }
 
     public void compileTokens(final String line) {
-        this.rawStatement = this.rawStatement + Tokens.SINGLESPACE + line.trim();
+        if(null == this.rawStatement)
+            this.rawStatement = line.trim();
+        else
+            this.rawStatement = this.rawStatement + Tokens.NEWLINE + line.trim();
     }
 
     public abstract List evaluate();
@@ -32,5 +35,4 @@ public abstract class Statement {
     public String toString() {
         return this.rawStatement;
     }
-
 }

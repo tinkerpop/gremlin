@@ -15,8 +15,8 @@ public class FunctionStatement extends CompoundStatement {
 
     private String namespace;
     private String functionName;
-    private List<String> functionArguments;
-    private List<String> functionBody;
+    private List<String> functionArguments = new ArrayList<String>();
+    private List<String> functionBody = new ArrayList<String>();
     private int declarationLine;
 
     private static final String BAD_FUNCTION_DEFINITION = "bad function definition";
@@ -25,9 +25,6 @@ public class FunctionStatement extends CompoundStatement {
 
     public FunctionStatement(final XPathEvaluator xPathEvaluator) {
         super(xPathEvaluator);
-
-        this.functionBody = new ArrayList<String>();
-        this.functionArguments = new ArrayList<String>();
     }
 
     public String getNamespace() {
@@ -73,7 +70,7 @@ public class FunctionStatement extends CompoundStatement {
     }
 
 
-    protected void updateStatementList(final String line) {
+    /*protected void updateStatementList(final String line) {
         StatementGenerator.generateStatement(line, this.xPathEvaluator);
 
         if (endPattern.matcher(line).find()) {
@@ -87,7 +84,7 @@ public class FunctionStatement extends CompoundStatement {
         } else {
             this.functionBody.add(line);
         }
-    }
+    }*/
 
     public List evaluate() throws EvaluationException {
         this.xPathEvaluator.getGremlinPathContext().registerFunction(new DynamicFunction(this));

@@ -18,6 +18,7 @@ public class FunctionStatementTest extends BaseTest {
         assertTrue(FunctionStatement.isStatement("func test:name ($x, $y,   $z,    $p)"));
         assertFalse(FunctionStatement.isStatement("func test : name ($x,   $y, $z)"));
         assertFalse(FunctionStatement.isStatement("func name($x,  $y, $z)"));
+        assertFalse(FunctionStatement.isStatement("func name($x,  $y, $z) my name is pavel"));
 
     }
 

@@ -11,8 +11,6 @@ public class StatementGenerator {
 
         if (CommentStatement.isStatement(line)) {
             return new CommentStatement(xPathEvaluator);
-        } else if (RootStatement.isStatement(line)) {
-            return new RootStatement(xPathEvaluator);
         } else if (IfElseStatement.isStatement(line)) {
             return new IfElseStatement(xPathEvaluator);
         } else if (ForeachStatement.isStatement(line)) {
@@ -27,6 +25,8 @@ public class StatementGenerator {
             return new ScriptStatement(xPathEvaluator);
         } else if (FunctionStatement.isStatement(line)) {
             return new FunctionStatement(xPathEvaluator);
+        } else if (PathStatement.isStatement(line)) {
+            return new PathStatement(xPathEvaluator);
         } else {
             return new XPathStatement(xPathEvaluator);
         }

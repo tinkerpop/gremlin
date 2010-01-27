@@ -14,62 +14,65 @@ import java.util.List;
  */
 public class DynamicFunction implements Function {
 
-    protected final String namespace;
-    protected final String functionName;
-    protected final int declarationLine;
-    protected final List<String> arguments;
-    protected final List<String> functionBody;
+    //protected final String namespace;
+    //protected final String functionName;
+    //protected final int declarationLine;
+    //protected final List<String> arguments;
+    //protected final List<String> functionBody;
     private final SyntaxException PARAMETER_SIZE_EXCEPTION;
+    private final FunctionStatement functionStatement;
 
     public DynamicFunction(final FunctionStatement statement) {
-        this.declarationLine = statement.getDeclarationLine();
-        this.namespace = statement.getNamespace();
-        this.functionName = statement.getFunctionName();
-        this.arguments = statement.getArguments();
-        this.functionBody = statement.getFunctionBody();
-        this.PARAMETER_SIZE_EXCEPTION = new SyntaxException("Incorrect number of arguments: " + this.namespace + ":" + this.functionName + "()");
+        this.functionStatement = statement;
+        //this.declarationLine = statement.getDeclarationLine();
+        //this.namespace = statement.getNamespace();
+        //this.functionName = statement.getFunctionName();
+        //this.arguments = statement.getArguments();
+        //this.functionBody = statement.getFunctionBody();
+        this.PARAMETER_SIZE_EXCEPTION = new SyntaxException("Incorrect number of arguments: " + this.functionStatement.getNamespace() + ":" + this.functionStatement.getFunctionName() + "()");
     }
 
     public Object invoke(final ExpressionContext context, final Object[] parameters) throws EvaluationException {
         GremlinEvaluator evaluator = new GremlinEvaluator();
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+        List<String> arguments = this.functionStatement.getArguments();
 
         if (null == objects) {
-            if (this.arguments.size() > 0)
+            if (arguments.size() > 0)
                 throw PARAMETER_SIZE_EXCEPTION;
         } else {
-            if (objects.length != this.arguments.size())
+            if (objects.length != arguments.size())
                 throw this.PARAMETER_SIZE_EXCEPTION;
 
             for (int i = 0; i < objects.length; i++)
-                evaluator.setVariable(this.arguments.get(i), objects[i]);
+                evaluator.setVariable(arguments.get(i), objects[i]);
         }
 
-        Object result = null;
 
-        String body = "";
+        /*String body = "";
         for (String line : this.functionBody)
-            body += line + "\n";
+            body += line + "\n";*/
 
+        List result;
         try {
-            result = evaluator.evaluate(new ByteArrayInputStream(body.getBytes()));
+            result = evaluator.evaluate(new ByteArrayInputStream(functionStatement.getStatementBody().getBytes()));
         } catch (Exception e) {
-            String fullname = FunctionHelper.makeFunctionName(this.namespace, this.functionName);
-            throw new EvaluationException(fullname + "() [declared at line " + this.declarationLine + "]: " + e.getMessage());
+            String fullname = FunctionHelper.makeFunctionName(this.functionStatement.getNamespace(), this.functionStatement.getFunctionName());
+            throw new EvaluationException(fullname + "() [declared at line " + this.functionStatement.getDeclarationLine() + "]: " + e.getMessage());
         }
 
-        if (result instanceof List && ((List) result).size() == 1) {
-            return ((List) result).get(0);
+        if (null != result && result.size() == 1) {
+            return result.get(0);
         } else {
             return result;
         }
     }
 
     public String getFunctionName() {
-        return this.functionName;
+        return this.functionStatement.getFunctionName();
     }
 
     public String getNamespace() {
-        return this.namespace;
+        return this.functionStatement.getNamespace();
     }
 }

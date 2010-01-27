@@ -4,17 +4,13 @@ import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import org.apache.commons.jxpath.DynamicPropertyHandler;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VertexPropertyHandler implements DynamicPropertyHandler {
+public class VertexPropertyHandler extends ElementPropertyHandler {
 
     private static final List<String> staticProperties = new ArrayList<String>();
 
@@ -31,6 +27,7 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
         List<String> list = new ArrayList<String>();
         list.addAll(vertex.getPropertyKeys());
         list.addAll(staticProperties);
+        list.addAll(Arrays.asList(super.getPropertyNames(vertexObject)));
         return list.toArray(new String[list.size()]);
     }
 
@@ -57,8 +54,10 @@ public class VertexPropertyHandler implements DynamicPropertyHandler {
             return bothEdges;
         } else if (key.equals(Tokens.ID)) {
             return vertex.getId();
-        } else {
+        } else if (vertex.getPropertyKeys().contains(key)){
             return vertex.getProperty(key);
+        } else {
+            return super.getProperty(vertexObject, key);
         }
     }
 }
