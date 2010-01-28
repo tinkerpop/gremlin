@@ -21,4 +21,12 @@ public class SomeEdge extends SomeElement implements Edge {
     public String toString() {
         return StringFactory.edgeString(this);
     }
+
+    public boolean equals(final Object object) {
+        return object instanceof SomeEdge && ((SomeEdge) object).getId().equals(this.getId());
+    }
+
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }

@@ -17,4 +17,12 @@ public class SomeVertex extends SomeElement implements Vertex {
     public String toString() {
         return StringFactory.vertexString(this);
     }
+
+    public boolean equals(final Object object) {
+        return object instanceof SomeVertex && ((SomeVertex) object).getId().equals(this.getId());
+    }
+
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }

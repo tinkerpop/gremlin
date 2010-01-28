@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.io;
+package com.tinkerpop.gremlin.db.fs;
 
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -10,14 +10,14 @@ import java.util.HashMap;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.io.functions.OpenFunction;
+import com.tinkerpop.gremlin.db.fs.functions.OpenFunction;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FileFunctions implements Functions {
+public class FileSystemFunctions implements Functions {
 
-    public static final String NAMESPACE_PREFIX = "io";
+    public static final String NAMESPACE_PREFIX = "fs";
 
     private static Set<String> namespaces = new HashSet<String>();
     private static final Map<String, Function> functionMap = new HashMap<String, Function>();

@@ -64,6 +64,11 @@
             <artifactId>jline</artifactId>
             <version>0.9.94</version>
         </dependency>
+        <!--<dependency>
+            <groupId>berkeleydb</groupId>
+            <artifactId>je</artifactId>
+            <version>3.2.76</version>
+        </dependency>-->
         <!-- GRAPH IMPLEMENTATION SUPPORT -->
         <!-- NEO4J SUPPORT -->
         <dependency>

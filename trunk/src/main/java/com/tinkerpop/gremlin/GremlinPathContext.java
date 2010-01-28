@@ -5,7 +5,7 @@ import com.tinkerpop.gremlin.db.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.db.sail.lds.LinkedDataSailFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.db.io.FileFunctions;
+import com.tinkerpop.gremlin.db.fs.FileSystemFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -42,7 +42,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         library.addFunctions(new SailFunctions());
         library.addFunctions(new LinkedDataSailFunctions());
         library.addFunctions(new MongoFunctions());
-        library.addFunctions(new FileFunctions());
+        library.addFunctions(new FileSystemFunctions());
     }
 
     public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {

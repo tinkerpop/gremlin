@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.io;
+package com.tinkerpop.gremlin.db.fs;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
@@ -12,11 +12,11 @@ import java.util.Arrays;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FileGraph implements Graph {
+public class FileSystemGraph implements Graph {
 
     public Vertex getVertex(Object id) {
         File file = new File(id.toString());
-        return new FileVertex(file);
+        return new FileSystemVertex(file);
     }
 
     public Vertex addVertex(Object id) {

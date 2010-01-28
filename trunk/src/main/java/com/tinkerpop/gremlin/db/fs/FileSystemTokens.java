@@ -1,9 +1,9 @@
-package com.tinkerpop.gremlin.db.io;
+package com.tinkerpop.gremlin.db.fs;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FileTokens {
+public class FileSystemTokens {
 
     public static final String READ = "read";
     public static final String WRITE = "write";

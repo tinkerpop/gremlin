@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.db.io;
+package com.tinkerpop.gremlin.db.fs;
 
 import com.tinkerpop.gremlin.db.StringFactory;
 import com.tinkerpop.gremlin.model.Edge;
@@ -9,13 +9,13 @@ import java.io.File;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FileEdge extends FileElement implements Edge {
+public class FileSystemEdge extends FileSystemElement implements Edge {
 
     private final File outFile;
     private final File inFile;
     private final String label;
 
-    public FileEdge(final File outFile, final File inFile, final String label) {
+    public FileSystemEdge(final File outFile, final File inFile, final String label) {
         this.outFile = outFile;
         this.inFile = inFile;
         this.label = label;
@@ -26,18 +26,26 @@ public class FileEdge extends FileElement implements Edge {
     }
 
     public Vertex getInVertex() {
-        return new FileVertex(inFile);
+        return new FileSystemVertex(inFile);
     }
 
     public Vertex getOutVertex() {
-        return new FileVertex(outFile);
+        return new FileSystemVertex(outFile);
     }
 
     public Object getId() {
-        return "";
+        return (outFile.toString() + inFile.toString()).hashCode();
     }
 
     public String toString() {
         return StringFactory.edgeString(this);
+    }
+
+    public boolean equals(final Object object) {
+        return object instanceof FileSystemEdge && ((FileSystemEdge) object).getId().equals(this.getId());
+    }
+
+    public int hashCode() {
+        return this.getId().hashCode();
     }
 }
