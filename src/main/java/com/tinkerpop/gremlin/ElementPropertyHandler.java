@@ -1,32 +1,26 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.paths.Path;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class ElementPropertyHandler implements DynamicPropertyHandler {
 
-    private static Map<String, DynamicPath> paths = new HashMap<String, DynamicPath>();
-
     public String[] getPropertyNames(final Object object) {
-        return paths.keySet().toArray(new String[paths.size()]);
+        Set<String> pathNames = GremlinPathContext.getPathNames();
+        return pathNames.toArray(new String[pathNames.size()]);
     }
 
     public Object getProperty(final Object object, final String key) {
-        DynamicPath path = paths.get(key);
+        Path path = GremlinPathContext.getPath(key);
         return path.invoke(object);
     }
 
-    public static void addDynamicPath(DynamicPath path) throws EvaluationException {
-        paths.put(path.getPathName(), path);
-    }
-
     public boolean containsProperty(String key) {
-        return paths.containsKey(key);
+        return GremlinPathContext.getPath(key) != null;
     }
 }

@@ -1,6 +1,8 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.functions.NativeFunction;
+import com.tinkerpop.gremlin.FunctionHelper;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 
@@ -12,12 +14,12 @@ import java.util.Set;
 /**
  * @author Pavel A. Yaskevich
  */
-public class DynamicFunctions implements Functions {
+public class NativeFunctionLibrary implements Functions {
 
     private static Set<String> namespaces = new HashSet<String>();
     private static Map<String, Map<String, Function>> namespaceFunctionsMap = new HashMap<String, Map<String, Function>>();
 
-    public DynamicFunctions(DynamicFunction function) {
+    public NativeFunctionLibrary(NativeFunction function) {
         Map<String, Function> functions;
         String namespace = function.getNamespace();
 

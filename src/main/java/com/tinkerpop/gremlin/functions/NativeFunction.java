@@ -1,8 +1,10 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
+import com.tinkerpop.gremlin.GremlinEvaluator;
+import com.tinkerpop.gremlin.FunctionHelper;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
@@ -12,12 +14,12 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class DynamicFunction implements Function {
+public class NativeFunction implements Function {
 
     private final SyntaxException PARAMETER_SIZE_EXCEPTION;
     private final FunctionStatement functionStatement;
 
-    public DynamicFunction(final FunctionStatement statement) {
+    public NativeFunction(final FunctionStatement statement) {
         this.functionStatement = statement;
         this.PARAMETER_SIZE_EXCEPTION = new SyntaxException("Incorrect number of arguments: " + this.functionStatement.getNamespace() + ":" + this.functionStatement.getFunctionName() + "()");
     }

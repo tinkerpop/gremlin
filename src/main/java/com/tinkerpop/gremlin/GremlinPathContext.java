@@ -1,21 +1,27 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.db.fs.FileSystemFunctions;
 import com.tinkerpop.gremlin.db.mongo.MongoFunctions;
 import com.tinkerpop.gremlin.db.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.db.sail.lds.LinkedDataSailFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.db.fs.FileSystemFunctions;
+import com.tinkerpop.gremlin.functions.NativeFunction;
+import com.tinkerpop.gremlin.functions.NativeFunctionLibrary;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.paths.Path;
+import com.tinkerpop.gremlin.paths.PathLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathIntrospector;
+import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -25,33 +31,35 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     private boolean newRoot = false;
     private static final Pattern variablePattern = Pattern.compile(Tokens.VARIABLE_REGEX);
-    private static FunctionLibrary library;
+    private static FunctionLibrary functionLibrary;
+    private static PathLibrary pathLibrary;
 
     static {
-        library = new FunctionLibrary();
+        functionLibrary = new FunctionLibrary();
+        pathLibrary = new PathLibrary();
 
         JXPathIntrospector.registerDynamicClass(Graph.class, GraphPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
 
-        library.addFunctions(new CoreFunctions());
-        library.addFunctions(new GremlinFunctions());
+        functionLibrary.addFunctions(new CoreFunctions());
+        functionLibrary.addFunctions(new GremlinFunctions());
         ///
-        library.addFunctions(new TinkerFunctions());
-        library.addFunctions(new Neo4jFunctions());
-        library.addFunctions(new SailFunctions());
-        library.addFunctions(new LinkedDataSailFunctions());
-        library.addFunctions(new MongoFunctions());
-        library.addFunctions(new FileSystemFunctions());
+        functionLibrary.addFunctions(new TinkerFunctions());
+        functionLibrary.addFunctions(new Neo4jFunctions());
+        functionLibrary.addFunctions(new SailFunctions());
+        functionLibrary.addFunctions(new LinkedDataSailFunctions());
+        functionLibrary.addFunctions(new MongoFunctions());
+        functionLibrary.addFunctions(new FileSystemFunctions());
     }
 
     public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {
         super(parentContext, root);
         if (null == parentContext) {
-            this.setFunctions(library);
+            this.setFunctions(functionLibrary);
         } else {
             // TODO: Why is this needed? Completely odd...
-            if(parentContext.hasVariable(Tokens.GRAPH_VARIABLE))
+            if (parentContext.hasVariable(Tokens.GRAPH_VARIABLE))
                 this.setVariable(Tokens.GRAPH_VARIABLE, parentContext.getVariable(Tokens.GRAPH_VARIABLE));
         }
     }
@@ -138,11 +146,24 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return variable.replace(Tokens.DOLLAR_SIGN, Tokens.EMPTY_STRING);
     }
 
-    public static void registerFunction(final DynamicFunction dynamicFunction) {
-        library.addFunctions(new DynamicFunctions(dynamicFunction));
+    public static void registerNativeFunction(final NativeFunction nativeFunction) {
+        functionLibrary.addFunctions(new NativeFunctionLibrary(nativeFunction));
     }
 
-    public static void registerPath(final DynamicPath dynamicPath) {
-        ElementPropertyHandler.addDynamicPath(dynamicPath);
+    //Todo:integrate native and java functions
+    public void addFunctions(Functions functions) {
+        functionLibrary.addFunctions(functions);
+    }
+
+    public static void addPath(Path path) {
+        GremlinPathContext.pathLibrary.addPath(path);
+    }
+
+    public static Path getPath(String name) {
+        return GremlinPathContext.pathLibrary.getPath(name);
+    }
+
+    public static Set<String> getPathNames() {
+        return GremlinPathContext.pathLibrary.getPathNames();
     }
 }

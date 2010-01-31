@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.DynamicFunction;
+import com.tinkerpop.gremlin.functions.NativeFunction;
 import com.tinkerpop.gremlin.XPathEvaluator;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class FunctionStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        this.xPathEvaluator.getGremlinPathContext().registerFunction(new DynamicFunction(this));
+        this.xPathEvaluator.getGremlinPathContext().registerNativeFunction(new NativeFunction(this));
         return null;
     }
 

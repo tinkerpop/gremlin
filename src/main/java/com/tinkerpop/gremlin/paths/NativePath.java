@@ -1,8 +1,10 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.paths;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.PathStatement;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.paths.Path;
+import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -10,11 +12,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class DynamicPath {
+public class NativePath implements Path {
 
     PathStatement pathStatement;
 
-    public DynamicPath(PathStatement pathStatement) {
+    public NativePath(PathStatement pathStatement) {
         this.pathStatement = pathStatement;
     }
 

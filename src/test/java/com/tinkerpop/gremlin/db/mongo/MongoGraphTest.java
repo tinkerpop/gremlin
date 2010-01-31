@@ -24,7 +24,7 @@ public class MongoGraphTest extends BaseTest {
         config.supportsEdgeIteration = true;
     }
 
-    public void testVertexSuite() throws Exception {
+    /*public void testVertexSuite() throws Exception {
         doSuiteTest(new VertexTestSuite(config));
     }
 
@@ -42,7 +42,7 @@ public class MongoGraphTest extends BaseTest {
 
     public void testGraphMLReaderSuite() throws Exception {
         doSuiteTest(new GraphMLReaderTestSuite(config));
-    }
+    }*/
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
         String doTest = System.getProperty("testMongoDB");
