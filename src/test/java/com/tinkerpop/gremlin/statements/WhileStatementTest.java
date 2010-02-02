@@ -5,10 +5,12 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class WhileStatementTest extends BaseTest {
+public class WhileStatementTest extends TestCase {
 
     public void testWhileStatementSyntax() {
         assertTrue(WhileStatement.isStatement("while $i"));

@@ -18,7 +18,7 @@ public class ClearFunctionTest extends BaseTest {
         graph.addVertex(null);
         assertEquals(count(graph.getVertices()), 3);
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         xe.evaluateList("g:clear()");
         assertEquals(count(graph.getVertices()), 0);
         graph.addVertex(null);

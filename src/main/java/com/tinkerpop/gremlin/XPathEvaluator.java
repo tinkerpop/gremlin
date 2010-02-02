@@ -3,8 +3,10 @@ package com.tinkerpop.gremlin;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.paths.PathLibrary;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
+import org.apache.commons.jxpath.FunctionLibrary;
 
 import java.util.Iterator;
 import java.util.List;
@@ -50,12 +52,12 @@ public class XPathEvaluator {
                 List results = this.gremlinPathContext.selectNodes(xPathString);
                 if (null != results && results.size() == 1) {
                     Object x = results.get(0);
-                    this.setVariable(Tokens.LAST_VARIABLE, x);
+                    this.gremlinPathContext.getVariables().declareVariable(Tokens.LAST_VARIABLE, x);
                     if (x instanceof List) {
                         return x;
                     }
                 } else {
-                    this.setVariable(Tokens.LAST_VARIABLE, results);
+                    this.gremlinPathContext.getVariables().declareVariable(Tokens.LAST_VARIABLE, results);
                 }
 
                 return results;
@@ -83,16 +85,16 @@ public class XPathEvaluator {
         return (Iterator) this.evaluate(xPathString, ReturnType.ITERATOR);
     }
 
-    public void setVariable(final String variable, final Object value) {
-        this.gremlinPathContext.setVariable(variable, value);
+    public VariableLibrary getVariables() {
+        return this.gremlinPathContext.getVariables();
     }
 
-    public Object getVariable(final String variable) {
-        return this.gremlinPathContext.getVariable(variable);
+    public PathLibrary getPaths() {
+        return this.gremlinPathContext.getPaths();
     }
 
-    public void removeVariable(final String variable) {
-        this.gremlinPathContext.removeVariable(variable);
+    public FunctionLibrary getFunctions() {
+        return this.gremlinPathContext.getFunctions();
     }
 
     public void setRoot(final Object root) {
@@ -100,11 +102,7 @@ public class XPathEvaluator {
     }
 
     public Object getRoot() {
-        return this.gremlinPathContext;
-    }
-
-    public GremlinPathContext getGremlinPathContext() {
-        return this.gremlinPathContext;
+        return this.gremlinPathContext.getRoot();
     }
 
     public int getCurrentLineNumber() {

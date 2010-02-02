@@ -11,16 +11,16 @@ import java.util.Set;
 public abstract class ElementPropertyHandler implements DynamicPropertyHandler {
 
     public String[] getPropertyNames(final Object object) {
-        Set<String> pathNames = GremlinPathContext.getPathNames();
+        Set<String> pathNames = GremlinPathContext.getPaths().getPathNames();
         return pathNames.toArray(new String[pathNames.size()]);
     }
 
     public Object getProperty(final Object object, final String key) {
-        Path path = GremlinPathContext.getPath(key);
+        Path path = GremlinPathContext.getPaths().getPath(key);
         return path.invoke(object);
     }
 
     public boolean containsProperty(String key) {
-        return GremlinPathContext.getPath(key) != null;
+        return GremlinPathContext.getPaths().getPath(key) != null;
     }
 }

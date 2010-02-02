@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.var;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -25,12 +25,12 @@ public class AssignFunction implements Function {
             if (objects.length == 1 && objects[0] instanceof String) {
                 // ../..[g:assign('$i')]
                 if (FunctionHelper.isLastInContext(context))
-                    FunctionHelper.getGremlin(context).setVariable((String) objects[0], FunctionHelper.asObject(context.getContextNodeList()));
+                    FunctionHelper.getGremlin(context).getVariables().declareVariable((String) objects[0], FunctionHelper.asObject(context.getContextNodeList()));
                 return Boolean.TRUE;
             } else if (objects.length == 2) {
                 if (objects[0] instanceof String) {
                     // g:assign('$i', value)
-                    FunctionHelper.getGremlin(context).setVariable((String) objects[0], objects[1]);
+                    FunctionHelper.getGremlin(context).getVariables().declareVariable((String) objects[0], objects[1]);
                     return objects[1];
                 }
             } else if (objects.length == 3) {

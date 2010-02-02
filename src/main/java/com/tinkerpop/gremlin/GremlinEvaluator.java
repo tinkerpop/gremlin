@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.*;
 
+import javax.script.ScriptEngine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,34 +59,30 @@ public class GremlinEvaluator {
         return null;
     }
 
-    public List evaluate(final InputStream input) throws IOException, SyntaxException, EvaluationException {
+    public List evaluate(final InputStream input) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String line;
         List result = null;
 
-        while ((line = reader.readLine()) != null) {
-            try {
-                this.xPathEvaluator.incrLineNumber();
-                result = this.evaluate(line);
-            } catch (SyntaxException e) {
-                throw new SyntaxException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
-            } catch (EvaluationException e) {
-                throw new EvaluationException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
+        try {
+            while ((line = reader.readLine()) != null) {
+                try {
+                    this.xPathEvaluator.incrLineNumber();
+                    result = this.evaluate(line);
+                } catch (SyntaxException e) {
+                    throw new SyntaxException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
+                } catch (EvaluationException e) {
+                    throw new EvaluationException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
+                }
             }
+        } catch (IOException e) {
+            throw new EvaluationException(e.getMessage() + Tokens.AT_LINE + this.xPathEvaluator.getLastStatementLineNumber());
         }
         return result;
     }
 
-    public void setVariable(final String variable, final Object value) {
-        this.xPathEvaluator.setVariable(variable, value);
-    }
-
-    public Object getVariable(final String variable) {
-        return this.xPathEvaluator.getVariable(variable);
-    }
-
-    public void removeVariable(final String variable) {
-        this.xPathEvaluator.removeVariable(variable);
+    public VariableLibrary getVariables() {
+        return this.xPathEvaluator.getVariables();
     }
 
     protected boolean inStatement() {

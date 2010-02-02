@@ -36,7 +36,7 @@ public class FunctionHelper {
     }
 
     public static Graph getGraph(final ExpressionContext context) {
-        Object graph = FunctionHelper.getGremlin(context).getVariable(Tokens.GRAPH_VARIABLE);
+        Object graph = FunctionHelper.getGremlin(context).getVariables().getVariable(Tokens.GRAPH_VARIABLE);
         if (null != graph && graph instanceof Graph)
             return (Graph) graph;
         else

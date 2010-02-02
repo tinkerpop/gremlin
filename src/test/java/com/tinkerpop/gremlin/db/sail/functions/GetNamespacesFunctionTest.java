@@ -18,7 +18,7 @@ public class GetNamespacesFunctionTest extends TestCase {
 
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertTrue(xe.evaluateList("sail:get-ns($g)").get(0) instanceof Map);
         Map map = (Map) xe.evaluateList("sail:get-ns($g)").get(0);
         assertEquals(map.size(), 5);
@@ -54,7 +54,7 @@ public class GetNamespacesFunctionTest extends TestCase {
 
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertTrue(xe.evaluateList("sail:get-ns()").get(0) instanceof Map);
         Map map = (Map) xe.evaluateList("sail:get-ns()").get(0);
         assertEquals(map.size(), 5);

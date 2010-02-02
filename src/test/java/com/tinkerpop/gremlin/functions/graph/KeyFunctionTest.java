@@ -26,7 +26,7 @@ public class KeyFunctionTest extends TestCase {
         marko.setProperty("zipcode", 87501);
         jen.setProperty("zipcode", "87501");
 
-        xe.setVariable("$_g", graph);
+        xe.getVariables().declareVariable("$_g", graph);
         List results = xe.evaluateList("g:key('name','marko')");
         assertEquals(results.size(), 1);
         assertTrue(results.contains(marko));

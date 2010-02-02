@@ -6,10 +6,12 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ForeachStatementTest extends BaseTest {
+public class ForeachStatementTest extends TestCase {
 
     public void testForeachStatementSyntax() {
         assertTrue(ForeachStatement.isStatement("foreach $i in 123"));

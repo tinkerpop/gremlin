@@ -22,7 +22,7 @@ public class OperateValueFunctionTest extends TestCase {
         Map map = new HashMap();
         map.put("marko", 1.0);
         map.put("jen", 2.0);
-        xe.setVariable("$i", map);
+        xe.getVariables().declareVariable("$i", map);
         assertEquals(xe.evaluateList("$i/@marko").get(0), 1.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
         assertEquals(xe.evaluateList("'marko'[g:p(g:op-value('+',$i,.,10))]").get(0), "marko");
@@ -43,7 +43,7 @@ public class OperateValueFunctionTest extends TestCase {
         List list = new ArrayList();
         list.add(1.0);
         list.add(2.0);
-        xe.setVariable("$i", list);
+        xe.getVariables().declareVariable("$i", list);
         assertEquals(xe.evaluateList("$i[1]").get(0), 1.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 2.0);
         assertEquals(xe.evaluateList("1[g:p(g:op-value('+',$i,.,10))]").get(0), 1.0);
@@ -66,7 +66,7 @@ public class OperateValueFunctionTest extends TestCase {
         Vertex vertex = graph.addVertex("1");
         vertex.setProperty("marko", 1.0);
         vertex.setProperty("jen", 2.0);
-        xe.setVariable("$i", vertex);
+        xe.getVariables().declareVariable("$i", vertex);
         assertEquals(xe.evaluateList("$i/@marko").get(0), 1.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
         assertEquals(xe.evaluateList("'marko'[g:p(g:op-value('+',$i,.,10))]").get(0), "marko");

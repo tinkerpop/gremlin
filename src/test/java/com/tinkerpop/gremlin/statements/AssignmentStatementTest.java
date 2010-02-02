@@ -5,10 +5,12 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AssignmentStatementTest extends BaseTest {
+public class AssignmentStatementTest extends TestCase {
 
     public void testAssignmentStatementSyntax() {
         assertTrue(AssignmentStatement.isStatement("$i := 1"));

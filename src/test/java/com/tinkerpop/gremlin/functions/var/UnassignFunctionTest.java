@@ -17,9 +17,9 @@ public class UnassignFunctionTest extends TestCase {
     public void testUnassignFunctionVariable() {
         XPathEvaluator xe = new XPathEvaluator();
         assertEquals(xe.evaluateList("g:assign('$i',2)").get(0), 2.0);
-        assertEquals(xe.getVariable("$i"), 2.0);
+        assertEquals(xe.getVariables().getVariable("$i"), 2.0);
         assertEquals(xe.evaluateList("g:unassign('$i')").get(0), 2.0);
-        assertNull(xe.getVariable("$i"));
+        assertNull(xe.getVariables().getVariable("$i"));
         assertEquals(xe.evaluateList("g:unassign('$non-existant-variable')").size(), 0);
     }
 
@@ -28,7 +28,7 @@ public class UnassignFunctionTest extends TestCase {
         Map map = new HashMap();
         map.put("marko", 1.0);
         map.put("jen", 2.0);
-        xe.setVariable("$i", map);
+        xe.getVariables().declareVariable("$i", map);
         assertEquals(xe.evaluateList("$i/@marko").get(0), 1.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2.0);
         assertEquals(xe.evaluateList("'marko'[g:unassign($i,.)]").get(0), "marko");
@@ -41,7 +41,7 @@ public class UnassignFunctionTest extends TestCase {
         List list = new ArrayList();
         list.add(1.0);
         list.add(2.0);
-        xe.setVariable("$i", list);
+        xe.getVariables().declareVariable("$i", list);
         assertEquals(xe.evaluateList("$i[1]").get(0), 1.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 2.0);
         assertEquals(list.get(0), 1.0);

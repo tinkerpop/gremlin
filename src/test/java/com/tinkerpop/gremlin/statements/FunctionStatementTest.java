@@ -5,10 +5,12 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 
+import junit.framework.TestCase;
+
 /**
  * @author Pavel A. Yaskevich
  */
-public class FunctionStatementTest extends BaseTest {
+public class FunctionStatementTest extends TestCase {
 
     public void testFunctionStatementSyntax() {
         assertTrue(FunctionStatement.isStatement("func test:name()"));

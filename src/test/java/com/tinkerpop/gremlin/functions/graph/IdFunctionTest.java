@@ -14,7 +14,7 @@ public class IdFunctionTest extends TestCase {
     public void testIdFunction() {
         XPathEvaluator xe = new XPathEvaluator();
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertEquals(xe.evaluateList("g:id($g, '1')").size(), 1);
         assertEquals(xe.evaluateList("g:id($g, '1')").get(0), graph.getVertex("1"));
         assertEquals(xe.evaluateList("g:id($g, '2')").size(), 1);
@@ -26,7 +26,7 @@ public class IdFunctionTest extends TestCase {
     public void testIdFunctionGraphVariable() {
         XPathEvaluator xe = new XPathEvaluator();
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("g:id('1')").size(), 1);
         assertEquals(xe.evaluateList("g:id('1')").get(0), graph.getVertex("1"));
         assertEquals(xe.evaluateList("g:id('2')").size(), 1);

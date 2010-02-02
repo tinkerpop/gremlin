@@ -14,12 +14,12 @@ import java.util.Set;
 /**
  * @author Pavel A. Yaskevich
  */
-public class NativeFunctionLibrary implements Functions {
+public class NativeFunctions implements Functions {
 
     private static Set<String> namespaces = new HashSet<String>();
     private static Map<String, Map<String, Function>> namespaceFunctionsMap = new HashMap<String, Map<String, Function>>();
 
-    public NativeFunctionLibrary(NativeFunction function) {
+    public NativeFunctions(NativeFunction function) {
         Map<String, Function> functions;
         String namespace = function.getNamespace();
 

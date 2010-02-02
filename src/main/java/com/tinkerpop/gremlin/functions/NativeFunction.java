@@ -25,7 +25,7 @@ public class NativeFunction implements Function {
     }
 
     public Object invoke(final ExpressionContext context, final Object[] parameters) throws EvaluationException {
-        GremlinEvaluator evaluator = new GremlinEvaluator();
+        GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
         List<String> arguments = this.functionStatement.getArguments();
 
@@ -37,12 +37,12 @@ public class NativeFunction implements Function {
                 throw this.PARAMETER_SIZE_EXCEPTION;
 
             for (int i = 0; i < objects.length; i++)
-                evaluator.setVariable(arguments.get(i), objects[i]);
+                gremlinEvaluator.getVariables().declareVariable(arguments.get(i), objects[i]);
         }
 
         List result;
         try {
-            result = evaluator.evaluate(new ByteArrayInputStream(functionStatement.getStatementBody().getBytes()));
+            result = gremlinEvaluator.evaluate(new ByteArrayInputStream(functionStatement.getStatementBody().getBytes()));
         } catch (Exception e) {
             String fullname = FunctionHelper.makeFunctionName(this.functionStatement.getNamespace(), this.functionStatement.getFunctionName());
             throw new EvaluationException(fullname + "() [declared at line " + this.functionStatement.getDeclarationLine() + "]: " + e.getMessage());

@@ -14,7 +14,7 @@ public class AddVertexFunctionTest extends BaseTest {
     public void testAddVertexFunction() {
         Graph graph = new TinkerGraph();
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(count(graph.getVertices()), 0);
         xe.evaluateList("g:add-v()");
         assertEquals(count(graph.getVertices()), 1);

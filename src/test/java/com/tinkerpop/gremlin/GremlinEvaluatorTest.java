@@ -16,16 +16,16 @@ public class GremlinEvaluatorTest extends BaseTest {
     public void testSettingGraphVariable() {
         Graph graph = new TinkerGraph();
         GremlinEvaluator ge = new GremlinEvaluator();
-        ge.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertTrue(true);
         try {
-            ge.setVariable(Tokens.GRAPH_VARIABLE, new ArrayList());
+            ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, new ArrayList());
             assertFalse(true);
         } catch (EvaluationException e) {
             assertTrue(true);
         }
         try {
-            ge.setVariable(Tokens.GRAPH_VARIABLE, "a graph");
+            ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, "a graph");
             assertFalse(true);
         } catch (EvaluationException e) {
             assertTrue(true);
@@ -33,6 +33,15 @@ public class GremlinEvaluatorTest extends BaseTest {
 
     }
 
+    public void testRemovingVariable() {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        ge.getVariables().declareVariable("$marko", "marko");
+        assertEquals(ge.getVariables().getVariable("$marko"), "marko");
+        ge.getVariables().undeclareVariable("$marko");
+        assertFalse(ge.getVariables().isDeclaredVariable("$marko"));
+        assertNull(ge.getVariables().getVariable("$marko"));
+    }
+    
     public void testUnmodifiableListChecker() {
         assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
         assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));

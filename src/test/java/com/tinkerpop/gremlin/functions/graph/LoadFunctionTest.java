@@ -14,7 +14,7 @@ public class LoadFunctionTest extends BaseTest {
         Graph graph = new TinkerGraph();
         assertEquals(count(graph.getVertices()), 0);
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$_g", graph);
+        xe.getVariables().declareVariable("$_g", graph);
         //TODO: where is this file in test cases ? xe.evaluateList("g:load('src/test/resources/com/tinkerpop/gremlin/model/parser/graph-example-1.xml')");
     }
 }

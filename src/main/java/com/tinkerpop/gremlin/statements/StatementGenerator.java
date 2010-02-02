@@ -27,6 +27,8 @@ public class StatementGenerator {
             return new FunctionStatement(xPathEvaluator);
         } else if (PathStatement.isStatement(line)) {
             return new PathStatement(xPathEvaluator);
+        } else if (IncludeStatement.isStatement(line)) {
+            return new IncludeStatement(xPathEvaluator);
         } else {
             return new XPathStatement(xPathEvaluator);
         }

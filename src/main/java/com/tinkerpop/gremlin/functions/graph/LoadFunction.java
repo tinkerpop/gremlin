@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.parser.GraphMLReader;
 import com.tinkerpop.gremlin.statements.EvaluationException;
@@ -9,6 +9,9 @@ import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -32,7 +35,13 @@ public class LoadFunction implements Function {
 
             if (null != fileName) {
                 try {
-                    GraphMLReader.inputGraph(graph, new FileInputStream(fileName));
+                    InputStream stream;
+                    try {
+                        stream = new URL(fileName).openStream();
+                    } catch (MalformedURLException urlEx) {
+                        stream = new FileInputStream(fileName);
+                    }
+                    GraphMLReader.inputGraph(graph, stream);
                     return Boolean.TRUE;
                 } catch (Exception e) {
                     throw new EvaluationException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());

@@ -2,11 +2,12 @@ package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class XPathStatementTest extends BaseTest {
+public class XPathStatementTest extends TestCase {
 
     public void testBasicXpath() {
         XPathEvaluator xPathEvaluator = new XPathEvaluator();

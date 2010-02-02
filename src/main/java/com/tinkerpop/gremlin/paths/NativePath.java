@@ -25,12 +25,12 @@ public class NativePath implements Path {
     }
 
     public Object invoke(Object root) throws EvaluationException {
-        GremlinEvaluator evaluator = new GremlinEvaluator();
-        evaluator.setVariable(Tokens.AT_VARIABLE, root);
+        GremlinEvaluator gremlinEvaluator = new GremlinEvaluator();
+        gremlinEvaluator.getVariables().declareVariable(Tokens.AT_VARIABLE, root);
 
         List result;
         try {
-            result = evaluator.evaluate(new ByteArrayInputStream(this.pathStatement.getStatementBody().getBytes()));
+            result = gremlinEvaluator.evaluate(new ByteArrayInputStream(this.pathStatement.getStatementBody().getBytes()));
         } catch (Exception e) {
             throw new EvaluationException(e.getMessage());
         }

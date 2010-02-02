@@ -16,7 +16,7 @@ public class AddIndexFunctionTest extends TestCase {
         Graph graph = new TinkerGraph();
         graph.getIndex().indexAll(false);
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         Vertex v = graph.addVertex("1");
         v.setProperty("name", "marko");
         v.setProperty("age", 30);

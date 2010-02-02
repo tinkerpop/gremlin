@@ -14,12 +14,12 @@ public class RemoveVertexEdgeFunctionTest extends BaseTest {
     public void testRemoveVertexEdgeFunction() {
         Graph graph = new TinkerGraph();
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
-        xe.setVariable("$v", graph.addVertex('1'));
-        xe.setVariable("$u", graph.addVertex('2'));
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable("$v", graph.addVertex('1'));
+        xe.getVariables().declareVariable("$u", graph.addVertex('2'));
         assertEquals(count(graph.getVertices()), 2);
         assertEquals(count(graph.getEdges()), 0);
-        xe.setVariable("$e", graph.addEdge(null, graph.getVertex('1'), graph.getVertex('2'), "knows"));
+        xe.getVariables().declareVariable("$e", graph.addEdge(null, graph.getVertex('1'), graph.getVertex('2'), "knows"));
         assertEquals(count(graph.getVertices()), 2);
         assertEquals(count(graph.getEdges()), 1);
         xe.evaluateList("g:remove-ve($e)");

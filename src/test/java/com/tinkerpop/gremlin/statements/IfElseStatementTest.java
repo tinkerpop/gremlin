@@ -5,10 +5,12 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IfElseStatementTest extends BaseTest {
+public class IfElseStatementTest extends TestCase {
 
     public void testIfElseStatementSyntax() {
         assertTrue(IfElseStatement.isStatement("if true()"));

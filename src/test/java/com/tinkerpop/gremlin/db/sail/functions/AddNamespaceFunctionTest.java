@@ -15,7 +15,7 @@ public class AddNamespaceFunctionTest extends TestCase {
     public void testAddNamespaceFunction() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:ns($g, 'tg:marko')").get(0), "tg:marko");
         assertTrue((Boolean) xe.evaluateList("sail:add-ns($g,'tg','http://tinkerpop.com#')").get(0));
         assertEquals(xe.evaluateList("sail:ns($g, 'tg:marko')").get(0), "http://tinkerpop.com#marko");
@@ -26,7 +26,7 @@ public class AddNamespaceFunctionTest extends TestCase {
     public void testAddNamespaceFunctionGraphVariable() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:ns('tg:marko')").get(0), "tg:marko");
         assertTrue((Boolean) xe.evaluateList("sail:add-ns('tg','http://tinkerpop.com#')").get(0));
         assertEquals(xe.evaluateList("sail:ns('tg:marko')").get(0), "http://tinkerpop.com#marko");

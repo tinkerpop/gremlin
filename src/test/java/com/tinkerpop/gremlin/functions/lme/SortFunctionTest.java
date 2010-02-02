@@ -19,7 +19,7 @@ public class SortFunctionTest extends TestCase {
         map.put("josh", 1);
         map.put("peter", 3);
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$m", map);
+        xe.getVariables().declareVariable("$m", map);
         Map sortedMap = (Map) xe.evaluateList("g:sort($m, 'value', true())").get(0);
         assertEquals(map.get("marko"), 2);
         assertEquals(map.get("josh"), 1);
@@ -58,7 +58,7 @@ public class SortFunctionTest extends TestCase {
         list.add(1);
         list.add(3);
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$i", list);
+        xe.getVariables().declareVariable("$i", list);
         List sortedList = xe.evaluateList("g:sort($i, true())");
         assertEquals(sortedList.get(0), 3);
         assertEquals(sortedList.get(1), 2);

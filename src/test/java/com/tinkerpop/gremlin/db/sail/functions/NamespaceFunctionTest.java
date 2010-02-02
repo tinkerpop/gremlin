@@ -15,7 +15,7 @@ public class NamespaceFunctionTest extends TestCase {
     public void testNamespaceFunction() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:ns($g, 'rdf:type')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
         assertEquals(xe.evaluateList("sail:ns($g, 'rdf:label')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
         assertEquals(xe.evaluateList("sail:ns($g, 'dag:type')").get(0), "dag:type");
@@ -31,7 +31,7 @@ public class NamespaceFunctionTest extends TestCase {
     public void testNamespaceFunctionGraphVariable() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:ns('rdf:type')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
         assertEquals(xe.evaluateList("sail:ns('rdf:label')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#label");
         assertEquals(xe.evaluateList("sail:ns('dag:type')").get(0), "dag:type");

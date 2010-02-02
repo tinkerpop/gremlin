@@ -20,7 +20,7 @@ public class GetFunctionTest extends TestCase {
         map.put("marko", 1);
         map.put("josh", 2);
         map.put(3.0, "peter");
-        xe.setVariable("$m", map);
+        xe.getVariables().declareVariable("$m", map);
         assertEquals(xe.evaluateList("g:get($m,'marko')").size(), 1);
         assertTrue(xe.evaluateList("g:get($m,'marko')").contains(1));
         assertTrue(xe.evaluateList("g:get($m, 3)").contains("peter"));
@@ -34,7 +34,7 @@ public class GetFunctionTest extends TestCase {
         list.add("marko");
         list.add("josh");
         list.add(3.0);
-        xe.setVariable("$l", list);
+        xe.getVariables().declareVariable("$l", list);
         assertEquals(xe.evaluateList("g:get($l,1)").size(), 1);
         assertTrue(xe.evaluateList("g:get($l,1)").contains("marko"));
         assertTrue(xe.evaluateList("g:get($l,3)").contains(3.0));

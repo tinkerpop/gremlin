@@ -19,7 +19,7 @@ public class DynamicPathTest extends TestCase {
     public void testKnowsPath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
         Graph graph = new TinkerGraph();
-        ge.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
         GraphMLReader.inputGraph(graph, stream);
 
@@ -36,7 +36,7 @@ public class DynamicPathTest extends TestCase {
     public void testKnowsWeightPath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
         Graph graph = new TinkerGraph();
-        ge.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
         GraphMLReader.inputGraph(graph, stream);
 
@@ -54,7 +54,7 @@ public class DynamicPathTest extends TestCase {
     public void testMultiLinePath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
         Graph graph = new TinkerGraph();
-        ge.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
         GraphMLReader.inputGraph(graph, stream);
 

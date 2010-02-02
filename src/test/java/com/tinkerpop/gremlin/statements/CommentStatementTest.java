@@ -5,10 +5,12 @@ import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 
+import junit.framework.TestCase;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CommentStatementTest extends BaseTest {
+public class CommentStatementTest extends TestCase {
 
     public void testCommentStatementSyntax() {
         assertTrue(CommentStatement.isStatement("# a comment"));

@@ -15,7 +15,7 @@ public class PrefixFunctionTest extends TestCase {
     public void testPrefixFunction() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:prefix($g, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type')").get(0), "rdf:type");
         assertEquals(xe.evaluateList("sail:prefix($g, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#label')").get(0), "rdf:label");
         assertEquals(xe.evaluateList("sail:prefix($g, 'dag:type')").get(0), "dag:type");
@@ -31,7 +31,7 @@ public class PrefixFunctionTest extends TestCase {
     public void testPrefixFunctionGraphVariable() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')").get(0), "rdf:type");
         assertEquals(xe.evaluateList("sail:prefix('http://www.w3.org/1999/02/22-rdf-syntax-ns#label')").get(0), "rdf:label");
         assertEquals(xe.evaluateList("sail:prefix('dag:type')").get(0), "dag:type");
@@ -47,7 +47,7 @@ public class PrefixFunctionTest extends TestCase {
     public void testPrefixNamespaceFunction() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:prefix($g, sail:ns($g, 'rdf:type'))").get(0), "rdf:type");
         assertEquals(xe.evaluateList("sail:prefix($g, sail:ns($g, 'rdf:label'))").get(0), "rdf:label");
         assertEquals(xe.evaluateList("sail:prefix($g, sail:ns($g, sail:prefix($g, sail:ns($g, 'rdf:label'))))").get(0), "rdf:label");

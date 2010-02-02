@@ -31,8 +31,8 @@ public class MapFunctionTest extends TestCase {
         XPathEvaluator xe = new XPathEvaluator();
         Vertex marko = TinkerGraphFactory.createTinkerGraph().getVertex("1");
         Edge edge = TinkerGraphFactory.createTinkerGraph().getVertex("1").getOutEdges().iterator().next();
-        xe.setVariable("$v", marko);
-        xe.setVariable("$e", edge);
+        xe.getVariables().declareVariable("$v", marko);
+        xe.getVariables().declareVariable("$e", edge);
         assertEquals(((Map) (xe.evaluateList("g:map($v)")).get(0)).keySet().size(), 2);
         assertTrue(((Map) (xe.evaluateList("g:map($v)")).get(0)).keySet().contains("age"));
         assertTrue(((Map) (xe.evaluateList("g:map($v)")).get(0)).keySet().contains("name"));

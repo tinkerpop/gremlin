@@ -1,11 +1,12 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TokensTest extends BaseTest {
+public class TokensTest extends TestCase {
 
     public void testWhiteSpaceRegEx() {
         assertTrue(" ".matches(Tokens.WHITESPACE_REGEX));

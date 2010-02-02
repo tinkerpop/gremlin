@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.util;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Element;
 import com.tinkerpop.gremlin.model.Vertex;

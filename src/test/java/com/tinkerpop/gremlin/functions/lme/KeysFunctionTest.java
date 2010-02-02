@@ -19,7 +19,7 @@ public class KeysFunctionTest extends TestCase {
         map.put("marko", 1);
         map.put("josh", 2);
         map.put(3, "peter");
-        xe.setVariable("$m", map);
+        xe.getVariables().declareVariable("$m", map);
         assertEquals(xe.evaluateList("g:keys($m)").size(), 3);
         assertTrue(xe.evaluateList("g:keys($m)").contains("marko"));
         assertTrue(xe.evaluateList("g:keys($m)").contains("josh"));
@@ -30,7 +30,7 @@ public class KeysFunctionTest extends TestCase {
     public void testKeysFunctionElement() {
         XPathEvaluator xe = new XPathEvaluator();
         Vertex marko = TinkerGraphFactory.createTinkerGraph().getVertex("1");
-        xe.setVariable("$v", marko);
+        xe.getVariables().declareVariable("$v", marko);
         assertEquals(xe.evaluateList("g:keys($v)").size(), 2);
         assertTrue(xe.evaluateList("g:keys($v)").contains("age"));
         assertTrue(xe.evaluateList("g:keys($v)").contains("name"));

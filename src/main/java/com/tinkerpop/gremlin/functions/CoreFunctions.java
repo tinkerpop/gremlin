@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
@@ -15,11 +15,6 @@ public class CoreFunctions implements Functions {
     private static Functions coreFunctions = JXPathContext.newContext(null).getFunctions();
 
     public Function getFunction(final String namespace, final String name, final Object[] parameters) {
-        // TODO -- this doesn't seem to be getting called?!   ID IS BEING TREATED SEPERATELY
-        // TODO -- Implement an identity and key manager and throw the EvaluationException 
-        if (name.equals("id") || name.equals("key")) {
-            throw EvaluationException.createException(FunctionHelper.makeFunctionName(namespace, name), EvaluationException.EvaluationErrorType.USE_OTHER);
-        }
         return coreFunctions.getFunction(namespace, name, parameters);
     }
 

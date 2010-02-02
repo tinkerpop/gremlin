@@ -15,7 +15,7 @@ public class RemoveNamespaceFunctionTest extends TestCase {
     public void testRemoveNamespaceFunction() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable("$g", graph);
+        xe.getVariables().declareVariable("$g", graph);
         assertEquals(xe.evaluateList("sail:ns($g, 'rdf:type')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
         assertTrue((Boolean) xe.evaluateList("sail:remove-ns($g, 'rdf')").get(0));
         assertEquals(xe.evaluateList("sail:ns($g, 'rdf:type')").get(0), "rdf:type");
@@ -38,7 +38,7 @@ public class RemoveNamespaceFunctionTest extends TestCase {
     public void testRemoveNamespaceFunctionGraphVariable() {
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
-        xe.setVariable(Tokens.GRAPH_VARIABLE, graph);
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         assertEquals(xe.evaluateList("sail:ns('rdf:type')").get(0), "http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
         assertTrue((Boolean) xe.evaluateList("sail:remove-ns('rdf')").get(0));
         assertEquals(xe.evaluateList("sail:ns('rdf:type')").get(0), "rdf:type");

@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.paths;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,5 +21,11 @@ public class PathLibrary {
 
     public Set<String> getPathNames() {
         return paths.keySet();
+    }
+
+    public void addPaths(PathLibrary paths) {
+        for (String name : paths.getPathNames()) {
+            this.paths.put(name, paths.getPath(name));
+        }
     }
 }

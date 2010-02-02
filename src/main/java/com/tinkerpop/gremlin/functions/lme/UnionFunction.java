@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.lme;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

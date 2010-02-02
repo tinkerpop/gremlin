@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;

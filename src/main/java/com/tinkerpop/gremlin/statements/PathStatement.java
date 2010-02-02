@@ -45,7 +45,7 @@ public class PathStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        GremlinPathContext.addPath(new NativePath(this));
+        this.xPathEvaluator.getPaths().addPath(new NativePath(this));
         return null;
     }
 

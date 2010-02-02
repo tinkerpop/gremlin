@@ -14,6 +14,7 @@ public class Tokens {
     public static final String ELSE = "else";
     public static final String END = "end";
     public static final String SCRIPT = "script";
+    public static final String INCLUDE = "include";
     public static final String COMMENT = "#";
 
     public static final String DOLLAR_SIGN = "$";

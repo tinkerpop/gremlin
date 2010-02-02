@@ -59,7 +59,7 @@ public class ForeachStatement extends CompoundStatement {
             if (itty != null) {
                 while (itty.hasNext()) {
                     Object item = itty.next();
-                    xPathEvaluator.setVariable(this.variable, item);
+                    xPathEvaluator.getVariables().declareVariable(this.variable, item);
                     for (Statement statement : this.statementList) {
                         results = statement.evaluate();
                     }
