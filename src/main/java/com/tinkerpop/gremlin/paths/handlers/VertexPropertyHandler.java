@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.paths.handlers;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VertexPropertyHandler extends ElementPropertyHandler {
+public class VertexPropertyHandler extends ObjectPropertyHandler {
 
     private static final List<String> staticProperties = new ArrayList<String>();
 
@@ -26,7 +26,7 @@ public class VertexPropertyHandler extends ElementPropertyHandler {
         Vertex vertex = (Vertex) vertexObject;
         List<String> list = new ArrayList<String>();
         Set<String> keys = vertex.getPropertyKeys();
-        if(null != keys)
+        if (null != keys)
             list.addAll(vertex.getPropertyKeys());
         list.addAll(staticProperties);
         list.addAll(Arrays.asList(super.getPropertyNames(vertexObject)));

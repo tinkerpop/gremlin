@@ -19,13 +19,13 @@ public class StopTransactionFunction implements Function {
     public Boolean invoke(final ExpressionContext context, final Object[] parameters) {
 
         Graph graph = GraphFunctionHelper.getGraph(context, parameters);
-        if(parameters != null && graph instanceof Neo4jGraph) {
+        if (parameters != null && graph instanceof Neo4jGraph) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
             if (objects.length == 1 && objects[0] instanceof Boolean) {
-                ((Neo4jGraph)graph).stopTransaction((Boolean)objects[0]);
+                ((Neo4jGraph) graph).stopTransaction((Boolean) objects[0]);
                 return Boolean.TRUE;
             } else if (objects.length == 2 && objects[0] instanceof Graph && objects[1] instanceof Boolean) {
-                ((Neo4jGraph)graph).stopTransaction((Boolean)objects[1]);
+                ((Neo4jGraph) graph).stopTransaction((Boolean) objects[1]);
                 return Boolean.TRUE;
             }
         }

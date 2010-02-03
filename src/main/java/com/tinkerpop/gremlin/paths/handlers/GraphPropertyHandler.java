@@ -1,8 +1,7 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.paths.handlers;
 
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.Tokens;
-import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GraphPropertyHandler implements DynamicPropertyHandler {
+public class GraphPropertyHandler extends ObjectPropertyHandler {
 
     private static final String[] properties = new String[]{Tokens.VERTICES, Tokens.EDGES};
     public static final String CANNOT_BE_SET = " cannot be set as a property.";

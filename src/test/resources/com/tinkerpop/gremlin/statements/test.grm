@@ -1,0 +1,7 @@
+func test:marko($x)
+  $x + 200
+  end
+
+path knows
+  ./outE
+  end

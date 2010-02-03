@@ -1,16 +1,15 @@
 package com.tinkerpop.gremlin.db.fs;
 
+import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.db.fs.functions.OpenFunction;
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 
-import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.HashMap;
-
-import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.db.fs.functions.OpenFunction;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

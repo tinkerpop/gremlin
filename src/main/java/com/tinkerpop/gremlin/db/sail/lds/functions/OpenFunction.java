@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.db.sail.lds.functions;
 
 import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.db.sail.SailGraph;
+import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import net.fortytwo.linkeddata.sail.LinkedDataSail;

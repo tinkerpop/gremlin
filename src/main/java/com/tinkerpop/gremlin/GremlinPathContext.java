@@ -6,14 +6,15 @@ import com.tinkerpop.gremlin.db.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.db.sail.lds.LinkedDataSailFunctions;
 import com.tinkerpop.gremlin.db.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.functions.NativeFunction;
-import com.tinkerpop.gremlin.functions.NativeFunctions;
 import com.tinkerpop.gremlin.functions.CoreFunctions;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.NativeFunction;
+import com.tinkerpop.gremlin.functions.NativeFunctions;
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Graph;
 import com.tinkerpop.gremlin.model.Vertex;
 import com.tinkerpop.gremlin.paths.PathLibrary;
+import com.tinkerpop.gremlin.paths.handlers.*;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.FunctionLibrary;
 import org.apache.commons.jxpath.Functions;
@@ -21,6 +22,7 @@ import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -33,9 +35,15 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     private VariableLibrary variableLibrary = new VariableLibrary(this);
 
     static {
+        JXPathIntrospector.registerDynamicClass(Map.class, MapPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Graph.class, GraphPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Vertex.class, VertexPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Edge.class, EdgePropertyHandler.class);
+        // todo: generalize this solution
+        //JXPathIntrospector.registerDynamicClass(Float.class, ObjectPropertyHandler.class);
+        JXPathIntrospector.registerDynamicClass(String.class, ObjectPropertyHandler.class);
+        JXPathIntrospector.registerDynamicClass(Boolean.class, ObjectPropertyHandler.class);
+
 
         functionLibrary.addFunctions(new CoreFunctions());
         functionLibrary.addFunctions(new GremlinFunctions());

@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.functions;
 
+import com.tinkerpop.gremlin.FunctionHelper;
 import com.tinkerpop.gremlin.functions.flow.ContinueFunction;
 import com.tinkerpop.gremlin.functions.flow.HaltFunction;
 import com.tinkerpop.gremlin.functions.graph.*;
@@ -11,7 +12,6 @@ import com.tinkerpop.gremlin.functions.util.*;
 import com.tinkerpop.gremlin.functions.var.AssignFunction;
 import com.tinkerpop.gremlin.functions.var.UnassignFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.FunctionHelper;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
 

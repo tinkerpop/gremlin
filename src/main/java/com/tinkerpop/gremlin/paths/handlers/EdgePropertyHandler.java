@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.paths.handlers;
 
 import com.tinkerpop.gremlin.model.Edge;
 import com.tinkerpop.gremlin.model.Vertex;
@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class EdgePropertyHandler extends ElementPropertyHandler {
+public class EdgePropertyHandler extends ObjectPropertyHandler {
 
     private static final List<String> staticProperties = new ArrayList<String>();
 

@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.functions.NativeFunction;
-import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.GremlinPathContext;
+import com.tinkerpop.gremlin.XPathEvaluator;
+import com.tinkerpop.gremlin.functions.NativeFunction;
 
 import java.util.ArrayList;
 import java.util.List;

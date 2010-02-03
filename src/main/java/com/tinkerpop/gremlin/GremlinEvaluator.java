@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.*;
 
-import javax.script.ScriptEngine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +28,8 @@ public class GremlinEvaluator {
             try {
                 if (null == this.currentStatement) {
                     this.currentStatement = StatementGenerator.generateStatement(line, xPathEvaluator);
-                    if (this.currentStatement instanceof ScriptStatement) {
-                        ((ScriptStatement) this.currentStatement).setGremlinEvaluator(this);
+                    if (this.currentStatement instanceof ReflectiveStatement) {
+                        ((ReflectiveStatement) this.currentStatement).setGremlinEvaluator(this);
                     }
                     this.currentStatement.compileTokens(line);
                 } else {
@@ -40,8 +39,7 @@ public class GremlinEvaluator {
                 if (this.currentStatement.isComplete()) {
                     Statement temp = this.currentStatement;
                     this.currentStatement = null;
-                    List tempResult = temp.evaluate();
-                    return tempResult;
+                    return temp.evaluate();
                 } else {
                     return null;
                 }

@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.db.neo4j;
 
 import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.db.neo4j.functions.AutomaticTransactionsFunction;
 import com.tinkerpop.gremlin.db.neo4j.functions.OpenFunction;
 import com.tinkerpop.gremlin.db.neo4j.functions.StartTransactionFunction;
 import com.tinkerpop.gremlin.db.neo4j.functions.StopTransactionFunction;
-import com.tinkerpop.gremlin.db.neo4j.functions.AutomaticTransactionsFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;

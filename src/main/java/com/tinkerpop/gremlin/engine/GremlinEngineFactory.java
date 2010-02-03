@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.engine;
 
-import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,16 +43,16 @@ public class GremlinEngineFactory implements ScriptEngineFactory {
     }
 
     public String getOutputStatement(final String toDisplay) {
-        return "g:print(" + toDisplay + ")";   
+        return "g:print(" + toDisplay + ")";
     }
 
     public Object getParameter(final String key) {
-        return null;    
+        return null;
     }
 
     public String getProgram(final String... statements) {
         String program = new String();
-        for(String statement : statements) {
+        for (String statement : statements) {
             program = program + statement + "\n";
         }
         return program;

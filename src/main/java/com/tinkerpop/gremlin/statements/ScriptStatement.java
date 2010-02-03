@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ScriptStatement extends SimpleStatement {
+public class ScriptStatement extends SimpleStatement implements ReflectiveStatement {
 
     private String fileNameExpression;
     private GremlinEvaluator gremlinEvaluator;

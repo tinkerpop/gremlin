@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.functions;
 
+import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.GremlinEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
-import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.FunctionHelper;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
 

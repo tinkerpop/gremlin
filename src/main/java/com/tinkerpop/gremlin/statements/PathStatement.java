@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.GremlinPathContext;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.paths.NativePath;
 

@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.engine;
 
 import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.VariableLibrary;
 import com.tinkerpop.gremlin.GremlinPathContext;
+import com.tinkerpop.gremlin.VariableLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 
 import javax.script.Bindings;

@@ -1,10 +1,9 @@
 package com.tinkerpop.gremlin.paths;
 
+import com.tinkerpop.gremlin.GremlinEvaluator;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.PathStatement;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.paths.Path;
-import com.tinkerpop.gremlin.GremlinEvaluator;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;

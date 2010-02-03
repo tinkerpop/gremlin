@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.Variables;
 
 import javax.script.Bindings;
@@ -28,7 +28,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Variable
         this.declareVariable(name, value);
         return o;
     }
-    
+
     public void declareVariable(final String name, final Object value) {
         if (variablePattern.matcher(name).matches()) {
             // $i := ././././

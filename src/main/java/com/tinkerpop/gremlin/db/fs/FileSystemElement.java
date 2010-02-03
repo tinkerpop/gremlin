@@ -18,7 +18,7 @@ public abstract class FileSystemElement implements Element {
     }
 
     public void setProperty(String key, Object value) {
-        
+
     }
 
     public Object getProperty(String key) {
