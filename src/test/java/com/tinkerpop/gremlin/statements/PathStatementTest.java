@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.GremlinEvaluator;
+import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.db.tg.TinkerGraph;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
@@ -22,8 +24,11 @@ public class PathStatementTest extends TestCase {
 
     public void testPathStatementEvaluation() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
+        Graph graph = new TinkerGraph();
+        ge.getVariables().declareVariable(Tokens.AT_VARIABLE, graph.addVertex(null));
         String funcst = "path knows\n1.0\nend\n";
         assertNull(ge.evaluate(new ByteArrayInputStream(funcst.getBytes())));
+        assertEquals(ge.evaluate("./knows").get(0), 1.0);
 
         String funcbigst = "path friend\n$x := 1\nrepeat 2\n$x := $x * 2\nend\nend\n";
         assertNull(ge.evaluate(new ByteArrayInputStream(funcbigst.getBytes())));

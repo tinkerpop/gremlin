@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PathLibrary {
+public class PathLibrary implements Paths {
 
     Map<String, Path> paths = new HashMap<String, Path>();
 
@@ -23,7 +23,7 @@ public class PathLibrary {
         return paths.keySet();
     }
 
-    public void addPaths(PathLibrary paths) {
+    public void addPaths(Paths paths) {
         for (String name : paths.getPathNames()) {
             this.paths.put(name, paths.getPath(name));
         }

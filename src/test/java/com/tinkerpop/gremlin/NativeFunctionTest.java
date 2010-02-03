@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-public class DynamicFunctionTest extends TestCase {
+public class NativeFunctionTest extends TestCase {
 
     public void testFunctionStatements() throws IOException {
         GremlinEvaluator ge = new GremlinEvaluator();

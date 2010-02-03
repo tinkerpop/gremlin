@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.GremlinEvaluator;
+import com.tinkerpop.gremlin.db.tg.TinkerGraph;
+import com.tinkerpop.gremlin.model.Graph;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
@@ -29,12 +31,13 @@ public class IncludeStatementTest extends TestCase {
 
     }
 
-     /*public void testIncludeStatementPathEvaluation() throws Exception {
+    public void testIncludeStatementPathEvaluation() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
+        Graph graph = new TinkerGraph();
+        ge.getVariables().declareVariable(Tokens.AT_VARIABLE, graph.addVertex(null));
         assertNull(ge.evaluate("include 'com.tinkerpop.gremlin.statements.TestPaths'"));
-        assertEquals(ge.evaluate("./test-path-1").get(0), "");
-        assertEquals(ge.evaluate("test:test-func-2()").get(0), "marko was here");
+        assertEquals(ge.evaluate("./test-path-1").get(0), "undercover cop");
         assertEquals(ge.evaluate("count(9)").get(0), 1.0);
 
-    }*/
+    }
 }

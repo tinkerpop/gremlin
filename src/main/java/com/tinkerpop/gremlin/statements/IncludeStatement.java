@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.paths.PathLibrary;
+import com.tinkerpop.gremlin.paths.Paths;
 import org.apache.commons.jxpath.Functions;
 
 import java.util.List;
@@ -39,8 +40,8 @@ public class IncludeStatement extends SimpleStatement {
                 Class aClass = Class.forName(name);
                 if (Functions.class.isAssignableFrom(aClass)) {
                     this.xPathEvaluator.getFunctions().addFunctions((Functions) aClass.newInstance());
-                } else if(PathLibrary.class.isAssignableFrom(aClass)) {
-                    this.xPathEvaluator.getPaths().addPaths((PathLibrary)aClass.newInstance());
+                } else if(Paths.class.isAssignableFrom(aClass)) {
+                    this.xPathEvaluator.getPaths().addPaths((Paths)aClass.newInstance());
                 }
             } catch (ClassNotFoundException e) {
                 System.out.println("try for gremlin file.");

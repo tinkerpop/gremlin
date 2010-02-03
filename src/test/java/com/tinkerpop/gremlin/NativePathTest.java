@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class DynamicPathTest extends TestCase {
+public class NativePathTest extends TestCase {
 
     public void testKnowsPath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
