@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.db.tg.TinkerGraph;
-import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.models.ggm.Graph;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

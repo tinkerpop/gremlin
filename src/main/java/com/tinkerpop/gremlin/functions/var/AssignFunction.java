@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.functions.var;
 
-import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
-import com.tinkerpop.gremlin.model.Element;
+import com.tinkerpop.gremlin.models.ggm.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.db.tg.TinkerGraph;
-import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.parser.GraphMLReader;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.models.ggm.Edge;
+import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.statements.Tokens;
 import junit.framework.TestCase;
 

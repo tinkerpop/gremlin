@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.graph;
 
-import com.tinkerpop.gremlin.FunctionHelper;
-import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
+import com.tinkerpop.gremlin.models.ggm.Graph;
 import org.apache.commons.jxpath.ExpressionContext;
 
 /**

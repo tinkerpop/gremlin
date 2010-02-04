@@ -1,9 +1,10 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.db.tg.TinkerGraph;
-import com.tinkerpop.gremlin.model.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;

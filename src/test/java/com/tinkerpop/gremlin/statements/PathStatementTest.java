@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.db.tg.TinkerGraph;
+import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
 import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;

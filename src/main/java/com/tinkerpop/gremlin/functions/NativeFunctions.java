@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.functions;
 
-import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;

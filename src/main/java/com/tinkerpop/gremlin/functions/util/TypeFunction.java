@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.functions.util;
 
-import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
-import com.tinkerpop.gremlin.model.Edge;
-import com.tinkerpop.gremlin.model.Graph;
-import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.models.ggm.Edge;
+import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.functions.lme;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.db.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.model.Vertex;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.gremlin.models.ggm.Vertex;
 import junit.framework.TestCase;
 
 import java.util.HashMap;

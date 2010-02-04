@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.functions;
 
-import com.tinkerpop.gremlin.FunctionHelper;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import junit.framework.TestCase;
 
 /**
