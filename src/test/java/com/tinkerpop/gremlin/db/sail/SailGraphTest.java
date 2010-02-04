@@ -18,7 +18,6 @@ import java.util.regex.Matcher;
  */
 public class SailGraphTest extends BaseTest {
 
-    public static final String TP_NS = "http://tinkerpop.com#";
     private static final SuiteConfiguration config = new SuiteConfiguration();
 
     static {
@@ -130,7 +129,7 @@ public class SailGraphTest extends BaseTest {
     }
 
     private static void doSuiteTest(ModelTestSuite suite) throws Exception {
-        String doTest = System.getProperty("testSesame");
+        String doTest = System.getProperty("testSail");
         if (doTest == null || doTest.equals("true")) {
             for (Method method : suite.getClass().getDeclaredMethods()) {
                 if (method.getName().startsWith("test")) {

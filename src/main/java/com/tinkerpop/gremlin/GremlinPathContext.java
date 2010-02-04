@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.db.fs.FileSystemFunctions;
-import com.tinkerpop.gremlin.db.mongo.MongoFunctions;
 import com.tinkerpop.gremlin.db.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.db.sail.SailFunctions;
 import com.tinkerpop.gremlin.db.sail.lds.LinkedDataSailFunctions;
@@ -52,7 +51,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         functionLibrary.addFunctions(new Neo4jFunctions());
         functionLibrary.addFunctions(new SailFunctions());
         functionLibrary.addFunctions(new LinkedDataSailFunctions());
-        functionLibrary.addFunctions(new MongoFunctions());
         functionLibrary.addFunctions(new FileSystemFunctions());
     }
 

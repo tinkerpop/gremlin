@@ -147,12 +147,12 @@
             <version>2.3-pr1</version>
             <type>jar</type>
         </dependency>
-        <!-- MONGODB SUPPORT -->
+        <!-- MONGODB SUPPORT
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency>-->
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -275,12 +275,12 @@
                             <name>neo4jDirectory</name>
                             <value>/tmp/gremlin_test</value>
                         </property>
-                        <!-- SESAME TEST PROPERTIES -->
+                        <!-- SAIL TEST PROPERTIES -->
                         <property>
-                            <name>testSesame</name>
+                            <name>testSail</name>
                             <value>true</value>
                         </property>
-                        <!-- MONGODB TEST PROPERTIES -->
+                        <!-- MONGODB TEST PROPERTIES
                         <property>
                             <name>testMongoDB</name>
                             <value>true</value>
@@ -296,11 +296,10 @@
                         <property>
                             <name>mongoDatabase</name>
                             <value>gremlin_test</value>
-                        </property>
+                        </property>-->
                     </systemProperties>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>
