@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.paths;
 
 import com.tinkerpop.gremlin.GremlinPathContext;
-import com.tinkerpop.gremlin.paths.Path;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 
 import java.util.Set;

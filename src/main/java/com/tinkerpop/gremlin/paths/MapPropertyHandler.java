@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.paths;
 
-import com.tinkerpop.gremlin.paths.ObjectPropertyHandler;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

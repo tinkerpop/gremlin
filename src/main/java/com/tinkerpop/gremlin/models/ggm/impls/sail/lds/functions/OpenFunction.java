@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.models.ggm.impls.sail.lds.functions;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.models.ggm.impls.sail.SailFunctions;
-import com.tinkerpop.gremlin.models.ggm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.sail.SailFunctions;
+import com.tinkerpop.gremlin.models.ggm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import net.fortytwo.linkeddata.sail.LinkedDataSail;
 import net.fortytwo.ripple.Ripple;

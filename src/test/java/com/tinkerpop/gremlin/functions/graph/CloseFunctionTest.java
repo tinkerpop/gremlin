@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
 import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
 import com.tinkerpop.gremlin.statements.Tokens;
 import junit.framework.TestCase;
 

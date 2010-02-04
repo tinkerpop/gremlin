@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
-import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
-import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.Index;
+import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
 import org.neo4j.graphdb.Relationship;
 
 /**

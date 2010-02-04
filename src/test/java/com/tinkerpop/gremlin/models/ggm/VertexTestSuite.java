@@ -2,8 +2,6 @@ package com.tinkerpop.gremlin.models.ggm;
 
 import com.tinkerpop.gremlin.models.ggm.impls.sail.SailTokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import com.tinkerpop.gremlin.models.ggm.Graph;
-import com.tinkerpop.gremlin.models.ggm.Vertex;
 
 import java.util.HashSet;
 import java.util.Set;

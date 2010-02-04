@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
-import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
-import com.tinkerpop.gremlin.models.ggm.impls.neo4j.util.Neo4jEdgeIterable;
 import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.Index;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
+import com.tinkerpop.gremlin.models.ggm.impls.neo4j.util.Neo4jEdgeIterable;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 

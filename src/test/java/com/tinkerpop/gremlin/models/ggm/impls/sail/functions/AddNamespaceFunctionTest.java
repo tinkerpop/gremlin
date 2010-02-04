@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.models.ggm.impls.sail.functions;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.models.ggm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.statements.Tokens;
 import junit.framework.TestCase;
 import org.openrdf.sail.memory.MemoryStore;

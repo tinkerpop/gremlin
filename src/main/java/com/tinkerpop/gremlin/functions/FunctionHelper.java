@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.functions;
 
+import com.tinkerpop.gremlin.GremlinPathContext;
 import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.GremlinPathContext;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.NodeSet;
 import org.apache.commons.jxpath.Pointer;

@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.models.ggm.parser;
 
 import com.tinkerpop.gremlin.models.ggm.*;
-import com.tinkerpop.gremlin.models.ggm.parser.GraphMLReader;
 
 import java.io.InputStream;
 import java.util.HashSet;

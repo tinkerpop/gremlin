@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.models.ggm.impls.sail;
 
-import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
 import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.model.Literal;

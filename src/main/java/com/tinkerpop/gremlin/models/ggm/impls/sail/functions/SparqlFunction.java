@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.models.ggm.impls.sail.functions;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.models.ggm.impls.sail.SailFunctions;
-import com.tinkerpop.gremlin.models.ggm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.models.ggm.impls.sail.SailFunctions;
+import com.tinkerpop.gremlin.models.ggm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import info.aduna.iteration.CloseableIteration;
 import org.apache.commons.jxpath.ExpressionContext;

@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j.functions;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
+import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jGraph;
-import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

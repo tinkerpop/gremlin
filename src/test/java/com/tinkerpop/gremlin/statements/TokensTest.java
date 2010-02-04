@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.BaseTest;
 import junit.framework.TestCase;
 
 /**

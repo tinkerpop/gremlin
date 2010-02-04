@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.models.ggm.impls.tg;
 
-import com.tinkerpop.gremlin.models.ggm.parser.GraphMLReaderTestSuite;
 import com.tinkerpop.gremlin.models.ggm.*;
+import com.tinkerpop.gremlin.models.ggm.parser.GraphMLReaderTestSuite;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Method;

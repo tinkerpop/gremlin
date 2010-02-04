@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j.util;
 
+import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jEdge;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jGraph;
-import com.tinkerpop.gremlin.models.ggm.Edge;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;

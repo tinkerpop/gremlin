@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class GremlinEvaluatorTest extends BaseTest {
         assertFalse(ge.getVariables().isDeclaredVariable("$marko"));
         assertNull(ge.getVariables().getVariable("$marko"));
     }
-    
+
     public void testUnmodifiableListChecker() {
         assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
         assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));

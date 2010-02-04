@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.models.ggm.parser;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraphFactory;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

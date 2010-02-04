@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.functions;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.flow.ContinueFunction;
 import com.tinkerpop.gremlin.functions.flow.HaltFunction;
 import com.tinkerpop.gremlin.functions.graph.*;

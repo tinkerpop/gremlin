@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j.util;
 
+import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jVertex;
-import com.tinkerpop.gremlin.models.ggm.Vertex;
 import org.neo4j.graphdb.Node;
 
 import java.util.Iterator;

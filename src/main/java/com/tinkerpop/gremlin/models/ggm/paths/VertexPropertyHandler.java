@@ -2,10 +2,9 @@ package com.tinkerpop.gremlin.models.ggm.paths;
 
 import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.paths.ObjectPropertyHandler;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.paths.ObjectPropertyHandler;
-import com.tinkerpop.gremlin.models.ggm.paths.GraphPropertyHandler;
 
 import java.util.*;
 

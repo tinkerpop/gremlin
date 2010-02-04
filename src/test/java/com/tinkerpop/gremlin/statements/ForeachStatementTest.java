@@ -1,12 +1,10 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinEvaluator;
+import junit.framework.TestCase;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

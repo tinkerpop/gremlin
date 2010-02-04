@@ -1,10 +1,11 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
+import com.tinkerpop.gremlin.models.ggm.Edge;
+import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.ggm.Index;
+import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.util.Neo4jGraphEdgeIterable;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.util.Neo4jVertexIterable;
-import com.tinkerpop.gremlin.models.ggm.Index;
-import com.tinkerpop.gremlin.models.ggm.*;
-import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.neo4j.graphdb.*;
 import org.neo4j.index.Isolation;

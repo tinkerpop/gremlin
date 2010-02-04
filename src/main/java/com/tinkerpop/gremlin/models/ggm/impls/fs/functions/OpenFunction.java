@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.models.ggm.impls.fs.functions;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
+import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.models.ggm.impls.fs.FileSystemFunctions;
 import com.tinkerpop.gremlin.models.ggm.impls.fs.FileSystemGraph;
-import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

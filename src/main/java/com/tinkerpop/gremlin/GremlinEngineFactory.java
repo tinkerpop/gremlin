@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.GremlinEngine;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import java.util.Arrays;
