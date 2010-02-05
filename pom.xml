@@ -63,11 +63,6 @@
             <artifactId>jline</artifactId>
             <version>0.9.94</version>
         </dependency>
-        <!--<dependency>
-            <groupId>berkeleydb</groupId>
-            <artifactId>je</artifactId>
-            <version>3.2.76</version>
-        </dependency>-->
         <!-- GRAPH IMPLEMENTATION SUPPORT -->
         <!-- NEO4J SUPPORT -->
         <dependency>
@@ -280,23 +275,6 @@
                             <name>testSail</name>
                             <value>true</value>
                         </property>
-                        <!-- MONGODB TEST PROPERTIES
-                        <property>
-                            <name>testMongoDB</name>
-                            <value>true</value>
-                        </property>
-                        <property>
-                            <name>mongoIP</name>
-                            <value>127.0.0.1</value>
-                        </property>
-                        <property>
-                            <name>mongoPort</name>
-                            <value>27017</value>
-                        </property>
-                        <property>
-                            <name>mongoDatabase</name>
-                            <value>gremlin_test</value>
-                        </property>-->
                     </systemProperties>
                 </configuration>
             </plugin>

@@ -51,11 +51,7 @@ public class XPathEvaluator {
             if (type == ReturnType.LIST) {
                 List results = this.gremlinPathContext.selectNodes(xPathString);
                 if (null != results && results.size() == 1) {
-                    Object x = results.get(0);
-                    this.gremlinPathContext.getVariables().declareVariable(Tokens.LAST_VARIABLE, x);
-                    if (x instanceof List) {
-                        return x;
-                    }
+                    this.gremlinPathContext.getVariables().declareVariable(Tokens.LAST_VARIABLE, results.get(0));
                 } else {
                     this.gremlinPathContext.getVariables().declareVariable(Tokens.LAST_VARIABLE, results);
                 }

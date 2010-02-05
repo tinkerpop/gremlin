@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import com.tinkerpop.gremlin.GremlinEvaluator;
+
 public class NativeFunctionTest extends TestCase {
 
     public void testFunctionStatements() throws IOException {

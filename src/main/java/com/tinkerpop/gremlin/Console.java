@@ -28,7 +28,7 @@ public class Console {
     private static final String EMPTY_STRING = "";
     private static final String SYNTAX_ERROR = "Syntax error: ";
     private static final String EVALUATION_ERROR = "Evaluation error: ";
-    //private static final String GREMLIN_VERSION = "0.1";
+    //private static final String GREMLIN_VERSION = "0.2";
 
 
     public static void main(final String[] args) throws IOException {

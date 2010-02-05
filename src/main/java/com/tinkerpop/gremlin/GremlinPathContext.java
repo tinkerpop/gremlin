@@ -112,13 +112,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         return functionLibrary;
     }
 
-
-    public static void registerNativeFunction(final NativeFunction nativeFunction) {
-        functionLibrary.addFunctions(new NativeFunctions(nativeFunction));
-    }
-
-    //Todo:integrate native and java functions
-    public void addFunctions(Functions functions) {
+    public static void addFunctions(Functions functions) {
         functionLibrary.addFunctions(functions);
     }
 }
