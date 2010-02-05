@@ -64,6 +64,17 @@
             <version>0.9.94</version>
         </dependency>
         <!-- GRAPH IMPLEMENTATION SUPPORT -->
+        <!-- JUNG SUPPORT -->
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-algorithms</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-api</artifactId>
+            <version>2.0</version>
+        </dependency>
         <!-- NEO4J SUPPORT -->
         <dependency>
             <groupId>org.neo4j</groupId>
