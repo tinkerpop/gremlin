@@ -2,8 +2,6 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.functions.CoreFunctions;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
-import com.tinkerpop.gremlin.functions.NativeFunction;
-import com.tinkerpop.gremlin.functions.NativeFunctions;
 import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.models.ggm.Vertex;

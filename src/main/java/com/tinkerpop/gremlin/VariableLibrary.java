@@ -22,7 +22,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Variable
         this.gremlinPathContext = gremlinPathContext;
     }
 
-    public Object put(final String name, final Object value) { 
+    public Object put(final String name, final Object value) {
         Object o = this.get(removeVariableDollarSign(name));
         this.declareVariable(name, value);
         return o;

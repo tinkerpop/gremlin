@@ -29,6 +29,7 @@ public class SailGraphTest extends BaseTest {
         config.supportsEdgeIteration = true;
         config.supportsVertexIndex = false;
         config.supportsEdgeIndex = false;
+        config.ignoresSuppliedIds = false;
     }
 
     public void testTypeConversion() {
@@ -128,7 +129,7 @@ public class SailGraphTest extends BaseTest {
         doSuiteTest(new IndexTestSuite(config));
     }
 
-    private static void doSuiteTest(ModelTestSuite suite) throws Exception {
+    private void doSuiteTest(ModelTestSuite suite) throws Exception {
         String doTest = System.getProperty("testSail");
         if (doTest == null || doTest.equals("true")) {
             for (Method method : suite.getClass().getDeclaredMethods()) {

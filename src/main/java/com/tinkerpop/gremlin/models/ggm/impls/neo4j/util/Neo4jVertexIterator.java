@@ -25,7 +25,7 @@ public class Neo4jVertexIterator implements Iterator<Vertex> {
     }
 
     public Vertex next() {
-        return new Neo4jVertex(this.nodes.next(), this.graph.getIndex(), this.graph);
+        return new Neo4jVertex(this.nodes.next(), this.graph);
     }
 
     public boolean hasNext() {

@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
 import com.tinkerpop.gremlin.models.ggm.Element;
-import com.tinkerpop.gremlin.models.ggm.Index;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.NotFoundException;
 import org.neo4j.graphdb.PropertyContainer;
@@ -17,10 +16,8 @@ public abstract class Neo4jElement implements Element {
 
     protected Neo4jGraph graph;
     protected PropertyContainer element;
-    protected final Index index;
 
-    public Neo4jElement(final Index index, final Neo4jGraph graph) {
-        this.index = index;
+    public Neo4jElement(final Neo4jGraph graph) {
         this.graph = graph;
     }
 
@@ -28,12 +25,12 @@ public abstract class Neo4jElement implements Element {
         if (this instanceof Neo4jVertex) {
             Object value2 = this.getProperty(key);
             if (null != value2)
-                this.index.remove(key, value2, this);
+                this.graph.getIndex().remove(key, value2, this);
         }
 
         this.element.setProperty(key, value);
         if (this instanceof Neo4jVertex)
-            this.index.put(key, value, this);
+            this.graph.getIndex().put(key, value, this);
 
         this.graph.stopStartTransaction();
     }
@@ -58,7 +55,7 @@ public abstract class Neo4jElement implements Element {
             if (this instanceof Neo4jVertex) {
                 Object value2 = this.getProperty(key);
                 if (null != value2)
-                    this.index.remove(key, value2, this);
+                    this.graph.getIndex().remove(key, value2, this);
             }
             Object value = this.element.removeProperty(key);
             this.graph.stopStartTransaction();

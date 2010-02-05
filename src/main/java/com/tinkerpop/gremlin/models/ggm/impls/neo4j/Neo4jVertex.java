@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
 import com.tinkerpop.gremlin.models.ggm.Edge;
-import com.tinkerpop.gremlin.models.ggm.Index;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.util.Neo4jEdgeIterable;
@@ -13,8 +12,8 @@ import org.neo4j.graphdb.Node;
  */
 public class Neo4jVertex extends Neo4jElement implements Vertex {
 
-    public Neo4jVertex(final Node node, final Index index, final Neo4jGraph graph) {
-        super(index, graph);
+    public Neo4jVertex(final Node node, final Neo4jGraph graph) {
+        super(graph);
         this.element = node;
 
     }

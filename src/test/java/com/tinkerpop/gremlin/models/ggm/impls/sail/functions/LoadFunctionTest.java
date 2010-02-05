@@ -12,6 +12,7 @@ import org.openrdf.sail.memory.MemoryStore;
 public class LoadFunctionTest extends TestCase {
 
     public void testLoadTriples() {
+        //TODO: do!
         Graph graph = new SailGraph(new MemoryStore());
         XPathEvaluator xe = new XPathEvaluator();
         graph.shutdown();

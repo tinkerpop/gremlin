@@ -43,7 +43,7 @@ public class Neo4jIndex implements Index {
             if (itty2.hasNext()) {
                 Set<Element> elements = new HashSet<Element>();
                 while (itty2.hasNext()) {
-                    elements.add(new Neo4jVertex(itty2.next(), this, this.graph));
+                    elements.add(new Neo4jVertex(itty2.next(), this.graph));
                 }
                 return elements;
             }

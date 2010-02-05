@@ -187,7 +187,7 @@
         </repository>
         <repository>
             <id>tinkerpop-repository</id>
-            <name>TinkerPop Public Maven2 Repository</name>
+            <name>TinkerPop Maven2 Repository</name>
             <url>http://tinkerpop.com/maven2</url>
         </repository>
     </repositories>

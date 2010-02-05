@@ -74,10 +74,9 @@ public class GraphMLReader {
                         inVertex = graph.addVertex(inStringId);
                         vertexIdMap.put(inStringId, inVertex.getId());
                     }
-                    try {
-                        currentEdge = graph.addEdge(edgeId, outVertex, inVertex, edgeLabel);
-                    } catch (Exception e) {
-                    }
+
+                    currentEdge = graph.addEdge(edgeId, outVertex, inVertex, edgeLabel);
+
 
                 } else if (elementName.equals(GraphMLTokens.DATA)) {
                     String key = reader.getAttributeValue(null, GraphMLTokens.KEY);

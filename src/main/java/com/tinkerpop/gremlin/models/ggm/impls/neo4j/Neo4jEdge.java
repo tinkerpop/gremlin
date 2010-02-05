@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
 import com.tinkerpop.gremlin.models.ggm.Edge;
-import com.tinkerpop.gremlin.models.ggm.Index;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
 import com.tinkerpop.gremlin.models.ggm.impls.StringFactory;
 import org.neo4j.graphdb.Relationship;
@@ -11,8 +10,8 @@ import org.neo4j.graphdb.Relationship;
  */
 public class Neo4jEdge extends Neo4jElement implements Edge {
 
-    public Neo4jEdge(final Relationship relationship, final Index index, final Neo4jGraph graph) {
-        super(index, graph);
+    public Neo4jEdge(final Relationship relationship, final Neo4jGraph graph) {
+        super(graph);
         this.element = relationship;
     }
 
@@ -21,11 +20,11 @@ public class Neo4jEdge extends Neo4jElement implements Edge {
     }
 
     public Vertex getOutVertex() {
-        return new Neo4jVertex(((Relationship) this.element).getStartNode(), this.index, this.graph);
+        return new Neo4jVertex(((Relationship) this.element).getStartNode(), this.graph);
     }
 
     public Vertex getInVertex() {
-        return new Neo4jVertex(((Relationship) this.element).getEndNode(), this.index, this.graph);
+        return new Neo4jVertex(((Relationship) this.element).getEndNode(), this.graph);
     }
 
     public boolean equals(final Object object) {

@@ -22,6 +22,7 @@ public class TinkerGraphTest extends TestCase {
         config.supportsEdgeIteration = true;
         config.supportsVertexIndex = true;
         config.supportsEdgeIndex = false;
+        config.ignoresSuppliedIds = false;
     }
 
     public void testVertexSuite() throws Exception {
@@ -45,7 +46,7 @@ public class TinkerGraphTest extends TestCase {
     }
 
 
-    private static void doSuiteTest(ModelTestSuite suite) throws Exception {
+    private void doSuiteTest(ModelTestSuite suite) throws Exception {
         String doTest = System.getProperty("testTinkerGraph");
         if (doTest == null || doTest.equals("true")) {
             for (Method method : suite.getClass().getDeclaredMethods()) {

@@ -25,7 +25,7 @@ public class Neo4jEdgeIterator implements Iterator<Edge> {
     }
 
     public Edge next() {
-        return new Neo4jEdge(this.relationships.next(), this.graph.getIndex(), this.graph);
+        return new Neo4jEdge(this.relationships.next(), this.graph);
     }
 
     public boolean hasNext() {

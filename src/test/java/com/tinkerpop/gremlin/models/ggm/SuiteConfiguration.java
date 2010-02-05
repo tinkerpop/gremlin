@@ -13,5 +13,6 @@ public class SuiteConfiguration {
     public boolean supportsEdgeIteration;
     public boolean supportsVertexIndex;
     public boolean supportsEdgeIndex;
+    public boolean ignoresSuppliedIds;
 
 }

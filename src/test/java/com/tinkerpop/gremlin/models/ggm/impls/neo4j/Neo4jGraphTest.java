@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin.models.ggm.impls.neo4j;
 
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.models.ggm.*;
+import com.tinkerpop.gremlin.models.ggm.parser.GraphMLReaderTestSuite;
+import junit.framework.TestCase;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -9,7 +10,7 @@ import java.lang.reflect.Method;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Neo4jGraphTest extends BaseTest {
+public class Neo4jGraphTest extends TestCase {
 
     private static final SuiteConfiguration config = new SuiteConfiguration();
 
@@ -22,6 +23,7 @@ public class Neo4jGraphTest extends BaseTest {
         config.supportsEdgeIteration = true;
         config.supportsVertexIndex = true;
         config.supportsEdgeIndex = false;
+        config.ignoresSuppliedIds = true;
     }
 
     public void testVertexSuite() throws Exception {
@@ -40,12 +42,12 @@ public class Neo4jGraphTest extends BaseTest {
         doSuiteTest(new IndexTestSuite(config));
     }
 
-    /*public void testGraphMLReaderSuite() throws Exception {
-        doSuiteTest(new GraphMLReaderTestSuite());
-    }*/
+    public void testGraphMLReaderSuite() throws Exception {
+        doSuiteTest(new GraphMLReaderTestSuite(config));
+    }
 
 
-    private static void doSuiteTest(ModelTestSuite suite) throws Exception {
+    private void doSuiteTest(ModelTestSuite suite) throws Exception {
         String doTest = System.getProperty("testNeo4j");
         if (doTest == null || doTest.equals("true")) {
             String directory = System.getProperty("neo4jDirectory");

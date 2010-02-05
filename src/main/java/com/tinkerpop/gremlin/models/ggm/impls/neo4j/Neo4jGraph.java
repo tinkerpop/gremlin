@@ -43,7 +43,7 @@ public class Neo4jGraph implements Graph {
     }
 
     public Vertex addVertex(final Object id) {
-        Vertex vertex = new Neo4jVertex(neo.createNode(), this.index, this);
+        Vertex vertex = new Neo4jVertex(neo.createNode(), this);
         this.stopStartTransaction();
         return vertex;
     }
@@ -55,7 +55,7 @@ public class Neo4jGraph implements Graph {
         try {
             Long longId = Double.valueOf(id.toString()).longValue();
             Node node = this.neo.getNodeById(longId);
-            return new Neo4jVertex(node, this.index, this);
+            return new Neo4jVertex(node, this);
         } catch (NotFoundException e) {
             return null;
         } catch (NumberFormatException e) {
@@ -95,7 +95,7 @@ public class Neo4jGraph implements Graph {
         Node inNode = (Node) ((Neo4jVertex) inVertex).getRawElement();
         Relationship relationship = outNode.createRelationshipTo(inNode, DynamicRelationshipType.withName(label));
         this.stopStartTransaction();
-        return new Neo4jEdge(relationship, this.index, this);
+        return new Neo4jEdge(relationship, this);
     }
 
     public void removeEdge(Edge edge) {
