@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.functions.GremlinFunctions;
 import com.tinkerpop.gremlin.models.ggm.Edge;
 import com.tinkerpop.gremlin.models.ggm.Graph;
 import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.models.ggm.jung.JungFunctions;
 import com.tinkerpop.gremlin.models.ggm.impls.fs.FileSystemFunctions;
 import com.tinkerpop.gremlin.models.ggm.impls.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.models.ggm.impls.sail.SailFunctions;
@@ -54,6 +55,7 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         functionLibrary.addFunctions(new SailFunctions());
         functionLibrary.addFunctions(new LinkedDataSailFunctions());
         functionLibrary.addFunctions(new FileSystemFunctions());
+        functionLibrary.addFunctions(new JungFunctions());
     }
 
     public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {
