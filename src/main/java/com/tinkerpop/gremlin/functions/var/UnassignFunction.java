@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.functions.var;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
-import com.tinkerpop.gremlin.models.ggm.Element;
+import com.tinkerpop.gremlin.models.pgm.Element;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

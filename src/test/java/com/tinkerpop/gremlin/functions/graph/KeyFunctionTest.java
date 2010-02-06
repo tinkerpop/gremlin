@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.models.ggm.Graph;
-import com.tinkerpop.gremlin.models.ggm.Vertex;
-import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.gremlin.models.pgm.Graph;
+import com.tinkerpop.gremlin.models.pgm.Vertex;
+import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
 
 import java.util.List;

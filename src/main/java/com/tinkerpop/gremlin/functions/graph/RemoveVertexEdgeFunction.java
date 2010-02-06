@@ -2,10 +2,10 @@ package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
-import com.tinkerpop.gremlin.models.ggm.Edge;
-import com.tinkerpop.gremlin.models.ggm.Element;
-import com.tinkerpop.gremlin.models.ggm.Graph;
-import com.tinkerpop.gremlin.models.ggm.Vertex;
+import com.tinkerpop.gremlin.models.pgm.Edge;
+import com.tinkerpop.gremlin.models.pgm.Element;
+import com.tinkerpop.gremlin.models.pgm.Graph;
+import com.tinkerpop.gremlin.models.pgm.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;

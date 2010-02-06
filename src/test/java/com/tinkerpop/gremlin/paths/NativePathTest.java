@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.paths;
 
 import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.models.ggm.Edge;
-import com.tinkerpop.gremlin.models.ggm.Graph;
-import com.tinkerpop.gremlin.models.ggm.impls.tg.TinkerGraph;
-import com.tinkerpop.gremlin.models.ggm.parser.GraphMLReader;
+import com.tinkerpop.gremlin.models.pgm.Edge;
+import com.tinkerpop.gremlin.models.pgm.Graph;
+import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.models.pgm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.statements.Tokens;
 import junit.framework.TestCase;
 

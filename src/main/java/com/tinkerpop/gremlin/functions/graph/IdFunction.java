@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.functions.graph;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.GremlinFunctions;
-import com.tinkerpop.gremlin.models.ggm.Graph;
+import com.tinkerpop.gremlin.models.pgm.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Function;
