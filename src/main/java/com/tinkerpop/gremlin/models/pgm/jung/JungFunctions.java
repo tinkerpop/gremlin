@@ -2,6 +2,8 @@ package com.tinkerpop.gremlin.models.pgm.jung;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.models.pgm.jung.functions.scoring.PageRankFunction;
+import com.tinkerpop.gremlin.models.pgm.jung.functions.cluster.EdgeBetweennessClustererFunction;
+import com.tinkerpop.gremlin.models.pgm.jung.functions.shortestpath.DijkstraShortestPathFunction;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.Function;
 import org.apache.commons.jxpath.Functions;
@@ -24,6 +26,8 @@ public class JungFunctions implements Functions {
     static {
         namespaces.add(NAMESPACE_PREFIX);
         functionMap.put(PageRankFunction.FUNCTION_NAME, new PageRankFunction());
+        functionMap.put(EdgeBetweennessClustererFunction.FUNCTION_NAME, new EdgeBetweennessClustererFunction());
+        functionMap.put(DijkstraShortestPathFunction.FUNCTION_NAME, new DijkstraShortestPathFunction());
 
     }
 
