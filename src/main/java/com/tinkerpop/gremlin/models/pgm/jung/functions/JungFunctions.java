@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.models.pgm.jung;
+package com.tinkerpop.gremlin.models.pgm.jung.functions;
 
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.models.pgm.jung.functions.scoring.PageRankFunction;

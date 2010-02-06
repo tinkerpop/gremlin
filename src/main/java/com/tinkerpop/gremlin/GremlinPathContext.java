@@ -10,7 +10,7 @@ import com.tinkerpop.gremlin.models.pgm.impls.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.models.pgm.impls.sail.SailFunctions;
 import com.tinkerpop.gremlin.models.pgm.impls.sail.lds.LinkedDataSailFunctions;
 import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.models.pgm.jung.JungFunctions;
+import com.tinkerpop.gremlin.models.pgm.jung.functions.JungFunctions;
 import com.tinkerpop.gremlin.models.pgm.paths.EdgePropertyHandler;
 import com.tinkerpop.gremlin.models.pgm.paths.GraphPropertyHandler;
 import com.tinkerpop.gremlin.models.pgm.paths.VertexPropertyHandler;

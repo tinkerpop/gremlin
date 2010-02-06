@@ -46,7 +46,7 @@ public class SortFunction implements Function {
     private static Map sortByValue(final Map map, final boolean reverse) {
         List mapKeys = new ArrayList(map.keySet());
         List mapValues = new ArrayList(map.values());
-        Collections.sort(mapKeys);
+        //Collections.sort(mapKeys); TODO: decide if we want to sort keys (causes problems if they don't implement comparable e.g. vertices)
         Collections.sort(mapValues);
 
         if (reverse)
