@@ -13,7 +13,7 @@ public class TimeFunction implements Function {
 
     public static final String FUNCTION_NAME = "time";
 
-    public Double invoke(final ExpressionContext context, final Object[] parameters) {
+    public Number invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null == parameters) {
             return new Long(System.currentTimeMillis()).doubleValue();

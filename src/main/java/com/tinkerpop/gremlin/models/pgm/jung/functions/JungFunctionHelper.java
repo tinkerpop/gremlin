@@ -2,33 +2,42 @@ package com.tinkerpop.gremlin.models.pgm.jung.functions;
 
 import com.tinkerpop.gremlin.models.pgm.Edge;
 import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.functors.ChainedTransformer;
 
-import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class JungFunctionHelper {
 
-    /*public static Transformer<Edge, Double> edgeLabelWeightChain(Map<String, Boolean> labelFilter, String weightPropertyKey) {
-        EdgeLabelTransformer
-    }*/
+    public Transformer<Edge, Double> edgeLabelWeightTransformer(Set<String> labels, boolean filter, String weightPropertyKey) {
+        return new ChainedTransformer<Edge, Double>(new Transformer[]{new EdgeLabelTransformer(labels, filter), new EdgeWeightTransformer(weightPropertyKey)});
+    }
 
-    public class EdgeLabelTransformer implements Transformer<Edge, Double> {
-        private Map<String, Boolean> labelFilter;
+    public class EdgeLabelTransformer implements Transformer<Edge, Edge> {
+        private Set<String> labels;
+        private boolean filter;
 
-        public EdgeLabelTransformer(Map<String, Boolean> labelFilter) {
-            this.labelFilter = labelFilter;
+        public EdgeLabelTransformer(Set<String> labels, boolean filter) {
+            this.labels = labels;
+            this.filter = filter;
         }
 
-        public Double transform(Edge edge) {
-            Boolean filter = labelFilter.get(edge.getLabel());
-            if (filter == null)
-                return 0.0d;
-            else if (filter)
-                return 0.0d;
-            else
-                return 1.0;
+        public Edge transform(Edge edge) {
+            if (labels.contains(edge.getLabel())) {
+                if (filter) {
+                    return null;
+                } else {
+                    return edge;
+                }
+            } else {
+                if (filter) {
+                    return edge;
+                } else {
+                    return null;
+                }
+            }
         }
     }
 
@@ -40,11 +49,15 @@ public class JungFunctionHelper {
         }
 
         public Double transform(Edge edge) {
-            Object object = edge.getProperty(this.weightPropertyKey);
-            if(object instanceof Number) {
-                return ((Number)object).doubleValue();
+            if (null != edge) {
+                Object object = edge.getProperty(this.weightPropertyKey);
+                if (object instanceof Number) {
+                    return ((Number) object).doubleValue();
+                } else {
+                    return 0.0d;
+                }
             } else {
-                return 0.0d;
+                return 0.0;
             }
         }
     }

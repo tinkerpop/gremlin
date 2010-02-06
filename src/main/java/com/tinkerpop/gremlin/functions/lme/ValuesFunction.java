@@ -16,14 +16,14 @@ public class ValuesFunction implements Function {
 
     public static final String FUNCTION_NAME = "values";
 
-    public Collection invoke(final ExpressionContext context, final Object[] parameters) {
+    public List invoke(final ExpressionContext context, final Object[] parameters) {
 
         if (null != parameters && parameters.length == 1) {
             Object object = FunctionHelper.nodeSetConversion(parameters[0]);
             if (object instanceof Map) {
-                return ((Map) object).values();
+                return new ArrayList(((Map) object).values());
             } else if (object instanceof Element) {
-                return getElementValues((Element) object);
+                return new ArrayList(getElementValues((Element) object));
             }
         }
 
@@ -31,7 +31,7 @@ public class ValuesFunction implements Function {
 
     }
 
-    private Collection getElementValues(final Element element) {
+    private List getElementValues(final Element element) {
         Set<String> keys = element.getPropertyKeys();
         List list = new ArrayList();
         for (String key : keys) {
