@@ -1,0 +1,27 @@
+ChangeLog
+
+Gremlin: A Graph Programming Language
+"http://gremlin.tinkerpop.com":http://gremlin.tinkerpop.com
+
+==<hr/>==
+
+*Version 0.2* (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
+* Added user defined functions
+* Added user defined paths
+* Added .gremlinrc load script
+* Added support for manual transaction handling of Neo4j graphs
+* Added support for embedded maps and lists
+* Added support for JSON encoding and decoding of Gremlin types
+* Added better support for vertex and edge property indexing
+* Added working graph $_g variable and updated graph functions to support it
+* Added support for SPARQL queries for SAIL-based graphs
+* Added support for Linked Data SAIL for real-time analysis of the Web of Data
+* Added support for script loading
+* Added support for JUNG algorithms over Gremlin graphs
+* Added more test cases to the property graph model test suite
+* Various bug fixes and optimizations
+
+==<hr/>==
+
+*Version 0.1* (XMas Alpha -- December 25, 2009)
+* Initial release of the language.
