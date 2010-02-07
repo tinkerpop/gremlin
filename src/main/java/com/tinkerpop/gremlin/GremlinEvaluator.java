@@ -2,10 +2,7 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 
 
@@ -16,10 +13,19 @@ public class GremlinEvaluator {
 
     private Statement currentStatement;
     private XPathEvaluator xPathEvaluator;
+    public static final String GREMLIN_RC_FILE = ".gremlinrc";
 
     public GremlinEvaluator() {
         this.xPathEvaluator = new XPathEvaluator();
         this.currentStatement = null;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(GREMLIN_RC_FILE);
+            this.evaluate(fileInputStream);
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            throw new EvaluationException("Evaluation error: " + e.getMessage());
+        }
+
     }
 
     public List evaluate(String line) throws SyntaxException, EvaluationException {
