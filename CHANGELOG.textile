@@ -24,4 +24,4 @@ Gremlin: A Graph Programming Language
 ==<hr/>==
 
 *Version 0.1* (XMas Alpha -- December 25, 2009)
-* Initial release of the language.
+* Initial release of the language and virtual machine
