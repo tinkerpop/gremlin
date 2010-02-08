@@ -11,7 +11,7 @@ public class RandomNaturalFunctionTest extends TestCase {
 
     public void testRandomNaturalFunction() {
         XPathEvaluator xe = new XPathEvaluator();
-        assertEquals(xe.evaluateList("g:append(1,2,3)[g:rand-nat()]").size(), 1);
+        assertEquals(xe.evaluateList("g:list(1,2,3)[g:rand-nat()]").size(), 1);
         assertEquals(xe.evaluateList("g:type(1[g:rand-nat()])").get(0), "number");
         assertEquals(xe.evaluateList("g:type(g:rand-nat(1000))").get(0), "number");
         try {
@@ -21,7 +21,7 @@ public class RandomNaturalFunctionTest extends TestCase {
             assertTrue(true);
         }
         for (int i = 0; i < 1000; i++) {
-            assertTrue((Double) (xe.evaluateList("g:append(1,2,3)[g:rand-nat()]").get(0)) > 0.0);
+            assertTrue((Double) (xe.evaluateList("g:list(1,2,3)[g:rand-nat()]").get(0)) > 0.0);
         }
 
     }

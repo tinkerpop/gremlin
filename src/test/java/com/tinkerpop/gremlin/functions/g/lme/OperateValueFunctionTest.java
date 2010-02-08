@@ -49,7 +49,7 @@ public class OperateValueFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("1[g:p(g:op-value('+',$i,.,10))]").get(0), 1.0);
         assertEquals(xe.evaluateList("$i[1]").get(0), 11.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 2.0);
-        xe.evaluateList("g:append(1,2)[g:p(g:op-value('+',$i,.,1000))]");
+        xe.evaluateList("g:list(1,2)[g:p(g:op-value('+',$i,.,1000))]");
         assertEquals(xe.evaluateList("$i[1]").get(0), 1011.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 1002.0);
         try {

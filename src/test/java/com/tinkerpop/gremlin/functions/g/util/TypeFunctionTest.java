@@ -17,11 +17,11 @@ public class TypeFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("g:type(1+2)").size(), 1);
         assertEquals(xe.evaluateList("g:type(1+2)").get(0), "number");
 
-        assertEquals(xe.evaluateList("g:type(g:append(1,2))").size(), 1);
-        assertEquals(xe.evaluateList("g:type(g:append(1,2))").get(0), "list");
+        assertEquals(xe.evaluateList("g:type(g:list(1,2))").size(), 1);
+        assertEquals(xe.evaluateList("g:type(g:list(1,2))").get(0), "list");
 
         assertEquals(xe.evaluateList("g:type(g:map())").size(), 1);
-        assertEquals(xe.evaluateList("g:type(g:map())").get(0), "map");
+        assertEquals(xe.evaluateList("g:type(g:map('marko',1))").get(0), "map");
 
     }
 }

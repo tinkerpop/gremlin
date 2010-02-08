@@ -19,7 +19,7 @@ public class AssignFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("g:assign('$i',2)").size(), 1);
         assertEquals(xe.evaluateList("g:assign('$i',2)").get(0), 2.0);
         assertEquals(xe.getVariables().getVariable("i"), 2.0);
-        assertEquals(xe.evaluateList("g:assign('$i', g:append(1,2,3))").size(), 3);
+        assertEquals(xe.evaluateList("g:assign('$i', g:list(1,2,3))").size(), 3);
         assertEquals(xe.getVariables().getVariable("i").getClass(), ArrayList.class);
 
         assertEquals(xe.evaluateList("(1+2)[g:assign('$i')]").size(), 1);
@@ -119,7 +119,7 @@ public class AssignFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("'peter'[g:p(g:assign($i, ., 1000))]").get(0), "peter");
         assertEquals(xe.evaluateList("$i/@peter").get(0), 1000.0);
 
-        xe.evaluateList("g:append('marko','jen','peter')[g:p(g:assign($i,.,2000))]");
+        xe.evaluateList("g:list('marko','jen','peter')[g:p(g:assign($i,.,2000))]");
         assertEquals(xe.evaluateList("$i/@marko").get(0), 2000.0);
         assertEquals(xe.evaluateList("$i/@jen").get(0), 2000.0);
         assertEquals(xe.evaluateList("$i/@peter").get(0), 2000.0);
@@ -142,7 +142,7 @@ public class AssignFunctionTest extends TestCase {
         assertEquals(xe.evaluateList("1[g:p(g:assign($i, .,(1+2)))]").get(0), 1.0);
         assertEquals(xe.evaluateList("$i[1]").get(0), 3.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 2.0);
-        xe.evaluateList("g:append(1,2)[g:p(g:assign($i,.,1000))]");
+        xe.evaluateList("g:list(1,2)[g:p(g:assign($i,.,1000))]");
         assertEquals(xe.evaluateList("$i[1]").get(0), 1000.0);
         assertEquals(xe.evaluateList("$i[2]").get(0), 1000.0);
         try {

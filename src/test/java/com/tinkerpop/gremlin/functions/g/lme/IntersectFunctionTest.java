@@ -10,14 +10,14 @@ public class IntersectFunctionTest extends TestCase {
 
     public void testIntersectFunction() {
         XPathEvaluator xe = new XPathEvaluator();
-        assertEquals(xe.evaluateList("g:intersect(g:append(1,2,3,4),3)").size(), 1);
-        assertTrue(xe.evaluateList("g:intersect(g:append(1,2,3,4),3)").contains(3.0));
-        assertEquals(xe.evaluateList("g:intersect(g:append(1,2,3,4),g:append(1,2))").size(), 2);
-        assertTrue(xe.evaluateList("g:intersect(g:append(1,2,3,4),g:append(1,2))").contains(1.0));
-        assertTrue(xe.evaluateList("g:intersect(g:append(1,2,3,4),g:append(1,2))").contains(2.0));
-        assertEquals(xe.evaluateList("g:intersect(g:append(1,2,3,4),g:append(1,2,3),g:append(1,2))").size(), 2);
-        assertTrue(xe.evaluateList("g:intersect(g:append(1,2,3,4),g:append(1,2,3),g:append(1,2))").contains(1.0));
-        assertTrue(xe.evaluateList("g:intersect(g:append(1,2,3,4),g:append(1,2,3),g:append(1,2))").contains(2.0));
+        assertEquals(xe.evaluateList("g:intersect(g:list(1,2,3,4),3)").size(), 1);
+        assertTrue(xe.evaluateList("g:intersect(g:list(1,2,3,4),3)").contains(3.0));
+        assertEquals(xe.evaluateList("g:intersect(g:list(1,2,3,4),g:list(1,2))").size(), 2);
+        assertTrue(xe.evaluateList("g:intersect(g:list(1,2,3,4),g:list(1,2))").contains(1.0));
+        assertTrue(xe.evaluateList("g:intersect(g:list(1,2,3,4),g:list(1,2))").contains(2.0));
+        assertEquals(xe.evaluateList("g:intersect(g:list(1,2,3,4),g:list(1,2,3),g:list(1,2))").size(), 2);
+        assertTrue(xe.evaluateList("g:intersect(g:list(1,2,3,4),g:list(1,2,3),g:list(1,2))").contains(1.0));
+        assertTrue(xe.evaluateList("g:intersect(g:list(1,2,3,4),g:list(1,2,3),g:list(1,2))").contains(2.0));
 
         assertEquals(xe.evaluateList("g:intersect(1,1)").size(), 1);
         assertEquals(xe.evaluateList("g:intersect(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)").size(), 1);

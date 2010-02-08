@@ -1,12 +1,12 @@
 package com.tinkerpop.gremlin.statements;
 
+import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
+import com.tinkerpop.gremlin.functions.Functions;
 import junit.framework.TestCase;
 import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,27 +17,61 @@ public class TestFunctions extends TestCase implements Functions {
 
     public static final String NAMESPACE_PREFIX = "test";
 
-    private static Set<String> namespaces = new HashSet<String>();
-    private static Map<String, Function> functionMap = new HashMap<String, Function>();
+    Map<String, Map<String, Function>> functions = new HashMap<String, Map<String, Function>>();
 
-    static {
-        namespaces.add(NAMESPACE_PREFIX);
-        functionMap.put("test-func-1", new TestFunctionOne());
-        functionMap.put("test-func-2", new TestFunctionTwo());
+    public void addFunction(String namespace, Function function) {
+        Map<String, Function> namespacedFunctions = this.functions.get(namespace);
+        if (null == namespacedFunctions) {
+            namespacedFunctions = new HashMap<String, Function>();
+            this.functions.put(namespace, namespacedFunctions);
+        }
+        namespacedFunctions.put(function.getName(), function);
 
     }
 
-    public Function getFunction(final String namespace, final String name, final Object[] parameters) {
-        return functionMap.get(name);
+    public void addFunctions(Functions functions) {
+        Map<String, Map<String, Function>> functionMap = functions.getFunctions();
+        for (String namespace : functionMap.keySet()) {
+            Map<String, Function> namespacedFunctions = functionMap.get(namespace);
+            for (String name : namespacedFunctions.keySet()) {
+                this.addFunction(namespace, namespacedFunctions.get(name));
+            }
+        }
+    }
+
+    public Function getFunction(String namespace, String name, Object[] params) {
+        Map<String, Function> namespacedFunctions = this.functions.get(namespace);
+        if (null != namespacedFunctions) {
+            Function function = namespacedFunctions.get(name);
+            if (null != function) {
+                return function;
+            }
+        }
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(namespace, name), EvaluationException.EvaluationErrorType.NO_FUNCTION);
+    }
+
+    public Map<String, Map<String, Function>> getFunctions() {
+        return this.functions;
     }
 
     public Set getUsedNamespaces() {
-        return namespaces;
+        return this.functions.keySet();
     }
+
+    public TestFunctions() {
+        this.addFunction(NAMESPACE_PREFIX, new TestFunctionOne());
+        this.addFunction(NAMESPACE_PREFIX, new TestFunctionTwo());
+
+    }
+
 
     private static class TestFunctionOne implements Function {
         public Object invoke(ExpressionContext context, Object[] parameters) {
             return new Integer(187);
+        }
+
+        public String getName() {
+            return "test-func-1";
         }
     }
 
@@ -45,7 +79,12 @@ public class TestFunctions extends TestCase implements Functions {
         public Object invoke(ExpressionContext context, Object[] parameters) {
             return "marko was here";
         }
+
+        public String getName() {
+            return "test-func-2";
+        }
     }
+
 
     public void testTrue() {
         assertTrue(true);

@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.GremlinEvaluator;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import com.tinkerpop.gremlin.functions.Functions;
 import com.tinkerpop.gremlin.paths.Paths;
-import org.apache.commons.jxpath.Functions;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -19,7 +19,7 @@ public class XPathEvaluatorTest extends BaseTest {
         assertEquals(xe.getVariables().getVariable("$_last"), 3.0);
         xe.evaluateList("1+2");
         assertEquals(xe.evaluateList("g:type($_last)").get(0), "number");
-        xe.evaluateList("g:append(1,2,3)");
+        xe.evaluateList("g:list(1,2,3)");
         assertEquals(xe.evaluateList("g:type($_last)").get(0), "list");
 
 
