@@ -3,7 +3,9 @@ Gremlin: A Graph-Based Programming Language
 
 ==<hr/>==
 
-*Version 0.2* (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
+!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
+
+h3. Version 0.2 (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
 * Added user defined functions
 ** Gremlin and Java defined functions supported
 * Added user defined paths
@@ -29,5 +31,7 @@ Gremlin: A Graph-Based Programming Language
 
 ==<hr/>==
 
-*Version 0.1* (XMas Alpha -- December 25, 2009)
+!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-xmas-alpha.png!
+
+h3. Version 0.1 (XMas Alpha -- December 25, 2009)
 * Initial release of the language and virtual machine
