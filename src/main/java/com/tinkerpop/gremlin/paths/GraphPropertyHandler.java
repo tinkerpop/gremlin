@@ -1,7 +1,6 @@
-package com.tinkerpop.gremlin.models.pgm.paths;
+package com.tinkerpop.gremlin.paths;
 
 import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.paths.ObjectPropertyHandler;
 import com.tinkerpop.gremlin.statements.Tokens;
 
 import java.util.ArrayList;

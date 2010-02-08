@@ -10,21 +10,21 @@ h3. Version 0.2 (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
 ** Gremlin and Java defined functions supported
 * Added user defined paths
 ** Gremlin and Java defined functions supported
-* Added .gremlinrc load script
+* Added @.gremlinrc@ load script
 * Added support for manual transaction handling of Neo4j graphs
-** boolean neo4j:start-tx(), boolean neo4j:stop-tx(boolean) added
+** @boolean neo4j:start-tx()@, @boolean neo4j:stop-tx(boolean)@ added
 * Added support for embedded maps and lists
 * Added support for JSON encoding and decoding of Gremlin types
-** g:json(object) was removed
-** string g:to-json(object) and object g:from-json(string) added
+** @g:json(object)@ was removed
+** @string g:to-json(object)@ and @object g:from-json(string)@ added
 * Added better support for vertex and edge property indexing
-* Added working graph $_g variable and updated graph functions to support it
+* Added working graph @$_g@ variable and updated graph functions to support it
 * Added support for SPARQL queries for SAIL-based graphs
-** list sail:sparql(string) was added
+** @list sail:sparql(string)@ was added
 * Added support for Linked Data SAIL for real-time analysis of the Web of Data
 * Added support for script loading
 * Added support for JUNG algorithms over Gremlin graphs
-* Renamed g:append(object, object+) to g:list(object, object+)
+* Renamed @g:append(object, object+)@ to @g:list(object, object+)@
 * Renamed the general graph model to property graph model
 * Added more test cases to the property graph model test suite
 * Various bug fixes and optimizations

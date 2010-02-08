@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.number;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -32,7 +32,7 @@ public class RandomNaturalFunction implements Function {
 
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 }

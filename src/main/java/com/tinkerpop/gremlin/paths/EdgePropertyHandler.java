@@ -1,8 +1,7 @@
-package com.tinkerpop.gremlin.models.pgm.paths;
+package com.tinkerpop.gremlin.paths;
 
 import com.tinkerpop.gremlin.models.pgm.Edge;
 import com.tinkerpop.gremlin.models.pgm.Vertex;
-import com.tinkerpop.gremlin.paths.ObjectPropertyHandler;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
 

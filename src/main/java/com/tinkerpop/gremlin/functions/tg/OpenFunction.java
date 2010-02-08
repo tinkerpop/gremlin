@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.tg;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.models.pgm.Graph;
 import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
@@ -24,7 +24,7 @@ public class OpenFunction implements Function {
 
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 }

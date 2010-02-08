@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.xpath;
 
-import junit.framework.TestCase;
 import com.tinkerpop.gremlin.XPathEvaluator;
+import junit.framework.TestCase;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.jung;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
 import com.tinkerpop.gremlin.models.pgm.Edge;
@@ -47,7 +47,7 @@ public class DijkstraShortestPathFunction implements Function {
 
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 }

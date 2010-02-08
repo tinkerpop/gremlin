@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.functions.FunctionLibrary;
 import com.tinkerpop.gremlin.paths.PathLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import com.tinkerpop.gremlin.statements.Tokens;
-import com.tinkerpop.gremlin.functions.FunctionLibrary;
 import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.JXPathInvalidSyntaxException;
 

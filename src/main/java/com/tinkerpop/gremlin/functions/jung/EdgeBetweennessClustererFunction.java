@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.jung;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
 import com.tinkerpop.gremlin.models.pgm.Edge;
@@ -48,7 +48,7 @@ public class EdgeBetweennessClustererFunction implements Function {
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 }

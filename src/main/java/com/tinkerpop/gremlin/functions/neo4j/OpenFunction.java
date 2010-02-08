@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.neo4j;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.models.pgm.Graph;
 import com.tinkerpop.gremlin.models.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
@@ -26,7 +26,7 @@ public class OpenFunction implements Function {
 
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 }

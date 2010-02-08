@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.lds;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.functions.sail.SailFunctions;
 import com.tinkerpop.gremlin.models.pgm.Graph;
@@ -53,7 +53,7 @@ public class OpenFunction implements Function {
 
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 }

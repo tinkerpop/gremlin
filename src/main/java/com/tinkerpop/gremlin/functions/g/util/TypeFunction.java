@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.util;
 
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.Function;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.models.pgm.Edge;
 import com.tinkerpop.gremlin.models.pgm.Graph;
@@ -56,7 +56,7 @@ public class TypeFunction implements Function {
 
     }
 
-        public String getName() {
+    public String getName() {
         return FUNCTION_NAME;
     }
 
