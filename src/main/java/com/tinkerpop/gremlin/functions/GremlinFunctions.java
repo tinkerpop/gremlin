@@ -77,7 +77,8 @@ public class GremlinFunctions implements Functions {
         functionMap.put(PrintFunction.FUNCTION_NAME, new PrintFunction());
         functionMap.put(TimeFunction.FUNCTION_NAME, new TimeFunction());
         functionMap.put(PathFunction.FUNCTION_NAME, new PathFunction());
-        functionMap.put(JsonFunction.FUNCTION_NAME, new JsonFunction());
+        functionMap.put(ToJsonFunction.FUNCTION_NAME, new ToJsonFunction());
+        functionMap.put(FromJsonFunction.FUNCTION_NAME, new FromJsonFunction());
     }
 
     public Function getFunction(final String namespace, final String name, final Object[] parameters) {

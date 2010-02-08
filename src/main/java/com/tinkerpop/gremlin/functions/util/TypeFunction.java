@@ -43,7 +43,7 @@ public class TypeFunction implements Function {
                 return GRAPH;
             else if (object instanceof Map)
                 return MAP;
-            else if (object instanceof Double || object instanceof Integer)
+            else if (object instanceof Number)
                 return NUMBER;
             else if (object instanceof String)
                 return STRING;

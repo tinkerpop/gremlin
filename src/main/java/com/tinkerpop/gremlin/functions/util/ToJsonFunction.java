@@ -19,9 +19,9 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class JsonFunction implements Function {
+public class ToJsonFunction implements Function {
 
-    public static final String FUNCTION_NAME = "json";
+    public static final String FUNCTION_NAME = "to-json";
     private static final String ID = "_id";
     private static final String PROPERTIES = "properties";
     private static final String TYPE = "type";
