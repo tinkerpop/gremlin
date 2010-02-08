@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.FunctionStatement;
 import com.tinkerpop.gremlin.statements.SyntaxException;
 import org.apache.commons.jxpath.ExpressionContext;
-import org.apache.commons.jxpath.Function;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -54,7 +53,7 @@ public class NativeFunction implements Function {
         }
     }
 
-    public String getFunctionName() {
+    public String getName() {
         return this.functionStatement.getFunctionName();
     }
 

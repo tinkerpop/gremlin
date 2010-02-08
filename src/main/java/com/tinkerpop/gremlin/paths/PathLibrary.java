@@ -12,7 +12,7 @@ public class PathLibrary implements Paths {
     Map<String, Path> paths = new HashMap<String, Path>();
 
     public void addPath(Path path) {
-        paths.put(path.getPathName(), path);
+        paths.put(path.getName(), path);
     }
 
     public Path getPath(String name) {

@@ -1,16 +1,16 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.functions.CoreFunctions;
-import com.tinkerpop.gremlin.functions.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.core.CoreFunctions;
+import com.tinkerpop.gremlin.functions.fs.FileSystemFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.jung.JungFunctions;
+import com.tinkerpop.gremlin.functions.lds.LinkedDataSailFunctions;
+import com.tinkerpop.gremlin.functions.neo4j.Neo4jFunctions;
+import com.tinkerpop.gremlin.functions.sail.SailFunctions;
+import com.tinkerpop.gremlin.functions.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.models.pgm.Edge;
 import com.tinkerpop.gremlin.models.pgm.Graph;
 import com.tinkerpop.gremlin.models.pgm.Vertex;
-import com.tinkerpop.gremlin.models.pgm.impls.fs.FileSystemFunctions;
-import com.tinkerpop.gremlin.models.pgm.impls.neo4j.Neo4jFunctions;
-import com.tinkerpop.gremlin.models.pgm.impls.sail.SailFunctions;
-import com.tinkerpop.gremlin.models.pgm.impls.sail.lds.LinkedDataSailFunctions;
-import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerFunctions;
-import com.tinkerpop.gremlin.models.pgm.jung.functions.JungFunctions;
 import com.tinkerpop.gremlin.models.pgm.paths.EdgePropertyHandler;
 import com.tinkerpop.gremlin.models.pgm.paths.GraphPropertyHandler;
 import com.tinkerpop.gremlin.models.pgm.paths.VertexPropertyHandler;
@@ -19,7 +19,6 @@ import com.tinkerpop.gremlin.paths.ObjectPropertyHandler;
 import com.tinkerpop.gremlin.paths.PathLibrary;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.FunctionLibrary;
-import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
@@ -32,7 +31,7 @@ import java.util.Map;
 public class GremlinPathContext extends JXPathContextReferenceImpl {
 
     private boolean newRoot = false;
-    private static FunctionLibrary functionLibrary = new FunctionLibrary();
+    private FunctionLibrary functionLibrary = new FunctionLibrary();
     private static PathLibrary pathLibrary = new PathLibrary();
     private VariableLibrary variableLibrary = new VariableLibrary(this);
 
@@ -45,23 +44,24 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         //JXPathIntrospector.registerDynamicClass(Float.class, ObjectPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(String.class, ObjectPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(Boolean.class, ObjectPropertyHandler.class);
+    }
 
-
-        functionLibrary.addFunctions(new CoreFunctions());
-        functionLibrary.addFunctions(new GremlinFunctions());
+    private void loadBaseFunctions() {
+        this.functionLibrary.addFunctions(new CoreFunctions());
+        this.functionLibrary.addFunctions(new GremlinFunctions());
         ///
-        functionLibrary.addFunctions(new TinkerFunctions());
-        functionLibrary.addFunctions(new Neo4jFunctions());
-        functionLibrary.addFunctions(new SailFunctions());
-        functionLibrary.addFunctions(new LinkedDataSailFunctions());
-        functionLibrary.addFunctions(new FileSystemFunctions());
-        functionLibrary.addFunctions(new JungFunctions());
+        this.functionLibrary.addFunctions(new TinkerFunctions());
+        this.functionLibrary.addFunctions(new Neo4jFunctions());
+        this.functionLibrary.addFunctions(new SailFunctions());
+        this.functionLibrary.addFunctions(new LinkedDataSailFunctions());
+        this.functionLibrary.addFunctions(new FileSystemFunctions());
+        this.functionLibrary.addFunctions(new JungFunctions());
     }
 
     public GremlinPathContext(final GremlinPathContext parentContext, final Object root) {
         super(parentContext, root);
         if (null == parentContext) {
-            this.setFunctions(functionLibrary);
+            this.loadBaseFunctions();
             this.setVariables(new VariableLibrary(this));
         } else {
             // TODO: Why is this needed? Completely odd...
@@ -109,10 +109,6 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
     }
 
     public FunctionLibrary getFunctions() {
-        return functionLibrary;
-    }
-
-    public static void addFunctions(Functions functions) {
-        functionLibrary.addFunctions(functions);
+        return this.functionLibrary;
     }
 }

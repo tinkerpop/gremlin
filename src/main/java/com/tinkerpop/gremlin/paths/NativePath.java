@@ -19,7 +19,7 @@ public class NativePath implements Path {
         this.pathStatement = pathStatement;
     }
 
-    public String getPathName() {
+    public String getName() {
         return pathStatement.getPathName();
     }
 

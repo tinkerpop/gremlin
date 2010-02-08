@@ -270,7 +270,7 @@
                         <!-- NEO4J TEST PROPERTIES -->
                         <property>
                             <name>testNeo4j</name>
-                            <value>true</value>
+                            <value>false</value>
                         </property>
                         <property>
                             <name>neo4jDirectory</name>

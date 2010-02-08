@@ -1,8 +1,6 @@
 package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
-import org.apache.commons.jxpath.Function;
-import org.apache.commons.jxpath.Functions;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,10 +22,10 @@ public class NativeFunctions implements Functions {
         namespaces.add(namespace);
 
         if ((functions = namespaceFunctionsMap.get(namespace)) != null) {
-            functions.put(function.getFunctionName(), function);
+            functions.put(function.getName(), function);
         } else {
             functions = new HashMap<String, Function>();
-            functions.put(function.getFunctionName(), function);
+            functions.put(function.getName(), function);
             namespaceFunctionsMap.put(namespace, functions);
         }
     }
@@ -43,6 +41,10 @@ public class NativeFunctions implements Functions {
         }
 
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(namespace, name), EvaluationException.EvaluationErrorType.NO_FUNCTION);
+    }
+
+    public void addFunctions(Functions functions) {
+        throw new EvaluationException("Use constructor to add new native functions");
     }
 
     public Set getUsedNamespaces() {

@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.GremlinPathContext;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.functions.NativeFunction;
 import com.tinkerpop.gremlin.functions.NativeFunctions;
@@ -72,7 +71,7 @@ public class FunctionStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        GremlinPathContext.addFunctions(new NativeFunctions(new NativeFunction(this)));
+        this.xPathEvaluator.getFunctions().addFunctions(new NativeFunctions(new NativeFunction(this)));
         return null;
     }
 

@@ -35,7 +35,7 @@ public class TestPaths extends TestCase implements Paths {
     }
 
     private class TestPathOne implements Path {
-        public String getPathName() {
+        public String getName() {
             return "test-path-1";
         }
 
