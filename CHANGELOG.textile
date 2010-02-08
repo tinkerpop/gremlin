@@ -1,6 +1,6 @@
 ChangeLog
 
-Gremlin: A Graph Programming Language
+Gremlin: A Graph-Based Programming Language
 "http://gremlin.tinkerpop.com":http://gremlin.tinkerpop.com
 
 ==<hr/>==
