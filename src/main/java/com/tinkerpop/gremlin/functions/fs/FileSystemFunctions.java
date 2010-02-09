@@ -7,7 +7,7 @@ import com.tinkerpop.gremlin.functions.FunctionLibrary;
  */
 public class FileSystemFunctions extends FunctionLibrary {
 
-    public static final String NAMESPACE_PREFIX = "lds";
+    public static final String NAMESPACE_PREFIX = "fs";
 
     public FileSystemFunctions() {
         this.addFunction(NAMESPACE_PREFIX, new OpenFunction());

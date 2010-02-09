@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.statements;
 
-import com.tinkerpop.gremlin.GremlinEvaluator;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.GremlinEvaluator;
 import junit.framework.TestCase;
 
 /**

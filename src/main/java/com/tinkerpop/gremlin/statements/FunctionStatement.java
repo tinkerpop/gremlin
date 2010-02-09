@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.functions.NativeFunction;
-import com.tinkerpop.gremlin.functions.NativeFunctions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,11 @@ import java.util.regex.Pattern;
  * @author Pavel A. Yaskevich
  */
 public class FunctionStatement extends CompoundStatement {
+
+    /* func string:string(variables)
+        ./././
+        end
+    */
 
     private String namespace;
     private String functionName;
@@ -71,7 +75,8 @@ public class FunctionStatement extends CompoundStatement {
     }
 
     public List evaluate() throws EvaluationException {
-        this.xPathEvaluator.getFunctions().addFunctions(new NativeFunctions(new NativeFunction(this)));
+        NativeFunction function = new NativeFunction(this);
+        this.xPathEvaluator.getFunctions().addFunction(function.getNamespace(), function);
         return null;
     }
 

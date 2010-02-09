@@ -1,5 +1,9 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
+import com.tinkerpop.gremlin.statements.Tokens;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -21,7 +25,18 @@ public class XPathEvaluatorTest extends BaseTest {
         assertEquals(xe.evaluateList("g:type($_last)").get(0), "number");
         xe.evaluateList("g:list(1,2,3)");
         assertEquals(xe.evaluateList("g:type($_last)").get(0), "list");
+    }
 
+    public void testGraphVariable() {
+        XPathEvaluator xe = new XPathEvaluator();
+        Graph graph = new TinkerGraph();
+        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
 
+        try {
+            xe.evaluateList("g:list(g:id('1'))");
+            assertTrue(true);
+        } catch (Exception e) {
+            assertFalse(true);
+        }
     }
 }

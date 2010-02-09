@@ -68,8 +68,13 @@ public class XPathEvaluator {
             throw new SyntaxException(e.getMessage().replace("Invalid XPath:", "Invalid statement:"));
         } catch (EvaluationException e) {
             throw e;
+        } catch (UnsupportedOperationException e) {
+            throw new EvaluationException("Unsupported operation");
         } catch (Exception e) {
-            throw new EvaluationException(e.getMessage());
+            if (null != e.getMessage())
+                throw new EvaluationException(e.getMessage());
+            else
+                throw new EvaluationException("An evaluation error has occurred");
         }
     }
 

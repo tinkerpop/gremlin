@@ -36,7 +36,6 @@ public class FunctionLibrary implements Functions {
     }
 
     public Function getFunction(final String namespace, final String name, final Object[] parameters) {
-
         Map<String, Function> namespacedFunctions = this.functions.get(namespace);
         if (null != namespacedFunctions) {
             Function function = namespacedFunctions.get(name);
@@ -51,7 +50,7 @@ public class FunctionLibrary implements Functions {
         return this.functions;
     }
 
-    public Set getUsedNamespaces() {
+    public Set<String> getUsedNamespaces() {
         return this.functions.keySet();
     }
 }

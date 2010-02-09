@@ -1,14 +1,10 @@
 package com.tinkerpop.gremlin.functions.xpath;
 
 import com.tinkerpop.gremlin.functions.Function;
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.FunctionLibrary;
-import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.apache.commons.jxpath.Functions;
 import org.apache.commons.jxpath.JXPathContext;
-
-import java.util.ArrayList;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -52,9 +48,9 @@ public class XPathFunctions extends FunctionLibrary {
     private static final String NULL = "null";
 
     public XPathFunctions() {
-        // list functions
         Functions coreFunctions = JXPathContext.newContext(null).getFunctions();
-        this.addFunction(null, new FunctionWrapper(LAST, coreFunctions.getFunction(null, LAST, null)));
+        // list functions
+        /*this.addFunction(null, new FunctionWrapper(LAST, coreFunctions.getFunction(null, LAST, null)));
         this.addFunction(null, new FunctionWrapper(POSITION, coreFunctions.getFunction(null, POSITION, null)));
         this.addFunction(null, new FunctionWrapper(COUNT, coreFunctions.getFunction(null, COUNT, new Object[]{new ArrayList()})));
         // string functions
@@ -79,35 +75,13 @@ public class XPathFunctions extends FunctionLibrary {
         this.addFunction(null, new FunctionWrapper(FLOOR, coreFunctions.getFunction(null, FLOOR, new Object[]{1})));
         this.addFunction(null, new FunctionWrapper(CEILING, coreFunctions.getFunction(null, CEILING, new Object[]{1})));
         this.addFunction(null, new FunctionWrapper(ROUND, coreFunctions.getFunction(null, ROUND, new Object[]{1})));
-        // regular expression functions
+        // regular expression functions*/
         this.addFunction(null, new FunctionWrapper(MATCHES, coreFunctions.getFunction(null, MATCHES, new Object[]{new String(), new String()})));
         this.addFunction(null, new FunctionWrapper(REPLACE, coreFunctions.getFunction(null, REPLACE, new Object[]{new String(), new String(), new String()})));
         // other functions
-        this.addFunction(null, new FunctionWrapper(NAME, coreFunctions.getFunction(null, NAME, new Object[]{new String()})));
+        /*this.addFunction(null, new FunctionWrapper(NAME, coreFunctions.getFunction(null, NAME, new Object[]{new String()})));
         this.addFunction(null, new FunctionWrapper(LOCAL_NAME, coreFunctions.getFunction(null, LOCAL_NAME, new Object[]{new String()})));
-        this.addFunction(null, new FunctionWrapper(NULL, coreFunctions.getFunction(null, NULL, null)));
-    }
-
-    private final class SumFunction implements Function {
-        public String getName() {
-            return SUM;
-        }
-
-        public Number invoke(final ExpressionContext context, final Object[] parameters) {
-            if (parameters != null) {
-                Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-                double sum = 0.0d;
-                for (Object o : objects) {
-                    if (o instanceof Number) {
-                        sum = sum + ((Number) o).doubleValue();
-                    } else {
-                        throw EvaluationException.createException(FunctionHelper.makeFunctionName(XPathFunctions.NAMESPACE_PREFIX, SUM), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
-                    }
-                }
-                return sum;
-            }
-            throw EvaluationException.createException(FunctionHelper.makeFunctionName(XPathFunctions.NAMESPACE_PREFIX, SUM), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
-        }
+        this.addFunction(null, new FunctionWrapper(NULL, coreFunctions.getFunction(null, NULL, null)));*/
     }
 
     public static class FunctionWrapper implements Function {

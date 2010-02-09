@@ -57,7 +57,10 @@ public class GremlinEvaluator {
                 throw e;
             } catch (Exception e) {
                 this.currentStatement = null;
-                throw new SyntaxException(e.getMessage());
+                if (null != e.getMessage())
+                    throw new EvaluationException(e.getMessage());
+                else
+                    throw new EvaluationException("An evaluation error has occurred");
             }
         }
         return null;

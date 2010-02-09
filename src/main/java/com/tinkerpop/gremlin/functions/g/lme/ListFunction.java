@@ -21,7 +21,7 @@ public class ListFunction implements Function {
         // TODO: handle null() like an object or just exclude it?
         Object[] objects = FunctionHelper.nodeSetConversion(parameters);
 
-        if (null != objects && objects.length > 1) {
+        if (null != objects) {
             List list = new ArrayList();
             for (Object object : objects) {
                 if (object instanceof Collection)
