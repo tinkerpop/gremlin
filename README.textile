@@ -1,6 +1,6 @@
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-logo.png!
 
-Gremlin is a "Turing-complete":http://en.wikipedia.org/wiki/Turing_completeness, "graph-based":http://en.wikipedia.org/wiki/Graph_%28mathematics%29 programming language developed in Java 1.6+ for key/value-pair multi-relational graphs known as property graphs. Gremlin makes extensive use of the "XPath 1.0":http://www.w3.org/TR/xpath language to support complex graph traversals. This language has applications in the areas of graph query, analysis, and manipulation. Connectors exist for the following graph management systems:
+Gremlin is a "Turing-complete":http://en.wikipedia.org/wiki/Turing_completeness, "graph-based":http://en.wikipedia.org/wiki/Graph_%28mathematics%29 programming language developed in Java 1.6+ for key/value-pair multi-relational graphs called property graphs. Gremlin makes extensive use of the "XPath 1.0":http://www.w3.org/TR/xpath language to support complex graph traversals. This language has applications in the areas of graph query, analysis, and manipulation. Connectors, provided by "Blueprints":http://blueprints.tinkerpop.com, exist for the following graph management systems:
 
 * "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
 * "Neo4j":http://neo4j.org/ graph database
