@@ -164,34 +164,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.2</version>
-                <configuration>
-                    <systemProperties>
-                        <!-- TINKERGRAPH TEST PROPERTIES -->
-                        <property>
-                            <name>testTinkerGraph</name>
-                            <value>true</value>
-                        </property>
-                        <!-- NEO4J TEST PROPERTIES -->
-                        <property>
-                            <name>testNeo4j</name>
-                            <value>true</value>
-                        </property>
-                        <property>
-                            <name>neo4jDirectory</name>
-                            <value>/tmp/gremlin_test</value>
-                        </property>
-                        <!-- SAIL TEST PROPERTIES -->
-                        <property>
-                            <name>testSail</name>
-                            <value>true</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

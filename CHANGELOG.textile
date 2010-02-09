@@ -26,7 +26,7 @@ h3. Version 0.2 (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
 * Added support for JUNG algorithms over Gremlin graphs
 * Renamed @g:append(object, object+)@ to @g:list(object, object+)@
 * Renamed the general graph model to property graph model
-* Added more test cases to the property graph model test suite
+** Moved the model and its implementations to Blueprints
 * Various bug fixes and optimizations
 
 ==<hr/>==
