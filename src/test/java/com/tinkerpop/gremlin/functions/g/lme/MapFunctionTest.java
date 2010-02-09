@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.functions.g.lme;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.XPathEvaluator;
-import com.tinkerpop.gremlin.models.pgm.Edge;
-import com.tinkerpop.gremlin.models.pgm.Vertex;
-import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import junit.framework.TestCase;
 

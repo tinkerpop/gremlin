@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 

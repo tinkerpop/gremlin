@@ -1,6 +1,0 @@
-org.openrdf.rio.n3.N3ParserFactory
-org.openrdf.rio.ntriples.NTriplesParserFactory
-org.openrdf.rio.rdfxml.RDFXMLParserFactory
-org.openrdf.rio.trig.TriGParserFactory
-org.openrdf.rio.trix.TriXParserFactory
-org.openrdf.rio.turtle.TurtleParserFactory

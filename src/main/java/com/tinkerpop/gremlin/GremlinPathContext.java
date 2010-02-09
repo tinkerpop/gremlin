@@ -1,5 +1,8 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.functions.FunctionLibrary;
 import com.tinkerpop.gremlin.functions.Functions;
 import com.tinkerpop.gremlin.functions.fs.FileSystemFunctions;
@@ -10,9 +13,6 @@ import com.tinkerpop.gremlin.functions.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.functions.sail.SailFunctions;
 import com.tinkerpop.gremlin.functions.tg.TinkerFunctions;
 import com.tinkerpop.gremlin.functions.xpath.XPathFunctions;
-import com.tinkerpop.gremlin.models.pgm.Edge;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.Vertex;
 import com.tinkerpop.gremlin.paths.*;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.JXPathIntrospector;

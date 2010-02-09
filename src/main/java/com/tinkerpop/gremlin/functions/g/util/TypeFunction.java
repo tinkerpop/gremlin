@@ -1,11 +1,11 @@
 package com.tinkerpop.gremlin.functions.g.util;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
-import com.tinkerpop.gremlin.models.pgm.Edge;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.Vertex;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 

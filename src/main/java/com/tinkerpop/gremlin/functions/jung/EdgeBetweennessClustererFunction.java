@@ -1,13 +1,13 @@
 package com.tinkerpop.gremlin.functions.jung;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.jung.JungGraph;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
-import com.tinkerpop.gremlin.models.pgm.Edge;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.Vertex;
-import com.tinkerpop.gremlin.models.pgm.jung.JungGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import edu.uci.ics.jung.algorithms.cluster.EdgeBetweennessClusterer;
 import org.apache.commons.jxpath.ExpressionContext;

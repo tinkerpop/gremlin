@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.functions.neo4j;
 
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 

@@ -1,10 +1,9 @@
 package com.tinkerpop.gremlin.paths;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.GremlinEvaluator;
-import com.tinkerpop.gremlin.models.pgm.Edge;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.impls.tg.TinkerGraph;
-import com.tinkerpop.gremlin.models.pgm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.statements.Tokens;
 import junit.framework.TestCase;
 
@@ -19,10 +18,8 @@ public class NativePathTest extends TestCase {
 
     public void testKnowsPath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
-        Graph graph = new TinkerGraph();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
         ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
-        InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
-        GraphMLReader.inputGraph(graph, stream);
 
         InputStream simpleFunc = new ByteArrayInputStream("path knows\n./outE[@label='knows']\nend\n$_ := g:id('1')\n./knows".getBytes());
         List results = ge.evaluate(simpleFunc);
@@ -36,10 +33,8 @@ public class NativePathTest extends TestCase {
 
     public void testKnowsWeightPath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
-        Graph graph = new TinkerGraph();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
         ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
-        InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
-        GraphMLReader.inputGraph(graph, stream);
 
         InputStream simpleFunc = new ByteArrayInputStream("path knows\n./outE[@label='knows' and @weight > 0.5]\nend\n$_ := g:id('1')\n./knows".getBytes());
         List results = ge.evaluate(simpleFunc);
@@ -54,10 +49,8 @@ public class NativePathTest extends TestCase {
 
     public void testMultiLinePath() throws Exception {
         GremlinEvaluator ge = new GremlinEvaluator();
-        Graph graph = new TinkerGraph();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
         ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
-        InputStream stream = GraphMLReader.class.getResourceAsStream("graph-example-1.xml");
-        GraphMLReader.inputGraph(graph, stream);
 
         InputStream simpleFunc = new ByteArrayInputStream("path knows\n$x := ./outE[@label='knows']\n$x := $x[@weight > 0.5]\n$x\nend\n$_ := g:id('1')\n./knows".getBytes());
         List results = ge.evaluate(simpleFunc);

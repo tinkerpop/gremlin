@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.functions.sail;
 
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
+import com.tinkerpop.blueprints.pgm.impls.sail.SailTokens;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.models.pgm.Graph;
-import com.tinkerpop.gremlin.models.pgm.impls.sail.SailGraph;
-import com.tinkerpop.gremlin.models.pgm.impls.sail.SailTokens;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 import org.openrdf.model.impl.URIImpl;

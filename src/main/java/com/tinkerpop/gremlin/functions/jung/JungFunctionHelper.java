@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.functions.jung;
 
-import com.tinkerpop.gremlin.models.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Edge;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.functors.ChainedTransformer;
 
