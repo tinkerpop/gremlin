@@ -1,9 +1,13 @@
 package com.tinkerpop.gremlin.statements;
 
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.GremlinEvaluator;
 import junit.framework.TestCase;
+
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -36,6 +40,23 @@ public class IncludeStatementTest extends TestCase {
         assertTrue((Boolean) ge.evaluate("include 'com.tinkerpop.gremlin.statements.TestPaths'").get(0));
         assertEquals(ge.evaluate("./test-path-1").get(0), "undercover cop");
         assertEquals(ge.evaluate("count(9)").get(0), 1.0);
+    }
+
+    public void testIncludeStatementPathOverTinkerGraph() {
+        GremlinEvaluator ge = new GremlinEvaluator();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
+        ge.getVariables().declareVariable(Tokens.AT_VARIABLE, graph.getVertex("1"));
+        assertTrue((Boolean) ge.evaluate("include 'com.tinkerpop.gremlin.statements.TestPaths'").get(0));
+        List results = ge.evaluate("./co-developer");
+        assertEquals(results.size(), 2);
+        for(Vertex vertex : (List<Vertex>)results) {
+            if(vertex.getProperty("name").equals("peter") || vertex.getProperty("name").equals("josh")) {
+                assertTrue(true);
+            } else {
+                assertTrue(false);
+            }
+        }
 
     }
 
