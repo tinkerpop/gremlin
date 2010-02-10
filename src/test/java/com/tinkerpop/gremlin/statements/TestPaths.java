@@ -20,6 +20,7 @@ public class TestPaths extends TestCase implements Paths {
 
     public TestPaths() {
         this.addPath(new TestPathOne());
+        this.addPath(new CoDeveloperPath());
     }
 
     public void addPath(Path path) {

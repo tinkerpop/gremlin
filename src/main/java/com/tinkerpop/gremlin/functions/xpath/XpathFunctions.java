@@ -11,7 +11,6 @@ import org.apache.commons.jxpath.JXPathContext;
  */
 public class XPathFunctions extends FunctionLibrary {
 
-
     public static final String NAMESPACE_PREFIX = "";
 
     private static final String LAST = "last";
