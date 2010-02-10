@@ -1,10 +1,14 @@
 package com.tinkerpop.gremlin.statements;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.paths.Path;
 import com.tinkerpop.gremlin.paths.PathLibrary;
 import com.tinkerpop.gremlin.paths.Paths;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -48,4 +52,33 @@ public class TestPaths extends TestCase implements Paths {
         assertTrue(true);
     }
 
+
+    public class CoDeveloperPath implements Path {
+        public Object invoke(Object root) {
+            if (null != root && root instanceof Vertex) {
+                Vertex vertex = (Vertex) root;
+                Set<Vertex> projects = new HashSet<Vertex>();
+                for (Edge edge : vertex.getOutEdges()) {
+                    if (edge.getLabel().equals("created")) {
+                        projects.add(edge.getInVertex());
+                    }
+                }
+                Set<Vertex> coDevelopers = new HashSet<Vertex>();
+                for (Vertex project : projects) {
+                    for (Edge edge : project.getInEdges()) {
+                        if (edge.getLabel().equals("created") && edge.getOutVertex() != root) {
+                            coDevelopers.add(edge.getOutVertex());
+                        }
+                    }
+                }
+                return new ArrayList<Vertex>(coDevelopers);
+            } else {
+                return null;
+            }
+        }
+
+        public String getName() {
+            return "co-developer";
+        }
+    }
 }

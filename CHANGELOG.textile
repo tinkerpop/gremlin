@@ -1,11 +1,25 @@
 Gremlin: A Graph-Based Programming Language
 "http://gremlin.tinkerpop.com":http://gremlin.tinkerpop.com
 
+<repository>
+  <id>tinkerpop-repository</id>
+  <name>TinkerPop Maven2 Repository</name>
+  <url>http://tinkerpop.com/maven2</url>
+</repository>
+
 ==<hr/>==
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
 
 h3. Version 0.2 (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.2</version>
+</dependency>
+
+
 * Added user defined functions
 ** Gremlin and Java defined functions supported
 * Added user defined paths
@@ -34,4 +48,12 @@ h3. Version 0.2 (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-xmas-alpha.png!
 
 h3. Version 0.1 (XMas Alpha -- December 25, 2009)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.1</version>
+</dependency>
+
+
 * Initial release of the language and virtual machine
