@@ -29,6 +29,7 @@ public class IncludeStatementTest extends TestCase {
         assertTrue((Boolean) ge.evaluate("include 'com.tinkerpop.gremlin.statements.TestFunctions'").get(0));
         assertEquals(ge.evaluate("test:test-func-1()").get(0), 187);
         assertEquals(ge.evaluate("test:test-func-2()").get(0), "marko was here");
+        assertEquals(ge.evaluate("test:pow(2,3)").get(0), 8.0);
         assertEquals(ge.evaluate("count(9)").get(0), 1.0);
 
     }

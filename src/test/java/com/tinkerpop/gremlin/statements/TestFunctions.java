@@ -61,6 +61,7 @@ public class TestFunctions extends TestCase implements Functions {
     public TestFunctions() {
         this.addFunction(NAMESPACE_PREFIX, new TestFunctionOne());
         this.addFunction(NAMESPACE_PREFIX, new TestFunctionTwo());
+        this.addFunction(NAMESPACE_PREFIX, new PowerFunction());
 
     }
 
@@ -82,6 +83,21 @@ public class TestFunctions extends TestCase implements Functions {
 
         public String getName() {
             return "test-func-2";
+        }
+    }
+
+    private static class PowerFunction implements Function {
+        public Number invoke(final ExpressionContext context, final Object[] parameters) {
+            Object[] objects = FunctionHelper.nodeSetConversion(parameters);
+            if (objects != null && objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Number.class, Number.class})) {
+                return Math.pow(((Number) objects[0]).doubleValue(), ((Number) objects[1]).doubleValue());
+            } else {
+                throw EvaluationException.createException(FunctionHelper.makeFunctionName("ex", "pow"), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+            }
+        }
+
+        public String getName() {
+            return "pow";
         }
     }
 
