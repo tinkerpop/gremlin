@@ -9,7 +9,7 @@ import org.apache.commons.jxpath.JXPathContext;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class XPPathFunctions extends FunctionLibrary {
+public class XPathFunctions extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "";
 
@@ -46,7 +46,7 @@ public class XPPathFunctions extends FunctionLibrary {
     private static final String LOCAL_NAME = "local-name";
     private static final String NULL = "null";
 
-    public XPPathFunctions() {
+    public XPathFunctions() {
         Functions coreFunctions = JXPathContext.newContext(null).getFunctions();
         // list functions
         /*this.addFunction(null, new FunctionWrapper(LAST, coreFunctions.getFunction(null, LAST, null)));
