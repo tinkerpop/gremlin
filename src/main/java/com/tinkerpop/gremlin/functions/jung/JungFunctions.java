@@ -11,7 +11,6 @@ public class JungFunctions extends FunctionLibrary {
 
     public JungFunctions() {
         this.addFunction(NAMESPACE_PREFIX, new PageRankFunction());
-        this.addFunction(NAMESPACE_PREFIX, new EdgeBetweennessClustererFunction());
         this.addFunction(NAMESPACE_PREFIX, new DijkstraShortestPathFunction());
 
     }

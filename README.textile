@@ -5,5 +5,6 @@ Gremlin is a "Turing-complete":http://en.wikipedia.org/wiki/Turing_completeness,
 * "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
 * "Neo4j":http://neo4j.org/ graph database
 * "Sesame 2.0":http://www.openrdf.org compliant RDF stores
+* "Java Universal Network/Graph Framework":http://jung.sourceforge.net algorithms package
 
 The documentation for Gremlin can be found at this "location":http://gremlin.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.

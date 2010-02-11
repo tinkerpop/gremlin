@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -58,13 +59,13 @@ public class TestPaths extends TestCase implements Paths {
         public Object invoke(Object root) {
             if (null != root && root instanceof Vertex) {
                 Vertex vertex = (Vertex) root;
-                Set<Vertex> projects = new HashSet<Vertex>();
+                List<Vertex> projects = new ArrayList<Vertex>();
                 for (Edge edge : vertex.getOutEdges()) {
                     if (edge.getLabel().equals("created")) {
                         projects.add(edge.getInVertex());
                     }
                 }
-                Set<Vertex> coDevelopers = new HashSet<Vertex>();
+                List<Vertex> coDevelopers = new ArrayList<Vertex>();
                 for (Vertex project : projects) {
                     for (Edge edge : project.getInEdges()) {
                         if (edge.getLabel().equals("created") && edge.getOutVertex() != root) {
@@ -72,7 +73,7 @@ public class TestPaths extends TestCase implements Paths {
                         }
                     }
                 }
-                return new ArrayList<Vertex>(coDevelopers);
+                return coDevelopers;
             } else {
                 return null;
             }

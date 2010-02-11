@@ -5,11 +5,11 @@ import com.tinkerpop.gremlin.functions.FunctionLibrary;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TinkerFunctions extends FunctionLibrary {
+public class TinkerGraphFunctions extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "tg";
 
-    public TinkerFunctions() {
+    public TinkerGraphFunctions() {
         this.addFunction(NAMESPACE_PREFIX, new OpenFunction());
     }
 }

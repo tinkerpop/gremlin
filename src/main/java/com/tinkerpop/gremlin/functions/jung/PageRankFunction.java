@@ -10,10 +10,10 @@ import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import edu.uci.ics.jung.algorithms.scoring.PageRank;
+import org.apache.commons.collections15.Transformer;
 import org.apache.commons.jxpath.ExpressionContext;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -22,27 +22,75 @@ public class PageRankFunction implements Function {
 
     public static final String FUNCTION_NAME = "pagerank";
 
+    /*
+        alpha = 0.15
+        labels = g:list()
+        allow = true()
+        weight_key = 'weight'
+        normalize = true()
+     */
+
+
     public Map invoke(final ExpressionContext context, final Object[] parameters) {
 
-        if (parameters != null && parameters.length > 0) {
-            Graph graph = GraphFunctionHelper.getGraph(context, parameters);
-            Number alpha = null;
+
+        Graph graph = GraphFunctionHelper.getGraph(context, parameters);
+        if (null != graph) {
             Object[] objects = FunctionHelper.nodeSetConversion(parameters);
-            if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, Number.class})) {
-                alpha = (Number) objects[1];
-            } else if (objects.length == 1 && objects[0] instanceof Number) {
-                alpha = (Number) objects[0];
+            Map parameterMap;
+            if (null == objects) {
+                parameterMap = new HashMap();
+                parameterMap.put("alpha", 0.15);
+            } else if (objects.length == 1 && FunctionHelper.assertTypes(objects, new Class[]{Map.class})) {
+                parameterMap = (Map) objects[0];
+            } else if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, Map.class})) {
+                parameterMap = (Map) objects[1];
+            } else {
+                throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
             }
-            if (null != alpha && null != graph) {
-                PageRank<Vertex, Edge> pageRank = new PageRank<Vertex, Edge>(new JungGraph(graph), (Double) alpha);
-                pageRank.evaluate();
-                Map<Vertex, Number> scores = new HashMap<Vertex, Number>();
-                for (Vertex vertex : graph.getVertices()) {
-                    scores.put(vertex, pageRank.getVertexScore(vertex));
-                }
-                return scores;
+
+
+            Double alpha = null;
+            List labels = null;
+            Boolean filter = null;
+            String weightKey = null;
+            Boolean normalize = null;
+
+            Object temp = parameterMap.get("alpha");
+            if (null != temp && temp instanceof Number)
+                alpha = ((Number) temp).doubleValue();
+            temp = parameterMap.get("labels");
+            if (null != temp && temp instanceof List)
+                labels = (List) temp;
+            temp = parameterMap.get("filter");
+            if (null != temp && temp instanceof Boolean)
+                filter = (Boolean) temp;
+            temp = parameterMap.get("weight-key");
+            if (null != temp && temp instanceof String)
+                weightKey = (String) temp;
+            temp = parameterMap.get("normalize");
+            if (null != temp && temp instanceof Boolean)
+                normalize = (Boolean) temp;
+            if (null == alpha)
+                alpha = 0.15d;
+
+
+            PageRank<Vertex, Edge> pageRank;
+            Transformer<Edge, Number> transformer = JungFunctionHelper.makeTransformer(JungFunctionHelper.makeSetList(labels), filter, 0.0d, true, weightKey, normalize, false);
+            if (null == transformer) {
+                pageRank = new PageRank<Vertex, Edge>(new JungGraph(graph), alpha);
+            } else {
+                pageRank = new PageRank<Vertex, Edge>(new JungGraph(graph), transformer, alpha);
             }
+            pageRank.evaluate();
+            Map<Vertex, Number> scores = new HashMap<Vertex, Number>();
+            for (Vertex vertex : graph.getVertices()) {
+                scores.put(vertex, pageRank.getVertexScore(vertex));
+            }
+            return scores;
+
         }
+
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }

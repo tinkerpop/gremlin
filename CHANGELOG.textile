@@ -37,10 +37,12 @@ bc. <dependency>
 ** @list sail:sparql(string)@ was added
 * Added support for Linked Data SAIL for real-time analysis of the Web of Data
 * Added support for script loading
+** @script gremlin-script.grm@
 * Added support for JUNG algorithms over Gremlin graphs
 * Renamed @g:append(object, object+)@ to @g:list(object, object+)@
 * Renamed the general graph model to property graph model
-** Moved the model and its implementations to Blueprints
+** Moved the model and its implementations to "Blueprints":http://blueprints.tinkerpop.com
+** Uses Blueprints 0.1
 * Various bug fixes and optimizations
 
 ==<hr/>==

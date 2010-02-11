@@ -5,7 +5,7 @@ package com.tinkerpop.gremlin.statements;
  */
 public class EvaluationException extends RuntimeException {
 
-    private static final String EMBEDDED_COLLECTION_MESSAGE = "a list can not be the element of a list";
+    private static final String EMBEDDED_LIST_MESSAGE = "a list can not be the element of a list";
     private static final String UNSUPPORTED_PARAMETERS_MESSAGE = "does not support provided parameters";
     private static final String INDEX_BOUND_MESSAGE = "index out of bounds of collection";
     private static final String NO_FUNCTION_MESSAGE = "undefined function";
@@ -17,7 +17,7 @@ public class EvaluationException extends RuntimeException {
     }
 
 
-    public EvaluationException(String message) {
+    public EvaluationException(final String message) {
         super(message);
     }
 
@@ -25,7 +25,7 @@ public class EvaluationException extends RuntimeException {
         if (type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
             return new EvaluationException(functionName + " " + UNSUPPORTED_PARAMETERS_MESSAGE);
         else if (type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
-            return new EvaluationException(functionName + " " + EMBEDDED_COLLECTION_MESSAGE);
+            return new EvaluationException(functionName + " " + EMBEDDED_LIST_MESSAGE);
         else if (type == EvaluationErrorType.INDEX_BOUNDS)
             return new EvaluationException(functionName + " " + INDEX_BOUND_MESSAGE);
         else if (type == EvaluationErrorType.NO_FUNCTION)
@@ -41,7 +41,7 @@ public class EvaluationException extends RuntimeException {
         if (type == EvaluationErrorType.UNSUPPORTED_PARAMETERS)
             return new EvaluationException(UNSUPPORTED_PARAMETERS_MESSAGE);
         else if (type == EvaluationErrorType.EMBEDDED_COLLECTIONS)
-            return new EvaluationException(EMBEDDED_COLLECTION_MESSAGE);
+            return new EvaluationException(EMBEDDED_LIST_MESSAGE);
         else if (type == EvaluationErrorType.INDEX_BOUNDS)
             return new EvaluationException(INDEX_BOUND_MESSAGE);
         else if (type == EvaluationErrorType.UNSUPPORTED_OPERATION)

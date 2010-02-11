@@ -6,7 +6,7 @@ import com.tinkerpop.gremlin.functions.jung.JungFunctions;
 import com.tinkerpop.gremlin.functions.lds.LinkedDataSailFunctions;
 import com.tinkerpop.gremlin.functions.neo4j.Neo4jFunctions;
 import com.tinkerpop.gremlin.functions.sail.SailFunctions;
-import com.tinkerpop.gremlin.functions.tg.TinkerFunctions;
+import com.tinkerpop.gremlin.functions.tg.TinkerGraphFunctions;
 import com.tinkerpop.gremlin.functions.xpath.XPathFunctions;
 
 /**
@@ -19,7 +19,7 @@ public class CoreFunctionLibrary {
         baseLibrary.addFunctions(new XPathFunctions());
         baseLibrary.addFunctions(new GremlinFunctions());
         ///
-        baseLibrary.addFunctions(new TinkerFunctions());
+        baseLibrary.addFunctions(new TinkerGraphFunctions());
         baseLibrary.addFunctions(new Neo4jFunctions());
         baseLibrary.addFunctions(new SailFunctions());
         baseLibrary.addFunctions(new LinkedDataSailFunctions());
