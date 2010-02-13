@@ -34,15 +34,17 @@ bc. <dependency>
 * Added better support for vertex and edge property indexing
 * Added working graph @$_g@ variable and updated graph functions to support it
 * Added support for SPARQL queries for SAIL-based graphs
-** @list sail:sparql(string)@ was added
+** @list sail:sparql(graph?, string)@ was added
 * Added support for Linked Data SAIL for real-time analysis of the Web of Data
 * Added support for script loading
 ** @script gremlin-script.grm@
 * Added support for JUNG algorithms over Gremlin graphs
-* Renamed @g:append(object, object+)@ to @g:list(object, object+)@
+** @map jung:pagerank(graph?, map?)@
+** @list jung:dijkstra(graph?, vertex, vertex, map?)@
+* Renamed @g:append(object, object+)@ to @g:list(object+)@
 * Renamed the general graph model to property graph model
 ** Moved the model and its implementations to "Blueprints":http://blueprints.tinkerpop.com
-** Uses Blueprints 0.1
+** Dependency is on Blueprints 0.1
 * Various bug fixes and optimizations
 
 ==<hr/>==

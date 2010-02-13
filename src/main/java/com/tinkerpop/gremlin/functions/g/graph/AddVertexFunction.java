@@ -6,7 +6,10 @@ import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ExpressionContext;
+
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -30,6 +33,15 @@ public class AddVertexFunction implements Function {
                 u.setProperty(key, v.getProperty(key));
             }
             return u;
+        } else if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, Map.class})) {
+            Map map = (Map) objects[1];
+            Vertex vertex = graph.addVertex(map.get(Tokens.ID));
+            for (Object key : map.keySet()) {
+                if (key instanceof String && !key.equals(Tokens.ID)) {
+                    vertex.setProperty((String) key, map.get(key));
+                }
+            }
+            return vertex;
         } else if (objects.length == 2 && objects[0] instanceof Graph) {
             return graph.addVertex(objects[1]);
         } else if (objects.length == 1 && objects[0] instanceof Vertex) {
@@ -40,6 +52,15 @@ public class AddVertexFunction implements Function {
             }
             return u;
 
+        } else if (objects.length == 1 && objects[0] instanceof Map) {
+            Map map = (Map) objects[0];
+            Vertex vertex = graph.addVertex(map.get(Tokens.ID));
+            for (Object key : map.keySet()) {
+                if (key instanceof String && !key.equals(Tokens.ID)) {
+                    vertex.setProperty((String) key, map.get(key));
+                }
+            }
+            return vertex;
         } else if (objects.length == 1) {
             return graph.addVertex(objects[0]);
         }
