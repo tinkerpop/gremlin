@@ -23,13 +23,17 @@ public class VariableLibrary extends HashMap<String, Object> implements Variable
     }
 
     public Object put(final String name, final Object value) {
-        Object o = this.get(removeVariableDollarSign(name));
+        Object o = super.get(removeVariableDollarSign(name));
         this.declareVariable(name, value);
         return o;
+
     }
 
-    public Object get(final String name) {
-        return super.get(removeVariableDollarSign(name));
+    public Object get(final Object name) {
+        if (name instanceof String)
+            return super.get(removeVariableDollarSign((String) name));
+        else
+            return null;
     }
 
     public void declareVariable(final String name, final Object value) {
