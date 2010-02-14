@@ -50,5 +50,13 @@ public class AddVertexFunctionTest extends BaseTest {
         assertEquals(vertex.getProperty("age"), 37.0);
         assertEquals(vertex.getId(), "abcd");
         assertEquals(vertex.getPropertyKeys().size(), 2);
+        assertEquals(count(graph.getIndex().get("name", "peter")), 1);
+        assertEquals(graph.getIndex().get("name", "peter").iterator().next(), vertex);
+        assertEquals(count(graph.getIndex().get("age", 37.0)), 1);
+        assertEquals(graph.getIndex().get("age", 37.0).iterator().next(), vertex);
+        assertEquals(count(graph.getIndex().get("name", "marko")), 1);
+        assertEquals(count(graph.getIndex().get("age", 30.0)), 1);
+
     }
+
 }
