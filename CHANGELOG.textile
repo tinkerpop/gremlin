@@ -9,9 +9,19 @@ Gremlin: A Graph-Based Programming Language
 
 ==<hr/>==
 
+h3. Version 0.3 (Gremalicious -- NOT OFFICIALLY RELEASE YET)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.3-SNAPSHOT</version>
+</dependency>
+
+==<hr/>==
+
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
 
-h3. Version 0.2 (Gremicide -- NOT OFFICIALLY RELEASE YET, 2010)
+h3. Version 0.2 (Gremicide -- February 14, 2010)
 
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
@@ -33,7 +43,7 @@ bc. <dependency>
 ** @string g:to-json(object)@ and @object g:from-json(string)@ added
 * Added better support for vertex and edge property indexing
 * Added working graph @$_g@ variable and updated graph functions to support it
-* Added support for SPARQL queries for SAIL-based graphs
+* Added support for "SPARQL":http://www.w3.org/TR/rdf-sparql-query/ queries for SAIL-based graphs
 ** @list sail:sparql(graph?, string)@ was added
 * Added support for Linked Data SAIL for real-time analysis of the Web of Data
 * Added support for script loading
