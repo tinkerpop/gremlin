@@ -17,6 +17,8 @@ bc. <dependency>
   <version>0.3-SNAPSHOT</version>
 </dependency>
 
+* Added support for Java 1.6+ @ScriptEngine@ and @ScriptEngineFactory@
+
 ==<hr/>==
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
