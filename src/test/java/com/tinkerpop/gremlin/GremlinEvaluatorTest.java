@@ -31,7 +31,6 @@ public class GremlinEvaluatorTest extends BaseTest {
         } catch (EvaluationException e) {
             assertTrue(true);
         }
-
     }
 
     public void testRemovingVariable() {
@@ -47,12 +46,4 @@ public class GremlinEvaluatorTest extends BaseTest {
         assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
         assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));
     }
-
-    /* public void testInputStream() throws Exception {
-       stopWatch();
-       GremlinEvaluator ge = new GremlinEvaluator();
-       List result = ge.evaluate(GremlinEvaluator.class.getResourceAsStream("examples.grm"));
-       System.out.println(result);
-       System.out.println(stopWatch());
-   } */
 }

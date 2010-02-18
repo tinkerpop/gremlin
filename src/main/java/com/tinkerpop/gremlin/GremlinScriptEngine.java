@@ -1,11 +1,9 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
+import com.tinkerpop.gremlin.statements.Tokens;
 
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineFactory;
+import javax.script.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -15,11 +13,12 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinEngine implements ScriptEngine {
+public class GremlinScriptEngine implements ScriptEngine {
 
-    private GremlinEvaluator gremlinEvaluator;
+    private final GremlinEvaluator gremlinEvaluator;
+    private final SimpleScriptContext scriptContext = new SimpleScriptContext();
 
-    public GremlinEngine() {
+    public GremlinScriptEngine() {
         this.gremlinEvaluator = new GremlinEvaluator();
     }
 
@@ -76,11 +75,11 @@ public class GremlinEngine implements ScriptEngine {
     }
 
     public ScriptContext getContext() {
-        return null;
+        return this.scriptContext;
     }
 
     public ScriptEngineFactory getFactory() {
-        return new GremlinEngineFactory();
+        return new GremlinScriptEngineFactory();
     }
 
     public void put(final String key, final Object value) {
@@ -91,8 +90,10 @@ public class GremlinEngine implements ScriptEngine {
         this.setBindings(bindings);
     }
 
-    private void setBindings(Bindings bindings) {
+    private void setBindings(final Bindings bindings) {
         for (String key : bindings.keySet()) {
+            if(!key.startsWith(Tokens.DOLLAR_SIGN))
+                key = Tokens.DOLLAR_SIGN + key;
             this.gremlinEvaluator.getVariables().declareVariable(key, bindings.get(key));
         }
     }

@@ -18,6 +18,8 @@ bc. <dependency>
 </dependency>
 
 * Added support for Java 1.6+ @ScriptEngine@ and @ScriptEngineFactory@
+** Renamed @GremlinEngine@ to @GremlinScriptEngine@
+** Renamed @GremlinEngineFactory@ to @GremlinScriptEngineFactory@
 
 ==<hr/>==
 

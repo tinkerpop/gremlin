@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinEngineFactory implements ScriptEngineFactory {
+public class GremlinScriptEngineFactory implements ScriptEngineFactory {
 
     public String getEngineName() {
         return "TinkerGremlin";
@@ -27,7 +27,7 @@ public class GremlinEngineFactory implements ScriptEngineFactory {
     }
 
     public String getLanguageVersion() {
-        return "0.1";
+        return "0.2";
     }
 
     public String getMethodCallSyntax(final String obj, final String m, final String... args) {
@@ -59,6 +59,6 @@ public class GremlinEngineFactory implements ScriptEngineFactory {
     }
 
     public ScriptEngine getScriptEngine() {
-        return new GremlinEngine();
+        return new GremlinScriptEngine();
     }
 }

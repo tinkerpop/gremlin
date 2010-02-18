@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
+import org.apache.commons.jxpath.JXPathException;
 import org.apache.commons.jxpath.Variables;
 
 import javax.script.Bindings;
@@ -53,7 +54,11 @@ public class VariableLibrary extends HashMap<String, Object> implements Variable
             // $i[1] := ././././
             // $i/@key := ././././
             if (!(value instanceof List)) {
-                this.gremlinPathContext.setValue(name, value);
+                try {
+                    this.gremlinPathContext.setValue(name, value);
+                } catch (JXPathException e) {
+                    throw new EvaluationException(e.getMessage());
+                }
             } else {
                 if (((List) value).size() == 0) {
                     this.gremlinPathContext.setValue(name, null);
