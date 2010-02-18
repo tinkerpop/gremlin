@@ -17,22 +17,19 @@ public class GremlinScriptEngineTest extends TestCase {
         ScriptEngine engine = factory.getScriptEngine();
         engine.put("$marko", 10);
         assertEquals(engine.get("$marko"), 10);
-        assertEquals(engine.getBindings(0).get("$marko"), 10);
-        assertEquals(engine.getBindings(0).put("$marko", 22), 10);
-        for (int i = 0; i < 10; i++) {
-            assertEquals(engine.getBindings(i).get("$marko"), 22);
-        }
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$marko"), 10);
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$marko", 22), 10);
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$marko"), 22);
+        
         Bindings bindings = engine.createBindings();
         bindings.put("$x", 10);
         bindings.put("$y", "marko");
         bindings.put("$z", true);
-        engine.setBindings(bindings, 0);
+        engine.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
         assertEquals(engine.get("$x"), 10);
         assertEquals(engine.get("$y"), "marko");
         assertTrue((Boolean) engine.get("$z"));
-        ///
-        assertEquals(engine.get("$marko"), 22);
-        assertEquals(engine.getBindings(0).get("$marko"), 22);
+        
         try {
             engine.put("bad_variable", 1000.0);
             assertTrue(false);
@@ -48,7 +45,7 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(((List) engine.eval("1+2", new SimpleScriptContext())).get(0), 3.0);
         assertEquals(((List) engine.eval("$x := 'marko'")).get(0), "marko");
         assertEquals(engine.get("$x"), "marko");
-        assertEquals(engine.getBindings(0).get("$x"), "marko");
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$x"), "marko");
         assertEquals(((List) engine.eval("$i := 0\nrepeat 10\n$i := $i + 1\nend\n")).get(0), 10.0);
 
         String script = "$i := 0\n" +
@@ -58,6 +55,16 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(((List) engine.eval(script)).get(0), 10.0);
         InputStreamReader reader = new InputStreamReader(GremlinScriptEngine.class.getResourceAsStream("gremlinscriptengine-test.grm"));
         assertEquals(((List) engine.eval(reader)).get(0), 10.0);
+    }
+
+    public void testScriptEngineGlobalContext() {
+        ScriptEngineFactory factory = new GremlinScriptEngineFactory();
+        ScriptEngine engine1 = factory.getScriptEngine();
+        ScriptEngine engine2 = factory.getScriptEngine();
+        assertNull(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).put("$name", "marko"));
+        assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "marko");
+        assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).put("$name", "jen"), "marko");
+        assertEquals(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "jen");
     }
 
 }

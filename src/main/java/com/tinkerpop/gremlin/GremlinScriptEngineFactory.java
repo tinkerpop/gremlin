@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineFactory;
+import javax.script.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,6 +8,8 @@ import java.util.List;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GremlinScriptEngineFactory implements ScriptEngineFactory {
+
+    private final Bindings globalBindings = new SimpleBindings();
 
     public String getEngineName() {
         return "TinkerGremlin";
@@ -59,6 +60,10 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
     }
 
     public ScriptEngine getScriptEngine() {
-        return new GremlinScriptEngine();
+        GremlinScriptEngine engine = new GremlinScriptEngine();
+        engine.setBindings(engine.getGremlinEvaluator().getVariables(), ScriptContext.ENGINE_SCOPE);
+        engine.setBindings(this.globalBindings, ScriptContext.GLOBAL_SCOPE);
+        return engine;
+
     }
 }
