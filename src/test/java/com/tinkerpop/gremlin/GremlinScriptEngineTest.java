@@ -1,11 +1,10 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.statements.EvaluationException;
 import junit.framework.TestCase;
 
 import javax.script.*;
-
-import com.tinkerpop.gremlin.statements.EvaluationException;
-
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -27,17 +26,17 @@ public class GremlinScriptEngineTest extends TestCase {
         bindings.put("$x", 10);
         bindings.put("$y", "marko");
         bindings.put("$z", true);
-        engine.setBindings(bindings,0);
+        engine.setBindings(bindings, 0);
         assertEquals(engine.get("$x"), 10);
         assertEquals(engine.get("$y"), "marko");
-        assertTrue((Boolean)engine.get("$z"));
+        assertTrue((Boolean) engine.get("$z"));
         ///
         assertEquals(engine.get("$marko"), 22);
         assertEquals(engine.getBindings(0).get("$marko"), 22);
         try {
             engine.put("bad_variable", 1000.0);
             assertTrue(false);
-        } catch(EvaluationException e) {
+        } catch (EvaluationException e) {
             assertTrue(true);
         }
     }
@@ -45,11 +44,20 @@ public class GremlinScriptEngineTest extends TestCase {
     public void testScriptEngineEvaluation() throws ScriptException {
         ScriptEngineFactory factory = new GremlinScriptEngineFactory();
         ScriptEngine engine = factory.getScriptEngine();
-        assertEquals(((List)engine.eval("1+2")).get(0), 3.0);
-        assertEquals(((List)engine.eval("1+2", new SimpleScriptContext())).get(0), 3.0);
-        assertEquals(((List)engine.eval("$x := 'marko'")).get(0), "marko");
+        assertEquals(((List) engine.eval("1+2")).get(0), 3.0);
+        assertEquals(((List) engine.eval("1+2", new SimpleScriptContext())).get(0), 3.0);
+        assertEquals(((List) engine.eval("$x := 'marko'")).get(0), "marko");
         assertEquals(engine.get("$x"), "marko");
         assertEquals(engine.getBindings(0).get("$x"), "marko");
-        assertEquals(((List)engine.eval("$i := 0\nrepeat 10\n$i := $i + 1\nend\n")).get(0), 10.0);
+        assertEquals(((List) engine.eval("$i := 0\nrepeat 10\n$i := $i + 1\nend\n")).get(0), 10.0);
+
+        String script = "$i := 0\n" +
+                "repeat 10\n" +
+                "  $i := $i + 1\n" +
+                "end\n";
+        assertEquals(((List) engine.eval(script)).get(0), 10.0);
+        InputStreamReader reader = new InputStreamReader(GremlinScriptEngine.class.getResourceAsStream("gremlinscriptengine-test.grm"));
+        assertEquals(((List) engine.eval(reader)).get(0), 10.0);
     }
+
 }
