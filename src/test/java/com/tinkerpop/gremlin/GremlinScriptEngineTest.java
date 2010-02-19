@@ -13,8 +13,8 @@ import java.util.List;
 public class GremlinScriptEngineTest extends TestCase {
 
     public void testVariableLibraryAsBindings() {
-        ScriptEngineFactory factory = new GremlinScriptEngineFactory();
-        ScriptEngine engine = factory.getScriptEngine();
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("gremlin");
         engine.put("$marko", 10);
         assertEquals(engine.get("$marko"), 10);
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$marko"), 10);
@@ -39,8 +39,8 @@ public class GremlinScriptEngineTest extends TestCase {
     }
 
     public void testScriptEngineEvaluation() throws ScriptException {
-        ScriptEngineFactory factory = new GremlinScriptEngineFactory();
-        ScriptEngine engine = factory.getScriptEngine();
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("gremlin");
         assertEquals(((List) engine.eval("1+2")).get(0), 3.0);
         assertEquals(((List) engine.eval("1+2", new SimpleScriptContext())).get(0), 3.0);
         assertEquals(((List) engine.eval("$x := 'marko'")).get(0), "marko");
@@ -58,13 +58,15 @@ public class GremlinScriptEngineTest extends TestCase {
     }
 
     public void testScriptEngineGlobalContext() {
-        ScriptEngineFactory factory = new GremlinScriptEngineFactory();
-        ScriptEngine engine1 = factory.getScriptEngine();
-        ScriptEngine engine2 = factory.getScriptEngine();
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine1 = manager.getEngineByName("gremlin");
+        ScriptEngine engine2 = manager.getEngineByName("gremlin");
         assertNull(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).put("$name", "marko"));
+        assertEquals(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "marko");
         assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "marko");
         assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).put("$name", "jen"), "marko");
         assertEquals(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "jen");
+        assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "jen");
     }
 
 }

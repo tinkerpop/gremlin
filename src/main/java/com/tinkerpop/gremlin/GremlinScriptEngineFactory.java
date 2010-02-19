@@ -9,26 +9,30 @@ import java.util.List;
  */
 public class GremlinScriptEngineFactory implements ScriptEngineFactory {
 
-    private final Bindings globalBindings = new SimpleBindings();
+    private static final String ENGINE_NAME = "TinkerPop Gremlin Engine";
+    private static final String LANGUAGE_NAME = "gremlin";
+    private static final String VERSION_NUMBER = "0.2";
+    private static final String PLAIN = "plain";
+    private static final List<String> EXTENSIONS = Arrays.asList("grm");
 
     public String getEngineName() {
-        return "TinkerGremlin";
+        return ENGINE_NAME;
     }
 
     public String getEngineVersion() {
-        return "0.1";
+        return VERSION_NUMBER;
     }
 
     public List<String> getExtensions() {
-        return Arrays.asList("grm");
+        return EXTENSIONS;
     }
 
     public String getLanguageName() {
-        return "gremlin";
+        return LANGUAGE_NAME;
     }
 
     public String getLanguageVersion() {
-        return "0.2";
+        return VERSION_NUMBER;
     }
 
     public String getMethodCallSyntax(final String obj, final String m, final String... args) {
@@ -36,11 +40,11 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
     }
 
     public List<String> getMimeTypes() {
-        return Arrays.asList("plain");
+        return Arrays.asList(PLAIN);
     }
 
     public List<String> getNames() {
-        return Arrays.asList("GremlinEngine", "Gremlin");
+        return Arrays.asList(LANGUAGE_NAME);
     }
 
     public String getOutputStatement(final String toDisplay) {
@@ -48,7 +52,18 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
     }
 
     public Object getParameter(final String key) {
-        return null;
+        if(key.equals(ScriptEngine.ENGINE)) {
+            return this.getEngineName();
+        } else if(key.equals(ScriptEngine.ENGINE_VERSION)) {
+            return this.getEngineVersion();
+        } else if(key.equals(ScriptEngine.NAME)) {
+            return ENGINE_NAME;
+        } else if(key.equals(ScriptEngine.LANGUAGE)) {
+            return this.getLanguageName();
+        } else if(key.equals(ScriptEngine.LANGUAGE_VERSION)) {
+            return this.getLanguageVersion();
+        } else
+            return null;
     }
 
     public String getProgram(final String... statements) {
@@ -62,8 +77,6 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
     public ScriptEngine getScriptEngine() {
         GremlinScriptEngine engine = new GremlinScriptEngine();
         engine.setBindings(engine.getGremlinEvaluator().getVariables(), ScriptContext.ENGINE_SCOPE);
-        engine.setBindings(this.globalBindings, ScriptContext.GLOBAL_SCOPE);
         return engine;
-
     }
 }
