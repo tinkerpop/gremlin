@@ -32,8 +32,9 @@ public class ListFunction implements Function {
 
             }
             return list;
+        } else {
+            return new ArrayList();
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
     }
 
     public String getName() {

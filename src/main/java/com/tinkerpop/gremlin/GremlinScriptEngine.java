@@ -24,7 +24,6 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return new VariableLibrary(new GremlinPathContext(null));
     }
 
-
     public Object eval(final Reader reader, final ScriptContext context) {
         BufferedReader bReader = new BufferedReader(reader);
         String line;

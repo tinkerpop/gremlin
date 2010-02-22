@@ -57,7 +57,7 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(((List) engine.eval(reader)).get(0), 10.0);
     }
 
-    public void testScriptEngineGlobalContext() {
+    public void testScriptEngineGlobalScope() {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine1 = manager.getEngineByName("gremlin");
         ScriptEngine engine2 = manager.getEngineByName("gremlin");
@@ -67,6 +67,18 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).put("$name", "jen"), "marko");
         assertEquals(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "jen");
         assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "jen");
+    }
+
+     public void testScriptEngineGlobalVsEngineScope() {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine1 = manager.getEngineByName("gremlin");
+        ScriptEngine engine2 = manager.getEngineByName("gremlin");
+        assertNull(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).put("$name", "marko"));
+        assertEquals(engine1.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "marko");
+        assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "marko");
+        assertNull(engine2.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "jen"));
+        assertNull(engine1.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"));
+        assertEquals(engine2.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"), "jen");
     }
 
 }
