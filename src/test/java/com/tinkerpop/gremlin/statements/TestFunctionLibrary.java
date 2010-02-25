@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TestFunctions extends TestCase implements Functions {
+public class TestFunctionLibrary extends TestCase implements Functions {
 
     public static final String NAMESPACE_PREFIX = "test";
 
@@ -58,7 +58,7 @@ public class TestFunctions extends TestCase implements Functions {
         return this.functions.keySet();
     }
 
-    public TestFunctions() {
+    public TestFunctionLibrary() {
         this.addFunction(NAMESPACE_PREFIX, new TestFunctionOne());
         this.addFunction(NAMESPACE_PREFIX, new TestFunctionTwo());
         this.addFunction(NAMESPACE_PREFIX, new PowerFunction());

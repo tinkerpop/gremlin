@@ -17,13 +17,23 @@ bc. <dependency>
   <version>0.3-SNAPSHOT</version>
 </dependency>
 
-* Added support for Java 1.6+ @ScriptEngine@ and @ScriptEngineFactory@
-** Renamed @GremlinEngine@ to @GremlinScriptEngine@
-** Renamed @GremlinEngineFactory@ to @GremlinScriptEngineFactory@
-
 ==<hr/>==
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
+
+h3. Version 0.2.1 (Gremicide -- February 25, 2010)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.2.1</version>
+</dependency>
+
+* Instance naming convention for @Functions@ changed to @FunctionLibrary@
+* @list g:list(object+)@ is now @list g:list(object*)@
+* Added support for Java 1.6+ JSR 223 @ScriptEngine@ and @ScriptEngineFactory@
+** Renamed @GremlinEngine@ to @GremlinScriptEngine@
+** Renamed @GremlinEngineFactory@ to @GremlinScriptEngineFactory@
 
 h3. Version 0.2 (Gremicide -- February 14, 2010)
 

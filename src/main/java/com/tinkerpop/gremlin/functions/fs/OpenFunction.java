@@ -19,7 +19,7 @@ public class OpenFunction implements Function {
         if (parameters == null) {
             return new FileSystemGraph();
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(FileSystemFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(FileSystemFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

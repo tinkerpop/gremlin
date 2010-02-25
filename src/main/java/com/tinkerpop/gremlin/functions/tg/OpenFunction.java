@@ -20,7 +20,7 @@ public class OpenFunction implements Function {
         if (null == parameters) {
             return new TinkerGraph();
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(TinkerGraphFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(TinkerGraphFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

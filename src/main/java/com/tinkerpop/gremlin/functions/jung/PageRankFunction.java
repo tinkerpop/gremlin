@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.jung.JungGraph;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import edu.uci.ics.jung.algorithms.scoring.PageRank;
@@ -46,7 +46,7 @@ public class PageRankFunction implements Function {
             } else if (objects.length == 2 && FunctionHelper.assertTypes(objects, new Class[]{Graph.class, Map.class})) {
                 parameterMap = (Map) objects[1];
             } else {
-                throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+                throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
             }
 
 
@@ -91,7 +91,7 @@ public class PageRankFunction implements Function {
 
         }
 
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

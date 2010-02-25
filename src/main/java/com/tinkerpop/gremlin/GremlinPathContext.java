@@ -6,7 +6,6 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.functions.CoreFunctionLibrary;
 import com.tinkerpop.gremlin.functions.FunctionLibrary;
 import com.tinkerpop.gremlin.paths.*;
-import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 
@@ -36,8 +35,8 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         super(parentContext, root);
         super.setFunctions(CoreFunctionLibrary.getBaseLibrary());
         super.setVariables(new VariableLibrary(this));
-        if(null != parentContext && parentContext.getVariables().isDeclaredVariable(Tokens.GRAPH_VARIABLE)) {
-            this.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, parentContext.getVariables().getVariable(Tokens.GRAPH_VARIABLE));
+        if(null != parentContext) {
+            this.setVariables(parentContext.getVariables());
         }
     }
 

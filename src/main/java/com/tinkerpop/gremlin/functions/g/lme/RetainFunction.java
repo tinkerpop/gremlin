@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.functions.g.lme;
 
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 
@@ -34,7 +34,7 @@ public class RetainFunction implements Function {
             return setA.size() > 0;*/
             return setA.contains(context.getContextNodePointer().getValue());
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

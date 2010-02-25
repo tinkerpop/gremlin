@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.functions.g.lme;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import org.apache.commons.jxpath.ExpressionContext;
 
@@ -41,7 +41,7 @@ public class OperateValueFunction implements Function {
                 }
             }
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 
@@ -94,7 +94,7 @@ public class OperateValueFunction implements Function {
 
     private static void opValue(final String operation, final List list, final Integer index, final Number amount) {
         if (list.size() < index + 1)
-            throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.INDEX_BOUNDS);
+            throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.INDEX_BOUNDS);
 
         Object object = list.get(index);
         Number value;

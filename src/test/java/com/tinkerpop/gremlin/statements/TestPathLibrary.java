@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class TestPaths extends TestCase implements Paths {
+public class TestPathLibrary extends TestCase implements Paths {
 
     PathLibrary library = new PathLibrary();
 
-    public TestPaths() {
+    public TestPathLibrary() {
         this.addPath(new TestPathOne());
         this.addPath(new CoDeveloperPath());
     }

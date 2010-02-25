@@ -4,8 +4,8 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
-import com.tinkerpop.gremlin.functions.sail.SailFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
+import com.tinkerpop.gremlin.functions.sail.SailFunctionLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import net.fortytwo.linkeddata.sail.LinkedDataSail;
 import net.fortytwo.ripple.Ripple;
@@ -32,7 +32,7 @@ public class OpenFunction implements Function {
                 Sail sail = new LinkedDataSail(baseSail, uriMap);
                 return new SailGraph(sail);
             } catch (Exception e) {
-                throw new EvaluationException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
+                throw new EvaluationException(GremlinFunctionLibrary.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
 
             }
         } else if (parameters.length == 1) {
@@ -44,12 +44,12 @@ public class OpenFunction implements Function {
                     Sail sail = new LinkedDataSail(((SailGraph) object).getSail(), uriMap);
                     return new SailGraph(sail);
                 } catch (Exception e) {
-                    throw new EvaluationException(GremlinFunctions.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
+                    throw new EvaluationException(GremlinFunctionLibrary.NAMESPACE_PREFIX + ":" + FUNCTION_NAME + " " + e.getMessage());
 
                 }
             }
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(SailFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(SailFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

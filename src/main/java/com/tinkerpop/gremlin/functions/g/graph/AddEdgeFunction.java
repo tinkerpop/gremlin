@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
 import org.apache.commons.jxpath.ExpressionContext;
@@ -71,7 +71,7 @@ public class AddEdgeFunction implements Function {
 
             }
         }
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

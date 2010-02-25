@@ -5,11 +5,11 @@ import com.tinkerpop.gremlin.functions.FunctionLibrary;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class FileSystemFunctions extends FunctionLibrary {
+public class FileSystemFunctionLibrary extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "fs";
 
-    public FileSystemFunctions() {
+    public FileSystemFunctionLibrary() {
         this.addFunction(NAMESPACE_PREFIX, new OpenFunction());
     }
 }

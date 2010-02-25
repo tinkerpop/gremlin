@@ -5,11 +5,11 @@ import com.tinkerpop.gremlin.functions.FunctionLibrary;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SailFunctions extends FunctionLibrary {
+public class SailFunctionLibrary extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "sail";
 
-    public SailFunctions() {
+    public SailFunctionLibrary() {
         this.addFunction(NAMESPACE_PREFIX, new OpenFunction());
         this.addFunction(NAMESPACE_PREFIX, new AddNamespaceFunction());
         this.addFunction(NAMESPACE_PREFIX, new RemoveNamespaceFunction());

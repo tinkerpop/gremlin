@@ -26,17 +26,4 @@ public class XPathEvaluatorTest extends BaseTest {
         xe.evaluateList("g:list(1,2,3)");
         assertEquals(xe.evaluateList("g:type($_last)").get(0), "list");
     }
-
-    public void testGraphVariable() {
-        XPathEvaluator xe = new XPathEvaluator();
-        Graph graph = new TinkerGraph();
-        xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
-
-        try {
-            xe.evaluateList("g:list(g:id('1'))");
-            assertTrue(true);
-        } catch (Exception e) {
-            assertFalse(true);
-        }
-    }
 }

@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.jung.JungGraph;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.gremlin.functions.g.GremlinFunctions;
+import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
 import com.tinkerpop.gremlin.functions.g.graph.GraphFunctionHelper;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
@@ -51,7 +51,7 @@ public class DijkstraShortestPathFunction implements Function {
                 targetVertex = (Vertex) objects[2];
                 parameterMap = (Map) objects[3];
             } else {
-                throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+                throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
             }
 
             List labels = null;
@@ -86,7 +86,7 @@ public class DijkstraShortestPathFunction implements Function {
             return dsp.getPath(sourceVertex, targetVertex);
         }
 
-        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctions.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
+        throw EvaluationException.createException(FunctionHelper.makeFunctionName(GremlinFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
 
     }
 

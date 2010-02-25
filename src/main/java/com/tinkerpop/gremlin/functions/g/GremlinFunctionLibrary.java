@@ -15,11 +15,11 @@ import com.tinkerpop.gremlin.functions.g.var.UnassignFunction;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinFunctions extends FunctionLibrary {
+public class GremlinFunctionLibrary extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "g";
 
-    public GremlinFunctions() {
+    public GremlinFunctionLibrary() {
         // variables
         this.addFunction(NAMESPACE_PREFIX, new AssignFunction());
         this.addFunction(NAMESPACE_PREFIX, new UnassignFunction());

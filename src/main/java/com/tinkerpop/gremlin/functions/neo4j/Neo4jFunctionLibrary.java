@@ -5,11 +5,11 @@ import com.tinkerpop.gremlin.functions.FunctionLibrary;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Neo4jFunctions extends FunctionLibrary {
+public class Neo4jFunctionLibrary extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "neo4j";
 
-    public Neo4jFunctions() {
+    public Neo4jFunctionLibrary() {
         this.addFunction(NAMESPACE_PREFIX, new OpenFunction());
         this.addFunction(NAMESPACE_PREFIX, new AutomaticTransactionsFunction());
         this.addFunction(NAMESPACE_PREFIX, new StartTransactionFunction());

@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
@@ -45,5 +46,21 @@ public class GremlinEvaluatorTest extends BaseTest {
     public void testUnmodifiableListChecker() {
         assertTrue(FunctionHelper.isUnmodifiable(Collections.EMPTY_LIST));
         assertFalse(FunctionHelper.isUnmodifiable(new ArrayList()));
+    }
+
+    public void testGraphVariable() {
+        // this is a test for the variable issue that occurs when a new path context is created.
+        GremlinEvaluator ge = new GremlinEvaluator();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
+
+        try {
+            ge.evaluate("$_ := g:list(g:id('1'), g:id('2'))");
+            ge.evaluate("./bothE");
+            assertEquals(ge.evaluate("g:list(g:key('name','marko'))").get(0), graph.getVertex('1'));
+            assertTrue(true);
+        } catch (Exception e) {
+            assertFalse(true);
+        }
     }
 }

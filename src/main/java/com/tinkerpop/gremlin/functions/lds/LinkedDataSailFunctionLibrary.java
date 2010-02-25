@@ -5,11 +5,11 @@ import com.tinkerpop.gremlin.functions.FunctionLibrary;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class LinkedDataSailFunctions extends FunctionLibrary {
+public class LinkedDataSailFunctionLibrary extends FunctionLibrary {
 
     public static final String NAMESPACE_PREFIX = "lds";
 
-    public LinkedDataSailFunctions() {
+    public LinkedDataSailFunctionLibrary() {
         this.addFunction(NAMESPACE_PREFIX, new OpenFunction());
     }
 }
