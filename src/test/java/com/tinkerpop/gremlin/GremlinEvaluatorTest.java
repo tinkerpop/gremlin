@@ -15,6 +15,16 @@ import java.util.Collections;
  */
 public class GremlinEvaluatorTest extends BaseTest {
 
+    public void testRootVariable() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinEvaluator ge = new GremlinEvaluator();
+        ge.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
+        assertEquals(ge.evaluate("$_ := g:id('1')").get(0), graph.getVertex("1"));
+        ge.evaluate("./outE");
+        assertEquals(ge.evaluate("$_ := g:id('2')").get(0), graph.getVertex("2"));
+        assertEquals(ge.evaluate(".").get(0), graph.getVertex("2"));
+    }
+
     public void testSettingGraphVariable() {
         Graph graph = new TinkerGraph();
         GremlinEvaluator ge = new GremlinEvaluator();

@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.functions.neo4j.Neo4jFunctionLibrary;
 import com.tinkerpop.gremlin.functions.sail.SailFunctionLibrary;
 import com.tinkerpop.gremlin.functions.tg.TinkerGraphFunctionLibrary;
 import com.tinkerpop.gremlin.functions.xpath.XPathFunctionLibrary;
+import com.tinkerpop.gremlin.functions.neo4jsail.Neo4jSailFunctionLibrary;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -23,6 +24,7 @@ public class CoreFunctionLibrary {
         baseLibrary.addFunctions(new Neo4jFunctionLibrary());
         baseLibrary.addFunctions(new SailFunctionLibrary());
         baseLibrary.addFunctions(new LinkedDataSailFunctionLibrary());
+        baseLibrary.addFunctions(new Neo4jSailFunctionLibrary());
         baseLibrary.addFunctions(new FileSystemFunctionLibrary());
         baseLibrary.addFunctions(new JungFunctionLibrary());
         return baseLibrary;
