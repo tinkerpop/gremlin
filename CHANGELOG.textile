@@ -32,7 +32,6 @@ bc. <dependency>
 * Fixed a bug introduced in 0.2.1 having to do with variables copied from a parent path context
 * Added dependency on Neo4j RDF and SAIL
 * Added Neo4jSailGraph to the core distribution
-* 
 
 h3. Version 0.2.1 (Gremicide -- February 25, 2010)
 
