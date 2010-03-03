@@ -30,7 +30,7 @@ public class OpenFunction implements Function {
                 GraphDatabaseService graphDb = new EmbeddedGraphDatabase((String) object);
                 IndexService indexService = new LuceneIndexService(graphDb);
                 RdfStore rdfStore = new VerboseQuadStore(graphDb, indexService);
-                return new SailGraph(new GraphDatabaseSail(graphDb, rdfStore));
+                return new SailGraph(new GraphDatabaseSail(graphDb, rdfStore, true));
             }
         }
         throw EvaluationException.createException(FunctionHelper.makeFunctionName(Neo4jFunctionLibrary.NAMESPACE_PREFIX, FUNCTION_NAME), EvaluationException.EvaluationErrorType.UNSUPPORTED_PARAMETERS);
