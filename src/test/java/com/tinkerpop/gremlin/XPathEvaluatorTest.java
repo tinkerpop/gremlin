@@ -1,9 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
-import com.tinkerpop.gremlin.statements.Tokens;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
