@@ -21,17 +21,17 @@ bc. <dependency>
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
 
-h3. Version 0.2.2 (Gremicide -- NOT OFFICIALLY RELEASED YET)
+h3. Version 0.2.2 (Gremicide -- March 7, 2010)
 
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.2.2-SNAPSHOT</version>
+  <version>0.2.2</version>
 </dependency>
 
 * Fixed a bug introduced in 0.2.1 having to do with variables copied from a parent path context
-* Added dependency on Neo4j RDF and SAIL
-* Added Neo4jSailGraph to the core distribution
+* Added dependency on Neo4j RDF and SAIL SNAPSHOTS
+* Added Neo4jSailGraph BETA to the core distribution
 
 h3. Version 0.2.1 (Gremicide -- February 25, 2010)
 

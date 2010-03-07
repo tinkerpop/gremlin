@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.2</version>
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph-Based Programming Language</name>
@@ -32,11 +32,6 @@
             <email>peter.neubauer@neotechnology.com</email>
             <url>http://www.linkedin.com/in/neubauer</url>
         </contributor>
-        <contributor>
-            <name>Joshua Shinavier</name>
-            <email>josh@fortytwo.net</email>
-            <url>http://fortytwo.net</url>
-        </contributor>
     </contributors>
     <mailingLists>
         <mailingList>
@@ -62,7 +57,7 @@
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.1.1</version>
         </dependency>
         <dependency>
             <groupId>commons-jxpath</groupId>
