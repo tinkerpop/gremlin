@@ -40,7 +40,7 @@
             <unsubscribe>http://groups.google.com/group/gremlin-users</unsubscribe>
             <archive>http://groups.google.com/group/gremlin-users/topics</archive>
         </mailingList>
-    </mailingLists>
+    </mailingLists>                  
     <inceptionYear>2009</inceptionYear>
     <dependencies>
         <dependency>
