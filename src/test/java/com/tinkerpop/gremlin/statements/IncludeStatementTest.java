@@ -51,8 +51,8 @@ public class IncludeStatementTest extends TestCase {
         assertTrue((Boolean) ge.evaluate("include 'com.tinkerpop.gremlin.statements.TestPathLibrary'").get(0));
         List results = ge.evaluate("./co-developer");
         assertEquals(results.size(), 2);
-        for(Vertex vertex : (List<Vertex>)results) {
-            if(vertex.getProperty("name").equals("peter") || vertex.getProperty("name").equals("josh")) {
+        for (Vertex vertex : (List<Vertex>) results) {
+            if (vertex.getProperty("name").equals("peter") || vertex.getProperty("name").equals("josh")) {
                 assertTrue(true);
             } else {
                 assertTrue(false);

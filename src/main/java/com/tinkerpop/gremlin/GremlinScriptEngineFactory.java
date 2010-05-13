@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin;
 
-import javax.script.*;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,15 +54,15 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
     }
 
     public Object getParameter(final String key) {
-        if(key.equals(ScriptEngine.ENGINE)) {
+        if (key.equals(ScriptEngine.ENGINE)) {
             return this.getEngineName();
-        } else if(key.equals(ScriptEngine.ENGINE_VERSION)) {
+        } else if (key.equals(ScriptEngine.ENGINE_VERSION)) {
             return this.getEngineVersion();
-        } else if(key.equals(ScriptEngine.NAME)) {
+        } else if (key.equals(ScriptEngine.NAME)) {
             return ENGINE_NAME;
-        } else if(key.equals(ScriptEngine.LANGUAGE)) {
+        } else if (key.equals(ScriptEngine.LANGUAGE)) {
             return this.getLanguageName();
-        } else if(key.equals(ScriptEngine.LANGUAGE_VERSION)) {
+        } else if (key.equals(ScriptEngine.LANGUAGE_VERSION)) {
             return this.getLanguageVersion();
         } else
             return null;

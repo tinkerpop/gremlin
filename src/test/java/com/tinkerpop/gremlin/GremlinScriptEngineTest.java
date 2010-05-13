@@ -20,7 +20,7 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$marko"), 10);
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$marko", 22), 10);
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$marko"), 22);
-        
+
         Bindings bindings = engine.createBindings();
         bindings.put("$x", 10);
         bindings.put("$y", "marko");
@@ -29,7 +29,7 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(engine.get("$x"), 10);
         assertEquals(engine.get("$y"), "marko");
         assertTrue((Boolean) engine.get("$z"));
-        
+
         try {
             engine.put("bad_variable", 1000.0);
             assertTrue(false);
@@ -69,7 +69,7 @@ public class GremlinScriptEngineTest extends TestCase {
         assertEquals(engine2.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "jen");
     }
 
-     public void testScriptEngineGlobalVsEngineScope() {
+    public void testScriptEngineGlobalVsEngineScope() {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine1 = manager.getEngineByName("gremlin");
         ScriptEngine engine2 = manager.getEngineByName("gremlin");

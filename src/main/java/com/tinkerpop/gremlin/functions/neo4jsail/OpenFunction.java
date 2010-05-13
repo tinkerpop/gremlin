@@ -11,9 +11,9 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.index.IndexService;
 import org.neo4j.index.lucene.LuceneIndexService;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.rdf.sail.GraphDatabaseSail;
 import org.neo4j.rdf.store.RdfStore;
 import org.neo4j.rdf.store.VerboseQuadStore;
-import org.neo4j.rdf.sail.GraphDatabaseSail;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

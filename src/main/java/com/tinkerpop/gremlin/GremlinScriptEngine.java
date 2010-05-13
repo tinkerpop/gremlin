@@ -2,7 +2,10 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.statements.EvaluationException;
 
-import javax.script.*;
+import javax.script.AbstractScriptEngine;
+import javax.script.Bindings;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngineFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;

@@ -5,7 +5,7 @@ package com.tinkerpop.gremlin.functions.jung;
  */
 public class PageRankPriorsFunction {
 
-public static final String FUNCTION_NAME = "pagerank-priors";
+    public static final String FUNCTION_NAME = "pagerank-priors";
 
     /*
         alpha = 0.15

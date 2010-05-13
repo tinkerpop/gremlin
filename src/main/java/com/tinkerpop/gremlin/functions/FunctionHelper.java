@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.gremlin.GremlinPathContext;
 import com.tinkerpop.gremlin.statements.EvaluationException;
 import com.tinkerpop.gremlin.statements.Tokens;
@@ -11,8 +10,6 @@ import org.apache.commons.jxpath.Pointer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.Collection;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

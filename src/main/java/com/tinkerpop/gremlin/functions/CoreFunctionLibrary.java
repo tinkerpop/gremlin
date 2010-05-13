@@ -5,10 +5,10 @@ import com.tinkerpop.gremlin.functions.g.GremlinFunctionLibrary;
 import com.tinkerpop.gremlin.functions.jung.JungFunctionLibrary;
 import com.tinkerpop.gremlin.functions.lds.LinkedDataSailFunctionLibrary;
 import com.tinkerpop.gremlin.functions.neo4j.Neo4jFunctionLibrary;
+import com.tinkerpop.gremlin.functions.neo4jsail.Neo4jSailFunctionLibrary;
 import com.tinkerpop.gremlin.functions.sail.SailFunctionLibrary;
 import com.tinkerpop.gremlin.functions.tg.TinkerGraphFunctionLibrary;
 import com.tinkerpop.gremlin.functions.xpath.XPathFunctionLibrary;
-import com.tinkerpop.gremlin.functions.neo4jsail.Neo4jSailFunctionLibrary;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

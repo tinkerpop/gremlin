@@ -13,7 +13,9 @@ import edu.uci.ics.jung.algorithms.scoring.PageRank;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.jxpath.ExpressionContext;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

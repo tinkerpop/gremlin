@@ -36,8 +36,8 @@ public class GremlinPathContext extends JXPathContextReferenceImpl {
         super(parentContext, root);
         super.setFunctions(CoreFunctionLibrary.getBaseLibrary());
         super.setVariables(new VariableLibrary(this));
-        if(null != parentContext) {
-            if(parentContext.getVariables().isDeclaredVariable(Tokens.GRAPH_VARIABLE)) {
+        if (null != parentContext) {
+            if (parentContext.getVariables().isDeclaredVariable(Tokens.GRAPH_VARIABLE)) {
                 this.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, parentContext.getVariables().getVariable(Tokens.GRAPH_VARIABLE));
             }
         }

@@ -37,7 +37,7 @@ public class AddVertexFunctionTest extends BaseTest {
         List result = xe.evaluateList("g:add-v(g:map('name','marko','age',30))");
         assertEquals(result.size(), 1);
         assertTrue(result.get(0) instanceof Vertex);
-        Vertex vertex = (Vertex)result.get(0);
+        Vertex vertex = (Vertex) result.get(0);
         assertEquals(vertex.getProperty("name"), "marko");
         assertEquals(vertex.getProperty("age"), 30.0);
         assertEquals(vertex.getPropertyKeys().size(), 2);
@@ -45,7 +45,7 @@ public class AddVertexFunctionTest extends BaseTest {
         result = xe.evaluateList("g:add-v($_g, g:map('id','abcd','name','peter','age',37))");
         assertEquals(result.size(), 1);
         assertTrue(result.get(0) instanceof Vertex);
-        vertex = (Vertex)result.get(0);
+        vertex = (Vertex) result.get(0);
         assertEquals(vertex.getProperty("name"), "peter");
         assertEquals(vertex.getProperty("age"), 37.0);
         assertEquals(vertex.getId(), "abcd");

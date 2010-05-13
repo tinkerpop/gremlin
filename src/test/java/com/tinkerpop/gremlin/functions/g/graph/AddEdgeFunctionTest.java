@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
-import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.XPathEvaluator;
@@ -42,7 +42,7 @@ public class AddEdgeFunctionTest extends BaseTest {
     }
 
     public void testAddEdgeFunctionWithMap() {
-         Graph graph = new TinkerGraph();
+        Graph graph = new TinkerGraph();
         XPathEvaluator xe = new XPathEvaluator();
         xe.getVariables().declareVariable(Tokens.GRAPH_VARIABLE, graph);
         xe.getVariables().declareVariable("$v", graph.addVertex('1'));
@@ -50,7 +50,7 @@ public class AddEdgeFunctionTest extends BaseTest {
         List result = xe.evaluateList("g:add-e(g:map('weight',1.0),$v,'knows1',$u)");
         assertEquals(result.size(), 1);
         assertTrue(result.get(0) instanceof Edge);
-        Edge edge = (Edge)result.get(0);
+        Edge edge = (Edge) result.get(0);
         assertEquals(edge.getProperty("weight"), 1.0);
         assertEquals(edge.getLabel(), "knows1");
         assertEquals(edge.getPropertyKeys().size(), 1);
@@ -58,7 +58,7 @@ public class AddEdgeFunctionTest extends BaseTest {
         result = xe.evaluateList("g:add-e($_g, g:map('weight',2.12),$v,'knows1',$u)");
         assertEquals(result.size(), 1);
         assertTrue(result.get(0) instanceof Edge);
-        edge = (Edge)result.get(0);
+        edge = (Edge) result.get(0);
         assertEquals(edge.getProperty("weight"), 2.12);
         assertEquals(edge.getLabel(), "knows1");
         assertEquals(edge.getPropertyKeys().size(), 1);

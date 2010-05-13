@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin.functions.jung;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.XPathEvaluator;
 import com.tinkerpop.gremlin.statements.Tokens;
 
@@ -50,7 +50,7 @@ public class DijkstraShortestPathFunctionTest extends JungTest {
 
         List results = xe.evaluateList("jung:dijkstra($a,$b)");
         assertEquals(results.size(), 1);
-        assertEquals(((Edge)results.get(0)).getId(),"d");
+        assertEquals(((Edge) results.get(0)).getId(), "d");
 
         results = xe.evaluateList("jung:dijkstra($a,$b,g:map('labels',g:list('hates'),'filter',true()))");
         assertEquals(results.size(), 2);

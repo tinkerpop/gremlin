@@ -8,9 +8,8 @@ import com.tinkerpop.gremlin.paths.Paths;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
