@@ -122,7 +122,7 @@
             <version>2.3.1</version>
             <type>jar</type>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>org.openrdf.sesame</groupId>
             <artifactId>sesame</artifactId>
             <version>2.3.1</version>
@@ -146,7 +146,7 @@
             <version>2.3.1</version>
             <type>jar</type>
         </dependency>
-	<!-- LOGGING -->
+        <!-- LOGGING -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -182,7 +182,7 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-	<repository>
+        <repository>
             <id>aduna-repo</id>
             <name>Aduna repository</name>
             <url>http://repo.aduna-software.org/maven2/releases</url>
@@ -248,5 +248,19 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-alpha-6</version>
+            </extension>
+        </extensions>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>tinkerpop.repo</id>
+            <name>TinkerPop Maven2 Repository</name>
+            <url>ftp://ftp.tinkerpop.com:21/public/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
