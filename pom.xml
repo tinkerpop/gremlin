@@ -43,21 +43,21 @@
     </mailingLists>
     <inceptionYear>2009</inceptionYear>
     <dependencies>
-		<dependency>
-    		<groupId>org.antlr</groupId>
-    		<artifactId>antlr</artifactId>
-    		<version>3.2</version>
-		</dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>3.2</version>
+        </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-  			<groupId>com.tinkerpop</groupId>
-  			<artifactId>pipes</artifactId>
-  			<version>0.1-SNAPSHOT</version>
-		</dependency>
+            <groupId>com.tinkerpop</groupId>
+            <artifactId>pipes</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>

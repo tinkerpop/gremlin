@@ -1,21 +1,21 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
+import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
 public class GreaterThan extends BinaryOperation {
 
-	public GreaterThan(final Operation... operands) {
-		super(operands);
-	}
-	
+    public GreaterThan(final Operation... operands) {
+        super(operands);
+    }
+
     public Atom compute() {
-        Double a = (Double)this.operands[0].compute().getValue();
-        Double b = (Double)this.operands[1].compute().getValue();
+        Double a = (Double) this.operands[0].compute().getValue();
+        Double b = (Double) this.operands[1].compute().getValue();
 
         return new Atom((a > b) ? true : false);
     }
@@ -23,5 +23,5 @@ public class GreaterThan extends BinaryOperation {
     public Type getType() {
         return Type.LOGIC;
     }
-    
+
 }

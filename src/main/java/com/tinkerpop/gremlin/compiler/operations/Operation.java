@@ -9,9 +9,9 @@ public interface Operation {
     public enum Type {
         MATH, LOGIC, STATEMENT
     }
-    
+
     public Atom compute();
-    
+
     public Type getType();
-    
+
 }
