@@ -40,7 +40,7 @@ public class Foreach implements Operation {
 
         if (paramAtom.isList()) {
             params = ((List<Object>) paramAtom.getValue()).iterator();
-        } else if (paramAtom.isIterator()) {
+        } else if (paramAtom.isIterable()) {
             params = (Iterator<Object>) paramAtom.getValue();
         } else {
             return new Atom(null);

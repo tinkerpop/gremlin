@@ -17,7 +17,7 @@ public class IdFunction implements Function {
 
     public Atom compute(List<Operation> params) throws RuntimeException {
         if (params.size() == 0 || params.size() > 2)
-            throw new RuntimeException("Unsupported arguments for g:load().");
+            throw new RuntimeException(Function.UNSUPPORTED_ARGUMENTS + this.FUNCTION_NAME);
 
         Graph graph = null;
         Object identifer = null;

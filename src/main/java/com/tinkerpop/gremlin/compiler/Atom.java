@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class Atom {
     /* identifier and property used in gpath */
     private boolean identifier = false;
     private boolean property = false;
-    private boolean iterator = false;
+    //private boolean iterator = false;
 
     private String dynamicObjectType = "";
 
@@ -52,12 +51,6 @@ public class Atom {
         }
     }
 
-    @SuppressWarnings("rawtypes")
-    public Atom(Iterator itty) {
-        this.iterator = true;
-        this.val = itty;
-    }
-
     public Object getValue() {
         return this.val;
     }
@@ -75,7 +68,7 @@ public class Atom {
     }
 
     public boolean isNull() {
-        return (this.val == null) ? true : false;
+        return null == this.val;
     }
 
     public boolean isList() {
@@ -91,15 +84,11 @@ public class Atom {
     }
 
     public boolean isFunctionCall() {
-        return (this.function == null) ? false : true;
+        return null != this.function;
     }
 
     public boolean isGraph() {
-        return (this.val instanceof Graph) ? true : false;
-    }
-
-    public boolean isIterator() {
-        return this.iterator;
+        return isClassOf(Graph.class);
     }
 
     public boolean isPersistent() {
@@ -162,8 +151,7 @@ public class Atom {
 
     public boolean equals(Object object) {
         if (object instanceof Atom) {
-            if (((Atom) object).getValue().equals(this.val))
-                return true;
+            return (((Atom) object).getValue().equals(this.val));
         }
         return false;
     }

@@ -34,8 +34,8 @@ public class MapFunctionTest extends TestCase {
         Function func = new MapFunction();
         Atom result = func.compute(TestHelper.createUnaryArgs("key1", "value1", "key2", 2));
         assertEquals(((Map) result.getValue()).size(), 2);
-        assertEquals(((Map<String, Atom>) result.getValue()).get(new Atom("key1")).getValue(), "value1");
-        assertEquals(((Map<String, Atom>) result.getValue()).get(new Atom("key2")).getValue(), 2);
+        assertEquals(((Map<Atom, Atom>) result.getValue()).get(new Atom("key1")).getValue(), "value1");
+        assertEquals(((Map<Atom, Atom>) result.getValue()).get(new Atom("key2")).getValue(), 2);
 
     }
 }

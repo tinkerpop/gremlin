@@ -15,8 +15,8 @@ public class PrintFunction implements Function {
 
     public Atom compute(final List<Operation> params) throws RuntimeException {
 
-        for (Operation o : params) {
-            System.out.println(o.compute());
+        for (Operation operation : params) {
+            System.out.println(operation.compute());
         }
 
         return new Atom(null);

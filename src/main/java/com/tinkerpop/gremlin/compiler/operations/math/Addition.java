@@ -14,10 +14,13 @@ public class Addition extends BinaryOperation {
     }
 
     public Atom compute() {
-        Double a = (Double) this.operands[0].compute().getValue();
-        Double b = (Double) this.operands[1].compute().getValue();
-
-        return new Atom(a + b);
+        Object a = this.operands[0].compute().getValue();
+        Object b = this.operands[1].compute().getValue();
+        if (a instanceof String || b instanceof String) {
+            return new Atom(a.toString() + b.toString());
+        } else {
+            return new Atom((Double) a + (Double) b);
+        }
     }
 
     public Type getType() {

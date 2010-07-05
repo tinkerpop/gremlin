@@ -16,8 +16,8 @@ public class ConcatFunction implements Function {
     public Atom compute(final List<Operation> params) throws RuntimeException {
         String resultString = "";
 
-        for (Operation o : params) {
-            resultString = resultString.concat(o.compute().toString());
+        for (Operation operation : params) {
+            resultString = resultString.concat(operation.compute().toString());
         }
 
         return new Atom(resultString);

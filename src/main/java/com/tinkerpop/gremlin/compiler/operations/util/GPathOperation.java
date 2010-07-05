@@ -27,16 +27,12 @@ public class GPathOperation implements Operation {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Atom compute() {
-        //List<Object> results = new ArrayList<Object>();
 
         if (this.startPoint instanceof Iterator) {
             this.pipeline.setStarts((Iterator) this.startPoint);
         } else {
             this.pipeline.setStarts(new SingleIterator(this.startPoint));
         }
-
-        //while(this.pipeline.hasNext())
-        //	results.add(this.pipeline.next());
 
         return new Atom(this.pipeline);
     }
