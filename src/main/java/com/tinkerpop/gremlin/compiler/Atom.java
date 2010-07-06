@@ -17,9 +17,9 @@ import java.util.Map;
 /**
  * @author Pavel A. Yaskevich
  */
-public class Atom {
+public class Atom<T> {
 
-    private Object val;
+    private T val;
 
     /* for not persistent variable calls */
     private String variableName;
@@ -43,7 +43,7 @@ public class Atom {
     // required for Pipes support
     private Object gpathStartPoint;
 
-    public Atom(Object value) {
+    public Atom(T value) {
         this.val = value;
 
         // string preprocessing
@@ -60,7 +60,7 @@ public class Atom {
                 result += stringVal.charAt(i);
             }
 
-            this.val = result;
+            this.val = (T)result;
         }
     }
 

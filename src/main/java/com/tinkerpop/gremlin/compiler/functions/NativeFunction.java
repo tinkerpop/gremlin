@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class NativeFunction implements Function {
+public class NativeFunction implements Function<Object> {
 
     private String FUNCTION_NAME;
 
@@ -24,7 +24,7 @@ public class NativeFunction implements Function {
         this.body = body;
     }
 
-    public Atom compute(final List<Operation> params) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> params) throws RuntimeException {
         if (this.arguments.size() != params.size())
             throw new RuntimeException("Wrong number of arguments (" + params.size() + " of " + this.arguments.size() + ")");
 

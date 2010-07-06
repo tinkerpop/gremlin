@@ -11,11 +11,11 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class UnionFunction extends AbstractFunction {
+public class UnionFunction extends AbstractFunction<Iterable<Atom>> {
 
     private static final String FUNCTION_NAME = "union";
 
-    public Atom compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable<Atom>> compute(List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() < 2) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -32,7 +32,7 @@ public class UnionFunction extends AbstractFunction {
                 }
 
             }
-            return new Atom(set);
+            return new Atom<Iterable<Atom>>(set);
         }
     }
 

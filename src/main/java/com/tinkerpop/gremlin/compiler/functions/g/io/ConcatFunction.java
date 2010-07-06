@@ -9,19 +9,19 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class ConcatFunction extends AbstractFunction {
+public class ConcatFunction extends AbstractFunction<String> {
 
     private static final String FUNCTION_NAME = "concat";
 
 
-    public Atom compute(final List<Operation> params) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
         String resultString = "";
 
-        for (Operation operation : params) {
+        for (Operation operation : parameters) {
             resultString = resultString.concat(operation.compute().toString());
         }
 
-        return new Atom(resultString);
+        return new Atom<String>(resultString);
     }
 
     public String getFunctionName() {

@@ -9,19 +9,19 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class TimeFunction extends AbstractFunction {
+public class TimeFunction extends AbstractFunction<Double> {
 
-    private final static String FUNCTION_NAME = "time";
+    private static final String FUNCTION_NAME = "time";
 
-    private final double ONE_MILLION = 1000000d;
+    private static final double ONE_MILLION = 1000000d;
 
-    public Atom compute(final List<Operation> params) throws RuntimeException {
+    public Atom<Double> compute(final List<Operation> params) throws RuntimeException {
         if (params.size() == 0) {
-            return new Atom(new Double(System.nanoTime() / ONE_MILLION));
+            return new Atom<Double>(System.nanoTime() / ONE_MILLION);
         } else if (params.size() == 1) {
             Object time = params.get(0).compute().getValue();
             if (time instanceof Number) {
-                return new Atom((System.nanoTime() / ONE_MILLION) - (Double) time);
+                return new Atom<Double>((System.nanoTime() / ONE_MILLION) - (Double) time);
             }
         }
 

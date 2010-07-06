@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SumFunction extends AbstractFunction {
+public class SumFunction extends AbstractFunction<Double> {
 
     private static final String FUNCTION_NAME = "sum";
 
-    public Atom compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Double> compute(List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 0) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -24,22 +24,22 @@ public class SumFunction extends AbstractFunction {
                 if (atom.isNumber()) {
                     counter = counter + ((Double) atom.getValue());
                 } else if (atom.isIterable()) {
-                    counter = counter + countRecurssiveIterable((Iterable<Atom>) atom.getValue(), 0.0d);
+                    counter = counter + countRecursiveIterable((Iterable<Atom>) atom.getValue(), 0.0d);
                 } else {
                     throw new RuntimeException(this.createUnsupportedArgumentMessage());
                 }
 
             }
-            return new Atom(counter);
+            return new Atom<Double>(counter);
         }
     }
 
-    private double countRecurssiveIterable(Iterable<Atom> iterable, double counter) throws RuntimeException {
+    private double countRecursiveIterable(Iterable<Atom> iterable, double counter) throws RuntimeException {
         for (Atom atom : iterable) {
             if (atom.isNumber()) {
                 counter = counter + (Double) atom.getValue();
             } else if (atom.isIterable()) {
-                counter = countRecurssiveIterable((Iterable<Atom>) atom.getValue(), counter);
+                counter = countRecursiveIterable((Iterable<Atom>) atom.getValue(), counter);
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
             }

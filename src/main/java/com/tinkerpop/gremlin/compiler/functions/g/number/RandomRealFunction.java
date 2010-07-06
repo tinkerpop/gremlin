@@ -10,16 +10,16 @@ import java.util.Random;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RandomRealFunction extends AbstractFunction {
+public class RandomRealFunction extends AbstractFunction<Double> {
 
     public static final String FUNCTION_NAME = "rand-real";
     private static final Random random = new Random();
 
 
-    public Atom compute(List<Operation> params) throws RuntimeException {
+    public Atom<Double> compute(List<Operation> parameters) throws RuntimeException {
 
-        if (params.size() == 0) {
-            return new Atom(random.nextDouble());
+        if (parameters.size() == 0) {
+            return new Atom<Double>(random.nextDouble());
         }
 
         throw new RuntimeException(this.createUnsupportedArgumentMessage());

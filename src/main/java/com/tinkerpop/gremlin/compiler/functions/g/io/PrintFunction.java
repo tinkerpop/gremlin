@@ -9,18 +9,18 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class PrintFunction extends AbstractFunction {
+public class PrintFunction extends AbstractFunction<Object> {
 
     private static final String FUNCTION_NAME = "print";
 
 
-    public Atom compute(final List<Operation> params) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> parameters) throws RuntimeException {
 
-        for (Operation operation : params) {
+        for (Operation operation : parameters) {
             System.out.println(operation.compute());
         }
 
-        return new Atom(null);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

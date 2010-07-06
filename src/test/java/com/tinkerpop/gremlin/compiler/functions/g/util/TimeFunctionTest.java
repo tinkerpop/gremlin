@@ -17,7 +17,7 @@ public class TimeFunctionTest extends BaseTest {
         this.stopWatch();
         double timeA = (Double) function.compute(new ArrayList<Operation>()).getValue();
         double timeB = (Double) function.compute(new ArrayList<Operation>()).getValue();
-        printPerformance("Time function", 2, "evaluations", this.stopWatch());
+        printPerformance(function.getFunctionName() + " function", 2, "evaluations", this.stopWatch());
         assertTrue(timeB >= timeA);
     }
 }

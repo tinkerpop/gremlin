@@ -12,33 +12,33 @@ import java.util.Map;
 /**
  * @author Pavel A. Yaskevich
  */
-public class MapFunction extends AbstractFunction {
+public class MapFunction extends AbstractFunction<Map<Atom, Atom>> {
 
     private static final String FUNCTION_NAME = "map";
 
-    public Atom compute(List<Operation> params) throws RuntimeException {
+    public Atom<Map<Atom, Atom>> compute(List<Operation> parameters) throws RuntimeException {
         Map<Atom, Atom> map = new HashMap<Atom, Atom>();
 
-        if (params.size() == 1) {
-            Atom atom = params.get(0).compute();
+        if (parameters.size() == 1) {
+            Atom atom = parameters.get(0).compute();
             if (atom.isElement()) {
                 Element element = (Element) atom.getValue();
                 for (String key : element.getPropertyKeys()) {
-                    map.put(new Atom(key), new Atom(element.getProperty(key)));
+                    map.put(new Atom<String>(key), new Atom(element.getProperty(key)));
                 }
             }
 
-        } else if (params.size() % 2 == 0) {
-            for (int i = 0; i < params.size(); i += 2) {
-                Atom key = params.get(i).compute();
-                Atom value = params.get(i + 1).compute();
+        } else if (parameters.size() % 2 == 0) {
+            for (int i = 0; i < parameters.size(); i += 2) {
+                Atom key = parameters.get(i).compute();
+                Atom value = parameters.get(i + 1).compute();
                 map.put(key, value);
             }
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
 
-        return new Atom(map);
+        return new Atom<Map<Atom, Atom>>(map);
     }
 
     public String getFunctionName() {

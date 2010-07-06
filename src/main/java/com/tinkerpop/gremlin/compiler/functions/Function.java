@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public interface Function {
+public interface Function<T> {
 
-    public Atom compute(List<Operation> params) throws RuntimeException;
+    public Atom<T> compute(List<Operation> params) throws RuntimeException;
 
     public String getFunctionName();
 

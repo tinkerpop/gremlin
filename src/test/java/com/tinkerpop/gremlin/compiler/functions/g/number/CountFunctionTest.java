@@ -16,14 +16,14 @@ public class CountFunctionTest extends BaseTest {
     public void testCountSingleValue() {
         Function function = new CountFunction();
         this.stopWatch();
-        assertEquals(function.compute(TestHelper.createUnaryArgs(1)).getValue(), 1l);
-        printPerformance("Count function", 1, "evaluation", this.stopWatch());
+        assertEquals(function.compute(TestHelper.createUnaryArgs(1)).getValue(), 1.0);
+        printPerformance(function.getFunctionName() + " function", 1, "argument", this.stopWatch());
     }
 
     public void testCountListOfValues() {
         Function function = new CountFunction();
         this.stopWatch();
-        assertEquals(function.compute(TestHelper.createUnaryArgs(Arrays.asList(1, 2, 3, 4, 5, 6))).getValue(), 6l);
-        printPerformance("Count function", 1, "evaluation", this.stopWatch());
+        assertEquals(function.compute(TestHelper.createUnaryArgs(Arrays.asList(1, 2, 3, 4, 5, 6))).getValue(), 6.0);
+        printPerformance(function.getFunctionName() + " function", 6, "arguments", this.stopWatch());
     }
 }

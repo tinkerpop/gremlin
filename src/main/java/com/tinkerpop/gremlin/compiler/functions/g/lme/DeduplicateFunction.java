@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,11 +12,11 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class DeduplicateFunction extends AbstractFunction {
+public class DeduplicateFunction extends AbstractFunction<Iterable<Atom>> {
 
     private static final String FUNCTION_NAME = "dedup";
 
-    public Atom compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable<Atom>> compute(List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 0) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -32,7 +33,7 @@ public class DeduplicateFunction extends AbstractFunction {
                 }
 
             }
-            return new Atom(set);
+            return new Atom<Iterable<Atom>>(set);
         }
     }
 
