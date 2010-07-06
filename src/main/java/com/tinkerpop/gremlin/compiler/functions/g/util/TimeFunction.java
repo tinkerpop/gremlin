@@ -15,11 +15,11 @@ public class TimeFunction extends AbstractFunction<Double> {
 
     private static final double ONE_MILLION = 1000000d;
 
-    public Atom<Double> compute(final List<Operation> params) throws RuntimeException {
-        if (params.size() == 0) {
+    public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
+        if (parameters.size() == 0) {
             return new Atom<Double>(System.nanoTime() / ONE_MILLION);
-        } else if (params.size() == 1) {
-            Object time = params.get(0).compute().getValue();
+        } else if (parameters.size() == 1) {
+            Object time = parameters.get(0).compute().getValue();
             if (time instanceof Number) {
                 return new Atom<Double>((System.nanoTime() / ONE_MILLION) - (Double) time);
             }
