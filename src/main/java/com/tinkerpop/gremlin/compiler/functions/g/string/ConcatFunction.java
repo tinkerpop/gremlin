@@ -18,7 +18,7 @@ public class ConcatFunction extends AbstractFunction<String> {
         String resultString = "";
 
         for (Operation operation : parameters) {
-            resultString = resultString.concat(operation.compute().toValueString());
+            resultString = resultString.concat(operation.compute().toString());
         }
 
         return new Atom<String>(resultString);
