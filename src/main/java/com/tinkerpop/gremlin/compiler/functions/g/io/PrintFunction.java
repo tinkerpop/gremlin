@@ -17,7 +17,7 @@ public class PrintFunction extends AbstractFunction<Object> {
     public Atom<Object> compute(final List<Operation> parameters) throws RuntimeException {
 
         for (Operation operation : parameters) {
-            System.out.println(operation.compute());
+            System.out.println(operation.compute().toValueString());
         }
 
         return new Atom<Object>(null);
