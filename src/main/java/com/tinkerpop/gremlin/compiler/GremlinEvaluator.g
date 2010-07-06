@@ -69,10 +69,6 @@ options {
     public static void setVariableLibrary(VariableLibrary lib) {
         variables = lib;
     }
-
-    private static String formatOutputString(Object output) {
-        return (output instanceof Atom) ? ((Atom) output).toValueString() : output.toString();
-    }
 }
 
 program
@@ -82,16 +78,16 @@ program
                         if (!result.isNull() && DEBUG) {
                             if (result.isIterable()) {
                                 for(Object o : (Iterable)result.getValue()) {
-                                    System.out.println(Tokens.RESULT_PROMPT + formatOutputString(o));
+                                    System.out.println(Tokens.RESULT_PROMPT + o);
                                 }
                             } else if (result.isMap()) {
                                 Map map = (Map) result.getValue();
                                 
                                 for (Object key : map.keySet()) {
-                                    System.out.println(Tokens.RESULT_PROMPT + formatOutputString(key) + "=" + formatOutputString(map.get(key)));
+                                    System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
                                 }
                             } else {
-                                System.out.println(Tokens.RESULT_PROMPT + result.toValueString());
+                                System.out.println(Tokens.RESULT_PROMPT + result);
                             }
                         }
 
