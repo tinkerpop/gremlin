@@ -192,10 +192,6 @@ public class Atom<T> {
     }
 
     public String toString() {
-        return "ATOM[" + this.toValueString() + "]";
-    }
-
-    public String toValueString() {
         return (this.value == null) ? "null" : this.value.toString();
     }
 

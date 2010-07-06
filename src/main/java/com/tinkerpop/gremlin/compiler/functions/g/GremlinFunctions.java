@@ -4,7 +4,7 @@ import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.IdFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.KeyFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.LoadFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.io.ConcatFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.string.ConcatFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.DeduplicateFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.ListFunction;

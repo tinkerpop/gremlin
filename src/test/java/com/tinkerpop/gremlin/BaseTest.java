@@ -1,5 +1,8 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import junit.framework.TestCase;
 
 import java.util.*;
@@ -80,5 +83,17 @@ public class BaseTest extends TestCase {
             System.out.println("\t" + name + ": " + events + " " + eventName + " in " + timeInMilliseconds + "ms");
         else
             System.out.println("\t" + name + ": " + eventName + " in " + timeInMilliseconds + "ms");
+    }
+
+    public static UnaryOperation createUnary(Object object) {
+        return new UnaryOperation(new Atom(object));
+    }
+
+    public static List<Operation> createUnaryArgs(Object... objects) {
+        List<Operation> args = new ArrayList<Operation>();
+        for (Object object : objects) {
+            args.add(createUnary(object));
+        }
+        return args;
     }
 }

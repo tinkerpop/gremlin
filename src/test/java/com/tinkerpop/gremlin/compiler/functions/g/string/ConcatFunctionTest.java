@@ -1,9 +1,9 @@
-package com.tinkerpop.gremlin.compiler.functions.g.io;
+package com.tinkerpop.gremlin.compiler.functions.g.string;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.TestHelper;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.g.string.ConcatFunction;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -13,7 +13,7 @@ public class ConcatFunctionTest extends BaseTest {
     public void testOneStringConcat() {
         Function<String> function = new ConcatFunction();
         this.stopWatch();
-        Atom<String> atom = function.compute(TestHelper.createUnaryArgs("marko"));
+        Atom<String> atom = function.compute(createUnaryArgs("marko"));
         printPerformance(function.getFunctionName() + " function", 1, "argument concat", this.stopWatch());
         assertEquals(atom.getValue(), "marko");
     }
@@ -21,7 +21,7 @@ public class ConcatFunctionTest extends BaseTest {
     public void testTwoStringConcat() {
         Function<String> function = new ConcatFunction();
         this.stopWatch();
-        Atom<String> atom = function.compute(TestHelper.createUnaryArgs("marko", "rodriguez"));
+        Atom<String> atom = function.compute(createUnaryArgs("marko", "rodriguez"));
         printPerformance(function.getFunctionName() + " function", 2, "argument concat", this.stopWatch());
         assertEquals(atom.getValue(), "markorodriguez");
     }
@@ -29,7 +29,7 @@ public class ConcatFunctionTest extends BaseTest {
     public void testThreeObjectConcat() {
         Function<String> function = new ConcatFunction();
         this.stopWatch();
-        Atom<String> atom = function.compute(TestHelper.createUnaryArgs("marko", 1, "rodriguez", 7.0d));
+        Atom<String> atom = function.compute(createUnaryArgs("marko", 1, "rodriguez", 7.0d));
         printPerformance(function.getFunctionName() + " function", 4, "argument concat", this.stopWatch());
         assertEquals(atom.getValue(), "marko1rodriguez7.0");
     }

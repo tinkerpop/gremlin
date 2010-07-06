@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.compiler.functions.g.lme;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.TestHelper;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -29,7 +28,7 @@ public class MapFunctionTest extends BaseTest {
         Function function = new MapFunction();
         try {
             this.stopWatch();
-            function.compute(TestHelper.createUnaryArgs("key1"));
+            function.compute(createUnaryArgs("key1"));
             printPerformance(function.getFunctionName() + " function", 1, "bad argument", this.stopWatch());
             assertFalse(false);
         } catch (Exception e) {
@@ -40,7 +39,7 @@ public class MapFunctionTest extends BaseTest {
     public void testTwoEntryMap() {
         Function<Map<Atom, Atom>> function = new MapFunction();
         this.stopWatch();
-        Atom<Map<Atom, Atom>> atom = function.compute(TestHelper.createUnaryArgs("key1", "value1", "key2", 2));
+        Atom<Map<Atom, Atom>> atom = function.compute(createUnaryArgs("key1", "value1", "key2", 2));
         printPerformance(function.getFunctionName() + " function", 2, "key argument", this.stopWatch());
         assertTrue(atom.isMap());
         assertEquals(atom.getValue().size(), 2);
@@ -53,7 +52,7 @@ public class MapFunctionTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Function<Map<Atom, Atom>> function = new MapFunction();
         this.stopWatch();
-        Atom<Map<Atom, Atom>> atom = function.compute(TestHelper.createUnaryArgs(graph.getVertex("1")));
+        Atom<Map<Atom, Atom>> atom = function.compute(createUnaryArgs(graph.getVertex("1")));
         printPerformance(function.getFunctionName() + " function", 1, "vertex argument", this.stopWatch());
         assertTrue(atom.isMap());
         Map<Atom, Atom> map = atom.getValue();

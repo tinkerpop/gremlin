@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.g.io;
+package com.tinkerpop.gremlin.compiler.functions.g.string;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
