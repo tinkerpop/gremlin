@@ -9,34 +9,38 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import java.util.List;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdFunction extends AbstractFunction {
+public class KeyFunction extends AbstractFunction {
 
-    private final static String FUNCTION_NAME = "id";
+    private static final String FUNCTION_NAME = "key";
 
 
     public Atom compute(List<Operation> params) throws RuntimeException {
-        if (params.size() == 0 || params.size() > 2)
+        if (params.size() != 2 && params.size() != 3)
             throwUnsupportedArguments();
 
         Graph graph = null;
-        Object identifer = null;
+        String key = null;
+        Object value = null;
 
         // graph variable as first param
-        if (params.size() == 2) {
+        if (params.size() == 3) {
             graph = GraphFunctionHelper.getGraph(params.get(0));
-            identifer = params.get(1).compute().getValue();
+            key = (String) params.get(1).compute().getValue();
+            value = params.get(2).compute().getValue();
         } else {
             // only identifier in params
             graph = GraphFunctionHelper.getGraph(null);
-            identifer = params.get(0).compute().getValue();
+            key = (String) params.get(0).compute().getValue();
+            value = params.get(1).compute().getValue();
         }
 
-        return new Atom(graph.getVertex(identifer));
+        return new Atom(graph.getIndex().get(key, value));
     }
 
     public String getFunctionName() {
         return FUNCTION_NAME;
     }
+
 }

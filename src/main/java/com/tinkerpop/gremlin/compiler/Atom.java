@@ -1,6 +1,9 @@
 package com.tinkerpop.gremlin.compiler;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -89,6 +92,18 @@ public class Atom {
 
     public boolean isGraph() {
         return isClassOf(Graph.class);
+    }
+
+    public boolean isElement() {
+        return isClassOf(Element.class);
+    }
+
+    public boolean isVertex() {
+        return isClassOf(Vertex.class);
+    }
+
+    public boolean isEdge() {
+        return isClassOf(Edge.class);
     }
 
     public boolean isPersistent() {

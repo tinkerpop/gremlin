@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.graph;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.functions.helpers.GraphFunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -16,13 +16,14 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class LoadFunction implements Function {
+public class LoadFunction extends AbstractFunction {
 
-    private final String FUNCTION_NAME = "load";
+    private static final String FUNCTION_NAME = "load";
+
 
     public Atom compute(List<Operation> params) throws RuntimeException {
         if (params.size() == 0 || params.size() > 2)
-            throw new RuntimeException(Function.UNSUPPORTED_ARGUMENTS + this.FUNCTION_NAME);
+            throwUnsupportedArguments();
 
         Graph graph = null;
         String filename = null;
@@ -53,7 +54,7 @@ public class LoadFunction implements Function {
     }
 
     public String getFunctionName() {
-        return this.FUNCTION_NAME;
+        return FUNCTION_NAME;
     }
 
 

@@ -9,17 +9,22 @@ import java.util.List;
 public abstract class AbstractFunctions implements Functions {
 
     protected List<Function> functions = new ArrayList<Function>();
+    protected static String NAMESPACE;
 
     public Function getFunction(final String functionName) throws RuntimeException {
-        for (Function fn : functions) {
-            if (fn.getFunctionName().equals(functionName))
-                return fn;
+        for (Function function : this.functions) {
+            if (function.getFunctionName().equals(functionName))
+                return function;
         }
-        throw new RuntimeException("Unregistered function: " + functionName);
+        throw new RuntimeException("Unregistered function: " + this.getNamespace() + ":" + functionName);
     }
 
-    public void addFunction(Function function) {
+    public void addFunction(final Function function) {
         this.functions.add(function);
+    }
+
+    public String getNamespace() {
+        return NAMESPACE;
     }
 
 }

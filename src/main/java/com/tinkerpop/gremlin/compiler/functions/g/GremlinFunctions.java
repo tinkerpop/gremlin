@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g;
 
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.IdFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.graph.KeyFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.LoadFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.ConcatFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
@@ -15,7 +16,9 @@ import com.tinkerpop.gremlin.compiler.functions.g.util.TimeFunction;
  */
 public class GremlinFunctions extends AbstractFunctions {
 
-    private final static String NAMESPACE = "g";
+    static {
+        NAMESPACE = "g";
+    }
 
     public GremlinFunctions() {
         // io
@@ -24,6 +27,7 @@ public class GremlinFunctions extends AbstractFunctions {
         // graph
         functions.add(new LoadFunction());
         functions.add(new IdFunction());
+        functions.add(new KeyFunction());
         // util
         functions.add(new CountFunction());
         functions.add(new TimeFunction());
@@ -33,7 +37,5 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new MapFunction());
     }
 
-    public String getNamespace() {
-        return NAMESPACE;
-    }
+
 }

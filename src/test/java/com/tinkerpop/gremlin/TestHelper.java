@@ -25,6 +25,14 @@ public class TestHelper extends TestCase {
         return args;
     }
 
+    public static int countIterable(Iterable itty) {
+        int counter = 0;
+        for (Object object : itty) {
+            counter++;
+        }
+        return counter;
+    }
+
     public void testTrue() {
         assertTrue(true);
     }

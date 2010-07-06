@@ -10,9 +10,7 @@ import java.util.List;
  */
 public interface Function {
 
-    public final String UNSUPPORTED_ARGUMENTS = "Unsupported arguments for ";
-
-    public Atom compute(final List<Operation> params) throws RuntimeException;
+    public Atom compute(List<Operation> params) throws RuntimeException;
 
     public String getFunctionName();
 

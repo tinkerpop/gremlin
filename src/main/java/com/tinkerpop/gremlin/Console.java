@@ -59,7 +59,7 @@ public class Console {
 
             if (line.isEmpty()) continue;
 
-            // analize current statement
+            // analyze current statement
             for (String statement : compoundStatements) {
                 if (line.indexOf(statement + " ") == 0) {
                     inCompoundStatement = true;

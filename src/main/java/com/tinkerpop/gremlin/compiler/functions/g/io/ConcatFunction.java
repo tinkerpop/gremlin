@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.io;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -9,9 +9,10 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class ConcatFunction implements Function {
+public class ConcatFunction extends AbstractFunction {
 
-    private final String FUNCTION_NAME = "concat";
+    private static final String FUNCTION_NAME = "concat";
+
 
     public Atom compute(final List<Operation> params) throws RuntimeException {
         String resultString = "";
@@ -24,6 +25,7 @@ public class ConcatFunction implements Function {
     }
 
     public String getFunctionName() {
-        return this.FUNCTION_NAME;
+        return FUNCTION_NAME;
     }
+
 }

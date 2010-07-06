@@ -1,0 +1,20 @@
+package com.tinkerpop.gremlin.compiler.functions;
+
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
+public abstract class AbstractFunction implements Function {
+
+    protected static boolean assertTypes(final Object[] objects, final Class[] types) {
+        for (int i = 0; i < objects.length; i++) {
+            if (!types[i].isInstance(objects[i]))
+                return false;
+        }
+        return true;
+    }
+
+    protected void throwUnsupportedArguments() throws RuntimeException {
+        throw new RuntimeException("Unsupported arguments for " + this.getFunctionName());
+    }
+
+}

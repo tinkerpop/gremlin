@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.pipes.PipeHelper;
 
@@ -10,14 +10,16 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class CountFunction implements Function {
+public class CountFunction extends AbstractFunction {
 
-    private final String FUNCTION_NAME = "count";
+
+    private static final String FUNCTION_NAME = "count";
+
 
     @SuppressWarnings("unchecked")
     public Atom compute(final List<Operation> params) throws RuntimeException {
         if (params.size() != 1)
-            throw new RuntimeException(Function.UNSUPPORTED_ARGUMENTS + this.FUNCTION_NAME);
+            throwUnsupportedArguments();
 
         Atom result = params.get(0).compute();
         if (result.isIterable()) {
@@ -29,7 +31,8 @@ public class CountFunction implements Function {
     }
 
     public String getFunctionName() {
-        return this.FUNCTION_NAME;
+        return FUNCTION_NAME;
     }
+
 
 }

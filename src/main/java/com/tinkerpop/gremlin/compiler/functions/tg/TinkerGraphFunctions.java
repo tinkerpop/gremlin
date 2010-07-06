@@ -7,15 +7,12 @@ import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
  */
 public class TinkerGraphFunctions extends AbstractFunctions {
 
-    private final static String NAMESPACE = "tg";
+    static {
+        NAMESPACE = "tg";
+    }
 
     public TinkerGraphFunctions() {
         this.functions.add(new OpenFunction());
 
     }
-
-    public String getNamespace() {
-        return NAMESPACE;
-    }
-
 }

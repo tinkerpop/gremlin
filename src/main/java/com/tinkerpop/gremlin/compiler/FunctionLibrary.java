@@ -29,14 +29,14 @@ public class FunctionLibrary {
         this.functionsByNamespace.put(functions.getNamespace(), functions);
     }
 
-    public void registerFunction(final String namespace, final Function fn) {
+    public void registerFunction(final String namespace, final Function function) {
         Functions functions = this.functionsByNamespace.get(namespace);
 
         if (functions == null) {
             functions = new NativeFunctions(namespace);
-            functions.addFunction(fn);
+            functions.addFunction(function);
         } else {
-            functions.addFunction(fn);
+            functions.addFunction(function);
         }
 
         this.functionsByNamespace.put(namespace, functions);

@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.HashMap;
@@ -11,27 +12,38 @@ import java.util.Map;
 /**
  * @author Pavel A. Yaskevich
  */
-public class MapFunction implements Function {
+public class MapFunction extends AbstractFunction {
 
-    private final String FUNCTION_NAME = "map";
+    private static final String FUNCTION_NAME = "map";
 
     public Atom compute(List<Operation> params) throws RuntimeException {
         Map<Atom, Atom> map = new HashMap<Atom, Atom>();
 
-        if (params.size() % 2 != 0)
-            throw new RuntimeException(Function.UNSUPPORTED_ARGUMENTS + this.FUNCTION_NAME);
+        if (params.size() == 1) {
+            Atom atom = params.get(0).compute();
+            if (atom.isElement()) {
+                Element element = (Element) atom.getValue();
+                for (String key : element.getPropertyKeys()) {
+                    map.put(new Atom(key), new Atom(element.getProperty(key)));
+                }
+            }
 
-        for (int i = 0; i < params.size(); i += 2) {
-            Atom key = params.get(i).compute();
-            Atom value = params.get(i + 1).compute();
-            map.put(key, value);
+        } else if (params.size() % 2 == 0) {
+            for (int i = 0; i < params.size(); i += 2) {
+                Atom key = params.get(i).compute();
+                Atom value = params.get(i + 1).compute();
+                map.put(key, value);
+            }
+        } else {
+            throwUnsupportedArguments();
         }
 
         return new Atom(map);
     }
 
     public String getFunctionName() {
-        return this.FUNCTION_NAME;
+        return FUNCTION_NAME;
     }
+
 
 }

@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -9,9 +9,10 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class TimeFunction implements Function {
+public class TimeFunction extends AbstractFunction {
 
-    private final String FUNCTION_NAME = "time";
+    private final static String FUNCTION_NAME = "time";
+
     private final double ONE_MILLION = 1000000d;
 
     public Atom compute(final List<Operation> params) throws RuntimeException {
@@ -24,11 +25,13 @@ public class TimeFunction implements Function {
             }
         }
 
-        throw new RuntimeException(Function.UNSUPPORTED_ARGUMENTS + this.FUNCTION_NAME);
+        throwUnsupportedArguments();
+        return null;
     }
 
     public String getFunctionName() {
-        return this.FUNCTION_NAME;
+        return FUNCTION_NAME;
     }
+
 
 }
