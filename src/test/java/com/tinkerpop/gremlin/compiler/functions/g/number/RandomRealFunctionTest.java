@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.g.lme;
+package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
@@ -6,16 +6,18 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ListFunctionTest extends TestCase {
+public class RandomRealFunctionTest extends TestCase {
 
-    public void testEmptyList() {
-        Function function = new ListFunction();
+    public void testRangeOfReal() {
+        Function function = new RandomRealFunction();
         Atom atom = function.compute(new ArrayList<Operation>());
-        assertEquals(((List) atom.getValue()).size(), 0);
+        assertTrue(atom.isNumber());
+        Double real = (Double) atom.getValue();
+        assertTrue(real < 1.000001d);
+        assertTrue(real > -0.000001d);
     }
 }

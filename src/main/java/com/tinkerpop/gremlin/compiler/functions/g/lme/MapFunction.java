@@ -35,7 +35,7 @@ public class MapFunction extends AbstractFunction {
                 map.put(key, value);
             }
         } else {
-            throwUnsupportedArguments();
+            throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
 
         return new Atom(map);

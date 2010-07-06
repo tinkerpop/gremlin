@@ -9,13 +9,20 @@ bc. <repository>
 
 ==<hr/>==
 
-h3. Version 0.3 (Gremalicious -- NOT OFFICIALLY RELEASED YET)
+!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
+
+h3. Version 0.5 (Gremlivich -- NOT OFFICIALLY RELEASED YET)
 
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.5-SNAPSHOT</version>
 </dependency>
+
+* A complete redesign and implementation of the Gremlin compiler
+** Order of magnitude increase in speed for numerous operations
+** Lazy evaluation for better memory usage
+* @Functions@ implement the @ServiceLoader@ pattern for ease of incorporating 3rd-party extensions
 
 ==<hr/>==
 

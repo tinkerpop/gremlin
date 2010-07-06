@@ -18,7 +18,7 @@ public class KeyFunction extends AbstractFunction {
 
     public Atom compute(List<Operation> params) throws RuntimeException {
         if (params.size() != 2 && params.size() != 3)
-            throwUnsupportedArguments();
+            throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
         Graph graph = null;
         String key = null;

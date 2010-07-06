@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.g.util;
+package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
@@ -19,7 +19,7 @@ public class CountFunction extends AbstractFunction {
     @SuppressWarnings("unchecked")
     public Atom compute(final List<Operation> params) throws RuntimeException {
         if (params.size() != 1)
-            throwUnsupportedArguments();
+            throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
         Atom result = params.get(0).compute();
         if (result.isIterable()) {

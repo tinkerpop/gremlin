@@ -18,7 +18,7 @@ public class IdFunction extends AbstractFunction {
 
     public Atom compute(List<Operation> params) throws RuntimeException {
         if (params.size() == 0 || params.size() > 2)
-            throwUnsupportedArguments();
+            throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
         Graph graph = null;
         Object identifer = null;

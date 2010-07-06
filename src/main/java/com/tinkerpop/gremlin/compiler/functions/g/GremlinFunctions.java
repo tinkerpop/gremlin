@@ -6,9 +6,13 @@ import com.tinkerpop.gremlin.compiler.functions.g.graph.KeyFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.LoadFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.ConcatFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.lme.DeduplicateFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.ListFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.MapFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.util.CountFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.lme.UnionFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.RandomRealFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.SumFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.CountFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.util.TimeFunction;
 
 /**
@@ -33,8 +37,13 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new TimeFunction());
         // list
         functions.add(new ListFunction());
+        functions.add(new DeduplicateFunction());
+        functions.add(new UnionFunction());
         // map
         functions.add(new MapFunction());
+        // number
+        functions.add(new RandomRealFunction());
+        functions.add(new SumFunction());
     }
 
 

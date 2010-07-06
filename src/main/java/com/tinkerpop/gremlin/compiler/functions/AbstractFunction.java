@@ -13,8 +13,8 @@ public abstract class AbstractFunction implements Function {
         return true;
     }
 
-    protected void throwUnsupportedArguments() throws RuntimeException {
-        throw new RuntimeException("Unsupported arguments for " + this.getFunctionName());
+    protected String createUnsupportedArgumentMessage() {
+        return "Unsupported arguments for " + this.getFunctionName();
     }
 
 }

@@ -25,8 +25,7 @@ public class TimeFunction extends AbstractFunction {
             }
         }
 
-        throwUnsupportedArguments();
-        return null;
+        throw new RuntimeException(this.createUnsupportedArgumentMessage());
     }
 
     public String getFunctionName() {

@@ -37,7 +37,7 @@ public class GremlinPipesHelper {
             if (GremlinEvaluator.paths.isPath(tokenString)) {
                 pipes.addAll(GremlinEvaluator.paths.getPath(tokenString));
             } else {
-                throw new RuntimeException("Could not build pipe for '" + tokenString + "'.");
+                throw new RuntimeException("No pipe exists for '" + tokenString + "'.");
             }
         }
 
@@ -84,6 +84,14 @@ public class GremlinPipesHelper {
 
             if (value.equals(".."))
                 System.out.println("history!!");
+
+            // vertex iterator
+            if (value.equals("V"))
+                pipe = new GraphElementPipe(GraphElementPipe.ElementType.VERTEX);
+
+            // edge iterator
+            if (value.equals("E"))
+                pipe = new GraphElementPipe(GraphElementPipe.ElementType.EDGE);
         }
 
         if (tokenAtom.isProperty())

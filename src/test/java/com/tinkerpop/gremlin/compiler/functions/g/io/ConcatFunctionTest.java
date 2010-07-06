@@ -11,20 +11,20 @@ import junit.framework.TestCase;
 public class ConcatFunctionTest extends TestCase {
 
     public void testOneStringConcat() {
-        Function func = new ConcatFunction();
-        Atom result = func.compute(TestHelper.createUnaryArgs("marko"));
-        assertEquals(result.getValue(), "marko");
+        Function function = new ConcatFunction();
+        Atom atom = function.compute(TestHelper.createUnaryArgs("marko"));
+        assertEquals(atom.getValue(), "marko");
     }
 
     public void testTwoStringConcat() {
-        Function func = new ConcatFunction();
-        Atom result = func.compute(TestHelper.createUnaryArgs("marko", "rodriguez"));
-        assertEquals(result.getValue(), "markorodriguez");
+        Function function = new ConcatFunction();
+        Atom atom = function.compute(TestHelper.createUnaryArgs("marko", "rodriguez"));
+        assertEquals(atom.getValue(), "markorodriguez");
     }
 
     public void testThreeObjectConcat() {
-        Function func = new ConcatFunction();
-        Atom result = func.compute(TestHelper.createUnaryArgs("marko", 1, "rodriguez", 7.0d));
-        assertEquals(result.getValue(), "marko1rodriguez7.0");
+        Function function = new ConcatFunction();
+        Atom atom = function.compute(TestHelper.createUnaryArgs("marko", 1, "rodriguez", 7.0d));
+        assertEquals(atom.getValue(), "marko1rodriguez7.0");
     }
 }
