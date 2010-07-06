@@ -6,10 +6,7 @@ import com.tinkerpop.gremlin.compiler.functions.g.graph.IdFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.KeyFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.LoadFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.DeduplicateFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.ListFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.MapFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.UnionFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.lme.*;
 import com.tinkerpop.gremlin.compiler.functions.g.number.CountFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.number.RandomRealFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.number.RoundFunction;
@@ -29,33 +26,33 @@ public class GremlinFunctions extends AbstractFunctions {
     private static final String NAMESPACE = "g";
 
     public GremlinFunctions() {
-        //bool
+        // bool
         functions.add(new NotFunction());
-        // io
-        functions.add(new PrintFunction());
-        // string
-        functions.add(new ConcatFunction());
-        functions.add(new ContainsFunction());
-        functions.add(new StartsWithFunction());
-        functions.add(new StringLengthFunction());
         // graph
         functions.add(new LoadFunction());
         functions.add(new IdFunction());
         functions.add(new KeyFunction());
-        // util
-        functions.add(new TypeFunction());
-        functions.add(new TimeFunction());
-        // list
+        // io
+        functions.add(new PrintFunction());
+        // lme
         functions.add(new ListFunction());
         functions.add(new DeduplicateFunction());
         functions.add(new UnionFunction());
-        // map
+        functions.add(new ValuesFunction());
         functions.add(new MapFunction());
         // number
         functions.add(new CountFunction());
         functions.add(new RandomRealFunction());
         functions.add(new SumFunction());
         functions.add(new RoundFunction());
+        // string
+        functions.add(new ConcatFunction());
+        functions.add(new ContainsFunction());
+        functions.add(new StartsWithFunction());
+        functions.add(new StringLengthFunction());
+        // util
+        functions.add(new TypeFunction());
+        functions.add(new TimeFunction());
     }
 
     public String getNamespace() {

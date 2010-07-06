@@ -10,8 +10,8 @@
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph-Based Programming Language</name>
     <description>Gremlin is a Turing-complete, graph-based programming language developed in Java 1.6+ for
-        key/value-pair multi-relational graphs called property graphs. Gremlin makes extensive use of the XPath 1.0
-        language to support complex graph traversals. This language has applications in the areas of graph query,
+        key/value-pair multi-relational graphs called property graphs. Gremlin makes extensive use of an XPath-like
+        syntax to support complex graph traversals. This language has applications in the areas of graph query,
         analysis, and manipulation.
     </description>
     <developers>

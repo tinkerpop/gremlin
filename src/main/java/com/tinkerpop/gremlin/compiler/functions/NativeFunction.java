@@ -24,23 +24,23 @@ public class NativeFunction implements Function<Object> {
         this.body = body;
     }
 
-    public Atom<Object> compute(final List<Operation> params) throws RuntimeException {
-        if (this.arguments.size() != params.size())
-            throw new RuntimeException("Wrong number of arguments (" + params.size() + " of " + this.arguments.size() + ")");
+    public Atom<Object> compute(final List<Operation> parameters) throws RuntimeException {
+        if (this.arguments.size() != parameters.size())
+            throw new RuntimeException("Wrong number of arguments (" + parameters.size() + " of " + this.arguments.size() + ")");
 
         // cloning variable library
         // all changes in variables will stay inside function + full access to current state of global variables
         VariableLibrary varLib = GremlinEvaluator.getVariableLibrary().clone();
 
-        // mapping arguments to params
+        // mapping arguments to parameters
         for (int i = 0; i < this.arguments.size(); i++) {
-            Atom computedParam = params.get(i).compute();
+            Atom computedParam = parameters.get(i).compute();
             DeclareVariable.decalareWithInit(this.arguments.get(i), computedParam);
         }
 
-        Atom result = null;
-        for (int i = 0; i < this.body.size(); i++) {
-            result = this.body.get(i).compute();
+        Atom<Object> result = null;
+        for (Operation operation : this.body) {
+            result = operation.compute();
         }
 
         // setting variable library back to original

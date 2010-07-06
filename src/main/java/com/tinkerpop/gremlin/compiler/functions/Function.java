@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface Function<T> {
 
-    public Atom<T> compute(List<Operation> params) throws RuntimeException;
+    public Atom<T> compute(List<Operation> parameters) throws RuntimeException;
 
     public String getFunctionName();
 

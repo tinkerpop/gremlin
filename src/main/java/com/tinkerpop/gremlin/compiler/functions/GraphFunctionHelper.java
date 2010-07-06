@@ -13,7 +13,6 @@ public class GraphFunctionHelper {
 
     public static Graph getGraph(final Operation parameter) {
         Atom graphGlobalVariable = GremlinEvaluator.getVariable(Tokens.GRAPH);
-
         if (parameter == null)
             return (Graph) graphGlobalVariable.getValue();
 
