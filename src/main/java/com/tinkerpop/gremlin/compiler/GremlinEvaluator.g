@@ -9,6 +9,8 @@ options {
     package com.tinkerpop.gremlin.compiler;
 
     import java.util.ArrayList;
+    
+    import java.util.Map;
     import java.util.HashMap;
 
     import com.tinkerpop.gremlin.Gremlin;
@@ -74,9 +76,15 @@ program
                         Atom result = $statement.op.compute();
                         
                         if (!result.isNull() && DEBUG) {
-                            if (result.isArray()) {
-                                for(Object o : (ArrayList)result.getValue()) {
+                            if (result.isIterable()) {
+                                for(Object o : (Iterable)result.getValue()) {
                                     System.out.println(Tokens.RESULT_PROMPT + o);
+                                }
+                            } else if (result.isMap()) {
+                                Map map = (Map) result.getValue();
+                                
+                                for (Object key : map.keySet()) {
+                                    System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
                                 }
                             } else {
                                 System.out.println(Tokens.RESULT_PROMPT + result);
@@ -278,9 +286,15 @@ atom returns [Atom value]
                                                                         $value = propertyAtom;
                                                                     }
 	|	IDENTIFIER                                                  {
-                                                                        Atom idAtom = new Atom($IDENTIFIER.text);
-                                                                        idAtom.setIdentifier(true);
-                                                                        $value = idAtom;
+	                                                                    String idText = $IDENTIFIER.text;
+
+	                                                                    if (idText.equals(".")) {
+	                                                                        $value = getVariable(Tokens.ROOT);
+	                                                                    } else {
+                                                                            Atom idAtom = new Atom($IDENTIFIER.text);
+                                                                            idAtom.setIdentifier(true);
+                                                                            $value = idAtom;
+                                                                        }
                                                                     }
 	|	function_call                                               { $value = $function_call.value; }
 	|	'('! statement ')'!

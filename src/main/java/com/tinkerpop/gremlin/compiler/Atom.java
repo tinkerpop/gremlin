@@ -6,7 +6,11 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
+import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.SingleIterator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,9 +33,15 @@ public class Atom {
     /* identifier and property used in gpath */
     private boolean identifier = false;
     private boolean property = false;
-    //private boolean iterator = false;
 
-    private String dynamicObjectType = "";
+    private Type type = Type.REGULAR;
+    
+    public enum Type {
+        FUNCTION, VARIABLE, GPATH, REGULAR
+    }
+
+    // required for Pipes support
+    private Object gpathStartPoint;
 
     public Atom(Object value) {
         this.val = value;
@@ -55,7 +65,14 @@ public class Atom {
     }
 
     public Object getValue() {
-        return this.val;
+        if (this.gpathStartPoint != null) {
+            Pipeline pipeline = (Pipeline)this.val;
+            pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(this.gpathStartPoint));
+            
+            return pipeline;
+        } else {
+            return this.val;
+        }
     }
 
     public boolean isString() {
@@ -124,15 +141,21 @@ public class Atom {
 
     public void setVariableName(final String name) {
         this.variableName = name;
-        this.dynamicObjectType = "VARIABLE";
+        this.type = Type.VARIABLE;
     }
 
     public void setFunction(final Function fn, final List<Operation> params) {
         this.function = fn;
         this.functionParams = params;
-        this.dynamicObjectType = "FUNCTION";
+        this.type = Type.FUNCTION;
     }
 
+    public void setStartPoint(Object gpathStartPoint) {
+        this.type = Type.GPATH;
+        this.persistent = true; 
+        this.gpathStartPoint = gpathStartPoint;    
+    }
+    
     public void setIdentifier(final boolean flag) {
         this.identifier = flag;
     }
@@ -145,9 +168,9 @@ public class Atom {
         Atom result = null;
 
         try {
-            if (this.dynamicObjectType.equals("VARIABLE")) {
+            if (this.type == Type.VARIABLE) {
                 result = GremlinEvaluator.getVariable(this.variableName);
-            } else if (this.dynamicObjectType.equals("FUNCTION")) {
+            } else if (this.type == Type.FUNCTION) {
                 result = this.function.compute(this.functionParams);
             } else {
                 result = this;

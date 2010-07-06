@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.SingleIterator;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
@@ -15,6 +16,7 @@ import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -176,4 +178,7 @@ public class GremlinPipesHelper {
         }
     }
 
+    public static Iterator pipelineStartPoint(Object point) {
+        return (point instanceof Iterator) ? (Iterator) point : new SingleIterator(point);
+    }
 }
