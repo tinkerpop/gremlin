@@ -56,10 +56,10 @@ public class BaseTest extends TestCase {
         return count(iterable.iterator());
     }
 
-    public static List asList(final Object x, final int times) {
+    public static List asList(final Iterable iterable) {
         List list = new ArrayList();
-        for (int i = 0; i < times; i++) {
-            list.add(x);
+        for (Object object : iterable) {
+            list.add(object);
         }
         return list;
     }

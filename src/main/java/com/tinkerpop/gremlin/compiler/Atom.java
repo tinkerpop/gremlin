@@ -8,9 +8,7 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +17,7 @@ import java.util.Map;
  */
 public class Atom<T> {
 
-    private T val;
+    private T value;
 
     /* for not persistent variable calls */
     private String variableName;
@@ -35,7 +33,7 @@ public class Atom<T> {
     private boolean property = false;
 
     private Type type = Type.REGULAR;
-    
+
     public enum Type {
         FUNCTION, VARIABLE, GPATH, REGULAR
     }
@@ -44,12 +42,12 @@ public class Atom<T> {
     private Object gpathStartPoint;
 
     public Atom(T value) {
-        this.val = value;
+        this.value = value;
 
         // string preprocessing
         if (this.isString()) {
             String result = "";
-            String stringVal = (String) this.val;
+            String stringVal = (String) this.value;
 
             for (int i = 0; i < stringVal.length(); i++) {
                 Character currChar = stringVal.charAt(i);
@@ -60,18 +58,17 @@ public class Atom<T> {
                 result += stringVal.charAt(i);
             }
 
-            this.val = (T)result;
+            this.value = (T) result;
         }
     }
 
-    public Object getValue() {
+    public T getValue() {
         if (this.gpathStartPoint != null) {
-            Pipeline pipeline = (Pipeline)this.val;
+            Pipeline pipeline = (Pipeline) this.value;
             pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(this.gpathStartPoint));
-            
-            return pipeline;
+            return (T) pipeline;
         } else {
-            return this.val;
+            return this.value;
         }
     }
 
@@ -88,11 +85,7 @@ public class Atom<T> {
     }
 
     public boolean isNull() {
-        return null == this.val;
-    }
-
-    public boolean isList() {
-        return isClassOf(List.class);
+        return null == this.value;
     }
 
     public boolean isMap() {
@@ -152,10 +145,10 @@ public class Atom<T> {
 
     public void setStartPoint(Object gpathStartPoint) {
         this.type = Type.GPATH;
-        this.persistent = true; 
-        this.gpathStartPoint = gpathStartPoint;    
+        this.persistent = true;
+        this.gpathStartPoint = gpathStartPoint;
     }
-    
+
     public void setIdentifier(final boolean flag) {
         this.identifier = flag;
     }
@@ -184,22 +177,26 @@ public class Atom<T> {
 
     @SuppressWarnings("rawtypes")
     private boolean isClassOf(final Class klass) {
-        return (this.isNull()) ? false : ((klass.isAssignableFrom(this.val.getClass())) ? true : false);
+        return (this.isNull()) ? false : ((klass.isAssignableFrom(this.value.getClass())) ? true : false);
     }
 
     public boolean equals(Object object) {
         if (object instanceof Atom) {
-            return (((Atom) object).getValue().equals(this.val));
+            return (((Atom) object).getValue().equals(this.value));
         }
         return false;
     }
 
     public int hashCode() {
-        return this.val.hashCode();
+        return this.value.hashCode();
     }
 
     public String toString() {
-        return (this.val == null) ? "null" : this.val.toString();
+        return "ATOM[" + this.toValueString() + "]";
+    }
+
+    public String toValueString() {
+        return (this.value == null) ? "null" : this.value.toString();
     }
 
 }

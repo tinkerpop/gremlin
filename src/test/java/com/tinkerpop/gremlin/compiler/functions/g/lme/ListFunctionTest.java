@@ -1,21 +1,22 @@
 package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
+import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import junit.framework.TestCase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ListFunctionTest extends TestCase {
+public class ListFunctionTest extends BaseTest {
 
     public void testEmptyList() {
-        Function function = new ListFunction();
-        Atom atom = function.compute(new ArrayList<Operation>());
-        assertEquals(((List) atom.getValue()).size(), 0);
+        Function<Iterable<Atom>> function = new ListFunction();
+        this.stopWatch();
+        Atom<Iterable<Atom>> atom = function.compute(new ArrayList<Operation>());
+        printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
+        assertEquals(count(atom.getValue()), 0);
     }
 }

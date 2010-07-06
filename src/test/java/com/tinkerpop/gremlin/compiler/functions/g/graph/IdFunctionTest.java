@@ -15,13 +15,13 @@ public class IdFunctionTest extends BaseTest {
 
     public void testId() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Function function = new IdFunction();
+        Function<Vertex> function = new IdFunction();
         assertEquals(function.getFunctionName(), "id");
         this.stopWatch();
-        Atom atom = function.compute(TestHelper.createUnaryArgs(graph, "1"));
+        Atom<Vertex> atom = function.compute(TestHelper.createUnaryArgs(graph, "1"));
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
-        assertEquals(((Vertex) atom.getValue()).getProperty("name"), "marko");
+        assertEquals(atom.getValue().getProperty("name"), "marko");
 
     }
 }

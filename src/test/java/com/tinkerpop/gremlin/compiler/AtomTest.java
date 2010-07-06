@@ -33,8 +33,8 @@ public class AtomTest extends TestCase {
         HashMap map2 = new HashMap();
         assertTrue(new Atom(map2).isMap());
         LinkedList list1 = new LinkedList();
-        assertTrue(new Atom(list1).isList());
+        assertTrue(new Atom(list1).isIterable());
         ArrayList list2 = new ArrayList();
-        assertTrue(new Atom(list2).isList());
+        assertTrue(new Atom(list2).isIterable());
     }
 }

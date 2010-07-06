@@ -16,7 +16,6 @@ public class KeyFunction extends AbstractFunction<Iterable<Element>> {
 
     private static final String FUNCTION_NAME = "key";
 
-
     public Atom<Iterable<Element>> compute(List<Operation> parameters) throws RuntimeException {
         if (parameters.size() != 2 && parameters.size() != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

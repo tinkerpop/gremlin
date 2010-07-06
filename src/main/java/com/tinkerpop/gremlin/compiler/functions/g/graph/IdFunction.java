@@ -16,7 +16,6 @@ public class IdFunction extends AbstractFunction<Vertex> {
 
     private final static String FUNCTION_NAME = "id";
 
-
     public Atom<Vertex> compute(List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 0 || parameters.size() > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
