@@ -13,7 +13,7 @@ public class SumFunction extends AbstractFunction<Double> {
 
     private static final String FUNCTION_NAME = "sum";
 
-    public Atom<Double> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 0) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -34,7 +34,7 @@ public class SumFunction extends AbstractFunction<Double> {
         }
     }
 
-    private double countRecursiveIterable(Iterable<Atom> iterable, double counter) throws RuntimeException {
+    private double countRecursiveIterable(final Iterable<Atom> iterable, double counter) throws RuntimeException {
         for (Atom atom : iterable) {
             if (atom.isNumber()) {
                 counter = counter + (Double) atom.getValue();

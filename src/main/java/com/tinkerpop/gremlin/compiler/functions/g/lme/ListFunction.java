@@ -15,10 +15,10 @@ public class ListFunction extends AbstractFunction<Iterable<Atom>> {
 
     private static final String FUNCTION_NAME = "list";
 
-    public Atom<Iterable<Atom>> compute(List<Operation> params) throws RuntimeException {
+    public Atom<Iterable<Atom>> compute(final List<Operation> parameters) throws RuntimeException {
         List<Atom> list = new ArrayList<Atom>();
 
-        for (Operation operation : params) {
+        for (Operation operation : parameters) {
             list.add(operation.compute());
         }
 

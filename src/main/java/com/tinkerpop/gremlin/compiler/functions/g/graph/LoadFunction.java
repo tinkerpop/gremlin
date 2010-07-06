@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.parser.GraphMLReader;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
-import com.tinkerpop.gremlin.compiler.functions.helpers.GraphFunctionHelper;
+import com.tinkerpop.gremlin.compiler.functions.GraphFunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ public class LoadFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "load";
 
 
-    public Atom<Boolean> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 0 || parameters.size() > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 

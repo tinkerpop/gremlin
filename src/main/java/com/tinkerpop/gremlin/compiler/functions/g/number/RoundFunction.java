@@ -10,19 +10,17 @@ import java.util.Random;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RandomRealFunction extends AbstractFunction<Double> {
+public class RoundFunction extends AbstractFunction<Double> {
 
-    public static final String FUNCTION_NAME = "rand-real";
-    private static final Random random = new Random();
-
+    public static final String FUNCTION_NAME = "round";
 
     public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
 
-        if (parameters.size() == 0) {
-            return new Atom<Double>(random.nextDouble());
+        if (parameters.size() == 1) {
+            return new Atom<Double>(new Double(Math.round((Double) parameters.get(0).compute().getValue())));
+        } else {
+            throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
-
-        throw new RuntimeException(this.createUnsupportedArgumentMessage());
     }
 
     public String getFunctionName() {

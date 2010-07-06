@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
-import com.tinkerpop.gremlin.compiler.functions.helpers.GraphFunctionHelper;
+import com.tinkerpop.gremlin.compiler.functions.GraphFunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class KeyFunction extends AbstractFunction<Iterable<Element>> {
 
     private static final String FUNCTION_NAME = "key";
 
-    public Atom<Iterable<Element>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable<Element>> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() != 2 && parameters.size() != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 

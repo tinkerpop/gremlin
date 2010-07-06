@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class RandomRealFunctionTest extends BaseTest {
 
     public void testRangeOfReal() {
-        Function function = new RandomRealFunction();
+        Function<Double> function = new RandomRealFunction();
         this.stopWatch();
-        Atom atom = function.compute(new ArrayList<Operation>());
+        Atom<Double> atom = function.compute(new ArrayList<Operation>());
         printPerformance(function.getFunctionName() + " function", 1, "random generation", this.stopWatch());
         assertTrue(atom.isNumber());
-        Double real = (Double) atom.getValue();
+        Double real = atom.getValue();
         assertTrue(real < 1.000001d);
         assertTrue(real > -0.000001d);
     }

@@ -10,9 +10,10 @@ import com.tinkerpop.gremlin.compiler.functions.g.lme.DeduplicateFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.ListFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.MapFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.UnionFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.number.RandomRealFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.number.SumFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.number.CountFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.RandomRealFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.RoundFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.SumFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.util.TimeFunction;
 
 /**
@@ -20,9 +21,7 @@ import com.tinkerpop.gremlin.compiler.functions.g.util.TimeFunction;
  */
 public class GremlinFunctions extends AbstractFunctions {
 
-    static {
-        NAMESPACE = "g";
-    }
+    private static final String NAMESPACE = "g";
 
     public GremlinFunctions() {
         // io
@@ -44,6 +43,11 @@ public class GremlinFunctions extends AbstractFunctions {
         // number
         functions.add(new RandomRealFunction());
         functions.add(new SumFunction());
+        functions.add(new RoundFunction());
+    }
+
+    public String getNamespace() {
+        return NAMESPACE;
     }
 
 

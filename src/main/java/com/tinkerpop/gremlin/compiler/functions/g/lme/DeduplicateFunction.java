@@ -16,7 +16,7 @@ public class DeduplicateFunction extends AbstractFunction<Iterable<Atom>> {
 
     private static final String FUNCTION_NAME = "dedup";
 
-    public Atom<Iterable<Atom>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable<Atom>> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 0) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

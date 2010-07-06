@@ -16,7 +16,7 @@ public class MapFunction extends AbstractFunction<Map<Atom, Atom>> {
 
     private static final String FUNCTION_NAME = "map";
 
-    public Atom<Map<Atom, Atom>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Map<Atom, Atom>> compute(final List<Operation> parameters) throws RuntimeException {
         Map<Atom, Atom> map = new HashMap<Atom, Atom>();
 
         if (parameters.size() == 1) {

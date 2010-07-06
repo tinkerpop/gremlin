@@ -15,7 +15,7 @@ public class UnionFunction extends AbstractFunction<Iterable<Atom>> {
 
     private static final String FUNCTION_NAME = "union";
 
-    public Atom<Iterable<Atom>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable<Atom>> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() < 2) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

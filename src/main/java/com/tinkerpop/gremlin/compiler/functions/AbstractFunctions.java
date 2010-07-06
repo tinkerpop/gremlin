@@ -9,7 +9,6 @@ import java.util.List;
 public abstract class AbstractFunctions implements Functions {
 
     protected List<Function> functions = new ArrayList<Function>();
-    protected static String NAMESPACE;
 
     public Function getFunction(final String functionName) throws RuntimeException {
         for (Function function : this.functions) {
@@ -22,9 +21,4 @@ public abstract class AbstractFunctions implements Functions {
     public void addFunction(final Function function) {
         this.functions.add(function);
     }
-
-    public String getNamespace() {
-        return NAMESPACE;
-    }
-
 }
