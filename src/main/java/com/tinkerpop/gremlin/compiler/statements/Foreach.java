@@ -17,9 +17,10 @@ public class Foreach implements Operation {
     private Operation paramOp;
     private List<Operation> statements;
 
-    /*
-      * $x := 1|2|3|4
+    /**
+      *
       * $z := 0
+      * $x := g:list(1, 2, 3)
       *
       * foreach $y in $x
       * 	 $z := $z + $y
@@ -34,21 +35,14 @@ public class Foreach implements Operation {
 
     @SuppressWarnings("unchecked")
     public Atom compute() {
-        Atom paramAtom = this.paramOp.compute();
+        Atom paramsAtom = this.paramOp.compute();
 
-        Iterator<Object> params = null;
+        if (!paramsAtom.isIterable())
+             return new Atom(null);
 
-        if (paramAtom.isList()) {
-            params = ((List<Object>) paramAtom.getValue()).iterator();
-        } else if (paramAtom.isIterable()) {
-            params = (Iterator<Object>) paramAtom.getValue();
-        } else {
-            return new Atom(null);
-        }
-
-        while (params.hasNext()) {
-            Object currentParam = params.next();
-
+        Iterable params = (Iterable)paramsAtom.getValue();
+        
+        for (Object currentParam : params) {
             if (currentParam instanceof Atom) {
                 DeclareVariable.decalareWithInit(this.var, (Atom) currentParam);
             } else {
