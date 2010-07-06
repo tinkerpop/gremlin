@@ -1,58 +1,56 @@
 package com.tinkerpop.gremlin.compiler;
 
 import com.tinkerpop.gremlin.compiler.functions.Function;
-import com.tinkerpop.gremlin.compiler.functions.g.GremlinFunctionLibrary;
-import com.tinkerpop.gremlin.compiler.functions.tg.TinkerGraphFunctionLibrary;
+import com.tinkerpop.gremlin.compiler.functions.Functions;
+import com.tinkerpop.gremlin.compiler.functions.NativeFunctions;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 /**
  * @author Pavel A. Yaskevich
  */
 public class FunctionLibrary {
 
-    Map<String, List<Function>> functionsByNamespace;
+    Map<String, Functions> functionsByNamespace;
 
     public FunctionLibrary() {
-        this.functionsByNamespace = new HashMap<String, List<Function>>();
-
-        this.registerFunctions("g", GremlinFunctionLibrary.library());
-        this.registerFunctions("tg", TinkerGraphFunctionLibrary.library());
-    }
-
-    public void registerFunctions(final String namespace, final List<Function> functions) {
-        for (int i = 0; i < functions.size(); i++) {
-            this.registerFunction(namespace, functions.get(i));
+        this.functionsByNamespace = new HashMap<String, Functions>();
+        ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
+        for (Functions functions : functionsService) {
+            this.registerFunctions(functions);
         }
     }
 
+    public void registerFunctions(final Functions functions) {
+        this.functionsByNamespace.put(functions.getNamespace(), functions);
+    }
+
     public void registerFunction(final String namespace, final Function fn) {
-        List<Function> functions = this.functionsByNamespace.get(namespace);
+        Functions functions = this.functionsByNamespace.get(namespace);
 
         if (functions == null) {
-            functions = new ArrayList<Function>();
-            functions.add(fn);
+            functions = new NativeFunctions(namespace);
+            functions.addFunction(fn);
         } else {
-            functions.add(fn);
+            functions.addFunction(fn);
         }
 
         this.functionsByNamespace.put(namespace, functions);
     }
 
     public Function getFunction(final String namespace, final String functionName) throws RuntimeException {
-        List<Function> functions = this.functionsByNamespace.get(namespace);
+        Functions functions = this.functionsByNamespace.get(namespace);
 
         if (functions == null) {
             throw new RuntimeException("No such namespace: " + namespace);
         } else {
-            for (Function fn : functions) {
-                if (fn.getFunctionName().equals(functionName))
-                    return fn;
-            }
+            Function function = functions.getFunction(functionName);
+            if (null != function)
+                return function;
         }
 
         throw new RuntimeException("Unregistered function: " + namespace + ":" + functionName);
@@ -69,8 +67,5 @@ public class FunctionLibrary {
         return result;
     }
 
-    public Map<String, List<Function>> getRawLibrary() {
-        return this.functionsByNamespace;
-    }
 
 }
