@@ -150,7 +150,7 @@ public class GremlinPipesHelper {
 
             if (unaryAtom.isNumber()) {
                 int idx = ((Double) unaryAtom.getValue()).intValue();
-                return (idx == 0) ? new RangeFilterPipe(0, 1) : new RangeFilterPipe(idx - 1, idx);
+                return (idx == 0) ? new RangeFilterPipe(0, 1) : new RangeFilterPipe(idx, idx + 1);
             }
 
             if (unaryAtom.getValue() instanceof Range) {

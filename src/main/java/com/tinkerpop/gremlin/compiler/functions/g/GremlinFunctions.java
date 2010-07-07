@@ -1,20 +1,15 @@
 package com.tinkerpop.gremlin.compiler.functions.g;
 
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
+import com.tinkerpop.gremlin.compiler.functions.g.bool.BooleanFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.bool.NotFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.IdFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.KeyFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.LoadFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.*;
-import com.tinkerpop.gremlin.compiler.functions.g.number.CountFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.number.RandomRealFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.number.RoundFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.number.SumFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.string.ConcatFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.string.ContainsFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.string.StartsWithFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.string.StringLengthFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.number.*;
+import com.tinkerpop.gremlin.compiler.functions.g.string.*;
 import com.tinkerpop.gremlin.compiler.functions.g.util.TimeFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.util.TypeFunction;
 
@@ -27,6 +22,7 @@ public class GremlinFunctions extends AbstractFunctions {
 
     public GremlinFunctions() {
         // bool
+        functions.add(new BooleanFunction());
         functions.add(new NotFunction());
         // graph
         functions.add(new LoadFunction());
@@ -42,6 +38,10 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new MapFunction());
         // number
         functions.add(new CountFunction());
+        functions.add(new DoubleFunction());
+        functions.add(new FloatFunction());
+        functions.add(new IntegerFunction());
+        functions.add(new LongFunction());
         functions.add(new RandomRealFunction());
         functions.add(new SumFunction());
         functions.add(new RoundFunction());
@@ -49,6 +49,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new ConcatFunction());
         functions.add(new ContainsFunction());
         functions.add(new StartsWithFunction());
+        functions.add(new StringFunction());
         functions.add(new StringLengthFunction());
         // util
         functions.add(new TypeFunction());
