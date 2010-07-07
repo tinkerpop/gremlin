@@ -12,12 +12,11 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 public class GraphFunctionHelper {
 
     public static Graph getGraph(final Operation parameter) {
-        Atom graphGlobalVariable = GremlinEvaluator.getVariable(Tokens.GRAPH);
+        Atom<Graph> graphGlobalVariable = GremlinEvaluator.getVariable(Tokens.GRAPH);
         if (parameter == null)
-            return (Graph) graphGlobalVariable.getValue();
+            return graphGlobalVariable.getValue();
 
         Atom paramAtom = parameter.compute();
-        return (paramAtom.isGraph()) ? (Graph) paramAtom.getValue() : (Graph) graphGlobalVariable.getValue();
+        return (paramAtom.isGraph()) ? (Graph) paramAtom.getValue() : graphGlobalVariable.getValue();
     }
-
 }
