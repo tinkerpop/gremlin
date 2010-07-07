@@ -77,7 +77,7 @@ public class Atom<T> {
     }
 
     public boolean isNumber() {
-        return isClassOf(Double.class);
+        return isClassOf(Number.class);
     }
 
     public boolean isBoolean() {

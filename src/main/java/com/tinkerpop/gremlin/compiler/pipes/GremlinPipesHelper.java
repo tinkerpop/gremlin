@@ -149,7 +149,7 @@ public class GremlinPipesHelper {
             Atom unaryAtom = predicate.compute();
 
             if (unaryAtom.isNumber()) {
-                int idx = ((Double) unaryAtom.getValue()).intValue();
+                int idx = ((Number) unaryAtom.getValue()).intValue();
                 return (idx == 0) ? new RangeFilterPipe(0, 1) : new RangeFilterPipe(idx, idx + 1);
             }
 
