@@ -50,4 +50,8 @@ public class Range implements Iterable {
             this.range.add(new Double(i));
         }
     }
+
+    public String toString() {
+        return this.range.toString();
+    }
 }
