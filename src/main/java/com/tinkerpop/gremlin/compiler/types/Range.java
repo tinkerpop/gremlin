@@ -12,7 +12,7 @@ public class Range implements Iterable {
     private final int minimum;
     private final int maximum;
     
-    private final List<Integer> range = new ArrayList<Integer>(); 
+    private final List<Double> range = new ArrayList<Double>(); 
 
     /**
      * Simple prototype of the Range class
@@ -33,7 +33,7 @@ public class Range implements Iterable {
         this.fillRangeList();
     }
     
-    public Iterator<Integer> iterator() {
+    public Iterator<Double> iterator() {
         return this.range.iterator();
     }
 
@@ -47,7 +47,7 @@ public class Range implements Iterable {
 
     private void fillRangeList() {
         for (int i = this.minimum; i < this.maximum; i++) {
-            this.range.add(i);
+            this.range.add(new Double(i));
         }
     }
 }
