@@ -10,7 +10,7 @@ public class NativeFunctions extends AbstractFunctions {
     public NativeFunctions(String namespace) {
         this.namespace = namespace;
     }
-    
+
     public String getNamespace() {
         return this.namespace;
     }

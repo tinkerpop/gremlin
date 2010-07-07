@@ -150,7 +150,7 @@ public class GremlinPipesHelper {
             }
 
             if (unaryAtom.getValue() instanceof Range) {
-                Range range = (Range)unaryAtom.getValue();
+                Range range = (Range) unaryAtom.getValue();
                 return new RangeFilterPipe(range.getMinimum(), range.getMaximum());
             }
         }

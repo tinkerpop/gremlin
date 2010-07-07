@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.functions.Function;
-import com.tinkerpop.gremlin.compiler.functions.g.number.CountFunction;
 
 import java.util.Arrays;
 

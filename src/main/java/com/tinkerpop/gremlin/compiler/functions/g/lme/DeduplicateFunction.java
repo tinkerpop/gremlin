@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

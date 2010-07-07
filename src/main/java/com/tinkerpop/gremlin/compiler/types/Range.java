@@ -11,14 +11,14 @@ public class Range implements Iterable {
 
     private final int minimum;
     private final int maximum;
-    
-    private final List<Integer> range = new ArrayList<Integer>(); 
+
+    private final List<Integer> range = new ArrayList<Integer>();
 
     /**
      * Simple prototype of the Range class
-     *
+     * <p/>
      * foreach $i in 0..10
-     *   g:print($i)
+     * g:print($i)
      * end
      */
     public Range(final int min, final int max) {
@@ -32,7 +32,7 @@ public class Range implements Iterable {
         this.maximum = new Integer(max);
         this.fillRangeList();
     }
-    
+
     public Iterator<Integer> iterator() {
         return this.range.iterator();
     }

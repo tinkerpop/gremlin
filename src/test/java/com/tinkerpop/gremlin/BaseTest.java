@@ -5,7 +5,9 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import junit.framework.TestCase;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,28 +18,6 @@ public class BaseTest extends TestCase {
 
     public void testTrue() {
         assertTrue(true);
-    }
-
-    public static List<String> generateUUIDs(int number) {
-        List<String> uuids = new ArrayList<String>();
-        for (int i = 0; i < number; i++) {
-            uuids.add(UUID.randomUUID().toString());
-        }
-        return uuids;
-    }
-
-    public static List<String> generateUUIDs(String prefix, int number) {
-        List<String> uuids = new ArrayList<String>();
-        for (int i = 0; i < number; i++) {
-            uuids.add(prefix + UUID.randomUUID().toString());
-        }
-        return uuids;
-    }
-
-    public static void printCollection(final Collection collection) {
-        for (Object o : collection) {
-            System.out.println(o);
-        }
     }
 
     public static void printIterator(final Iterator itty) {
@@ -91,8 +71,10 @@ public class BaseTest extends TestCase {
 
     public static List<Operation> createUnaryArgs(Object... objects) {
         List<Operation> args = new ArrayList<Operation>();
-        for (Object object : objects) {
-            args.add(createUnary(object));
+        if (null != objects) {
+            for (Object object : objects) {
+                args.add(createUnary(object));
+            }
         }
         return args;
     }

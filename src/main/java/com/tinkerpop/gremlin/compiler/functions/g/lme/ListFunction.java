@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

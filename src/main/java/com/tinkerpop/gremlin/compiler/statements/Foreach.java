@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,14 +17,13 @@ public class Foreach implements Operation {
     private List<Operation> statements;
 
     /**
-      *
-      * $z := 0
-      * $x := g:list(1, 2, 3)
-      *
-      * foreach $y in $x
-      * 	 $z := $z + $y
-      * end
-      */
+     * $z := 0
+     * $x := g:list(1, 2, 3)
+     * <p/>
+     * foreach $y in $x
+     * $z := $z + $y
+     * end
+     */
 
     public Foreach(String var, Operation paramOp, List<Operation> statements) {
         this.var = var;
@@ -38,10 +36,10 @@ public class Foreach implements Operation {
         Atom paramsAtom = this.paramOp.compute();
 
         if (!paramsAtom.isIterable())
-             return new Atom(null);
+            return new Atom(null);
 
-        Iterable params = (Iterable)paramsAtom.getValue();
-        
+        Iterable params = (Iterable) paramsAtom.getValue();
+
         for (Object currentParam : params) {
             if (currentParam instanceof Atom) {
                 DeclareVariable.decalareWithInit(this.var, (Atom) currentParam);

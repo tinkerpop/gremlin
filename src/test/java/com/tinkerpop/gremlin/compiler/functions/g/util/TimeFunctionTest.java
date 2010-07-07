@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.compiler.functions.g.util;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import junit.framework.TestCase;
 
 import java.util.ArrayList;
 

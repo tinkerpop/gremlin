@@ -5,7 +5,6 @@ import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

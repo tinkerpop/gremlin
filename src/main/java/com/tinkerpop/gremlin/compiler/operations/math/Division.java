@@ -35,7 +35,7 @@ public class Division extends BinaryOperation {
 
         return null;
     }
-    
+
     public Type getType() {
         return Type.MATH;
     }

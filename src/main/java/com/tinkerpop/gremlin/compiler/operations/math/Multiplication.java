@@ -35,7 +35,7 @@ public class Multiplication extends BinaryOperation {
 
         return null;
     }
-    
+
     public Type getType() {
         return Type.MATH;
     }

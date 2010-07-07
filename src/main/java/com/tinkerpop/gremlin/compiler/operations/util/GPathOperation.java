@@ -5,9 +5,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class GPathOperation implements Operation {
@@ -22,13 +20,13 @@ public class GPathOperation implements Operation {
     public GPathOperation(List<Pipe> pipes, Object point) {
         this.pipes = pipes;
         this.pipeline = new Pipeline(this.pipes);
-        this.startPoint = point;  
+        this.startPoint = point;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Atom compute() {
         this.pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(this.startPoint));
-        
+
         Atom pipelineAtom = new Atom(this.pipeline);
         pipelineAtom.setStartPoint(this.startPoint);
 
@@ -38,7 +36,7 @@ public class GPathOperation implements Operation {
     public Type getType() {
         return Type.STATEMENT;
     }
-    
+
     @SuppressWarnings("rawtypes")
     public List<Pipe> getPipes() {
         return this.pipes;

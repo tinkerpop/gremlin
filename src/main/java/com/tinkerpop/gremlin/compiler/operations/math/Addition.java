@@ -16,7 +16,7 @@ public class Addition extends BinaryOperation {
     public Atom compute() {
         Object a = this.operands[0].compute().getValue();
         Object b = this.operands[1].compute().getValue();
-        
+
         if (a instanceof String || b instanceof String) {
             return new Atom<String>(a.toString() + b.toString());
         } else {
