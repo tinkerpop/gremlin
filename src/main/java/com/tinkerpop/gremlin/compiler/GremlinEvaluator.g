@@ -184,10 +184,10 @@ step
             if (tokenAtom != null) {
                 if ($gpath_statement::pipeCount == 0) {
                     if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
                     } else if (paths.isPath(tokenAtom.getValue().toString())) {
                         $gpath_statement::pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
-                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
                     } else {
                         $gpath_statement::startPoint = tokenAtom.getValue();
                     }
@@ -327,7 +327,7 @@ atom returns [Atom value]
 	                                                                    String idText = $IDENTIFIER.text;
                                                                         
 	                                                                    if (idText.equals(".") && !isGPath) {
-	                                                                        $value = getVariable(Tokens.ROOT);
+	                                                                        $value = getVariable(Tokens.ROOT_VARIABLE);
 	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
                                                                             Matcher range = rangePattern.matcher(idText);
                                                                             if (range.matches())

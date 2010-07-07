@@ -1,11 +1,12 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-07-07 23:35:13
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-07-08 00:01:35
 
     package com.tinkerpop.gremlin.compiler;
 
     import java.util.ArrayList;
     
     import java.util.Map;
-
+    import java.util.HashMap;
+    
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
     
@@ -29,12 +30,16 @@
     import com.tinkerpop.gremlin.compiler.operations.logic.*;
     import com.tinkerpop.gremlin.compiler.operations.util.*;
 
+    import com.tinkerpop.gremlin.compiler.functions.Function;
     import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
 
     // blueprints
+    import com.tinkerpop.blueprints.pgm.Vertex;
 
     // pipes
     import com.tinkerpop.pipes.Pipe;
+    import com.tinkerpop.pipes.Pipeline;
+    import com.tinkerpop.pipes.SingleIterator;
     import com.tinkerpop.pipes.pgm.PropertyPipe;
     import com.tinkerpop.pipes.filter.OrFilterPipe;
     import com.tinkerpop.pipes.util.HasNextPipe;
@@ -44,6 +49,7 @@
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;import java.util.Stack;
 import java.util.List;
+import java.util.ArrayList;
 
 
 public class GremlinEvaluator extends TreeParser {
@@ -1245,27 +1251,17 @@ public class GremlinEvaluator extends TreeParser {
 
 
                         Atom tokenAtom = (token24!=null?token24.atom:null);
-<<<<<<< HEAD
-               
-                        if (((gpath_statement_scope)gpath_statement_stack.peek()).pipeCount == 0) {
-                            if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-                                ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
-                            } else if (paths.isPath(tokenAtom.getValue().toString())) {
-                                ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
-                                ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
-=======
                         
                         if (tokenAtom != null) {
                             if (((gpath_statement_scope)gpath_statement_stack.peek()).pipeCount == 0) {
                                 if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-                                    ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                                    ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
                                 } else if (paths.isPath(tokenAtom.getValue().toString())) {
                                     ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
-                                    ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                                    ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
                                 } else {
                                     ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = tokenAtom.getValue();
                                 }
->>>>>>> support for ".." + logic operations fixed.
                             } else {
                                 ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList.addAll(GremlinPipesHelper.pipesForStep((token24!=null?token24.atom:null), predicates));
                             }
