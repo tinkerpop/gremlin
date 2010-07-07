@@ -74,7 +74,7 @@ step
     ;
 
 token	
-	: 	expression
+	: 	(expression | '..')
 	;
 
 statement

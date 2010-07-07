@@ -13,7 +13,7 @@ public class And extends BinaryOperation {
         super(operands);
     }
 
-    public Atom compute() {
+    public Atom<Boolean> compute() {
         Type aType = this.operands[0].getType();
         Type bType = this.operands[1].getType();
 
@@ -23,16 +23,16 @@ public class And extends BinaryOperation {
         Boolean exprResult;
 
         if (aType == Type.LOGIC && bType == Type.LOGIC) {
-            exprResult = ((Boolean) resultA.getValue() && (Boolean) resultB.getValue()) ? true : false;
+            exprResult = ((Boolean) resultA.getValue() && (Boolean) resultB.getValue());
         } else if (aType == Type.MATH && bType == Type.LOGIC) {
-            exprResult = (resultA.isNull() == false && (Boolean) resultB.getValue()) ? true : false;
+            exprResult = (!resultA.isNull() && (Boolean) resultB.getValue());
         } else if (aType == Type.LOGIC && bType == Type.MATH) {
-            exprResult = ((Boolean) resultA.getValue() && resultB.isNull() == false) ? true : false;
+            exprResult = ((Boolean) resultA.getValue() && !resultB.isNull());
         } else {
-            exprResult = (resultA.isNull() == false && resultB.isNull() == false) ? true : false;
+            exprResult = (!resultA.isNull() && !resultB.isNull());
         }
 
-        return new Atom(exprResult);
+        return new Atom<Boolean>(exprResult);
     }
 
     public Type getType() {

@@ -13,11 +13,14 @@ public class LessThanOrEqual extends BinaryOperation {
         super(operands);
     }
 
-    public Atom compute() {
-        Double a = (Double) this.operands[0].compute().getValue();
-        Double b = (Double) this.operands[1].compute().getValue();
+    public Atom<Boolean> compute() {
+        Atom aAtom = this.operands[0].compute();
+        Atom bAtom = this.operands[1].compute();
+        
+        Double a = ((Number) aAtom.getValue()).doubleValue();
+        Double b = ((Number) bAtom.getValue()).doubleValue();
 
-        return new Atom(((a < b) || (a.compareTo(b) == 0)) ? true : false);
+        return new Atom<Boolean>(((a < b) || (a.compareTo(b) == 0)));
     }
 
     public Type getType() {

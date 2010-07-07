@@ -47,6 +47,8 @@ options {
     import com.tinkerpop.pipes.Pipeline;
     import com.tinkerpop.pipes.SingleIterator;
     import com.tinkerpop.pipes.pgm.PropertyPipe;
+    import com.tinkerpop.pipes.filter.OrFilterPipe;
+    import com.tinkerpop.pipes.util.HasNextPipe;
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 }
 
@@ -178,18 +180,20 @@ step
     :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ))
         {
             Atom tokenAtom = $token.atom;
-   
-            if ($gpath_statement::pipeCount == 0) {
-                if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-                    $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
-                } else if (paths.isPath(tokenAtom.getValue().toString())) {
-                    $gpath_statement::pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
-                    $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+            
+            if (tokenAtom != null) {
+                if ($gpath_statement::pipeCount == 0) {
+                    if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
+                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                    } else if (paths.isPath(tokenAtom.getValue().toString())) {
+                        $gpath_statement::pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
+                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                    } else {
+                        $gpath_statement::startPoint = tokenAtom.getValue();
+                    }
                 } else {
-                    $gpath_statement::startPoint = tokenAtom.getValue();
+                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep($token.atom, predicates));
                 }
-            } else {
-                $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep($token.atom, predicates));
             }
             
             $gpath_statement::pipeCount++;
@@ -198,6 +202,13 @@ step
 
 token returns [Atom atom]	
     : 	expression { $atom = $expression.expr.compute(); }
+    |   '..'       {
+                        Pipeline history = new Pipeline($gpath_statement::pipeList);
+                        $gpath_statement::pipeList = new ArrayList<Pipe>();
+                        $gpath_statement::pipeList.add(new OrFilterPipe(new HasNextPipe(history)));
+
+                        $atom = null;
+                   }
 	;
 
 

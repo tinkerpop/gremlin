@@ -23,15 +23,15 @@ public class Equality extends BinaryOperation {
             String aString = (String) a.getValue();
             String bString = (String) b.getValue();
 
-            exprResult = (aString.equals(bString)) ? true : false;
+            exprResult = (aString.equals(bString));
         } else {
-            Double aDouble = (Double) a.getValue();
-            Double bDouble = (Double) b.getValue();
+            Double aDouble = ((Number) a.getValue()).doubleValue();
+            Double bDouble = ((Number) b.getValue()).doubleValue();
 
-            exprResult = (aDouble.compareTo(bDouble) == 0) ? true : false;
+            exprResult = (aDouble.compareTo(bDouble) == 0);
         }
 
-        return new Atom(exprResult);
+        return new Atom<Boolean>(exprResult);
     }
 
     public Type getType() {

@@ -13,11 +13,11 @@ public class GreaterThan extends BinaryOperation {
         super(operands);
     }
 
-    public Atom compute() {
-        Double a = (Double) this.operands[0].compute().getValue();
-        Double b = (Double) this.operands[1].compute().getValue();
+    public Atom<Boolean> compute() {
+        Number a = (Number) this.operands[0].compute().getValue();
+        Number b = (Number) this.operands[1].compute().getValue();
 
-        return new Atom((a > b) ? true : false);
+        return new Atom<Boolean>((a.doubleValue() > b.doubleValue()));
     }
 
     public Type getType() {

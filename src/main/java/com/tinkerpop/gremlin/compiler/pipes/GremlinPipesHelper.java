@@ -45,14 +45,14 @@ public class GremlinPipesHelper {
         for (int i = 0; i < predicates.size(); i++) {
             pipes.add(pipeForPredicate(predicates.get(i)));
         }
-
+        
         return pipes;
     }
 
     @SuppressWarnings("rawtypes")
     private static Pipe pipeForToken(final Atom tokenAtom) {
         Pipe pipe = null;
-
+        
         if (tokenAtom.isIdentifier()) {
             String value = (String) tokenAtom.getValue();
 
@@ -82,10 +82,7 @@ public class GremlinPipesHelper {
             // both edges
             if (value.equals("bothE"))
                 pipe = new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES);
-
-            if (value.equals(".."))
-                System.out.println("history!!");
-
+   
             // vertex iterator
             if (value.equals("V"))
                 pipe = new GraphElementPipe(GraphElementPipe.ElementType.VERTEX);
@@ -97,7 +94,6 @@ public class GremlinPipesHelper {
 
         if (tokenAtom.isProperty())
             pipe = new GremlinPropertyPipe(tokenAtom.getValue());
-
 
         return pipe;
     }
@@ -122,7 +118,7 @@ public class GremlinPipesHelper {
             Object storedObject = null;
 
             if (operandB.isNumber())
-                storedObject = ((Double) operandB.getValue()).floatValue();
+                storedObject = (Number) operandB.getValue();
             else
                 storedObject = (String) operandB.getValue();
 
@@ -159,7 +155,7 @@ public class GremlinPipesHelper {
             }
         }
 
-        throw new RuntimeException("Can not map - " + predicate.getClass() + " to any of existing pipes.");
+        throw new RuntimeException("Can't map - " + predicate.getClass() + " to any of existing pipes.");
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

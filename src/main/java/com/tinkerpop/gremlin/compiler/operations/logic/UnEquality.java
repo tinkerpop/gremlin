@@ -15,7 +15,7 @@ public class UnEquality extends BinaryOperation {
 
     public Atom compute() {
         Atom exprResultAtom = new Equality(this.operands[0], this.operands[1]).compute();
-        return new Atom((Boolean) exprResultAtom.getValue() == false);
+        return new Atom<Boolean>(!((Boolean) exprResultAtom.getValue()));
     }
 
     public Type getType() {
