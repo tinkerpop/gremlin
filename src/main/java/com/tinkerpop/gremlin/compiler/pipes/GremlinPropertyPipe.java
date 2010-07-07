@@ -12,6 +12,7 @@ import java.util.Map;
 public class GremlinPropertyPipe<E> extends AbstractPipe<Object, E> {
 
     private final Object key;
+    private static final String ILLEGAL_START = "Illegal start to this pipe (must be element or map)";
 
     public GremlinPropertyPipe(final Object key) {
         this.key = key;
@@ -24,7 +25,7 @@ public class GremlinPropertyPipe<E> extends AbstractPipe<Object, E> {
         } else if (start instanceof Map) {
             return (E) ((Map) start).get(new Atom(this.key));
         } else {
-            throw new RuntimeException("Illegal start to this pipe");
+            throw new RuntimeException(ILLEGAL_START);
         }
     }
 }
