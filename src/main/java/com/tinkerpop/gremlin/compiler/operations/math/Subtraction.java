@@ -13,11 +13,27 @@ public class Subtraction extends BinaryOperation {
         super(operands);
     }
 
-    public Atom compute() {
-        Double a = (Double) this.operands[0].compute().getValue();
-        Double b = (Double) this.operands[1].compute().getValue();
+    public Atom<Number> compute() {
+        Atom<Number> a = this.operands[0].compute();
+        Atom<Number> b = this.operands[1].compute();
 
-        return new Atom(a - b);
+        return new Atom<Number>(subtract(a.getValue(), b.getValue()));
+    }
+
+    private Number subtract(Number a, Number b) {
+        if (a instanceof Integer)
+            return a.intValue() - b.intValue();
+
+        if (a instanceof Long)
+            return a.longValue() - b.longValue();
+
+        if (a instanceof Float)
+            return a.floatValue() - b.floatValue();
+
+        if (a instanceof Double)
+            return a.doubleValue() - b.doubleValue();
+
+        return null;
     }
 
     public Type getType() {

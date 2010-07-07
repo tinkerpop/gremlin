@@ -289,8 +289,17 @@ atom returns [Atom value]
     @init {
         List<Double> array = new ArrayList<Double>();
     }
-	:	^(NUM NUMBER)                                               { $value = new Atom(new Double($NUMBER.text)); }
-	|   ^(RANGE min=NUMBER max=NUMBER)                              { $value = new Atom(new Range($min.text, $max.text)); }
+	:   ^(INT G_INT)                                                { $value = new Atom<Integer>(new Integer($G_INT.text)); }
+	|   ^(LONG G_LONG)                                              {
+	                                                                    String longStr = $G_LONG.text;
+	                                                                    $value = new Atom<Long>(new Long(longStr.substring(0, longStr.length() - 1)));
+	                                                                }
+	|   ^(FLOAT G_FLOAT)                                            { $value = new Atom<Float>(new Float($G_FLOAT.text)); }
+	|   ^(DOUBLE G_DOUBLE)                                          {
+	                                                                    String doubleStr = $G_DOUBLE.text;
+	                                                                    $value = new Atom<Double>(new Double(doubleStr.substring(0, doubleStr.length() - 1)));
+	                                                                }
+	|   ^(RANGE min=G_INT max=G_INT)                                { $value = new Atom(new Range($min.text, $max.text)); }
 	|	^(STR StringLiteral)                                        { $value = new Atom($StringLiteral.text); }
     |   ^(BOOL b=BOOLEAN)                                           { $value = new Atom(new Boolean($b.text)); }
     |   NULL                                                        { $value = new Atom(null); }

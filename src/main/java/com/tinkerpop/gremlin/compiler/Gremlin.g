@@ -40,7 +40,11 @@ tokens {
 	INCLUDE;
 	
 	// for atoms
-    NUM;
+    INT;
+    LONG;
+    FLOAT;
+    DOUBLE;
+    
 	STR;
     ARR;
 
@@ -159,7 +163,10 @@ function_call_params
 	;
 	
 atom
-	:	NUMBER		    -> ^(NUM NUMBER)
+	:   G_INT           -> ^(INT G_INT)
+	|   G_LONG          -> ^(LONG G_LONG)
+	|   G_FLOAT         -> ^(FLOAT G_FLOAT)
+	|   G_DOUBLE        -> ^(DOUBLE G_DOUBLE)
 	|   range
 	|	StringLiteral	-> ^(STR StringLiteral)
     |   b=BOOLEAN       -> ^(BOOL $b)
@@ -176,6 +183,23 @@ StringLiteral
 	| '\'' SingleStringCharacter* '\''
 	;
 
+
+G_INT
+    : ('0'..'9')+ 
+    ;
+
+G_LONG
+    : ('0'..'9')+ 'l' 
+    ;
+
+G_FLOAT
+    : G_INT '.' G_INT
+    ;
+
+G_DOUBLE
+    : G_FLOAT 'd'
+    ;
+    
 BOOLEAN
     : 'true'
     | 'false'
@@ -185,13 +209,14 @@ NULL
     : 'null'
     ;
 
-NUMBER	
-    : 	('0'..'9')+ ('.' ('0'..'9')+)? 
+/*
+fragment NUMBER	
+    : 	('0'..'9')+
 	;
-
+*/
 
 range
-    :   min=NUMBER '..' max=NUMBER  -> ^(RANGE $min $max)
+    :   min=G_INT '..' max=G_INT  -> ^(RANGE $min $max)
     ;
 
   
