@@ -15,6 +15,8 @@ options {
     
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
+
+    import java.util.Collections;
     
     import com.tinkerpop.gremlin.Gremlin;
 
@@ -47,8 +49,11 @@ options {
     import com.tinkerpop.pipes.Pipeline;
     import com.tinkerpop.pipes.SingleIterator;
     import com.tinkerpop.pipes.pgm.PropertyPipe;
-    import com.tinkerpop.pipes.filter.OrFilterPipe;
-    import com.tinkerpop.pipes.util.HasNextPipe;
+    //import com.tinkerpop.pipes.filter.OrFilterPipe;
+    import com.tinkerpop.pipes.filter.FilterPipe;
+    //import com.tinkerpop.pipes.util.HasNextPipe;
+    import com.tinkerpop.pipes.filter.FutureFilterPipe;
+    
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 }
 
@@ -169,7 +174,11 @@ gpath_statement returns [Operation op]
     }
 	:	^(GPATH (step)+) 
         {
-            $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::startPoint);
+            if ($gpath_statement::pipeList.size() > 0) {
+                $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::startPoint);
+            } else {
+                $op = new UnaryOperation(new Atom(null));
+            }
         }
 	;
 
@@ -203,10 +212,34 @@ step
 token returns [Atom atom]	
     : 	expression { $atom = $expression.expr.compute(); }
     |   '..'       {
-                        Pipeline history = new Pipeline($gpath_statement::pipeList);
-                        $gpath_statement::pipeList = new ArrayList<Pipe>();
-                        $gpath_statement::pipeList.add(new OrFilterPipe(new HasNextPipe(history)));
 
+                        List<Pipe> history = new ArrayList<Pipe>();
+                        List<Pipe> newPipes = new ArrayList<Pipe>();
+                        List<Pipe> pipes = $gpath_statement::pipeList;
+
+                        if ((pipes.size() - 1) < 1) {
+                            $gpath_statement::pipeList = new ArrayList();
+                        } else {
+                            int idx;
+                            
+                            for (idx = pipes.size() - 1; idx >= 0; idx--) {
+                                Pipe currentPipe = pipes.get(idx);
+                                history.add(currentPipe);
+
+                                if (!(currentPipe instanceof FilterPipe)) break;
+                            }
+
+                            for (int i = 0; i < idx; i++) {
+                                newPipes.add(pipes.get(i));
+                            }
+
+                            // don't like that - fix. PY
+                            Collections.reverse(history);
+                            newPipes.add(new FutureFilterPipe(new Pipeline(history)));
+                        
+                            $gpath_statement::pipeList = newPipes;
+                        }
+                        
                         $atom = null;
                    }
 	;
