@@ -18,12 +18,7 @@ public class CloseFunction extends AbstractFunction<Boolean> {
         if (parameters.size() > 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        if (parameters.size() == 1) {
-            GraphFunctionHelper.getGraph(parameters.get(0)).shutdown();
-        } else {
-            GraphFunctionHelper.getGraph(null).shutdown();
-        }
-
+        GraphFunctionHelper.getGraph(parameters, 0).shutdown();
         return new Atom<Boolean>(true);
     }
 

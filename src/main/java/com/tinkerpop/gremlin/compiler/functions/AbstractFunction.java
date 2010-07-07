@@ -14,7 +14,7 @@ public abstract class AbstractFunction<T> implements Function<T> {
     }
 
     protected String createUnsupportedArgumentMessage() {
-        return "Unsupported arguments for " + this.getFunctionName();
+        return "Unsupported arguments for " + this.getFunctionName() + " function";
     }
 
 }

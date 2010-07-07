@@ -18,33 +18,46 @@ public class SumFunction extends AbstractFunction<Double> {
         if (parameters.size() == 0) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            double counter = 0.0d;
+            double sum = 0.0d;
             for (Operation operation : parameters) {
                 Atom atom = operation.compute();
                 if (atom.isNumber()) {
-                    counter = counter + ((Double) atom.getValue());
+                    sum = incrSum(atom, sum);
                 } else if (atom.isIterable()) {
-                    counter = counter + countRecursiveIterable((Iterable<Atom>) atom.getValue(), 0.0d);
+                    sum = sum + countRecursiveIterable((Iterable<Atom>) atom.getValue(), 0.0d);
                 } else {
                     throw new RuntimeException(this.createUnsupportedArgumentMessage());
                 }
 
             }
-            return new Atom<Double>(counter);
+            return new Atom<Double>(sum);
         }
     }
 
-    private double countRecursiveIterable(final Iterable<Atom> iterable, double counter) throws RuntimeException {
+    private double countRecursiveIterable(final Iterable<Atom> iterable, double sum) throws RuntimeException {
         for (Atom atom : iterable) {
             if (atom.isNumber()) {
-                counter = counter + (Double) atom.getValue();
+                sum = incrSum(atom, sum);
             } else if (atom.isIterable()) {
-                counter = countRecursiveIterable((Iterable<Atom>) atom.getValue(), counter);
+                sum = countRecursiveIterable((Iterable<Atom>) atom.getValue(), sum);
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
             }
         }
-        return counter;
+        return sum;
+    }
+
+    private double incrSum(final Atom atom, double sum) {
+        if (atom.isInteger()) {
+            sum = sum + ((Integer) atom.getValue());
+        } else if (atom.isLong()) {
+            sum = sum + ((Long) atom.getValue());
+        } else if (atom.isFloat()) {
+            sum = sum + ((Float) atom.getValue());
+        } else {
+            sum = sum + ((Double) atom.getValue());
+        }
+        return sum;
     }
 
     public String getFunctionName() {

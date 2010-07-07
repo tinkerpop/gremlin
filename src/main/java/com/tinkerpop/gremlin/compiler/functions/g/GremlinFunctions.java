@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler.functions.g;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
 import com.tinkerpop.gremlin.compiler.functions.g.bool.BooleanFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.bool.NotFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.graph.CloseFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.IdFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.KeyFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.LoadFunction;
@@ -25,6 +26,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new BooleanFunction());
         functions.add(new NotFunction());
         // graph
+        functions.add(new CloseFunction());
         functions.add(new LoadFunction());
         functions.add(new IdFunction());
         functions.add(new KeyFunction());

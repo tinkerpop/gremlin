@@ -25,16 +25,12 @@ public class LoadFunction extends AbstractFunction<Boolean> {
         if (parameters.size() == 0 || parameters.size() > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = null;
+        Graph graph = GraphFunctionHelper.getGraph(parameters, 0);
         String filename = null;
 
-        // graph variable as first parameters
         if (parameters.size() == 2) {
-            graph = GraphFunctionHelper.getGraph(parameters.get(0));
             filename = (String) parameters.get(1).compute().getValue();
         } else {
-            // only filename in parameters
-            graph = GraphFunctionHelper.getGraph(null);
             filename = (String) parameters.get(0).compute().getValue();
         }
 
@@ -49,7 +45,7 @@ public class LoadFunction extends AbstractFunction<Boolean> {
             GraphMLReader.inputGraph(graph, stream);
             return new Atom<Boolean>(true);
         } catch (Exception e) {
-            throw new RuntimeException("g:load - " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 

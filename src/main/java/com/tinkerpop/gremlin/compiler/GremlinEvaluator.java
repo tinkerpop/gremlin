@@ -5,8 +5,7 @@
     import java.util.ArrayList;
     
     import java.util.Map;
-    import java.util.HashMap;
-    
+
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
     
@@ -30,16 +29,12 @@
     import com.tinkerpop.gremlin.compiler.operations.logic.*;
     import com.tinkerpop.gremlin.compiler.operations.util.*;
 
-    import com.tinkerpop.gremlin.compiler.functions.Function;
     import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
 
     // blueprints
-    import com.tinkerpop.blueprints.pgm.Vertex;
 
     // pipes
     import com.tinkerpop.pipes.Pipe;
-    import com.tinkerpop.pipes.Pipeline;
-    import com.tinkerpop.pipes.SingleIterator;
     import com.tinkerpop.pipes.pgm.PropertyPipe;
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 
@@ -47,7 +42,6 @@
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;import java.util.Stack;
 import java.util.List;
-import java.util.ArrayList;
 
 
 public class GremlinEvaluator extends TreeParser {
@@ -1252,10 +1246,10 @@ public class GremlinEvaluator extends TreeParser {
                
                         if (((gpath_statement_scope)gpath_statement_stack.peek()).pipeCount == 0) {
                             if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-                                ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                                ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
                             } else if (paths.isPath(tokenAtom.getValue().toString())) {
                                 ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
-                                ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT).getValue();
+                                ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
                             } else {
                                 ((gpath_statement_scope)gpath_statement_stack.peek()).startPoint = tokenAtom.getValue();
                             }
@@ -3536,7 +3530,7 @@ public class GremlinEvaluator extends TreeParser {
                     	                                                                    String idText = (IDENTIFIER88!=null?IDENTIFIER88.getText():null);
                                                                                             
                     	                                                                    if (idText.equals(".") && !isGPath) {
-                    	                                                                        retval.value = getVariable(Tokens.ROOT);
+                    	                                                                        retval.value = getVariable(Tokens.ROOT_VARIABLE);
                     	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
                                                                                                 Matcher range = rangePattern.matcher(idText);
                                                                                                 if (range.matches())

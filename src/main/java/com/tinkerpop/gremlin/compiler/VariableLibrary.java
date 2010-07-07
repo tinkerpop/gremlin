@@ -9,27 +9,33 @@ import java.util.Map;
  * @author Pavel A. Yaskevich
  */
 public class VariableLibrary {
+
+    private static final String GRAPH_VARIABLE_ERROR = "Cannot set $_g to anything but a graph";
+
     private Map<String, Atom> variables;
 
     public VariableLibrary() {
         this.variables = new HashMap<String, Atom>();
     }
 
-    public void declare(String var, Atom value) {
-        this.variables.put(var, value);
+    public void declare(String variable, Atom value) {
+        if (variable.equals(Tokens.GRAPH_VARIABLE) && !value.isGraph()) {
+            throw new RuntimeException(GRAPH_VARIABLE_ERROR);
+        }
+        this.variables.put(variable, value);
     }
 
-    public void free(String var) {
-        this.variables.remove(var);
+    public void free(String variable) {
+        this.variables.remove(variable);
     }
 
-    public Atom get(String var) {
-        Atom result = this.variables.get(var);
-        return (result == null) ? DeclareVariable.makeAtomValue(var, new Atom(null)) : result;
+    public Atom get(String variable) {
+        Atom result = this.variables.get(variable);
+        return (result == null) ? DeclareVariable.makeAtomValue(variable, new Atom(null)) : result;
     }
 
-    public boolean isDeclared(String var) {
-        return (this.variables.get(var) == null) ? false : true;
+    public boolean isDeclared(String variable) {
+        return this.variables.get(variable) != null;
     }
 
     public VariableLibrary clone() {

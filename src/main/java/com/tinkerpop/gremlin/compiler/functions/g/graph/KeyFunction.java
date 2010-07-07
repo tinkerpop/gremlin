@@ -20,18 +20,14 @@ public class KeyFunction extends AbstractFunction<Iterable<Element>> {
         if (parameters.size() != 2 && parameters.size() != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = null;
+        Graph graph = GraphFunctionHelper.getGraph(parameters, 0);
         String key = null;
         Object value = null;
 
-        // graph variable as first parameters
         if (parameters.size() == 3) {
-            graph = GraphFunctionHelper.getGraph(parameters.get(0));
             key = (String) parameters.get(1).compute().getValue();
             value = parameters.get(2).compute().getValue();
         } else {
-            // only identifier in parameters
-            graph = GraphFunctionHelper.getGraph(null);
             key = (String) parameters.get(0).compute().getValue();
             value = parameters.get(1).compute().getValue();
         }

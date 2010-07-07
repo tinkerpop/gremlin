@@ -20,16 +20,12 @@ public class IdFunction extends AbstractFunction<Vertex> {
         if (parameters.size() == 0 || parameters.size() > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = null;
+        Graph graph = GraphFunctionHelper.getGraph(parameters, 0);
         Object identifer = null;
 
-        // graph variable as first parameters
         if (parameters.size() == 2) {
-            graph = GraphFunctionHelper.getGraph(parameters.get(0));
             identifer = parameters.get(1).compute().getValue();
         } else {
-            // only identifier in parameters
-            graph = GraphFunctionHelper.getGraph(null);
             identifer = parameters.get(0).compute().getValue();
         }
 

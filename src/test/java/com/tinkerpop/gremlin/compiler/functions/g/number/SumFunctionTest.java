@@ -5,6 +5,8 @@ import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -14,7 +16,7 @@ public class SumFunctionTest extends BaseTest {
     public void testSumSimpleList() {
         Function function = new SumFunction();
         this.stopWatch();
-        assertEquals(function.compute(createUnaryArgs(1.0, 2.0, 3.0, 4.0)).getValue(), 10.0d);
+        assertEquals(function.compute(createUnaryArgs(1, 2.0d, 3.0f, 4l)).getValue(), 10.0d);
         printPerformance(function.getFunctionName() + " function", 4, "arguments", this.stopWatch());
     }
 
@@ -22,6 +24,16 @@ public class SumFunctionTest extends BaseTest {
         Function function = new SumFunction();
         this.stopWatch();
         assertEquals(function.compute(createUnaryArgs(1.0, 2.0, Arrays.asList(new Atom<Double>(3.0), new Atom<Double>(4.0)))).getValue(), 10.0d);
+        printPerformance(function.getFunctionName() + " function", 4, "arguments (with list embedding)", this.stopWatch());
+    }
+
+    public void testSumEmbeddedSet() {
+        Function function = new SumFunction();
+        Set<Atom> set = new HashSet<Atom>();
+        set.add(new Atom<Double>(3.0d));
+        set.add(new Atom<Double>(4.0d));
+        this.stopWatch();
+        assertEquals(function.compute(createUnaryArgs(1.0, 2.0, set)).getValue(), 10.0d);
         printPerformance(function.getFunctionName() + " function", 4, "arguments (with list embedding)", this.stopWatch());
     }
 }

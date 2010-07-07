@@ -80,6 +80,22 @@ public class Atom<T> {
         return isClassOf(Number.class);
     }
 
+    public boolean isInteger() {
+        return isClassOf(Integer.class);
+    }
+
+    public boolean isLong() {
+        return isClassOf(Long.class);
+    }
+
+    public boolean isFloat() {
+        return isClassOf(Float.class);
+    }
+
+    public boolean isDouble() {
+        return isClassOf(Double.class);
+    }
+
     public boolean isBoolean() {
         return isClassOf(Boolean.class);
     }

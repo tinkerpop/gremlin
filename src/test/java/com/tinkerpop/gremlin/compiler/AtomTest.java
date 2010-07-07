@@ -10,31 +10,33 @@ import java.util.*;
 public class AtomTest extends TestCase {
 
     public void testAtomEquality() {
-        assertEquals(new Atom("marko"), new Atom("marko"));
-        assertEquals(new Atom(1), new Atom(1));
-        assertNotSame(new Atom("marko"), new Atom("pavel"));
-        assertNotSame(new Atom(1), new Atom(1l));
+        assertEquals(new Atom<String>("marko"), new Atom<String>("marko"));
+        assertEquals(new Atom<Integer>(1), new Atom<Integer>(1));
+        assertNotSame(new Atom<String>("marko"), new Atom<String>("pavel"));
+        assertNotSame(new Atom<Integer>(1), new Atom<Long>(1l));
     }
 
     public void testAtomHash() {
         Map<Atom, Integer> map = new HashMap<Atom, Integer>();
-        map.put(new Atom("marko"), 1);
-        map.put(new Atom("marko"), 2);
-        map.put(new Atom("pavel"), 3);
+        map.put(new Atom<String>("marko"), 1);
+        map.put(new Atom<String>("marko"), 2);
+        map.put(new Atom<String>("pavel"), 3);
         assertEquals(map.size(), 2);
-        assertEquals(map.get(new Atom("marko")), new Integer(2));
-        assertEquals(map.get(new Atom("pavel")), new Integer(3));
+        assertEquals(map.get(new Atom<String>("marko")), new Integer(2));
+        assertEquals(map.get(new Atom<String>("pavel")), new Integer(3));
 
     }
 
     public void testAtomInheritance() {
         LinkedHashMap map1 = new LinkedHashMap();
-        assertTrue(new Atom(map1).isMap());
+        assertTrue(new Atom<Map>(map1).isMap());
         HashMap map2 = new HashMap();
-        assertTrue(new Atom(map2).isMap());
+        assertTrue(new Atom<Map>(map2).isMap());
         LinkedList list1 = new LinkedList();
-        assertTrue(new Atom(list1).isIterable());
+        assertTrue(new Atom<List>(list1).isIterable());
         ArrayList list2 = new ArrayList();
-        assertTrue(new Atom(list2).isIterable());
+        assertTrue(new Atom<List>(list2).isIterable());
+        HashSet set1 = new HashSet();
+        assertTrue(new Atom<Set>(set1).isIterable());
     }
 }
