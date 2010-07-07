@@ -12,7 +12,10 @@ options {
     
     import java.util.Map;
     import java.util.HashMap;
-
+    
+    import java.util.regex.Pattern;
+    import java.util.regex.Matcher;
+    
     import com.tinkerpop.gremlin.Gremlin;
 
     import com.tinkerpop.gremlin.compiler.Tokens;
@@ -21,6 +24,10 @@ options {
     import com.tinkerpop.gremlin.compiler.FunctionLibrary;
     import com.tinkerpop.gremlin.compiler.PathLibrary;
 
+    // types
+    import com.tinkerpop.gremlin.compiler.types.Range;
+
+    // operations
     import com.tinkerpop.gremlin.compiler.operations.Operation;
     import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 
@@ -44,8 +51,13 @@ options {
 }
 
 @members {
+    // debug mode
     public  static boolean DEBUG = false;
- 
+
+    private boolean isGPath = false;
+
+    private Pattern rangePattern = Pattern.compile("^(\\d+)..(\\d+)");
+    
     private static VariableLibrary variables = new VariableLibrary();
     public  static FunctionLibrary functions = new FunctionLibrary();
     public  static PathLibrary     paths     = new PathLibrary();
@@ -144,9 +156,14 @@ gpath_statement returns [Operation op]
         List<Pipe> pipeList;
     }
     @init {
+        isGPath = true;
+        
         $gpath_statement::pipeCount = 0;
         $gpath_statement::startPoint = null;
         $gpath_statement::pipeList = new ArrayList<Pipe>();
+    }
+    @after {
+        isGPath = false;
     }
 	:	^(GPATH (step)+) 
         {
@@ -272,7 +289,8 @@ atom returns [Atom value]
     @init {
         List<Double> array = new ArrayList<Double>();
     }
-	:	^(NUM NUMBER)                                               { $value = new Atom(new Double($NUMBER.text));  }
+	:	^(NUM NUMBER)                                               { $value = new Atom(new Double($NUMBER.text)); }
+	|   ^(RANGE min=NUMBER max=NUMBER)                              { $value = new Atom(new Range($min.text, $max.text)); }
 	|	^(STR StringLiteral)                                        { $value = new Atom($StringLiteral.text); }
     |   ^(BOOL b=BOOLEAN)                                           { $value = new Atom(new Boolean($b.text)); }
     |   NULL                                                        { $value = new Atom(null); }
@@ -287,9 +305,15 @@ atom returns [Atom value]
                                                                     }
 	|	IDENTIFIER                                                  {
 	                                                                    String idText = $IDENTIFIER.text;
-
-	                                                                    if (idText.equals(".")) {
+                                                                        
+	                                                                    if (idText.equals(".") && !isGPath) {
 	                                                                        $value = getVariable(Tokens.ROOT);
+	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
+                                                                            Matcher range = rangePattern.matcher(idText);
+                                                                            if (range.matches())
+                                                                                $value = new Atom(new Range(range.group(1), range.group(2)));
+                                                                            else
+                                                                                $value = new Atom(null);
 	                                                                    } else {
                                                                             Atom idAtom = new Atom($IDENTIFIER.text);
                                                                             idAtom.setIdentifier(true);

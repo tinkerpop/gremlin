@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
+import com.tinkerpop.gremlin.compiler.types.Range;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
@@ -149,7 +150,12 @@ public class GremlinPipesHelper {
 
             if (unaryAtom.isNumber()) {
                 int idx = ((Double) unaryAtom.getValue()).intValue();
-                return new RangeFilterPipe(idx - 1, idx);
+                return (idx == 0) ? new RangeFilterPipe(0, 1) : new RangeFilterPipe(idx - 1, idx);
+            }
+
+            if (unaryAtom.getValue() instanceof Range) {
+                Range range = (Range)unaryAtom.getValue();
+                return new RangeFilterPipe(range.getMinimum(), range.getMaximum());
             }
         }
 

@@ -46,7 +46,7 @@ tokens {
 
     BOOL;
     NULL;
-    ARR_IDX;
+    RANGE;
 
 	PROPERTY_CALL;
 	VARIABLE_CALL;
@@ -160,6 +160,7 @@ function_call_params
 	
 atom
 	:	NUMBER		    -> ^(NUM NUMBER)
+	|   range
 	|	StringLiteral	-> ^(STR StringLiteral)
     |   b=BOOLEAN       -> ^(BOOL $b)
     |   NULL
@@ -174,7 +175,7 @@ StringLiteral
 	: '"' DoubleStringCharacter* '"'
 	| '\'' SingleStringCharacter* '\''
 	;
-		
+
 BOOLEAN
     : 'true'
     | 'false'
@@ -184,15 +185,16 @@ NULL
     : 'null'
     ;
 
-/*
-array
-    : NUMBER '|'! NUMBER ('|'! NUMBER)*
-    ;
-*/
 NUMBER	
     : 	('0'..'9')+ ('.' ('0'..'9')+)? 
 	;
-		
+
+
+range
+    :   min=NUMBER '..' max=NUMBER  -> ^(RANGE $min $max)
+    ;
+
+  
 VARIABLE 
 	:	'$' IDENTIFIER
 	;
