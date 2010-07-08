@@ -54,11 +54,13 @@ tokens {
 
 	PROPERTY_CALL;
 	VARIABLE_CALL;
+	COLLECTION_CALL;
 }
 
 program	
     :	COMMENT+
     |   (statement? NEWLINE)+
+    |   (collection? NEWLINE)+
 	;
 
 COMMENT
@@ -173,8 +175,8 @@ atom
     |   NULL
 	|	PROPERTY	    -> ^(PROPERTY_CALL PROPERTY)
 	|	VARIABLE        -> ^(VARIABLE_CALL VARIABLE)
-	|	IDENTIFIER
 	|	function_call
+	|   IDENTIFIER
 	|	'('! statement ')'!
 	;
 
@@ -219,11 +221,14 @@ range
     :   min=G_INT '..' max=G_INT  -> ^(RANGE $min $max)
     ;
 
-  
-VARIABLE 
-	:	'$' IDENTIFIER
-	;
-	
+VARIABLE
+    :   '$' IDENTIFIER
+    ;
+
+collection
+    : token ('[' statement ']')+ -> ^(COLLECTION_CALL ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)+)))
+    ;
+
 PROPERTY
 	:	'@' IDENTIFIER	
 	;

@@ -89,37 +89,43 @@ options {
     public static void setVariableLibrary(VariableLibrary lib) {
         variables = lib;
     }
+
+    private static void formProgramResult(List<Object> resultList, Operation currentOperation) {
+        Atom result = currentOperation.compute();
+
+        if (EMBEDDED) resultList.add(result.getValue());
+
+        if (!result.isNull() && DEBUG) {
+            if (result.isIterable()) {
+                for(Object o : (Iterable)result.getValue()) {
+                    System.out.println(Tokens.RESULT_PROMPT + o);
+                }
+            } else if (result.isMap()) {
+                Map map = (Map) result.getValue();
+
+                for (Object key : map.keySet()) {
+                    System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                }
+            } else {
+                System.out.println(Tokens.RESULT_PROMPT + result);
+            }
+        }
+    }
 }
 
 program returns [Iterable results]
     @init {
         List<Object> resultList = new ArrayList<Object>();
     }
-    :   (statement {
-                        Atom result = $statement.op.compute();
-
-                        if (EMBEDDED) resultList.add(result.getValue());
-                        
-                        if (!result.isNull() && DEBUG) {
-                            if (result.isIterable()) {
-                                for(Object o : (Iterable)result.getValue()) {
-                                    System.out.println(Tokens.RESULT_PROMPT + o);
-                                }
-                            } else if (result.isMap()) {
-                                Map map = (Map) result.getValue();
-                                
-                                for (Object key : map.keySet()) {
-                                    System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
-                                }
-                            } else {
-                                System.out.println(Tokens.RESULT_PROMPT + result);
-                            }
-                        }
-
-                   } NEWLINE*)+
-                   {
-                        $results = resultList;
-                   }
+    : ((statement
+     {
+        formProgramResult(resultList, $statement.op);
+     } | collection {
+        formProgramResult(resultList, $collection.op);
+     }) NEWLINE*)+
+     {
+        $results = resultList;
+     }
     ;
 
 statement returns [Operation op]
@@ -337,6 +343,35 @@ function_call returns [Atom value]
             }
         }
 	;
+
+collection returns [Operation op]
+    @init {
+        Object startPoint = null;
+        List<Pipe> pipes = new ArrayList<Pipe>();
+        List<Operation> predicates = new ArrayList<Operation>();
+    }
+    : ^(COLLECTION_CALL ^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )+ )))
+    {
+        Atom tokenAtom = $token.atom;
+
+        if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
+            startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
+        } else if (paths.isPath(tokenAtom.getValue().toString())) {
+            pipes.addAll(paths.getPath((String)tokenAtom.getValue()));
+            startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
+        } else {
+            startPoint = tokenAtom.getValue();
+        }
+
+        Atom id = new Atom(".");
+        id.setIdentifier(true);
+        
+        pipes.addAll(GremlinPipesHelper.pipesForStep(id, predicates));
+
+        $op = new GPathOperation(pipes, startPoint);
+    }
+    ;
+
 
 atom returns [Atom value]
     @init {
