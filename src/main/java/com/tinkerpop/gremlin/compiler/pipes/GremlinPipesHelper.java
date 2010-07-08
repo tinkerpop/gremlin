@@ -149,6 +149,10 @@ public class GremlinPipesHelper {
                 return (idx == 0) ? new RangeFilterPipe(0, 1) : new RangeFilterPipe(idx, idx + 1);
             }
 
+            if (unaryAtom.isBoolean()) {
+                return new BooleanFilterPipe(!((Boolean)unaryAtom.getValue()));
+            }
+            
             if (unaryAtom.getValue() instanceof Range) {
                 Range range = (Range) unaryAtom.getValue();
                 return new RangeFilterPipe(range.getMinimum(), range.getMaximum());
