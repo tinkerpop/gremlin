@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-07-08 02:34:27
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-07-08 02:55:28
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -1368,7 +1368,7 @@ public class GremlinEvaluator extends TreeParser {
                                             List<Pipe> newPipes = new ArrayList<Pipe>();
                                             List<Pipe> pipes = ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList;
 
-                                            if ((pipes.size() - 1) < 1) {
+                                            if ((pipes.size() == 1 && (pipes.get(0) instanceof FutureFilterPipe)) || pipes.size() == 0) {
                                                 ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList = new ArrayList();
                                             } else {
                                                 int idx;

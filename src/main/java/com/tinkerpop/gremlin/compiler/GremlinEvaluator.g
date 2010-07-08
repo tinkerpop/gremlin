@@ -217,7 +217,7 @@ token returns [Atom atom]
                         List<Pipe> newPipes = new ArrayList<Pipe>();
                         List<Pipe> pipes = $gpath_statement::pipeList;
 
-                        if ((pipes.size() - 1) < 1) {
+                        if ((pipes.size() == 1 && (pipes.get(0) instanceof FutureFilterPipe)) || pipes.size() == 0) {
                             $gpath_statement::pipeList = new ArrayList();
                         } else {
                             int idx;
