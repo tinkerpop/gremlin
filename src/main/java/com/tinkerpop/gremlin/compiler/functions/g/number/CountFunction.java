@@ -10,21 +10,21 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class CountFunction extends AbstractFunction<Double> {
+public class CountFunction extends AbstractFunction<Long> {
 
 
     private static final String FUNCTION_NAME = "count";
 
-    public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Long> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
         final Atom result = parameters.get(0).compute();
         if (result.isIterable()) {
-            final double count = PipeHelper.counter(((Iterable) result.getValue()).iterator());
-            return new Atom<Double>(count);
+            final long count = PipeHelper.counter(((Iterable) result.getValue()).iterator());
+            return new Atom<Long>(count);
         } else {
-            return new Atom<Double>(1.0d);
+            return new Atom<Long>(1l);
         }
     }
 

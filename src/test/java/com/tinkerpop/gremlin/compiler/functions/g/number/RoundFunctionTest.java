@@ -10,18 +10,16 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
 public class RoundFunctionTest extends BaseTest {
 
     public void testRound() {
-        Function<Double> function = new RoundFunction();
+        Function<Long> function = new RoundFunction();
         this.stopWatch();
-        Atom<Double> atom = function.compute(createUnaryArgs(1.4));
+        Atom<Long> atom = function.compute(createUnaryArgs(1.4));
         printPerformance(function.getFunctionName() + " function", 1, "argument", this.stopWatch());
-        Double real = atom.getValue();
-        assertEquals(real, 1.0);
+        assertEquals(atom.getValue(), new Long(1));
 
         this.stopWatch();
         atom = function.compute(createUnaryArgs(1.5));
         printPerformance(function.getFunctionName() + " function", 1, "argument", this.stopWatch());
-        real = atom.getValue();
-        assertEquals(real, 2.0);
+        assertEquals(atom.getValue(), new Long(2));
 
     }
 }
