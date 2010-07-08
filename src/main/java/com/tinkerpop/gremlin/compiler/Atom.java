@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Pavel A. Yaskevich
  */
-public class Atom<T> {
+public class Atom<T> implements Comparable<Atom<T>> {
 
     private T value;
 
@@ -201,6 +201,15 @@ public class Atom<T> {
             return (((Atom) object).getValue().equals(this.value));
         }
         return false;
+    }
+
+    public int compareTo(Atom<T> atom) {
+        Object object = atom.getValue();
+        if (this.value instanceof Comparable && object instanceof Comparable) {
+            return ((Comparable) this.value).compareTo(object);
+        } else {
+            return 0;
+        }
     }
 
     public int hashCode() {

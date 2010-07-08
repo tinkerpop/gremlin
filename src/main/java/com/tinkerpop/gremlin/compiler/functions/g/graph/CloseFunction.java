@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.graph;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
-import com.tinkerpop.gremlin.compiler.functions.GraphFunctionHelper;
+import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class CloseFunction extends AbstractFunction<Boolean> {
         if (parameters.size() > 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        GraphFunctionHelper.getGraph(parameters, 0).shutdown();
+        FunctionHelper.getGraph(parameters, 0).shutdown();
         return new Atom<Boolean>(true);
     }
 

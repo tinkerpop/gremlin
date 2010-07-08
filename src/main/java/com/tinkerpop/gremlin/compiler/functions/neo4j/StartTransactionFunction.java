@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.compiler.functions.neo4j;
 import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
-import com.tinkerpop.gremlin.compiler.functions.GraphFunctionHelper;
+import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class StartTransactionFunction extends AbstractFunction<Boolean> {
     public Atom<Boolean> compute(List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() > 1) {
-            Neo4jGraph graph = (Neo4jGraph) GraphFunctionHelper.getGraph(parameters, 0);
+            Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0);
             graph.startTransaction();
             return new Atom<Boolean>(true);
         } else {

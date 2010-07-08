@@ -39,6 +39,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new UnionFunction());
         functions.add(new ValuesFunction());
         functions.add(new MapFunction());
+        functions.add(new SortFunction());
         // number
         functions.add(new CountFunction());
         functions.add(new DoubleFunction());

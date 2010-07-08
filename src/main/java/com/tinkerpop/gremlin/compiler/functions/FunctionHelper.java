@@ -6,12 +6,13 @@ import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class GraphFunctionHelper {
+public class FunctionHelper {
 
     public static Graph getGraph(final Operation parameter) {
         Atom<Graph> graphGlobalVariable = GremlinEvaluator.getVariable(Tokens.GRAPH_VARIABLE);
@@ -30,5 +31,11 @@ public class GraphFunctionHelper {
                 return (Graph) atom.getValue();
         }
         return (Graph) GremlinEvaluator.getVariable(Tokens.GRAPH_VARIABLE).getValue();
+    }
+
+    public static void fillCollection(Iterable itty, Collection collection) {
+        for (Object object : itty) {
+            collection.add(object);
+        }
     }
 }

@@ -1,5 +1,8 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
+import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -15,6 +18,9 @@ public class TypeFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "type";
     private static final String ITERABLE = "iterable";
     private static final String MAP = "map";
+    private static final String GRAPH = "graph";
+    private static final String VERTEX = "vertex";
+    private static final String EDGE = "edge";
 
     public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
 
@@ -24,6 +30,12 @@ public class TypeFunction extends AbstractFunction<String> {
                 return new Atom<String>(ITERABLE);
             else if (object instanceof Map)
                 return new Atom<String>(MAP);
+            else if (object instanceof Graph)
+                return new Atom<String>(GRAPH);
+            else if (object instanceof Vertex)
+                return new Atom<String>(VERTEX);
+            else if (object instanceof Edge)
+                return new Atom<String>(EDGE);
             else
                 return new Atom<String>(object.getClass().getSimpleName().toLowerCase());
         } else

@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
-import com.tinkerpop.gremlin.compiler.functions.GraphFunctionHelper;
+import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class KeyFunction extends AbstractFunction<Iterable<Element>> {
         if (parameters.size() != 2 && parameters.size() != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = GraphFunctionHelper.getGraph(parameters, 0);
+        Graph graph = FunctionHelper.getGraph(parameters, 0);
         String key = null;
         Object value = null;
 

@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
-import com.tinkerpop.gremlin.compiler.functions.GraphFunctionHelper;
+import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class IdFunction extends AbstractFunction<Vertex> {
         if (parameters.size() == 0 || parameters.size() > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = GraphFunctionHelper.getGraph(parameters, 0);
+        Graph graph = FunctionHelper.getGraph(parameters, 0);
         Object identifer = null;
 
         if (parameters.size() == 2) {

@@ -14,7 +14,6 @@ public class Neo4jFunctions extends AbstractFunctions {
         this.functions.add(new OpenFunction());
         this.functions.add(new StartTransactionFunction());
         this.functions.add(new StopTransactionFunction());
-
     }
 
     public String getNamespace() {
