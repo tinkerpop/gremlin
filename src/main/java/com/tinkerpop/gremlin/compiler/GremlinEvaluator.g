@@ -226,6 +226,8 @@ step
 
 token returns [Atom atom]	
     : 	expression { $atom = $expression.expr.compute(); }
+    |   gpath_statement { $atom = $gpath_statement.op.compute(); }
+    |   collection { $atom = $collection.op.compute(); }
     |   '..'       {
 
                         List<Pipe> history = new ArrayList<Pipe>();

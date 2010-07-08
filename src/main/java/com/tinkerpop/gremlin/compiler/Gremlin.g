@@ -178,6 +178,7 @@ atom
 	|	function_call
 	|   IDENTIFIER
 	|	'('! statement ')'!
+	|   '('! collection ')'!
 	;
 
 StringLiteral
