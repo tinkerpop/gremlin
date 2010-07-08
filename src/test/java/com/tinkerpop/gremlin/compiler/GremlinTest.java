@@ -100,8 +100,76 @@ public class GremlinTest extends BaseTest {
         assertEquals(results.size(), 2);
         name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("josh") || name.equals("vadas"));
-         name = (String) results.get(1).getProperty("name");
+        name = (String) results.get(1).getProperty("name");
         assertTrue(name.equals("josh") || name.equals("vadas"));
+
+    }
+
+    public void testHistoryOnGraph() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        GremlinEvaluator.declareVariable(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        this.stopWatch();
+        String script = "./outE/inV/../..";
+        Iterable itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        List<Vertex> results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
+        assertEquals(results.size(), 1);
+        String name = (String) results.get(0).getProperty("name");
+        assertEquals(name, "marko");
+
+        this.stopWatch();
+        script = "./outE/inV/../../..";
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        assertNull(itty);
+
+        this.stopWatch();
+        script = "./outE/inV/outE/inV/../..";
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
+        assertEquals(results.size(), 1);
+        name = (String) results.get(0).getProperty("name");
+        assertEquals(name, "josh");
+
+        this.stopWatch();
+        script = "./outE/inV/outE/inV[@name='lop']/../..";
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
+        assertEquals(results.size(), 1);
+        name = (String) results.get(0).getProperty("name");
+        assertEquals(name, "josh");
+
+        this.stopWatch();
+        script = "./outE/inV/outE/inV[@name='ripple']/../..";
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
+        assertEquals(results.size(), 1);
+        name = (String) results.get(0).getProperty("name");
+        assertEquals(name, "josh");
+
+        this.stopWatch();
+        script = "./outE/inV/outE/inV[@name='ripple' or @name='lop' or @name='blah']/../../outE/inV";
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
+        assertEquals(results.size(), 2);
+        name = (String) results.get(0).getProperty("name");
+        assertTrue(name.equals("ripple") || name.equals("lop"));
 
     }
 
