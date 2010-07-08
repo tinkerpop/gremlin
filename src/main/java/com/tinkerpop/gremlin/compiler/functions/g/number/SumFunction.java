@@ -22,7 +22,7 @@ public class SumFunction extends AbstractFunction<Double> {
             for (Operation operation : parameters) {
                 Atom atom = operation.compute();
                 if (atom.isNumber()) {
-                    sum = incrSum(atom, sum);
+                    sum = sum + ((Number) atom.getValue()).doubleValue();
                 } else if (atom.isIterable()) {
                     sum = sum + countRecursiveIterable((Iterable<Atom>) atom.getValue(), 0.0d);
                 } else {
@@ -37,7 +37,7 @@ public class SumFunction extends AbstractFunction<Double> {
     private double countRecursiveIterable(final Iterable<Atom> iterable, double sum) throws RuntimeException {
         for (Atom atom : iterable) {
             if (atom.isNumber()) {
-                sum = incrSum(atom, sum);
+                sum = sum + ((Number) atom.getValue()).doubleValue();
             } else if (atom.isIterable()) {
                 sum = countRecursiveIterable((Iterable<Atom>) atom.getValue(), sum);
             } else {
@@ -47,18 +47,6 @@ public class SumFunction extends AbstractFunction<Double> {
         return sum;
     }
 
-    private double incrSum(final Atom atom, double sum) {
-        if (atom.isInteger()) {
-            sum = sum + ((Integer) atom.getValue());
-        } else if (atom.isLong()) {
-            sum = sum + ((Long) atom.getValue());
-        } else if (atom.isFloat()) {
-            sum = sum + ((Float) atom.getValue());
-        } else {
-            sum = sum + ((Double) atom.getValue());
-        }
-        return sum;
-    }
 
     public String getFunctionName() {
         return FUNCTION_NAME;

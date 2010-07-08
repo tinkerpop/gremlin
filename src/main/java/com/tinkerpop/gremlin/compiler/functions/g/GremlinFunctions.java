@@ -52,9 +52,12 @@ public class GremlinFunctions extends AbstractFunctions {
         // string
         functions.add(new ConcatFunction());
         functions.add(new ContainsFunction());
+        functions.add(new MatchesFunction());
+        functions.add(new NormalizeSpaceFunction());
         functions.add(new StartsWithFunction());
         functions.add(new StringFunction());
         functions.add(new StringLengthFunction());
+        functions.add(new SubstringFunction());
         // util
         functions.add(new AssignFunction());
         functions.add(new PathFunction());
