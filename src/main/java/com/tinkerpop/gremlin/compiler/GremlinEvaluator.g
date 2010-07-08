@@ -60,6 +60,7 @@ options {
 @members {
     // debug mode
     public  static boolean DEBUG = false;
+    public  static boolean EMBEDDED = false;
 
     private boolean isGPath = false;
 
@@ -90,9 +91,14 @@ options {
     }
 }
 
-program
+program returns [Iterable results]
+    @init {
+        List<Object> resultList = new ArrayList<Object>();
+    }
     :   (statement {
                         Atom result = $statement.op.compute();
+
+                        if (EMBEDDED) resultList.add(result.getValue());
                         
                         if (!result.isNull() && DEBUG) {
                             if (result.isIterable()) {
@@ -111,6 +117,9 @@ program
                         }
 
                    } NEWLINE*)+
+                   {
+                        $results = resultList;
+                   }
     ;
 
 statement returns [Operation op]
