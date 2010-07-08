@@ -21,12 +21,12 @@ public class KeysFunction extends AbstractFunction<Iterable<Atom>> {
         if (parameters.size() != 1) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            Atom atom = parameters.get(0).compute();
+            final Atom atom = parameters.get(0).compute();
             if (atom.isMap()) {
                 return new Atom<Iterable<Atom>>(((Map<Atom, Atom>) atom.getValue()).keySet());
             } else if (atom.isElement()) {
-                List<Atom> keys = new ArrayList<Atom>();
-                Element element = ((Element) atom.getValue());
+                final List<Atom> keys = new ArrayList<Atom>();
+                final Element element = ((Element) atom.getValue());
                 for (String key : element.getPropertyKeys()) {
                     keys.add(new Atom<String>(key));
                 }

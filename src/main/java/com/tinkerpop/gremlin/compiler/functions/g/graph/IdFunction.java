@@ -17,13 +17,14 @@ public class IdFunction extends AbstractFunction<Vertex> {
     private final static String FUNCTION_NAME = "id";
 
     public Atom<Vertex> compute(final List<Operation> parameters) throws RuntimeException {
-        if (parameters.size() == 0 || parameters.size() > 2)
+        final int size = parameters.size();
+        if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = FunctionHelper.getGraph(parameters, 0);
-        Object identifer = null;
+        final Graph graph = FunctionHelper.getGraph(parameters, 0);
+        final Object identifer;
 
-        if (parameters.size() == 2) {
+        if (size == 2) {
             identifer = parameters.get(1).compute().getValue();
         } else {
             identifer = parameters.get(0).compute().getValue();

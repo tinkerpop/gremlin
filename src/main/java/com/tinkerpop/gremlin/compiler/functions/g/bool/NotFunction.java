@@ -16,7 +16,7 @@ public class NotFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            Boolean bool = (Boolean) parameters.get(0).compute().getValue();
+            final Boolean bool = (Boolean) parameters.get(0).compute().getValue();
             return new Atom<Boolean>(!bool);
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

@@ -16,7 +16,7 @@ public class NormalizeSpaceFunction extends AbstractFunction<String> {
 
     public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            String string = (String) parameters.get(0).compute().getValue();
+            final String string = (String) parameters.get(0).compute().getValue();
             return new Atom<String>(string.trim());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

@@ -18,7 +18,7 @@ public class UnassignFunction extends AbstractFunction<Boolean> {
         if (parameters.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        String variable = (String) parameters.get(0).compute().getValue();
+        final String variable = (String) parameters.get(0).compute().getValue();
         GremlinEvaluator.freeVariable(variable);
         return new Atom<Boolean>(true);
     }

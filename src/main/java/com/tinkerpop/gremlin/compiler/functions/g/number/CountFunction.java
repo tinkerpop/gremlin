@@ -19,9 +19,9 @@ public class CountFunction extends AbstractFunction<Double> {
         if (parameters.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Atom result = parameters.get(0).compute();
+        final Atom result = parameters.get(0).compute();
         if (result.isIterable()) {
-            double count = PipeHelper.counter(((Iterable) result.getValue()).iterator());
+            final double count = PipeHelper.counter(((Iterable) result.getValue()).iterator());
             return new Atom<Double>(count);
         } else {
             return new Atom<Double>(1.0d);

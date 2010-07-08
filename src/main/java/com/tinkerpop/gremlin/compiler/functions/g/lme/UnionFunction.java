@@ -20,9 +20,9 @@ public class UnionFunction extends AbstractFunction<Iterable<Atom>> {
         if (parameters.size() < 2) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            Set<Atom> set = new HashSet<Atom>();
+            final Set<Atom> set = new HashSet<Atom>();
             for (Operation operation : parameters) {
-                Atom atom = operation.compute();
+                final Atom atom = operation.compute();
                 if (atom.isIterable()) {
                     for (Object object : (Iterable) atom.getValue()) {
                         set.add(new Atom(object));

@@ -15,8 +15,8 @@ public class LongFunction extends AbstractFunction<Long> {
 
     public Atom<Long> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
-            Double temp = Double.valueOf(object.toString());
+            final Object object = parameters.get(0).compute().getValue();
+            final Double temp = Double.valueOf(object.toString());
             return new Atom<Long>(temp.longValue());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

@@ -15,14 +15,15 @@ public class SubstringFunction extends AbstractFunction<String> {
 
 
     public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
-        if (parameters.size() == 2) {
-            String string = (String) parameters.get(0).compute().getValue();
-            Number start = (Number) parameters.get(1).compute().getValue();
+        final int size = parameters.size();
+        if (size == 2) {
+            final String string = (String) parameters.get(0).compute().getValue();
+            final Number start = (Number) parameters.get(1).compute().getValue();
             return new Atom<String>(string.substring(start.intValue()));
-        } else if (parameters.size() == 3) {
-            String string = (String) parameters.get(0).compute().getValue();
-            Number start = (Number) parameters.get(1).compute().getValue();
-            Number end = (Number) parameters.get(2).compute().getValue();
+        } else if (size == 3) {
+            final String string = (String) parameters.get(0).compute().getValue();
+            final Number start = (Number) parameters.get(1).compute().getValue();
+            final Number end = (Number) parameters.get(2).compute().getValue();
             return new Atom<String>(string.substring(start.intValue(), end.intValue()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

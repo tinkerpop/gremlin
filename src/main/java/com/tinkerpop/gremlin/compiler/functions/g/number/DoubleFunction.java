@@ -15,7 +15,7 @@ public class DoubleFunction extends AbstractFunction<Double> {
 
     public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
+            final Object object = parameters.get(0).compute().getValue();
             return new Atom<Double>(Double.valueOf(object.toString()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

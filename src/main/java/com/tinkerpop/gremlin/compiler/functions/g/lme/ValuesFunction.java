@@ -21,17 +21,17 @@ public class ValuesFunction extends AbstractFunction<Iterable<Atom>> {
         if (parameters.size() != 1) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            Atom atom = parameters.get(0).compute();
+            final Atom atom = parameters.get(0).compute();
             if (atom.isMap()) {
-                List<Atom> values = new ArrayList<Atom>();
-                for (Atom value : ((Map<Atom, Atom>) atom.getValue()).values()) {
+                final List<Atom> values = new ArrayList<Atom>();
+                for (final Atom value : ((Map<Atom, Atom>) atom.getValue()).values()) {
                     values.add(value);
                 }
                 return new Atom<Iterable<Atom>>(values);
             } else if (atom.isElement()) {
-                List<Atom> values = new ArrayList<Atom>();
-                Element element = ((Element) atom.getValue());
-                for (String key : element.getPropertyKeys()) {
+                final List<Atom> values = new ArrayList<Atom>();
+                final Element element = ((Element) atom.getValue());
+                for (final String key : element.getPropertyKeys()) {
                     values.add(new Atom(element.getProperty(key)));
                 }
                 return new Atom<Iterable<Atom>>(values);

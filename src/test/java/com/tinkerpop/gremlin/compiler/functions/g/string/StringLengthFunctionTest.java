@@ -10,20 +10,20 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
 public class StringLengthFunctionTest extends BaseTest {
 
     public void testStringLength() {
-        Function<Double> function = new StringLengthFunction();
+        Function<Integer> function = new StringLengthFunction();
         this.stopWatch();
-        Atom<Double> atom = function.compute(createUnaryArgs("marko"));
+        Atom<Integer> atom = function.compute(createUnaryArgs("marko"));
         printPerformance(function.getFunctionName() + " function", 1, "string length of 5", this.stopWatch());
-        assertEquals(atom.getValue(), 5.0);
+        assertEquals(atom.getValue(), new Integer(5));
         this.stopWatch();
         atom = function.compute(createUnaryArgs(""));
         printPerformance(function.getFunctionName() + " function", 1, "string length of 0", this.stopWatch());
-        assertEquals(atom.getValue(), 0.0);
+        assertEquals(atom.getValue(), new Integer(0));
     }
 
     public void testIllegalArguments() {
         try {
-            Function<Double> function = new StringLengthFunction();
+            Function<Integer> function = new StringLengthFunction();
             function.compute(createUnaryArgs());
             assertFalse(true);
         } catch (Exception e) {

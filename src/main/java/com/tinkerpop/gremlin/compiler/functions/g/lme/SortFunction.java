@@ -18,21 +18,22 @@ public class SortFunction extends AbstractFunction<Object> {
     private static final String KEY_VALUE_ERROR = "Must specify whether to sort by key or by value";
 
     public Atom<Object> compute(final List<Operation> parameters) throws RuntimeException {
-        if (parameters.size() == 2) {
+        final int size = parameters.size();
+        if (size == 2) {
             // sort iterable
-            Iterable iterable = (Iterable) parameters.get(0).compute().getValue();
-            Boolean reverse = (Boolean) parameters.get(1).compute().getValue();
-            List sortedList = new ArrayList();
+            final Iterable iterable = (Iterable) parameters.get(0).compute().getValue();
+            final Boolean reverse = (Boolean) parameters.get(1).compute().getValue();
+            final List sortedList = new ArrayList();
             FunctionHelper.fillCollection(iterable, sortedList);
             Collections.sort(sortedList);
             if (reverse)
                 Collections.reverse(sortedList);
             return new Atom<Object>(sortedList);
-        } else if (parameters.size() == 3) {
+        } else if (size == 3) {
             // sort map
-            Map map = (Map) parameters.get(0).compute().getValue();
-            String keyOrValue = (String) parameters.get(1).compute().getValue();
-            Boolean reverse = (Boolean) parameters.get(2).compute().getValue();
+            final Map map = (Map) parameters.get(0).compute().getValue();
+            final String keyOrValue = (String) parameters.get(1).compute().getValue();
+            final Boolean reverse = (Boolean) parameters.get(2).compute().getValue();
             if (keyOrValue.equals(VALUE)) {
                 return new Atom<Object>(sortByValue(map, reverse));
             } else if (keyOrValue.equals(KEY)) {
@@ -51,24 +52,24 @@ public class SortFunction extends AbstractFunction<Object> {
     }
 
     private static Map sortByValue(final Map map, final boolean reverse) {
-        List mapKeys = new ArrayList(map.keySet());
-        List mapValues = new ArrayList(map.values());
+        final List mapKeys = new ArrayList(map.keySet());
+        final List mapValues = new ArrayList(map.values());
         Collections.sort(mapValues);
 
         if (reverse)
             Collections.reverse(mapValues);
 
-        LinkedHashMap sortedMap = new LinkedHashMap();
-        HashMap oldMap = new HashMap(map);
+        final LinkedHashMap sortedMap = new LinkedHashMap();
+        final HashMap oldMap = new HashMap(map);
 
-        Iterator ittyValue = mapValues.iterator();
+        final Iterator ittyValue = mapValues.iterator();
         while (ittyValue.hasNext()) {
-            Object value = ittyValue.next();
-            Iterator ittyKey = mapKeys.iterator();
+            final Object value = ittyValue.next();
+            final Iterator ittyKey = mapKeys.iterator();
             while (ittyKey.hasNext()) {
-                Object key = ittyKey.next();
-                String comp1 = map.get(key).toString();
-                String comp2 = value.toString();
+                final Object key = ittyKey.next();
+                final String comp1 = map.get(key).toString();
+                final String comp2 = value.toString();
                 if (comp1.equals(comp2)) {
                     map.remove(key);
                     mapKeys.remove(key);

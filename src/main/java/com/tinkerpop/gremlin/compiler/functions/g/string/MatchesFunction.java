@@ -16,8 +16,8 @@ public class MatchesFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 2) {
-            String string = (String) parameters.get(0).compute().getValue();
-            String regex = (String) parameters.get(1).compute().getValue();
+            final String string = (String) parameters.get(0).compute().getValue();
+            final String regex = (String) parameters.get(1).compute().getValue();
             return new Atom<Boolean>(string.matches(regex));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

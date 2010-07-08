@@ -51,8 +51,11 @@ public class GremlinTest extends BaseTest {
 
         this.stopWatch();
         String script = "./outE/inV";
-        List<Vertex> results = asList((Iterable) Gremlin.evaluate(script).iterator().next());
-        printPerformance(script, 1, "iterator listed", this.stopWatch());
+        Iterable itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        List<Vertex> results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
         assertEquals(results.size(), 3);
         String name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
@@ -63,8 +66,11 @@ public class GremlinTest extends BaseTest {
 
         this.stopWatch();
         script = "./outE[@label='created' or @label='knows']/inV";
-        results = asList((Iterable) Gremlin.evaluate(script).iterator().next());
-        printPerformance(script, 1, "iterator listed", this.stopWatch());
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
         assertEquals(results.size(), 3);
         name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
@@ -75,22 +81,28 @@ public class GremlinTest extends BaseTest {
 
         this.stopWatch();
         script = "./outE[@label='created']/inV";
-        results = asList((Iterable) Gremlin.evaluate(script).iterator().next());
-        printPerformance(script, 1, "iterator listed", this.stopWatch());
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
         assertEquals(results.size(), 1);
         name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("lop"));
 
         this.stopWatch();
         script = "./outE[@label='knows']/inV";
-        results = asList((Iterable) Gremlin.evaluate(script).iterator().next());
-        printPerformance(script, 1, "iterator listed", this.stopWatch());
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
         assertEquals(results.size(), 2);
         name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("josh") || name.equals("vadas"));
          name = (String) results.get(1).getProperty("name");
         assertTrue(name.equals("josh") || name.equals("vadas"));
 
-
     }
+
 }

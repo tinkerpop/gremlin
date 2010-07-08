@@ -15,7 +15,7 @@ public class FloatFunction extends AbstractFunction<Float> {
 
     public Atom<Float> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
+            final Object object = parameters.get(0).compute().getValue();
             return new Atom<Float>(Float.valueOf(object.toString()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

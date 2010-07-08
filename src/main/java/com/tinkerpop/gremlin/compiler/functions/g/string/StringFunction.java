@@ -16,8 +16,7 @@ public class StringFunction extends AbstractFunction<String> {
 
     public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
-            return new Atom<String>(object.toString());
+            return new Atom<String>(parameters.get(0).compute().getValue().toString());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

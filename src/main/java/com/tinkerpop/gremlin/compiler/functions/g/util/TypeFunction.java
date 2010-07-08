@@ -25,7 +25,7 @@ public class TypeFunction extends AbstractFunction<String> {
     public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
+            final Object object = parameters.get(0).compute().getValue();
             if (object instanceof Iterable)
                 return new Atom<String>(ITERABLE);
             else if (object instanceof Map)

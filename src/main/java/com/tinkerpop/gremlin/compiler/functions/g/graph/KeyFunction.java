@@ -17,14 +17,16 @@ public class KeyFunction extends AbstractFunction<Iterable<Element>> {
     private static final String FUNCTION_NAME = "key";
 
     public Atom<Iterable<Element>> compute(final List<Operation> parameters) throws RuntimeException {
-        if (parameters.size() != 2 && parameters.size() != 3)
+
+        final int size = parameters.size();
+        if (size != 2 && size != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Graph graph = FunctionHelper.getGraph(parameters, 0);
-        String key = null;
-        Object value = null;
+        final Graph graph = FunctionHelper.getGraph(parameters, 0);
+        final String key;
+        final Object value;
 
-        if (parameters.size() == 3) {
+        if (size == 3) {
             key = (String) parameters.get(1).compute().getValue();
             value = parameters.get(2).compute().getValue();
         } else {

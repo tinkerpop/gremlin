@@ -16,8 +16,8 @@ public class ContainsFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 2) {
-            String base = (String) parameters.get(0).compute().getValue();
-            String check = (String) parameters.get(1).compute().getValue();
+            final String base = (String) parameters.get(0).compute().getValue();
+            final String check = (String) parameters.get(1).compute().getValue();
             return new Atom<Boolean>(base.contains(check));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

@@ -19,8 +19,8 @@ public class SumFunction extends AbstractFunction<Double> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
             double sum = 0.0d;
-            for (Operation operation : parameters) {
-                Atom atom = operation.compute();
+            for (final Operation operation : parameters) {
+                final Atom atom = operation.compute();
                 if (atom.isNumber()) {
                     sum = sum + ((Number) atom.getValue()).doubleValue();
                 } else if (atom.isIterable()) {
@@ -35,7 +35,7 @@ public class SumFunction extends AbstractFunction<Double> {
     }
 
     private double countRecursiveIterable(final Iterable<Atom> iterable, double sum) throws RuntimeException {
-        for (Atom atom : iterable) {
+        for (final Atom atom : iterable) {
             if (atom.isNumber()) {
                 sum = sum + ((Number) atom.getValue()).doubleValue();
             } else if (atom.isIterable()) {

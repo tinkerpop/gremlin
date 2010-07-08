@@ -18,8 +18,8 @@ public class AssignFunction extends AbstractFunction<Boolean> {
         if (parameters.size() != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        String variable = (String) parameters.get(0).compute().getValue();
-        Atom atom = parameters.get(1).compute();
+        final String variable = (String) parameters.get(0).compute().getValue();
+        final Atom atom = parameters.get(1).compute();
         GremlinEvaluator.declareVariable(variable, atom);
         return new Atom<Boolean>(true);
     }
