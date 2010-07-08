@@ -26,15 +26,21 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
         final Graph graph = FunctionHelper.getGraph(parameters, 0);
         final Object identifier;
 
-        if (size == 2) {
-            identifier = parameters.get(1).compute().getValue();
-        } else {
+        if (size == 0)
             return new Atom<Vertex>(graph.addVertex(null));
-        }
+        else if (size == 1 && !parameters.get(0).compute().isGraph())
+            identifier = parameters.get(0).compute().getValue();
+        else
+            identifier = parameters.get(1).compute().getValue();
 
         if (identifier instanceof Map) {
             final Map<Atom, Atom> map = (Map<Atom, Atom>) identifier;
-            final Vertex vertex = graph.addVertex(map.get(new Atom<String>(Tokens.ID)).getValue());
+            final Vertex vertex;
+            if (map.containsKey(new Atom<String>(Tokens.ID))) {
+                vertex = graph.addVertex(map.get(new Atom<String>(Tokens.ID)).getValue());
+            } else {
+                vertex = graph.addVertex(null);
+            }
             for (Atom key : map.keySet()) {
                 Object noAtomKey = key.getValue();
                 if (noAtomKey instanceof String && !noAtomKey.equals(Tokens.ID)) {
@@ -44,12 +50,16 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
             return new Atom<Vertex>(vertex);
 
         } else if (identifier instanceof Vertex) {
+            Vertex v = (Vertex) identifier;
+            Vertex u = graph.addVertex(v.getId());
+            for (String key : v.getPropertyKeys()) {
+                u.setProperty(key, v.getProperty(key));
+            }
+            return new Atom<Vertex>(u);
 
         } else {
             return new Atom<Vertex>(graph.addVertex(identifier));
         }
-
-        return new Atom<Vertex>(graph.getVertex(identifier));
     }
 
     public String getFunctionName() {

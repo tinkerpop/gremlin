@@ -25,12 +25,14 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new BooleanFunction());
         functions.add(new NotFunction());
         // graph
+        functions.add(new AddEdgeFunction());
         functions.add(new AddVertexFunction());
         functions.add(new ClearFunction());
         functions.add(new CloseFunction());
-        functions.add(new LoadFunction());
         functions.add(new IdFunction());
         functions.add(new KeyFunction());
+        functions.add(new LoadFunction());
+        functions.add(new RemoveVertexEdgeFunction());
         functions.add(new SaveFunction());
         // io
         functions.add(new PrintFunction());

@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -18,6 +19,14 @@ public class BaseTest extends TestCase {
 
     public void testTrue() {
         assertTrue(true);
+    }
+
+    public List<String> generateUUIDs(int count) {
+        List<String> list = new ArrayList<String>();
+        for(int i=0; i<count; i++) {
+            list.add(UUID.randomUUID().toString());
+        }
+        return list;
     }
 
     public static void printIterator(final Iterator itty) {
