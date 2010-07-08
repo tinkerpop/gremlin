@@ -21,19 +21,7 @@ public class Division extends BinaryOperation {
     }
 
     private Number divide(Number a, Number b) {
-        if (a instanceof Double || b instanceof Double)
-            return a.doubleValue() / b.doubleValue();
-
-        if (a instanceof Float || b instanceof Float)
-            return a.floatValue() / b.floatValue();
-
-        if (a instanceof Long || b instanceof Long)
-            return a.longValue() / b.longValue();
-
-        if (a instanceof Integer || b instanceof Integer)
-            return a.intValue() / b.intValue();
-
-        return null;
+        return a.doubleValue() / b.doubleValue();
     }
 
     public Type getType() {

@@ -40,9 +40,14 @@ public class BaseTest extends TestCase {
     }
 
     public static List asList(final Iterable iterable) {
+        return asList(iterable.iterator());
+    }
+
+    public static List asList(final Iterator iterator) {
         List list = new ArrayList();
-        for (Object object : iterable) {
-            list.add(object);
+        while (iterator.hasNext()) {
+
+            list.add(iterator.next());
         }
         return list;
     }

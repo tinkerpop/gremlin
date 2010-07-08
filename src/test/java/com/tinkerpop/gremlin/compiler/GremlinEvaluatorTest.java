@@ -32,7 +32,6 @@ public class GremlinEvaluatorTest extends BaseTest {
         assertNull(GremlinEvaluator.getVariable("x").getValue());
         assertNull(GremlinEvaluator.getVariable("y").getValue());
         assertNull(GremlinEvaluator.getVariable("z").getValue());
-
     }
 
 }
