@@ -189,6 +189,6 @@ public class GremlinPipesHelper {
     }
 
     public static Iterator pipelineStartPoint(Object point) {
-        return (point instanceof Iterator) ? (Iterator) point : new SingleIterator(point);
+        return (point instanceof Iterable) ? ((Iterable) point).iterator() : new SingleIterator(point);
     }
 }
