@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ExceptFunction extends AbstractFunction<Boolean> {
+public class RetainFunction extends AbstractFunction<Boolean> {
 
-    private static final String FUNCTION_NAME = "except";
+    private static final String FUNCTION_NAME = "retain";
 
     public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() != 2)
@@ -21,15 +21,15 @@ public class ExceptFunction extends AbstractFunction<Boolean> {
         final Atom object = parameters.get(0).compute();
         final Atom check = parameters.get(1).compute();
         if (check.isCollection()) {
-            return new Atom<Boolean>(!((Collection) check.getValue()).contains(object));
+            return new Atom<Boolean>(((Collection) check.getValue()).contains(object));
         } else if (check.isIterable()) {
             for (Atom check2 : (Iterable<Atom>) check.getValue()) {
                 if (check2.equals(object))
-                    return new Atom<Boolean>(false);
+                    return new Atom<Boolean>(true);
             }
-            return new Atom<Boolean>(true);
+            return new Atom<Boolean>(false);
         } else {
-            return new Atom<Boolean>(!check.equals(object));
+            return new Atom<Boolean>(check.equals(object));
         }
     }
 

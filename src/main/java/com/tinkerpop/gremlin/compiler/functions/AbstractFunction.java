@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.compiler.functions;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,6 +26,12 @@ public abstract class AbstractFunction<T> implements Function<T> {
             list.add(operation.compute().getValue());
         }
         return list;
+    }
+
+    protected static void fillCollection(Collection collection, Iterator itty) {
+        while (itty.hasNext()) {
+            collection.add(itty.next());
+        }
     }
 
     protected String createUnsupportedArgumentMessage() {
