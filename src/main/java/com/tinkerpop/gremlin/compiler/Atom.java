@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 import com.tinkerpop.pipes.Pipeline;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +111,10 @@ public class Atom<T> implements Comparable<Atom<T>> {
 
     public boolean isIterable() {
         return isClassOf(Iterable.class);
+    }
+
+    public boolean isCollection() {
+        return isClassOf(Collection.class);
     }
 
     public boolean isFunctionCall() {

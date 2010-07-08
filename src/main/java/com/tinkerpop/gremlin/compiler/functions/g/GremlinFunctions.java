@@ -37,12 +37,14 @@ public class GremlinFunctions extends AbstractFunctions {
         // io
         functions.add(new PrintFunction());
         // lme
-        functions.add(new ListFunction());
         functions.add(new DeduplicateFunction());
-        functions.add(new UnionFunction());
-        functions.add(new ValuesFunction());
+        functions.add(new ExceptFunction());
+        functions.add(new GetFunction());
+        functions.add(new ListFunction());
         functions.add(new MapFunction());
         functions.add(new SortFunction());
+        functions.add(new UnionFunction());
+        functions.add(new ValuesFunction());
         // number
         functions.add(new CountFunction());
         functions.add(new DoubleFunction());
