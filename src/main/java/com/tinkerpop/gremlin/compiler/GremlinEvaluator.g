@@ -95,6 +95,10 @@ options {
 
         if (EMBEDDED) resultList.add(result.getValue());
 
+        if (!(currentOperation instanceof DeclareVariable)) {
+            declareVariable(Tokens.LAST_VARIABLE, result);
+        }
+        
         if (!result.isNull() && DEBUG) {
             if (result.isIterable()) {
                 for(Object o : (Iterable)result.getValue()) {

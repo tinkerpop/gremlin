@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.util.GPathOperation;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 import com.tinkerpop.pipes.Pipeline;
 
@@ -36,12 +37,9 @@ public class Atom<T> implements Comparable<Atom<T>> {
     private Type type = Type.REGULAR;
 
     public enum Type {
-        FUNCTION, VARIABLE, GPATH, REGULAR
+        FUNCTION, VARIABLE, REGULAR
     }
-
-    // required for Pipes support
-    private Object gpathStartPoint;
-
+    
     public Atom(T value) {
         this.value = value;
 
@@ -64,13 +62,7 @@ public class Atom<T> implements Comparable<Atom<T>> {
     }
 
     public T getValue() {
-        if (this.gpathStartPoint != null) {
-            Pipeline pipeline = (Pipeline) this.value;
-            pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(this.gpathStartPoint));
-            return (T) pipeline;
-        } else {
-            return this.value;
-        }
+        return this.value;
     }
 
     public boolean isString() {
@@ -162,12 +154,6 @@ public class Atom<T> implements Comparable<Atom<T>> {
         this.function = fn;
         this.functionParams = params;
         this.type = Type.FUNCTION;
-    }
-
-    public void setStartPoint(Object gpathStartPoint) {
-        this.type = Type.GPATH;
-        this.persistent = true;
-        this.gpathStartPoint = gpathStartPoint;
     }
 
     public void setIdentifier(final boolean flag) {
