@@ -202,10 +202,7 @@ public class Atom<T> implements Comparable<Atom<T>> {
     }
 
     public boolean equals(Object object) {
-        if (object instanceof Atom) {
-            return (((Atom) object).getValue().equals(this.value));
-        }
-        return false;
+        return object instanceof Atom && (((Atom) object).getValue().equals(this.value));
     }
 
     public int compareTo(Atom<T> atom) {

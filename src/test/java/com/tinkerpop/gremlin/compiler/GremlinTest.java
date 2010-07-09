@@ -103,6 +103,14 @@ public class GremlinTest extends BaseTest {
         name = (String) results.get(1).getProperty("name");
         assertTrue(name.equals("josh") || name.equals("vadas"));
 
+        this.stopWatch();
+        script = "./inE";
+        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        results = asList(itty);
+        printPerformance(script, 1, "pipe listed", this.stopWatch());
+        assertEquals(results.size(), 0);
     }
 
     public void testHistoryOnGraph() throws Exception {

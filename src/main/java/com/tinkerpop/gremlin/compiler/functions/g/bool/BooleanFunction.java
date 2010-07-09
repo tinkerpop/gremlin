@@ -16,8 +16,7 @@ public class BooleanFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            final Object object = parameters.get(0).compute().getValue();
-            return new Atom<Boolean>(Boolean.parseBoolean(object.toString()));
+            return new Atom<Boolean>(Boolean.parseBoolean(parameters.get(0).compute().getValue().toString()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

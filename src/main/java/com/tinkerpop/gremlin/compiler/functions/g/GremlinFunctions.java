@@ -26,12 +26,15 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new NotFunction());
         // graph
         functions.add(new AddEdgeFunction());
+        functions.add(new AddIndexFunction());
         functions.add(new AddVertexFunction());
         functions.add(new ClearFunction());
         functions.add(new CloseFunction());
         functions.add(new IdFunction());
+        functions.add(new IndexAllFunction());
         functions.add(new KeyFunction());
         functions.add(new LoadFunction());
+        functions.add(new RemoveIndexFunction());
         functions.add(new RemoveVertexEdgeFunction());
         functions.add(new SaveFunction());
         // io
@@ -49,9 +52,11 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new UnionFunction());
         functions.add(new ValuesFunction());
         // number
+        functions.add(new CeilingFunction());
         functions.add(new CountFunction());
         functions.add(new DoubleFunction());
         functions.add(new FloatFunction());
+        functions.add(new FloorFunction());
         functions.add(new IntegerFunction());
         functions.add(new LongFunction());
         functions.add(new RandomNaturalFunction());
@@ -66,7 +71,10 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new StartsWithFunction());
         functions.add(new StringFunction());
         functions.add(new StringLengthFunction());
+        functions.add(new SubstringAfterFunction());
+        functions.add(new SubstringBeforeFunction());
         functions.add(new SubstringFunction());
+        functions.add(new TranslateFunction());
         // util
         functions.add(new AssignFunction());
         functions.add(new PathFunction());
