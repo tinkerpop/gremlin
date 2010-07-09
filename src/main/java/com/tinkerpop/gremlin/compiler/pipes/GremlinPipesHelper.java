@@ -26,7 +26,7 @@ import java.util.List;
 public class GremlinPipesHelper {
 
     @SuppressWarnings("rawtypes")
-    public static List<Pipe> pipesForStep(Atom token, List<Operation> predicates) throws RuntimeException {
+    public static List<Pipe> pipesForStep(final Atom token, final List<Operation> predicates) throws RuntimeException {
         List<Pipe> pipes = new ArrayList<Pipe>();
         String tokenString = (String) token.getValue();
 
@@ -49,6 +49,16 @@ public class GremlinPipesHelper {
         return pipes;
     }
 
+    public static List<Pipe> pipesForStep(final List<Operation> predicates) {
+        List<Pipe> pipes = new ArrayList<Pipe>();
+        
+        for (int i = 0; i < predicates.size(); i++) {
+            pipes.add(pipeForPredicate(predicates.get(i)));
+        }
+
+        return pipes;
+    }
+    
     @SuppressWarnings("rawtypes")
     private static Pipe pipeForToken(final Atom tokenAtom) {
         Pipe pipe = null;

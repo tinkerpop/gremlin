@@ -59,6 +59,7 @@ tokens {
 
 program	
     :	COMMENT+
+    |   VARIABLE ':=' collection NEWLINE -> ^(VAR VARIABLE collection)
     |   (statement? NEWLINE)+
     |   (collection? NEWLINE)+
 	;
@@ -88,7 +89,7 @@ statement
 	|	function_definition_statement
 	|	include_statement
 	|	gpath_statement
-	|	VARIABLE ':=' statement -> ^(VAR VARIABLE statement)
+    | VARIABLE ':=' statement  -> ^(VAR VARIABLE statement)	
 	|	expression (('and'^|'or'^) expression)*
 	;
 

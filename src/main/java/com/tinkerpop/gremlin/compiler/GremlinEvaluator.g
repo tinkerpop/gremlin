@@ -94,10 +94,6 @@ options {
         Atom result = currentOperation.compute();
 
         if (EMBEDDED) resultList.add(result.getValue());
-
-        if (!(currentOperation instanceof DeclareVariable)) {
-            declareVariable(Tokens.LAST_VARIABLE, result);
-        }
         
         if (!result.isNull() && DEBUG) {
             if (result.isIterable()) {
@@ -114,6 +110,12 @@ options {
                 System.out.println(Tokens.RESULT_PROMPT + result);
             }
         }
+
+        if (!(currentOperation instanceof DeclareVariable)) {
+            declareVariable(Tokens.LAST_VARIABLE, result);
+            System.out.println("\$_last is " + currentOperation);
+        }
+        
     }
 }
 
@@ -124,8 +126,10 @@ program returns [Iterable results]
     : ((statement
      {
         formProgramResult(resultList, $statement.op);
-     } | collection {
-        formProgramResult(resultList, $collection.op);
+     } | col=collection {
+        formProgramResult(resultList, $col.op);
+     } | ^(VAR VARIABLE c=collection) {
+        formProgramResult(resultList, $c.op); 
      }) NEWLINE*)+
      {
         $results = resultList;
@@ -369,10 +373,7 @@ collection returns [Operation op]
             startPoint = tokenAtom.getValue();
         }
 
-        Atom id = new Atom(".");
-        id.setIdentifier(true);
-        
-        pipes.addAll(GremlinPipesHelper.pipesForStep(id, predicates));
+        pipes.addAll(GremlinPipesHelper.pipesForStep(predicates));
 
         $op = new GPathOperation(pipes, startPoint);
     }

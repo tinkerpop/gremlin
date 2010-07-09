@@ -10,10 +10,10 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
  */
 public class DeclareVariable implements Operation {
 
-    private String name;
-    private Operation valueOperation;
+    private final String name;
+    private final Operation valueOperation;
 
-    public DeclareVariable(String name, Operation valueOp) {
+    public DeclareVariable(final String name, final Operation valueOp) {
         this.name = name;
         this.valueOperation = valueOp;
     }
