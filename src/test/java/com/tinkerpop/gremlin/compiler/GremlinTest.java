@@ -180,5 +180,4 @@ public class GremlinTest extends BaseTest {
         assertTrue(name.equals("ripple") || name.equals("lop"));
 
     }
-
 }

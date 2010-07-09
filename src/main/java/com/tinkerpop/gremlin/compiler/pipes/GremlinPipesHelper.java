@@ -15,7 +15,6 @@ import com.tinkerpop.pipes.filter.OrFilterPipe;
 import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -45,24 +44,24 @@ public class GremlinPipesHelper {
         for (int i = 0; i < predicates.size(); i++) {
             pipes.add(pipeForPredicate(predicates.get(i)));
         }
-        
+
         return pipes;
     }
 
     public static List<Pipe> pipesForStep(final List<Operation> predicates) {
         List<Pipe> pipes = new ArrayList<Pipe>();
-        
+
         for (int i = 0; i < predicates.size(); i++) {
             pipes.add(pipeForPredicate(predicates.get(i)));
         }
 
         return pipes;
     }
-    
+
     @SuppressWarnings("rawtypes")
     private static Pipe pipeForToken(final Atom tokenAtom) {
         Pipe pipe = null;
-        
+
         if (tokenAtom.isIdentifier()) {
             String value = (String) tokenAtom.getValue();
 
@@ -92,7 +91,7 @@ public class GremlinPipesHelper {
             // both edges
             if (value.equals("bothE"))
                 pipe = new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES);
-   
+
             // vertex iterator
             if (value.equals("V"))
                 pipe = new GraphElementPipe(GraphElementPipe.ElementType.VERTEX);
@@ -160,9 +159,9 @@ public class GremlinPipesHelper {
             }
 
             if (unaryAtom.isBoolean()) {
-                return new BooleanFilterPipe(!((Boolean)unaryAtom.getValue()));
+                return new BooleanFilterPipe(!((Boolean) unaryAtom.getValue()));
             }
-            
+
             if (unaryAtom.getValue() instanceof Range) {
                 Range range = (Range) unaryAtom.getValue();
                 return new GremlinRangeFilterPipe(range.getMinimum(), range.getMaximum());
@@ -203,6 +202,41 @@ public class GremlinPipesHelper {
     }
 
     public static Iterator pipelineStartPoint(Object point) {
-        return (point instanceof Iterable) ? ((Iterable) point).iterator() : new SingleIterator(point);
+        if (point instanceof Iterable && !(point instanceof Pipe)) {
+            return new AtomStream((Iterable) point);
+        } else if (point instanceof Pipe) {
+            return ((Iterable) point).iterator();
+        } else {
+            return new SingleIterator(point);
+        }
+    }
+
+    public static class AtomStream implements Iterable, Iterator {
+
+        private final Iterator itty;
+
+        public AtomStream(Iterable iterable) {
+            itty = iterable.iterator();
+        }
+
+        public Object next() {
+            final Object object = itty.next();
+            if (object instanceof Atom)
+                return ((Atom) object).getValue();
+            else
+                return object;
+        }
+
+        public boolean hasNext() {
+            return this.itty.hasNext();
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        public Iterator iterator() {
+            return this;
+        }
     }
 }
