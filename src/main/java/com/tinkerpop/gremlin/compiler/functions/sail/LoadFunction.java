@@ -15,6 +15,7 @@ import java.util.List;
 public class LoadFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "load";
+    private final String EMPTY_STRING = "";
 
     public Atom<Boolean> compute(List<Operation> parameters) throws RuntimeException {
 
@@ -45,7 +46,7 @@ public class LoadFunction extends AbstractFunction<Boolean> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
         try {
-            graph.loadRDF(new FileInputStream(file), "", format, baseGraph);
+            graph.loadRDF(new FileInputStream(file), EMPTY_STRING, format, baseGraph);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }

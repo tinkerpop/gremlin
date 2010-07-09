@@ -22,14 +22,14 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class SparqlFunction extends AbstractFunction<List<Atom<Map<Atom<String>,Atom<Vertex>>>>> {
+public class SparqlFunction extends AbstractFunction<List<Atom<Map<Atom<String>, Atom<Vertex>>>>> {
 
     private final String FUNCTION_NAME = "sparql";
     private static final String PREFIX_SPACE = "PREFIX ";
     private static final String COLON_LESSTHAN = ": <";
     private static final String GREATERTHAN_NEWLINE = ">\n";
 
-    public Atom<List<Atom<Map<Atom<String>,Atom<Vertex>>>>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<List<Atom<Map<Atom<String>, Atom<Vertex>>>>> compute(List<Operation> parameters) throws RuntimeException {
 
         final int size = parameters.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0);
@@ -44,7 +44,7 @@ public class SparqlFunction extends AbstractFunction<List<Atom<Map<Atom<String>,
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
 
-        return new Atom<List<Atom<Map<Atom<String>,Atom<Vertex>>>>>(executeSparql(graph, sparqlQuery));
+        return new Atom<List<Atom<Map<Atom<String>, Atom<Vertex>>>>>(executeSparql(graph, sparqlQuery));
     }
 
 
@@ -57,14 +57,14 @@ public class SparqlFunction extends AbstractFunction<List<Atom<Map<Atom<String>,
         return prefixString;
     }
 
-    private static List<Atom<Map<Atom<String>,Atom<Vertex>>>> executeSparql(final SailGraph graph, String sparqlQuery) throws RuntimeException {
+    private static List<Atom<Map<Atom<String>, Atom<Vertex>>>> executeSparql(final SailGraph graph, String sparqlQuery) throws RuntimeException {
         try {
             sparqlQuery = getPrefixes(graph) + sparqlQuery;
-            SPARQLParser parser = new SPARQLParser();
-            ParsedQuery query = parser.parseQuery(sparqlQuery, null);
+            final SPARQLParser parser = new SPARQLParser();
+            final ParsedQuery query = parser.parseQuery(sparqlQuery, null);
             boolean includeInferred = false;
-            CloseableIteration<? extends BindingSet, QueryEvaluationException> results = graph.getSailConnection().evaluate(query.getTupleExpr(), query.getDataset(), new MapBindingSet(), includeInferred);
-            List<Atom<Map<Atom<String>, Atom<Vertex>>>> returnList = new ArrayList<Atom<Map<Atom<String>, Atom<Vertex>>>>();
+            final CloseableIteration<? extends BindingSet, QueryEvaluationException> results = graph.getSailConnection().evaluate(query.getTupleExpr(), query.getDataset(), new MapBindingSet(), includeInferred);
+            final List<Atom<Map<Atom<String>, Atom<Vertex>>>> returnList = new ArrayList<Atom<Map<Atom<String>, Atom<Vertex>>>>();
             try {
                 while (results.hasNext()) {
                     BindingSet bs = results.next();
