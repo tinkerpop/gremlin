@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
+import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 
@@ -21,6 +22,11 @@ public class GPath implements Iterable {
     }
     
     public Iterator iterator() {
+        for(Pipe p : this.pipes) {
+            if (p instanceof GremlinRangeFilterPipe) {
+                ((GremlinRangeFilterPipe) p).reset();
+            }
+        }
         Pipeline pipeline = new Pipeline(this.pipes);
         pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(this.start));
         return pipeline;

@@ -12,9 +12,9 @@ import com.tinkerpop.pipes.SingleIterator;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
-import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -156,7 +156,7 @@ public class GremlinPipesHelper {
 
             if (unaryAtom.isNumber()) {
                 int idx = ((Number) unaryAtom.getValue()).intValue();
-                return (idx == 0) ? new RangeFilterPipe(0, 1) : new RangeFilterPipe(idx, idx + 1);
+                return (idx == 0) ? new GremlinRangeFilterPipe(0, 1) : new GremlinRangeFilterPipe(idx, idx + 1);
             }
 
             if (unaryAtom.isBoolean()) {
@@ -165,7 +165,7 @@ public class GremlinPipesHelper {
             
             if (unaryAtom.getValue() instanceof Range) {
                 Range range = (Range) unaryAtom.getValue();
-                return new RangeFilterPipe(range.getMinimum(), range.getMaximum());
+                return new GremlinRangeFilterPipe(range.getMinimum(), range.getMaximum());
             }
         }
 

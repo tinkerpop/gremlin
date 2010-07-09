@@ -49,9 +49,7 @@ options {
     import com.tinkerpop.pipes.Pipeline;
     import com.tinkerpop.pipes.SingleIterator;
     import com.tinkerpop.pipes.pgm.PropertyPipe;
-    //import com.tinkerpop.pipes.filter.OrFilterPipe;
     import com.tinkerpop.pipes.filter.FilterPipe;
-    //import com.tinkerpop.pipes.util.HasNextPipe;
     import com.tinkerpop.pipes.filter.FutureFilterPipe;
     
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
@@ -113,7 +111,6 @@ options {
 
         if (!(currentOperation instanceof DeclareVariable)) {
             declareVariable(Tokens.LAST_VARIABLE, result);
-            System.out.println("\$_last is " + currentOperation);
         }
         
     }
@@ -129,7 +126,7 @@ program returns [Iterable results]
      } | col=collection {
         formProgramResult(resultList, $col.op);
      } | ^(VAR VARIABLE c=collection) {
-        formProgramResult(resultList, $c.op); 
+        formProgramResult(resultList, new DeclareVariable($VARIABLE.text, $c.op)); 
      }) NEWLINE*)+
      {
         $results = resultList;
