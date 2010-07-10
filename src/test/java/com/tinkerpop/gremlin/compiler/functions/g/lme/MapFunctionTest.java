@@ -19,9 +19,9 @@ import java.util.Map;
 public class MapFunctionTest extends BaseTest {
 
     public void testEmptyMap() {
-        Function<Map<Atom, Atom>> function = new MapFunction();
+        Function<Map> function = new MapFunction();
         this.stopWatch();
-        Atom<Map<Atom, Atom>> atom = function.compute(new ArrayList<Operation>());
+        Atom<Map> atom = function.compute(new ArrayList<Operation>());
         printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
         assertTrue(atom.isMap());
         assertEquals(atom.getValue().size(), 0);
@@ -40,27 +40,27 @@ public class MapFunctionTest extends BaseTest {
     }
 
     public void testTwoEntryMap() {
-        Function<Map<Atom, Atom>> function = new MapFunction();
+        Function<Map> function = new MapFunction();
         this.stopWatch();
-        Atom<Map<Atom, Atom>> atom = function.compute(createUnaryArgs("key1", "value1", "key2", 2));
+        Atom<Map> atom = function.compute(createUnaryArgs("key1", "value1", "key2", 2));
         printPerformance(function.getFunctionName() + " function", 2, "key argument", this.stopWatch());
         assertTrue(atom.isMap());
         assertEquals(atom.getValue().size(), 2);
-        assertEquals(atom.getValue().get(new Atom<String>("key1")).getValue(), "value1");
-        assertEquals(atom.getValue().get(new Atom<String>("key2")).getValue(), 2);
+        assertEquals(atom.getValue().get("key1"), "value1");
+        assertEquals(atom.getValue().get("key2"), 2);
 
     }
 
     public void testElementMap() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Function<Map<Atom, Atom>> function = new MapFunction();
+        Function<Map> function = new MapFunction();
         this.stopWatch();
-        Atom<Map<Atom, Atom>> atom = function.compute(createUnaryArgs(graph.getVertex("1")));
+        Atom<Map> atom = function.compute(createUnaryArgs(graph.getVertex("1")));
         printPerformance(function.getFunctionName() + " function", 1, "vertex argument", this.stopWatch());
         assertTrue(atom.isMap());
         Map<Atom, Atom> map = atom.getValue();
-        assertEquals(map.get(new Atom<String>("name")), new Atom<String>("marko"));
-        assertEquals(map.get(new Atom<String>("age")), new Atom<Integer>(29));
+        assertEquals(map.get("name"), "marko");
+        assertEquals(map.get("age"), 29);
     }
 
     public void testMapGremlin() throws Exception {
@@ -73,7 +73,7 @@ public class MapFunctionTest extends BaseTest {
         List<Vertex> results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
         assertEquals(results.size(), 1);
-        assertEquals(results.get(0), new Atom<String>("v1"));
+        assertEquals(results.get(0), "v1");
 
         this.stopWatch();
         script = "g:map('k1','v1','k2','v2')/@k2";
@@ -83,7 +83,7 @@ public class MapFunctionTest extends BaseTest {
         results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
         assertEquals(results.size(), 1);
-        assertEquals(results.get(0), new Atom<String>("v2"));
+        assertEquals(results.get(0), "v2");
 
         this.stopWatch();
         script = "g:map('k1','v1','k2','v2')/@k3";

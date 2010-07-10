@@ -16,28 +16,28 @@ import java.util.Map;
 public class ValuesFunctionTest extends BaseTest {
 
     public void testMapValues() {
-        Map<Atom, Atom> map = new HashMap<Atom, Atom>();
-        map.put(new Atom<String>("marko"), new Atom<Double>(30.0d));
-        map.put(new Atom<String>("jen"), new Atom<Double>(26.0d));
-        Function<Iterable<Atom>> function = new ValuesFunction();
+        Map map = new HashMap();
+        map.put("marko", 30.0d);
+        map.put("jen", 26.0d);
+        Function<Iterable> function = new ValuesFunction();
         this.stopWatch();
-        Atom<Iterable<Atom>> atom = function.compute(createUnaryArgs(map));
+        Atom<Iterable> atom = function.compute(createUnaryArgs(map));
         printPerformance(function.getFunctionName() + " function", 2, "value map", this.stopWatch());
-        List<Atom> list = asList(atom.getValue());
+        List list = asList(atom.getValue());
         assertEquals(list.size(), 2);
-        assertTrue(list.contains(new Atom<Double>(30.0d)));
-        assertTrue(list.contains(new Atom<Double>(26.0d)));
+        assertTrue(list.contains(30.0d));
+        assertTrue(list.contains(26.0d));
     }
 
     public void testElementValues() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        Function<Iterable<Atom>> function = new ValuesFunction();
+        Function<Iterable> function = new ValuesFunction();
         this.stopWatch();
-        Atom<Iterable<Atom>> atom = function.compute(createUnaryArgs(graph.getVertex("1")));
+        Atom<Iterable> atom = function.compute(createUnaryArgs(graph.getVertex("1")));
         printPerformance(function.getFunctionName() + " function", 2, "value vertex", this.stopWatch());
         List<Atom> list = asList(atom.getValue());
         assertEquals(list.size(), 2);
-        assertTrue(list.contains(new Atom<Integer>(29)));
-        assertTrue(list.contains(new Atom<String>("marko")));
+        assertTrue(list.contains(29));
+        assertTrue(list.contains("marko"));
     }
 }

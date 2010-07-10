@@ -18,10 +18,10 @@ public class GetFunctionTest extends BaseTest {
 
     public void testGet() {
         Function<Object> function = new GetFunction();
-        List<Atom> list = Arrays.asList(new Atom("pavel"), new Atom(23));
-        Map<Atom, Atom> map = new HashMap<Atom, Atom>();
-        map.put(new Atom<String>("name"), new Atom<String>("pavel"));
-        map.put(new Atom<String>("id"), new Atom<String>("23"));
+        List list = Arrays.asList("pavel", 23);
+        Map map = new HashMap();
+        map.put("name", "pavel");
+        map.put("id", "23");
         Vertex vertex = TinkerGraphFactory.createTinkerGraph().getVertex(1);
 
         this.stopWatch();
@@ -30,7 +30,7 @@ public class GetFunctionTest extends BaseTest {
         assertEquals(atom.getValue(), 23);
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(map, new Atom<String>("name")));
+        atom = function.compute(createUnaryArgs(map, "name"));
         printPerformance(function.getFunctionName() + " function", 1, "map get", this.stopWatch());
         assertEquals(atom.getValue(), "pavel");
 

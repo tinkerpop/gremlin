@@ -16,9 +16,9 @@ import java.util.List;
 public class ListFunctionTest extends BaseTest {
 
     public void testEmptyList() {
-        Function<Iterable<Atom>> function = new ListFunction();
+        Function<Iterable> function = new ListFunction();
         this.stopWatch();
-        Atom<Iterable<Atom>> atom = function.compute(new ArrayList<Operation>());
+        Atom<Iterable> atom = function.compute(new ArrayList<Operation>());
         printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
         assertEquals(count(atom.getValue()), 0);
     }

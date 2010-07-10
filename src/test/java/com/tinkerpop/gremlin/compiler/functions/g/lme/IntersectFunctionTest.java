@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class IntersectFunctionTest extends BaseTest {
     public void testIntersect() {
-        Function<Iterable<Atom>> function = new IntersectFunction();
-        List<Atom> list1 = Arrays.asList(new Atom("marko"), new Atom("pavel"), new Atom("peter"), new Atom("josh"));
-        List<Atom> list2 = Arrays.asList(new Atom("marko"), new Atom("pavel"));
-        List<Atom> list3 = Arrays.asList(new Atom("marko"));
+        Function<Iterable> function = new IntersectFunction();
+        List list1 = Arrays.asList("marko","pavel", "peter", "josh");
+        List list2 = Arrays.asList("marko", "pavel");
+        List list3 = Arrays.asList("marko");
 
         this.stopWatch();
-        Atom<Iterable<Atom>> atom = function.compute(createUnaryArgs("marko", "marko", "marko"));
+        Atom<Iterable> atom = function.compute(createUnaryArgs("marko", "marko", "marko"));
         printPerformance(function.getFunctionName() + " function", 3, "singleton intersect", this.stopWatch());
         assertEquals(count(atom.getValue()), 1);
 
@@ -26,25 +26,25 @@ public class IntersectFunctionTest extends BaseTest {
         atom = function.compute(createUnaryArgs(list1, list2));
         printPerformance(function.getFunctionName() + " function", 2, "list intersect", this.stopWatch());
         assertEquals(count(atom.getValue()), 2);
-        for (Atom object : atom.getValue()) {
-            assertTrue(object.getValue().equals("marko") || object.getValue().equals("pavel"));
+        for (Object object : atom.getValue()) {
+            assertTrue(object.equals("marko") || object.equals("pavel"));
         }
 
         this.stopWatch();
         atom = function.compute(createUnaryArgs(list1, list3));
         printPerformance(function.getFunctionName() + " function", 2, "list intersect", this.stopWatch());
         assertEquals(count(atom.getValue()), 1);
-        for (Atom object : atom.getValue()) {
-            assertTrue(object.getValue().equals("marko"));
+        for (Object object : atom.getValue()) {
+            assertTrue(object.equals("marko"));
         }
 
         this.stopWatch();
         atom = function.compute(createUnaryArgs(list1, list1));
         printPerformance(function.getFunctionName() + " function", 2, "list intersect", this.stopWatch());
         assertEquals(count(atom.getValue()), 4);
-        for (Atom object : atom.getValue()) {
-            assertTrue(object.getValue().equals("marko") || object.getValue().equals("pavel") ||
-                    object.getValue().equals("peter") || object.getValue().equals("josh"));
+        for (Object object : atom.getValue()) {
+            assertTrue(object.equals("marko") || object.equals("pavel") ||
+                    object.equals("peter") || object.equals("josh"));
         }
 
         try {

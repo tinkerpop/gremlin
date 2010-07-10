@@ -13,17 +13,17 @@ import java.util.List;
 public class UnionFunctionTest extends BaseTest {
 
     public void testUnionList() {
-        Function<Iterable<Atom>> function = new UnionFunction();
+        Function<Iterable> function = new UnionFunction();
         this.stopWatch();
-        Atom<Iterable<Atom>> atom = function.compute(createUnaryArgs(1.0d, 2.0d, 3.0d, 4.0d));
+        Atom<Iterable> atom = function.compute(createUnaryArgs(1.0d, 2.0d, 3.0d, 4.0d));
         printPerformance(function.getFunctionName() + " function", 4, "primitive arguments", this.stopWatch());
-        List<Atom> list = asList(atom.getValue());
+        List list = asList(atom.getValue());
         assertEquals(list.size(), 4);
 
-        assertTrue(list.contains(new Atom<Double>(1.0d)));
-        assertTrue(list.contains(new Atom<Double>(2.0d)));
-        assertTrue(list.contains(new Atom<Double>(3.0d)));
-        assertTrue(list.contains(new Atom<Double>(4.0d)));
+        assertTrue(list.contains(1.0d));
+        assertTrue(list.contains(2.0d));
+        assertTrue(list.contains(3.0d));
+        assertTrue(list.contains(4.0d));
 
         function = new UnionFunction();
         this.stopWatch();
@@ -31,8 +31,8 @@ public class UnionFunctionTest extends BaseTest {
         printPerformance(function.getFunctionName() + " function", 3, "list arguments", this.stopWatch());
         list = asList(atom.getValue());
         assertEquals(list.size(), 2);
-        assertTrue(list.contains(new Atom<Double>(1.0d)));
-        assertTrue(list.contains(new Atom<Double>(2.0d)));
+        assertTrue(list.contains(1.0d));
+        assertTrue(list.contains(2.0d));
 
     }
 }

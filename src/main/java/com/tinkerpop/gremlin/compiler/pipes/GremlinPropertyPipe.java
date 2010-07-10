@@ -23,7 +23,7 @@ public class GremlinPropertyPipe<E> extends AbstractPipe<Object, E> {
         if (start instanceof Element) {
             return (E) ((Element) start).getProperty((String) this.key);
         } else if (start instanceof Map) {
-            return (E) ((Map) start).get(new Atom(this.key));
+            return (E) ((Map) start).get(this.key);
         } else {
             throw new RuntimeException(ILLEGAL_START);
         }

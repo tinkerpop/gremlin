@@ -20,11 +20,11 @@ public class SumFunction extends AbstractFunction<Double> {
         } else {
             double sum = 0.0d;
             for (final Operation operation : parameters) {
-                final Atom atom = operation.compute();
-                if (atom.isNumber()) {
-                    sum = sum + ((Number) atom.getValue()).doubleValue();
-                } else if (atom.isIterable()) {
-                    sum = sum + countRecursiveIterable((Iterable<Atom>) atom.getValue(), 0.0d);
+                final Object object = operation.compute().getValue();
+                if (object instanceof Number) {
+                    sum = sum + ((Number) object).doubleValue();
+                } else if (object instanceof Iterable) {
+                    sum = sum + countRecursiveIterable((Iterable) object, 0.0d);
                 } else {
                     throw new RuntimeException(this.createUnsupportedArgumentMessage());
                 }
@@ -34,12 +34,12 @@ public class SumFunction extends AbstractFunction<Double> {
         }
     }
 
-    private double countRecursiveIterable(final Iterable<Atom> iterable, double sum) throws RuntimeException {
-        for (final Atom atom : iterable) {
-            if (atom.isNumber()) {
-                sum = sum + ((Number) atom.getValue()).doubleValue();
-            } else if (atom.isIterable()) {
-                sum = countRecursiveIterable((Iterable<Atom>) atom.getValue(), sum);
+    private double countRecursiveIterable(final Iterable iterable, double sum) throws RuntimeException {
+        for (final Object object : iterable) {
+            if (object instanceof Number) {
+                sum = sum + ((Number) object).doubleValue();
+            } else if (object instanceof Iterable) {
+                sum = countRecursiveIterable((Iterable) object, sum);
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
             }

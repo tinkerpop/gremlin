@@ -12,37 +12,37 @@ import java.util.Set;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IntersectFunction extends AbstractFunction<Iterable<Atom>> {
+public class IntersectFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "intersect";
 
-    public Atom<Iterable<Atom>> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() < 2) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            Set<Atom> set = null;
+            Set set = null;
             for (Operation operation : parameters) {
-                final Atom atom = operation.compute();
-                if (atom.isIterable()) {
+                final Object object = operation.compute().getValue();
+                if (object instanceof Iterable) {
                     if (null == set) {
-                        set = new HashSet<Atom>();
-                        fillCollection(set, ((Iterable) atom.getValue()).iterator());
+                        set = new HashSet();
+                        fillCollection(set, ((Iterable) object).iterator());
                     } else {
-                        Set<Atom> temp = new HashSet<Atom>();
-                        fillCollection(temp, ((Iterable) atom.getValue()).iterator());
+                        Set temp = new HashSet();
+                        fillCollection(temp, ((Iterable) object).iterator());
                         set.retainAll(temp);
                     }
                 } else {
                     if (null == set) {
-                        set = new HashSet<Atom>();
-                        set.add(atom);
+                        set = new HashSet();
+                        set.add(object);
                     } else {
-                        set.retainAll(Arrays.asList(atom));
+                        set.retainAll(Arrays.asList(object));
                     }
                 }
             }
-            return new Atom<Iterable<Atom>>(set);
+            return new Atom<Iterable>(set);
         }
     }
 

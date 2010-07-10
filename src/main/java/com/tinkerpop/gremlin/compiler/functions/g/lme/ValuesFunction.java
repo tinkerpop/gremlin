@@ -12,29 +12,25 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ValuesFunction extends AbstractFunction<Iterable<Atom>> {
+public class ValuesFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "values";
 
-    public Atom<Iterable<Atom>> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() != 1) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            final Atom atom = parameters.get(0).compute();
-            if (atom.isMap()) {
-                final List<Atom> values = new ArrayList<Atom>();
-                for (final Atom value : ((Map<Atom, Atom>) atom.getValue()).values()) {
-                    values.add(value);
-                }
-                return new Atom<Iterable<Atom>>(values);
-            } else if (atom.isElement()) {
-                final List<Atom> values = new ArrayList<Atom>();
-                final Element element = ((Element) atom.getValue());
+            final Object object = parameters.get(0).compute().getValue();
+            if (object instanceof Map) {
+                return new Atom<Iterable>(((Map) object).values());
+            } else if (object instanceof Element) {
+                final List values = new ArrayList();
+                final Element element = (Element) object;
                 for (final String key : element.getPropertyKeys()) {
-                    values.add(new Atom(element.getProperty(key)));
+                    values.add(element.getProperty(key));
                 }
-                return new Atom<Iterable<Atom>>(values);
+                return new Atom<Iterable>(values);
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
             }

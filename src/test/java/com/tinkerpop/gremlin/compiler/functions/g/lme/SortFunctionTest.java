@@ -15,75 +15,75 @@ import java.util.Map;
 public class SortFunctionTest extends BaseTest {
 
     public void testSortFunctionMap() {
-        Map<Atom, Atom> map = new HashMap<Atom, Atom>();
-        map.put(new Atom<String>("marko"), new Atom<Integer>(2));
-        map.put(new Atom<String>("josh"), new Atom<Integer>(1));
-        map.put(new Atom<String>("peter"), new Atom<Integer>(3));
+        Map map = new HashMap();
+        map.put("marko", 2);
+        map.put("josh", 1);
+        map.put("peter", 3);
         Function<Object> function = new SortFunction();
         this.stopWatch();
-        Map<Atom, Atom> sortedMap = (Map<Atom, Atom>) (function.compute(createUnaryArgs(map, "value", true))).getValue();
+        Map sortedMap = (Map) (function.compute(createUnaryArgs(map, "value", true))).getValue();
         printPerformance(function.getFunctionName() + " function", 3, "entry map (reverse by value)", this.stopWatch());
-        assertEquals(map.get(new Atom<String>("marko")), new Atom<Integer>(2));
-        assertEquals(map.get(new Atom<String>("josh")), new Atom<Integer>(1));
-        assertEquals(map.get(new Atom<String>("peter")), new Atom<Integer>(3));
+        assertEquals(map.get("marko"), 2);
+        assertEquals(map.get("josh"), 1);
+        assertEquals(map.get("peter"), 3);
 
         List values = new ArrayList(sortedMap.values());
-        assertEquals(values.get(0), new Atom<Integer>(3));
-        assertEquals(values.get(1), new Atom<Integer>(2));
-        assertEquals(values.get(2), new Atom<Integer>(1));
+        assertEquals(values.get(0), 3);
+        assertEquals(values.get(1), 2);
+        assertEquals(values.get(2), 1);
 
         this.stopWatch();
-        sortedMap = (Map<Atom, Atom>) (function.compute(createUnaryArgs(map, "value", false))).getValue();
+        sortedMap = (Map) (function.compute(createUnaryArgs(map, "value", false))).getValue();
         printPerformance(function.getFunctionName() + " function", 3, "entry map (normal by value)", this.stopWatch());
         values = new ArrayList(sortedMap.values());
-        assertEquals(values.get(0), new Atom<Integer>(1));
-        assertEquals(values.get(1), new Atom<Integer>(2));
-        assertEquals(values.get(2), new Atom<Integer>(3));
+        assertEquals(values.get(0), 1);
+        assertEquals(values.get(1), 2);
+        assertEquals(values.get(2), 3);
 
         this.stopWatch();
-        sortedMap = (Map<Atom, Atom>) (function.compute(createUnaryArgs(map, "key", true))).getValue();
+        sortedMap = (Map) (function.compute(createUnaryArgs(map, "key", true))).getValue();
         printPerformance(function.getFunctionName() + " function", 3, "entry map (reverse by key)", this.stopWatch());
         List keys = new ArrayList(sortedMap.keySet());
-        assertEquals(keys.get(0), new Atom<String>("peter"));
-        assertEquals(keys.get(1), new Atom<String>("marko"));
-        assertEquals(keys.get(2), new Atom<String>("josh"));
+        assertEquals(keys.get(0), "peter");
+        assertEquals(keys.get(1), "marko");
+        assertEquals(keys.get(2), "josh");
 
         this.stopWatch();
-        sortedMap = (Map<Atom, Atom>) (function.compute(createUnaryArgs(map, "key", false))).getValue();
+        sortedMap = (Map) (function.compute(createUnaryArgs(map, "key", false))).getValue();
         printPerformance(function.getFunctionName() + " function", 3, "entry map (normal by key)", this.stopWatch());
         keys = new ArrayList(sortedMap.keySet());
-        assertEquals(keys.get(0), new Atom<String>("josh"));
-        assertEquals(keys.get(1), new Atom<String>("marko"));
-        assertEquals(keys.get(2), new Atom<String>("peter"));
+        assertEquals(keys.get(0), "josh");
+        assertEquals(keys.get(1), "marko");
+        assertEquals(keys.get(2), "peter");
 
-        assertEquals(map.get(new Atom<String>("marko")), new Atom<Integer>(2));
-        assertEquals(map.get(new Atom<String>("josh")), new Atom<Integer>(1));
-        assertEquals(map.get(new Atom<String>("peter")), new Atom<Integer>(3));
+        assertEquals(map.get("marko"), 2);
+        assertEquals(map.get("josh"), 1);
+        assertEquals(map.get("peter"), 3);
     }
 
     public void testSortFunctionList() {
-        List<Atom<Integer>> list = new ArrayList<Atom<Integer>>();
-        list.add(new Atom<Integer>(2));
-        list.add(new Atom<Integer>(1));
-        list.add(new Atom<Integer>(3));
+        List list = new ArrayList();
+        list.add(2);
+        list.add(1);
+        list.add(3);
 
         Function<Object> function = new SortFunction();
         this.stopWatch();
-        List sortedList = (List<Atom>) (function.compute(createUnaryArgs(list, true))).getValue();
+        List sortedList = (List) (function.compute(createUnaryArgs(list, true))).getValue();
         printPerformance(function.getFunctionName() + " function", 3, "item list (reverse)", this.stopWatch());
-        assertEquals(sortedList.get(0), new Atom<Integer>(3));
-        assertEquals(sortedList.get(1), new Atom<Integer>(2));
-        assertEquals(sortedList.get(2), new Atom<Integer>(1));
+        assertEquals(sortedList.get(0), 3);
+        assertEquals(sortedList.get(1), 2);
+        assertEquals(sortedList.get(2), 1);
 
         this.stopWatch();
-        sortedList = (List<Atom>) (function.compute(createUnaryArgs(list, false))).getValue();
+        sortedList = (List) (function.compute(createUnaryArgs(list, false))).getValue();
         printPerformance(function.getFunctionName() + " function", 3, "item list (normal)", this.stopWatch());
-        assertEquals(sortedList.get(0), new Atom<Integer>(1));
-        assertEquals(sortedList.get(1), new Atom<Integer>(2));
-        assertEquals(sortedList.get(2), new Atom<Integer>(3));
+        assertEquals(sortedList.get(0), 1);
+        assertEquals(sortedList.get(1), 2);
+        assertEquals(sortedList.get(2), 3);
 
-        assertEquals(list.get(0), new Atom<Integer>(2));
-        assertEquals(list.get(1), new Atom<Integer>(1));
-        assertEquals(list.get(2), new Atom<Integer>(3));
+        assertEquals(list.get(0), 2);
+        assertEquals(list.get(1), 1);
+        assertEquals(list.get(2), 3);
     }
 }

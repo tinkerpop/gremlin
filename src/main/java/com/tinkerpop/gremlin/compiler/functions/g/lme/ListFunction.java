@@ -10,18 +10,18 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class ListFunction extends AbstractFunction<Iterable<Atom>> {
+public class ListFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "list";
 
-    public Atom<Iterable<Atom>> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> parameters) throws RuntimeException {
 
-        final List<Atom> list = new ArrayList<Atom>();
+        final List<Object> list = new ArrayList<Object>();
         for (Operation operation : parameters) {
-            list.add(operation.compute());
+            list.add(operation.compute().getValue());
         }
 
-        return new Atom<Iterable<Atom>>(list);
+        return new Atom<Iterable>(list);
     }
 
     public String getFunctionName() {

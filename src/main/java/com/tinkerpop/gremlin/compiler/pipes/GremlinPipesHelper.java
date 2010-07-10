@@ -202,9 +202,10 @@ public class GremlinPipesHelper {
     }
 
     public static Iterator pipelineStartPoint(Object point) {
-        if (point instanceof Iterable && !(point instanceof Pipe)) {
-            return new AtomStream((Iterable) point);
-        } else if (point instanceof Pipe) {
+        //if (point instanceof Iterable && !(point instanceof Pipe)) {
+        //    return new AtomStream((Iterable) point);
+        //} else 
+        if (point instanceof Iterable) {
             return ((Iterable) point).iterator();
         } else {
             return new SingleIterator(point);

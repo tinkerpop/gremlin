@@ -21,11 +21,11 @@ public class GetFunction extends AbstractFunction<Object> {
 
         List<Object> objects = generateObjects(parameters);
         if (objects.get(0) instanceof Map) {
-            return ((Map<Atom, Atom>) objects.get(0)).get(objects.get(1));
+            return new Atom(((Map) objects.get(0)).get(objects.get(1)));
         } else if (objects.get(0) instanceof List) {
-            return ((List<Atom>) objects.get(0)).get((Integer) objects.get(1));
+            return new Atom(((List) objects.get(0)).get((Integer) objects.get(1)));
         } else if (objects.get(0) instanceof Element) {
-            return new Atom<Object>(((Element) objects.get(0)).getProperty((String) objects.get(1)));
+            return new Atom(((Element) objects.get(0)).getProperty((String) objects.get(1)));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

@@ -18,12 +18,12 @@ public class ExceptFunction extends AbstractFunction<Boolean> {
         if (parameters.size() != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Atom object = parameters.get(0).compute();
-        final Atom check = parameters.get(1).compute();
-        if (check.isCollection()) {
-            return new Atom<Boolean>(!((Collection) check.getValue()).contains(object));
-        } else if (check.isIterable()) {
-            for (Atom check2 : (Iterable<Atom>) check.getValue()) {
+        final Object object = parameters.get(0).compute().getValue();
+        final Object check = parameters.get(1).compute().getValue();
+        if (check instanceof Collection) {
+            return new Atom<Boolean>(!((Collection) check).contains(object));
+        } else if (check instanceof Iterable) {
+            for (Object check2 : (Iterable) check) {
                 if (check2.equals(object))
                     return new Atom<Boolean>(false);
             }

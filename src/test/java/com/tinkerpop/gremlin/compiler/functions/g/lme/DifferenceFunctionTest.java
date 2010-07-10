@@ -13,13 +13,13 @@ import java.util.List;
 public class DifferenceFunctionTest extends BaseTest {
 
     public void testDifference() {
-        Function<Iterable<Atom>> function = new DifferenceFunction();
-        List<Atom> list1 = Arrays.asList(new Atom("marko"), new Atom("pavel"), new Atom("peter"), new Atom("josh"));
-        List<Atom> list2 = Arrays.asList(new Atom("marko"), new Atom("pavel"));
-        List<Atom> list3 = Arrays.asList(new Atom("marko"));
+        Function<Iterable> function = new DifferenceFunction();
+        List list1 = Arrays.asList("marko", "pavel", "peter", "josh");
+        List list2 = Arrays.asList("marko", "pavel");
+        List list3 = Arrays.asList("marko");
 
         this.stopWatch();
-        Atom<Iterable<Atom>> atom = function.compute(createUnaryArgs("marko", "marko", "marko"));
+        Atom<Iterable> atom = function.compute(createUnaryArgs("marko", "marko", "marko"));
         printPerformance(function.getFunctionName() + " function", 3, "singleton difference", this.stopWatch());
         assertEquals(count(atom.getValue()), 0);
 
@@ -27,16 +27,16 @@ public class DifferenceFunctionTest extends BaseTest {
         atom = function.compute(createUnaryArgs(list1, list2));
         printPerformance(function.getFunctionName() + " function", 2, "list difference", this.stopWatch());
         assertEquals(count(atom.getValue()), 2);
-        for (Atom object : atom.getValue()) {
-            assertTrue(object.getValue().equals("peter") || object.getValue().equals("josh"));
+        for (Object object : atom.getValue()) {
+            assertTrue(object.equals("peter") || object.equals("josh"));
         }
 
         this.stopWatch();
         atom = function.compute(createUnaryArgs(list1, list3));
         printPerformance(function.getFunctionName() + " function", 2, "list difference", this.stopWatch());
         assertEquals(count(atom.getValue()), 3);
-        for (Atom object : atom.getValue()) {
-            assertTrue(object.getValue().equals("pavel") || object.getValue().equals("peter") || object.getValue().equals("josh"));
+        for (Object object : atom.getValue()) {
+            assertTrue(object.equals("pavel") || object.equals("peter") || object.equals("josh"));
         }
 
         this.stopWatch();

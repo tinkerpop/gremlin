@@ -22,9 +22,9 @@ public class SparqlFunctionTest extends BaseTest {
     public void testSparql() {
         SailGraph graph = SailGraphFactory.createTinkerGraph(new MemoryStore());
         GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        Function<List<Atom<Map<Atom<String>, Atom<Vertex>>>>> function = new SparqlFunction();
+        Function<List<Map<String, Vertex>>> function = new SparqlFunction();
         this.stopWatch();
-        Atom<List<Atom<Map<Atom<String>, Atom<Vertex>>>>> atom = function.compute(createUnaryArgs(graph, "SELECT ?x ?y WHERE { ?x tg:knows ?y }"));
+        Atom<List<Map<String,Vertex>>> atom = function.compute(createUnaryArgs(graph, "SELECT ?x ?y WHERE { ?x tg:knows ?y }"));
         printPerformance(function.getFunctionName() + " function", 2, "binding values", this.stopWatch());
         System.out.println(atom);
         graph.shutdown();

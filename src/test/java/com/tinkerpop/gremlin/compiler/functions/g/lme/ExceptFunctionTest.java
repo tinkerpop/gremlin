@@ -14,8 +14,8 @@ public class ExceptFunctionTest extends BaseTest {
 
     public void testExcept() {
         Function<Boolean> function = new ExceptFunction();
-        List<Atom> list = Arrays.asList(new Atom("pavel"), new Atom(23));
-        assertTrue(list.contains(new Atom("pavel")));
+        List list = Arrays.asList("pavel",23);
+        assertTrue(list.contains("pavel"));
 
         this.stopWatch();
         Atom<Boolean> atom = function.compute(createUnaryArgs("pavel", list));
