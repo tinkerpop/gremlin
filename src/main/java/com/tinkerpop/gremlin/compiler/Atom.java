@@ -6,9 +6,6 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.operations.util.GPathOperation;
-import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
-import com.tinkerpop.pipes.Pipeline;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +14,7 @@ import java.util.Map;
 /**
  * @author Pavel A. Yaskevich
  */
-public class Atom<T> implements Comparable<Atom<T>> {
+public class Atom<T> {
 
     private T value;
 
@@ -39,7 +36,7 @@ public class Atom<T> implements Comparable<Atom<T>> {
     public enum Type {
         FUNCTION, VARIABLE, REGULAR
     }
-    
+
     public Atom(T value) {
         this.value = value;
 
@@ -191,14 +188,14 @@ public class Atom<T> implements Comparable<Atom<T>> {
         return object instanceof Atom && (((Atom) object).getValue().equals(this.value));
     }
 
-    public int compareTo(Atom<T> atom) {
+    /*public int compareTo(Atom<T> atom) {
         Object object = atom.getValue();
         if (this.value instanceof Comparable && object instanceof Comparable) {
             return ((Comparable) this.value).compareTo(object);
         } else {
             return 0;
         }
-    }
+    }*/
 
     public int hashCode() {
         return this.value.hashCode();

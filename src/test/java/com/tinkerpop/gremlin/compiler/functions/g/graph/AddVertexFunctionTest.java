@@ -36,9 +36,9 @@ public class AddVertexFunctionTest extends BaseTest {
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "21");
 
-        Map<Atom, Atom> map = new HashMap<Atom, Atom>();
-        map.put(new Atom<String>("name"), new Atom<String>("marko"));
-        map.put(new Atom<String>(Tokens.ID), new Atom<String>("22"));
+        Map map = new HashMap();
+        map.put("name", "marko");
+        map.put(Tokens.ID, "22");
         this.stopWatch();
         atom = function.compute(createUnaryArgs(map));
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
@@ -47,9 +47,9 @@ public class AddVertexFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getProperty("name"), "marko");
         Vertex vertexMarko = atom.getValue();
 
-        map = new HashMap<Atom, Atom>();
-        map.put(new Atom<String>("name"), new Atom<String>("pavel"));
-        map.put(new Atom<String>(Tokens.ID), new Atom<String>("23"));
+        map = new HashMap();
+        map.put("name", "pavel");
+        map.put(Tokens.ID, "23");
         this.stopWatch();
         atom = function.compute(createUnaryArgs(graph, map));
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());

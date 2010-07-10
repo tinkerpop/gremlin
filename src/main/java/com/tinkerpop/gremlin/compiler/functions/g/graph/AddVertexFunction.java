@@ -34,17 +34,16 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
             identifier = parameters.get(1).compute().getValue();
 
         if (identifier instanceof Map) {
-            final Map<Atom, Atom> map = (Map<Atom, Atom>) identifier;
+            final Map map = (Map) identifier;
             final Vertex vertex;
-            if (map.containsKey(new Atom<String>(Tokens.ID))) {
-                vertex = graph.addVertex(map.get(new Atom<String>(Tokens.ID)).getValue());
+            if (map.containsKey(Tokens.ID)) {
+                vertex = graph.addVertex(map.get(Tokens.ID));
             } else {
                 vertex = graph.addVertex(null);
             }
-            for (Atom key : map.keySet()) {
-                Object noAtomKey = key.getValue();
-                if (noAtomKey instanceof String && !noAtomKey.equals(Tokens.ID)) {
-                    vertex.setProperty((String) noAtomKey, map.get(key).getValue());
+            for (Object key : map.keySet()) {
+                if (key instanceof String && !key.equals(Tokens.ID)) {
+                    vertex.setProperty((String) key, map.get(key));
                 }
             }
             return new Atom<Vertex>(vertex);

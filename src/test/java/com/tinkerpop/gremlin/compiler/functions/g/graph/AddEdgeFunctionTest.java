@@ -40,8 +40,8 @@ public class AddEdgeFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getLabel(), "co-developer");
 
 
-        Map<Atom, Atom> map = new HashMap<Atom, Atom>();
-        map.put(new Atom<String>("weight"), new Atom<Double>(0.5d));
+        Map map = new HashMap();
+        map.put("weight", 0.5d);
         this.stopWatch();
         atom = function.compute(createUnaryArgs(map, graph.getVertex("1"), "co-worker", graph.getVertex("2")));
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
