@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import junit.framework.TestCase;
+import org.antlr.runtime.RecognitionException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,7 +24,7 @@ public class BaseTest extends TestCase {
 
     public List<String> generateUUIDs(int count) {
         List<String> list = new ArrayList<String>();
-        for(int i=0; i<count; i++) {
+        for (int i = 0; i < count; i++) {
             list.add(UUID.randomUUID().toString());
         }
         return list;
@@ -60,6 +61,30 @@ public class BaseTest extends TestCase {
         }
         return list;
     }
+
+    public List evaluateGremlinScriptIterable(String script, boolean printStatistics) throws RecognitionException {
+        this.stopWatch();
+        Iterable itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        if (printStatistics)
+            printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        this.stopWatch();
+        // todo: make a "illegal pipe constructed error"
+        if (null == itty)
+            return null;
+        List results = asList(itty);
+        if (printStatistics)
+            printPerformance(script, 1, "pipe listed", this.stopWatch());
+        return results;
+    }
+
+    public Object evaluateGremlinScriptPrimitive(String script, boolean printStatistics) throws RecognitionException {
+        this.stopWatch();
+        Object object = Gremlin.evaluate(script).iterator().next();
+        if (printStatistics)
+            printPerformance(script, 1, "pipe evaluated", this.stopWatch());
+        return object;
+    }
+
 
     public double stopWatch() {
         if (this.timer == -1.0d) {
