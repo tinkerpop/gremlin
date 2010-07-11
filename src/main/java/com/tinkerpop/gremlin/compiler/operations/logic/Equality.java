@@ -13,25 +13,10 @@ public class Equality extends BinaryOperation {
         super(operands);
     }
 
-    public Atom compute() {
-        Atom a = this.operands[0].compute();
-        Atom b = this.operands[1].compute();
-
-        Boolean exprResult;
-
-        if (!a.isNumber() && !b.isNumber()) {
-            String aString = (String) a.getValue();
-            String bString = (String) b.getValue();
-
-            exprResult = (aString.equals(bString));
-        } else {
-            Double aDouble = ((Number) a.getValue()).doubleValue();
-            Double bDouble = ((Number) b.getValue()).doubleValue();
-
-            exprResult = (aDouble.compareTo(bDouble) == 0);
-        }
-
-        return new Atom<Boolean>(exprResult);
+    public Atom<Boolean> compute() {
+        final Object a = this.operands[0].compute().getValue();
+        final Object b = this.operands[1].compute().getValue();
+        return new Atom<Boolean>(a.equals(b));
     }
 
     public Type getType() {

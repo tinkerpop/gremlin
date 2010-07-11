@@ -13,7 +13,7 @@ public class Or extends BinaryOperation {
         super(operands);
     }
 
-    public Atom compute() {
+    public Atom<Boolean> compute() {
         Type aType = this.operands[0].getType();
         Type bType = this.operands[1].getType();
 
@@ -32,7 +32,7 @@ public class Or extends BinaryOperation {
             exprResult = (!resultA.isNull() || !resultB.isNull());
         }
 
-        return new Atom(exprResult);
+        return new Atom<Boolean>(exprResult);
     }
 
     public Type getType() {

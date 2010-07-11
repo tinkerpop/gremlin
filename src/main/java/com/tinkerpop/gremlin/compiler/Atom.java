@@ -138,6 +138,10 @@ public class Atom<T> {
         return this.property;
     }
 
+    public boolean isComparable() {
+        return isClassOf(Comparable.class);
+    }
+
     public void setPersistent(final boolean flag) {
         this.persistent = flag;
     }

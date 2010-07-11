@@ -14,10 +14,15 @@ public class GreaterThan extends BinaryOperation {
     }
 
     public Atom<Boolean> compute() {
-        Number a = (Number) this.operands[0].compute().getValue();
-        Number b = (Number) this.operands[1].compute().getValue();
+        Object a = this.operands[0].compute().getValue();
+        Object b = this.operands[1].compute().getValue();
+        if (a instanceof Comparable) {
+            int comparison = ((Comparable) a).compareTo(b);
+            return new Atom<Boolean>(comparison > 0);
+        } else {
+            throw new RuntimeException(a + " and " + b + " are incomparable objects");
+        }
 
-        return new Atom<Boolean>((a.doubleValue() > b.doubleValue()));
     }
 
     public Type getType() {

@@ -13,14 +13,16 @@ public class GreaterThanOrEqual extends BinaryOperation {
         super(operands);
     }
 
-    public Atom<Boolean> compute() {
-        Atom aAtom = this.operands[0].compute();
-        Atom bAtom = this.operands[1].compute();
-        
-        Double a = ((Number) aAtom.getValue()).doubleValue();
-        Double b = ((Number) bAtom.getValue()).doubleValue();
+ public Atom<Boolean> compute() {
+        Object a = this.operands[0].compute().getValue();
+        Object b = this.operands[1].compute().getValue();
+        if (a instanceof Comparable) {
+            int comparison = ((Comparable) a).compareTo(b);
+            return new Atom<Boolean>(comparison >= 0);
+        } else {
+            throw new RuntimeException(a + " and " + b + " are incomparable objects");
+        }
 
-        return new Atom<Boolean>(((a > b) || (a.compareTo(b) == 0)));
     }
 
     public Type getType() {
