@@ -107,7 +107,7 @@ public class Atom<T> {
     }
 
     public boolean isFunctionCall() {
-        return null != this.function;
+        return this.type == Type.FUNCTION;
     }
 
     public boolean isGraph() {
@@ -203,6 +203,15 @@ public class Atom<T> {
 
     public String toString() {
         return (this.value == null) ? "null" : this.value.toString();
+    }
+
+    public Function getFunctionObject()
+    {
+        return this.function;
+    }
+
+    public List<Operation> getFunctionParameters() {
+        return this.functionParams;
     }
 
 }

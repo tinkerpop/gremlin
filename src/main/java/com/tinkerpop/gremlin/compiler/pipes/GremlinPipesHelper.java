@@ -2,8 +2,10 @@ package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
+import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
 import com.tinkerpop.gremlin.compiler.types.Range;
 import com.tinkerpop.pipes.IdentityPipe;
@@ -113,6 +115,57 @@ public class GremlinPipesHelper {
         if (predicate instanceof BinaryOperation) {
             Operation[] operands = ((BinaryOperation) predicate).getOperands();
 
+            // checking if there is a function call
+            if (operands[0] instanceof UnaryOperation || operands[1] instanceof UnaryOperation) {
+                UnaryOperation operandA = (UnaryOperation) operands[0];
+                UnaryOperation operandB = (UnaryOperation) operands[1];
+
+                Function function = null;
+                List<Operation> parameters = null;
+                List<Integer> pipeObjectIndices = null;
+                Object objectProperty = null;
+                
+                if (operandA.isFunctionCall()) {
+                    function = operandA.getFunctionObject();
+                    parameters = operandA.getFunctionParameters();
+                    pipeObjectIndices = operandA.pipeObjectIndicesInFunctionParams();
+                    objectProperty = operandB.compute().getValue();
+                }
+
+                if (operandB.isFunctionCall()) {
+                    function = operandB.getFunctionObject();
+                    parameters = operandB.getFunctionParameters();
+                    pipeObjectIndices = operandB.pipeObjectIndicesInFunctionParams();
+                    objectProperty = operandA.compute().getValue();
+                }
+
+                // if we really deal with function call here
+                if (function != null) {
+
+                    Filter filter = null;
+
+                    if (predicate instanceof Equality)
+                        filter = Filter.NOT_EQUAL;
+
+                    if (predicate instanceof UnEquality)
+                        filter = Filter.EQUAL;
+
+                    if (predicate instanceof GreaterThan)
+                        filter = Filter.LESS_THAN;
+
+                    if (predicate instanceof GreaterThanOrEqual)
+                        filter = Filter.LESS_THAN_EQUAL;
+
+                    if (predicate instanceof LessThan)
+                        filter = Filter.GREATER_THAN;
+
+                    if (predicate instanceof LessThanOrEqual)
+                        filter = Filter.GREATER_THAN_EQUAL;
+
+                    return new FunctionComparisonFilterPipe(function, parameters, pipeObjectIndices, filter, objectProperty);
+                }
+            }
+
             if (predicate instanceof And)
                 return andFilterPipe(operands);
 
@@ -151,8 +204,14 @@ public class GremlinPipesHelper {
 
         } else {
             // unary operation like var def or premitive type
-            Atom unaryAtom = predicate.compute();
+            UnaryOperation operation = (UnaryOperation) predicate;
 
+            if (operation.isFunctionCall()) {
+                return new FunctionFilterPipe(operation.getFunctionObject(), operation.getFunctionParameters(), operation.pipeObjectIndicesInFunctionParams());    
+            }
+
+            Atom unaryAtom = operation.compute();
+            
             if (unaryAtom.isNumber()) {
                 int idx = ((Number) unaryAtom.getValue()).intValue();
                 return (idx == 0) ? new GremlinRangeFilterPipe(0, 1) : new GremlinRangeFilterPipe(idx, idx + 1);
