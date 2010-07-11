@@ -112,5 +112,13 @@ public class GremlinTest extends BaseTest {
         assertEquals(((List)((Map)((List)(results.get("k2"))).get(2)).get("k2")).get(0), 3);
         assertNull(((Map)((List)(results.get("k2"))).get(2)).get("k3"));
 
+        String embedd = "g:map('k1','v1','k2',g:list(1,2,g:map('k11','v11','k22',g:list('a','b','c'))))";
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k1", true).get(0), "v1");
+        assertEquals(((List)evaluateGremlinScriptIterable(embedd + "/@k2", true).get(0)).get(0), 1);
+        assertEquals(((List)evaluateGremlinScriptIterable(embedd + "/@k2", true).get(0)).get(1), 2);
+        //assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0]", true).get(0), 1);
+        //assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[1]", true).get(0), 2);
+        //assertEquals(((Map)evaluateGremlinScriptIterable(embedd + "/@k2[3]", true).get(0)).get("k11"), "v11");
+
     }
 }
