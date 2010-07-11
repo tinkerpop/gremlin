@@ -67,13 +67,20 @@ public class BaseTest extends TestCase {
         Iterable itty = (Iterable) Gremlin.evaluate(script).iterator().next();
         if (printStatistics)
             printPerformance(script, 1, "pipe constructed", this.stopWatch());
+        else
+            this.stopWatch();
+
         this.stopWatch();
         // todo: make a "illegal pipe constructed error"
-        if (null == itty)
+        if (null == itty) {
+            this.stopWatch();
             return null;
+        }
         List results = asList(itty);
         if (printStatistics)
             printPerformance(script, 1, "pipe listed", this.stopWatch());
+        else
+            this.stopWatch();
         return results;
     }
 
@@ -82,6 +89,8 @@ public class BaseTest extends TestCase {
         Object object = Gremlin.evaluate(script).iterator().next();
         if (printStatistics)
             printPerformance(script, 1, "pipe evaluated", this.stopWatch());
+        else
+            this.stopWatch();
         return object;
     }
 
@@ -104,8 +113,8 @@ public class BaseTest extends TestCase {
             System.out.println("\t" + name + ": " + eventName + " in " + timeInMilliseconds + "ms");
     }
 
-    public static UnaryOperation createUnary(Object object) {
-        return new UnaryOperation(new Atom(object));
+    public static <T> UnaryOperation createUnary(T object) {
+        return new UnaryOperation(new Atom<T>(object));
     }
 
     public static List<Operation> createUnaryArgs(Object... objects) {

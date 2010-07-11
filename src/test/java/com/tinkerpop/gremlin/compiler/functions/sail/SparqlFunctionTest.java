@@ -23,10 +23,16 @@ public class SparqlFunctionTest extends BaseTest {
         SailGraph graph = SailGraphFactory.createTinkerGraph(new MemoryStore());
         GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         Function<List<Map<String, Vertex>>> function = new SparqlFunction();
+        String query = "SELECT ?x ?y WHERE { ?x tg:knows ?y }";
         this.stopWatch();
-        Atom<List<Map<String,Vertex>>> atom = function.compute(createUnaryArgs(graph, "SELECT ?x ?y WHERE { ?x tg:knows ?y }"));
-        printPerformance(function.getFunctionName() + " function", 2, "binding values", this.stopWatch());
-        System.out.println(atom);
+        Atom<List<Map<String, Vertex>>> atom = function.compute(createUnaryArgs(graph, query));
+        printPerformance(function.getFunctionName() + " function", 1, query, this.stopWatch());
+        List<Map<String, Vertex>> results = atom.getValue();
+        assertEquals(results.size(), 2);
+        for (Map<String, Vertex> map : results) {
+            assertEquals(map.get("x"), graph.getVertex("tg:1"));
+            assertTrue(map.get("y").equals(graph.getVertex("tg:2")) || map.get("y").equals(graph.getVertex("tg:4")));
+        }
         graph.shutdown();
     }
 }

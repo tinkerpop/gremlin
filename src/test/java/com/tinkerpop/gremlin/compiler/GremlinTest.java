@@ -116,9 +116,14 @@ public class GremlinTest extends BaseTest {
         assertEquals(evaluateGremlinScriptIterable(embedd + "/@k1", true).get(0), "v1");
         assertEquals(((List)evaluateGremlinScriptIterable(embedd + "/@k2", true).get(0)).get(0), 1);
         assertEquals(((List)evaluateGremlinScriptIterable(embedd + "/@k2", true).get(0)).get(1), 2);
-        //assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0]", true).get(0), 1);
-        //assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[1]", true).get(0), 2);
-        //assertEquals(((Map)evaluateGremlinScriptIterable(embedd + "/@k2[3]", true).get(0)).get("k11"), "v11");
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][0]", true).get(0), 1);
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][1]", true).get(0), 2);
+        assertEquals(((Map)evaluateGremlinScriptIterable(embedd + "/@k2[0][2]", true).get(0)).get("k11"), "v11");
+
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k11", true).get(0), "v11");
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][0]", true).get(0), "a");
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][1]", true).get(0), "b");
+        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][2]", true).get(0), "c");
 
     }
 }
