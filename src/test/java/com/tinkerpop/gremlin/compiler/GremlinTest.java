@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -102,6 +103,14 @@ public class GremlinTest extends BaseTest {
     }
 
     public void testEmbeddedListMaps() throws Exception {
-        assertTrue(true);
+        Map results = (Map) evaluateGremlinScriptPrimitive("g:map(1,2,'k2',g:list(1,2,g:map('k1','v1','k2',g:list(1+2))))", true);
+        assertEquals(results.get(1), 2);
+        assertEquals(((List)(results.get("k2"))).get(0), 1);
+        assertEquals(((List)(results.get("k2"))).get(1), 2);
+        assertTrue(((List)(results.get("k2"))).get(2) instanceof Map);
+        assertEquals(((Map)((List)(results.get("k2"))).get(2)).get("k1"), "v1");
+        assertEquals(((List)((Map)((List)(results.get("k2"))).get(2)).get("k2")).get(0), 3);
+        assertNull(((Map)((List)(results.get("k2"))).get(2)).get("k3"));
+
     }
 }
