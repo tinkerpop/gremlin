@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.compiler.operations;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
+import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 import java.util.ArrayList;
@@ -52,14 +54,17 @@ public class UnaryOperation implements Operation {
         List<Integer> pipeObjectIndices = new ArrayList<Integer>();
 
         int position = 0;
+        Atom rootVariable = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE);
+        
         for (Operation parameter : this.getFunctionParameters()) {
             Atom atom = parameter.compute();
 
             if (atom.isIdentifier()) {
                 String token = atom.getValue().toString();
-                
-                if (token.equals("."))
+
+                if (token.equals(".") || rootVariable.equals(atom)) {
                     pipeObjectIndices.add(position);
+                }
             }
 
             position++;

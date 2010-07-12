@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-07-13 00:45:30
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-07-13 02:45:45
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -4173,7 +4173,10 @@ public class GremlinEvaluator extends TreeParser {
                     	                                                                    String idText = (IDENTIFIER101!=null?IDENTIFIER101.getText():null);
                                                                                             
                     	                                                                    if (idText.equals(".") && !isGPath) {
-                    	                                                                        retval.value = getVariable(Tokens.ROOT_VARIABLE);
+                    	                                                                        Atom id  = getVariable(Tokens.ROOT_VARIABLE);
+                    	                                                                        Atom dot = new Atom(id.getValue());
+                    	                                                                        dot.setIdentifier(true);
+                    	                                                                        retval.value = dot;
                     	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
                                                                                                 Matcher range = rangePattern.matcher(idText);
                                                                                                 if (range.matches())
@@ -4190,7 +4193,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 13 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:439:4: function_call
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:442:4: function_call
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -4206,7 +4209,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 14 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:440:4: '(' statement ')'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:443:4: '(' statement ')'
                     {
                     root_0 = (CommonTree)adaptor.nil();
 

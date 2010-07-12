@@ -423,7 +423,10 @@ atom returns [Atom value]
 	                                                                    String idText = $IDENTIFIER.text;
                                                                         
 	                                                                    if (idText.equals(".") && !isGPath) {
-	                                                                        $value = getVariable(Tokens.ROOT_VARIABLE);
+	                                                                        Atom id  = getVariable(Tokens.ROOT_VARIABLE);
+	                                                                        Atom dot = new Atom(id.getValue());
+	                                                                        dot.setIdentifier(true);
+	                                                                        $value = dot;
 	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
                                                                             Matcher range = rangePattern.matcher(idText);
                                                                             if (range.matches())
