@@ -214,7 +214,7 @@ public class GremlinPipesHelper {
             
             if (unaryAtom.isNumber()) {
                 int idx = ((Number) unaryAtom.getValue()).intValue();
-                return (idx == 0) ? new GremlinRangeFilterPipe(0, 1) : new GremlinRangeFilterPipe(idx, idx + 1);
+                return new GremlinRangeFilterPipe(idx, idx + 1);
             }
 
             if (unaryAtom.isBoolean()) {
@@ -266,6 +266,8 @@ public class GremlinPipesHelper {
         //} else 
         if (point instanceof Iterable) {
             return ((Iterable) point).iterator();
+        } else if (point instanceof Iterator) {
+            return (Iterator) point;
         } else {
             return new SingleIterator(point);
         }

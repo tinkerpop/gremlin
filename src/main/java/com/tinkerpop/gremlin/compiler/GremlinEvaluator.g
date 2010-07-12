@@ -12,6 +12,7 @@ options {
     
     import java.util.Map;
     import java.util.HashMap;
+    import java.util.Iterator;
     
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
@@ -109,6 +110,12 @@ options {
 
                 for (Object key : map.keySet()) {
                     System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                }
+            } else if(result.getValue() instanceof Iterator) {
+                Iterator itty = (Iterator) result.getValue();
+                
+                while(itty.hasNext()) {
+                    System.out.println(Tokens.RESULT_PROMPT + itty.next());
                 }
             } else {
                 System.out.println(Tokens.RESULT_PROMPT + result);
@@ -226,6 +233,8 @@ step
                     } else {
                         $gpath_statement::startPoint = tokenAtom.getValue();
                     }
+
+                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(predicates));
                 } else {
                     $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep($token.atom, predicates));
                 }
