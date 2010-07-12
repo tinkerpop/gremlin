@@ -141,6 +141,10 @@ public class Atom<T> {
     public boolean isComparable() {
         return isClassOf(Comparable.class);
     }
+    
+    public boolean isVariableCall() {
+        return this.type == Type.VARIABLE;
+    }
 
     public void setPersistent(final boolean flag) {
         this.persistent = flag;

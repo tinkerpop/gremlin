@@ -33,6 +33,10 @@ public class UnaryOperation implements Operation {
         return this.operand.isFunctionCall();
     }
 
+    public boolean isVariableCall() {
+        return this.operand.isVariableCall();
+    }
+
     public Function getFunctionObject() {
         return this.operand.getFunctionObject();
     }

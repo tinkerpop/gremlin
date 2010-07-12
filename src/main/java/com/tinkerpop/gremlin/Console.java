@@ -93,6 +93,7 @@ public class Console {
                 Gremlin.evaluate(input);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
+                //e.printStackTrace();
             }
         }
     }

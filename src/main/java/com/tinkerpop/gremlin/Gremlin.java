@@ -30,6 +30,8 @@ public class Gremlin {
         GremlinParser.program_return r = parser.program();
 
         CommonTree t = (CommonTree) r.getTree();
+
+        //System.out.println(t.toStringTree());
         
         CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
         GremlinEvaluator walker = new GremlinEvaluator(nodes);

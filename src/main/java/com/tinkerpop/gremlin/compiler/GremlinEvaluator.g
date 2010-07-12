@@ -28,6 +28,7 @@ options {
 
     // types
     import com.tinkerpop.gremlin.compiler.types.Range;
+    import com.tinkerpop.gremlin.compiler.types.GPath;
 
     // operations
     import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -47,7 +48,10 @@ options {
     // pipes
     import com.tinkerpop.pipes.Pipe;
     import com.tinkerpop.pipes.Pipeline;
+
     import com.tinkerpop.pipes.SingleIterator;
+    import com.tinkerpop.pipes.MultiIterator;
+    
     import com.tinkerpop.pipes.pgm.PropertyPipe;
     import com.tinkerpop.pipes.filter.FilterPipe;
     import com.tinkerpop.pipes.filter.FutureFilterPipe;
@@ -92,6 +96,8 @@ options {
         Atom result = currentOperation.compute();
 
         if (EMBEDDED) resultList.add(result.getValue());
+
+        //System.out.println(result.getValue().getClass());
         
         if (!result.isNull() && DEBUG) {
             if (result.isIterable()) {
@@ -299,7 +305,7 @@ block returns [List<Operation> operations]
     @init {
         List<Operation> operationList = new ArrayList<Operation>();
     }
-    :	^(BLOCK (statement { operationList.add($statement.op); })+) { $operations = operationList; }
+    :	^(BLOCK ( (statement { operationList.add($statement.op); } | collection { operationList.add($collection.op); }))+) { $operations = operationList; }
 	;
 
 expression returns [Operation expr]
@@ -341,7 +347,7 @@ function_call returns [Atom value]
     @init {
         List<Operation> params = new ArrayList<Operation>();
     }
-	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG st=statement { params.add($st.op); }) )* ))
+	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG (st=statement { params.add($st.op); } | col=collection { params.add($col.op); }) ) )* ))
         {
             try {
                 $value = functions.runFunction($ns.text, $fn_name.text, params);

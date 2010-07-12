@@ -89,7 +89,7 @@ statement
 	|	function_definition_statement
 	|	include_statement
 	|	gpath_statement
-    | VARIABLE ':=' statement  -> ^(VAR VARIABLE statement)	
+    |   VARIABLE ':=' statement  -> ^(VAR VARIABLE statement)	
 	|	expression (('and'^|'or'^) expression)*
 	;
 
@@ -138,9 +138,16 @@ formal_arguments
 	;
 
 block	
-    :	(statement | NEWLINE)* -> ^(BLOCK statement*)
+    :	(block_body | NEWLINE)* -> ^(BLOCK block_body*)
 	;
-	
+
+block_body
+    : collection NEWLINE
+    | statement
+    | VARIABLE ':=' collection NEWLINE -> ^(VAR VARIABLE collection)
+    | COMMENT NEWLINE
+    ;
+
 expression
 	:	operation (('='^ | '!='^ | '<'^ | '<='^ | '>'^ | '>='^) operation)*
 	;
@@ -162,8 +169,14 @@ function_name
 	;
 	
 function_call_params
-	:	statement (',' statement)* -> ^(ARG statement)+
+	//:	(statement | collection) (',' (statement | collection))* -> ^(ARG statement | collection)+
+	: function_call_param (',' function_call_param)* -> ^(ARG function_call_param)+
 	;
+
+function_call_param
+    : collection
+    | statement
+    ;
 	
 atom
 	:   G_INT           -> ^(INT G_INT)
