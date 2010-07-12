@@ -37,7 +37,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new RemoveIndexFunction());
         functions.add(new RemoveVertexEdgeFunction());
         functions.add(new SaveFunction());
-        functions.add(new ScopeFunction());
+        functions.add(new GroupFunction());
         
         // io
         functions.add(new PrintFunction());

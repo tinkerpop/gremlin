@@ -13,8 +13,8 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class ScopeFunction extends AbstractFunction<Iterator> {
-    private final static String FUNCTION_NAME = "scope";
+public class GroupFunction extends AbstractFunction<Iterator> {
+    private final static String FUNCTION_NAME = "group";
 
     public Atom<Iterator> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() != 1)
