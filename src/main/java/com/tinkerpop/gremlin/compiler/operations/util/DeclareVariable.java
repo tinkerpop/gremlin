@@ -23,7 +23,7 @@ public class DeclareVariable implements Operation {
         GremlinEvaluator.declareVariable(this.name, varValue);
 
         GremlinEvaluator.declareVariable(Tokens.LAST_VARIABLE, varValue);
-        return (GremlinEvaluator.DEBUG) ? varValue : new Atom(null);
+        return varValue;
     }
 
     public static void decalareWithInit(String var, Atom value) {
