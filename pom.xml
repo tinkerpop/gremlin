@@ -99,11 +99,19 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-
         <repository>
             <id>aduna-repo</id>
             <name>Aduna repository</name>
             <url>http://repo.aduna-software.org/maven2/releases</url>
+        </repository>
+        <repository>
+            <id>neo4j-public-repository</id>
+            <name>Publically available Maven 2 repository for Neo4j</name>
+            <url>http://m2.neo4j.org</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
         </repository>
     </repositories>
     <build>

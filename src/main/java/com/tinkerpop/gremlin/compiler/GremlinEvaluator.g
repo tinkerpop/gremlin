@@ -318,12 +318,12 @@ block returns [List<Operation> operations]
 	;
 
 expression returns [Operation expr]
-    :   ^('='  a=operation b=operation) { $expr = new Equality($a.op, $b.op); }
-    |   ^('!=' a=operation b=operation) { $expr = new UnEquality($a.op, $b.op); }
-    |   ^('<'  a=operation b=operation) { $expr = new LessThan($a.op, $b.op); }
-    |   ^('>'  a=operation b=operation) { $expr = new GreaterThan($a.op, $b.op); }
-    |   ^('<=' a=operation b=operation) { $expr = new LessThanOrEqual($a.op, $b.op); }
-    |   ^('>=' a=operation b=operation) { $expr = new GreaterThanOrEqual($a.op, $b.op); }
+    :   ^('='  a=statement b=statement) { $expr = new Equality($a.op, $b.op); }
+    |   ^('!=' a=statement b=statement) { $expr = new UnEquality($a.op, $b.op); }
+    |   ^('<'  a=statement b=statement) { $expr = new LessThan($a.op, $b.op); }
+    |   ^('>'  a=statement b=statement) { $expr = new GreaterThan($a.op, $b.op); }
+    |   ^('<=' a=statement b=statement) { $expr = new LessThanOrEqual($a.op, $b.op); }
+    |   ^('>=' a=statement b=statement) { $expr = new GreaterThanOrEqual($a.op, $b.op); }
     |   operation                       { $expr = $operation.op; }
 	;
 

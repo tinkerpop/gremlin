@@ -151,7 +151,7 @@ block_body
 expression
 	:	operation (('='^ | '!='^ | '<'^ | '<='^ | '>'^ | '>='^) operation)*
 	;
-	
+
 operation
 	:	binary_operation (('+'^|'-'^) binary_operation)*
 	;
