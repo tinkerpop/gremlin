@@ -283,9 +283,9 @@ token returns [Atom atom]
 
 
 if_statement returns [Operation op]
-	:	^(IF ^(COND cond=statement) block) 
+	:	^(IF ^(COND cond=statement) if_block=block ( ^(ELSE else_block=block ) )? )
         {
-            $op = new If($cond.op, $block.operations);
+            $op = new If($cond.op, $if_block.operations, $else_block.operations);
         }
 	;
 

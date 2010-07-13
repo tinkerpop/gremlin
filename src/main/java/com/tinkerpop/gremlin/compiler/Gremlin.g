@@ -31,6 +31,7 @@ tokens {
 	FUNC_CALL;
 
 	IF;
+	ELSE;
 	COND;
 	BLOCK;
 	
@@ -99,8 +100,10 @@ include_statement
 	
 if_statement 
 	:	'if' statement NEWLINE 
-           block 
-        'end' -> ^(IF ^(COND statement) block)
+           if_block=block
+        ('else'
+           else_block=block)?
+        'end' -> ^(IF ^(COND statement) $if_block ^(ELSE $else_block)?)
 	;
 
 foreach_statement

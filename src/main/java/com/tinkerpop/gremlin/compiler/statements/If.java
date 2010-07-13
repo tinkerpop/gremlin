@@ -12,7 +12,8 @@ public class If implements Operation {
 
     private final Operation condition;
     private final List<Operation> statements;
-
+    private final List<Operation> alternatives;
+    
     /*
       * $x := 0
       * $y := 5
@@ -23,9 +24,10 @@ public class If implements Operation {
       * end
       */
 
-    public If(final Operation condition, final List<Operation> statements) {
+    public If(final Operation condition, final List<Operation> statements, final List<Operation> alternatives) {
         this.condition = condition;
         this.statements = statements;
+        this.alternatives = alternatives;
     }
 
     public Atom compute() {
@@ -34,6 +36,10 @@ public class If implements Operation {
         if (condResult.isNull() == false) {
             if ((Boolean) condResult.getValue() == true) {
                 for (Operation operation : statements) {
+                    operation.compute();
+                }
+            } else if (null != alternatives) {
+                for (Operation operation : alternatives) {
                     operation.compute();
                 }
             }
