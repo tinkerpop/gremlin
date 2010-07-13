@@ -15,9 +15,9 @@ public class AutoTransactionFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "auto-tx";
 
-    public Atom<Boolean> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
 
-        Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0);
+        final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0);
         if (parameters.size() == 1) {
             graph.setAutoTransactions((Boolean) parameters.get(0).compute().getValue());
         } else if (parameters.size() == 2) {

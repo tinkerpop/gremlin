@@ -15,7 +15,7 @@ public class StartTransactionFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "start-tx";
 
-    public Atom<Boolean> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() > 1) {
             Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0);

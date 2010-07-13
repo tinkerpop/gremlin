@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.g.graph;
+package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
@@ -20,14 +20,14 @@ public class GroupFunction extends AbstractFunction<Iterator> {
         if (parameters.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Atom path = parameters.get(0).compute();
-        List<Object> scopedValues = new ArrayList<Object>();
+        GPath path = (GPath) parameters.get(0).compute().getValue();
+        List<Object> list = new ArrayList<Object>();
 
-        for(Object o : (GPath) path.getValue()) {
-            scopedValues.add(o);
+        for (Object object : path) {
+            list.add(object);
         }
 
-        return new Atom<Iterator>(new SingleIterator<List>(scopedValues));
+        return new Atom<Iterator>(new SingleIterator<List>(list));
     }
 
     public String getFunctionName() {

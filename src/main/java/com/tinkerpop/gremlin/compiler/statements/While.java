@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class While implements Operation {
 
-    private Operation condition;
-    private List<Operation> statements;
+    private final Operation condition;
+    private final List<Operation> statements;
 
     /*
       * $x := 0
@@ -21,8 +21,8 @@ public class While implements Operation {
       * end
       */
 
-    public While(Operation cond, List<Operation> statements) {
-        this.condition = cond;
+    public While(final Operation condition, final List<Operation> statements) {
+        this.condition = condition;
         this.statements = statements;
     }
 
@@ -41,8 +41,8 @@ public class While implements Operation {
             }
 
             if (repeatIteration) {
-                for (int i = 0; i < this.statements.size(); i++) {
-                    this.statements.get(i).compute();
+                for (Operation operation : statements) {
+                    operation.compute();
                 }
             }
         }

@@ -15,26 +15,26 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
  */
 public class Gremlin {
 
-    public static Iterable evaluate(String code) throws RecognitionException {
+    public static Iterable evaluate(final String code) throws RecognitionException {
         GremlinEvaluator.EMBEDDED = true;
-        
+
         ANTLRStringStream input = new ANTLRStringStream(code + "\n");
         return evaluate(input);
     }
-    
-    public static Iterable evaluate(CharStream input) throws RecognitionException {
-        GremlinLexer lexer = new GremlinLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        GremlinParser parser = new GremlinParser(tokens);
-        GremlinParser.program_return r = parser.program();
+    public static Iterable evaluate(final CharStream input) throws RecognitionException {
+        final GremlinLexer lexer = new GremlinLexer(input);
+        final CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        CommonTree t = (CommonTree) r.getTree();
+        final GremlinParser parser = new GremlinParser(tokens);
+        final GremlinParser.program_return r = parser.program();
+
+        final CommonTree t = (CommonTree) r.getTree();
 
         //System.out.println(t.toStringTree());
-        
-        CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
-        GremlinEvaluator walker = new GremlinEvaluator(nodes);
+
+        final CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
+        final GremlinEvaluator walker = new GremlinEvaluator(nodes);
 
         return walker.program().results;
     }

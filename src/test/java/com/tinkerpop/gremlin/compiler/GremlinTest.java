@@ -124,6 +124,53 @@ public class GremlinTest extends BaseTest {
         assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][0]", true).get(0), "a");
         assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][1]", true).get(0), "b");
         assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][2]", true).get(0), "c");
+    }
+
+    public void testIdAndLabelProperties() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        GremlinEvaluator.declareVariable(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        List<Vertex> results = evaluateGremlinScriptIterable("./@id", true);
+        assertEquals(results.size(), 1);
+        assertEquals(results.get(0), "1");
+
+        results = evaluateGremlinScriptIterable("./outE/inV/@id", true);
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains("2"));
+        assertTrue(results.contains("3"));
+        assertTrue(results.contains("4"));
+
+        results = evaluateGremlinScriptIterable("./outE/@label", true);
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains("created"));
+        assertTrue(results.contains("knows"));
+    }
+
+    public void testVertexEdgeGraphProperties() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        GremlinEvaluator.declareVariable(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        List<Vertex> results = evaluateGremlinScriptIterable("$_g/V", true);
+        assertEquals(results.size(), 6);
+        assertTrue(results.contains(graph.getVertex("1")));
+        assertTrue(results.contains(graph.getVertex("2")));
+        assertTrue(results.contains(graph.getVertex("3")));
+        assertTrue(results.contains(graph.getVertex("4")));
+        assertTrue(results.contains(graph.getVertex("5")));
+        assertTrue(results.contains(graph.getVertex("6")));
+
+
+        results = evaluateGremlinScriptIterable("$_g/E/@id", true);
+        assertEquals(results.size(), 6);
+        assertTrue(results.contains("7"));
+        assertTrue(results.contains("8"));
+        assertTrue(results.contains("9"));
+        assertTrue(results.contains("10"));
+        assertTrue(results.contains("11"));
+        assertTrue(results.contains("12"));
+
 
     }
 }

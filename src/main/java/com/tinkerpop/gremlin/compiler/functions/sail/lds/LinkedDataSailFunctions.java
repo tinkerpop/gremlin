@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.lds;
+package com.tinkerpop.gremlin.compiler.functions.sail.lds;
 
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
 

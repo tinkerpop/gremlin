@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class Repeat implements Operation {
 
-    private Operation counterOperation;
-    private List<Operation> statements;
+    private final Operation counterOperation;
+    private final List<Operation> statements;
 
     /*
       * $x := 6
@@ -21,7 +21,7 @@ public class Repeat implements Operation {
       * end
       */
 
-    public Repeat(Operation counterOperation, List<Operation> statements) {
+    public Repeat(final Operation counterOperation, final List<Operation> statements) {
         this.counterOperation = counterOperation;
         this.statements = statements;
     }
@@ -34,8 +34,8 @@ public class Repeat implements Operation {
                 Number times = (Number) counter.getValue();
 
                 for (int i = 0; i < times.intValue(); i++) {
-                    for (int j = 0; j < this.statements.size(); j++) {
-                        this.statements.get(j).compute();
+                    for (Operation operation : statements) {
+                        operation.compute();
                     }
                 }
             }

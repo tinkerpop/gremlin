@@ -11,7 +11,7 @@ public abstract class AbstractFunctions implements Functions {
     protected List<Function> functions = new ArrayList<Function>();
 
     public Function getFunction(final String functionName) throws RuntimeException {
-        for (Function function : this.functions) {
+        for (final Function function : this.functions) {
             if (function.getFunctionName().equals(functionName))
                 return function;
         }

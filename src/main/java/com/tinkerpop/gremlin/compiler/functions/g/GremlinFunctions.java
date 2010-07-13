@@ -37,8 +37,6 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new RemoveIndexFunction());
         functions.add(new RemoveVertexEdgeFunction());
         functions.add(new SaveFunction());
-        functions.add(new GroupFunction());
-        
         // io
         functions.add(new PrintFunction());
         // lme
@@ -46,6 +44,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new DifferenceFunction());
         functions.add(new ExceptFunction());
         functions.add(new GetFunction());
+        functions.add(new GroupFunction());
         functions.add(new IntersectFunction());
         functions.add(new ListFunction());
         functions.add(new MapFunction());

@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.neo4jsail;
+package com.tinkerpop.gremlin.compiler.functions.sail.neo4jsail;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;

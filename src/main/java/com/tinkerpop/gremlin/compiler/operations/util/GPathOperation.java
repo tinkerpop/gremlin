@@ -10,11 +10,8 @@ import java.util.List;
 public class GPathOperation implements Operation {
 
     private final Object startPoint;
-
-    @SuppressWarnings({"rawtypes"})
     private final List<Pipe> pipes;
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     public GPathOperation(List<Pipe> pipes, Object point) {
         this.pipes = pipes;
         this.startPoint = point;
@@ -28,7 +25,6 @@ public class GPathOperation implements Operation {
         return Type.STATEMENT;
     }
 
-    @SuppressWarnings("rawtypes")
     public List<Pipe> getPipes() {
         return this.pipes;
     }

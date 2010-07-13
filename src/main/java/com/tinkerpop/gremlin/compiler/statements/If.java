@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class If implements Operation {
 
-    private Operation condition;
-    private List<Operation> statements;
+    private final Operation condition;
+    private final List<Operation> statements;
 
     /*
       * $x := 0
@@ -23,9 +23,9 @@ public class If implements Operation {
       * end
       */
 
-    public If(Operation cond, List<Operation> block) {
-        this.condition = cond;
-        this.statements = block;
+    public If(final Operation condition, final List<Operation> statements) {
+        this.condition = condition;
+        this.statements = statements;
     }
 
     public Atom compute() {
@@ -33,8 +33,8 @@ public class If implements Operation {
 
         if (condResult.isNull() == false) {
             if ((Boolean) condResult.getValue() == true) {
-                for (int i = 0; i < this.statements.size(); i++) {
-                    this.statements.get(i).compute();
+                for (Operation operation : statements) {
+                    operation.compute();
                 }
             }
         }

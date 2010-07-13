@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.functions.lds;
+package com.tinkerpop.gremlin.compiler.functions.sail.lds;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
@@ -20,7 +20,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> parameters) throws RuntimeException {
 
         final int size = parameters.size();
         if (size == 0) {

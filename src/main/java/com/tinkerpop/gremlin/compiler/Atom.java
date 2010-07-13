@@ -23,7 +23,7 @@ public class Atom<T> {
 
     /* for not persistent function calls */
     private Function function;
-    private List<Operation> functionParams;
+    private List<Operation> functionParameters;
 
     private boolean persistent = true;
 
@@ -32,6 +32,9 @@ public class Atom<T> {
     private boolean property = false;
 
     private Type type = Type.REGULAR;
+
+    private static final String NULL = "null";
+    private static final String EMPTY_STRING = "";
 
     public enum Type {
         FUNCTION, VARIABLE, REGULAR
@@ -42,16 +45,14 @@ public class Atom<T> {
 
         // string preprocessing
         if (this.isString()) {
-            String result = "";
-            String stringVal = (String) this.value;
+            String result = EMPTY_STRING;
+            String stringValue = (String) this.value;
 
-            for (int i = 0; i < stringVal.length(); i++) {
-                Character currChar = stringVal.charAt(i);
-
-                if ((i == 0 || i == stringVal.length() - 1) && (currChar.equals('"') || currChar.equals('\'')))
+            for (int i = 0; i < stringValue.length(); i++) {
+                final Character currentCharacter = stringValue.charAt(i);
+                if ((i == 0 || i == stringValue.length() - 1) && (currentCharacter.equals('"') || currentCharacter.equals('\'')))
                     continue;
-
-                result += stringVal.charAt(i);
+                result += stringValue.charAt(i);
             }
 
             this.value = (T) result;
@@ -141,7 +142,7 @@ public class Atom<T> {
     public boolean isComparable() {
         return isClassOf(Comparable.class);
     }
-    
+
     public boolean isVariableCall() {
         return this.type == Type.VARIABLE;
     }
@@ -155,9 +156,9 @@ public class Atom<T> {
         this.type = Type.VARIABLE;
     }
 
-    public void setFunction(final Function fn, final List<Operation> params) {
-        this.function = fn;
-        this.functionParams = params;
+    public void setFunction(final Function function, final List<Operation> parameters) {
+        this.function = function;
+        this.functionParameters = parameters;
         this.type = Type.FUNCTION;
     }
 
@@ -170,24 +171,23 @@ public class Atom<T> {
     }
 
     public Atom recalculated() {
-        Atom result = null;
+        final Atom result;
 
         try {
             if (this.type == Type.VARIABLE) {
                 result = GremlinEvaluator.getVariable(this.variableName);
             } else if (this.type == Type.FUNCTION) {
-                result = this.function.compute(this.functionParams);
+                result = this.function.compute(this.functionParameters);
             } else {
                 result = this;
             }
+            return result;
         } catch (Exception e) {
             System.err.println(e);
+            return null;
         }
-
-        return result;
     }
 
-    @SuppressWarnings("rawtypes")
     private boolean isClassOf(final Class klass) {
         return (this.isNull()) ? false : ((klass.isAssignableFrom(this.value.getClass())) ? true : false);
     }
@@ -196,30 +196,20 @@ public class Atom<T> {
         return object instanceof Atom && (((Atom) object).getValue().equals(this.value));
     }
 
-    /*public int compareTo(Atom<T> atom) {
-        Object object = atom.getValue();
-        if (this.value instanceof Comparable && object instanceof Comparable) {
-            return ((Comparable) this.value).compareTo(object);
-        } else {
-            return 0;
-        }
-    }*/
-
     public int hashCode() {
         return this.value.hashCode();
     }
 
     public String toString() {
-        return (this.value == null) ? "null" : this.value.toString();
+        return (this.value == null) ? NULL : this.value.toString();
     }
 
-    public Function getFunctionObject()
-    {
+    public Function getFunctionObject() {
         return this.function;
     }
 
     public List<Operation> getFunctionParameters() {
-        return this.functionParams;
+        return this.functionParameters;
     }
 
 }

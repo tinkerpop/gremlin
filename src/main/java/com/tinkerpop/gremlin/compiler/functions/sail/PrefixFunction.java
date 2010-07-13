@@ -15,7 +15,7 @@ public class PrefixFunction extends AbstractFunction<String> {
 
     private final String FUNCTION_NAME = "prefix";
 
-    public Atom<String> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
 
         final int size = parameters.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0);

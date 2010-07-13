@@ -36,13 +36,13 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
         if (identifier instanceof Map) {
             final Map map = (Map) identifier;
             final Vertex vertex;
-            if (map.containsKey(Tokens.ID)) {
-                vertex = graph.addVertex(map.get(Tokens.ID));
+            if (map.containsKey(Tokens._ID)) {
+                vertex = graph.addVertex(map.get(Tokens._ID));
             } else {
                 vertex = graph.addVertex(null);
             }
             for (Object key : map.keySet()) {
-                if (key instanceof String && !key.equals(Tokens.ID)) {
+                if (key instanceof String && !key.equals(Tokens._ID)) {
                     vertex.setProperty((String) key, map.get(key));
                 }
             }

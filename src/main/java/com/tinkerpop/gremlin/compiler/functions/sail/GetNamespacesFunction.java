@@ -16,7 +16,7 @@ public class GetNamespacesFunction extends AbstractFunction<Map<String, String>>
 
     private final String FUNCTION_NAME = "get-ns";
 
-    public Atom<Map<String, String>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Map<String, String>> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() > 1) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

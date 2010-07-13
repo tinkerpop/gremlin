@@ -7,7 +7,7 @@ public class NativeFunctions extends AbstractFunctions {
 
     private final String namespace;
 
-    public NativeFunctions(String namespace) {
+    public NativeFunctions(final String namespace) {
         this.namespace = namespace;
     }
 

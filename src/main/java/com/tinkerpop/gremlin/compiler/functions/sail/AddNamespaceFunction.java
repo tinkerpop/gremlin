@@ -15,7 +15,7 @@ public class AddNamespaceFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "add-ns";
 
-    public Atom<Boolean> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
 
         final int size = parameters.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0);

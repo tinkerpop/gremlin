@@ -38,7 +38,7 @@ public class AddVertexFunctionTest extends BaseTest {
 
         Map map = new HashMap();
         map.put("name", "marko");
-        map.put(Tokens.ID, "22");
+        map.put(Tokens._ID, "22");
         this.stopWatch();
         atom = function.compute(createUnaryArgs(map));
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
@@ -49,7 +49,7 @@ public class AddVertexFunctionTest extends BaseTest {
 
         map = new HashMap();
         map.put("name", "pavel");
-        map.put(Tokens.ID, "23");
+        map.put(Tokens._ID, "23");
         this.stopWatch();
         atom = function.compute(createUnaryArgs(graph, map));
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());

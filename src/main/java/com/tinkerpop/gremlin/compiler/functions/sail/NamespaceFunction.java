@@ -15,7 +15,7 @@ public class NamespaceFunction extends AbstractFunction<String> {
 
     private final String FUNCTION_NAME = "ns";
 
-    public Atom<String> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
 
         final int size = parameters.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0);

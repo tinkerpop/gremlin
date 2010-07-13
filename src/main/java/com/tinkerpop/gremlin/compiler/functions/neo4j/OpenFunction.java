@@ -15,7 +15,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 1) {
             return new Atom<Graph>(new Neo4jGraph((String) parameters.get(0).compute().getValue()));

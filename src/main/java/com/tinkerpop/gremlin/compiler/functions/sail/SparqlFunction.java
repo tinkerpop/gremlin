@@ -29,7 +29,7 @@ public class SparqlFunction extends AbstractFunction<List<Map<String, Vertex>>> 
     private static final String COLON_LESSTHAN = ": <";
     private static final String GREATERTHAN_NEWLINE = ">\n";
 
-    public Atom<List<Map<String, Vertex>>> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<List<Map<String, Vertex>>> compute(final List<Operation> parameters) throws RuntimeException {
 
         final int size = parameters.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0);

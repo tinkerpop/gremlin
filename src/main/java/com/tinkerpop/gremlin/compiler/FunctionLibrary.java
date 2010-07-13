@@ -15,12 +15,12 @@ import java.util.ServiceLoader;
  */
 public class FunctionLibrary {
 
-    Map<String, Functions> functionsByNamespace;
+    final Map<String, Functions> functionsByNamespace;
 
     public FunctionLibrary() {
         this.functionsByNamespace = new HashMap<String, Functions>();
-        ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
-        for (Functions functions : functionsService) {
+        final ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
+        for (final Functions functions : functionsService) {
             this.registerFunctions(functions);
         }
     }
@@ -43,7 +43,7 @@ public class FunctionLibrary {
     }
 
     public Function getFunction(final String namespace, final String functionName) throws RuntimeException {
-        Functions functions = this.functionsByNamespace.get(namespace);
+        final Functions functions = this.functionsByNamespace.get(namespace);
 
         if (functions == null) {
             throw new RuntimeException("No such namespace: " + namespace);
@@ -57,9 +57,9 @@ public class FunctionLibrary {
     }
 
     public Atom runFunction(final String namespace, final String functionName, final List<Operation> params) throws Exception {
-        Function fn = this.getFunction(namespace, functionName);
+        final Function fn = this.getFunction(namespace, functionName);
 
-        Atom result = new Atom(null);
+        final Atom result = new Atom(null);
 
         result.setPersistent(false);
         result.setFunction(fn, params);

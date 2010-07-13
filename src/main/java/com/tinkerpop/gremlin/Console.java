@@ -14,6 +14,7 @@ public class Console {
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
     private static final String INDENT = "\t   ";
+    private static final String THREE_SPACES = "   ";
 
     private static final String[] compoundStatements = {"if", "while", "repeat", "foreach", "func", "path"};
 
@@ -22,9 +23,9 @@ public class Console {
         // debug mode
         GremlinEvaluator.DEBUG = true;
 
-        PrintStream output = System.out;
+        final PrintStream output = System.out;
 
-        ConsoleReader reader = new ConsoleReader();
+        final ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
 
         output.println();
@@ -47,7 +48,7 @@ public class Console {
                 prompt = INDENT;
                 if (codeDepth > 1) {
                     for (int i = 0; i < codeDepth; i++) {
-                        prompt += "  ";
+                        prompt += THREE_SPACES;
                     }
                 }
             } else {
@@ -60,7 +61,7 @@ public class Console {
             if (line.isEmpty()) continue;
 
             // analyze current statement
-            for (String statement : compoundStatements) {
+            for (final String statement : compoundStatements) {
                 if (line.indexOf(statement + " ") == 0) {
                     inCompoundStatement = true;
                     codeDepth++;
@@ -87,7 +88,7 @@ public class Console {
                 inCompoundStatement = false;
             }
 
-            ANTLRStringStream input = new ANTLRStringStream(line + "\n");
+            final ANTLRStringStream input = new ANTLRStringStream(line + "\n");
 
             try {
                 Gremlin.evaluate(input);

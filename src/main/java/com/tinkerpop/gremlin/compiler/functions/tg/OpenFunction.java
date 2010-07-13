@@ -15,7 +15,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> parameters) throws RuntimeException {
 
         if (parameters.size() == 0) {
             return new Atom<Graph>(new TinkerGraph());

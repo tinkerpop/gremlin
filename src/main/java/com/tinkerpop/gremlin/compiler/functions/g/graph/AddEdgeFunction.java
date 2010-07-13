@@ -42,17 +42,17 @@ public class AddEdgeFunction extends AbstractFunction<Edge> {
 
     }
 
-    private static Atom<Edge> createEdge(Graph graph, Object object, Vertex start, String label, Vertex end) {
+    private static Atom<Edge> createEdge(final Graph graph, final Object object, final Vertex start, final String label, final Vertex end) {
         if (object instanceof Map) {
             final Map map = (Map) object;
             final Edge edge;
-            if (map.containsKey(Tokens.ID)) {
-                edge = graph.addEdge(map.get(Tokens.ID), start, end, label);
+            if (map.containsKey(Tokens._ID)) {
+                edge = graph.addEdge(map.get(Tokens._ID), start, end, label);
             } else {
                 edge = graph.addEdge(null, start, end, label);
             }
             for (Object key : map.keySet()) {
-                if (key instanceof String && !key.equals(Tokens.ID)) {
+                if (key instanceof String && !key.equals(Tokens._ID)) {
                     edge.setProperty((String) key, map.get(key));
                 }
             }
