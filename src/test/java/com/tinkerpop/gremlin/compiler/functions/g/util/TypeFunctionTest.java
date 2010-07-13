@@ -21,9 +21,25 @@ public class TypeFunctionTest extends BaseTest {
         assertEquals(type, "boolean");
 
         this.stopWatch();
-        type = function.compute(createUnaryArgs(1.0)).getValue();
+        type = function.compute(createUnaryArgs(1.0f)).getValue();
+        printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
+        assertEquals(type, "float");
+
+        this.stopWatch();
+        type = function.compute(createUnaryArgs(1)).getValue();
+        printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
+        assertEquals(type, "integer");
+
+        this.stopWatch();
+        type = function.compute(createUnaryArgs(1.0d)).getValue();
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(type, "double");
+
+        this.stopWatch();
+        type = function.compute(createUnaryArgs(1l)).getValue();
+        printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
+        assertEquals(type, "long");
+
 
     }
 }

@@ -16,7 +16,14 @@ public class BooleanFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
         if (parameters.size() == 1) {
-            return new Atom<Boolean>(Boolean.parseBoolean(parameters.get(0).compute().getValue().toString()));
+            Object object = parameters.get(0).compute().getValue();
+            if (object instanceof Number) {
+                if (((Number) object).doubleValue() > 0)
+                    return new Atom<Boolean>(true);
+                else
+                    return new Atom<Boolean>(false);
+            } else
+                return new Atom<Boolean>(Boolean.parseBoolean(object.toString()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

@@ -18,6 +18,10 @@ public class BooleanFunctionTest extends BaseTest {
         this.stopWatch();
         atom = function.compute(createUnaryArgs(1));
         printPerformance(function.getFunctionName() + " function", 1, "boolean parse", this.stopWatch());
+        assertTrue(atom.getValue());
+        this.stopWatch();
+        atom = function.compute(createUnaryArgs(-0.2));
+        printPerformance(function.getFunctionName() + " function", 1, "boolean parse", this.stopWatch());
         assertFalse(atom.getValue());
     }
 
