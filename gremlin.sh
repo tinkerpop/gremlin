@@ -5,9 +5,9 @@ JAR=`dirname $0`/target/gremlin-*-standalone.jar
 
 # Find Java
 if [ "$JAVA_HOME" = "" ] ; then
-	JAVA="java"
+	JAVA="java -server"
 else
-	JAVA="$JAVA_HOME/bin/java"
+	JAVA="$JAVA_HOME/bin/java -server"
 fi
 
 # Set Java options
