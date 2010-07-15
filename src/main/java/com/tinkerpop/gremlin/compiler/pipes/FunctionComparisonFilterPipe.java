@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * [g:func() > 5]
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FunctionComparisonFilterPipe<S> extends AbstractComparisonFilterPipe<S, Object> {

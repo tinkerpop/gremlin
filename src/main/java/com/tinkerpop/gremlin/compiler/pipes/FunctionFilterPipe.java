@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * [g:func()]
+ * 
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {

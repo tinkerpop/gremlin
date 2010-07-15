@@ -6,6 +6,8 @@ import com.tinkerpop.pipes.filter.FilterPipe;
 import java.util.NoSuchElementException;
 
 /**
+ * [true]
+ * 
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class BooleanFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
