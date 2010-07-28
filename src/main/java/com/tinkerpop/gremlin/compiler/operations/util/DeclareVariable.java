@@ -32,29 +32,8 @@ public class DeclareVariable implements Operation {
     }
 
     public static void decalareWithInit(String var, Atom value) {
-        //GremlinEvaluator.declareVariable(var, makeAtomValue(var, value));
         GremlinEvaluator.declareVariable(var, value);
     }
-
-    /*
-    public static void declareEmpty(String var) {
-        decalareWithInit(var, new Atom(null));
-    }
-
-
-    public static Atom makeAtomValue(String name, Atom value) {
-        value.setPersistent(false);
-        value.setVariableName(name);
-
-        return value;
-    }
-
-
-    protected static Atom makeAtomValue(String name, Operation operation) {
-        Atom value = operation.compute();
-        return makeAtomValue(name, value);
-    }
-    */
     
     public Type getType() {
         return Type.STATEMENT;
