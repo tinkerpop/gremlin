@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 
 /**
  * @author Pavel A. Yaskevich
@@ -19,20 +20,27 @@ public class DeclareVariable implements Operation {
     }
 
     public Atom compute() {
-        Atom varValue = makeAtomValue(this.name, this.valueOperation);
-        GremlinEvaluator.declareVariable(this.name, varValue);
+        Atom atom = this.valueOperation.compute();
 
-        GremlinEvaluator.declareVariable(Tokens.LAST_VARIABLE, varValue);
-        return varValue;
+        if (!(atom instanceof DynamicEntity)) {
+            GremlinEvaluator.declareVariable(this.name, atom);
+        } else {
+            GremlinEvaluator.declareVariable(this.name, new Atom<Object>(atom.getValue()));
+        }
+
+        return atom;
     }
 
     public static void decalareWithInit(String var, Atom value) {
-        GremlinEvaluator.declareVariable(var, makeAtomValue(var, value));
+        //GremlinEvaluator.declareVariable(var, makeAtomValue(var, value));
+        GremlinEvaluator.declareVariable(var, value);
     }
 
+    /*
     public static void declareEmpty(String var) {
         decalareWithInit(var, new Atom(null));
     }
+
 
     public static Atom makeAtomValue(String name, Atom value) {
         value.setPersistent(false);
@@ -41,11 +49,13 @@ public class DeclareVariable implements Operation {
         return value;
     }
 
+
     protected static Atom makeAtomValue(String name, Operation operation) {
         Atom value = operation.compute();
         return makeAtomValue(name, value);
     }
-
+    */
+    
     public Type getType() {
         return Type.STATEMENT;
     }

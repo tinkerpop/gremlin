@@ -16,9 +16,9 @@ public class UnassignFunctionTest extends BaseTest {
         GremlinEvaluator.declareVariable("y", new Atom<Integer>(2));
         GremlinEvaluator.declareVariable("z", new Atom<Integer>(3));
 
-        assertEquals(GremlinEvaluator.getVariable("x"), new Atom<Integer>(1));
-        assertEquals(GremlinEvaluator.getVariable("y"), new Atom<Integer>(2));
-        assertEquals(GremlinEvaluator.getVariable("z"), new Atom<Integer>(3));
+        assertEquals(GremlinEvaluator.getVariable("x").getValue(), 1);
+        assertEquals(GremlinEvaluator.getVariable("y").getValue(), 2);
+        assertEquals(GremlinEvaluator.getVariable("z").getValue(), 3);
 
         this.stopWatch();
         assertTrue(function.compute(createUnaryArgs("x")).getValue());

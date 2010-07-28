@@ -18,26 +18,15 @@ public class Atom<T> {
 
     private T value;
 
-    /* for not persistent variable calls */
-    private String variableName;
-
-    /* for not persistent function calls */
-    private Function function;
-    private List<Operation> functionParameters;
-
-    private boolean persistent = true;
-
     /* identifier and property used in gpath */
     private boolean identifier = false;
     private boolean property = false;
 
-    private Type type = Type.REGULAR;
-
     private static final String NULL = "null";
     private static final String EMPTY_STRING = "";
 
-    public enum Type {
-        FUNCTION, VARIABLE, REGULAR
+    public Atom() {
+        this.value = null;    
     }
 
     public Atom(T value) {
@@ -107,10 +96,6 @@ public class Atom<T> {
         return isClassOf(Collection.class);
     }
 
-    public boolean isFunctionCall() {
-        return this.type == Type.FUNCTION;
-    }
-
     public boolean isGraph() {
         return isClassOf(Graph.class);
     }
@@ -126,11 +111,7 @@ public class Atom<T> {
     public boolean isEdge() {
         return isClassOf(Edge.class);
     }
-
-    public boolean isPersistent() {
-        return this.persistent;
-    }
-
+    
     public boolean isIdentifier() {
         return this.identifier;
     }
@@ -143,25 +124,6 @@ public class Atom<T> {
         return isClassOf(Comparable.class);
     }
 
-    public boolean isVariableCall() {
-        return this.type == Type.VARIABLE;
-    }
-
-    public void setPersistent(final boolean flag) {
-        this.persistent = flag;
-    }
-
-    public void setVariableName(final String name) {
-        this.variableName = name;
-        this.type = Type.VARIABLE;
-    }
-
-    public void setFunction(final Function function, final List<Operation> parameters) {
-        this.function = function;
-        this.functionParameters = parameters;
-        this.type = Type.FUNCTION;
-    }
-
     public void setIdentifier(final boolean flag) {
         this.identifier = flag;
     }
@@ -170,26 +132,8 @@ public class Atom<T> {
         this.property = flag;
     }
 
-    public Atom recalculated() {
-        final Atom result;
-
-        try {
-            if (this.type == Type.VARIABLE) {
-                result = GremlinEvaluator.getVariable(this.variableName);
-            } else if (this.type == Type.FUNCTION) {
-                result = this.function.compute(this.functionParameters);
-            } else {
-                result = this;
-            }
-            return result;
-        } catch (Exception e) {
-            System.err.println(e);
-            return null;
-        }
-    }
-
-    private boolean isClassOf(final Class klass) {
-        return (this.isNull()) ? false : ((klass.isAssignableFrom(this.value.getClass())) ? true : false);
+    protected boolean isClassOf(final Class klass) {
+        return (!this.isNull()) && (klass.isAssignableFrom(this.value.getClass()));
     }
 
     public boolean equals(Object object) {
@@ -202,14 +146,6 @@ public class Atom<T> {
 
     public String toString() {
         return (this.value == null) ? NULL : this.value.toString();
-    }
-
-    public Function getFunctionObject() {
-        return this.function;
-    }
-
-    public List<Operation> getFunctionParameters() {
-        return this.functionParameters;
     }
 
 }

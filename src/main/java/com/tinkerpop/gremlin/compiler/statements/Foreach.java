@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
+import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.List;
 
@@ -48,7 +49,9 @@ public class Foreach implements Operation {
             }
 
             for (Operation operation : this.statements) {
-                operation.compute();
+                Atom atom = operation.compute();
+                if (atom instanceof Func)
+                    atom.getValue();
             }
         }
 

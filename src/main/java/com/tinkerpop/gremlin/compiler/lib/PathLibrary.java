@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler;
+package com.tinkerpop.gremlin.compiler.lib;
 
 import com.tinkerpop.pipes.Pipe;
 

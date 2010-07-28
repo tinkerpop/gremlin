@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.List;
 
@@ -42,7 +43,9 @@ public class While implements Operation {
 
             if (repeatIteration) {
                 for (Operation operation : statements) {
-                    operation.compute();
+                    Atom atom = operation.compute();
+                    if (atom instanceof Func)
+                        atom.getValue();
                 }
             }
         }

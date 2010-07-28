@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
-import com.tinkerpop.gremlin.compiler.VariableLibrary;
+import com.tinkerpop.gremlin.compiler.lib.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 
@@ -30,7 +30,7 @@ public class NativeFunction implements Function<Object> {
 
         // cloning variable library
         // all changes in variables will stay inside function + full access to current state of global variables
-        VariableLibrary varLib = GremlinEvaluator.getVariableLibrary().clone();
+        VariableLibrary varLib = GremlinEvaluator.getVariableLibrary().cloneLibrary();
 
         // mapping arguments to parameters
         for (int i = 0; i < this.arguments.size(); i++) {

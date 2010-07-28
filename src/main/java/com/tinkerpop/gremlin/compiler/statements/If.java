@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.List;
 
@@ -33,14 +34,17 @@ public class If implements Operation {
     public Atom compute() {
         Atom condResult = this.condition.compute();
 
-        if (condResult.isNull() == false) {
-            if ((Boolean) condResult.getValue() == true) {
+        if (!condResult.isNull()) {
+            if ((Boolean) condResult.getValue()) {
                 for (Operation operation : statements) {
                     operation.compute();
                 }
             } else if (null != alternatives) {
                 for (Operation operation : alternatives) {
-                    operation.compute();
+                    Atom atom = operation.compute();
+                    
+                    if (atom instanceof Func)
+                        atom.getValue();
                 }
             }
         }

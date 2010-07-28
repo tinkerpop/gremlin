@@ -1,9 +1,11 @@
-package com.tinkerpop.gremlin.compiler;
+package com.tinkerpop.gremlin.compiler.lib;
 
+import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.functions.Functions;
 import com.tinkerpop.gremlin.compiler.functions.NativeFunctions;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,24 +15,22 @@ import java.util.ServiceLoader;
 /**
  * @author Pavel A. Yaskevich
  */
-public class FunctionLibrary {
-
-    final Map<String, Functions> functionsByNamespace;
+public class FunctionLibrary extends HashMap<String, Functions> {
 
     public FunctionLibrary() {
-        this.functionsByNamespace = new HashMap<String, Functions>();
         final ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
+        
         for (final Functions functions : functionsService) {
             this.registerFunctions(functions);
         }
     }
 
     public void registerFunctions(final Functions functions) {
-        this.functionsByNamespace.put(functions.getNamespace(), functions);
+        super.put(functions.getNamespace(), functions);
     }
 
     public void registerFunction(final String namespace, final Function function) {
-        Functions functions = this.functionsByNamespace.get(namespace);
+        Functions functions = super.get(namespace);
 
         if (functions == null) {
             functions = new NativeFunctions(namespace);
@@ -39,11 +39,11 @@ public class FunctionLibrary {
             functions.addFunction(function);
         }
 
-        this.functionsByNamespace.put(namespace, functions);
+        super.put(namespace, functions);
     }
 
     public Function getFunction(final String namespace, final String functionName) throws RuntimeException {
-        final Functions functions = this.functionsByNamespace.get(namespace);
+        final Functions functions = super.get(namespace);
 
         if (functions == null) {
             throw new RuntimeException("No such namespace: " + namespace);
@@ -55,17 +55,5 @@ public class FunctionLibrary {
 
         throw new RuntimeException("Unregistered function: " + namespace + ":" + functionName);
     }
-
-    public Atom runFunction(final String namespace, final String functionName, final List<Operation> params) throws Exception {
-        final Function fn = this.getFunction(namespace, functionName);
-
-        final Atom result = new Atom(null);
-
-        result.setPersistent(false);
-        result.setFunction(fn, params);
-
-        return result;
-    }
-
 
 }

@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.List;
 
@@ -35,7 +36,10 @@ public class Repeat implements Operation {
 
                 for (int i = 0; i < times.intValue(); i++) {
                     for (Operation operation : statements) {
-                        operation.compute();
+                        Atom atom = operation.compute();
+                        
+                        if (atom instanceof Func)
+                            atom.getValue();
                     }
                 }
             }

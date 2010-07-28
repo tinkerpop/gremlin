@@ -23,13 +23,12 @@ options {
 
     import com.tinkerpop.gremlin.compiler.Tokens;
     import com.tinkerpop.gremlin.compiler.Atom;
-    import com.tinkerpop.gremlin.compiler.VariableLibrary;
-    import com.tinkerpop.gremlin.compiler.FunctionLibrary;
-    import com.tinkerpop.gremlin.compiler.PathLibrary;
+    import com.tinkerpop.gremlin.compiler.lib.VariableLibrary;
+    import com.tinkerpop.gremlin.compiler.lib.FunctionLibrary;
+    import com.tinkerpop.gremlin.compiler.lib.PathLibrary;
 
     // types
-    import com.tinkerpop.gremlin.compiler.types.Range;
-    import com.tinkerpop.gremlin.compiler.types.GPath;
+    import com.tinkerpop.gremlin.compiler.types.*;
 
     // operations
     import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -78,6 +77,10 @@ options {
     }
 
     public static Atom getVariable(String name) {
+        return variables.getVariableByName(name);
+    }
+
+    public static Object getVariableValue(String name) {
         return variables.get(name);
     }
 
@@ -94,38 +97,38 @@ options {
     }
 
     private static void formProgramResult(List<Object> resultList, Operation currentOperation) {
-        Atom result = currentOperation.compute();
+        Atom result  = currentOperation.compute();
+        Object value = null;
 
-        if (EMBEDDED) resultList.add(result.getValue());
+        try {
+            value = result.getValue();
+        } catch(Exception e) {}
 
-        //System.out.println(result.getValue().getClass());
+        if (EMBEDDED) resultList.add(value);
         
-        if (!result.isNull() && DEBUG) {
-            if (result.isIterable()) {
-                for(Object o : (Iterable)result.getValue()) {
+        if (value != null && DEBUG) {
+            if (value instanceof Iterable) {
+                for(Object o : (Iterable)value) {
                     System.out.println(Tokens.RESULT_PROMPT + o);
                 }
-            } else if (result.isMap()) {
-                Map map = (Map) result.getValue();
+            } else if (value instanceof Map) {
+                Map map = (Map) value;
 
                 for (Object key : map.keySet()) {
                     System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
                 }
-            } else if(result.getValue() instanceof Iterator) {
-                Iterator itty = (Iterator) result.getValue();
+            } else if(value instanceof Iterator) {
+                Iterator itty = (Iterator) value;
                 
                 while(itty.hasNext()) {
                     System.out.println(Tokens.RESULT_PROMPT + itty.next());
                 }
             } else {
-                System.out.println(Tokens.RESULT_PROMPT + result);
+                System.out.println(Tokens.RESULT_PROMPT + value);
             }
         }
 
-        if (!(currentOperation instanceof DeclareVariable)) {
-            declareVariable(Tokens.LAST_VARIABLE, result);
-        }
-        
+        variables.setHistoryVariable(new Atom<Object>(value));
     }
 }
 
@@ -171,7 +174,7 @@ include_statement returns [Atom result]
                 ANTLRFileStream file = new ANTLRFileStream(filename.substring(1, filename.length() - 1));
                 Gremlin.evaluate(file);
             } catch(Exception e) {
-                $result = new Atom(false);
+                $result = new Atom<Boolean>(false);
             }
         }
 	;
@@ -183,7 +186,7 @@ path_definition_statement returns [Operation op]
 	:	^(PATH path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPathOperation)$gpath.op).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
         {
             paths.registerPath($path_name.text, pipes);
-            $op = new UnaryOperation(new Atom(null));
+            $op = new UnaryOperation(new Atom<Boolean>(true));
         }
 	;
 	
@@ -348,7 +351,7 @@ function_definition_statement returns [Operation op]
             NativeFunction fn = new NativeFunction($fn_name.text, params, $block.operations);
             functions.registerFunction($ns.text, fn);
 
-            $op = new UnaryOperation(new Atom(null));
+            $op = new UnaryOperation(new Atom<Boolean>(true));
         }
 	;
 	
@@ -359,7 +362,7 @@ function_call returns [Atom value]
 	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG (st=statement { params.add($st.op); } | col=collection { params.add($col.op); }) ) )* ))
         {
             try {
-                $value = functions.runFunction($ns.text, $fn_name.text, params);
+                $value = new Func(functions.getFunction($ns.text, $fn_name.text), params);
             } catch(Exception e) {
                 System.err.println(e);
             }
