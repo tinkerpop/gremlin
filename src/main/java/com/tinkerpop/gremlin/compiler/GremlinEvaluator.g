@@ -195,14 +195,14 @@ gpath_statement returns [Operation op]
     scope {
         int pipeCount;
 
-        Object startPoint;
+        Atom<Object> root;
         List<Pipe> pipeList;
     }
     @init {
         isGPath = true;
         
         $gpath_statement::pipeCount = 0;
-        $gpath_statement::startPoint = null;
+        $gpath_statement::root = null;
         $gpath_statement::pipeList = new ArrayList<Pipe>();
     }
     @after {
@@ -211,9 +211,9 @@ gpath_statement returns [Operation op]
 	:	^(GPATH (step)+) 
         {
             if ($gpath_statement::pipeList.size() > 0) {
-                $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::startPoint);
+                $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::root);
             } else {
-                $op = new UnaryOperation(new Atom(null));
+                $op = new UnaryOperation(new Atom<Object>(null));
             }
         }
 	;
@@ -228,18 +228,19 @@ step
             
             if (tokenAtom != null) {
                 if ($gpath_statement::pipeCount == 0) {
-                    if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
-                    } else if (paths.isPath(tokenAtom.getValue().toString())) {
-                        $gpath_statement::pipeList.addAll(paths.getPath((String)tokenAtom.getValue()));
-                        $gpath_statement::startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
-                    } else {
-                        $gpath_statement::startPoint = tokenAtom.getValue();
-                    }
 
+                    if (tokenAtom instanceof DynamicEntity) {
+                        $gpath_statement::root = tokenAtom;    
+                    } else if (paths.isPath(tokenAtom.toString())) {
+                        $gpath_statement::pipeList.addAll(paths.getPath(tokenAtom.toString()));
+                        $gpath_statement::root = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE);
+                    } else {
+                        $gpath_statement::root = tokenAtom;
+                    }
+                
                     $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(predicates));
                 } else {
-                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep($token.atom, predicates));
+                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(tokenAtom, predicates));
                 }
             }
             
@@ -371,7 +372,7 @@ function_call returns [Atom value]
 
 collection returns [Operation op]
     @init {
-        Object startPoint = null;
+        Atom<Object> root = null;
         List<Pipe> pipes = new ArrayList<Pipe>();
         List<Operation> predicates = new ArrayList<Operation>();
     }
@@ -379,18 +380,20 @@ collection returns [Operation op]
     {
         Atom tokenAtom = $token.atom;
 
-        if (tokenAtom.isIdentifier() && ((String)tokenAtom.getValue()).equals(".")) {
-            startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
-        } else if (paths.isPath(tokenAtom.getValue().toString())) {
-            pipes.addAll(paths.getPath((String)tokenAtom.getValue()));
-            startPoint = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE).getValue();
-        } else {
-            startPoint = tokenAtom.getValue();
+        if (tokenAtom != null) {
+            if (tokenAtom instanceof DynamicEntity) {
+                root = tokenAtom;
+            } else if (paths.isPath(tokenAtom.toString())) {
+                pipes.addAll(paths.getPath(tokenAtom.toString()));
+                root = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE);
+            } else {
+                root = tokenAtom;
+            }
+
+            pipes.addAll(GremlinPipesHelper.pipesForStep(predicates));
         }
-
-        pipes.addAll(GremlinPipesHelper.pipesForStep(predicates));
-
-        $op = new GPathOperation(pipes, startPoint);
+        
+        $op = new GPathOperation(pipes, root);
     }
     ;
 

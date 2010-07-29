@@ -1,5 +1,8 @@
 package com.tinkerpop.gremlin.compiler.types;
 
+import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
+import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
 import com.tinkerpop.pipes.Pipe;
@@ -8,17 +11,26 @@ import com.tinkerpop.pipes.Pipeline;
 import java.util.Iterator;
 import java.util.List;
 
+import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
+
 /**
  * @author Pavel A. Yaskevich
  */
 public class GPath implements Iterable {
 
-    private final Object start;
     private final List<Pipe> pipes;
+    private final Atom<Object> root;
+    private Object persistentRoot = null;
 
-    public GPath(final Object startPoint, final List<Pipe> pipes) {
+    public GPath(final Atom<Object> root, final List<Pipe> pipes) {
+        this.root  = root;
         this.pipes = pipes;
-        this.start = startPoint;
+
+        if (!(root instanceof DynamicEntity)) {
+            if (root.toString().equals(".") && root.isIdentifier()) {
+                this.persistentRoot = ((Atom) GremlinEvaluator.getVariableValue(Tokens.ROOT_VARIABLE)).getValue();
+            }
+        }
     }
     
     public Iterator iterator() {
@@ -27,8 +39,10 @@ public class GPath implements Iterable {
                 ((GremlinRangeFilterPipe) p).reset();
             }
         }
+        
         Pipeline pipeline = new Pipeline(this.pipes);
-        pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(this.start));
+        pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(((persistentRoot == null) ? root.getValue() : persistentRoot)));
         return pipeline;
     }
+    
 }

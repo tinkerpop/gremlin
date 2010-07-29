@@ -5,7 +5,9 @@ import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.lib.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
+import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,12 +37,38 @@ public class NativeFunction implements Function<Object> {
         // mapping arguments to parameters
         for (int i = 0; i < this.arguments.size(); i++) {
             Atom computedParam = parameters.get(i).compute();
-            DeclareVariable.decalareWithInit(this.arguments.get(i), computedParam);
+
+            if (computedParam instanceof DynamicEntity) {
+                DeclareVariable.decalareWithInit(this.arguments.get(i), new Atom<Object>(computedParam.getValue())); 
+            } else {
+                DeclareVariable.decalareWithInit(this.arguments.get(i), computedParam);
+            }
         }
 
+        long operationCount = 0;
         Atom<Object> result = null;
+
         for (Operation operation : this.body) {
-            result = operation.compute();
+            final Atom atom = operation.compute();
+
+            // setting 'result' only if this is the last statement of the function body
+            if (operationCount == this.body.size() - 1) {
+                if (atom instanceof DynamicEntity) {
+                    result = new Atom<Object>(atom.getValue());
+                } else if(atom.isIterable()) {
+                    List<Object> results = new ArrayList<Object>();
+
+                    for(Object o : (Iterable) atom.getValue()) {
+                        results.add(o);
+                    }
+
+                    result = new Atom<Object>(results);
+                } else {
+                    result = atom;
+                }
+            }
+
+            operationCount++;
         }
 
         // setting variable library back to original

@@ -9,16 +9,16 @@ import java.util.List;
 
 public class GPathOperation implements Operation {
 
-    private final Object startPoint;
+    private final Atom<Object> root;
     private final List<Pipe> pipes;
 
-    public GPathOperation(List<Pipe> pipes, Object point) {
+    public GPathOperation(List<Pipe> pipes, Atom<Object> root) {
+        this.root = root;
         this.pipes = pipes;
-        this.startPoint = point;
     }
 
     public Atom compute() {
-        return new Atom<GPath>(new GPath(this.startPoint, this.pipes));
+        return new Atom<GPath>(new GPath(this.root, this.pipes));
     }
 
     public Type getType() {
