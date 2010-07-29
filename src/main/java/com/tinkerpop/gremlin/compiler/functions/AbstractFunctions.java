@@ -19,6 +19,16 @@ public abstract class AbstractFunctions implements Functions {
     }
 
     public void addFunction(final Function function) {
+        this.removeByFunctionName(function.getFunctionName());
         this.functions.add(function);
+    }
+
+    private void removeByFunctionName(final String functionName) {
+        for (int i = 0; i < this.functions.size(); i++) {
+            final Function function = this.functions.get(i);
+            
+            if (function.getFunctionName().equals(functionName))
+                this.functions.remove(function);
+        }
     }
 }
