@@ -18,6 +18,8 @@ options {
     import java.util.regex.Matcher;
 
     import java.util.Collections;
+
+    import java.util.ServiceLoader;
     
     import com.tinkerpop.gremlin.Gremlin;
 
@@ -27,6 +29,8 @@ options {
     import com.tinkerpop.gremlin.compiler.lib.FunctionLibrary;
     import com.tinkerpop.gremlin.compiler.lib.PathLibrary;
 
+    import com.tinkerpop.gremlin.compiler.functions.Functions;
+    
     // types
     import com.tinkerpop.gremlin.compiler.types.*;
 
@@ -157,6 +161,7 @@ statement returns [Operation op]
 	|	path_definition_statement           { $op = $path_definition_statement.op; }
 	|	function_definition_statement       { $op = $function_definition_statement.op; }
 	|	include_statement                   { $op = new UnaryOperation($include_statement.result); }
+	|   script_statement                    { $op = new UnaryOperation($script_statement.result); }
 	|	gpath_statement                     { $op = $gpath_statement.op; }
 	|	^(VAR VARIABLE s=statement)         { $op = new DeclareVariable($VARIABLE.text, $s.op); }
     |   ^('and' a=statement b=statement)    { $op = new And($a.op, $b.op); }
@@ -164,10 +169,10 @@ statement returns [Operation op]
     |   expression                          { $op = $expression.expr; }
 	;
 
-include_statement returns [Atom result]
-	:	^(INCLUDE StringLiteral)
-        {
-            $result = new Atom(true);
+script_statement returns [Atom result]
+    : ^(SCRIPT StringLiteral)
+      {
+            $result = new Atom<Boolean>(true);
 
             String filename = $StringLiteral.text;
             try {
@@ -175,6 +180,26 @@ include_statement returns [Atom result]
                 Gremlin.evaluate(file);
             } catch(Exception e) {
                 $result = new Atom<Boolean>(false);
+            }
+      }
+    ;
+
+include_statement returns [Atom result]
+	:	^(INCLUDE StringLiteral)
+        {
+            $result = new Atom<Boolean>(true);
+
+            String className = $StringLiteral.text;
+            try {
+                final Class toLoad = Class.forName(className);
+                final ServiceLoader<Functions> functionsService = ServiceLoader.load(toLoad);
+
+                for (final Functions functionsToLoad : functionsService) {
+                    functions.registerFunctions(functionsToLoad);
+                }
+            } catch(Exception e) {
+                $result = new Atom<Boolean>(false);
+                e.printStackTrace();
             }
         }
 	;

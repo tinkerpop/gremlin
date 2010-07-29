@@ -39,6 +39,7 @@ tokens {
 	WHILE;
 	REPEAT;
 	INCLUDE;
+	SCRIPT;
 	
 	// for atoms
     INT;
@@ -89,6 +90,7 @@ statement
 	|	path_definition_statement
 	|	function_definition_statement
 	|	include_statement
+	|   script_statement
 	|	gpath_statement
     |   VARIABLE ':=' statement  -> ^(VAR VARIABLE statement)	
 	|	expression (('and'^|'or'^) expression)*
@@ -97,7 +99,11 @@ statement
 include_statement
 	:	'include' StringLiteral -> ^(INCLUDE StringLiteral)
 	;
-	
+
+script_statement
+    :   'script' StringLiteral -> ^(SCRIPT StringLiteral) 
+    ;
+
 if_statement 
 	:	'if' statement NEWLINE 
            if_block=block

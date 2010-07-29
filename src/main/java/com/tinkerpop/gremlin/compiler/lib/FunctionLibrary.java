@@ -1,15 +1,10 @@
 package com.tinkerpop.gremlin.compiler.lib;
 
-import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.functions.Functions;
 import com.tinkerpop.gremlin.compiler.functions.NativeFunctions;
-import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
 
 /**
