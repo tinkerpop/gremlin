@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface Function<T> {
 
-    public Atom<T> compute(List<Operation> parameters) throws RuntimeException;
+    public Atom<T> compute(List<Operation> parameters, GremlinScriptContext context) throws RuntimeException;
 
     public String getFunctionName();
 

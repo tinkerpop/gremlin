@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -15,7 +16,7 @@ public class TimeFunction extends AbstractFunction<Double> {
 
     private static final double ONE_MILLION = 1000000d;
 
-    public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Double> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         final int size = parameters.size();
         if (size == 0) {
             return new Atom<Double>(System.nanoTime() / ONE_MILLION);

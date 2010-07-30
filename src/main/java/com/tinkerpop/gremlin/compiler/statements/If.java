@@ -36,24 +36,25 @@ public class If implements Operation {
 
         if (!condResult.isNull()) {
             if ((Boolean) condResult.getValue()) {
-                for (Operation operation : statements) {
-                    operation.compute();
-                }
+                this.evaluateBody(this.statements);
             } else if (null != alternatives) {
-                for (Operation operation : alternatives) {
-                    Atom atom = operation.compute();
-                    
-                    if (atom instanceof Func)
-                        atom.getValue();
-                }
+                this.evaluateBody(this.alternatives);
             }
         }
 
-        return new Atom(null);
+        return new Atom<Object>(null);
     }
 
     public Type getType() {
         return Type.STATEMENT;
     }
 
+    private void evaluateBody(List<Operation> body) {
+        for (Operation operation : body) {
+            final Atom atom = operation.compute();
+
+            if (atom instanceof Func)
+                atom.getValue();
+        }    
+    }
 }

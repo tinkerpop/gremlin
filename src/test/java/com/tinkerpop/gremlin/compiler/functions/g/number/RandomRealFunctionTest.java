@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -14,8 +15,9 @@ public class RandomRealFunctionTest extends BaseTest {
 
     public void testRangeOfReal() {
         Function<Double> function = new RandomRealFunction();
+        GremlinScriptContext context = new GremlinScriptContext();
         this.stopWatch();
-        Atom<Double> atom = function.compute(new ArrayList<Operation>());
+        Atom<Double> atom = function.compute(new ArrayList<Operation>(), context);
         printPerformance(function.getFunctionName() + " function", 1, "random generation", this.stopWatch());
         assertTrue(atom.isNumber());
         Double real = atom.getValue();

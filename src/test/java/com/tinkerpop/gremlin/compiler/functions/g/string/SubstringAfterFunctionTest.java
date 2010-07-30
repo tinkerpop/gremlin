@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.string;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 /**
@@ -12,19 +13,20 @@ public class SubstringAfterFunctionTest extends BaseTest {
     public void testSubstringAfter() {
         Function<String> function = new SubstringAfterFunction();
         this.stopWatch();
-        Atom<String> atom = function.compute(createUnaryArgs("marko", "ar"));
+        GremlinScriptContext context = new GremlinScriptContext();
+        Atom<String> atom = function.compute(createUnaryArgs("marko", "ar"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "ko");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("marko", "ma"));
+        atom = function.compute(createUnaryArgs("marko", "ma"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "rko");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("marko", "o"));
+        atom = function.compute(createUnaryArgs("marko", "o"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("marko", "x"));
+        atom = function.compute(createUnaryArgs("marko", "x"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "marko");
     }
@@ -32,7 +34,8 @@ public class SubstringAfterFunctionTest extends BaseTest {
     public void testIllegalArguments() {
         try {
             Function<String> function = new SubstringAfterFunction();
-            function.compute(createUnaryArgs("marko"));
+            GremlinScriptContext context = new GremlinScriptContext();
+            function.compute(createUnaryArgs("marko"), context);
             assertFalse(true);
         } catch (Exception e) {
             assertTrue(true);

@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 /**
@@ -11,11 +12,13 @@ public class PathFunctionTest extends BaseTest {
     public void testPath() {
         Function<Boolean> function = new PathFunction();
         this.stopWatch();
-        assertTrue(function.compute(createUnaryArgs()).getValue());
-        assertTrue(function.compute(createUnaryArgs(1)).getValue());
-        assertTrue(function.compute(createUnaryArgs(null)).getValue());
-        assertTrue(function.compute(createUnaryArgs("marko")).getValue());
-        assertTrue(function.compute(createUnaryArgs(22.0, "pavel", true)).getValue());
+        GremlinScriptContext context = new GremlinScriptContext();
+        
+        assertTrue(function.compute(createUnaryArgs(), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(1), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(null), context).getValue());
+        assertTrue(function.compute(createUnaryArgs("marko"), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(22.0, "pavel", true), context).getValue());
         printPerformance(function.getFunctionName() + " function", 5, "evaluations", this.stopWatch());
     }
 }

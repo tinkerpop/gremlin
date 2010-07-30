@@ -2,8 +2,9 @@ package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.Gremlin;
+import com.tinkerpop.gremlin.GremlinScriptEngine;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -16,18 +17,23 @@ import java.util.List;
 public class ListFunctionTest extends BaseTest {
 
     public void testEmptyList() {
+        GremlinScriptContext context = new GremlinScriptContext();
         Function<Iterable> function = new ListFunction();
         this.stopWatch();
-        Atom<Iterable> atom = function.compute(new ArrayList<Operation>());
+        Atom<Iterable> atom = function.compute(new ArrayList<Operation>(), context);
         printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
         assertEquals(count(atom.getValue()), 0);
     }
 
-       public void testListGremlin() throws Exception {
+    public void testListGremlin() throws Exception {
+
+        final GremlinScriptEngine engine   = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
 
         this.stopWatch();
+        
         String script = "g:list(1,2,3)[0]";
-        Iterable itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        Iterable itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
         List<Vertex> results = asList(itty);
@@ -37,7 +43,7 @@ public class ListFunctionTest extends BaseTest {
 
         this.stopWatch();
         script = "g:list(1,2,3)[2]";
-        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
         results = asList(itty);
@@ -47,7 +53,7 @@ public class ListFunctionTest extends BaseTest {
 
         this.stopWatch();
         script = "g:list(1,2,3)[3]";
-        itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
         results = asList(itty);

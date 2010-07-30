@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -14,8 +15,9 @@ public class RandomNaturalFunctionTest extends BaseTest {
 
     public void testRandomNatural() {
         Function<Integer> function = new RandomNaturalFunction();
+        GremlinScriptContext context = new GremlinScriptContext();
         this.stopWatch();
-        Atom<Integer> atom = function.compute(new ArrayList<Operation>());
+        Atom<Integer> atom = function.compute(new ArrayList<Operation>(), context);
         printPerformance(function.getFunctionName() + " function", 1, "random generation", this.stopWatch());
         assertTrue(atom.isNumber());
         assertTrue(atom.isInteger());
@@ -25,8 +27,9 @@ public class RandomNaturalFunctionTest extends BaseTest {
 
     public void testRandomNaturalWithCap() {
         Function<Integer> function = new RandomNaturalFunction();
+        GremlinScriptContext context = new GremlinScriptContext();
         this.stopWatch();
-        Atom<Integer> atom = function.compute(createUnaryArgs(10l));
+        Atom<Integer> atom = function.compute(createUnaryArgs(10l), context);
         printPerformance(function.getFunctionName() + " function", 1, "random generation with cap", this.stopWatch());
         assertTrue(atom.isNumber());
         assertTrue(atom.isInteger());
@@ -34,7 +37,7 @@ public class RandomNaturalFunctionTest extends BaseTest {
         assertTrue(natural >= 0 && natural < 10);
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(10.0));
+        atom = function.compute(createUnaryArgs(10.0), context);
         printPerformance(function.getFunctionName() + " function", 1, "random generation with cap", this.stopWatch());
         assertTrue(atom.isNumber());
         assertTrue(atom.isInteger());

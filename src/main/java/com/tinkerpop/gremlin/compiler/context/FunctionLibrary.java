@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.lib;
+package com.tinkerpop.gremlin.compiler.context;
 
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.functions.Functions;

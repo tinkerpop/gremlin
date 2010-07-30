@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -14,8 +15,10 @@ public class TimeFunctionTest extends BaseTest {
     public void testBasicTimeAxioms() {
         Function function = new TimeFunction();
         this.stopWatch();
-        double timeA = (Double) function.compute(new ArrayList<Operation>()).getValue();
-        double timeB = (Double) function.compute(new ArrayList<Operation>()).getValue();
+        GremlinScriptContext context = new GremlinScriptContext();
+        
+        double timeA = (Double) function.compute(new ArrayList<Operation>(), context).getValue();
+        double timeB = (Double) function.compute(new ArrayList<Operation>(), context).getValue();
         printPerformance(function.getFunctionName() + " function", 2, "evaluations", this.stopWatch());
         assertTrue(timeB >= timeA);
     }

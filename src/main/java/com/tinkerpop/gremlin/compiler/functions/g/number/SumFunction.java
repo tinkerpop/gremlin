@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -13,7 +14,7 @@ public class SumFunction extends AbstractFunction<Double> {
 
     private static final String FUNCTION_NAME = "sum";
 
-    public Atom<Double> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Double> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
 
         if (parameters.size() == 0) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

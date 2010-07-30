@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
@@ -20,12 +21,15 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
     private final Function function;
     private final List<Operation> parameters;
     private final List<Integer> pipeObjectIndices;
+    private final GremlinScriptContext context;
+    
     //private int counter = -1;
 
-    public FunctionFilterPipe(Function function, List<Operation> parameters, List<Integer> pipeObjectIndices) {
+    public FunctionFilterPipe(Function function, List<Operation> parameters, List<Integer> pipeObjectIndices, final GremlinScriptContext context) {
         this.function = function;
         this.parameters = parameters;
         this.pipeObjectIndices = pipeObjectIndices;
+        this.context = context;
     }
 
     public S processNextStart() {
@@ -35,7 +39,7 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
                 for (Integer index : this.pipeObjectIndices)
                     this.parameters.set(index, new UnaryOperation(new Atom<S>(s)));
             }
-            Object functionReturn = this.function.compute(this.parameters).getValue();
+            Object functionReturn = this.function.compute(this.parameters, this.context).getValue();
             if (functionReturn instanceof Boolean && ((Boolean) functionReturn)) {
                 return s;
             }

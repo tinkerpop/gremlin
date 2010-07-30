@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin;
 
-import org.antlr.runtime.ANTLRFileStream;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 
+import java.io.FileReader;
 import java.io.PrintStream;
 
 /**
@@ -12,12 +13,13 @@ public class ScriptExecutor {
     public static void main(final String[] args) {
         final PrintStream output = System.out;
 
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        
         if (args.length != 1) {
             output.println("Parameters: <path_to_grm_script>");
         } else {
             try {
-                final ANTLRFileStream file = new ANTLRFileStream(args[0]);
-                Gremlin.evaluate(file);
+                engine.eval(new FileReader(args[0]), new GremlinScriptContext());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

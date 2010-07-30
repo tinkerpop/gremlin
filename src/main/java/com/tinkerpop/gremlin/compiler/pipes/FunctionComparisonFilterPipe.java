@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
@@ -19,13 +20,14 @@ public class FunctionComparisonFilterPipe<S> extends AbstractComparisonFilterPip
     private final Function function;
     private final List<Operation> parameters;
     private final List<Integer> pipeObjectIndices;
-
-    public FunctionComparisonFilterPipe(Function function, List<Operation> parameters, List<Integer> pipeObjectIndices, Filter filter, Object objectProperty) {
+    private final GremlinScriptContext context;
+    
+    public FunctionComparisonFilterPipe(Function function, List<Operation> parameters, List<Integer> pipeObjectIndices, Filter filter, Object objectProperty, final GremlinScriptContext context) {
         super(objectProperty, filter);
         this.function = function;
         this.parameters = parameters;
         this.pipeObjectIndices = pipeObjectIndices;
-
+        this.context = context;
     }
 
     public S processNextStart() {
@@ -35,7 +37,7 @@ public class FunctionComparisonFilterPipe<S> extends AbstractComparisonFilterPip
                 for (Integer index : this.pipeObjectIndices)
                     this.parameters.set(index, new UnaryOperation(new Atom<S>(s)));
             }
-            Object functionReturn = this.function.compute(this.parameters).getValue();
+            Object functionReturn = this.function.compute(this.parameters, this.context).getValue();
             if (compareObjectProperty(functionReturn)) {
                 return s;
             }

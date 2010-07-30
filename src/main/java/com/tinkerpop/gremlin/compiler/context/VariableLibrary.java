@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler.lib;
+package com.tinkerpop.gremlin.compiler.context;
 
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.Tokens;
@@ -26,7 +26,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
     }
 
     public Atom getVariableByName(String variable) {
-        return new Var(variable);
+        return new Var(variable, this);
     }
 
     public void setHistoryVariable(Atom value) {

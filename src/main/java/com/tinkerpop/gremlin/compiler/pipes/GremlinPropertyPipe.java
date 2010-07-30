@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.Map;

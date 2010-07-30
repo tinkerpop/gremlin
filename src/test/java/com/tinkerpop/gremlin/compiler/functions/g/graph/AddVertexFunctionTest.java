@@ -6,8 +6,8 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.Tokens;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 import java.util.HashMap;
@@ -20,18 +20,19 @@ public class AddVertexFunctionTest extends BaseTest {
 
     public void testAddVertex() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        
         Function<Vertex> function = new AddVertexFunction();
         assertEquals(function.getFunctionName(), "add-v");
         this.stopWatch();
-        Atom<Vertex> atom = function.compute(createUnaryArgs(graph, "20"));
+        Atom<Vertex> atom = function.compute(createUnaryArgs(graph, "20"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "20");
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("21"));
+        atom = function.compute(createUnaryArgs("21"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "21");
@@ -40,7 +41,7 @@ public class AddVertexFunctionTest extends BaseTest {
         map.put("name", "marko");
         map.put(Tokens._ID, "22");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(map));
+        atom = function.compute(createUnaryArgs(map), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "22");
@@ -51,16 +52,16 @@ public class AddVertexFunctionTest extends BaseTest {
         map.put("name", "pavel");
         map.put(Tokens._ID, "23");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(graph, map));
+        atom = function.compute(createUnaryArgs(graph, map), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "23");
         assertEquals(atom.getValue().getProperty("name"), "pavel");
         Vertex vertexPavel = atom.getValue();
 
-        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(new TinkerGraph()));
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(new TinkerGraph()));
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(vertexMarko));
+        atom = function.compute(createUnaryArgs(vertexMarko), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "22");
@@ -68,7 +69,7 @@ public class AddVertexFunctionTest extends BaseTest {
 
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(graph, vertexPavel));
+        atom = function.compute(createUnaryArgs(graph, vertexPavel), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "23");

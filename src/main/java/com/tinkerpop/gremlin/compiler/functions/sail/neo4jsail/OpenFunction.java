@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler.functions.sail.neo4jsail;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -22,7 +23,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(List<Operation> parameters) throws RuntimeException {
+    public Atom<Graph> compute(List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
 
         final int size = parameters.size();
         final String directory;

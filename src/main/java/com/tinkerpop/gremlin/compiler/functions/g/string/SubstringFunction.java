@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.string;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -14,7 +15,7 @@ public class SubstringFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "substring";
 
 
-    public Atom<String> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         final int size = parameters.size();
         if (size == 2) {
             final String string = (String) parameters.get(0).compute().getValue();

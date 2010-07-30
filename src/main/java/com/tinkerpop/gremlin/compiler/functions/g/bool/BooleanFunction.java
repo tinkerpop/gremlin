@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.bool;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -14,7 +15,7 @@ public class BooleanFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "boolean";
 
 
-    public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         if (parameters.size() == 1) {
             Object object = parameters.get(0).compute().getValue();
             if (object instanceof Number) {

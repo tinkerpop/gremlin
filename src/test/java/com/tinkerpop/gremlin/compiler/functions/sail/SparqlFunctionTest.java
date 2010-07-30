@@ -6,8 +6,8 @@ import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.Tokens;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import org.openrdf.sail.memory.MemoryStore;
 
@@ -21,11 +21,13 @@ public class SparqlFunctionTest extends BaseTest {
 
     public void testSparql() {
         SailGraph graph = SailGraphFactory.createTinkerGraph(new MemoryStore());
-        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        
         Function<List<Map<String, Vertex>>> function = new SparqlFunction();
         String query = "SELECT ?x ?y WHERE { ?x tg:knows ?y }";
         this.stopWatch();
-        Atom<List<Map<String, Vertex>>> atom = function.compute(createUnaryArgs(graph, query));
+        Atom<List<Map<String, Vertex>>> atom = function.compute(createUnaryArgs(graph, query), context);
         printPerformance(function.getFunctionName() + " function", 1, query, this.stopWatch());
         List<Map<String, Vertex>> results = atom.getValue();
         assertEquals(results.size(), 2);

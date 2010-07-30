@@ -8,6 +8,8 @@ options {
 @header {
     package com.tinkerpop.gremlin.compiler;
 
+    import java.io.FileReader;
+    
     import java.util.ArrayList;
     
     import java.util.Map;
@@ -20,14 +22,13 @@ options {
     import java.util.Collections;
 
     import java.util.ServiceLoader;
-    
-    import com.tinkerpop.gremlin.Gremlin;
 
+    import com.tinkerpop.gremlin.GremlinScriptEngine;
+    
     import com.tinkerpop.gremlin.compiler.Tokens;
     import com.tinkerpop.gremlin.compiler.Atom;
-    import com.tinkerpop.gremlin.compiler.lib.VariableLibrary;
-    import com.tinkerpop.gremlin.compiler.lib.FunctionLibrary;
-    import com.tinkerpop.gremlin.compiler.lib.PathLibrary;
+
+    import com.tinkerpop.gremlin.compiler.context.*;
 
     import com.tinkerpop.gremlin.compiler.functions.Functions;
     
@@ -71,36 +72,27 @@ options {
     private boolean isGPath = false;
 
     private Pattern rangePattern = Pattern.compile("^(\\d+)..(\\d+)");
+
+    private GremlinScriptContext context = new GremlinScriptContext();
+
+    public GremlinEvaluator(final TreeNodeStream input, final GremlinScriptContext context) {
+        this(input, new RecognizerSharedState());
+        this.context = context;
+    }
+
+    private Atom getVariable(String name) {
+        return this.context.getVariableLibrary().getVariableByName(name);
+    }
+
+    private Function getFunction(final String ns, final String functionName) {
+        return this.context.getFunctionLibrary().getFunction(ns, functionName);
+    }
+
+    private void registerFunction(final String ns, final Function func) {
+        this.context.getFunctionLibrary().registerFunction(ns, func);
+    }
     
-    private static VariableLibrary variables = new VariableLibrary();
-    public  static FunctionLibrary functions = new FunctionLibrary();
-    public  static PathLibrary     paths     = new PathLibrary();
-
-    public static void declareVariable(String name, Atom value) {
-        variables.declare(name, value);
-    }
-
-    public static Atom getVariable(String name) {
-        return variables.getVariableByName(name);
-    }
-
-    public static Object getVariableValue(String name) {
-        return variables.get(name);
-    }
-
-    public static void freeVariable(String name) {
-        variables.free(name);
-    }
-
-    public static VariableLibrary getVariableLibrary() {
-        return variables;
-    }
-
-    public static void setVariableLibrary(VariableLibrary lib) {
-        variables = lib;
-    }
-
-    private static void formProgramResult(List<Object> resultList, Operation currentOperation) {
+    private void formProgramResult(List<Object> resultList, Operation currentOperation) {
         Atom result  = currentOperation.compute();
         Object value = null;
 
@@ -132,7 +124,7 @@ options {
             }
         }
 
-        variables.setHistoryVariable(new Atom<Object>(value));
+        this.context.getVariableLibrary().setHistoryVariable(new Atom<Object>(value));
     }
 }
 
@@ -146,7 +138,7 @@ program returns [Iterable results]
      } | col=collection {
         formProgramResult(resultList, $col.op);
      } | ^(VAR VARIABLE c=collection) {
-        formProgramResult(resultList, new DeclareVariable($VARIABLE.text, $c.op)); 
+        formProgramResult(resultList, new DeclareVariable($VARIABLE.text, $c.op, this.context)); 
      }) NEWLINE*)+
      {
         $results = resultList;
@@ -163,7 +155,7 @@ statement returns [Operation op]
 	|	include_statement                   { $op = new UnaryOperation($include_statement.result); }
 	|   script_statement                    { $op = new UnaryOperation($script_statement.result); }
 	|	gpath_statement                     { $op = $gpath_statement.op; }
-	|	^(VAR VARIABLE s=statement)         { $op = new DeclareVariable($VARIABLE.text, $s.op); }
+	|	^(VAR VARIABLE s=statement)         { $op = new DeclareVariable($VARIABLE.text, $s.op, this.context); }
     |   ^('and' a=statement b=statement)    { $op = new And($a.op, $b.op); }
     |   ^('or'  a=statement b=statement)    { $op = new Or($a.op, $b.op); }
     |   expression                          { $op = $expression.expr; }
@@ -176,8 +168,8 @@ script_statement returns [Atom result]
 
             String filename = $StringLiteral.text;
             try {
-                ANTLRFileStream file = new ANTLRFileStream(filename.substring(1, filename.length() - 1));
-                Gremlin.evaluate(file);
+                final GremlinScriptEngine engine = new GremlinScriptEngine();
+                engine.eval(new FileReader(filename.substring(1, filename.length() - 1)), this.context);
             } catch(Exception e) {
                 $result = new Atom<Boolean>(false);
             }
@@ -195,7 +187,7 @@ include_statement returns [Atom result]
                 final ServiceLoader<Functions> functionsService = ServiceLoader.load(toLoad);
 
                 for (final Functions functionsToLoad : functionsService) {
-                    functions.registerFunctions(functionsToLoad);
+                    this.context.getFunctionLibrary().registerFunctions(functionsToLoad);
                 }
             } catch(Exception e) {
                 $result = new Atom<Boolean>(false);
@@ -210,7 +202,7 @@ path_definition_statement returns [Operation op]
     }
 	:	^(PATH path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPathOperation)$gpath.op).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
         {
-            paths.registerPath($path_name.text, pipes);
+            this.context.getPathLibrary().registerPath($path_name.text, pipes);
             $op = new UnaryOperation(new Atom<Boolean>(true));
         }
 	;
@@ -236,7 +228,7 @@ gpath_statement returns [Operation op]
 	:	^(GPATH (step)+) 
         {
             if ($gpath_statement::pipeList.size() > 0) {
-                $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::root);
+                $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::root, this.context);
             } else {
                 $op = new UnaryOperation(new Atom<Object>(null));
             }
@@ -249,8 +241,9 @@ step
     }
     :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ))
         {
-            Atom tokenAtom = $token.atom;
-            
+            final Atom tokenAtom = $token.atom;
+            final PathLibrary paths = this.context.getPathLibrary();
+
             if (tokenAtom != null) {
                 if ($gpath_statement::pipeCount == 0) {
 
@@ -258,14 +251,14 @@ step
                         $gpath_statement::root = tokenAtom;    
                     } else if (paths.isPath(tokenAtom.toString())) {
                         $gpath_statement::pipeList.addAll(paths.getPath(tokenAtom.toString()));
-                        $gpath_statement::root = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE);
+                        $gpath_statement::root = this.getVariable(Tokens.ROOT_VARIABLE);
                     } else {
                         $gpath_statement::root = tokenAtom;
                     }
                 
-                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(predicates));
+                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
                 } else {
-                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(tokenAtom, predicates));
+                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(tokenAtom, predicates, this.context));
                 }
             }
             
@@ -328,7 +321,7 @@ while_statement returns [Operation op]
 foreach_statement returns [Operation op]
 	:	^(FOREACH VARIABLE arr=statement block)
         {
-            $op = new Foreach($VARIABLE.text, $arr.op, $block.operations);
+            $op = new Foreach($VARIABLE.text, $arr.op, $block.operations, this.context);
         }
 	;
 	
@@ -375,7 +368,7 @@ function_definition_statement returns [Operation op]
 	:	^(FUNC ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG VARIABLE { params.add($VARIABLE.text); }) )*) block)
         {
             NativeFunction fn = new NativeFunction($fn_name.text, params, $block.operations);
-            functions.registerFunction($ns.text, fn);
+            this.registerFunction($ns.text, fn);
 
             $op = new UnaryOperation(new Atom<Boolean>(true));
         }
@@ -388,7 +381,7 @@ function_call returns [Atom value]
 	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG (st=statement { params.add($st.op); } | col=collection { params.add($col.op); }) ) )* ))
         {
             try {
-                $value = new Func(functions.getFunction($ns.text, $fn_name.text), params);
+                $value = new Func(this.getFunction($ns.text, $fn_name.text), params, this.context);
             } catch(Exception e) {
                 System.err.println(e);
             }
@@ -403,22 +396,23 @@ collection returns [Operation op]
     }
     : ^(COLLECTION_CALL ^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )+ )))
     {
-        Atom tokenAtom = $token.atom;
+        final Atom tokenAtom = $token.atom;
+        final PathLibrary paths = this.context.getPathLibrary();
 
         if (tokenAtom != null) {
             if (tokenAtom instanceof DynamicEntity) {
                 root = tokenAtom;
             } else if (paths.isPath(tokenAtom.toString())) {
                 pipes.addAll(paths.getPath(tokenAtom.toString()));
-                root = GremlinEvaluator.getVariable(Tokens.ROOT_VARIABLE);
+                root = this.getVariable(Tokens.ROOT_VARIABLE);
             } else {
                 root = tokenAtom;
             }
 
-            pipes.addAll(GremlinPipesHelper.pipesForStep(predicates));
+            pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
         }
         
-        $op = new GPathOperation(pipes, root);
+        $op = new GPathOperation(pipes, root, this.context);
     }
     ;
 
@@ -443,7 +437,7 @@ atom returns [Atom value]
     |   NULL                                                        { $value = new Atom(null); }
     |   ^(ARR (NUMBER { array.add(new Double($NUMBER.text)); })+)   { $value = new Atom(array); }
 	|	^(VARIABLE_CALL VARIABLE)                                   { 
-                                                                      $value = getVariable($VARIABLE.text); 
+                                                                      $value = this.getVariable($VARIABLE.text); 
                                                                     }
 	|	^(PROPERTY_CALL PROPERTY)                                   { 
                                                                         Atom propertyAtom = new Atom($PROPERTY.text.substring(1));
@@ -454,18 +448,18 @@ atom returns [Atom value]
 	                                                                    String idText = $IDENTIFIER.text;
                                                                         
 	                                                                    if (idText.equals(".") && !isGPath) {
-	                                                                        Atom id  = getVariable(Tokens.ROOT_VARIABLE);
+	                                                                        Atom id  = this.getVariable(Tokens.ROOT_VARIABLE);
 	                                                                        Atom dot = new Atom(id.getValue());
 	                                                                        dot.setIdentifier(true);
 	                                                                        $value = dot;
 	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
                                                                             Matcher range = rangePattern.matcher(idText);
                                                                             if (range.matches())
-                                                                                $value = new Atom(new Range(range.group(1), range.group(2)));
+                                                                                $value = new Atom<Range>(new Range(range.group(1), range.group(2)));
                                                                             else
                                                                                 $value = new Atom(null);
 	                                                                    } else {
-                                                                            Atom idAtom = new Atom($IDENTIFIER.text);
+                                                                            Atom idAtom = new Atom<String>($IDENTIFIER.text);
                                                                             idAtom.setIdentifier(true);
                                                                             $value = idAtom;
                                                                         }

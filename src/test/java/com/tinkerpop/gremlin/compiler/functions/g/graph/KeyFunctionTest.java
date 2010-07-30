@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 /**
@@ -14,10 +15,12 @@ public class KeyFunctionTest extends BaseTest {
 
     public void testKey() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        
         Function<Iterable<Element>> function = new KeyFunction();
         assertEquals(function.getFunctionName(), "key");
         this.stopWatch();
-        Atom<Iterable<Element>> atom = function.compute(createUnaryArgs(graph, "name", "marko"));
+        Atom<Iterable<Element>> atom = function.compute(createUnaryArgs(graph, "name", "marko"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isIterable());
         assertEquals(count(atom.getValue()), 1);

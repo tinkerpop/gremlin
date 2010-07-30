@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 /**
@@ -12,12 +13,13 @@ public class RoundFunctionTest extends BaseTest {
     public void testRound() {
         Function<Long> function = new RoundFunction();
         this.stopWatch();
-        Atom<Long> atom = function.compute(createUnaryArgs(1.4));
+        GremlinScriptContext context = new GremlinScriptContext();
+        Atom<Long> atom = function.compute(createUnaryArgs(1.4), context);
         printPerformance(function.getFunctionName() + " function", 1, "argument", this.stopWatch());
         assertEquals(atom.getValue(), new Long(1));
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(1.5));
+        atom = function.compute(createUnaryArgs(1.5), context);
         printPerformance(function.getFunctionName() + " function", 1, "argument", this.stopWatch());
         assertEquals(atom.getValue(), new Long(2));
 

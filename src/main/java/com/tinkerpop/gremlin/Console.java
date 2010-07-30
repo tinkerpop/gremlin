@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import jline.ConsoleReader;
-import org.antlr.runtime.ANTLRStringStream;
 
 import java.io.PrintStream;
 
@@ -41,6 +41,9 @@ public class Console {
         String compoundStatementParts = "";
         boolean inCompoundStatement = false;
 
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+        
         while (line != null) {
 
             // set appropriate prompt
@@ -88,10 +91,8 @@ public class Console {
                 inCompoundStatement = false;
             }
 
-            final ANTLRStringStream input = new ANTLRStringStream(line + "\n");
-
             try {
-                Gremlin.evaluate(input);
+                engine.eval(line, context);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
                 //e.printStackTrace();

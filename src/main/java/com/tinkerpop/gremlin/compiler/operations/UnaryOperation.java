@@ -1,12 +1,6 @@
 package com.tinkerpop.gremlin.compiler.operations;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
-import com.tinkerpop.gremlin.compiler.Tokens;
-import com.tinkerpop.gremlin.compiler.functions.Function;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Pavel A. Yaskevich

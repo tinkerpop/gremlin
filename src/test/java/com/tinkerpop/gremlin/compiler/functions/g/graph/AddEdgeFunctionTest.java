@@ -5,8 +5,8 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.Tokens;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 import java.util.HashMap;
@@ -19,12 +19,13 @@ public class AddEdgeFunctionTest extends BaseTest {
 
     public void testAddEdge() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        GremlinEvaluator.declareVariable(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<Edge> function = new AddEdgeFunction();
         assertEquals(function.getFunctionName(), "add-e");
         this.stopWatch();
-        Atom<Edge> atom = function.compute(createUnaryArgs(graph, null, graph.getVertex("1"), "co-developer", graph.getVertex("6")));
+        Atom<Edge> atom = function.compute(createUnaryArgs(graph, null, graph.getVertex("1"), "co-developer", graph.getVertex("6")), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isEdge());
         assertEquals(atom.getValue().getOutVertex().getId(), "1");
@@ -32,7 +33,7 @@ public class AddEdgeFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getLabel(), "co-developer");
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(null, graph.getVertex("1"), "co-developer", graph.getVertex("4")));
+        atom = function.compute(createUnaryArgs(null, graph.getVertex("1"), "co-developer", graph.getVertex("4")), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isEdge());
         assertEquals(atom.getValue().getOutVertex().getId(), "1");
@@ -43,7 +44,7 @@ public class AddEdgeFunctionTest extends BaseTest {
         Map map = new HashMap();
         map.put("weight", 0.5d);
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(map, graph.getVertex("1"), "co-worker", graph.getVertex("2")));
+        atom = function.compute(createUnaryArgs(map, graph.getVertex("1"), "co-worker", graph.getVertex("2")), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isEdge());
         assertEquals(atom.getValue().getOutVertex().getId(), "1");

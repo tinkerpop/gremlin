@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import junit.framework.TestCase;
@@ -62,9 +63,17 @@ public class BaseTest extends TestCase {
         return list;
     }
 
-    public List evaluateGremlinScriptIterable(String script, boolean printStatistics) throws RecognitionException {
+    public List evaluateGremlinScriptIterable(String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
         this.stopWatch();
-        Iterable itty = (Iterable) Gremlin.evaluate(script).iterator().next();
+        
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+
+        Iterable itty = null;
+        
+        try {
+            itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        } catch(Exception e) {}
+        
         if (printStatistics)
             printPerformance(script, 1, "pipe constructed", this.stopWatch());
         else
@@ -84,9 +93,11 @@ public class BaseTest extends TestCase {
         return results;
     }
 
-    public Object evaluateGremlinScriptPrimitive(String script, boolean printStatistics) throws RecognitionException {
+    public Object evaluateGremlinScriptPrimitive(String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
         this.stopWatch();
-        Object object = Gremlin.evaluate(script).iterator().next();
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        
+        Object object = ((Iterable) engine.eval(script, context)).iterator().next();
         if (printStatistics)
             printPerformance(script, 1, "pipe evaluated", this.stopWatch());
         else

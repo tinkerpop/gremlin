@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.string;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 /**
@@ -12,11 +13,12 @@ public class TranslateFunctionTest extends BaseTest {
     public void testTranslate() {
         Function<String> function = new TranslateFunction();
         this.stopWatch();
-        Atom<String> atom = function.compute(createUnaryArgs("marko","ar","ie"));
+        GremlinScriptContext context = new GremlinScriptContext();
+        Atom<String> atom = function.compute(createUnaryArgs("marko","ar","ie"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "mieko");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("marko","x","z"));
+        atom = function.compute(createUnaryArgs("marko","x","z"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "marko");
     }
@@ -24,7 +26,8 @@ public class TranslateFunctionTest extends BaseTest {
     public void testIllegalArguments() {
         try {
             Function<String> function = new TranslateFunction();
-            function.compute(createUnaryArgs("marko"));
+            GremlinScriptContext context = new GremlinScriptContext();
+            function.compute(createUnaryArgs("marko"), context);
             assertFalse(true);
         } catch (Exception e) {
             assertTrue(true);

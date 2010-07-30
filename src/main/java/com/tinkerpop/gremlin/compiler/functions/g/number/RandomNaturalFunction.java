@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.number;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -16,7 +17,7 @@ public class RandomNaturalFunction extends AbstractFunction<Integer> {
     private static final Random random = new Random();
 
 
-    public Atom<Integer> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Integer> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
 
 
         if (parameters.size() == 0) {

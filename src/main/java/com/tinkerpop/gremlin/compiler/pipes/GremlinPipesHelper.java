@@ -1,8 +1,9 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.Tokens;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.PathLibrary;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -27,8 +28,8 @@ import java.util.List;
  * @author Pavel A. Yaskevich
  */
 public class GremlinPipesHelper {
-
-    public static List<Pipe> pipesForStep(final Atom token, final List<Operation> predicates) throws RuntimeException {
+    
+    public static List<Pipe> pipesForStep(final Atom token, final List<Operation> predicates, final GremlinScriptContext context) throws RuntimeException {
         final List<Pipe> pipes = new ArrayList<Pipe>();
         final String tokenString = (String) token.getValue();
 
@@ -37,25 +38,27 @@ public class GremlinPipesHelper {
         if (tokenPipe != null) {
             pipes.add(tokenPipe);
         } else {
-            if (GremlinEvaluator.paths.isPath(tokenString)) {
-                pipes.addAll(GremlinEvaluator.paths.getPath(tokenString));
+            PathLibrary paths = context.getPathLibrary();
+            
+            if (paths.isPath(tokenString)) {
+                pipes.addAll(paths.getPath(tokenString));
             } else {
                 throw new RuntimeException("No pipe exists for '" + tokenString + "'");
             }
         }
 
         for (final Operation operation : predicates) {
-            pipes.add(pipeForPredicate(operation));
+            pipes.add(pipeForPredicate(operation, context));
         }
 
         return pipes;
     }
 
-    public static List<Pipe> pipesForStep(final List<Operation> predicates) {
+    public static List<Pipe> pipesForStep(final List<Operation> predicates, final GremlinScriptContext context) {
         final List<Pipe> pipes = new ArrayList<Pipe>();
 
         for (final Operation operation : predicates) {
-            pipes.add(pipeForPredicate(operation));
+            pipes.add(pipeForPredicate(operation, context));
         }
 
         return pipes;
@@ -103,15 +106,15 @@ public class GremlinPipesHelper {
         return null;
     }
 
-    private static Pipe pipeForPredicate(final Operation predicate) throws RuntimeException {
+    private static Pipe pipeForPredicate(final Operation predicate, final GremlinScriptContext context) throws RuntimeException {
 
         if (predicate instanceof BinaryOperation) {
             final Operation[] operands = ((BinaryOperation) predicate).getOperands();
 
             if (predicate instanceof And)
-                return andFilterPipe(operands);
+                return andFilterPipe(context, operands);
             else if (predicate instanceof Or)
-                return orFilterPipe(operands);
+                return orFilterPipe(context, operands);
 
             final Atom operandA = operands[0].compute();
             final Atom operandB = operands[1].compute();
@@ -154,7 +157,7 @@ public class GremlinPipesHelper {
                 else if (predicate instanceof LessThanOrEqual)
                     filter = Filter.GREATER_THAN_EQUAL;
 
-                return new FunctionComparisonFilterPipe(function, parameters, pipeObjectIndices, filter, objectProperty);
+                return new FunctionComparisonFilterPipe(function, parameters, pipeObjectIndices, filter, objectProperty, context);
             }
             
             final String key = (String) operandA.getValue();
@@ -192,7 +195,7 @@ public class GremlinPipesHelper {
 
             if (unaryAtom instanceof Func) {
                 Func functionCall = (Func) unaryAtom;
-                return new FunctionFilterPipe(functionCall.getFunction(), functionCall.getParameters(), functionCall.pipeObjectIndicesInFunctionParams());
+                return new FunctionFilterPipe(functionCall.getFunction(), functionCall.getParameters(), functionCall.pipeObjectIndicesInFunctionParams(), context);
             }
 
             if (unaryAtom.isNumber()) {
@@ -213,21 +216,21 @@ public class GremlinPipesHelper {
         throw new RuntimeException("No pipe for  " + predicate.getClass());
     }
 
-    private static List<Pipe> pipesForAndOrOperations(final Operation... operands) {
+    private static List<Pipe> pipesForAndOrOperations(final GremlinScriptContext context, final Operation... operands) {
         final List<Pipe> pipes = new ArrayList<Pipe>();
 
         for (Operation operation : operands) {
-            pipes.add(new HasNextPipe(pipeForPredicate(operation)));
+            pipes.add(new HasNextPipe(pipeForPredicate(operation, context)));
         }
         return pipes;
     }
 
-    private static Pipe andFilterPipe(final Operation... operands) {
-        return new AndFilterPipe(pipesForAndOrOperations(operands));
+    private static Pipe andFilterPipe(final GremlinScriptContext context, final Operation... operands) {
+        return new AndFilterPipe(pipesForAndOrOperations(context, operands));
     }
 
-    private static Pipe orFilterPipe(final Operation... operands) {
-        return new OrFilterPipe(pipesForAndOrOperations(operands));
+    private static Pipe orFilterPipe(final GremlinScriptContext context, final Operation... operands) {
+        return new OrFilterPipe(pipesForAndOrOperations(context, operands));
     }
 
     private static Pipe propertyFilterPipe(final String key, final Object storedObject, final Filter filter) {

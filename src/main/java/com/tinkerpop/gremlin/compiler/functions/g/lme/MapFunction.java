@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -16,7 +17,7 @@ public class MapFunction extends AbstractFunction<Map> {
 
     private static final String FUNCTION_NAME = "map";
 
-    public Atom<Map> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Map> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         final Map map = new HashMap();
         final int size = parameters.size();
         if (size == 1) {

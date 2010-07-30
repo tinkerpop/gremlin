@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -13,7 +14,7 @@ public class PathFunction extends AbstractFunction<Boolean> {
 
     private static final String FUNCTION_NAME = "p";
 
-    public Atom<Boolean> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         return new Atom<Boolean>(true);
     }
 

@@ -1,10 +1,9 @@
 package com.tinkerpop.gremlin.compiler.functions;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
-import com.tinkerpop.gremlin.compiler.lib.VariableLibrary;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 
 import java.util.ArrayList;
@@ -26,23 +25,19 @@ public class NativeFunction implements Function<Object> {
         this.body = body;
     }
 
-    public Atom<Object> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         if (this.arguments.size() != parameters.size())
             throw new RuntimeException("Wrong number of arguments (" + parameters.size() + " of " + this.arguments.size() + ")");
 
         // cloning variable library
         // all changes in variables will stay inside function + full access to current state of global variables
-        VariableLibrary varLib = GremlinEvaluator.getVariableLibrary().cloneLibrary();
+        VariableLibrary varLib = context.getVariableLibrary().cloneLibrary();
 
         // mapping arguments to parameters
         for (int i = 0; i < this.arguments.size(); i++) {
-            Atom computedParam = parameters.get(i).compute();
-
-            if (computedParam instanceof DynamicEntity) {
-                DeclareVariable.decalareWithInit(this.arguments.get(i), new Atom<Object>(computedParam.getValue())); 
-            } else {
-                DeclareVariable.decalareWithInit(this.arguments.get(i), computedParam);
-            }
+            final Atom computedParam = parameters.get(i).compute();
+            final Atom argumentValue = (computedParam instanceof DynamicEntity) ? new Atom<Object>(computedParam.getValue()) : computedParam;
+            context.getVariableLibrary().declare(this.arguments.get(i), argumentValue);
         }
 
         long operationCount = 0;
@@ -72,7 +67,7 @@ public class NativeFunction implements Function<Object> {
         }
 
         // setting variable library back to original
-        GremlinEvaluator.setVariableLibrary(varLib);
+        context.setVariableLibrary(varLib);
 
         return result;
     }

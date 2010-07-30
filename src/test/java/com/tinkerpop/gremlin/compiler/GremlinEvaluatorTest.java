@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.compiler;
 
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -9,29 +11,32 @@ public class GremlinEvaluatorTest extends BaseTest {
 
     public void testVariableHandling() {
         this.stopWatch();
-        GremlinEvaluator.declareVariable("w", new Atom<Double>(1.0d));
-        GremlinEvaluator.declareVariable("x", new Atom(null));
-        GremlinEvaluator.declareVariable("y", new Atom<String>("1"));
-        GremlinEvaluator.declareVariable("z", new Atom<Boolean>(true));
+        GremlinScriptContext context = new GremlinScriptContext();
+        VariableLibrary variables = context.getVariableLibrary();
+        
+        variables.declare("w", new Atom<Double>(1.0d));
+        variables.declare("x", new Atom(null));
+        variables.declare("y", new Atom<String>("1"));
+        variables.declare("z", new Atom<Boolean>(true));
         printPerformance("evaluator", 4, "variable declarations", this.stopWatch());
 
         this.stopWatch();
-        assertEquals(GremlinEvaluator.getVariable("w").getValue(), 1.0d);
-        assertNull(GremlinEvaluator.getVariable("x").getValue());
-        assertEquals(GremlinEvaluator.getVariable("y").getValue(), "1");
-        assertTrue((Boolean) GremlinEvaluator.getVariable("z").getValue());
+        assertEquals(variables.getVariableByName("w").getValue(), 1.0d);
+        assertNull(variables.getVariableByName("x").getValue());
+        assertEquals(variables.getVariableByName("y").getValue(), "1");
+        assertTrue((Boolean) variables.getVariableByName("z").getValue());
         printPerformance("evaluator", 4, "variable gets", this.stopWatch());
 
         this.stopWatch();
-        GremlinEvaluator.freeVariable("w");
-        GremlinEvaluator.freeVariable("x");
-        GremlinEvaluator.freeVariable("y");
-        GremlinEvaluator.freeVariable("z");
+        variables.free("w");
+        variables.free("x");
+        variables.free("y");
+        variables.free("z");
         printPerformance("evaluator", 4, "variable undeclarations", this.stopWatch());
-        assertNull(GremlinEvaluator.getVariable("w").getValue());
-        assertNull(GremlinEvaluator.getVariable("x").getValue());
-        assertNull(GremlinEvaluator.getVariable("y").getValue());
-        assertNull(GremlinEvaluator.getVariable("z").getValue());
+        assertNull(variables.getVariableByName("w").getValue());
+        assertNull(variables.getVariableByName("x").getValue());
+        assertNull(variables.getVariableByName("y").getValue());
+        assertNull(variables.getVariableByName("z").getValue());
     }
 
 }

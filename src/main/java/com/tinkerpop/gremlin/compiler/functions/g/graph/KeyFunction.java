@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.graph;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -16,13 +17,13 @@ public class KeyFunction extends AbstractFunction<Iterable<Element>> {
 
     private static final String FUNCTION_NAME = "key";
 
-    public Atom<Iterable<Element>> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Iterable<Element>> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
 
         final int size = parameters.size();
         if (size != 2 && size != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0);
+        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
         final String key;
         final Object value;
 

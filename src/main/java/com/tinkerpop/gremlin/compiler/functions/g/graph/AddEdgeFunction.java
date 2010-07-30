@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.Atom;
 import com.tinkerpop.gremlin.compiler.Tokens;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -19,12 +20,12 @@ public class AddEdgeFunction extends AbstractFunction<Edge> {
 
     private final static String FUNCTION_NAME = "add-e";
 
-    public Atom<Edge> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Edge> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         final int size = parameters.size();
         if (size < 3 || size > 5)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0);
+        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
         List<Object> objects = generateObjects(parameters);
 
         if (size == 5) {

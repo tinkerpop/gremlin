@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.Gremlin;
+import com.tinkerpop.gremlin.GremlinScriptEngine;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 
 import java.util.List;
 
@@ -11,7 +12,10 @@ import java.util.List;
 public class IfStatementTest extends BaseTest {
 
     public void testIfInGremlin() throws Exception {
-        List results = (List) Gremlin.evaluate("$x := 0\nif true\n$x := 10\nend\n$x\n");
+        final GremlinScriptEngine engine   = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        List results = (List) engine.eval("$x := 0\nif true\n$x := 10\nend\n$x\n", context);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), 0);
         assertNull(results.get(1));
@@ -19,7 +23,10 @@ public class IfStatementTest extends BaseTest {
     }
 
     public void testIfElseInGremlin() throws Exception {
-        List results = (List) Gremlin.evaluate("$x := 0\nif false\n$x := 10\nelse\n$x := 20\nend\n$x\n");
+        final GremlinScriptEngine engine   = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        List results = (List) engine.eval("$x := 0\nif false\n$x := 10\nelse\n$x := 20\nend\n$x\n", context);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), 0);
         assertNull(results.get(1));
@@ -27,7 +34,10 @@ public class IfStatementTest extends BaseTest {
     }
 
     public void testEmbeddedIfElseInGremlin() throws Exception {
-        List results = (List) Gremlin.evaluate("$x := 0\nif false\n$x := 10\nelse\nif true\n$x := 30\nelse\n$x := 20\nend\nend\n$x\n");
+        final GremlinScriptEngine engine   = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        List results = (List) engine.eval("$x := 0\nif false\n$x := 10\nelse\nif true\n$x := 30\nelse\n$x := 20\nend\nend\n$x\n", context);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), 0);
         assertNull(results.get(1));

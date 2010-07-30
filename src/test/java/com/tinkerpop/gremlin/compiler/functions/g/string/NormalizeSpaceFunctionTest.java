@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.string;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 
 /**
@@ -12,11 +13,12 @@ public class NormalizeSpaceFunctionTest extends BaseTest {
     public void testNormalizeSpace() {
         Function<String> function = new NormalizeSpaceFunction();
         this.stopWatch();
-        Atom<String> atom = function.compute(createUnaryArgs("   marko  "));
+        GremlinScriptContext context = new GremlinScriptContext();
+        Atom<String> atom = function.compute(createUnaryArgs("   marko  "), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "marko");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("\t  \tma r ko\n"));
+        atom = function.compute(createUnaryArgs("\t  \tma r ko\n"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "ma r ko");
     }
@@ -24,7 +26,8 @@ public class NormalizeSpaceFunctionTest extends BaseTest {
     public void testIllegalArguments() {
         try {
             Function<String> function = new NormalizeSpaceFunction();
-            function.compute(createUnaryArgs("marko", 2));
+            GremlinScriptContext context = new GremlinScriptContext();
+            function.compute(createUnaryArgs("marko", 2), context);
             assertFalse(true);
         } catch (Exception e) {
             assertTrue(true);

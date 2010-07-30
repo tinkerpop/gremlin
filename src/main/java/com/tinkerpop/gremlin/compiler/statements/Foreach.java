@@ -1,9 +1,8 @@
 package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.Atom;
-import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.List;
@@ -16,20 +15,22 @@ public class Foreach implements Operation {
     private final String variable;
     private final Operation parameter;
     private final List<Operation> statements;
-
+    private final GremlinScriptContext context;
+    
     /**
      * $z := 0
      * $x := g:list(1, 2, 3)
-     * <p/>
+     * 
      * foreach $y in $x
-     * $z := $z + $y
+     *   $z := $z + $y
      * end
      */
 
-    public Foreach(final String variable, final Operation parameter, final List<Operation> statements) {
+    public Foreach(final String variable, final Operation parameter, final List<Operation> statements, final GremlinScriptContext context) {
         this.variable = variable;
         this.parameter = parameter;
         this.statements = statements;
+        this.context = context;
     }
 
     @SuppressWarnings("unchecked")
@@ -42,12 +43,9 @@ public class Foreach implements Operation {
         final Iterable params = (Iterable) paramsAtom.getValue();
 
         for (Object currentParam : params) {
-            if (currentParam instanceof Atom) {
-                DeclareVariable.decalareWithInit(this.variable, (Atom) currentParam);
-            } else {
-                DeclareVariable.decalareWithInit(this.variable, new Atom(currentParam));
-            }
-
+            final Atom value = (currentParam instanceof Atom) ? (Atom) currentParam : new Atom(currentParam); 
+            context.getVariableLibrary().declare(this.variable, value);
+            
             for (Operation operation : this.statements) {
                 Atom atom = operation.compute();
                 if (atom instanceof Func)
@@ -55,7 +53,7 @@ public class Foreach implements Operation {
             }
         }
 
-        GremlinEvaluator.freeVariable(this.variable);
+        context.getVariableLibrary().free(this.variable);
 
         return new Atom(null);
     }

@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
 import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -17,7 +18,7 @@ public class SortFunction extends AbstractFunction<Object> {
     private static final String KEY = "key";
     private static final String KEY_VALUE_ERROR = "Must specify whether to sort by key or by value";
 
-    public Atom<Object> compute(final List<Operation> parameters) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         final int size = parameters.size();
         if (size == 2) {
             // sort iterable
