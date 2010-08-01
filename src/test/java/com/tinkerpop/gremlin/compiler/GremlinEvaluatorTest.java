@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

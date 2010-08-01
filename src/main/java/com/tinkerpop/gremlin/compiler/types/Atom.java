@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler;
+package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;

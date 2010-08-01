@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
-import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.PathLibrary;
@@ -167,7 +167,7 @@ public class GremlinPipesHelper {
             if (operandB.isNumber())
                 storedObject = operandB.getValue();
             else
-                storedObject = operandB.getValue();
+                storedObject = (operandB.isNull()) ? null : operandB.getValue();
 
             if (predicate instanceof Equality)
                 return propertyFilterPipe(key, storedObject, Filter.NOT_EQUAL);

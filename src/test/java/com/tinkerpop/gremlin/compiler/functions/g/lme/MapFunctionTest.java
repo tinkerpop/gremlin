@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinScriptEngine;
-import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;

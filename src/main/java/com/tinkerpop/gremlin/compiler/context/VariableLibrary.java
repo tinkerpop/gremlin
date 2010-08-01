@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.compiler.context;
 
-import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.types.Var;
 

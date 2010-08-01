@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.functions.neo4j;
 
 import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
-import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;

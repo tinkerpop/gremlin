@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.List;
 import java.util.Map;

@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import com.tinkerpop.gremlin.compiler.Atom;
-
 /**
  * @author Pavel A. Yaskevich
  */

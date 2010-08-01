@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.compiler.functions.g.io;
 
-import com.tinkerpop.gremlin.compiler.Atom;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
