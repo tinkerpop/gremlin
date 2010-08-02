@@ -240,14 +240,4 @@ public class GremlinPipesHelper {
             return new PropertyFilterPipe(key, storedObject, filter);
         }
     }
-
-    public static Iterator pipelineStartPoint(final Object root) {
-        if (root instanceof Iterable) {
-            return ((Iterable) root).iterator();
-        } else if (root instanceof Iterator) {
-            return (Iterator) root;
-        } else {
-            return new SingleIterator(root);
-        }
-    }
 }

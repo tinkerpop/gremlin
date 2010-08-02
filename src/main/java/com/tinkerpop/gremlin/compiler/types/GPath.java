@@ -2,10 +2,12 @@ package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.SingleIterator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,10 +25,11 @@ public class GPath implements Iterable, Comparable {
     public GPath(final Atom<Object> root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root  = root;
         this.pipes = pipes;
-
+        
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
-                this.persistentRoot = ((Atom) context.getVariableLibrary().get(Tokens.ROOT_VARIABLE)).getValue();
+                final VariableLibrary variables = context.getVariableLibrary();
+                this.persistentRoot = ((Atom) variables.get(Tokens.ROOT_VARIABLE)).getValue();
             }
         }
     }
@@ -39,7 +42,7 @@ public class GPath implements Iterable, Comparable {
         }
         
         Pipeline pipeline = new Pipeline(this.pipes);
-        pipeline.setStarts(GremlinPipesHelper.pipelineStartPoint(((persistentRoot == null) ? root.getValue() : persistentRoot)));
+        pipeline.setStarts(this.pipelineRoot());
         return pipeline;
     }
 
@@ -79,6 +82,18 @@ public class GPath implements Iterable, Comparable {
             List<Object> list = new ArrayList<Object>();
             list.add(operand);
             return list;
+        }
+    }
+
+    private Iterator pipelineRoot() {
+        final Object root = (persistentRoot == null) ? this.root.getValue() : this.persistentRoot;
+        
+        if (root instanceof Iterable) {
+            return ((Iterable) root).iterator();
+        } else if (root instanceof Iterator) {
+            return (Iterator) root;
+        } else {
+            return new SingleIterator<Object>(root);
         }
     }
 }
