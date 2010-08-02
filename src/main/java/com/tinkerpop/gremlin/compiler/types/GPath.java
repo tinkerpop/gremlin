@@ -62,6 +62,8 @@ public class GPath implements Iterable, Comparable {
 
         if (list.size() == 1) {
             Object c = list.get(0);
+
+            if (c == null) return -1;
             if (c instanceof Comparable && o instanceof Comparable)
                 return ((Comparable<Object>) c).compareTo(o);
         }
