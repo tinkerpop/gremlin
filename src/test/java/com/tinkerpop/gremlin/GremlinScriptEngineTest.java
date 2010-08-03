@@ -1,9 +1,10 @@
-package com.tinkerpop.gremlin.compiler;
+package com.tinkerpop.gremlin;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
+import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinTest extends BaseTest {
+public class GremlinScriptEngineTest extends BaseTest {
 
     public void testBasicMathStatements() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
@@ -71,6 +72,12 @@ public class GremlinTest extends BaseTest {
 
         results = evaluateGremlinScriptIterable("./inE", context, true);
         assertEquals(results.size(), 0);
+
+        results = evaluateGremlinScriptIterable("./outE/inV[@blah != null]", context, true);
+        assertEquals(results.size(), 0);
+
+        results = evaluateGremlinScriptIterable("./outE/inV[@blah = null]", context, true);
+        assertEquals(results.size(), 3);
     }
 
     public void testHistoryOnGraph() throws Exception {

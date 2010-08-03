@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler;
+package com.tinkerpop.gremlin.compiler.context;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
@@ -8,7 +8,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinEvaluatorTest extends BaseTest {
+public class GremlinScriptContextTest extends BaseTest {
 
     public void testVariableHandling() {
         this.stopWatch();
