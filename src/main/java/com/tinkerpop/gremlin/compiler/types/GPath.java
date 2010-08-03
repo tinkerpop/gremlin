@@ -10,6 +10,7 @@ import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.SingleIterator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -81,9 +82,7 @@ public class GPath implements Iterable, Comparable {
         } else if (operand instanceof Iterable) {
             return (Iterable) operand;
         } else {
-            List<Object> list = new ArrayList<Object>();
-            list.add(operand);
-            return list;
+            return Arrays.asList(operand);
         }
     }
 
