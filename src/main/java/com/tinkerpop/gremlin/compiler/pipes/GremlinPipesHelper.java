@@ -13,7 +13,6 @@ import com.tinkerpop.gremlin.compiler.types.Func;
 import com.tinkerpop.gremlin.compiler.types.Range;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.SingleIterator;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
@@ -21,7 +20,6 @@ import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -236,6 +234,8 @@ public class GremlinPipesHelper {
     private static Pipe propertyFilterPipe(final String key, final Object storedObject, final Filter filter) {
         if (key.equals(Tokens.LABEL)) {
             return new LabelFilterPipe((String) storedObject, filter);
+        } else if (key.equals(Tokens.ID)) {
+            return new IdFilterPipe(storedObject.toString(), filter);
         } else {
             return new PropertyFilterPipe(key, storedObject, filter);
         }
