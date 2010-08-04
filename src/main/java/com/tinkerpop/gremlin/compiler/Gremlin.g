@@ -166,7 +166,7 @@ operation
 	;
 	
 binary_operation
-	:	atom (('*'^|'div'^) atom)*
+	:	atom (('*'^|'div'^|'mod'^) atom)*
 	;
 	
 function_call

@@ -13,13 +13,14 @@ T__90=90
 ARG=5
 PATH=11
 G_INT=46
-INCLUDE=27
 SingleEscapeCharacter=59
+INCLUDE=27
 ARGS=6
 DOUBLE=32
 VAR=4
 GPATH=12
 COMMENT=41
+T__96=96
 T__95=95
 SCRIPT=28
 T__80=80
@@ -95,6 +96,7 @@ VARIABLE_CALL=39
 'end'=75
 '>='=90
 '/'=65
+'mod'=95
 'script'=72
 ':='=64
 '>'=89
@@ -112,7 +114,7 @@ VARIABLE_CALL=39
 '!='=86
 '<'=87
 'if'=73
-':'=95
+':'=96
 '('=82
 '*'=93
 '-'=92

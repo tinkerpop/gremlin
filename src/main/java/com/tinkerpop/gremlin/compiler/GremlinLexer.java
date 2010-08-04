@@ -1,7 +1,10 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-07-29 13:59:05
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-05 00:49:28
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GremlinLexer extends Lexer {
     public static final int WHILE=25;
@@ -20,13 +23,14 @@ public class GremlinLexer extends Lexer {
     public static final int ARG=5;
     public static final int PATH=11;
     public static final int G_INT=46;
-    public static final int SingleEscapeCharacter=59;
     public static final int INCLUDE=27;
+    public static final int SingleEscapeCharacter=59;
     public static final int DOUBLE=32;
     public static final int ARGS=6;
     public static final int VAR=4;
     public static final int GPATH=12;
     public static final int COMMENT=41;
+    public static final int T__96=96;
     public static final int T__95=95;
     public static final int SCRIPT=28;
     public static final int T__80=80;
@@ -755,8 +759,29 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__95;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:7: ( ':' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:9: ':'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:7: ( 'mod' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:9: 'mod'
+            {
+            match("mod"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__95"
+
+    // $ANTLR start "T__96"
+    public final void mT__96() throws RecognitionException {
+        try {
+            int _type = T__96;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:35:7: ( ':' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:35:9: ':'
             {
             match(':'); 
 
@@ -768,7 +793,7 @@ public class GremlinLexer extends Lexer {
         finally {
         }
     }
-    // $ANTLR end "T__95"
+    // $ANTLR end "T__96"
 
     // $ANTLR start "COMMENT"
     public final void mCOMMENT() throws RecognitionException {
@@ -1807,8 +1832,8 @@ public class GremlinLexer extends Lexer {
     // $ANTLR end "DecimalDigit"
 
     public void mTokens() throws RecognitionException {
-        // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:8: ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | COMMENT | StringLiteral | G_INT | G_LONG | G_FLOAT | G_DOUBLE | BOOLEAN | NULL | VARIABLE | PROPERTY | IDENTIFIER | NEWLINE | WS )
-        int alt16=45;
+        // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:8: ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | COMMENT | StringLiteral | G_INT | G_LONG | G_FLOAT | G_DOUBLE | BOOLEAN | NULL | VARIABLE | PROPERTY | IDENTIFIER | NEWLINE | WS )
+        int alt16=46;
         alt16 = dfa16.predict(input);
         switch (alt16) {
             case 1 :
@@ -2036,91 +2061,98 @@ public class GremlinLexer extends Lexer {
                 }
                 break;
             case 33 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:202: COMMENT
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:202: T__96
+                {
+                mT__96(); 
+
+                }
+                break;
+            case 34 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:208: COMMENT
                 {
                 mCOMMENT(); 
 
                 }
                 break;
-            case 34 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:210: StringLiteral
+            case 35 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:216: StringLiteral
                 {
                 mStringLiteral(); 
 
                 }
                 break;
-            case 35 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:224: G_INT
+            case 36 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:230: G_INT
                 {
                 mG_INT(); 
 
                 }
                 break;
-            case 36 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:230: G_LONG
+            case 37 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:236: G_LONG
                 {
                 mG_LONG(); 
 
                 }
                 break;
-            case 37 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:237: G_FLOAT
+            case 38 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:243: G_FLOAT
                 {
                 mG_FLOAT(); 
 
                 }
                 break;
-            case 38 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:245: G_DOUBLE
+            case 39 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:251: G_DOUBLE
                 {
                 mG_DOUBLE(); 
 
                 }
                 break;
-            case 39 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:254: BOOLEAN
+            case 40 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:260: BOOLEAN
                 {
                 mBOOLEAN(); 
 
                 }
                 break;
-            case 40 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:262: NULL
+            case 41 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:268: NULL
                 {
                 mNULL(); 
 
                 }
                 break;
-            case 41 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:267: VARIABLE
+            case 42 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:273: VARIABLE
                 {
                 mVARIABLE(); 
 
                 }
                 break;
-            case 42 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:276: PROPERTY
+            case 43 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:282: PROPERTY
                 {
                 mPROPERTY(); 
 
                 }
                 break;
-            case 43 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:285: IDENTIFIER
+            case 44 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:291: IDENTIFIER
                 {
                 mIDENTIFIER(); 
 
                 }
                 break;
-            case 44 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:296: NEWLINE
+            case 45 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:302: NEWLINE
                 {
                 mNEWLINE(); 
 
                 }
                 break;
-            case 45 :
-                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:304: WS
+            case 46 :
+                // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:1:310: WS
                 {
                 mWS(); 
 
@@ -2134,97 +2166,97 @@ public class GremlinLexer extends Lexer {
 
     protected DFA16 dfa16 = new DFA16(this);
     static final String DFA16_eotS =
-        "\1\uffff\1\45\3\uffff\12\41\5\uffff\1\65\1\67\1\uffff\1\70\1\uffff"+
-        "\1\41\2\uffff\1\72\2\41\7\uffff\1\77\1\41\1\101\1\103\1\104\11\41"+
-        "\5\uffff\1\41\1\uffff\1\41\1\120\2\41\1\uffff\1\123\1\uffff\1\41"+
-        "\2\uffff\2\41\1\127\6\41\1\136\1\137\1\uffff\2\41\1\uffff\2\41\1"+
-        "\145\1\uffff\1\41\1\147\3\41\1\153\2\uffff\1\154\1\155\1\156\2\41"+
-        "\1\uffff\1\41\1\uffff\1\155\1\162\1\41\4\uffff\1\41\1\165\1\41\1"+
-        "\uffff\1\167\1\170\1\uffff\1\171\3\uffff";
+        "\1\uffff\1\46\3\uffff\12\42\5\uffff\1\66\1\70\1\uffff\1\71\1\uffff"+
+        "\2\42\2\uffff\1\74\2\42\7\uffff\1\101\1\42\1\103\1\105\1\106\11"+
+        "\42\5\uffff\2\42\1\uffff\1\42\1\123\2\42\1\uffff\1\126\1\uffff\1"+
+        "\42\2\uffff\2\42\1\132\6\42\1\141\1\142\1\143\1\uffff\2\42\1\uffff"+
+        "\2\42\1\151\1\uffff\1\42\1\153\3\42\1\157\3\uffff\1\160\1\161\1"+
+        "\162\2\42\1\uffff\1\42\1\uffff\1\161\1\166\1\42\4\uffff\1\42\1\171"+
+        "\1\42\1\uffff\1\173\1\174\1\uffff\1\175\3\uffff";
     static final String DFA16_eofS =
-        "\172\uffff";
+        "\176\uffff";
     static final String DFA16_minS =
         "\1\11\1\75\3\uffff\1\56\1\156\1\162\1\146\1\143\1\154\1\141\1\150"+
-        "\1\145\1\141\5\uffff\2\75\1\uffff\1\55\1\uffff\1\151\2\uffff\1\55"+
-        "\1\162\1\165\7\uffff\1\55\1\144\3\55\1\162\1\163\1\144\1\162\1\156"+
-        "\1\154\1\151\1\160\1\164\5\uffff\1\166\1\uffff\1\60\1\55\1\165\1"+
-        "\154\1\uffff\1\55\1\uffff\1\154\2\uffff\1\151\1\145\1\55\1\145\1"+
-        "\143\1\163\1\154\1\145\1\150\2\55\1\uffff\1\145\1\154\1\uffff\1"+
-        "\165\1\160\1\55\1\uffff\1\141\1\55\2\145\1\141\1\55\2\uffff\3\55"+
-        "\1\144\1\164\1\uffff\1\143\1\uffff\2\55\1\164\4\uffff\1\145\1\55"+
-        "\1\150\1\uffff\2\55\1\uffff\1\55\3\uffff";
+        "\1\145\1\141\5\uffff\2\75\1\uffff\1\55\1\uffff\1\151\1\157\2\uffff"+
+        "\1\55\1\162\1\165\7\uffff\1\55\1\144\3\55\1\162\1\163\1\144\1\162"+
+        "\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1\144\1\uffff\1\60"+
+        "\1\55\1\165\1\154\1\uffff\1\55\1\uffff\1\154\2\uffff\1\151\1\145"+
+        "\1\55\1\145\1\143\1\163\1\154\1\145\1\150\3\55\1\uffff\1\145\1\154"+
+        "\1\uffff\1\165\1\160\1\55\1\uffff\1\141\1\55\2\145\1\141\1\55\3"+
+        "\uffff\3\55\1\144\1\164\1\uffff\1\143\1\uffff\2\55\1\164\4\uffff"+
+        "\1\145\1\55\1\150\1\uffff\2\55\1\uffff\1\55\3\uffff";
     static final String DFA16_maxS =
         "\1\u2029\1\75\3\uffff\1\56\1\156\1\162\1\156\1\143\1\156\1\165\1"+
-        "\150\1\145\1\141\5\uffff\2\75\1\uffff\1\172\1\uffff\1\151\2\uffff"+
-        "\1\172\1\162\1\165\7\uffff\1\172\1\144\3\172\1\162\1\163\1\144\1"+
-        "\162\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1\uffff\1\71\1"+
-        "\172\1\165\1\154\1\uffff\1\172\1\uffff\1\154\2\uffff\1\151\1\145"+
-        "\1\172\1\145\1\143\1\163\1\154\1\145\1\150\2\172\1\uffff\1\145\1"+
-        "\154\1\uffff\1\165\1\160\1\172\1\uffff\1\141\1\172\2\145\1\141\1"+
-        "\172\2\uffff\3\172\1\144\1\164\1\uffff\1\143\1\uffff\2\172\1\164"+
-        "\4\uffff\1\145\1\172\1\150\1\uffff\2\172\1\uffff\1\172\3\uffff";
+        "\150\1\145\1\141\5\uffff\2\75\1\uffff\1\172\1\uffff\1\151\1\157"+
+        "\2\uffff\1\172\1\162\1\165\7\uffff\1\172\1\144\3\172\1\162\1\163"+
+        "\1\144\1\162\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1\144\1"+
+        "\uffff\1\71\1\172\1\165\1\154\1\uffff\1\172\1\uffff\1\154\2\uffff"+
+        "\1\151\1\145\1\172\1\145\1\143\1\163\1\154\1\145\1\150\3\172\1\uffff"+
+        "\1\145\1\154\1\uffff\1\165\1\160\1\172\1\uffff\1\141\1\172\2\145"+
+        "\1\141\1\172\3\uffff\3\172\1\144\1\164\1\uffff\1\143\1\uffff\2\172"+
+        "\1\164\4\uffff\1\145\1\172\1\150\1\uffff\2\172\1\uffff\1\172\3\uffff";
     static final String DFA16_acceptS =
         "\2\uffff\1\2\1\3\1\4\12\uffff\1\23\1\24\1\25\1\26\1\27\2\uffff\1"+
-        "\34\1\uffff\1\36\1\uffff\1\41\1\42\3\uffff\1\51\1\52\1\53\1\54\1"+
-        "\55\1\1\1\40\16\uffff\1\31\1\30\1\33\1\32\1\35\1\uffff\1\43\4\uffff"+
-        "\1\5\1\uffff\1\7\1\uffff\1\16\1\12\13\uffff\1\44\2\uffff\1\6\3\uffff"+
-        "\1\14\6\uffff\1\37\1\45\5\uffff\1\13\1\uffff\1\22\3\uffff\1\21\1"+
-        "\46\1\47\1\50\3\uffff\1\17\2\uffff\1\11\1\uffff\1\20\1\10\1\15";
+        "\34\1\uffff\1\36\2\uffff\1\42\1\43\3\uffff\1\52\1\53\1\54\1\55\1"+
+        "\56\1\1\1\41\16\uffff\1\31\1\30\1\33\1\32\1\35\2\uffff\1\44\4\uffff"+
+        "\1\5\1\uffff\1\7\1\uffff\1\16\1\12\14\uffff\1\45\2\uffff\1\6\3\uffff"+
+        "\1\14\6\uffff\1\37\1\40\1\46\5\uffff\1\13\1\uffff\1\22\3\uffff\1"+
+        "\21\1\47\1\50\1\51\3\uffff\1\17\2\uffff\1\11\1\uffff\1\20\1\10\1"+
+        "\15";
     static final String DFA16_specialS =
-        "\172\uffff}>";
+        "\176\uffff}>";
     static final String[] DFA16_transitionS = {
-            "\1\43\1\42\2\uffff\1\42\22\uffff\1\43\1\23\1\33\1\32\1\37\2"+
-            "\uffff\1\33\1\17\1\20\1\30\1\26\1\21\1\27\1\5\1\2\12\34\1\1"+
-            "\1\uffff\1\24\1\22\1\25\1\uffff\1\40\32\41\1\3\1\uffff\1\4\1"+
-            "\uffff\1\41\1\uffff\1\6\2\41\1\31\1\12\1\13\2\41\1\10\4\41\1"+
-            "\36\1\7\1\16\1\41\1\15\1\11\1\35\2\41\1\14\3\41\u1fad\uffff"+
-            "\2\42",
-            "\1\44",
+            "\1\44\1\43\2\uffff\1\43\22\uffff\1\44\1\23\1\34\1\33\1\40\2"+
+            "\uffff\1\34\1\17\1\20\1\30\1\26\1\21\1\27\1\5\1\2\12\35\1\1"+
+            "\1\uffff\1\24\1\22\1\25\1\uffff\1\41\32\42\1\3\1\uffff\1\4\1"+
+            "\uffff\1\42\1\uffff\1\6\2\42\1\31\1\12\1\13\2\42\1\10\3\42\1"+
+            "\32\1\37\1\7\1\16\1\42\1\15\1\11\1\36\2\42\1\14\3\42\u1fad\uffff"+
+            "\2\43",
+            "\1\45",
             "",
             "",
             "",
-            "\1\46",
             "\1\47",
             "\1\50",
-            "\1\52\7\uffff\1\51",
-            "\1\53",
-            "\1\54\1\uffff\1\55",
-            "\1\60\15\uffff\1\56\5\uffff\1\57",
-            "\1\61",
+            "\1\51",
+            "\1\53\7\uffff\1\52",
+            "\1\54",
+            "\1\55\1\uffff\1\56",
+            "\1\61\15\uffff\1\57\5\uffff\1\60",
             "\1\62",
             "\1\63",
-            "",
-            "",
-            "",
-            "",
-            "",
             "\1\64",
-            "\1\66",
-            "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "",
-            "\1\71",
-            "",
-            "",
-            "\1\41\1\73\1\uffff\12\34\7\uffff\32\41\4\uffff\1\41\1\uffff"+
-            "\13\41\1\74\16\41",
-            "\1\75",
-            "\1\76",
             "",
             "",
             "",
             "",
             "",
+            "\1\65",
+            "\1\67",
+            "",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
+            "\1\72",
+            "\1\73",
             "",
             "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\1\42\1\75\1\uffff\12\35\7\uffff\32\42\4\uffff\1\42\1\uffff"+
+            "\13\42\1\76\16\42",
+            "\1\77",
             "\1\100",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\2\41"+
-            "\1\102\27\41",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\1\105",
-            "\1\106",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\102",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\2\42"+
+            "\1\104\27\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "\1\107",
             "\1\110",
             "\1\111",
@@ -2232,74 +2264,79 @@ public class GremlinLexer extends Lexer {
             "\1\113",
             "\1\114",
             "\1\115",
-            "",
-            "",
-            "",
-            "",
-            "",
             "\1\116",
+            "\1\117",
             "",
-            "\12\117",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "",
+            "",
+            "",
+            "\1\120",
             "\1\121",
-            "\1\122",
             "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "",
+            "\12\122",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "\1\124",
-            "",
-            "",
             "\1\125",
-            "\1\126",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
+            "\1\127",
+            "",
+            "",
             "\1\130",
             "\1\131",
-            "\1\132",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "\1\133",
             "\1\134",
             "\1\135",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\2\41\1\uffff\12\117\7\uffff\32\41\4\uffff\1\41\1\uffff\3\41"+
-            "\1\140\26\41",
+            "\1\136",
+            "\1\137",
+            "\1\140",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\122\7\uffff\32\42\4\uffff\1\42\1\uffff\3\42"+
+            "\1\144\26\42",
             "",
-            "\1\141",
-            "\1\142",
-            "",
-            "\1\143",
-            "\1\144",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "",
+            "\1\145",
             "\1\146",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "\1\147",
             "\1\150",
-            "\1\151",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
             "\1\152",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\154",
+            "\1\155",
+            "\1\156",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "",
             "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\1\157",
-            "\1\160",
             "",
-            "\1\161",
-            "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "\1\163",
-            "",
-            "",
-            "",
-            "",
             "\1\164",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\1\166",
             "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\1\165",
             "",
-            "\2\41\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\167",
+            "",
+            "",
+            "",
+            "",
+            "\1\170",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\172",
+            "",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
+            "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "",
             "",
             ""
@@ -2335,7 +2372,7 @@ public class GremlinLexer extends Lexer {
             this.transition = DFA16_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | COMMENT | StringLiteral | G_INT | G_LONG | G_FLOAT | G_DOUBLE | BOOLEAN | NULL | VARIABLE | PROPERTY | IDENTIFIER | NEWLINE | WS );";
+            return "1:1: Tokens : ( T__64 | T__65 | T__66 | T__67 | T__68 | T__69 | T__70 | T__71 | T__72 | T__73 | T__74 | T__75 | T__76 | T__77 | T__78 | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | COMMENT | StringLiteral | G_INT | G_LONG | G_FLOAT | G_DOUBLE | BOOLEAN | NULL | VARIABLE | PROPERTY | IDENTIFIER | NEWLINE | WS );";
         }
     }
  

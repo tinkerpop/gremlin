@@ -357,6 +357,7 @@ operation returns [Operation op]
 binary_operation returns [Operation operation]
     :   ^('*' a=operation b=operation)      { $operation = new Multiplication($a.op, $b.op); }
     |   ^('div' a=operation b=operation)    { $operation = new Division($a.op, $b.op); }
+    |	^('mod' a=operation b=operation)    { $operation = new Modulo($a.op, $b.op); }
     |   atom                                { $operation = new UnaryOperation($atom.value); }
 	;
 
