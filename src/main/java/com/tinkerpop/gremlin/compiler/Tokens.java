@@ -5,6 +5,8 @@ package com.tinkerpop.gremlin.compiler;
  */
 public class Tokens {
 
+    public static final String VERSION = "0.5";
+
     public static final String ROOT_VARIABLE = "$_";
     public static final String GRAPH_VARIABLE = "$_g";
     public static final String LAST_VARIABLE = "$_last";

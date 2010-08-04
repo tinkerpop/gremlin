@@ -25,4 +25,8 @@ public class UnaryOperation implements Operation {
         }
     }
 
+    public static <T> Operation createUnaryOperation(T object) {
+        return new UnaryOperation(new Atom<T>(object));
+    }
+
 }
