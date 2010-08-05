@@ -25,7 +25,6 @@ public class Func extends DynamicEntity {
     }
 
     protected Object value() {
-        // TODO: add `context` to compute()
         return function.compute(parameters, context).getValue();
     }
 

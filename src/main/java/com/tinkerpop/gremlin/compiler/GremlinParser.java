@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-05 00:49:28
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-05 02:01:13
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
@@ -239,7 +239,7 @@ public class GremlinParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: collection, VARIABLE
+                    // elements: VARIABLE, collection
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -633,7 +633,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, token
+            // elements: token, statement
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1391,7 +1391,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, else_block, if_block
+            // elements: if_block, statement, else_block
             // token labels: 
             // rule labels: if_block, retval, else_block
             // token list labels: 
@@ -1533,7 +1533,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, statement, VARIABLE
+            // elements: VARIABLE, block, statement
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1640,7 +1640,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, block
+            // elements: block, statement
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1754,7 +1754,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, statement
+            // elements: statement, block
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1862,7 +1862,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: IDENTIFIER, statement
+            // elements: statement, IDENTIFIER
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2013,7 +2013,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: formal_arguments, function_name, block
+            // elements: block, formal_arguments, function_name
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3147,7 +3147,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ns, ln
+            // elements: ln, ns
             // token labels: ln, ns
             // rule labels: retval
             // token list labels: 
@@ -3907,19 +3907,19 @@ public class GremlinParser extends Parser {
             // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:245:5: (min= G_INT '..' max= G_INT -> ^( RANGE $min $max) )
             // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:245:9: min= G_INT '..' max= G_INT
             {
-            min=(Token)match(input,G_INT,FOLLOW_G_INT_in_range1670); if (state.failed) return retval; 
+            min=(Token)match(input,G_INT,FOLLOW_G_INT_in_range1676); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_G_INT.add(min);
 
-            string_literal135=(Token)match(input,68,FOLLOW_68_in_range1672); if (state.failed) return retval; 
+            string_literal135=(Token)match(input,68,FOLLOW_68_in_range1678); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_68.add(string_literal135);
 
-            max=(Token)match(input,G_INT,FOLLOW_G_INT_in_range1676); if (state.failed) return retval; 
+            max=(Token)match(input,G_INT,FOLLOW_G_INT_in_range1682); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_G_INT.add(max);
 
 
 
             // AST REWRITE
-            // elements: min, max
+            // elements: max, min
             // token labels: min, max
             // rule labels: retval
             // token list labels: 
@@ -4000,7 +4000,7 @@ public class GremlinParser extends Parser {
             // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:253:5: ( token ( '[' statement ']' )+ -> ^( COLLECTION_CALL ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )+ ) ) ) )
             // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:253:7: token ( '[' statement ']' )+
             {
-            pushFollow(FOLLOW_token_in_collection1727);
+            pushFollow(FOLLOW_token_in_collection1733);
             token136=token();
 
             state._fsp--;
@@ -4022,16 +4022,16 @@ public class GremlinParser extends Parser {
             	case 1 :
             	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:253:14: '[' statement ']'
             	    {
-            	    char_literal137=(Token)match(input,66,FOLLOW_66_in_collection1730); if (state.failed) return retval; 
+            	    char_literal137=(Token)match(input,66,FOLLOW_66_in_collection1736); if (state.failed) return retval; 
             	    if ( state.backtracking==0 ) stream_66.add(char_literal137);
 
-            	    pushFollow(FOLLOW_statement_in_collection1732);
+            	    pushFollow(FOLLOW_statement_in_collection1738);
             	    statement138=statement();
 
             	    state._fsp--;
             	    if (state.failed) return retval;
             	    if ( state.backtracking==0 ) stream_statement.add(statement138.getTree());
-            	    char_literal139=(Token)match(input,67,FOLLOW_67_in_collection1734); if (state.failed) return retval; 
+            	    char_literal139=(Token)match(input,67,FOLLOW_67_in_collection1740); if (state.failed) return retval; 
             	    if ( state.backtracking==0 ) stream_67.add(char_literal139);
 
 
@@ -4051,7 +4051,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, token
+            // elements: token, statement
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -5906,13 +5906,13 @@ public class GremlinParser extends Parser {
     public static final BitSet FOLLOW_82_in_atom1482 = new BitSet(new long[]{0x000FF41000000000L,0x0000000000040010L});
     public static final BitSet FOLLOW_collection_in_atom1485 = new BitSet(new long[]{0x0000000000000000L,0x0000000000080000L});
     public static final BitSet FOLLOW_83_in_atom1487 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_G_INT_in_range1670 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
-    public static final BitSet FOLLOW_68_in_range1672 = new BitSet(new long[]{0x0000400000000000L});
-    public static final BitSet FOLLOW_G_INT_in_range1676 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_token_in_collection1727 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_66_in_collection1730 = new BitSet(new long[]{0x000FF41000000000L,0x000000000007D390L});
-    public static final BitSet FOLLOW_statement_in_collection1732 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_collection1734 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_G_INT_in_range1676 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_68_in_range1678 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_G_INT_in_range1682 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_token_in_collection1733 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_66_in_collection1736 = new BitSet(new long[]{0x000FF41000000000L,0x000000000007D390L});
+    public static final BitSet FOLLOW_statement_in_collection1738 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
+    public static final BitSet FOLLOW_67_in_collection1740 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
     public static final BitSet FOLLOW_VARIABLE_in_synpred3_Gremlin263 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_64_in_synpred3_Gremlin265 = new BitSet(new long[]{0x000FF41000000000L,0x0000000000040010L});
     public static final BitSet FOLLOW_collection_in_synpred3_Gremlin267 = new BitSet(new long[]{0x0000080000000000L});
