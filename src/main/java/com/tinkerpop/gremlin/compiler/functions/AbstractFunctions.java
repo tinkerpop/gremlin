@@ -24,11 +24,14 @@ public abstract class AbstractFunctions implements Functions {
     }
 
     private void removeByFunctionName(final String functionName) {
+        int index = -1;
         for (int i = 0; i < this.functions.size(); i++) {
             final Function function = this.functions.get(i);
-            
+
             if (function.getFunctionName().equals(functionName))
-                this.functions.remove(function);
+                index = i;
         }
+        if (index != -1)
+            this.functions.remove(index);
     }
 }

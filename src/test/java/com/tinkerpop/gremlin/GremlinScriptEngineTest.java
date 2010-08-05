@@ -31,6 +31,13 @@ public class GremlinScriptEngineTest extends BaseTest {
 
         result = evaluateGremlinScriptPrimitive("2 + (4l * 2.0d) - 7", context, true);
         assertEquals(result, 3.0d);
+
+        result = evaluateGremlinScriptPrimitive("-2 + 1", context, true);
+        assertEquals(result, -1);
+
+        // TODO: bad that substraction requires spacing.
+        //result = evaluateGremlinScriptPrimitive("1-2", context, true);
+        //assertEquals(result, -1);
     }
 
     public void testBasicGraphStatements() throws Exception {

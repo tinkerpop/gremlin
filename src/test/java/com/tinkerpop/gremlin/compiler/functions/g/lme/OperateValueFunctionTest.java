@@ -9,7 +9,9 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,7 +72,7 @@ public class OperateValueFunctionTest extends BaseTest {
         for (int i = 0; i < 100; i++) {
             atom = function.compute(createUnaryArgs("+", marko, "counter2", 1.0), context);
         }
-        printPerformance(function.getFunctionName() + " function", 100, "map additions", this.stopWatch());
+        printPerformance(function.getFunctionName() + " function", 100, "vertex additions", this.stopWatch());
         assertEquals(atom.getValue(), 100.0);
         assertEquals(marko.getProperty("counter"), 1);
         assertEquals(marko.getProperty("counter2"), 100.0);
@@ -79,9 +81,42 @@ public class OperateValueFunctionTest extends BaseTest {
         for (int i = 0; i < 100; i++) {
             atom = function.compute(createUnaryArgs("-", marko, "counter2", 1), context);
         }
-        printPerformance(function.getFunctionName() + " function", 100, "map subtractions", this.stopWatch());
+        printPerformance(function.getFunctionName() + " function", 100, "vertex subtractions", this.stopWatch());
         assertEquals(atom.getValue(), 0.0);
         assertEquals(marko.getProperty("counter"), 1);
         assertEquals(marko.getProperty("counter2"), 0.0);
+    }
+
+     public void testOperateValueList() {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        Function<Number> function = new OperateValueFunction();
+        List list = new ArrayList();
+        list.add(0);
+
+        this.stopWatch();
+        Atom<Number> atom = function.compute(createUnaryArgs("+", list, 0, 1), context);
+        printPerformance(function.getFunctionName() + " function", 1, "list addition", this.stopWatch());
+        assertEquals(atom.getValue(), 1);
+        assertEquals(list.get(0), 1);
+
+        list.add(0);
+        this.stopWatch();
+        for (int i = 0; i < 100; i++) {
+            atom = function.compute(createUnaryArgs("+", list, 1, 1.0), context);
+        }
+        printPerformance(function.getFunctionName() + " function", 100, "list additions", this.stopWatch());
+        assertEquals(atom.getValue(), 100.0);
+        assertEquals(list.get(0), 1);
+        assertEquals(list.get(1), 100.0);
+
+        this.stopWatch();
+        for (int i = 0; i < 100; i++) {
+            atom = function.compute(createUnaryArgs("-", list, 1, 1), context);
+        }
+        printPerformance(function.getFunctionName() + " function", 100, "list subtractions", this.stopWatch());
+        assertEquals(atom.getValue(), 0.0);
+        assertEquals(list.get(0), 1);
+        assertEquals(list.get(1), 0.0);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class WhileTest extends BaseTest {
 
-    public void testWhileCounter() {
+    public void testWhile() {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
@@ -25,5 +25,20 @@ public class WhileTest extends BaseTest {
         assertNull(results.get(2));
         assertEquals(results.get(3), 0);
         assertEquals(results.get(4), 10);
+    }
+
+    public void testEmbeddedWhile() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$x := 10\n$counter := 0\nwhile $x > 0\n$y := 10\n$x := $x - 1\nwhile $y > 0\n$y := $y - 1\n$counter := $counter + 1\nend\nend\n$counter\n", context);
+        printPerformance("while statement", 10, "iterations", this.stopWatch());
+        //System.out.println(results);
+        assertEquals(results.size(), 4);
+        assertEquals(results.get(0), 10);
+        assertEquals(results.get(1), 0);
+        assertNull(results.get(2));
+        assertEquals(results.get(3), 100);
     }
 }

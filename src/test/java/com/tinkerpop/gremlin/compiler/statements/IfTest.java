@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class IfTest extends BaseTest {
 
-    public void testIfInGremlin() throws Exception {
+    public void testIf() throws Exception {
         final GremlinScriptEngine engine   = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
@@ -24,7 +24,7 @@ public class IfTest extends BaseTest {
         assertEquals(results.get(2), 10);
     }
 
-    public void testIfElseInGremlin() throws Exception {
+    public void testIfElse() throws Exception {
         final GremlinScriptEngine engine   = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
@@ -37,7 +37,7 @@ public class IfTest extends BaseTest {
         assertEquals(results.get(2), 20);
     }
 
-    public void testEmbeddedIfElseInGremlin() throws Exception {
+    public void testEmbeddedIfElse() throws Exception {
         final GremlinScriptEngine engine   = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 

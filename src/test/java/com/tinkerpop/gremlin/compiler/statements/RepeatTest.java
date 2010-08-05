@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class RepeatTest extends BaseTest {
 
-    public void testRepeatCounter() {
+    public void testRepeat() {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
@@ -26,4 +26,18 @@ public class RepeatTest extends BaseTest {
         assertEquals(results.get(3), 0);
         assertEquals(results.get(4), 10);
     }
+
+    public void testEmbeddedRepeat() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$counter := 0\nrepeat 10\nrepeat 10\n$counter := $counter + 1\nend\nend\n$counter\n", context);
+        printPerformance("repeat statement", 2, "embedded iterations of 10", this.stopWatch());
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 0);
+        assertNull(results.get(1));
+        assertEquals(results.get(2), 100);
+    }
+
 }
