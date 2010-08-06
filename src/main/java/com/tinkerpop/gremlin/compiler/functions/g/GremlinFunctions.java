@@ -30,9 +30,10 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new AddVertexFunction());
         functions.add(new ClearFunction());
         functions.add(new CloseFunction());
-        functions.add(new IdFunction());
+        functions.add(new IdEdgeFunction());
+        functions.add(new IdVertexFunction());
         functions.add(new IndexAllFunction());
-        functions.add(new KeyFunction());
+        functions.add(new KeyVertexFunction());
         functions.add(new LoadFunction());
         functions.add(new RemoveIndexFunction());
         functions.add(new RemoveVertexEdgeFunction());
@@ -50,6 +51,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new MapFunction());
         functions.add(new OperateValueFunction());
         functions.add(new RetainFunction());
+        //functions.add(new SetFunction());
         functions.add(new SortFunction());
         functions.add(new UnionFunction());
         functions.add(new ValuesFunction());
@@ -70,6 +72,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new ContainsFunction());
         functions.add(new MatchesFunction());
         functions.add(new NormalizeSpaceFunction());
+        functions.add(new ReplaceFunction());
         functions.add(new StartsWithFunction());
         functions.add(new StringFunction());
         functions.add(new StringLengthFunction());

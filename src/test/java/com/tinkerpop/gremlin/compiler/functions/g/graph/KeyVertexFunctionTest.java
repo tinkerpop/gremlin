@@ -11,14 +11,14 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class KeyFunctionTest extends BaseTest {
+public class KeyVertexFunctionTest extends BaseTest {
 
     public void testKey() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
         
-        Function<Iterable<Element>> function = new KeyFunction();
-        assertEquals(function.getFunctionName(), "key");
+        Function<Iterable<Element>> function = new KeyVertexFunction();
+        assertEquals(function.getFunctionName(), "key-v");
         this.stopWatch();
         Atom<Iterable<Element>> atom = function.compute(createUnaryArgs(graph, "name", "marko"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());

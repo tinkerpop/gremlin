@@ -22,7 +22,7 @@ public class CountFunction extends AbstractFunction<Long> {
 
         final Atom result = parameters.get(0).compute();
         if (result.isIterable()) {
-            final long count = PipeHelper.counter(((Iterable) result.getValue()).iterator());
+            final long count = PipeHelper.counter(((Iterable<?>) result.getValue()).iterator());
             return new Atom<Long>(count);
         } else {
             return new Atom<Long>(1l);

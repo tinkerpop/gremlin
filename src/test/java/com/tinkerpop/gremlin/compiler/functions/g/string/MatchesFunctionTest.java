@@ -10,7 +10,7 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
  */
 public class MatchesFunctionTest extends BaseTest {
 
-    public void testNormalizeSpace() {
+    public void testMatches() {
         Function<Boolean> function = new MatchesFunction();
         this.stopWatch();
         GremlinScriptContext context = new GremlinScriptContext();

@@ -11,14 +11,14 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdFunctionTest extends BaseTest {
+public class IdVertexFunctionTest extends BaseTest {
 
-    public void testId() {
+    public void testIdVertex() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
         
-        Function<Vertex> function = new IdFunction();
-        assertEquals(function.getFunctionName(), "id");
+        Function<Vertex> function = new IdVertexFunction();
+        assertEquals(function.getFunctionName(), "id-v");
         this.stopWatch();
         Atom<Vertex> atom = function.compute(createUnaryArgs(graph, "1"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());

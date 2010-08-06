@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class KeyFunction extends AbstractFunction<Iterable<Element>> {
+public class KeyVertexFunction extends AbstractFunction<Iterable<Element>> {
 
-    private static final String FUNCTION_NAME = "key";
+    private static final String FUNCTION_NAME = "key-v";
 
     public Atom<Iterable<Element>> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
 

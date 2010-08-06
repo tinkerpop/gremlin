@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class IdFunction extends AbstractFunction<Vertex> {
+public class IdVertexFunction extends AbstractFunction<Vertex> {
 
-    private final static String FUNCTION_NAME = "id";
+    private final static String FUNCTION_NAME = "id-v";
 
     public Atom<Vertex> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         final int size = parameters.size();

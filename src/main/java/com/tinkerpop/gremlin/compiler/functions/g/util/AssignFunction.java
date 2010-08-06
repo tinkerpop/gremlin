@@ -1,11 +1,13 @@
 package com.tinkerpop.gremlin.compiler.functions.g.util;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,13 +17,29 @@ public class AssignFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "assign";
 
     public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() != 2)
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+        if (parameters.size() == 2) {
+            final String variable = (String) parameters.get(0).compute().getValue();
+            final Atom atom = parameters.get(1).compute();
+            context.getVariableLibrary().declare(variable, atom);
+            return new Atom<Boolean>(true);
+        } else if (parameters.size() == 3) {
+            final Object object = parameters.get(0).compute().getValue();
+            final Object key = parameters.get(1).compute().getValue();
+            final Object value = parameters.get(2).compute().getValue();
+            if (object instanceof Map) {
+                ((Map) object).put(key, value);
+            } else if (object instanceof List) {
+                ((List) object).set((Integer) key, value);
+            } else if (object instanceof Element) {
+                ((Element) object).setProperty((String) key, value);
+            } else {
+                throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            }
+            return new Atom<Boolean>(true);
 
-        final String variable = (String) parameters.get(0).compute().getValue();
-        final Atom atom = parameters.get(1).compute();
-        context.getVariableLibrary().declare(variable, atom);
-        return new Atom<Boolean>(true);
+        } else {
+            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+        }
     }
 
     public String getFunctionName() {

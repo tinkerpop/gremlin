@@ -19,11 +19,14 @@ bc. <dependency>
   <version>0.5-SNAPSHOT</version>
 </dependency>
 
-* A complete redesign and implementation of the Gremlin compiler
+* A complete redesign and implementation of the Gremlin compiler ("ANTLR-based":http://www.antlr.org/)
 ** Order of magnitude increase in speed for numerous operations
 ** Lazy evaluation for better memory usage
 * @Functions@ implement the @ServiceLoader@ pattern for ease of incorporating 3rd-party extensions
-** Numerous changes to the Gremlin function library (refer to documentation)
+* Numerous changes to the Gremlin function library
+** All core functions are now in the @g@ namespace (e.g. @g:count()@)
+** @g:id()@ changed to @g:id-v()@ and @g:id-e()@ for getting vertices and edges, respectively
+** @g:key()@ changed to @g:key-v()@
 
 ==<hr/>==
 
