@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -18,7 +18,7 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testBasicMathStatements() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
-         
+
         Object result = evaluateGremlinScriptPrimitive("1 + 2", context, true);
         assertEquals(result, 3);
 
@@ -42,11 +42,11 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testBasicGraphStatements() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        
+
         GremlinScriptContext context = new GremlinScriptContext();
         context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
-        
+
         List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV", context, true);
         assertEquals(results.size(), 3);
         String name = (String) results.get(0).getProperty("name");
@@ -119,24 +119,24 @@ public class GremlinScriptEngineTest extends BaseTest {
     }
 
     public void testEmbeddedListMaps() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();        
+        GremlinScriptContext context = new GremlinScriptContext();
         Map results = (Map) evaluateGremlinScriptPrimitive("g:map(1,2,'k2',g:list(1,2,g:map('k1','v1','k2',g:list(1+2))))", context, true);
 
         assertEquals(results.get(1), 2);
-        assertEquals(((List)(results.get("k2"))).get(0), 1);
-        assertEquals(((List)(results.get("k2"))).get(1), 2);
-        assertTrue(((List)(results.get("k2"))).get(2) instanceof Map);
-        assertEquals(((Map)((List)(results.get("k2"))).get(2)).get("k1"), "v1");
-        assertEquals(((List)((Map)((List)(results.get("k2"))).get(2)).get("k2")).get(0), 3);
-        assertNull(((Map)((List)(results.get("k2"))).get(2)).get("k3"));
+        assertEquals(((List) (results.get("k2"))).get(0), 1);
+        assertEquals(((List) (results.get("k2"))).get(1), 2);
+        assertTrue(((List) (results.get("k2"))).get(2) instanceof Map);
+        assertEquals(((Map) ((List) (results.get("k2"))).get(2)).get("k1"), "v1");
+        assertEquals(((List) ((Map) ((List) (results.get("k2"))).get(2)).get("k2")).get(0), 3);
+        assertNull(((Map) ((List) (results.get("k2"))).get(2)).get("k3"));
 
         String embedd = "g:map('k1','v1','k2',g:list(1,2,g:map('k11','v11','k22',g:list('a','b','c'))))";
         assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k1", context, true), "v1");
-        assertEquals(((List)evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(0), 1);
-        assertEquals(((List)evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(1), 2);
+        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(0), 1);
+        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(1), 2);
         assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][0]", context, true), 1);
         assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][1]", context, true), 2);
-        assertEquals(((Map)evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]", context, true)).get("k11"), "v11");
+        assertEquals(((Map) evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]", context, true)).get("k11"), "v11");
 
         assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k11", context, true), "v11");
         assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][0]", context, true), "a");
@@ -167,12 +167,12 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testVertexEdgeGraphProperties() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        
+
         GremlinScriptContext context = new GremlinScriptContext();
         context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        List<Vertex> results = evaluateGremlinScriptIterable("$_g/V", context, true);
+        List<Element> results = evaluateGremlinScriptIterable("$_g/V", context, true);
         assertEquals(results.size(), 6);
         assertTrue(results.contains(graph.getVertex("1")));
         assertTrue(results.contains(graph.getVertex("2")));
@@ -180,6 +180,24 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(results.contains(graph.getVertex("4")));
         assertTrue(results.contains(graph.getVertex("5")));
         assertTrue(results.contains(graph.getVertex("6")));
+
+        results = evaluateGremlinScriptIterable("$_g/V/@id", context, true);
+        assertEquals(results.size(), 6);
+        assertTrue(results.contains("1"));
+        assertTrue(results.contains("2"));
+        assertTrue(results.contains("3"));
+        assertTrue(results.contains("4"));
+        assertTrue(results.contains("5"));
+        assertTrue(results.contains("6"));
+
+        results = evaluateGremlinScriptIterable("$_g/E", context, true);
+        assertEquals(results.size(), 6);
+        assertTrue(results.contains(graph.getEdge("7")));
+        assertTrue(results.contains(graph.getEdge("8")));
+        assertTrue(results.contains(graph.getEdge("9")));
+        assertTrue(results.contains(graph.getEdge("10")));
+        assertTrue(results.contains(graph.getEdge("11")));
+        assertTrue(results.contains(graph.getEdge("12")));
 
 
         results = evaluateGremlinScriptIterable("$_g/E/@id", context, true);
