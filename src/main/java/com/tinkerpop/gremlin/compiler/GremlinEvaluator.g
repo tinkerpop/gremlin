@@ -108,9 +108,12 @@ options {
                 }
             } else if (value instanceof Map) {
                 Map map = (Map) value;
-
-                for (Object key : map.keySet()) {
-                    System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                if (map.isEmpty()) {
+                    System.out.println(Tokens.RESULT_PROMPT + "{}");
+                } else {
+                    for (Object key : map.keySet()) {
+                        System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                    }
                 }
             } else if(value instanceof Iterator) {
                 Iterator itty = (Iterator) value;

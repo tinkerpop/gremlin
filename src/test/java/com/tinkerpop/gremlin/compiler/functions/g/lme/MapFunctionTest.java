@@ -79,33 +79,27 @@ public class MapFunctionTest extends BaseTest {
         this.stopWatch();
 
         String script = "g:map('k1','v1','k2','v2')/@k1";
-        Iterable itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        String result = (String) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
-        List<Vertex> results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(results.size(), 1);
-        assertEquals(results.get(0), "v1");
+        assertEquals(result, "v1");
 
         this.stopWatch();
         script = "g:map('k1','v1','k2','v2')/@k2";
-        itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        result = (String) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
-        results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(results.size(), 1);
-        assertEquals(results.get(0), "v2");
+        assertEquals(result, "v2");
 
         this.stopWatch();
         script = "g:map('k1','v1','k2','v2')/@k3";
-        itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        Object nullResult = ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
-        results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(results.size(), 1);
-        assertNull(results.get(0));
+        assertNull(nullResult);
 
     }
 }

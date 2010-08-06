@@ -65,9 +65,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         name = (String) results.get(2).getProperty("name");
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
 
-        results = evaluateGremlinScriptIterable("./outE[@label='created']/inV", context, true);
-        assertEquals(results.size(), 1);
-        name = (String) results.get(0).getProperty("name");
+        Vertex result = (Vertex) evaluateGremlinScriptPrimitive("./outE[@label='created']/inV", context, true);
+        name = (String) result.getProperty("name");
         assertTrue(name.equals("lop"));
 
         results = evaluateGremlinScriptIterable("./outE[@label='knows']/inV", context, true);
@@ -78,10 +77,10 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(name.equals("josh") || name.equals("vadas"));
 
         results = evaluateGremlinScriptIterable("./inE", context, true);
-        assertEquals(results.size(), 0);
+        assertNull(results);
 
         results = evaluateGremlinScriptIterable("./outE/inV[@blah != null]", context, true);
-        assertEquals(results.size(), 0);
+        assertNull(results);
 
         results = evaluateGremlinScriptIterable("./outE/inV[@blah = null]", context, true);
         assertEquals(results.size(), 3);
@@ -94,34 +93,29 @@ public class GremlinScriptEngineTest extends BaseTest {
         context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV/../..", context, true);
-        assertEquals(results.size(), 1);
-        String name = (String) results.get(0).getProperty("name");
+        Vertex result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/../..", context, true);
+        String name = (String) result.getProperty("name");
         assertEquals(name, "marko");
 
-        results = evaluateGremlinScriptIterable("./outE/inV/../../..", context, true);
+        List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV/../../..", context, true);
         assertNull(results);
 
-        results = evaluateGremlinScriptIterable("./outE/inV/outE/inV/../..", context, true);
-        assertEquals(results.size(), 1);
-        name = (String) results.get(0).getProperty("name");
+        result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV/../..", context, true);
+        name = (String) result.getProperty("name");
         assertEquals(name, "josh");
 
-        results = evaluateGremlinScriptIterable("./outE/inV/outE/inV[@name='lop']/../..", context, true);
-        assertEquals(results.size(), 1);
-        name = (String) results.get(0).getProperty("name");
+        result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV[@name='lop']/../..", context, true);
+        name = (String) result.getProperty("name");
         assertEquals(name, "josh");
 
-        results = evaluateGremlinScriptIterable("./outE/inV/outE/inV[@name='ripple']/../..", context, true);
-        assertEquals(results.size(), 1);
-        name = (String) results.get(0).getProperty("name");
+        result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV[@name='ripple']/../..", context, true);
+        name = (String) result.getProperty("name");
         assertEquals(name, "josh");
 
         results = evaluateGremlinScriptIterable("./outE/inV/outE/inV[@name='ripple' or @name='lop' or @name='blah']/../../outE/inV", context, true);
         assertEquals(results.size(), 2);
         name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("ripple") || name.equals("lop"));
-
     }
 
     public void testEmbeddedListMaps() throws Exception {
@@ -137,17 +131,17 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertNull(((Map)((List)(results.get("k2"))).get(2)).get("k3"));
 
         String embedd = "g:map('k1','v1','k2',g:list(1,2,g:map('k11','v11','k22',g:list('a','b','c'))))";
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k1", context, true).get(0), "v1");
-        assertEquals(((List)evaluateGremlinScriptIterable(embedd + "/@k2", context, true).get(0)).get(0), 1);
-        assertEquals(((List)evaluateGremlinScriptIterable(embedd + "/@k2", context, true).get(0)).get(1), 2);
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][0]", context, true).get(0), 1);
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][1]", context, true).get(0), 2);
-        assertEquals(((Map)evaluateGremlinScriptIterable(embedd + "/@k2[0][2]", context, true).get(0)).get("k11"), "v11");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k1", context, true), "v1");
+        assertEquals(((List)evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(0), 1);
+        assertEquals(((List)evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(1), 2);
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][0]", context, true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][1]", context, true), 2);
+        assertEquals(((Map)evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]", context, true)).get("k11"), "v11");
 
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k11", context, true).get(0), "v11");
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][0]", context, true).get(0), "a");
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][1]", context, true).get(0), "b");
-        assertEquals(evaluateGremlinScriptIterable(embedd + "/@k2[0][2]/@k22[0][2]", context, true).get(0), "c");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k11", context, true), "v11");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][0]", context, true), "a");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][1]", context, true), "b");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][2]", context, true), "c");
     }
 
     public void testIdAndLabelProperties() throws Exception {
@@ -156,11 +150,10 @@ public class GremlinScriptEngineTest extends BaseTest {
         context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        List<Vertex> results = evaluateGremlinScriptIterable("./@id", context, true);
-        assertEquals(results.size(), 1);
-        assertEquals(results.get(0), "1");
+        String result = (String) evaluateGremlinScriptPrimitive("./@id", context, true);
+        assertEquals(result, "1");
 
-        results = evaluateGremlinScriptIterable("./outE/inV/@id", context, true);
+        List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV/@id", context, true);
         assertEquals(results.size(), 3);
         assertTrue(results.contains("2"));
         assertTrue(results.contains("3"));

@@ -5,7 +5,6 @@ package com.tinkerpop.gremlin.compiler.types;
  */
 public abstract class DynamicEntity extends Atom {
 
-    /* Should be implemented by extending classes */
     protected abstract Object value();
 
     public Object getValue() {

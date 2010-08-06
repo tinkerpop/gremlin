@@ -33,31 +33,26 @@ public class ListFunctionTest extends BaseTest {
         this.stopWatch();
         
         String script = "g:list(1,2,3)[0]";
-        Iterable itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        int result = (Integer) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
-        List<Vertex> results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(results.size(), 1);
-        assertEquals(results.get(0), 1);
+        assertEquals(result, 1);
 
         this.stopWatch();
         script = "g:list(1,2,3)[2]";
-        itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        result = (Integer) ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
-        results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(results.size(), 1);
-        assertEquals(results.get(0), 3);
+        assertEquals(result, 3);
 
         this.stopWatch();
         script = "g:list(1,2,3)[3]";
-        itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
+        Object nullResult = ((Iterable) engine.eval(script, context)).iterator().next();
         printPerformance(script, 1, "pipe constructed", this.stopWatch());
         this.stopWatch();
-        results = asList(itty);
         printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(results.size(), 0);
+        assertNull(nullResult);
     }
 }

@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.pipes.Pipe;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class GPathOperation implements Operation {
@@ -21,7 +22,7 @@ public class GPathOperation implements Operation {
     }
 
     public Atom compute() {
-        return new Atom<GPath>(new GPath(this.root, this.pipes, this.context));
+        return new GPath(this.root, this.pipes, this.context);
     }
 
     public Type getType() {

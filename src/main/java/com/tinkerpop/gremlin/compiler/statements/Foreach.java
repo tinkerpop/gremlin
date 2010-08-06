@@ -38,11 +38,9 @@ public class Foreach implements Operation {
         final Atom paramsAtom = this.parameter.compute();
 
         if (!paramsAtom.isIterable())
-            return new Atom(null);
+            return new Atom<Object>(null);
 
-        final Iterable params = (Iterable) paramsAtom.getValue();
-
-        for (Object currentParam : params) {
+        for (Object currentParam : (Iterable) paramsAtom.getValue()) {
             final Atom value = (currentParam instanceof Atom) ? (Atom) currentParam : new Atom(currentParam); 
             context.getVariableLibrary().declare(this.variable, value);
             
