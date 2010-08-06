@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.GPath;
 
+import java.io.Writer;
 import java.util.List;
 
 /**
@@ -17,17 +18,17 @@ public class PrintFunction extends AbstractFunction<Boolean> {
 
 
     public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-
+        
         for (Operation operation : parameters) {
             Atom atom = operation.compute();
             Object operationValue = atom.getValue();
             
             if (operationValue instanceof GPath) {
                 for (Object o : (GPath) operationValue) {
-                    System.out.println(o);
+                    context.writeOutput(o);
                 }
             } else {
-                System.out.println(atom);
+                context.writeOutput(atom);
             }
         }
 

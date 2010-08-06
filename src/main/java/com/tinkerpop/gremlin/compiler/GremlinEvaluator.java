@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-06 12:35:43
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-06 17:36:03
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -227,26 +227,26 @@ public class GremlinEvaluator extends TreeParser {
             
             if (value != null && DEBUG) {
                 if (value instanceof Iterable) {
-                    for(Object o : (Iterable)value) {
-                        System.out.println(Tokens.RESULT_PROMPT + o);
+                    for(Object o : (Iterable) value) {
+                        this.context.writeOutput(Tokens.RESULT_PROMPT + o);
                     }
                 } else if (value instanceof Map) {
                     Map map = (Map) value;
                     if (map.isEmpty()) {
-                        System.out.println(Tokens.RESULT_PROMPT + "{}");
+                        this.context.writeOutput(Tokens.RESULT_PROMPT + "{}");
                     } else {
                         for (Object key : map.keySet()) {
-                            System.out.println(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                            this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
                         }
                     }
                 } else if(value instanceof Iterator) {
                     Iterator itty = (Iterator) value;
                     
                     while(itty.hasNext()) {
-                        System.out.println(Tokens.RESULT_PROMPT + itty.next());
+                        this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next());
                     }
                 } else {
-                    System.out.println(Tokens.RESULT_PROMPT + value);
+                    this.context.writeOutput(Tokens.RESULT_PROMPT + value);
                 }
             }
 

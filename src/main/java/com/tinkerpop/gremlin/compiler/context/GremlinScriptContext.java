@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.context;
 
 import javax.script.SimpleScriptContext;
+import java.io.IOException;
 
 /**
  * @author Pavel A. Yaskevich
@@ -32,5 +33,13 @@ public class GremlinScriptContext extends SimpleScriptContext {
 
     public void setVariableLibrary(final VariableLibrary newLibrary) {
         this.variables = newLibrary;
+    }
+
+    public void writeOutput(Object o) throws RuntimeException {
+        try {
+            this.getWriter().write(o.toString() + "\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
