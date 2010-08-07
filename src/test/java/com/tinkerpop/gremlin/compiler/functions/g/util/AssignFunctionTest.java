@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.types.Var;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,10 +22,10 @@ public class AssignFunctionTest extends BaseTest {
         Function<Boolean> function = new AssignFunction();
         GremlinScriptContext context = new GremlinScriptContext();
         this.stopWatch();
-        assertTrue(function.compute(createUnaryArgs("x", 1), context).getValue());
-        assertTrue(function.compute(createUnaryArgs("y", 2), context).getValue());
-        assertTrue(function.compute(createUnaryArgs("z", 3), context).getValue());
-        assertTrue(function.compute(createUnaryArgs("x", 4), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("x", context), 1), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("y", context), 2), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("z", context), 3), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("x", context), 4), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
         assertEquals(context.getVariableByName("x").getValue(), 4);
         assertEquals(context.getVariableByName("y").getValue(), 2);
@@ -48,7 +49,5 @@ public class AssignFunctionTest extends BaseTest {
         assertEquals(map.get("key"), "value");
         assertEquals(list.get(0), "value");
         assertEquals(vertex.getProperty("name"), "marko2");
-
-
     }
 }

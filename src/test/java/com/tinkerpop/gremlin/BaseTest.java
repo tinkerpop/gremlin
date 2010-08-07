@@ -125,7 +125,8 @@ public class BaseTest extends TestCase {
     }
 
     public static <T> UnaryOperation createUnary(T object) {
-        return new UnaryOperation(new Atom<T>(object));
+        final Atom<T> argument = (object instanceof Atom) ? (Atom<T>) object : new Atom<T>(object);
+        return new UnaryOperation(argument);
     }
 
     public static List<Operation> createUnaryArgs(Object... objects) {

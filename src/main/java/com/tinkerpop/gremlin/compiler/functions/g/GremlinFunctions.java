@@ -8,10 +8,7 @@ import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.lme.*;
 import com.tinkerpop.gremlin.compiler.functions.g.number.*;
 import com.tinkerpop.gremlin.compiler.functions.g.string.*;
-import com.tinkerpop.gremlin.compiler.functions.g.util.AssignFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.util.PathFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.util.TimeFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.util.TypeFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.util.*;
 
 /**
  * @author Pavel A. Yaskevich
@@ -85,6 +82,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new PathFunction());
         functions.add(new TimeFunction());
         functions.add(new TypeFunction());
+        functions.add(new UnassignFunction());
     }
 
     public String getNamespace() {

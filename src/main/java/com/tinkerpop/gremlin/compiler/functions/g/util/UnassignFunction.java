@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.Var;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,12 @@ public class UnassignFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         if (parameters.size() == 1) {
-            final String variable = (String) parameters.get(0).compute().getValue();
-            context.getVariableLibrary().free(variable);
+            final Atom variable = parameters.get(0).compute();
+
+            if (!(variable instanceof Var))
+                return new Atom<Boolean>(false);
+
+            context.getVariableLibrary().free(((Var) variable).getVariableName());
             return new Atom<Boolean>(true);
         } else if (parameters.size() == 2) {
             final Object object = parameters.get(0).compute().getValue();

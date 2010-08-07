@@ -14,9 +14,14 @@ public class Var extends DynamicEntity {
         this.var = var;
         this.context = context;
     }
+
+    public String getVariableName() {
+        return this.var;
+    }
     
     protected Object value() {
         Atom atom = (Atom) this.context.getVariableLibrary().get(this.var);
         return (atom == null) ? null : atom.getValue();
     }
+
 }

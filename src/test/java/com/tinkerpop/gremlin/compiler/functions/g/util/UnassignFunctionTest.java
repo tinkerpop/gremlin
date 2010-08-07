@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.Var;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,10 +33,10 @@ public class UnassignFunctionTest extends BaseTest {
         assertEquals(context.getVariableByName("z").getValue(), 3);
 
         this.stopWatch();
-        assertTrue(function.compute(createUnaryArgs("x"), context).getValue());
-        assertTrue(function.compute(createUnaryArgs("y"), context).getValue());
-        assertTrue(function.compute(createUnaryArgs("z"), context).getValue());
-        assertTrue(function.compute(createUnaryArgs("x"), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("y", context)), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("z", context)), context).getValue());
+        assertTrue(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
         assertNull(context.getVariableByName("x").getValue());
         assertNull(context.getVariableByName("y").getValue());
