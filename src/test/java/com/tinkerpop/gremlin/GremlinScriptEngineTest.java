@@ -212,11 +212,11 @@ public class GremlinScriptEngineTest extends BaseTest {
     }
 
     public void testGPathInExpression() throws Exception {
-        assertTrue(true);
+        GremlinScriptContext context = new GremlinScriptContext();
+        assertEquals(evaluateGremlinScriptPrimitive("(g:list(1,2,3)[1]) + 10", context, true), 12);
+        assertEquals(evaluateGremlinScriptPrimitive("(g:map('marko',2)/@marko) + 10", context, true), 12);
         // TODO: make sure these all work
-        /*GremlinScriptContext context = new GremlinScriptContext();
-        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
-        assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
+        /*
         evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign('$x',.)]", context, true);
         assertEquals(context.getVariableByName("x").getValue(), 3);
         //evaluateGremlinScriptPrimitive("g:group(g:list(1,2,3))[g:assign('$x',.)]", context, true);
@@ -225,6 +225,7 @@ public class GremlinScriptEngineTest extends BaseTest {
         List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
         assertEquals(results.size(), 2);
         assertTrue(results.contains(2));
-        assertTrue(results.contains(3));*/
+        assertTrue(results.contains(3));
+        */
     }
 }
