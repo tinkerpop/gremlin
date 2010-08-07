@@ -18,15 +18,16 @@ public class UnassignFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "unassign";
 
     public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
+        final int size = parameters.size();
+        if (size == 1) {
             final Atom variable = parameters.get(0).compute();
 
             if (!(variable instanceof Var))
-                return new Atom<Boolean>(false);
+                throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
             context.getVariableLibrary().free(((Var) variable).getVariableName());
             return new Atom<Boolean>(true);
-        } else if (parameters.size() == 2) {
+        } else if (size == 2) {
             final Object object = parameters.get(0).compute().getValue();
             final Object key = parameters.get(1).compute().getValue();
             if (object instanceof Map) {

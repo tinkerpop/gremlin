@@ -22,6 +22,7 @@ public class OperateValueFunction extends AbstractFunction<Number> {
     private static final String MULTIPLY = "*";
     private static final String DIVIDE = "div";
     private static final String MODULO = "mod";
+    private static final String OPERATION_ERROR = "First argument must be +, -, *, div, or mod";
 
     public Atom<Number> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         if (parameters.size() != 4)
@@ -33,19 +34,19 @@ public class OperateValueFunction extends AbstractFunction<Number> {
         final Number amount = (Number) parameters.get(3).compute().getValue();
 
         if (struct instanceof Map) {
-            return new Atom<Number>(OperateValueFunction.opValue(operation, (Map) struct, key, amount));
+            return new Atom<Number>(this.opValue(operation, (Map) struct, key, amount));
         } else if (struct instanceof Element) {
-            return new Atom<Number>(OperateValueFunction.opValue(operation, (Element) struct, (String) key, amount));
+            return new Atom<Number>(this.opValue(operation, (Element) struct, (String) key, amount));
         } else if (struct instanceof List) {
-            return new Atom<Number>(OperateValueFunction.opValue(operation, (List) struct, (Integer) key, amount));
+            return new Atom<Number>(this.opValue(operation, (List) struct, (Integer) key, amount));
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("Second argument must be a list, map, or element"));
         }
 
     }
 
 
-    private static Number opValue(final String operation, final Map map, final Object key, final Number amount) {
+    private Number opValue(final String operation, final Map map, final Object key, final Number amount) {
         Object object = map.get(key);
         Number value;
         if (null == object || !(object instanceof Number))
@@ -63,12 +64,14 @@ public class OperateValueFunction extends AbstractFunction<Number> {
             map.put(key, new Division(UnaryOperation.createUnaryOperation(value), UnaryOperation.createUnaryOperation(amount)).compute().getValue());
         } else if (operation.equals(MODULO)) {
             map.put(key, new Modulo(UnaryOperation.createUnaryOperation(value), UnaryOperation.createUnaryOperation(amount)).compute().getValue());
+        } else {
+            throw new RuntimeException(this.createUnsupportedArgumentMessage(OPERATION_ERROR));
         }
         return (Number) map.get(key);
 
     }
 
-    private static Number opValue(final String operation, final Element element, final String key, final Number amount) {
+    private Number opValue(final String operation, final Element element, final String key, final Number amount) {
         Object object = element.getProperty(key);
         Number value;
         if (null == object || !(object instanceof Number))
@@ -87,11 +90,13 @@ public class OperateValueFunction extends AbstractFunction<Number> {
             element.setProperty(key, new Division(UnaryOperation.createUnaryOperation(value), UnaryOperation.createUnaryOperation(amount)).compute().getValue());
         } else if (operation.equals(MODULO)) {
             element.setProperty(key, new Modulo(UnaryOperation.createUnaryOperation(value), UnaryOperation.createUnaryOperation(amount)).compute().getValue());
+        } else {
+            throw new RuntimeException(this.createUnsupportedArgumentMessage(OPERATION_ERROR));
         }
         return (Number) element.getProperty(key);
     }
 
-    private static Number opValue(final String operation, final List list, final Integer index, final Number amount) {
+    private Number opValue(final String operation, final List list, final Integer index, final Number amount) {
         if (list.size() < index + 1)
             throw new RuntimeException("list index out of range");
 
@@ -112,6 +117,8 @@ public class OperateValueFunction extends AbstractFunction<Number> {
             list.set(index, new Division(UnaryOperation.createUnaryOperation(value), UnaryOperation.createUnaryOperation(amount)).compute().getValue());
         } else if (operation.equals(MODULO)) {
             list.set(index, new Modulo(UnaryOperation.createUnaryOperation(value), UnaryOperation.createUnaryOperation(amount)).compute().getValue());
+        } else {
+            throw new RuntimeException(this.createUnsupportedArgumentMessage(OPERATION_ERROR));
         }
         return (Number) list.get(index);
     }

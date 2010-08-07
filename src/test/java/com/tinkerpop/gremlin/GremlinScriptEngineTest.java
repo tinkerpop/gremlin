@@ -209,6 +209,22 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(results.contains("11"));
         assertTrue(results.contains("12"));
 
+    }
 
+    public void testGPathInExpression() throws Exception {
+        assertTrue(true);
+        // TODO: make sure these all work
+        /*GremlinScriptContext context = new GremlinScriptContext();
+        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
+        evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign('$x',.)]", context, true);
+        assertEquals(context.getVariableByName("x").getValue(), 3);
+        //evaluateGremlinScriptPrimitive("g:group(g:list(1,2,3))[g:assign('$x',.)]", context, true);
+        //assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
+
+        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(2));
+        assertTrue(results.contains(3));*/
     }
 }

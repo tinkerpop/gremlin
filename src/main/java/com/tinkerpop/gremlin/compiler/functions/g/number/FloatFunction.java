@@ -19,7 +19,7 @@ public class FloatFunction extends AbstractFunction<Float> {
             final Object object = parameters.get(0).compute().getValue();
             return new Atom<Float>(Float.valueOf(object.toString()));
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("One float convertible object required"));
         }
     }
 

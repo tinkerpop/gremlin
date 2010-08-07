@@ -12,7 +12,7 @@ import java.io.IOException;
 public class GremlinScriptContext extends SimpleScriptContext {
 
     protected VariableLibrary variables;
-    
+
     protected final FunctionLibrary functions;
     protected final PathLibrary paths;
 
@@ -41,6 +41,7 @@ public class GremlinScriptContext extends SimpleScriptContext {
     public Atom getVariableByName(String name) {
         return new Var(name, this);
     }
+
     public void writeOutput(Object o) throws RuntimeException {
         try {
             this.getWriter().write(o.toString() + "\n");

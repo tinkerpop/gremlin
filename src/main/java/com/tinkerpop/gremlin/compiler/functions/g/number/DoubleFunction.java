@@ -19,7 +19,7 @@ public class DoubleFunction extends AbstractFunction<Double> {
             final Object object = parameters.get(0).compute().getValue();
             return new Atom<Double>(Double.valueOf(object.toString()));
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("One double convertible object required"));
         }
     }
 

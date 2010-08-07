@@ -15,13 +15,9 @@ import java.util.UUID;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class BaseTest extends TestCase {
+public abstract class BaseTest extends TestCase {
 
     double timer = -1.0d;
-
-    public void testTrue() {
-        assertTrue(true);
-    }
 
     public List<String> generateUUIDs(int count) {
         List<String> list = new ArrayList<String>();
@@ -65,15 +61,16 @@ public class BaseTest extends TestCase {
 
     public List evaluateGremlinScriptIterable(String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
         this.stopWatch();
-        
+
         final GremlinScriptEngine engine = new GremlinScriptEngine();
 
         Iterable itty = null;
-        
+
         try {
             itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
-        } catch(Exception e) {}
-        
+        } catch (Exception e) {
+        }
+
         if (printStatistics)
             printPerformance(script, 1, "pipe constructed", this.stopWatch());
         else
@@ -96,7 +93,7 @@ public class BaseTest extends TestCase {
     public Object evaluateGremlinScriptPrimitive(String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
         this.stopWatch();
         final GremlinScriptEngine engine = new GremlinScriptEngine();
-        
+
         Object object = ((Iterable) engine.eval(script, context)).iterator().next();
         if (printStatistics)
             printPerformance(script, 1, "pipe evaluated", this.stopWatch());

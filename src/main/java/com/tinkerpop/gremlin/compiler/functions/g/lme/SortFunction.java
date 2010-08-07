@@ -40,7 +40,7 @@ public class SortFunction extends AbstractFunction<Object> {
             } else if (keyOrValue.equals(KEY)) {
                 return new Atom<Object>(sortByKey(map, reverse));
             } else {
-                throw new RuntimeException(KEY_VALUE_ERROR);
+                throw new RuntimeException(this.createUnsupportedArgumentMessage(KEY_VALUE_ERROR));
             }
 
         } else {

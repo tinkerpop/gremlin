@@ -20,7 +20,7 @@ public class IntegerFunction extends AbstractFunction<Integer> {
             final Double temp = Double.valueOf(object.toString());
             return new Atom<Integer>(temp.intValue());
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("One integer convertible object required"));
         }
     }
 

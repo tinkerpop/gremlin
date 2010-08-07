@@ -9,8 +9,7 @@ import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -19,7 +18,7 @@ public class MapFunctionTest extends BaseTest {
 
     public void testEmptyMap() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Map> function = new MapFunction();
         this.stopWatch();
         Atom<Map> atom = function.compute(new ArrayList<Operation>(), context);
@@ -30,7 +29,7 @@ public class MapFunctionTest extends BaseTest {
 
     public void testArgumentSizeErrorMap() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function function = new MapFunction();
         try {
             this.stopWatch();
@@ -44,7 +43,7 @@ public class MapFunctionTest extends BaseTest {
 
     public void testTwoEntryMap() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Map> function = new MapFunction();
         this.stopWatch();
         Atom<Map> atom = function.compute(createUnaryArgs("key1", "value1", "key2", 2), context);
@@ -58,7 +57,7 @@ public class MapFunctionTest extends BaseTest {
 
     public void testElementMap() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Function<Map> function = new MapFunction();
         this.stopWatch();
@@ -70,8 +69,54 @@ public class MapFunctionTest extends BaseTest {
         assertEquals(map.get("age"), 29);
     }
 
+    public void testMapMap() {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        Map map = new HashMap();
+        map.put("marko", 1);
+        map.put("peter", 2);
+        Function<Map> function = new MapFunction();
+        this.stopWatch();
+        Atom<Map> atom = function.compute(createUnaryArgs(map), context);
+        printPerformance(function.getFunctionName() + " function", 1, "vertex argument", this.stopWatch());
+        assertTrue(atom.isMap());
+        Map<Atom, Atom> map2 = atom.getValue();
+        assertEquals(map2.get("marko"), 1);
+        assertEquals(map2.get("peter"), 2);
+        assertEquals(map.size(), map2.size());
+    }
+
+    public void testListMap() {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        List list = Arrays.asList("marko", 1, "peter", 2);
+        Function<Map> function = new MapFunction();
+        this.stopWatch();
+        Atom<Map> atom = function.compute(createUnaryArgs(list), context);
+        printPerformance(function.getFunctionName() + " function", 1, "vertex argument", this.stopWatch());
+        assertTrue(atom.isMap());
+        Map<Atom, Atom> map = atom.getValue();
+        assertEquals(map.get("marko"), 1);
+        assertEquals(map.get("peter"), 2);
+        assertEquals(map.size(), list.size() / 2);
+    }
+
+    public void testListSizeErrorMap() {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        List list = Arrays.asList("marko", 1, "peter", 2, "pavel");
+        Function<Map> function = new MapFunction();
+        this.stopWatch();
+        try {
+            function.compute(createUnaryArgs(list), context);
+            assertTrue(false);
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+    }
+
     public void testMapGremlin() throws Exception {
-        final GremlinScriptEngine engine   = new GremlinScriptEngine();
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
         this.stopWatch();

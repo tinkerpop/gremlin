@@ -18,17 +18,18 @@ public class AssignFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "assign";
 
     public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 2) {
+        final int size = parameters.size();
+        if (size == 2) {
             final Atom variable = parameters.get(0).compute();
             
             if (!(variable instanceof Var))
-                return new Atom<Boolean>(false);
+                throw new RuntimeException(this.createUnsupportedArgumentMessage("Two argument evaluation requires first argument to be a variable"));
 
             final Atom atom = parameters.get(1).compute();
             context.getVariableLibrary().declare(((Var) variable).getVariableName(), atom);
             
             return new Atom<Boolean>(true);
-        } else if (parameters.size() == 3) {
+        } else if (size == 3) {
             final Object object = parameters.get(0).compute().getValue();
             final Object key = parameters.get(1).compute().getValue();
             final Object value = parameters.get(2).compute().getValue();
@@ -39,7 +40,7 @@ public class AssignFunction extends AbstractFunction<Boolean> {
             } else if (object instanceof Element) {
                 ((Element) object).setProperty((String) key, value);
             } else {
-                throw new RuntimeException(this.createUnsupportedArgumentMessage());
+                throw new RuntimeException(this.createUnsupportedArgumentMessage("Three argument evaluation required the first argument to be a list, map, or element"));
             }
             return new Atom<Boolean>(true);
 

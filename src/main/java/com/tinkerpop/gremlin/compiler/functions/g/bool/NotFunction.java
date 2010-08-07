@@ -19,7 +19,7 @@ public class NotFunction extends AbstractFunction<Boolean> {
         if (parameters.size() == 1) {
             return new Atom<Boolean>(!((Boolean) parameters.get(0).compute().getValue()));
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("One boolean argument required"));
         }
     }
 

@@ -83,6 +83,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new TimeFunction());
         functions.add(new TypeFunction());
         functions.add(new UnassignFunction());
+        functions.add(new VersionFunction());
     }
 
     public String getNamespace() {

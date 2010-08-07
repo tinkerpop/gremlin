@@ -13,20 +13,17 @@ import java.util.List;
  */
 public class CountFunction extends AbstractFunction<Long> {
 
-
     private static final String FUNCTION_NAME = "count";
 
     public Atom<Long> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
         if (parameters.size() != 1)
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("One countable argument required"));
 
         final Atom result = parameters.get(0).compute();
         if (result.isIterable()) {
-            final long count = PipeHelper.counter(((Iterable<?>) result.getValue()).iterator());
-            return new Atom<Long>(count);
-        } else {
+            return new Atom<Long>(PipeHelper.counter(((Iterable<?>) result.getValue()).iterator()));
+        } else
             return new Atom<Long>(1l);
-        }
     }
 
     public String getFunctionName() {

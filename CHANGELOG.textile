@@ -19,14 +19,20 @@ bc. <dependency>
   <version>0.5-SNAPSHOT</version>
 </dependency>
 
-* A complete redesign and implementation of the Gremlin compiler ("ANTLR-based":http://www.antlr.org/)
+* A complete redesign and implementation of the Gremlin compiler
+** Compiler written using "ANTLR":http://www.antlr.org/ 3.2
+** Virtual machine written using "Pipes":http://pipes.tinkerpop.com 0.1 and "JSR 223":http://jcp.org/en/jsr/detail?id=223.
+* Significant performance improvements
 ** Order of magnitude increase in speed for numerous operations
 ** Lazy evaluation for better memory usage
 * @Functions@ implement the @ServiceLoader@ pattern for ease of incorporating 3rd-party extensions
 * Numerous changes to the Gremlin function library
-** All core functions are now in the @g@ namespace (e.g. @g:count()@)
+** All core functions are now in the @g@ namespace (e.g. @g:count()@, @g:string()@)
 ** @g:id()@ changed to @g:id-v()@ and @g:id-e()@ for getting vertices and edges, respectively
 ** @g:key()@ changed to @g:key-v()@
+** Added @g:version()@ function to retrieve version information
+** Added @g:group()@ to replace @()@ model in Gremlin 0.2.2
+* Print stream can be dynamically set in @GremlinScriptContext@
 
 ==<hr/>==
 

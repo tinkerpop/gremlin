@@ -20,7 +20,7 @@ public class LongFunction extends AbstractFunction<Long> {
             final Double temp = Double.valueOf(object.toString());
             return new Atom<Long>(temp.longValue());
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage());
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("One long convertible object required"));
         }
     }
 

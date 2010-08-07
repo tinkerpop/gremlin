@@ -12,6 +12,8 @@ import java.util.List;
  */
 public abstract class AbstractFunction<T> implements Function<T> {
 
+    private static final String UNSUPPORTED_MESSAGE = "Unsupported arguments for ";
+
     protected static List<Object> generateObjects(List<Operation> operations) {
         final List<Object> list = new ArrayList<Object>();
         for (Operation operation : operations) {
@@ -27,7 +29,11 @@ public abstract class AbstractFunction<T> implements Function<T> {
     }
 
     protected String createUnsupportedArgumentMessage() {
-        return "Unsupported arguments for " + this.getFunctionName() + " function";
+        return UNSUPPORTED_MESSAGE + this.getFunctionName() + " function";
+    }
+
+    protected String createUnsupportedArgumentMessage(String extraInfo) {
+        return UNSUPPORTED_MESSAGE + this.getFunctionName() + " function: " + extraInfo;
     }
 
 }
