@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.PathLibrary;
@@ -9,6 +8,7 @@ import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Func;
 import com.tinkerpop.gremlin.compiler.types.Range;
 import com.tinkerpop.pipes.IdentityPipe;

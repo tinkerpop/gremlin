@@ -1,5 +1,8 @@
 package com.tinkerpop.gremlin.compiler.context;
 
+import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.Var;
+
 import javax.script.SimpleScriptContext;
 import java.io.IOException;
 
@@ -35,6 +38,9 @@ public class GremlinScriptContext extends SimpleScriptContext {
         this.variables = newLibrary;
     }
 
+    public Atom getVariableByName(String name) {
+        return new Var(name, this);
+    }
     public void writeOutput(Object o) throws RuntimeException {
         try {
             this.getWriter().write(o.toString() + "\n");

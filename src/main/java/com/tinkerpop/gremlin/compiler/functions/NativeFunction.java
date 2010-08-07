@@ -1,12 +1,11 @@
 package com.tinkerpop.gremlin.compiler.functions;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,18 +45,13 @@ public class NativeFunction implements Function<Object> {
         for (Operation operation : this.body) {
             final Atom atom = operation.compute();
 
+            if (atom instanceof DynamicEntity)
+                atom.getValue();
+
             // setting 'result' only if this is the last statement of the function body
             if (operationCount == this.body.size() - 1) {
-                if (atom instanceof DynamicEntity) {
+                if(atom instanceof DynamicEntity || atom.isIterable()) {
                     result = new Atom<Object>(atom.getValue());
-                } else if(atom.isIterable()) {
-                    List<Object> results = new ArrayList<Object>();
-
-                    for(Object o : (Iterable) atom.getValue()) {
-                        results.add(o);
-                    }
-
-                    result = new Atom<Object>(results);
                 } else {
                     result = atom;
                 }

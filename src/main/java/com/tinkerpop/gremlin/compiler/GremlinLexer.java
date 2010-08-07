@@ -2,9 +2,6 @@
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
 
 public class GremlinLexer extends Lexer {
     public static final int WHILE=25;

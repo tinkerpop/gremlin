@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import junit.framework.TestCase;
 
 import java.util.*;

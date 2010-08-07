@@ -1,66 +1,41 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-06 17:36:03
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-07 01:43:32
 
     package com.tinkerpop.gremlin.compiler;
 
-    import java.io.FileReader;
-    
-    import java.util.ArrayList;
-    
-    import java.util.Map;
-    import java.util.HashMap;
-    import java.util.Iterator;
-    
-    import java.util.regex.Pattern;
-    import java.util.regex.Matcher;
-
-    import java.util.Collections;
-
-    import java.util.ServiceLoader;
-
-    import com.tinkerpop.gremlin.GremlinScriptEngine;
-    
-    import com.tinkerpop.gremlin.compiler.Tokens;
-
-    import com.tinkerpop.gremlin.compiler.context.*;
-
-    import com.tinkerpop.gremlin.compiler.functions.Functions;
-    
-    // types
-    import com.tinkerpop.gremlin.compiler.types.*;
-
-    // operations
-    import com.tinkerpop.gremlin.compiler.operations.Operation;
-    import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
-
-    import com.tinkerpop.gremlin.compiler.statements.*;
-    import com.tinkerpop.gremlin.compiler.operations.math.*;
-    import com.tinkerpop.gremlin.compiler.operations.logic.*;
-    import com.tinkerpop.gremlin.compiler.operations.util.*;
-
-    import com.tinkerpop.gremlin.compiler.functions.Function;
-    import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
-
-    // blueprints
-    import com.tinkerpop.blueprints.pgm.Vertex;
-
-    // pipes
-    import com.tinkerpop.pipes.Pipe;
-    import com.tinkerpop.pipes.Pipeline;
-
-    import com.tinkerpop.pipes.SingleIterator;
-    import com.tinkerpop.pipes.MultiIterator;
-    
-    import com.tinkerpop.pipes.pgm.PropertyPipe;
-    import com.tinkerpop.pipes.filter.FilterPipe;
-    import com.tinkerpop.pipes.filter.FutureFilterPipe;
-    
-    import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
-
-
+import com.tinkerpop.gremlin.GremlinScriptEngine;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.PathLibrary;
+import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.Functions;
+import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
+import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
+import com.tinkerpop.gremlin.compiler.operations.logic.*;
+import com.tinkerpop.gremlin.compiler.operations.math.*;
+import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
+import com.tinkerpop.gremlin.compiler.operations.util.GPathOperation;
+import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
+import com.tinkerpop.gremlin.compiler.statements.Foreach;
+import com.tinkerpop.gremlin.compiler.statements.If;
+import com.tinkerpop.gremlin.compiler.statements.Repeat;
+import com.tinkerpop.gremlin.compiler.statements.While;
+import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
+import com.tinkerpop.gremlin.compiler.types.Func;
+import com.tinkerpop.gremlin.compiler.types.Range;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.filter.FutureFilterPipe;
+import com.tinkerpop.pipes.pgm.PropertyPipe;
+import org.antlr.runtime.BitSet;
 import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.tree.*;
+
+import java.io.FileReader;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class GremlinEvaluator extends TreeParser {
@@ -204,7 +179,7 @@ public class GremlinEvaluator extends TreeParser {
         }
 
         private Atom getVariable(String name) {
-            return this.context.getVariableLibrary().getVariableByName(name);
+            return this.context.getVariableByName(name);
         }
 
         private Function getFunction(final String ns, final String functionName) {

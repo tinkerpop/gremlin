@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.compiler.functions;
 
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class FunctionHelper {
 
     public static Graph getGraph(final Operation parameter, final GremlinScriptContext context) {
-        final Atom<Graph> graphGlobalVariable = context.getVariableLibrary().getVariableByName(Tokens.GRAPH_VARIABLE);
+        final Atom<Graph> graphGlobalVariable = context.getVariableByName(Tokens.GRAPH_VARIABLE);
         if (parameter == null)
             return graphGlobalVariable.getValue();
 
@@ -30,7 +30,7 @@ public class FunctionHelper {
             if (atom.isGraph())
                 return (Graph) atom.getValue();
         }
-        return (Graph) context.getVariableLibrary().getVariableByName(Tokens.GRAPH_VARIABLE).getValue();
+        return (Graph) context.getVariableByName(Tokens.GRAPH_VARIABLE).getValue();
     }
 
     public static void fillCollection(Iterable itty, Collection collection) {

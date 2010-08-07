@@ -1,12 +1,11 @@
 package com.tinkerpop.gremlin.compiler.operations.util;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.pipes.Pipe;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class GPathOperation implements Operation {

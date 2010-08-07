@@ -1,15 +1,13 @@
 package com.tinkerpop.gremlin.compiler.functions.g.lme;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinScriptEngine;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

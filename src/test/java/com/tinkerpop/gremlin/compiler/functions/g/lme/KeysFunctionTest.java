@@ -3,9 +3,9 @@ package com.tinkerpop.gremlin.compiler.functions.g.lme;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.HashMap;
 import java.util.List;

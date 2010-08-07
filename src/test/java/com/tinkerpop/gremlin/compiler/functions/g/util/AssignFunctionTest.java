@@ -26,13 +26,9 @@ public class AssignFunctionTest extends BaseTest {
         assertTrue(function.compute(createUnaryArgs("z", 3), context).getValue());
         assertTrue(function.compute(createUnaryArgs("x", 4), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
-
-        final VariableLibrary variables = context.getVariableLibrary();
-
-        assertEquals(variables.getVariableByName("x").getValue(), 4);
-        assertEquals(variables.getVariableByName("y").getValue(), 2);
-        assertEquals(variables.getVariableByName("z").getValue(), 3);
-
+        assertEquals(context.getVariableByName("x").getValue(), 4);
+        assertEquals(context.getVariableByName("y").getValue(), 2);
+        assertEquals(context.getVariableByName("z").getValue(), 3);
     }
 
     public void testAssignListMapElement() {

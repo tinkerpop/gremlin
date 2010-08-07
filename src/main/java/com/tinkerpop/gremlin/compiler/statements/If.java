@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.statements;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Func;
 
 import java.util.List;

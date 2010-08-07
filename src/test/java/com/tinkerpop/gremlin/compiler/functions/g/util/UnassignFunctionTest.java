@@ -3,10 +3,10 @@ package com.tinkerpop.gremlin.compiler.functions.g.util;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +27,9 @@ public class UnassignFunctionTest extends BaseTest {
         variables.declare("y", new Atom<Integer>(2));
         variables.declare("z", new Atom<Integer>(3));
 
-        assertEquals(variables.getVariableByName("x").getValue(), 1);
-        assertEquals(variables.getVariableByName("y").getValue(), 2);
-        assertEquals(variables.getVariableByName("z").getValue(), 3);
+        assertEquals(context.getVariableByName("x").getValue(), 1);
+        assertEquals(context.getVariableByName("y").getValue(), 2);
+        assertEquals(context.getVariableByName("z").getValue(), 3);
 
         this.stopWatch();
         assertTrue(function.compute(createUnaryArgs("x"), context).getValue());
@@ -37,9 +37,9 @@ public class UnassignFunctionTest extends BaseTest {
         assertTrue(function.compute(createUnaryArgs("z"), context).getValue());
         assertTrue(function.compute(createUnaryArgs("x"), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
-        assertNull(variables.getVariableByName("x").getValue());
-        assertNull(variables.getVariableByName("y").getValue());
-        assertNull(variables.getVariableByName("z").getValue());
+        assertNull(context.getVariableByName("x").getValue());
+        assertNull(context.getVariableByName("y").getValue());
+        assertNull(context.getVariableByName("z").getValue());
     }
 
      public void testUnassignMapListElement() {

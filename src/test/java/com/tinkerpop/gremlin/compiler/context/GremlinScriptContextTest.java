@@ -1,8 +1,6 @@
 package com.tinkerpop.gremlin.compiler.context;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
@@ -22,10 +20,10 @@ public class GremlinScriptContextTest extends BaseTest {
         printPerformance("evaluator", 4, "variable declarations", this.stopWatch());
 
         this.stopWatch();
-        assertEquals(variables.getVariableByName("w").getValue(), 1.0d);
-        assertNull(variables.getVariableByName("x").getValue());
-        assertEquals(variables.getVariableByName("y").getValue(), "1");
-        assertTrue((Boolean) variables.getVariableByName("z").getValue());
+        assertEquals(context.getVariableByName("w").getValue(), 1.0d);
+        assertNull(context.getVariableByName("x").getValue());
+        assertEquals(context.getVariableByName("y").getValue(), "1");
+        assertTrue((Boolean) context.getVariableByName("z").getValue());
         printPerformance("evaluator", 4, "variable gets", this.stopWatch());
 
         this.stopWatch();
@@ -34,10 +32,10 @@ public class GremlinScriptContextTest extends BaseTest {
         variables.free("y");
         variables.free("z");
         printPerformance("evaluator", 4, "variable undeclarations", this.stopWatch());
-        assertNull(variables.getVariableByName("w").getValue());
-        assertNull(variables.getVariableByName("x").getValue());
-        assertNull(variables.getVariableByName("y").getValue());
-        assertNull(variables.getVariableByName("z").getValue());
+        assertNull(context.getVariableByName("w").getValue());
+        assertNull(context.getVariableByName("x").getValue());
+        assertNull(context.getVariableByName("y").getValue());
+        assertNull(context.getVariableByName("z").getValue());
     }
 
 }

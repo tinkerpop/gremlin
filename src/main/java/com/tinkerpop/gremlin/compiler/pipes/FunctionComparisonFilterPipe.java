@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.pipes.filter.AbstractComparisonFilterPipe;
 
 import java.util.List;

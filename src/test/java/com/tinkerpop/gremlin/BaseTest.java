@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import junit.framework.TestCase;
 import org.antlr.runtime.RecognitionException;
 

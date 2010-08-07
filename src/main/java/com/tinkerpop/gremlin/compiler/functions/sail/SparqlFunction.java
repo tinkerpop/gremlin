@@ -2,11 +2,11 @@ package com.tinkerpop.gremlin.compiler.functions.sail;
 
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import info.aduna.iteration.CloseableIteration;
 import org.openrdf.query.Binding;
 import org.openrdf.query.BindingSet;

@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
@@ -43,8 +42,7 @@ public class Func extends DynamicEntity {
         List<Integer> pipeObjectIndices = new ArrayList<Integer>();
 
         int position = 0;
-        final VariableLibrary variables = context.getVariableLibrary();
-        final Atom rootVariable = variables.getVariableByName(Tokens.ROOT_VARIABLE);
+        final Atom rootVariable = context.getVariableByName(Tokens.ROOT_VARIABLE);
 
         for (Operation parameter : parameters) {
             Atom atom = parameter.compute();

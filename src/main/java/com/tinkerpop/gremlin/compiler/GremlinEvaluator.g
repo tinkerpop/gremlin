@@ -80,7 +80,7 @@ options {
     }
 
     private Atom getVariable(String name) {
-        return this.context.getVariableLibrary().getVariableByName(name);
+        return this.context.getVariableByName(name);
     }
 
     private Function getFunction(final String ns, final String functionName) {

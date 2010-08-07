@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 
 /**
  * @author Pavel A. Yaskevich
@@ -8,15 +8,15 @@ import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 public class Var extends DynamicEntity {
 
     private final String var;
-    private final VariableLibrary variables;
-    
-    public Var(final String var, final VariableLibrary variables) {
+    private final GremlinScriptContext context;
+
+    public Var(final String var, final GremlinScriptContext context) {
         this.var = var;
-        this.variables = variables;
+        this.context = context;
     }
     
     protected Object value() {
-        Atom atom = (Atom) variables.get(this.var);
+        Atom atom = (Atom) this.context.getVariableLibrary().get(this.var);
         return (atom == null) ? null : atom.getValue();
     }
 }
