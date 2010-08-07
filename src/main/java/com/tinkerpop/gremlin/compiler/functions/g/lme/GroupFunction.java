@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.pipes.SingleIterator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,14 +22,8 @@ public class GroupFunction extends AbstractFunction<Iterator> {
         if (parameters.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        GPath path = (GPath) parameters.get(0).compute().getValue();
-        List<Object> list = new ArrayList<Object>();
-
-        for (Object object : path) {
-            list.add(object);
-        }
-
-        return new Atom<Iterator>(new SingleIterator<List>(list));
+        Object path = parameters.get(0).compute().getValue();
+        return new Atom<Iterator>(new SingleIterator<Object>(path));
     }
 
     public String getFunctionName() {

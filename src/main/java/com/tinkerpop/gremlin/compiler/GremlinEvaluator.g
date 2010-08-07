@@ -97,7 +97,9 @@ options {
 
         try {
             value = result.getValue();
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            throw new RuntimeException(e);
+        }
 
         if (EMBEDDED) resultList.add(value);
         
@@ -307,28 +309,28 @@ token returns [Atom atom]
 
 
 if_statement returns [Operation op]
-	:	^(IF ^(COND cond=statement) if_block=block ( ^(ELSE else_block=block ) )? )
+	:	^(IF ^(COND cond=operand) if_block=block ( ^(ELSE else_block=block ) )? )
         {
             $op = new If($cond.op, $if_block.operations, $else_block.operations);
         }
 	;
 
 while_statement returns [Operation op]
-	:	^(WHILE ^(COND cond=statement) block)
+	:	^(WHILE ^(COND cond=operand) block)
         {
             $op = new While($cond.op, $block.operations);
         }
 	;
 
 foreach_statement returns [Operation op]
-	:	^(FOREACH VARIABLE arr=statement block)
+	:	^(FOREACH VARIABLE arr=operand block)
         {
             $op = new Foreach($VARIABLE.text, $arr.op, $block.operations, this.context);
         }
 	;
 	
 repeat_statement returns [Operation op]
-	:	^(REPEAT timer=statement block)
+	:	^(REPEAT timer=operand block)
         {
             $op = new Repeat($timer.op, $block.operations);
         }
@@ -339,29 +341,34 @@ block returns [List<Operation> operations]
         List<Operation> operationList = new ArrayList<Operation>();
     }
     :	^(BLOCK ( (statement { operationList.add($statement.op); } | collection { operationList.add($collection.op); }))+) { $operations = operationList; }
-	;
+    ;
+
+operand returns [Operation op]
+    : statement  { $op = $statement.op; }
+    | collection { $op = $collection.op; }
+    ;
 
 expression returns [Operation expr]
-    :   ^('='  a=statement b=statement) { $expr = new Equality($a.op, $b.op); }
-    |   ^('!=' a=statement b=statement) { $expr = new UnEquality($a.op, $b.op); }
-    |   ^('<'  a=statement b=statement) { $expr = new LessThan($a.op, $b.op); }
-    |   ^('>'  a=statement b=statement) { $expr = new GreaterThan($a.op, $b.op); }
-    |   ^('<=' a=statement b=statement) { $expr = new LessThanOrEqual($a.op, $b.op); }
-    |   ^('>=' a=statement b=statement) { $expr = new GreaterThanOrEqual($a.op, $b.op); }
+    :   ^('='  a=operand b=operand) { $expr = new Equality($a.op, $b.op); }
+    |   ^('!=' a=operand b=operand) { $expr = new UnEquality($a.op, $b.op); }
+    |   ^('<'  a=operand b=operand) { $expr = new LessThan($a.op, $b.op); }
+    |   ^('>'  a=operand b=operand) { $expr = new GreaterThan($a.op, $b.op); }
+    |   ^('<=' a=operand b=operand) { $expr = new LessThanOrEqual($a.op, $b.op); }
+    |   ^('>=' a=operand b=operand) { $expr = new GreaterThanOrEqual($a.op, $b.op); }
     |   operation                       { $expr = $operation.op; }
 	;
 
 operation returns [Operation op]
-    :   ^('+' a=operation b=operation) { $op = new Addition($a.op, $b.op); }
-    |   ^('-' a=operation b=operation) { $op = new Subtraction($a.op, $b.op); }
+    :   ^('+' a=operand b=operand) { $op = new Addition($a.op, $b.op); }
+    |   ^('-' a=operand b=operand) { $op = new Subtraction($a.op, $b.op); }
     |   binary_operation               { $op = $binary_operation.operation; }
 	;
 
 binary_operation returns [Operation operation]
-    :   ^('*' a=operation b=operation)      { $operation = new Multiplication($a.op, $b.op); }
-    |   ^('div' a=operation b=operation)    { $operation = new Division($a.op, $b.op); }
-    |	^('mod' a=operation b=operation)    { $operation = new Modulo($a.op, $b.op); }
-    |   atom                                { $operation = new UnaryOperation($atom.value); }
+    :   ^('*' a=operand b=operand)      { $operation = new Multiplication($a.op, $b.op); }
+    |   ^('div' a=operand b=operand)    { $operation = new Division($a.op, $b.op); }
+    |	^('mod' a=operand b=operand)    { $operation = new Modulo($a.op, $b.op); }
+    |   atom                            { $operation = new UnaryOperation($atom.value); }
 	;
 
 function_definition_statement returns [Operation op]

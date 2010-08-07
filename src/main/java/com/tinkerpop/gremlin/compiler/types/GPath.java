@@ -103,4 +103,13 @@ final public class GPath extends DynamicEntity implements Iterable {
         
         return true;
     }
+
+    public String toString() {
+        String result = "";
+        
+        for (Object o : this)
+            result += o.toString() + ", ";
+
+        return "[" + result.substring(0, result.length() - 2) + "]";
+    }
 }
