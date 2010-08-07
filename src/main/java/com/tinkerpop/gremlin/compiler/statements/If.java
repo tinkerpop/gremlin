@@ -45,10 +45,6 @@ public class If implements Operation {
         return new Atom<Object>(null);
     }
 
-    public Type getType() {
-        return Type.STATEMENT;
-    }
-
     private void evaluateBody(List<Operation> body) {
         for (Operation operation : body) {
             final Atom atom = operation.compute();
@@ -56,5 +52,9 @@ public class If implements Operation {
             if (atom instanceof Func)
                 atom.getValue();
         }    
+    }
+
+    public Type getType() {
+        return Type.CONTROL_STATEMENT;
     }
 }

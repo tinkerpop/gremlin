@@ -19,12 +19,11 @@ public class WhileTest extends BaseTest {
         List results = (List) engine.eval("$x := 10\n$counter := 0\nwhile $x > 0\n$x := $x - 1\n$counter := $counter + 1\nend\n$x\n$counter\n", context);
         printPerformance("while statement", 10, "iterations", this.stopWatch());
         //System.out.println(results);
-        assertEquals(results.size(), 5);
+        assertEquals(results.size(), 4);
         assertEquals(results.get(0), 10);
         assertEquals(results.get(1), 0);
-        assertNull(results.get(2));
-        assertEquals(results.get(3), 0);
-        assertEquals(results.get(4), 10);
+        assertEquals(results.get(2), 0);
+        assertEquals(results.get(3), 10);
     }
 
     public void testEmbeddedWhile() {
@@ -35,10 +34,9 @@ public class WhileTest extends BaseTest {
         List results = (List) engine.eval("$x := 10\n$counter := 0\nwhile $x > 0\n$y := 10\n$x := $x - 1\nwhile $y > 0\n$y := $y - 1\n$counter := $counter + 1\nend\nend\n$counter\n", context);
         printPerformance("while statement", 10, "iterations", this.stopWatch());
         //System.out.println(results);
-        assertEquals(results.size(), 4);
+        assertEquals(results.size(), 3);
         assertEquals(results.get(0), 10);
         assertEquals(results.get(1), 0);
-        assertNull(results.get(2));
-        assertEquals(results.get(3), 100);
+        assertEquals(results.get(2), 100);
     }
 }

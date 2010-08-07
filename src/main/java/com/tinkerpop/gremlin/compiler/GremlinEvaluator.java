@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-08 00:59:42
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-08 01:49:08
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -225,7 +225,8 @@ public class GremlinEvaluator extends TreeParser {
                 throw new RuntimeException(e);
             }
 
-            if (EMBEDDED) resultList.add(value);
+            if (EMBEDDED && (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT)) 
+                resultList.add(value);
             
             if (value != null && DEBUG) {
                 if (value instanceof Iterable) {
@@ -263,7 +264,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "program"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:135:1: program returns [Iterable results] : ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+ ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:136:1: program returns [Iterable results] : ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+ ;
     public final GremlinEvaluator.program_return program() throws RecognitionException {
         GremlinEvaluator.program_return retval = new GremlinEvaluator.program_return();
         retval.start = input.LT(1);
@@ -291,12 +292,12 @@ public class GremlinEvaluator extends TreeParser {
                 List<Object> resultList = new ArrayList<Object>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:139:5: ( ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+ )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:139:7: ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:140:5: ( ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:140:7: ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+
             {
             root_0 = (CommonTree)adaptor.nil();
 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:139:7: ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:140:7: ( ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )* )+
             int cnt3=0;
             loop3:
             do {
@@ -310,9 +311,9 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt3) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:139:8: ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )*
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:140:8: ( statement | col= collection | ^( VAR VARIABLE c= collection ) ) ( NEWLINE )*
             	    {
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:139:8: ( statement | col= collection | ^( VAR VARIABLE c= collection ) )
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:140:8: ( statement | col= collection | ^( VAR VARIABLE c= collection ) )
             	    int alt1=3;
             	    switch ( input.LA(1) ) {
             	    case FUNC:
@@ -407,7 +408,7 @@ public class GremlinEvaluator extends TreeParser {
 
             	    switch (alt1) {
             	        case 1 :
-            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:139:9: statement
+            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:140:9: statement
             	            {
             	            _last = (CommonTree)input.LT(1);
             	            pushFollow(FOLLOW_statement_in_program60);
@@ -423,7 +424,7 @@ public class GremlinEvaluator extends TreeParser {
             	            }
             	            break;
             	        case 2 :
-            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:142:10: col= collection
+            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:143:10: col= collection
             	            {
             	            _last = (CommonTree)input.LT(1);
             	            pushFollow(FOLLOW_collection_in_program73);
@@ -439,7 +440,7 @@ public class GremlinEvaluator extends TreeParser {
             	            }
             	            break;
             	        case 3 :
-            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:144:10: ^( VAR VARIABLE c= collection )
+            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:145:10: ^( VAR VARIABLE c= collection )
             	            {
             	            _last = (CommonTree)input.LT(1);
             	            {
@@ -480,7 +481,7 @@ public class GremlinEvaluator extends TreeParser {
 
             	    }
 
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:146:9: ( NEWLINE )*
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:147:9: ( NEWLINE )*
             	    loop2:
             	    do {
             	        int alt2=2;
@@ -493,7 +494,7 @@ public class GremlinEvaluator extends TreeParser {
 
             	        switch (alt2) {
             	    	case 1 :
-            	    	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:146:9: NEWLINE
+            	    	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:147:9: NEWLINE
             	    	    {
             	    	    _last = (CommonTree)input.LT(1);
             	    	    NEWLINE4=(CommonTree)match(input,NEWLINE,FOLLOW_NEWLINE_in_program92); 
@@ -549,7 +550,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:152:1: statement returns [Operation op] : ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | gpath_statement | ^( VAR VARIABLE s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:153:1: statement returns [Operation op] : ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | gpath_statement | ^( VAR VARIABLE s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression );
     public final GremlinEvaluator.statement_return statement() throws RecognitionException {
         GremlinEvaluator.statement_return retval = new GremlinEvaluator.statement_return();
         retval.start = input.LT(1);
@@ -596,7 +597,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree string_literal17_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:153:2: ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | gpath_statement | ^( VAR VARIABLE s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:154:2: ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | gpath_statement | ^( VAR VARIABLE s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression )
             int alt4=13;
             switch ( input.LA(1) ) {
             case IF:
@@ -697,7 +698,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt4) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:153:4: if_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:154:4: if_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -713,7 +714,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:154:4: foreach_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:155:4: foreach_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -729,7 +730,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:155:7: while_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:156:7: while_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -745,7 +746,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:156:4: repeat_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:157:4: repeat_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -761,7 +762,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:157:4: path_definition_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:158:4: path_definition_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -777,7 +778,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:158:4: function_definition_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:159:4: function_definition_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -793,7 +794,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 7 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:159:4: include_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:160:4: include_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -809,7 +810,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 8 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:160:6: script_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:161:6: script_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -825,7 +826,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 9 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:161:4: gpath_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:162:4: gpath_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -841,7 +842,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 10 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:162:4: ^( VAR VARIABLE s= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:163:4: ^( VAR VARIABLE s= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -880,7 +881,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 11 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:163:9: ^( 'and' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:164:9: ^( 'and' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -920,7 +921,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 12 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:164:9: ^( 'or' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:165:9: ^( 'or' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -960,7 +961,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 13 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:165:9: expression
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:166:9: expression
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -997,7 +998,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "script_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:168:1: script_statement returns [Atom result] : ^( SCRIPT StringLiteral ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:169:1: script_statement returns [Atom result] : ^( SCRIPT StringLiteral ) ;
     public final GremlinEvaluator.script_statement_return script_statement() throws RecognitionException {
         GremlinEvaluator.script_statement_return retval = new GremlinEvaluator.script_statement_return();
         retval.start = input.LT(1);
@@ -1014,8 +1015,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree StringLiteral20_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:169:5: ( ^( SCRIPT StringLiteral ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:169:7: ^( SCRIPT StringLiteral )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:170:5: ( ^( SCRIPT StringLiteral ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:170:7: ^( SCRIPT StringLiteral )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1076,7 +1077,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "include_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:183:1: include_statement returns [Atom result] : ^( INCLUDE StringLiteral ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:184:1: include_statement returns [Atom result] : ^( INCLUDE StringLiteral ) ;
     public final GremlinEvaluator.include_statement_return include_statement() throws RecognitionException {
         GremlinEvaluator.include_statement_return retval = new GremlinEvaluator.include_statement_return();
         retval.start = input.LT(1);
@@ -1093,8 +1094,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree StringLiteral22_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:184:2: ( ^( INCLUDE StringLiteral ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:184:4: ^( INCLUDE StringLiteral )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:185:2: ( ^( INCLUDE StringLiteral ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:185:4: ^( INCLUDE StringLiteral )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1160,7 +1161,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "path_definition_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:203:1: path_definition_statement returns [Operation op] : ^( PATH path_name= IDENTIFIER (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) ) ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:204:1: path_definition_statement returns [Operation op] : ^( PATH path_name= IDENTIFIER (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) ) ) ;
     public final GremlinEvaluator.path_definition_statement_return path_definition_statement() throws RecognitionException {
         GremlinEvaluator.path_definition_statement_return retval = new GremlinEvaluator.path_definition_statement_return();
         retval.start = input.LT(1);
@@ -1186,8 +1187,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Pipe> pipes = new ArrayList<Pipe>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:207:2: ( ^( PATH path_name= IDENTIFIER (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) ) ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:207:4: ^( PATH path_name= IDENTIFIER (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:208:2: ( ^( PATH path_name= IDENTIFIER (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) ) ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:208:4: ^( PATH path_name= IDENTIFIER (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) ) )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1210,7 +1211,7 @@ public class GremlinEvaluator extends TreeParser {
 
             adaptor.addChild(root_1, path_name_tree);
 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:207:32: (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:208:32: (gpath= gpath_statement | ^( PROPERTY_CALL pr= PROPERTY ) )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -1228,7 +1229,7 @@ public class GremlinEvaluator extends TreeParser {
             }
             switch (alt5) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:207:33: gpath= gpath_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:208:33: gpath= gpath_statement
                     {
                     _last = (CommonTree)input.LT(1);
                     pushFollow(FOLLOW_gpath_statement_in_path_definition_statement544);
@@ -1242,7 +1243,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:207:115: ^( PROPERTY_CALL pr= PROPERTY )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:208:115: ^( PROPERTY_CALL pr= PROPERTY )
                     {
                     _last = (CommonTree)input.LT(1);
                     {
@@ -1312,7 +1313,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "gpath_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:215:1: gpath_statement returns [Operation op] : ^( GPATH ( step )+ ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:216:1: gpath_statement returns [Operation op] : ^( GPATH ( step )+ ) ;
     public final GremlinEvaluator.gpath_statement_return gpath_statement() throws RecognitionException {
         gpath_statement_stack.push(new gpath_statement_scope());
         GremlinEvaluator.gpath_statement_return retval = new GremlinEvaluator.gpath_statement_return();
@@ -1337,8 +1338,8 @@ public class GremlinEvaluator extends TreeParser {
                 ((gpath_statement_scope)gpath_statement_stack.peek()).pipeList = new ArrayList<Pipe>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:232:2: ( ^( GPATH ( step )+ ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:232:4: ^( GPATH ( step )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:233:2: ( ^( GPATH ( step )+ ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:233:4: ^( GPATH ( step )+ )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1355,7 +1356,7 @@ public class GremlinEvaluator extends TreeParser {
 
 
             match(input, Token.DOWN, null); 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:232:12: ( step )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:233:12: ( step )+
             int cnt6=0;
             loop6:
             do {
@@ -1369,7 +1370,7 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt6) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:232:13: step
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:233:13: step
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_step_in_gpath_statement617);
@@ -1428,7 +1429,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "step"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:242:1: step : ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:243:1: step : ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) ) ;
     public final GremlinEvaluator.step_return step() throws RecognitionException {
         GremlinEvaluator.step_return retval = new GremlinEvaluator.step_return();
         retval.start = input.LT(1);
@@ -1456,8 +1457,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Operation> predicates = new ArrayList<Operation>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:246:5: ( ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:246:7: ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:247:5: ( ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:247:7: ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1512,7 +1513,7 @@ public class GremlinEvaluator extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:246:42: ( ^( PREDICATE statement ) )*
+                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:247:42: ( ^( PREDICATE statement ) )*
                 loop7:
                 do {
                     int alt7=2;
@@ -1525,7 +1526,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     switch (alt7) {
                 	case 1 :
-                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:246:44: ^( PREDICATE statement )
+                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:247:44: ^( PREDICATE statement )
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    {
@@ -1617,7 +1618,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "token"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:273:1: token returns [Atom atom] : ( expression | gpath_statement | collection | '..' );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:274:1: token returns [Atom atom] : ( expression | gpath_statement | collection | '..' );
     public final GremlinEvaluator.token_return token() throws RecognitionException {
         GremlinEvaluator.token_return retval = new GremlinEvaluator.token_return();
         retval.start = input.LT(1);
@@ -1638,7 +1639,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree string_literal36_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:274:5: ( expression | gpath_statement | collection | '..' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:275:5: ( expression | gpath_statement | collection | '..' )
             int alt8=4;
             switch ( input.LA(1) ) {
             case FUNC_CALL:
@@ -1694,7 +1695,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt8) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:274:8: expression
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:275:8: expression
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1710,7 +1711,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:275:9: gpath_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:276:9: gpath_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1726,7 +1727,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:276:9: collection
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:277:9: collection
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1742,7 +1743,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:277:9: '..'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:278:9: '..'
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1808,7 +1809,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "if_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:311:1: if_statement returns [Operation op] : ^( IF ^( COND cond= operand ) if_block= block ( ^( ELSE else_block= block ) )? ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:1: if_statement returns [Operation op] : ^( IF ^( COND cond= operand ) if_block= block ( ^( ELSE else_block= block ) )? ) ;
     public final GremlinEvaluator.if_statement_return if_statement() throws RecognitionException {
         GremlinEvaluator.if_statement_return retval = new GremlinEvaluator.if_statement_return();
         retval.start = input.LT(1);
@@ -1833,8 +1834,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree ELSE39_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:2: ( ^( IF ^( COND cond= operand ) if_block= block ( ^( ELSE else_block= block ) )? ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:4: ^( IF ^( COND cond= operand ) if_block= block ( ^( ELSE else_block= block ) )? )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:313:2: ( ^( IF ^( COND cond= operand ) if_block= block ( ^( ELSE else_block= block ) )? ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:313:4: ^( IF ^( COND cond= operand ) if_block= block ( ^( ELSE else_block= block ) )? )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1882,7 +1883,7 @@ public class GremlinEvaluator extends TreeParser {
             state._fsp--;
 
             adaptor.addChild(root_1, if_block.getTree());
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:45: ( ^( ELSE else_block= block ) )?
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:313:45: ( ^( ELSE else_block= block ) )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -1891,7 +1892,7 @@ public class GremlinEvaluator extends TreeParser {
             }
             switch (alt9) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:47: ^( ELSE else_block= block )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:313:47: ^( ELSE else_block= block )
                     {
                     _last = (CommonTree)input.LT(1);
                     {
@@ -1953,7 +1954,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "while_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:318:1: while_statement returns [Operation op] : ^( WHILE ^( COND cond= operand ) block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:319:1: while_statement returns [Operation op] : ^( WHILE ^( COND cond= operand ) block ) ;
     public final GremlinEvaluator.while_statement_return while_statement() throws RecognitionException {
         GremlinEvaluator.while_statement_return retval = new GremlinEvaluator.while_statement_return();
         retval.start = input.LT(1);
@@ -1974,8 +1975,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree COND41_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:319:2: ( ^( WHILE ^( COND cond= operand ) block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:319:4: ^( WHILE ^( COND cond= operand ) block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:320:2: ( ^( WHILE ^( COND cond= operand ) block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:320:4: ^( WHILE ^( COND cond= operand ) block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2053,7 +2054,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "foreach_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:325:1: foreach_statement returns [Operation op] : ^( FOREACH VARIABLE arr= operand block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:326:1: foreach_statement returns [Operation op] : ^( FOREACH VARIABLE arr= operand block ) ;
     public final GremlinEvaluator.foreach_statement_return foreach_statement() throws RecognitionException {
         GremlinEvaluator.foreach_statement_return retval = new GremlinEvaluator.foreach_statement_return();
         retval.start = input.LT(1);
@@ -2074,8 +2075,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree VARIABLE44_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:326:2: ( ^( FOREACH VARIABLE arr= operand block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:326:4: ^( FOREACH VARIABLE arr= operand block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:327:2: ( ^( FOREACH VARIABLE arr= operand block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:327:4: ^( FOREACH VARIABLE arr= operand block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2142,7 +2143,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "repeat_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:332:1: repeat_statement returns [Operation op] : ^( REPEAT timer= operand block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:333:1: repeat_statement returns [Operation op] : ^( REPEAT timer= operand block ) ;
     public final GremlinEvaluator.repeat_statement_return repeat_statement() throws RecognitionException {
         GremlinEvaluator.repeat_statement_return retval = new GremlinEvaluator.repeat_statement_return();
         retval.start = input.LT(1);
@@ -2161,8 +2162,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree REPEAT46_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:333:2: ( ^( REPEAT timer= operand block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:333:4: ^( REPEAT timer= operand block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:334:2: ( ^( REPEAT timer= operand block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:334:4: ^( REPEAT timer= operand block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2223,7 +2224,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "block"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:339:1: block returns [List<Operation> operations] : ^( BLOCK ( ( statement | collection ) )+ ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:340:1: block returns [List<Operation> operations] : ^( BLOCK ( ( statement | collection ) )+ ) ;
     public final GremlinEvaluator.block_return block() throws RecognitionException {
         GremlinEvaluator.block_return retval = new GremlinEvaluator.block_return();
         retval.start = input.LT(1);
@@ -2245,8 +2246,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Operation> operationList = new ArrayList<Operation>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:5: ( ^( BLOCK ( ( statement | collection ) )+ ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:7: ^( BLOCK ( ( statement | collection ) )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:5: ( ^( BLOCK ( ( statement | collection ) )+ ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:7: ^( BLOCK ( ( statement | collection ) )+ )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2263,7 +2264,7 @@ public class GremlinEvaluator extends TreeParser {
 
 
             match(input, Token.DOWN, null); 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:15: ( ( statement | collection ) )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:15: ( ( statement | collection ) )+
             int cnt11=0;
             loop11:
             do {
@@ -2277,9 +2278,9 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt11) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:17: ( statement | collection )
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:17: ( statement | collection )
             	    {
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:17: ( statement | collection )
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:17: ( statement | collection )
             	    int alt10=2;
             	    int LA10_0 = input.LA(1);
 
@@ -2297,7 +2298,7 @@ public class GremlinEvaluator extends TreeParser {
             	    }
             	    switch (alt10) {
             	        case 1 :
-            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:18: statement
+            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:18: statement
             	            {
             	            _last = (CommonTree)input.LT(1);
             	            pushFollow(FOLLOW_statement_in_block951);
@@ -2311,7 +2312,7 @@ public class GremlinEvaluator extends TreeParser {
             	            }
             	            break;
             	        case 2 :
-            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:343:68: collection
+            	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:68: collection
             	            {
             	            _last = (CommonTree)input.LT(1);
             	            pushFollow(FOLLOW_collection_in_block957);
@@ -2408,7 +2409,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_statement_in_operand988);
+                    pushFollow(FOLLOW_statement_in_operand986);
                     statement51=statement();
 
                     state._fsp--;
@@ -2424,7 +2425,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_collection_in_operand999);
+                    pushFollow(FOLLOW_collection_in_operand997);
                     collection52=collection();
 
                     state._fsp--;
@@ -2561,7 +2562,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    char_literal53=(CommonTree)match(input,85,FOLLOW_85_in_expression1025); 
+                    char_literal53=(CommonTree)match(input,85,FOLLOW_85_in_expression1023); 
                     char_literal53_tree = (CommonTree)adaptor.dupNode(char_literal53);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(char_literal53_tree, root_1);
@@ -2570,14 +2571,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1030);
+                    pushFollow(FOLLOW_operand_in_expression1028);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1034);
+                    pushFollow(FOLLOW_operand_in_expression1032);
                     b=operand();
 
                     state._fsp--;
@@ -2601,7 +2602,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    string_literal54=(CommonTree)match(input,86,FOLLOW_86_in_expression1048); 
+                    string_literal54=(CommonTree)match(input,86,FOLLOW_86_in_expression1046); 
                     string_literal54_tree = (CommonTree)adaptor.dupNode(string_literal54);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(string_literal54_tree, root_1);
@@ -2610,14 +2611,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1052);
+                    pushFollow(FOLLOW_operand_in_expression1050);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1056);
+                    pushFollow(FOLLOW_operand_in_expression1054);
                     b=operand();
 
                     state._fsp--;
@@ -2641,7 +2642,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    char_literal55=(CommonTree)match(input,87,FOLLOW_87_in_expression1070); 
+                    char_literal55=(CommonTree)match(input,87,FOLLOW_87_in_expression1068); 
                     char_literal55_tree = (CommonTree)adaptor.dupNode(char_literal55);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(char_literal55_tree, root_1);
@@ -2650,14 +2651,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1075);
+                    pushFollow(FOLLOW_operand_in_expression1073);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1079);
+                    pushFollow(FOLLOW_operand_in_expression1077);
                     b=operand();
 
                     state._fsp--;
@@ -2681,7 +2682,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    char_literal56=(CommonTree)match(input,89,FOLLOW_89_in_expression1093); 
+                    char_literal56=(CommonTree)match(input,89,FOLLOW_89_in_expression1091); 
                     char_literal56_tree = (CommonTree)adaptor.dupNode(char_literal56);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(char_literal56_tree, root_1);
@@ -2690,14 +2691,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1098);
+                    pushFollow(FOLLOW_operand_in_expression1096);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1102);
+                    pushFollow(FOLLOW_operand_in_expression1100);
                     b=operand();
 
                     state._fsp--;
@@ -2721,7 +2722,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    string_literal57=(CommonTree)match(input,88,FOLLOW_88_in_expression1116); 
+                    string_literal57=(CommonTree)match(input,88,FOLLOW_88_in_expression1114); 
                     string_literal57_tree = (CommonTree)adaptor.dupNode(string_literal57);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(string_literal57_tree, root_1);
@@ -2730,14 +2731,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1120);
+                    pushFollow(FOLLOW_operand_in_expression1118);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1124);
+                    pushFollow(FOLLOW_operand_in_expression1122);
                     b=operand();
 
                     state._fsp--;
@@ -2761,7 +2762,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    string_literal58=(CommonTree)match(input,90,FOLLOW_90_in_expression1138); 
+                    string_literal58=(CommonTree)match(input,90,FOLLOW_90_in_expression1136); 
                     string_literal58_tree = (CommonTree)adaptor.dupNode(string_literal58);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(string_literal58_tree, root_1);
@@ -2770,14 +2771,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1142);
+                    pushFollow(FOLLOW_operand_in_expression1140);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_expression1146);
+                    pushFollow(FOLLOW_operand_in_expression1144);
                     b=operand();
 
                     state._fsp--;
@@ -2797,7 +2798,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operation_in_expression1159);
+                    pushFollow(FOLLOW_operation_in_expression1157);
                     operation59=operation();
 
                     state._fsp--;
@@ -2904,7 +2905,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    char_literal60=(CommonTree)match(input,91,FOLLOW_91_in_operation1204); 
+                    char_literal60=(CommonTree)match(input,91,FOLLOW_91_in_operation1202); 
                     char_literal60_tree = (CommonTree)adaptor.dupNode(char_literal60);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(char_literal60_tree, root_1);
@@ -2913,14 +2914,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_operation1208);
+                    pushFollow(FOLLOW_operand_in_operation1206);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_operation1212);
+                    pushFollow(FOLLOW_operand_in_operation1210);
                     b=operand();
 
                     state._fsp--;
@@ -2944,7 +2945,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    char_literal61=(CommonTree)match(input,92,FOLLOW_92_in_operation1226); 
+                    char_literal61=(CommonTree)match(input,92,FOLLOW_92_in_operation1224); 
                     char_literal61_tree = (CommonTree)adaptor.dupNode(char_literal61);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(char_literal61_tree, root_1);
@@ -2953,14 +2954,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_operation1230);
+                    pushFollow(FOLLOW_operand_in_operation1228);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_operation1234);
+                    pushFollow(FOLLOW_operand_in_operation1232);
                     b=operand();
 
                     state._fsp--;
@@ -2980,7 +2981,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_binary_operation_in_operation1247);
+                    pushFollow(FOLLOW_binary_operation_in_operation1245);
                     binary_operation62=binary_operation();
 
                     state._fsp--;
@@ -3091,7 +3092,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    char_literal63=(CommonTree)match(input,93,FOLLOW_93_in_binary_operation1284); 
+                    char_literal63=(CommonTree)match(input,93,FOLLOW_93_in_binary_operation1282); 
                     char_literal63_tree = (CommonTree)adaptor.dupNode(char_literal63);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(char_literal63_tree, root_1);
@@ -3100,14 +3101,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_binary_operation1288);
+                    pushFollow(FOLLOW_operand_in_binary_operation1286);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_binary_operation1292);
+                    pushFollow(FOLLOW_operand_in_binary_operation1290);
                     b=operand();
 
                     state._fsp--;
@@ -3131,7 +3132,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    string_literal64=(CommonTree)match(input,94,FOLLOW_94_in_binary_operation1311); 
+                    string_literal64=(CommonTree)match(input,94,FOLLOW_94_in_binary_operation1309); 
                     string_literal64_tree = (CommonTree)adaptor.dupNode(string_literal64);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(string_literal64_tree, root_1);
@@ -3140,14 +3141,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_binary_operation1315);
+                    pushFollow(FOLLOW_operand_in_binary_operation1313);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_binary_operation1319);
+                    pushFollow(FOLLOW_operand_in_binary_operation1317);
                     b=operand();
 
                     state._fsp--;
@@ -3171,7 +3172,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    string_literal65=(CommonTree)match(input,95,FOLLOW_95_in_binary_operation1334); 
+                    string_literal65=(CommonTree)match(input,95,FOLLOW_95_in_binary_operation1332); 
                     string_literal65_tree = (CommonTree)adaptor.dupNode(string_literal65);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(string_literal65_tree, root_1);
@@ -3180,14 +3181,14 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_binary_operation1338);
+                    pushFollow(FOLLOW_operand_in_binary_operation1336);
                     a=operand();
 
                     state._fsp--;
 
                     adaptor.addChild(root_1, a.getTree());
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_operand_in_binary_operation1342);
+                    pushFollow(FOLLOW_operand_in_binary_operation1340);
                     b=operand();
 
                     state._fsp--;
@@ -3207,7 +3208,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_atom_in_binary_operation1358);
+                    pushFollow(FOLLOW_atom_in_binary_operation1356);
                     atom66=atom();
 
                     state._fsp--;
@@ -3285,7 +3286,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_1 = _last;
             CommonTree _first_1 = null;
             CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            FUNC67=(CommonTree)match(input,FUNC,FOLLOW_FUNC_in_function_definition_statement1412); 
+            FUNC67=(CommonTree)match(input,FUNC,FOLLOW_FUNC_in_function_definition_statement1410); 
             FUNC67_tree = (CommonTree)adaptor.dupNode(FUNC67);
 
             root_1 = (CommonTree)adaptor.becomeRoot(FUNC67_tree, root_1);
@@ -3298,7 +3299,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_2 = _last;
             CommonTree _first_2 = null;
             CommonTree root_2 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            FUNC_NAME68=(CommonTree)match(input,FUNC_NAME,FOLLOW_FUNC_NAME_in_function_definition_statement1415); 
+            FUNC_NAME68=(CommonTree)match(input,FUNC_NAME,FOLLOW_FUNC_NAME_in_function_definition_statement1413); 
             FUNC_NAME68_tree = (CommonTree)adaptor.dupNode(FUNC_NAME68);
 
             root_2 = (CommonTree)adaptor.becomeRoot(FUNC_NAME68_tree, root_2);
@@ -3311,7 +3312,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_3 = _last;
             CommonTree _first_3 = null;
             CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            NS69=(CommonTree)match(input,NS,FOLLOW_NS_in_function_definition_statement1418); 
+            NS69=(CommonTree)match(input,NS,FOLLOW_NS_in_function_definition_statement1416); 
             NS69_tree = (CommonTree)adaptor.dupNode(NS69);
 
             root_3 = (CommonTree)adaptor.becomeRoot(NS69_tree, root_3);
@@ -3320,7 +3321,7 @@ public class GremlinEvaluator extends TreeParser {
 
             match(input, Token.DOWN, null); 
             _last = (CommonTree)input.LT(1);
-            ns=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_definition_statement1422); 
+            ns=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_definition_statement1420); 
             ns_tree = (CommonTree)adaptor.dupNode(ns);
 
             adaptor.addChild(root_3, ns_tree);
@@ -3334,7 +3335,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_3 = _last;
             CommonTree _first_3 = null;
             CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            NAME70=(CommonTree)match(input,NAME,FOLLOW_NAME_in_function_definition_statement1426); 
+            NAME70=(CommonTree)match(input,NAME,FOLLOW_NAME_in_function_definition_statement1424); 
             NAME70_tree = (CommonTree)adaptor.dupNode(NAME70);
 
             root_3 = (CommonTree)adaptor.becomeRoot(NAME70_tree, root_3);
@@ -3343,7 +3344,7 @@ public class GremlinEvaluator extends TreeParser {
 
             match(input, Token.DOWN, null); 
             _last = (CommonTree)input.LT(1);
-            fn_name=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_definition_statement1430); 
+            fn_name=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_definition_statement1428); 
             fn_name_tree = (CommonTree)adaptor.dupNode(fn_name);
 
             adaptor.addChild(root_3, fn_name_tree);
@@ -3361,7 +3362,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_2 = _last;
             CommonTree _first_2 = null;
             CommonTree root_2 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            ARGS71=(CommonTree)match(input,ARGS,FOLLOW_ARGS_in_function_definition_statement1435); 
+            ARGS71=(CommonTree)match(input,ARGS,FOLLOW_ARGS_in_function_definition_statement1433); 
             ARGS71_tree = (CommonTree)adaptor.dupNode(ARGS71);
 
             root_2 = (CommonTree)adaptor.becomeRoot(ARGS71_tree, root_2);
@@ -3390,7 +3391,7 @@ public class GremlinEvaluator extends TreeParser {
                 	    CommonTree _save_last_3 = _last;
                 	    CommonTree _first_3 = null;
                 	    CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                	    ARG72=(CommonTree)match(input,ARG,FOLLOW_ARG_in_function_definition_statement1440); 
+                	    ARG72=(CommonTree)match(input,ARG,FOLLOW_ARG_in_function_definition_statement1438); 
                 	    ARG72_tree = (CommonTree)adaptor.dupNode(ARG72);
 
                 	    root_3 = (CommonTree)adaptor.becomeRoot(ARG72_tree, root_3);
@@ -3399,7 +3400,7 @@ public class GremlinEvaluator extends TreeParser {
 
                 	    match(input, Token.DOWN, null); 
                 	    _last = (CommonTree)input.LT(1);
-                	    VARIABLE73=(CommonTree)match(input,VARIABLE,FOLLOW_VARIABLE_in_function_definition_statement1442); 
+                	    VARIABLE73=(CommonTree)match(input,VARIABLE,FOLLOW_VARIABLE_in_function_definition_statement1440); 
                 	    VARIABLE73_tree = (CommonTree)adaptor.dupNode(VARIABLE73);
 
                 	    adaptor.addChild(root_3, VARIABLE73_tree);
@@ -3424,7 +3425,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
             _last = (CommonTree)input.LT(1);
-            pushFollow(FOLLOW_block_in_function_definition_statement1451);
+            pushFollow(FOLLOW_block_in_function_definition_statement1449);
             block74=block();
 
             state._fsp--;
@@ -3509,7 +3510,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_1 = _last;
             CommonTree _first_1 = null;
             CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            FUNC_CALL75=(CommonTree)match(input,FUNC_CALL,FOLLOW_FUNC_CALL_in_function_call1488); 
+            FUNC_CALL75=(CommonTree)match(input,FUNC_CALL,FOLLOW_FUNC_CALL_in_function_call1486); 
             FUNC_CALL75_tree = (CommonTree)adaptor.dupNode(FUNC_CALL75);
 
             root_1 = (CommonTree)adaptor.becomeRoot(FUNC_CALL75_tree, root_1);
@@ -3522,7 +3523,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_2 = _last;
             CommonTree _first_2 = null;
             CommonTree root_2 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            FUNC_NAME76=(CommonTree)match(input,FUNC_NAME,FOLLOW_FUNC_NAME_in_function_call1491); 
+            FUNC_NAME76=(CommonTree)match(input,FUNC_NAME,FOLLOW_FUNC_NAME_in_function_call1489); 
             FUNC_NAME76_tree = (CommonTree)adaptor.dupNode(FUNC_NAME76);
 
             root_2 = (CommonTree)adaptor.becomeRoot(FUNC_NAME76_tree, root_2);
@@ -3535,7 +3536,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_3 = _last;
             CommonTree _first_3 = null;
             CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            NS77=(CommonTree)match(input,NS,FOLLOW_NS_in_function_call1494); 
+            NS77=(CommonTree)match(input,NS,FOLLOW_NS_in_function_call1492); 
             NS77_tree = (CommonTree)adaptor.dupNode(NS77);
 
             root_3 = (CommonTree)adaptor.becomeRoot(NS77_tree, root_3);
@@ -3544,7 +3545,7 @@ public class GremlinEvaluator extends TreeParser {
 
             match(input, Token.DOWN, null); 
             _last = (CommonTree)input.LT(1);
-            ns=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_call1498); 
+            ns=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_call1496); 
             ns_tree = (CommonTree)adaptor.dupNode(ns);
 
             adaptor.addChild(root_3, ns_tree);
@@ -3558,7 +3559,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_3 = _last;
             CommonTree _first_3 = null;
             CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            NAME78=(CommonTree)match(input,NAME,FOLLOW_NAME_in_function_call1502); 
+            NAME78=(CommonTree)match(input,NAME,FOLLOW_NAME_in_function_call1500); 
             NAME78_tree = (CommonTree)adaptor.dupNode(NAME78);
 
             root_3 = (CommonTree)adaptor.becomeRoot(NAME78_tree, root_3);
@@ -3567,7 +3568,7 @@ public class GremlinEvaluator extends TreeParser {
 
             match(input, Token.DOWN, null); 
             _last = (CommonTree)input.LT(1);
-            fn_name=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_call1506); 
+            fn_name=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_function_call1504); 
             fn_name_tree = (CommonTree)adaptor.dupNode(fn_name);
 
             adaptor.addChild(root_3, fn_name_tree);
@@ -3585,7 +3586,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_2 = _last;
             CommonTree _first_2 = null;
             CommonTree root_2 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            ARGS79=(CommonTree)match(input,ARGS,FOLLOW_ARGS_in_function_call1511); 
+            ARGS79=(CommonTree)match(input,ARGS,FOLLOW_ARGS_in_function_call1509); 
             ARGS79_tree = (CommonTree)adaptor.dupNode(ARGS79);
 
             root_2 = (CommonTree)adaptor.becomeRoot(ARGS79_tree, root_2);
@@ -3614,7 +3615,7 @@ public class GremlinEvaluator extends TreeParser {
                 	    CommonTree _save_last_3 = _last;
                 	    CommonTree _first_3 = null;
                 	    CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                	    ARG80=(CommonTree)match(input,ARG,FOLLOW_ARG_in_function_call1516); 
+                	    ARG80=(CommonTree)match(input,ARG,FOLLOW_ARG_in_function_call1514); 
                 	    ARG80_tree = (CommonTree)adaptor.dupNode(ARG80);
 
                 	    root_3 = (CommonTree)adaptor.becomeRoot(ARG80_tree, root_3);
@@ -3643,7 +3644,7 @@ public class GremlinEvaluator extends TreeParser {
                 	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:392:92: st= statement
                 	            {
                 	            _last = (CommonTree)input.LT(1);
-                	            pushFollow(FOLLOW_statement_in_function_call1521);
+                	            pushFollow(FOLLOW_statement_in_function_call1519);
                 	            st=statement();
 
                 	            state._fsp--;
@@ -3657,7 +3658,7 @@ public class GremlinEvaluator extends TreeParser {
                 	            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:392:131: col= collection
                 	            {
                 	            _last = (CommonTree)input.LT(1);
-                	            pushFollow(FOLLOW_collection_in_function_call1529);
+                	            pushFollow(FOLLOW_collection_in_function_call1527);
                 	            col=collection();
 
                 	            state._fsp--;
@@ -3764,7 +3765,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_1 = _last;
             CommonTree _first_1 = null;
             CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            COLLECTION_CALL81=(CommonTree)match(input,COLLECTION_CALL,FOLLOW_COLLECTION_CALL_in_collection1578); 
+            COLLECTION_CALL81=(CommonTree)match(input,COLLECTION_CALL,FOLLOW_COLLECTION_CALL_in_collection1576); 
             COLLECTION_CALL81_tree = (CommonTree)adaptor.dupNode(COLLECTION_CALL81);
 
             root_1 = (CommonTree)adaptor.becomeRoot(COLLECTION_CALL81_tree, root_1);
@@ -3777,7 +3778,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_2 = _last;
             CommonTree _first_2 = null;
             CommonTree root_2 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            STEP82=(CommonTree)match(input,STEP,FOLLOW_STEP_in_collection1581); 
+            STEP82=(CommonTree)match(input,STEP,FOLLOW_STEP_in_collection1579); 
             STEP82_tree = (CommonTree)adaptor.dupNode(STEP82);
 
             root_2 = (CommonTree)adaptor.becomeRoot(STEP82_tree, root_2);
@@ -3790,7 +3791,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_3 = _last;
             CommonTree _first_3 = null;
             CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            TOKEN83=(CommonTree)match(input,TOKEN,FOLLOW_TOKEN_in_collection1584); 
+            TOKEN83=(CommonTree)match(input,TOKEN,FOLLOW_TOKEN_in_collection1582); 
             TOKEN83_tree = (CommonTree)adaptor.dupNode(TOKEN83);
 
             root_3 = (CommonTree)adaptor.becomeRoot(TOKEN83_tree, root_3);
@@ -3799,7 +3800,7 @@ public class GremlinEvaluator extends TreeParser {
 
             match(input, Token.DOWN, null); 
             _last = (CommonTree)input.LT(1);
-            pushFollow(FOLLOW_token_in_collection1586);
+            pushFollow(FOLLOW_token_in_collection1584);
             token84=token();
 
             state._fsp--;
@@ -3814,7 +3815,7 @@ public class GremlinEvaluator extends TreeParser {
             CommonTree _save_last_3 = _last;
             CommonTree _first_3 = null;
             CommonTree root_3 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            PREDICATES85=(CommonTree)match(input,PREDICATES,FOLLOW_PREDICATES_in_collection1590); 
+            PREDICATES85=(CommonTree)match(input,PREDICATES,FOLLOW_PREDICATES_in_collection1588); 
             PREDICATES85_tree = (CommonTree)adaptor.dupNode(PREDICATES85);
 
             root_3 = (CommonTree)adaptor.becomeRoot(PREDICATES85_tree, root_3);
@@ -3843,7 +3844,7 @@ public class GremlinEvaluator extends TreeParser {
             	    CommonTree _save_last_4 = _last;
             	    CommonTree _first_4 = null;
             	    CommonTree root_4 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-            	    PREDICATE86=(CommonTree)match(input,PREDICATE,FOLLOW_PREDICATE_in_collection1595); 
+            	    PREDICATE86=(CommonTree)match(input,PREDICATE,FOLLOW_PREDICATE_in_collection1593); 
             	    PREDICATE86_tree = (CommonTree)adaptor.dupNode(PREDICATE86);
 
             	    root_4 = (CommonTree)adaptor.becomeRoot(PREDICATE86_tree, root_4);
@@ -3852,7 +3853,7 @@ public class GremlinEvaluator extends TreeParser {
 
             	    match(input, Token.DOWN, null); 
             	    _last = (CommonTree)input.LT(1);
-            	    pushFollow(FOLLOW_statement_in_collection1597);
+            	    pushFollow(FOLLOW_statement_in_collection1595);
             	    statement87=statement();
 
             	    state._fsp--;
@@ -4091,7 +4092,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    INT88=(CommonTree)match(input,INT,FOLLOW_INT_in_atom1644); 
+                    INT88=(CommonTree)match(input,INT,FOLLOW_INT_in_atom1642); 
                     INT88_tree = (CommonTree)adaptor.dupNode(INT88);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(INT88_tree, root_1);
@@ -4100,7 +4101,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    G_INT89=(CommonTree)match(input,G_INT,FOLLOW_G_INT_in_atom1646); 
+                    G_INT89=(CommonTree)match(input,G_INT,FOLLOW_G_INT_in_atom1644); 
                     G_INT89_tree = (CommonTree)adaptor.dupNode(G_INT89);
 
                     adaptor.addChild(root_1, G_INT89_tree);
@@ -4123,7 +4124,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    LONG90=(CommonTree)match(input,LONG,FOLLOW_LONG_in_atom1704); 
+                    LONG90=(CommonTree)match(input,LONG,FOLLOW_LONG_in_atom1702); 
                     LONG90_tree = (CommonTree)adaptor.dupNode(LONG90);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(LONG90_tree, root_1);
@@ -4132,7 +4133,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    G_LONG91=(CommonTree)match(input,G_LONG,FOLLOW_G_LONG_in_atom1706); 
+                    G_LONG91=(CommonTree)match(input,G_LONG,FOLLOW_G_LONG_in_atom1704); 
                     G_LONG91_tree = (CommonTree)adaptor.dupNode(G_LONG91);
 
                     adaptor.addChild(root_1, G_LONG91_tree);
@@ -4158,7 +4159,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    FLOAT92=(CommonTree)match(input,FLOAT,FOLLOW_FLOAT_in_atom1762); 
+                    FLOAT92=(CommonTree)match(input,FLOAT,FOLLOW_FLOAT_in_atom1760); 
                     FLOAT92_tree = (CommonTree)adaptor.dupNode(FLOAT92);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(FLOAT92_tree, root_1);
@@ -4167,7 +4168,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    G_FLOAT93=(CommonTree)match(input,G_FLOAT,FOLLOW_G_FLOAT_in_atom1764); 
+                    G_FLOAT93=(CommonTree)match(input,G_FLOAT,FOLLOW_G_FLOAT_in_atom1762); 
                     G_FLOAT93_tree = (CommonTree)adaptor.dupNode(G_FLOAT93);
 
                     adaptor.addChild(root_1, G_FLOAT93_tree);
@@ -4190,7 +4191,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    DOUBLE94=(CommonTree)match(input,DOUBLE,FOLLOW_DOUBLE_in_atom1818); 
+                    DOUBLE94=(CommonTree)match(input,DOUBLE,FOLLOW_DOUBLE_in_atom1816); 
                     DOUBLE94_tree = (CommonTree)adaptor.dupNode(DOUBLE94);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(DOUBLE94_tree, root_1);
@@ -4199,7 +4200,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    G_DOUBLE95=(CommonTree)match(input,G_DOUBLE,FOLLOW_G_DOUBLE_in_atom1820); 
+                    G_DOUBLE95=(CommonTree)match(input,G_DOUBLE,FOLLOW_G_DOUBLE_in_atom1818); 
                     G_DOUBLE95_tree = (CommonTree)adaptor.dupNode(G_DOUBLE95);
 
                     adaptor.addChild(root_1, G_DOUBLE95_tree);
@@ -4225,7 +4226,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    RANGE96=(CommonTree)match(input,RANGE,FOLLOW_RANGE_in_atom1872); 
+                    RANGE96=(CommonTree)match(input,RANGE,FOLLOW_RANGE_in_atom1870); 
                     RANGE96_tree = (CommonTree)adaptor.dupNode(RANGE96);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(RANGE96_tree, root_1);
@@ -4234,13 +4235,13 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    min=(CommonTree)match(input,G_INT,FOLLOW_G_INT_in_atom1876); 
+                    min=(CommonTree)match(input,G_INT,FOLLOW_G_INT_in_atom1874); 
                     min_tree = (CommonTree)adaptor.dupNode(min);
 
                     adaptor.addChild(root_1, min_tree);
 
                     _last = (CommonTree)input.LT(1);
-                    max=(CommonTree)match(input,G_INT,FOLLOW_G_INT_in_atom1880); 
+                    max=(CommonTree)match(input,G_INT,FOLLOW_G_INT_in_atom1878); 
                     max_tree = (CommonTree)adaptor.dupNode(max);
 
                     adaptor.addChild(root_1, max_tree);
@@ -4263,7 +4264,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    STR97=(CommonTree)match(input,STR,FOLLOW_STR_in_atom1920); 
+                    STR97=(CommonTree)match(input,STR,FOLLOW_STR_in_atom1918); 
                     STR97_tree = (CommonTree)adaptor.dupNode(STR97);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(STR97_tree, root_1);
@@ -4272,7 +4273,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    StringLiteral98=(CommonTree)match(input,StringLiteral,FOLLOW_StringLiteral_in_atom1922); 
+                    StringLiteral98=(CommonTree)match(input,StringLiteral,FOLLOW_StringLiteral_in_atom1920); 
                     StringLiteral98_tree = (CommonTree)adaptor.dupNode(StringLiteral98);
 
                     adaptor.addChild(root_1, StringLiteral98_tree);
@@ -4295,7 +4296,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    BOOL99=(CommonTree)match(input,BOOL,FOLLOW_BOOL_in_atom1975); 
+                    BOOL99=(CommonTree)match(input,BOOL,FOLLOW_BOOL_in_atom1973); 
                     BOOL99_tree = (CommonTree)adaptor.dupNode(BOOL99);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(BOOL99_tree, root_1);
@@ -4304,7 +4305,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    b=(CommonTree)match(input,BOOLEAN,FOLLOW_BOOLEAN_in_atom1979); 
+                    b=(CommonTree)match(input,BOOLEAN,FOLLOW_BOOLEAN_in_atom1977); 
                     b_tree = (CommonTree)adaptor.dupNode(b);
 
                     adaptor.addChild(root_1, b_tree);
@@ -4323,7 +4324,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    NULL100=(CommonTree)match(input,NULL,FOLLOW_NULL_in_atom2034); 
+                    NULL100=(CommonTree)match(input,NULL,FOLLOW_NULL_in_atom2032); 
                     NULL100_tree = (CommonTree)adaptor.dupNode(NULL100);
 
                     adaptor.addChild(root_0, NULL100_tree);
@@ -4342,7 +4343,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    ARR101=(CommonTree)match(input,ARR,FOLLOW_ARR_in_atom2102); 
+                    ARR101=(CommonTree)match(input,ARR,FOLLOW_ARR_in_atom2100); 
                     ARR101_tree = (CommonTree)adaptor.dupNode(ARR101);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(ARR101_tree, root_1);
@@ -4367,7 +4368,7 @@ public class GremlinEvaluator extends TreeParser {
                     	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:449:16: NUMBER
                     	    {
                     	    _last = (CommonTree)input.LT(1);
-                    	    NUMBER102=(CommonTree)match(input,NUMBER,FOLLOW_NUMBER_in_atom2105); 
+                    	    NUMBER102=(CommonTree)match(input,NUMBER,FOLLOW_NUMBER_in_atom2103); 
                     	    NUMBER102_tree = (CommonTree)adaptor.dupNode(NUMBER102);
 
                     	    adaptor.addChild(root_1, NUMBER102_tree);
@@ -4404,7 +4405,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    VARIABLE_CALL103=(CommonTree)match(input,VARIABLE_CALL,FOLLOW_VARIABLE_CALL_in_atom2120); 
+                    VARIABLE_CALL103=(CommonTree)match(input,VARIABLE_CALL,FOLLOW_VARIABLE_CALL_in_atom2118); 
                     VARIABLE_CALL103_tree = (CommonTree)adaptor.dupNode(VARIABLE_CALL103);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(VARIABLE_CALL103_tree, root_1);
@@ -4413,7 +4414,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    VARIABLE104=(CommonTree)match(input,VARIABLE,FOLLOW_VARIABLE_in_atom2122); 
+                    VARIABLE104=(CommonTree)match(input,VARIABLE,FOLLOW_VARIABLE_in_atom2120); 
                     VARIABLE104_tree = (CommonTree)adaptor.dupNode(VARIABLE104);
 
                     adaptor.addChild(root_1, VARIABLE104_tree);
@@ -4438,7 +4439,7 @@ public class GremlinEvaluator extends TreeParser {
                     CommonTree _save_last_1 = _last;
                     CommonTree _first_1 = null;
                     CommonTree root_1 = (CommonTree)adaptor.nil();_last = (CommonTree)input.LT(1);
-                    PROPERTY_CALL105=(CommonTree)match(input,PROPERTY_CALL,FOLLOW_PROPERTY_CALL_in_atom2165); 
+                    PROPERTY_CALL105=(CommonTree)match(input,PROPERTY_CALL,FOLLOW_PROPERTY_CALL_in_atom2163); 
                     PROPERTY_CALL105_tree = (CommonTree)adaptor.dupNode(PROPERTY_CALL105);
 
                     root_1 = (CommonTree)adaptor.becomeRoot(PROPERTY_CALL105_tree, root_1);
@@ -4447,7 +4448,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     match(input, Token.DOWN, null); 
                     _last = (CommonTree)input.LT(1);
-                    PROPERTY106=(CommonTree)match(input,PROPERTY,FOLLOW_PROPERTY_in_atom2167); 
+                    PROPERTY106=(CommonTree)match(input,PROPERTY,FOLLOW_PROPERTY_in_atom2165); 
                     PROPERTY106_tree = (CommonTree)adaptor.dupNode(PROPERTY106);
 
                     adaptor.addChild(root_1, PROPERTY106_tree);
@@ -4470,7 +4471,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    IDENTIFIER107=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_atom2209); 
+                    IDENTIFIER107=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_atom2207); 
                     IDENTIFIER107_tree = (CommonTree)adaptor.dupNode(IDENTIFIER107);
 
                     adaptor.addChild(root_0, IDENTIFIER107_tree);
@@ -4504,7 +4505,7 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_function_call_in_atom2265);
+                    pushFollow(FOLLOW_function_call_in_atom2263);
                     function_call108=function_call();
 
                     state._fsp--;
@@ -4520,16 +4521,16 @@ public class GremlinEvaluator extends TreeParser {
                     root_0 = (CommonTree)adaptor.nil();
 
                     _last = (CommonTree)input.LT(1);
-                    char_literal109=(CommonTree)match(input,82,FOLLOW_82_in_atom2318); 
+                    char_literal109=(CommonTree)match(input,82,FOLLOW_82_in_atom2316); 
                     _last = (CommonTree)input.LT(1);
-                    pushFollow(FOLLOW_statement_in_atom2321);
+                    pushFollow(FOLLOW_statement_in_atom2319);
                     statement110=statement();
 
                     state._fsp--;
 
                     adaptor.addChild(root_0, statement110.getTree());
                     _last = (CommonTree)input.LT(1);
-                    char_literal111=(CommonTree)match(input,83,FOLLOW_83_in_atom2323); 
+                    char_literal111=(CommonTree)match(input,83,FOLLOW_83_in_atom2321); 
 
                     }
                     break;
@@ -4619,97 +4620,97 @@ public class GremlinEvaluator extends TreeParser {
     public static final BitSet FOLLOW_BLOCK_in_block946 = new BitSet(new long[]{0x0000000000000004L});
     public static final BitSet FOLLOW_statement_in_block951 = new BitSet(new long[]{0x000021FFFF181898L,0x00000000FFE40060L});
     public static final BitSet FOLLOW_collection_in_block957 = new BitSet(new long[]{0x000021FFFF181898L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_statement_in_operand988 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_collection_in_operand999 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_85_in_expression1025 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_expression1030 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_expression1034 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_86_in_expression1048 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_expression1052 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_expression1056 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_87_in_expression1070 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_expression1075 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_expression1079 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_89_in_expression1093 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_expression1098 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_expression1102 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_88_in_expression1116 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_expression1120 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_expression1124 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_90_in_expression1138 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_expression1142 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_expression1146 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_operation_in_expression1159 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_91_in_operation1204 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_operation1208 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_operation1212 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_92_in_operation1226 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_operation1230 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_operation1234 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_binary_operation_in_operation1247 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_93_in_binary_operation1284 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_binary_operation1288 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_binary_operation1292 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_94_in_binary_operation1311 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_binary_operation1315 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_binary_operation1319 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_95_in_binary_operation1334 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_operand_in_binary_operation1338 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_operand_in_binary_operation1342 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_atom_in_binary_operation1358 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FUNC_in_function_definition_statement1412 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_FUNC_NAME_in_function_definition_statement1415 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_NS_in_function_definition_statement1418 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_function_definition_statement1422 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_NAME_in_function_definition_statement1426 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_function_definition_statement1430 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ARGS_in_function_definition_statement1435 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ARG_in_function_definition_statement1440 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_VARIABLE_in_function_definition_statement1442 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_block_in_function_definition_statement1451 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_FUNC_CALL_in_function_call1488 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_FUNC_NAME_in_function_call1491 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_NS_in_function_call1494 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_function_call1498 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_NAME_in_function_call1502 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_function_call1506 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ARGS_in_function_call1511 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ARG_in_function_call1516 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_statement_in_function_call1521 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_collection_in_function_call1529 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_COLLECTION_CALL_in_collection1578 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_STEP_in_collection1581 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_TOKEN_in_collection1584 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_token_in_collection1586 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_PREDICATES_in_collection1590 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_PREDICATE_in_collection1595 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_statement_in_collection1597 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_INT_in_atom1644 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_G_INT_in_atom1646 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_LONG_in_atom1704 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_G_LONG_in_atom1706 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_FLOAT_in_atom1762 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_G_FLOAT_in_atom1764 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_DOUBLE_in_atom1818 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_G_DOUBLE_in_atom1820 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_RANGE_in_atom1872 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_G_INT_in_atom1876 = new BitSet(new long[]{0x0000400000000000L});
-    public static final BitSet FOLLOW_G_INT_in_atom1880 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_STR_in_atom1920 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_StringLiteral_in_atom1922 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_BOOL_in_atom1975 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_BOOLEAN_in_atom1979 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_NULL_in_atom2034 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ARR_in_atom2102 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_NUMBER_in_atom2105 = new BitSet(new long[]{0x0000000000000008L,0x0000000200000000L});
-    public static final BitSet FOLLOW_VARIABLE_CALL_in_atom2120 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_VARIABLE_in_atom2122 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_PROPERTY_CALL_in_atom2165 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_PROPERTY_in_atom2167 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_atom2209 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_function_call_in_atom2265 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_82_in_atom2318 = new BitSet(new long[]{0x000020FFFF181890L,0x00000000FFE40060L});
-    public static final BitSet FOLLOW_statement_in_atom2321 = new BitSet(new long[]{0x0000000000000000L,0x0000000000080000L});
-    public static final BitSet FOLLOW_83_in_atom2323 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_operand986 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_collection_in_operand997 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_85_in_expression1023 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_expression1028 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_expression1032 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_86_in_expression1046 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_expression1050 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_expression1054 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_87_in_expression1068 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_expression1073 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_expression1077 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_89_in_expression1091 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_expression1096 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_expression1100 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_88_in_expression1114 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_expression1118 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_expression1122 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_90_in_expression1136 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_expression1140 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_expression1144 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_operation_in_expression1157 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_91_in_operation1202 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_operation1206 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_operation1210 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_92_in_operation1224 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_operation1228 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_operation1232 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_binary_operation_in_operation1245 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_93_in_binary_operation1282 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_binary_operation1286 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_binary_operation1290 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_94_in_binary_operation1309 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_binary_operation1313 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_binary_operation1317 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_95_in_binary_operation1332 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_operand_in_binary_operation1336 = new BitSet(new long[]{0x000021FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_operand_in_binary_operation1340 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_atom_in_binary_operation1356 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FUNC_in_function_definition_statement1410 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_FUNC_NAME_in_function_definition_statement1413 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_NS_in_function_definition_statement1416 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_function_definition_statement1420 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_NAME_in_function_definition_statement1424 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_function_definition_statement1428 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ARGS_in_function_definition_statement1433 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ARG_in_function_definition_statement1438 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_VARIABLE_in_function_definition_statement1440 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_block_in_function_definition_statement1449 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_FUNC_CALL_in_function_call1486 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_FUNC_NAME_in_function_call1489 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_NS_in_function_call1492 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_function_call1496 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_NAME_in_function_call1500 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_function_call1504 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ARGS_in_function_call1509 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ARG_in_function_call1514 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_statement_in_function_call1519 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_collection_in_function_call1527 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_COLLECTION_CALL_in_collection1576 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_STEP_in_collection1579 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_TOKEN_in_collection1582 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_token_in_collection1584 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_PREDICATES_in_collection1588 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_PREDICATE_in_collection1593 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_statement_in_collection1595 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_INT_in_atom1642 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_G_INT_in_atom1644 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_LONG_in_atom1702 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_G_LONG_in_atom1704 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_FLOAT_in_atom1760 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_G_FLOAT_in_atom1762 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_DOUBLE_in_atom1816 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_G_DOUBLE_in_atom1818 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_RANGE_in_atom1870 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_G_INT_in_atom1874 = new BitSet(new long[]{0x0000400000000000L});
+    public static final BitSet FOLLOW_G_INT_in_atom1878 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_STR_in_atom1918 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_StringLiteral_in_atom1920 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_BOOL_in_atom1973 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_BOOLEAN_in_atom1977 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_NULL_in_atom2032 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ARR_in_atom2100 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_NUMBER_in_atom2103 = new BitSet(new long[]{0x0000000000000008L,0x0000000200000000L});
+    public static final BitSet FOLLOW_VARIABLE_CALL_in_atom2118 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_VARIABLE_in_atom2120 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_PROPERTY_CALL_in_atom2163 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_PROPERTY_in_atom2165 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_atom2207 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_function_call_in_atom2263 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_82_in_atom2316 = new BitSet(new long[]{0x000020FFFF181890L,0x00000000FFE40060L});
+    public static final BitSet FOLLOW_statement_in_atom2319 = new BitSet(new long[]{0x0000000000000000L,0x0000000000080000L});
+    public static final BitSet FOLLOW_83_in_atom2321 = new BitSet(new long[]{0x0000000000000002L});
 
 }

@@ -37,8 +37,7 @@ public class While implements Operation {
                 repeatIteration = false;
 
             if (currCondResult.isBoolean()) {
-                Boolean condBool = (Boolean) currCondResult.getValue();
-                repeatIteration = (condBool) ? true : false;
+                repeatIteration = (Boolean) currCondResult.getValue();
             }
 
             if (repeatIteration) {
@@ -50,11 +49,11 @@ public class While implements Operation {
             }
         }
 
-        return new Atom(null);
+        return new Atom<Object>(null);
     }
 
     public Type getType() {
-        return Type.STATEMENT;
+        return Type.CONTROL_STATEMENT;
     }
 
 }

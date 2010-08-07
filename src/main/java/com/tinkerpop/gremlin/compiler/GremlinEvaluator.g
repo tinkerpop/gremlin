@@ -101,7 +101,8 @@ options {
             throw new RuntimeException(e);
         }
 
-        if (EMBEDDED) resultList.add(value);
+        if (EMBEDDED && (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT)) 
+            resultList.add(value);
         
         if (value != null && DEBUG) {
             if (value instanceof Iterable) {

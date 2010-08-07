@@ -45,11 +45,11 @@ public class Repeat implements Operation {
             }
         }
 
-        return new Atom(null);
+        return new Atom<Object>(null);
     }
 
     public Type getType() {
-        return Type.STATEMENT;
+        return Type.CONTROL_STATEMENT;
     }
 
 }

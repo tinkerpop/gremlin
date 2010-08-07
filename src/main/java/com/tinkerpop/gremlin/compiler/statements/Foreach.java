@@ -53,11 +53,11 @@ public class Foreach implements Operation {
 
         context.getVariableLibrary().free(this.variable);
 
-        return new Atom(null);
+        return new Atom<Object>(null);
     }
 
     public Type getType() {
-        return Type.STATEMENT;
+        return Type.CONTROL_STATEMENT;
     }
 
 }

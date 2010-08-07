@@ -7,7 +7,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
  */
 public interface Operation {
     public enum Type {
-        MATH, LOGIC, STATEMENT
+        MATH, LOGIC, STATEMENT, CONTROL_STATEMENT
     }
 
     public Atom compute();
