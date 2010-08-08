@@ -18,11 +18,7 @@ public class UnaryOperation implements Operation {
     }
 
     public Type getType() {
-        if (this.operand.isNull()) {
-            return Type.MATH;
-        } else {
-            return (this.operand.isNumber()) ? Type.MATH : Type.LOGIC;
-        }
+        return Type.STATEMENT;
     }
 
     public static <T> Operation createUnaryOperation(T object) {
