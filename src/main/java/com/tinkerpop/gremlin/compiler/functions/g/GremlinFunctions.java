@@ -79,8 +79,10 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new TranslateFunction());
         // util
         functions.add(new AssignFunction());
+        functions.add(new FromJsonFunction());
         functions.add(new PathFunction());
         functions.add(new TimeFunction());
+        functions.add(new ToJsonFunction());
         functions.add(new TypeFunction());
         functions.add(new UnassignFunction());
         functions.add(new VersionFunction());

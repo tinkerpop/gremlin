@@ -35,6 +35,7 @@ bc. <dependency>
 * Print stream can be dynamically set in @GremlinScriptContext@
 * true(), false(), and null() are now keywords--true, false, null
 * String concatenation is supported with the + operation
+* Range filter support through @[1..10]@ type syntax
 
 ==<hr/>==
 

@@ -228,4 +228,17 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(results.contains(3));
         */
     }
+
+    public void testGPathInExpressionGraph() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        // TODO: make sure these all work
+        /*assertEquals(count(evaluateGremlinScriptIterable("./outE[./@label = 'knows']", context, true)), 3);
+        assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV/@name = 'vadas']/inV/@name", context, true), "vadas");
+        assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV[@name = 'vadas']/@name = 'vadas']/inV/@name", context, true), "vadas");
+        */
+    }
 }

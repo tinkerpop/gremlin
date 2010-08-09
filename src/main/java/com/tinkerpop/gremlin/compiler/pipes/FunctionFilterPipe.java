@@ -22,8 +22,6 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
     private final List<Operation> parameters;
     private final List<Integer> pipeObjectIndices;
     private final GremlinScriptContext context;
-    
-    //private int counter = -1;
 
     public FunctionFilterPipe(Function function, List<Operation> parameters, List<Integer> pipeObjectIndices, final GremlinScriptContext context) {
         this.function = function;
