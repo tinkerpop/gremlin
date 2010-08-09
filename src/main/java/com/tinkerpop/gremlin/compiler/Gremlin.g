@@ -59,28 +59,36 @@ tokens {
 	COLLECTION_CALL;
 }
 
+@lexer::header  {package com.tinkerpop.gremlin.compiler;}
+@parser::header {package com.tinkerpop.gremlin.compiler;}
+
 program	
     :	COMMENT+
-    |   VARIABLE ':=' collection NEWLINE -> ^(VAR VARIABLE collection)
     |   (statement? NEWLINE)+
-    |   (collection? NEWLINE)+
 	;
+
 
 COMMENT
     : '#' .* NEWLINE {skip();}
     ;
 
-gpath_statement
-	:	step '/' step ('/' step)* -> ^(GPATH step+)
+gpath_statement	
+    : step ('/' step)* -> ^(GPATH step+)
 	;
 
 step	
     :	token ('[' statement ']')* -> ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)*))
     ;
 
-token	
-	: 	(expression | '..')
+token
+	:   function_call 
+    |   StringLiteral	-> ^(STR StringLiteral)
+	|	PROPERTY	    -> ^(PROPERTY_CALL PROPERTY)
+	|	VARIABLE        -> ^(VARIABLE_CALL VARIABLE)
+	|   IDENTIFIER
+    |   '..'
 	;
+
 
 statement
     :   if_statement
@@ -91,7 +99,6 @@ statement
 	|	function_definition_statement
 	|	include_statement
 	|   script_statement
-	|	gpath_statement
     |   VARIABLE ':=' statement  -> ^(VAR VARIABLE statement)	
 	|	expression (('and'^|'or'^) expression)*
 	;
@@ -151,9 +158,7 @@ block
 	;
 
 block_body
-    : collection NEWLINE
-    | statement
-    | VARIABLE ':=' collection NEWLINE -> ^(VAR VARIABLE collection)
+    : statement
     | COMMENT NEWLINE
     ;
 
@@ -178,13 +183,11 @@ function_name
 	;
 	
 function_call_params
-	//:	(statement | collection) (',' (statement | collection))* -> ^(ARG statement | collection)+
 	: function_call_param (',' function_call_param)* -> ^(ARG function_call_param)+
 	;
 
 function_call_param
-    : collection
-    | statement
+    : statement
     ;
 	
 atom
@@ -193,15 +196,10 @@ atom
 	|   G_FLOAT         -> ^(FLOAT G_FLOAT)
 	|   G_DOUBLE        -> ^(DOUBLE G_DOUBLE)
 	|   range
-	|	StringLiteral	-> ^(STR StringLiteral)
+    |   gpath_statement
     |   b=BOOLEAN       -> ^(BOOL $b)
     |   NULL
-	|	PROPERTY	    -> ^(PROPERTY_CALL PROPERTY)
-	|	VARIABLE        -> ^(VARIABLE_CALL VARIABLE)
-	|	function_call
-	|   IDENTIFIER
 	|	'('! statement ')'!
-	|   '('! collection ')'!
 	;
 
 StringLiteral
@@ -235,22 +233,12 @@ NULL
     : 'null'
     ;
 
-/*
-fragment NUMBER	
-    : 	('0'..'9')+
-	;
-*/
-
 range
     :   min=G_INT '..' max=G_INT  -> ^(RANGE $min $max)
     ;
 
 VARIABLE
     :   '$' IDENTIFIER
-    ;
-
-collection
-    : token ('[' statement ']')+ -> ^(COLLECTION_CALL ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)+)))
     ;
 
 PROPERTY

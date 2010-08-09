@@ -15,6 +15,7 @@ options {
     import java.util.Map;
     import java.util.HashMap;
     import java.util.Iterator;
+    import java.util.LinkedHashMap;
     
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
@@ -91,6 +92,91 @@ options {
         this.context.getFunctionLibrary().registerFunction(ns, func);
     }
     
+    private Atom compileCollectionCall(final Atom<Object> tokenAtom, final List<Operation> predicates) {
+        final List<Pipe> pipes  = new ArrayList<Pipe>();
+        final Atom<Object> root = makePipelineRoot(tokenAtom, pipes);
+
+        pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
+
+        return new GPath(root, pipes, this.context);
+    }
+
+    private Atom compileGPathCall(final Map<Atom<Object>, List<Operation>> steps) {
+        Atom<Object> root = null;
+        List<Pipe> pipes = new ArrayList<Pipe>();
+
+        long count = 0;
+        for (final Atom<Object> token : steps.keySet()) {
+            final List<Operation> predicates = steps.get(token);
+            
+            if (count == 0) {
+                root = makePipelineRoot(token, pipes);
+                pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
+            } else if (token.isIdentifier() && token.getValue().equals("..")) {
+                List<Pipe> history = new ArrayList<Pipe>();
+                List<Pipe> newPipes = new ArrayList<Pipe>();
+                List<Pipe> currPipes = pipes;
+
+                if ((currPipes.size() == 1 && (currPipes.get(0) instanceof FutureFilterPipe)) || currPipes.size() == 0) {
+                    pipes = new ArrayList();
+                } else {
+                    int idx;
+                            
+                    for (idx = currPipes.size() - 1; idx >= 0; idx--) {
+                        Pipe currentPipe = currPipes.get(idx);
+                        history.add(currentPipe);
+
+                        if (!(currentPipe instanceof FilterPipe)) break;
+                    }
+
+                    for (int i = 0; i < idx; i++) {
+                        newPipes.add(currPipes.get(i));
+                    }
+
+                    Collections.reverse(history);
+                    newPipes.add(new FutureFilterPipe(new Pipeline(history)));
+                        
+                    pipes = newPipes;
+                }
+                
+                pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
+            } else {
+                pipes.addAll(GremlinPipesHelper.pipesForStep(token, predicates, this.context));
+            }
+
+            count++;
+        }
+        
+        return (pipes.size() == 0) ? new Atom<Object>(null) : new GPath(root, pipes, this.context);
+    }
+
+    private Atom<Object> makePipelineRoot(final Atom<Object> token, final List<Pipe> pipes) {
+        final PathLibrary paths = this.context.getPathLibrary();
+
+        if (token instanceof DynamicEntity) {
+            return token;
+        } else if (paths.isPath(token.toString())) {
+            pipes.addAll(paths.getPath(token.toString()));
+            return this.getVariable(Tokens.ROOT_VARIABLE);
+        } else {
+            return token;
+        }
+    }
+
+    private Atom<Object> singleGPathStep(final Atom<Object> token) {
+        final PathLibrary paths = this.context.getPathLibrary();
+
+        if (token instanceof DynamicEntity) {
+            return token;
+        } else if (token.isIdentifier() && token.getValue().equals(".")) {
+            return this.getVariable(Tokens.ROOT_VARIABLE);
+        } else if(paths.isPath(token.toString())) {
+            return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
+        } else {
+            return token;
+        }
+    }
+
     private void formProgramResult(List<Object> resultList, Operation currentOperation) {
         Atom result  = currentOperation.compute();
         Object value = null;
@@ -103,7 +189,7 @@ options {
 
         if (EMBEDDED && (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT)) 
             resultList.add(value);
-        
+
         if (value != null && DEBUG) {
             if (value instanceof Iterable) {
                 for(Object o : (Iterable) value) {
@@ -137,17 +223,10 @@ program returns [Iterable results]
     @init {
         List<Object> resultList = new ArrayList<Object>();
     }
-    : ((statement
-     {
-        formProgramResult(resultList, $statement.op);
-     } | col=collection {
-        formProgramResult(resultList, $col.op);
-     } | ^(VAR VARIABLE c=collection) {
-        formProgramResult(resultList, new DeclareVariable($VARIABLE.text, $c.op, this.context)); 
-     }) NEWLINE*)+
-     {
+    : (statement { formProgramResult(resultList, $statement.op); } NEWLINE*)+
+      {
         $results = resultList;
-     }
+      }
     ;
 
 statement returns [Operation op]
@@ -159,7 +238,6 @@ statement returns [Operation op]
 	|	function_definition_statement       { $op = $function_definition_statement.op; }
 	|	include_statement                   { $op = new UnaryOperation($include_statement.result); }
 	|   script_statement                    { $op = new UnaryOperation($script_statement.result); }
-	|	gpath_statement                     { $op = $gpath_statement.op; }
 	|	^(VAR VARIABLE s=statement)         { $op = new DeclareVariable($VARIABLE.text, $s.op, this.context); }
     |   ^('and' a=statement b=statement)    { $op = new And($a.op, $b.op); }
     |   ^('or'  a=statement b=statement)    { $op = new Or($a.op, $b.op); }
@@ -205,7 +283,7 @@ path_definition_statement returns [Operation op]
     @init {
         List<Pipe> pipes = new ArrayList<Pipe>();
     }
-	:	^(PATH path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPathOperation)$gpath.op).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
+	:	^(PATH path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPath) $gpath.value).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
         {
             this.context.getPathLibrary().registerPath($path_name.text, pipes);
             $op = new UnaryOperation(new Atom<Boolean>(true));
@@ -213,29 +291,28 @@ path_definition_statement returns [Operation op]
 	;
 	
 
-gpath_statement returns [Operation op]
+gpath_statement returns [Atom value]
     scope {
         int pipeCount;
-
-        Atom<Object> root;
-        List<Pipe> pipeList;
+        Map<Atom<Object>, List<Operation>> steps;
     }
     @init {
         isGPath = true;
-        
-        $gpath_statement::pipeCount = 0;
-        $gpath_statement::root = null;
-        $gpath_statement::pipeList = new ArrayList<Pipe>();
+        $gpath_statement::steps = new LinkedHashMap<Atom<Object>, List<Operation>>();
     }
     @after {
         isGPath = false;
     }
 	:	^(GPATH (step)+) 
         {
-            if ($gpath_statement::pipeList.size() > 0) {
-                $op = new GPathOperation($gpath_statement::pipeList, $gpath_statement::root, this.context);
+            Map<Atom<Object>, List<Operation>> stepMap = $gpath_statement::steps;
+
+            if (stepMap.size() == 1) {
+                Atom<Object> token = stepMap.keySet().iterator().next();
+                List<Operation> predicates = stepMap.get(token);
+                $value = (predicates.size() == 0) ? singleGPathStep(token) : compileCollectionCall(token, predicates);
             } else {
-                $op = new UnaryOperation(new Atom<Object>(null));
+                $value = compileGPathCall(stepMap);
             }
         }
 	;
@@ -246,92 +323,53 @@ step
     }
     :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ))
         {
-            final Atom tokenAtom = $token.atom;
-            final PathLibrary paths = this.context.getPathLibrary();
-
-            if (tokenAtom != null) {
-                if ($gpath_statement::pipeCount == 0) {
-
-                    if (tokenAtom instanceof DynamicEntity) {
-                        $gpath_statement::root = tokenAtom;    
-                    } else if (paths.isPath(tokenAtom.toString())) {
-                        $gpath_statement::pipeList.addAll(paths.getPath(tokenAtom.toString()));
-                        $gpath_statement::root = this.getVariable(Tokens.ROOT_VARIABLE);
-                    } else {
-                        $gpath_statement::root = tokenAtom;
-                    }
-                
-                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
-                } else {
-                    $gpath_statement::pipeList.addAll(GremlinPipesHelper.pipesForStep(tokenAtom, predicates, this.context));
-                }
-            }
-            
-            $gpath_statement::pipeCount++;
+            $gpath_statement::steps.put($token.atom, predicates);
         }
     ;
 
-token returns [Atom atom]	
-    : 	expression { $atom = $expression.expr.compute(); }
-    |   gpath_statement { $atom = $gpath_statement.op.compute(); }
-    |   collection { $atom = $collection.op.compute(); }
-    |   '..'       {
-
-                        List<Pipe> history = new ArrayList<Pipe>();
-                        List<Pipe> newPipes = new ArrayList<Pipe>();
-                        List<Pipe> pipes = $gpath_statement::pipeList;
-
-                        if ((pipes.size() == 1 && (pipes.get(0) instanceof FutureFilterPipe)) || pipes.size() == 0) {
-                            $gpath_statement::pipeList = new ArrayList();
-                        } else {
-                            int idx;
-                            
-                            for (idx = pipes.size() - 1; idx >= 0; idx--) {
-                                Pipe currentPipe = pipes.get(idx);
-                                history.add(currentPipe);
-
-                                if (!(currentPipe instanceof FilterPipe)) break;
-                            }
-
-                            for (int i = 0; i < idx; i++) {
-                                newPipes.add(pipes.get(i));
-                            }
-
-                            // don't like that - fix. PY
-                            Collections.reverse(history);
-                            newPipes.add(new FutureFilterPipe(new Pipeline(history)));
-                        
-                            $gpath_statement::pipeList = newPipes;
-                        }
-                        
-                        $atom = null;
-                   }
-	;
+token returns [Atom atom]
+    :   function_call               { $atom = $function_call.value; }
+    |   ^(STR StringLiteral)        { $atom = new Atom<String>($StringLiteral.text); }
+	|	^(VARIABLE_CALL VARIABLE)   { $atom = new Var($VARIABLE.text, this.context); }
+	|	^(PROPERTY_CALL PROPERTY)   { $atom = new Prop<String>($PROPERTY.text.substring(1)); }
+    |	IDENTIFIER                                                  
+        {
+            String idText = $IDENTIFIER.text;
+                                                                        
+	        if (idText.matches("^[\\d]+..[\\d]+")) {
+                    Matcher range = rangePattern.matcher(idText);
+                    $atom = (range.matches()) ? new Atom<Range>(new Range(range.group(1), range.group(2))) : new Atom<Object>(null);
+	        } else {
+                    $atom = new Id<String>($IDENTIFIER.text);
+            }
+        }
+	|   '..' { $atom = new Id<String>(".."); }
+    ;
 
 
 if_statement returns [Operation op]
-	:	^(IF ^(COND cond=operand) if_block=block ( ^(ELSE else_block=block ) )? )
+	:	^(IF ^(COND cond=statement) if_block=block ( ^(ELSE else_block=block ) )? )
         {
             $op = new If($cond.op, $if_block.operations, $else_block.operations);
         }
 	;
 
 while_statement returns [Operation op]
-	:	^(WHILE ^(COND cond=operand) block)
+	:	^(WHILE ^(COND cond=statement) block)
         {
             $op = new While($cond.op, $block.operations);
         }
 	;
 
 foreach_statement returns [Operation op]
-	:	^(FOREACH VARIABLE arr=operand block)
+	:	^(FOREACH VARIABLE arr=statement block)
         {
             $op = new Foreach($VARIABLE.text, $arr.op, $block.operations, this.context);
         }
 	;
 	
 repeat_statement returns [Operation op]
-	:	^(REPEAT timer=operand block)
+	:	^(REPEAT timer=statement block)
         {
             $op = new Repeat($timer.op, $block.operations);
         }
@@ -341,35 +379,30 @@ block returns [List<Operation> operations]
     @init {
         List<Operation> operationList = new ArrayList<Operation>();
     }
-    :	^(BLOCK ( (statement { operationList.add($statement.op); } | collection { operationList.add($collection.op); }))+) { $operations = operationList; }
-    ;
-
-operand returns [Operation op]
-    : statement  { $op = $statement.op; }
-    | collection { $op = $collection.op; }
+    :	^(BLOCK ( statement { operationList.add($statement.op); } )+) { $operations = operationList; }
     ;
 
 expression returns [Operation expr]
-    :   ^('='  a=operand b=operand) { $expr = new Equality($a.op, $b.op); }
-    |   ^('!=' a=operand b=operand) { $expr = new UnEquality($a.op, $b.op); }
-    |   ^('<'  a=operand b=operand) { $expr = new LessThan($a.op, $b.op); }
-    |   ^('>'  a=operand b=operand) { $expr = new GreaterThan($a.op, $b.op); }
-    |   ^('<=' a=operand b=operand) { $expr = new LessThanOrEqual($a.op, $b.op); }
-    |   ^('>=' a=operand b=operand) { $expr = new GreaterThanOrEqual($a.op, $b.op); }
+    :   ^('='  a=statement b=statement) { $expr = new Equality($a.op, $b.op); }
+    |   ^('!=' a=statement b=statement) { $expr = new UnEquality($a.op, $b.op); }
+    |   ^('<'  a=statement b=statement) { $expr = new LessThan($a.op, $b.op); }
+    |   ^('>'  a=statement b=statement) { $expr = new GreaterThan($a.op, $b.op); }
+    |   ^('<=' a=statement b=statement) { $expr = new LessThanOrEqual($a.op, $b.op); }
+    |   ^('>=' a=statement b=statement) { $expr = new GreaterThanOrEqual($a.op, $b.op); }
     |   operation                       { $expr = $operation.op; }
 	;
 
 operation returns [Operation op]
-    :   ^('+' a=operand b=operand) { $op = new Addition($a.op, $b.op); }
-    |   ^('-' a=operand b=operand) { $op = new Subtraction($a.op, $b.op); }
+    :   ^('+' a=statement b=statement) { $op = new Addition($a.op, $b.op); }
+    |   ^('-' a=statement b=statement) { $op = new Subtraction($a.op, $b.op); }
     |   binary_operation               { $op = $binary_operation.operation; }
 	;
 
 binary_operation returns [Operation operation]
-    :   ^('*' a=operand b=operand)      { $operation = new Multiplication($a.op, $b.op); }
-    |   ^('div' a=operand b=operand)    { $operation = new Division($a.op, $b.op); }
-    |	^('mod' a=operand b=operand)    { $operation = new Modulo($a.op, $b.op); }
-    |   atom                            { $operation = new UnaryOperation($atom.value); }
+    :   ^('*'   a=statement b=statement)  { $operation = new Multiplication($a.op, $b.op); }
+    |   ^('div' a=statement b=statement)  { $operation = new Division($a.op, $b.op); }
+    |	^('mod' a=statement b=statement)  { $operation = new Modulo($a.op, $b.op); }
+    |   atom                              { $operation = new UnaryOperation($atom.value); }
 	;
 
 function_definition_statement returns [Operation op]
@@ -389,16 +422,17 @@ function_call returns [Atom value]
     @init {
         List<Operation> params = new ArrayList<Operation>();
     }
-	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG (st=statement { params.add($st.op); } | col=collection { params.add($col.op); }) ) )* ))
+	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG st=statement { params.add($st.op); }) )* ))
         {
             try {
                 $value = new Func(this.getFunction($ns.text, $fn_name.text), params, this.context);
             } catch(Exception e) {
-                System.err.println(e);
+                System.err.println(e.getMessage());
             }
         }
 	;
 
+/*
 collection returns [Operation op]
     @init {
         Atom<Object> root = null;
@@ -426,12 +460,9 @@ collection returns [Operation op]
         $op = new GPathOperation(pipes, root, this.context);
     }
     ;
-
+*/
 
 atom returns [Atom value]
-    @init {
-        List<Double> array = new ArrayList<Double>();
-    }
 	:   ^(INT G_INT)                                                { $value = new Atom<Integer>(new Integer($G_INT.text)); }
 	|   ^(LONG G_LONG)                                              {
 	                                                                    String longStr = $G_LONG.text;
@@ -442,40 +473,10 @@ atom returns [Atom value]
 	                                                                    String doubleStr = $G_DOUBLE.text;
 	                                                                    $value = new Atom<Double>(new Double(doubleStr.substring(0, doubleStr.length() - 1)));
 	                                                                }
-	|   ^(RANGE min=G_INT max=G_INT)                                { $value = new Atom(new Range($min.text, $max.text)); }
-	|	^(STR StringLiteral)                                        { $value = new Atom($StringLiteral.text); }
-    |   ^(BOOL b=BOOLEAN)                                           { $value = new Atom(new Boolean($b.text)); }
-    |   NULL                                                        { $value = new Atom(null); }
-    |   ^(ARR (NUMBER { array.add(new Double($NUMBER.text)); })+)   { $value = new Atom(array); }
-	|	^(VARIABLE_CALL VARIABLE)                                   { 
-                                                                      $value = this.getVariable($VARIABLE.text); 
-                                                                    }
-	|	^(PROPERTY_CALL PROPERTY)                                   { 
-                                                                        Atom propertyAtom = new Atom($PROPERTY.text.substring(1));
-                                                                        propertyAtom.setProperty(true);
-                                                                        $value = propertyAtom;
-                                                                    }
-	|	IDENTIFIER                                                  {
-	                                                                    String idText = $IDENTIFIER.text;
-                                                                        
-	                                                                    if (idText.equals(".") && !isGPath) {
-	                                                                        Atom id  = this.getVariable(Tokens.ROOT_VARIABLE);
-	                                                                        Atom dot = new Atom(id.getValue());
-	                                                                        dot.setIdentifier(true);
-	                                                                        $value = dot;
-	                                                                    } else if (idText.matches("^[\\d]+..[\\d]+")) {
-                                                                            Matcher range = rangePattern.matcher(idText);
-                                                                            if (range.matches())
-                                                                                $value = new Atom<Range>(new Range(range.group(1), range.group(2)));
-                                                                            else
-                                                                                $value = new Atom(null);
-	                                                                    } else {
-                                                                            Atom idAtom = new Atom<String>($IDENTIFIER.text);
-                                                                            idAtom.setIdentifier(true);
-                                                                            $value = idAtom;
-                                                                        }
-                                                                    }
-	|	function_call                                               { $value = $function_call.value; }
+	|   ^(RANGE min=G_INT max=G_INT)                                { $value = new Atom<Range>(new Range($min.text, $max.text)); }
+    |   gpath_statement                                             { $value = $gpath_statement.value; }
+    |   ^(BOOL b=BOOLEAN)                                           { $value = new Atom<Boolean>(new Boolean($b.text)); }
+    |   NULL                                                        { $value = new Atom<Object>(null); }
 	|	'('! statement ')'!
 	;
 

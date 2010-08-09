@@ -18,6 +18,10 @@ public class Var extends DynamicEntity {
     public String getVariableName() {
         return this.var;
     }
+
+    public int hashCode() {
+        return this.var.hashCode();
+    }
     
     protected Object value() {
         Atom atom = (Atom) this.context.getVariableLibrary().get(this.var);

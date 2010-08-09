@@ -41,7 +41,7 @@ final public class GPath extends DynamicEntity implements Iterable {
     protected Object value() {
         Object top;
         Iterator pipeline = this.iterator();
-        
+
         if(pipeline.hasNext())
             top = pipeline.next();
         else
@@ -50,7 +50,8 @@ final public class GPath extends DynamicEntity implements Iterable {
         if (pipeline.hasNext()) {
             this.previouslyFetched.add(top);
             return this;
-        } else return top;
+        } else
+            return top;
     }
     
     public Iterator iterator() {
@@ -104,6 +105,10 @@ final public class GPath extends DynamicEntity implements Iterable {
         return true;
     }
 
+    public List<Pipe> getPipes() {
+        return this.pipes;
+    }
+    
     public String toString() {
         String result = "";
         

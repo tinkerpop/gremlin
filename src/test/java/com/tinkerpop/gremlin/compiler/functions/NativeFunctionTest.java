@@ -147,7 +147,7 @@ public class NativeFunctionTest extends BaseTest {
      *  func g:vadas-edge($edges)
      *
      *      foreach $edge in $edges
-     *          if ($edge/inV/@name) = 'vadas'
+     *          if $edge/inV/@name = 'vadas'
      *              $result := $edge
      *          end
      *      end
@@ -161,7 +161,7 @@ public class NativeFunctionTest extends BaseTest {
         context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        assertTrue((Boolean) this.evaluateGremlinScriptPrimitive("func g:vadas-edge($edges)\nforeach $edge in $edges\nif ($edge/inV/@name) = 'vadas'\n$result := $edge\nend\nend\n$result\nend", context, false));
+        assertTrue((Boolean) this.evaluateGremlinScriptPrimitive("func g:vadas-edge($edges)\nforeach $edge in $edges\nif $edge/inV/@name = 'vadas'\n$result := $edge\nend\nend\n$result\nend", context, false));
         assertEquals(this.evaluateGremlinScriptPrimitive("g:vadas-edge(./outE)", context, true), graph.getEdge("7"));
         assertEquals(this.evaluateGremlinScriptPrimitive("g:vadas-edge(./outE[0..2])", context, true), graph.getEdge("7"));
         assertNull(this.evaluateGremlinScriptPrimitive("g:vadas-edge(g:list())", context, true));

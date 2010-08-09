@@ -35,6 +35,10 @@ public class Func extends DynamicEntity {
         return parameters;
     }
 
+    public int hashCode() {
+        return this.function.hashCode();   
+    }
+
     /*
      * Used to return positions of "." identifiers in function params
      */
@@ -42,15 +46,13 @@ public class Func extends DynamicEntity {
         List<Integer> pipeObjectIndices = new ArrayList<Integer>();
 
         int position = 0;
-        final Atom rootVariable = context.getVariableByName(Tokens.ROOT_VARIABLE);
-
         for (Operation parameter : parameters) {
             Atom atom = parameter.compute();
 
             if (atom.isIdentifier()) {
                 String token = atom.getValue().toString();
 
-                if (token.equals(".") || rootVariable.equals(atom)) {
+                if (token.equals(".")) {
                     pipeObjectIndices.add(position);
                 }
             }

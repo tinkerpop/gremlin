@@ -1,7 +1,10 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-05 02:01:14
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-08 18:45:04
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GremlinLexer extends Lexer {
     public static final int WHILE=25;
@@ -19,7 +22,7 @@ public class GremlinLexer extends Lexer {
     public static final int T__90=90;
     public static final int ARG=5;
     public static final int PATH=11;
-    public static final int G_INT=46;
+    public static final int G_INT=47;
     public static final int INCLUDE=27;
     public static final int SingleEscapeCharacter=59;
     public static final int DOUBLE=32;
@@ -51,12 +54,12 @@ public class GremlinLexer extends Lexer {
     public static final int WS=54;
     public static final int T__72=72;
     public static final int PREDICATES=16;
-    public static final int VARIABLE=42;
+    public static final int VARIABLE=45;
     public static final int T__70=70;
-    public static final int G_DOUBLE=49;
-    public static final int PROPERTY=51;
+    public static final int G_DOUBLE=50;
+    public static final int PROPERTY=44;
     public static final int FUNC=7;
-    public static final int G_LONG=47;
+    public static final int G_LONG=48;
     public static final int FOREACH=24;
     public static final int REPEAT=26;
     public static final int FUNC_NAME=10;
@@ -82,16 +85,16 @@ public class GremlinLexer extends Lexer {
     public static final int PREDICATE=15;
     public static final int IF=20;
     public static final int STR=33;
-    public static final int BOOLEAN=50;
-    public static final int IDENTIFIER=45;
+    public static final int BOOLEAN=51;
+    public static final int IDENTIFIER=46;
     public static final int EscapeCharacter=61;
     public static final int COLLECTION_CALL=40;
-    public static final int G_FLOAT=48;
+    public static final int G_FLOAT=49;
     public static final int PROPERTY_CALL=38;
     public static final int UnicodeEscapeSequence=58;
     public static final int RANGE=37;
-    public static final int StringLiteral=44;
-    public static final int NEWLINE=43;
+    public static final int StringLiteral=43;
+    public static final int NEWLINE=42;
     public static final int BLOCK=23;
     public static final int NonEscapeCharacter=60;
     public static final int LONG=30;
@@ -117,11 +120,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__64;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:3:7: ( ':=' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:3:9: ':='
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:5:7: ( '/' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:5:9: '/'
             {
-            match(":="); 
-
+            match('/'); 
 
             }
 
@@ -138,10 +140,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__65;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:4:7: ( '/' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:4:9: '/'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:6:7: ( '[' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:6:9: '['
             {
-            match('/'); 
+            match('['); 
 
             }
 
@@ -158,10 +160,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__66;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:5:7: ( '[' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:5:9: '['
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:7:7: ( ']' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:7:9: ']'
             {
-            match('['); 
+            match(']'); 
 
             }
 
@@ -178,10 +180,11 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__67;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:6:7: ( ']' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:6:9: ']'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:8:7: ( '..' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:8:9: '..'
             {
-            match(']'); 
+            match(".."); 
+
 
             }
 
@@ -198,10 +201,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__68;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:7:7: ( '..' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:7:9: '..'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:9:7: ( ':=' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:9:9: ':='
             {
-            match(".."); 
+            match(":="); 
 
 
             }
@@ -219,8 +222,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__69;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:8:7: ( 'and' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:8:9: 'and'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:10:7: ( 'and' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:10:9: 'and'
             {
             match("and"); 
 
@@ -240,8 +243,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__70;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:9:7: ( 'or' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:9:9: 'or'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:11:7: ( 'or' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:11:9: 'or'
             {
             match("or"); 
 
@@ -261,8 +264,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__71;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:10:7: ( 'include' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:10:9: 'include'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:12:7: ( 'include' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:12:9: 'include'
             {
             match("include"); 
 
@@ -282,8 +285,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__72;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:11:7: ( 'script' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:11:9: 'script'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:13:7: ( 'script' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:13:9: 'script'
             {
             match("script"); 
 
@@ -303,8 +306,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__73;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:12:7: ( 'if' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:12:9: 'if'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:14:7: ( 'if' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:14:9: 'if'
             {
             match("if"); 
 
@@ -324,8 +327,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__74;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:13:7: ( 'else' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:13:9: 'else'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:15:7: ( 'else' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:15:9: 'else'
             {
             match("else"); 
 
@@ -345,8 +348,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__75;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:14:7: ( 'end' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:14:9: 'end'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:16:7: ( 'end' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:16:9: 'end'
             {
             match("end"); 
 
@@ -366,8 +369,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__76;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:15:7: ( 'foreach' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:15:9: 'foreach'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:17:7: ( 'foreach' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:17:9: 'foreach'
             {
             match("foreach"); 
 
@@ -387,8 +390,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__77;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:16:7: ( 'in' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:16:9: 'in'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:18:7: ( 'in' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:18:9: 'in'
             {
             match("in"); 
 
@@ -408,8 +411,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__78;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:17:7: ( 'while' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:17:9: 'while'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:19:7: ( 'while' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:19:9: 'while'
             {
             match("while"); 
 
@@ -429,8 +432,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__79;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:18:7: ( 'repeat' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:18:9: 'repeat'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:20:7: ( 'repeat' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:20:9: 'repeat'
             {
             match("repeat"); 
 
@@ -450,8 +453,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__80;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:19:7: ( 'path' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:19:9: 'path'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:21:7: ( 'path' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:21:9: 'path'
             {
             match("path"); 
 
@@ -471,8 +474,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__81;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:20:7: ( 'func' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:20:9: 'func'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:22:7: ( 'func' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:22:9: 'func'
             {
             match("func"); 
 
@@ -492,8 +495,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__82;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:21:7: ( '(' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:21:9: '('
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:23:7: ( '(' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:23:9: '('
             {
             match('('); 
 
@@ -512,8 +515,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__83;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:22:7: ( ')' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:22:9: ')'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:24:7: ( ')' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:24:9: ')'
             {
             match(')'); 
 
@@ -532,8 +535,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__84;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:23:7: ( ',' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:23:9: ','
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:25:7: ( ',' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:25:9: ','
             {
             match(','); 
 
@@ -552,8 +555,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__85;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:24:7: ( '=' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:24:9: '='
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:26:7: ( '=' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:26:9: '='
             {
             match('='); 
 
@@ -572,8 +575,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__86;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:25:7: ( '!=' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:25:9: '!='
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:27:7: ( '!=' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:27:9: '!='
             {
             match("!="); 
 
@@ -593,8 +596,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__87;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:26:7: ( '<' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:26:9: '<'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:28:7: ( '<' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:28:9: '<'
             {
             match('<'); 
 
@@ -613,8 +616,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__88;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:27:7: ( '<=' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:27:9: '<='
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:29:7: ( '<=' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:29:9: '<='
             {
             match("<="); 
 
@@ -634,8 +637,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__89;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:28:7: ( '>' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:28:9: '>'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:30:7: ( '>' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:30:9: '>'
             {
             match('>'); 
 
@@ -654,8 +657,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__90;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:29:7: ( '>=' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:29:9: '>='
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:31:7: ( '>=' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:31:9: '>='
             {
             match(">="); 
 
@@ -675,8 +678,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__91;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:30:7: ( '+' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:30:9: '+'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:32:7: ( '+' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:32:9: '+'
             {
             match('+'); 
 
@@ -695,8 +698,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__92;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:31:7: ( '-' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:31:9: '-'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:33:7: ( '-' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:33:9: '-'
             {
             match('-'); 
 
@@ -715,8 +718,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__93;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:32:7: ( '*' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:32:9: '*'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:7: ( '*' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:9: '*'
             {
             match('*'); 
 
@@ -735,8 +738,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__94;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:33:7: ( 'div' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:33:9: 'div'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:35:7: ( 'div' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:35:9: 'div'
             {
             match("div"); 
 
@@ -756,8 +759,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__95;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:7: ( 'mod' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:34:9: 'mod'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:36:7: ( 'mod' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:36:9: 'mod'
             {
             match("mod"); 
 
@@ -777,8 +780,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = T__96;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:35:7: ( ':' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:35:9: ':'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:37:7: ( ':' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:37:9: ':'
             {
             match(':'); 
 
@@ -797,11 +800,11 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:70:5: ( '#' ( . )* NEWLINE )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:70:7: '#' ( . )* NEWLINE
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:72:5: ( '#' ( . )* NEWLINE )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:72:7: '#' ( . )* NEWLINE
             {
             match('#'); 
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:70:11: ( . )*
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:72:11: ( . )*
             loop1:
             do {
                 int alt1=2;
@@ -817,7 +820,7 @@ public class GremlinLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:70:11: .
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:72:11: .
             	    {
             	    matchAny(); 
 
@@ -847,7 +850,7 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = StringLiteral;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:208:2: ( '\"' ( DoubleStringCharacter )* '\"' | '\\'' ( SingleStringCharacter )* '\\'' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:206:2: ( '\"' ( DoubleStringCharacter )* '\"' | '\\'' ( SingleStringCharacter )* '\\'' )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -865,10 +868,10 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:208:4: '\"' ( DoubleStringCharacter )* '\"'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:206:4: '\"' ( DoubleStringCharacter )* '\"'
                     {
                     match('\"'); 
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:208:8: ( DoubleStringCharacter )*
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:206:8: ( DoubleStringCharacter )*
                     loop2:
                     do {
                         int alt2=2;
@@ -881,7 +884,7 @@ public class GremlinLexer extends Lexer {
 
                         switch (alt2) {
                     	case 1 :
-                    	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:208:8: DoubleStringCharacter
+                    	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:206:8: DoubleStringCharacter
                     	    {
                     	    mDoubleStringCharacter(); 
 
@@ -898,10 +901,10 @@ public class GremlinLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:209:4: '\\'' ( SingleStringCharacter )* '\\''
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:207:4: '\\'' ( SingleStringCharacter )* '\\''
                     {
                     match('\''); 
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:209:9: ( SingleStringCharacter )*
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:207:9: ( SingleStringCharacter )*
                     loop3:
                     do {
                         int alt3=2;
@@ -914,7 +917,7 @@ public class GremlinLexer extends Lexer {
 
                         switch (alt3) {
                     	case 1 :
-                    	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:209:9: SingleStringCharacter
+                    	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:207:9: SingleStringCharacter
                     	    {
                     	    mSingleStringCharacter(); 
 
@@ -945,10 +948,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = G_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:214:5: ( ( '-' )? ( '0' .. '9' )+ )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:214:7: ( '-' )? ( '0' .. '9' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:212:5: ( ( '-' )? ( '0' .. '9' )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:212:7: ( '-' )? ( '0' .. '9' )+
             {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:214:7: ( '-' )?
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:212:7: ( '-' )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -957,7 +960,7 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:214:7: '-'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:212:7: '-'
                     {
                     match('-'); 
 
@@ -966,7 +969,7 @@ public class GremlinLexer extends Lexer {
 
             }
 
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:214:12: ( '0' .. '9' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:212:12: ( '0' .. '9' )+
             int cnt6=0;
             loop6:
             do {
@@ -980,7 +983,7 @@ public class GremlinLexer extends Lexer {
 
                 switch (alt6) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:214:13: '0' .. '9'
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:212:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -1012,10 +1015,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = G_LONG;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:218:5: ( ( '-' )? ( '0' .. '9' )+ 'l' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:218:7: ( '-' )? ( '0' .. '9' )+ 'l'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:216:5: ( ( '-' )? ( '0' .. '9' )+ 'l' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:216:7: ( '-' )? ( '0' .. '9' )+ 'l'
             {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:218:7: ( '-' )?
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:216:7: ( '-' )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -1024,7 +1027,7 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:218:7: '-'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:216:7: '-'
                     {
                     match('-'); 
 
@@ -1033,7 +1036,7 @@ public class GremlinLexer extends Lexer {
 
             }
 
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:218:12: ( '0' .. '9' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:216:12: ( '0' .. '9' )+
             int cnt8=0;
             loop8:
             do {
@@ -1047,7 +1050,7 @@ public class GremlinLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:218:13: '0' .. '9'
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:216:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -1080,8 +1083,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = G_FLOAT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:222:5: ( G_INT '.' G_INT )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:222:7: G_INT '.' G_INT
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:220:5: ( G_INT '.' G_INT )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:220:7: G_INT '.' G_INT
             {
             mG_INT(); 
             match('.'); 
@@ -1102,8 +1105,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = G_DOUBLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:226:5: ( G_FLOAT 'd' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:226:7: G_FLOAT 'd'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:224:5: ( G_FLOAT 'd' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:224:7: G_FLOAT 'd'
             {
             mG_FLOAT(); 
             match('d'); 
@@ -1123,7 +1126,7 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = BOOLEAN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:230:5: ( 'true' | 'false' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:228:5: ( 'true' | 'false' )
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -1141,7 +1144,7 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:230:7: 'true'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:228:7: 'true'
                     {
                     match("true"); 
 
@@ -1149,7 +1152,7 @@ public class GremlinLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:231:7: 'false'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:229:7: 'false'
                     {
                     match("false"); 
 
@@ -1171,8 +1174,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = NULL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:235:5: ( 'null' )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:235:7: 'null'
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:233:5: ( 'null' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:233:7: 'null'
             {
             match("null"); 
 
@@ -1192,8 +1195,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = VARIABLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:249:5: ( '$' IDENTIFIER )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:249:9: '$' IDENTIFIER
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:241:5: ( '$' IDENTIFIER )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:241:9: '$' IDENTIFIER
             {
             match('$'); 
             mIDENTIFIER(); 
@@ -1213,8 +1216,8 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = PROPERTY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:257:2: ( '@' IDENTIFIER )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:257:4: '@' IDENTIFIER
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:245:2: ( '@' IDENTIFIER )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:245:4: '@' IDENTIFIER
             {
             match('@'); 
             mIDENTIFIER(); 
@@ -1234,10 +1237,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = IDENTIFIER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:261:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '-' | '.' | '0' .. '9' )+ )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:261:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '-' | '.' | '0' .. '9' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:249:2: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '-' | '.' | '0' .. '9' )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:249:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '-' | '.' | '0' .. '9' )+
             {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:261:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '-' | '.' | '0' .. '9' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:249:5: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '-' | '.' | '0' .. '9' )+
             int cnt10=0;
             loop10:
             do {
@@ -1291,7 +1294,7 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = NEWLINE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:265:2: ( '\\n' | '\\r' | '\\u2028' | '\\u2029' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:253:2: ( '\\n' | '\\r' | '\\u2028' | '\\u2029' )
             // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:
             {
             if ( input.LA(1)=='\n'||input.LA(1)=='\r'||(input.LA(1)>='\u2028' && input.LA(1)<='\u2029') ) {
@@ -1319,10 +1322,10 @@ public class GremlinLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:272:5: ( ( ' ' | '\\t' )+ )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:272:7: ( ' ' | '\\t' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:260:5: ( ( ' ' | '\\t' )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:260:7: ( ' ' | '\\t' )+
             {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:272:7: ( ' ' | '\\t' )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:260:7: ( ' ' | '\\t' )+
             int cnt11=0;
             loop11:
             do {
@@ -1375,7 +1378,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "DoubleStringCharacter"
     public final void mDoubleStringCharacter() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:276:2: (~ ( '\"' | '\\\\' | NEWLINE ) | '\\\\' EscapeSequence )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:264:2: (~ ( '\"' | '\\\\' | NEWLINE ) | '\\\\' EscapeSequence )
             int alt12=2;
             int LA12_0 = input.LA(1);
 
@@ -1393,7 +1396,7 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt12) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:276:4: ~ ( '\"' | '\\\\' | NEWLINE )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:264:4: ~ ( '\"' | '\\\\' | NEWLINE )
                     {
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\u2027')||(input.LA(1)>='\u202A' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -1408,7 +1411,7 @@ public class GremlinLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:277:4: '\\\\' EscapeSequence
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:265:4: '\\\\' EscapeSequence
                     {
                     match('\\'); 
                     mEscapeSequence(); 
@@ -1426,7 +1429,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "SingleStringCharacter"
     public final void mSingleStringCharacter() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:281:2: (~ ( '\\'' | '\\\\' | NEWLINE ) | '\\\\' EscapeSequence )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:269:2: (~ ( '\\'' | '\\\\' | NEWLINE ) | '\\\\' EscapeSequence )
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -1444,7 +1447,7 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt13) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:281:4: ~ ( '\\'' | '\\\\' | NEWLINE )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:269:4: ~ ( '\\'' | '\\\\' | NEWLINE )
                     {
                     if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\u2027')||(input.LA(1)>='\u202A' && input.LA(1)<='\uFFFF') ) {
                         input.consume();
@@ -1459,7 +1462,7 @@ public class GremlinLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:282:4: '\\\\' EscapeSequence
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:270:4: '\\\\' EscapeSequence
                     {
                     match('\\'); 
                     mEscapeSequence(); 
@@ -1477,7 +1480,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "EscapeSequence"
     public final void mEscapeSequence() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:286:2: ( CharacterEscapeSequence | '0' | HexEscapeSequence | UnicodeEscapeSequence )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:274:2: ( CharacterEscapeSequence | '0' | HexEscapeSequence | UnicodeEscapeSequence )
             int alt14=4;
             int LA14_0 = input.LA(1);
 
@@ -1501,28 +1504,28 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt14) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:286:4: CharacterEscapeSequence
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:274:4: CharacterEscapeSequence
                     {
                     mCharacterEscapeSequence(); 
 
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:287:4: '0'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:275:4: '0'
                     {
                     match('0'); 
 
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:288:4: HexEscapeSequence
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:276:4: HexEscapeSequence
                     {
                     mHexEscapeSequence(); 
 
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:289:4: UnicodeEscapeSequence
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:277:4: UnicodeEscapeSequence
                     {
                     mUnicodeEscapeSequence(); 
 
@@ -1539,7 +1542,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "CharacterEscapeSequence"
     public final void mCharacterEscapeSequence() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:293:2: ( SingleEscapeCharacter | NonEscapeCharacter )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:281:2: ( SingleEscapeCharacter | NonEscapeCharacter )
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -1557,14 +1560,14 @@ public class GremlinLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:293:4: SingleEscapeCharacter
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:281:4: SingleEscapeCharacter
                     {
                     mSingleEscapeCharacter(); 
 
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:294:4: NonEscapeCharacter
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:282:4: NonEscapeCharacter
                     {
                     mNonEscapeCharacter(); 
 
@@ -1581,8 +1584,8 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "NonEscapeCharacter"
     public final void mNonEscapeCharacter() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:298:2: (~ ( EscapeCharacter | NEWLINE ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:298:4: ~ ( EscapeCharacter | NEWLINE )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:286:2: (~ ( EscapeCharacter | NEWLINE ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:286:4: ~ ( EscapeCharacter | NEWLINE )
             {
             if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='/')||(input.LA(1)>=':' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='a')||(input.LA(1)>='c' && input.LA(1)<='e')||(input.LA(1)>='g' && input.LA(1)<='m')||(input.LA(1)>='o' && input.LA(1)<='q')||input.LA(1)=='s'||input.LA(1)=='w'||(input.LA(1)>='y' && input.LA(1)<='\u2027')||(input.LA(1)>='\u202A' && input.LA(1)<='\uFFFF') ) {
                 input.consume();
@@ -1605,7 +1608,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "SingleEscapeCharacter"
     public final void mSingleEscapeCharacter() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:302:2: ( '\\'' | '\"' | '\\\\' | 'b' | 'f' | 'n' | 'r' | 't' | 'v' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:290:2: ( '\\'' | '\"' | '\\\\' | 'b' | 'f' | 'n' | 'r' | 't' | 'v' )
             // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:
             {
             if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t'||input.LA(1)=='v' ) {
@@ -1629,7 +1632,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "EscapeCharacter"
     public final void mEscapeCharacter() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:306:2: ( SingleEscapeCharacter | DecimalDigit | 'x' | 'u' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:294:2: ( SingleEscapeCharacter | DecimalDigit | 'x' | 'u' )
             int alt16=4;
             switch ( input.LA(1) ) {
             case '\"':
@@ -1678,28 +1681,28 @@ public class GremlinLexer extends Lexer {
 
             switch (alt16) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:306:4: SingleEscapeCharacter
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:294:4: SingleEscapeCharacter
                     {
                     mSingleEscapeCharacter(); 
 
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:307:4: DecimalDigit
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:295:4: DecimalDigit
                     {
                     mDecimalDigit(); 
 
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:308:4: 'x'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:296:4: 'x'
                     {
                     match('x'); 
 
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:4: 'u'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:297:4: 'u'
                     {
                     match('u'); 
 
@@ -1716,8 +1719,8 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "HexEscapeSequence"
     public final void mHexEscapeSequence() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:313:2: ( 'x' HexDigit HexDigit )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:313:4: 'x' HexDigit HexDigit
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:301:2: ( 'x' HexDigit HexDigit )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:301:4: 'x' HexDigit HexDigit
             {
             match('x'); 
             mHexDigit(); 
@@ -1734,8 +1737,8 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "UnicodeEscapeSequence"
     public final void mUnicodeEscapeSequence() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:317:2: ( 'u' HexDigit HexDigit HexDigit HexDigit )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:317:4: 'u' HexDigit HexDigit HexDigit HexDigit
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:305:2: ( 'u' HexDigit HexDigit HexDigit HexDigit )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:305:4: 'u' HexDigit HexDigit HexDigit HexDigit
             {
             match('u'); 
             mHexDigit(); 
@@ -1754,7 +1757,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "HexDigit"
     public final void mHexDigit() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:2: ( DecimalDigit | ( 'a' .. 'f' ) | ( 'A' .. 'F' ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:2: ( DecimalDigit | ( 'a' .. 'f' ) | ( 'A' .. 'F' ) )
             int alt17=3;
             switch ( input.LA(1) ) {
             case '0':
@@ -1800,17 +1803,17 @@ public class GremlinLexer extends Lexer {
 
             switch (alt17) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:4: DecimalDigit
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:4: DecimalDigit
                     {
                     mDecimalDigit(); 
 
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:19: ( 'a' .. 'f' )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:19: ( 'a' .. 'f' )
                     {
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:19: ( 'a' .. 'f' )
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:20: 'a' .. 'f'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:19: ( 'a' .. 'f' )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:20: 'a' .. 'f'
                     {
                     matchRange('a','f'); 
 
@@ -1820,10 +1823,10 @@ public class GremlinLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:32: ( 'A' .. 'F' )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:32: ( 'A' .. 'F' )
                     {
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:32: ( 'A' .. 'F' )
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:321:33: 'A' .. 'F'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:32: ( 'A' .. 'F' )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:309:33: 'A' .. 'F'
                     {
                     matchRange('A','F'); 
 
@@ -1843,8 +1846,8 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "DecimalDigit"
     public final void mDecimalDigit() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:325:2: ( ( '0' .. '9' ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:325:4: ( '0' .. '9' )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:313:2: ( ( '0' .. '9' ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:313:4: ( '0' .. '9' )
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9') ) {
                 input.consume();
@@ -2199,58 +2202,58 @@ public class GremlinLexer extends Lexer {
 
     protected DFA18 dfa18 = new DFA18(this);
     static final String DFA18_eotS =
-        "\1\uffff\1\46\3\uffff\12\42\5\uffff\1\66\1\70\1\uffff\1\71\1\uffff"+
-        "\2\42\2\uffff\1\74\2\42\7\uffff\1\101\1\42\1\103\1\105\1\106\11"+
-        "\42\5\uffff\2\42\1\uffff\1\42\1\124\2\42\1\uffff\1\127\1\uffff\1"+
-        "\42\2\uffff\2\42\1\133\6\42\1\142\1\143\1\42\1\144\1\uffff\2\42"+
-        "\1\uffff\2\42\1\152\1\uffff\1\42\1\154\3\42\1\160\3\uffff\1\161"+
-        "\1\162\1\163\2\42\1\uffff\1\42\1\uffff\1\162\1\167\1\42\4\uffff"+
+        "\4\uffff\1\42\1\47\11\42\5\uffff\1\66\1\70\1\uffff\1\71\1\uffff"+
+        "\2\42\2\uffff\1\74\2\42\5\uffff\1\101\2\uffff\1\42\1\103\1\105\1"+
+        "\106\11\42\5\uffff\2\42\1\uffff\1\42\1\124\2\42\1\uffff\1\127\1"+
+        "\uffff\1\42\2\uffff\2\42\1\133\6\42\1\142\1\143\1\42\1\144\1\uffff"+
+        "\2\42\1\uffff\2\42\1\152\1\uffff\1\42\1\154\3\42\1\160\3\uffff\1"+
+        "\161\1\162\1\163\2\42\1\uffff\1\42\1\uffff\1\162\1\167\1\42\4\uffff"+
         "\1\42\1\172\1\42\1\uffff\1\174\1\175\1\uffff\1\176\3\uffff";
     static final String DFA18_eofS =
         "\177\uffff";
     static final String DFA18_minS =
-        "\1\11\1\75\3\uffff\1\56\1\156\1\162\1\146\1\143\1\154\1\141\1\150"+
+        "\1\11\3\uffff\1\56\1\75\1\156\1\162\1\146\1\143\1\154\1\141\1\150"+
         "\1\145\1\141\5\uffff\2\75\1\uffff\1\55\1\uffff\1\151\1\157\2\uffff"+
-        "\1\55\1\162\1\165\7\uffff\1\55\1\144\3\55\1\162\1\163\1\144\1\162"+
-        "\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1\144\1\uffff\2\55"+
-        "\1\165\1\154\1\uffff\1\55\1\uffff\1\154\2\uffff\1\151\1\145\1\55"+
-        "\1\145\1\143\1\163\1\154\1\145\1\150\2\55\1\60\1\55\1\uffff\1\145"+
-        "\1\154\1\uffff\1\165\1\160\1\55\1\uffff\1\141\1\55\2\145\1\141\1"+
-        "\55\3\uffff\3\55\1\144\1\164\1\uffff\1\143\1\uffff\2\55\1\164\4"+
-        "\uffff\1\145\1\55\1\150\1\uffff\2\55\1\uffff\1\55\3\uffff";
+        "\1\55\1\162\1\165\5\uffff\1\55\2\uffff\1\144\3\55\1\162\1\163\1"+
+        "\144\1\162\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1\144\1\uffff"+
+        "\2\55\1\165\1\154\1\uffff\1\55\1\uffff\1\154\2\uffff\1\151\1\145"+
+        "\1\55\1\145\1\143\1\163\1\154\1\145\1\150\2\55\1\60\1\55\1\uffff"+
+        "\1\145\1\154\1\uffff\1\165\1\160\1\55\1\uffff\1\141\1\55\2\145\1"+
+        "\141\1\55\3\uffff\3\55\1\144\1\164\1\uffff\1\143\1\uffff\2\55\1"+
+        "\164\4\uffff\1\145\1\55\1\150\1\uffff\2\55\1\uffff\1\55\3\uffff";
     static final String DFA18_maxS =
-        "\1\u2029\1\75\3\uffff\1\56\1\156\1\162\1\156\1\143\1\156\1\165\1"+
+        "\1\u2029\3\uffff\1\56\1\75\1\156\1\162\1\156\1\143\1\156\1\165\1"+
         "\150\1\145\1\141\5\uffff\2\75\1\uffff\1\172\1\uffff\1\151\1\157"+
-        "\2\uffff\1\172\1\162\1\165\7\uffff\1\172\1\144\3\172\1\162\1\163"+
-        "\1\144\1\162\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1\144\1"+
-        "\uffff\1\71\1\172\1\165\1\154\1\uffff\1\172\1\uffff\1\154\2\uffff"+
-        "\1\151\1\145\1\172\1\145\1\143\1\163\1\154\1\145\1\150\2\172\1\71"+
-        "\1\172\1\uffff\1\145\1\154\1\uffff\1\165\1\160\1\172\1\uffff\1\141"+
-        "\1\172\2\145\1\141\1\172\3\uffff\3\172\1\144\1\164\1\uffff\1\143"+
-        "\1\uffff\2\172\1\164\4\uffff\1\145\1\172\1\150\1\uffff\2\172\1\uffff"+
-        "\1\172\3\uffff";
+        "\2\uffff\1\172\1\162\1\165\5\uffff\1\172\2\uffff\1\144\3\172\1\162"+
+        "\1\163\1\144\1\162\1\156\1\154\1\151\1\160\1\164\5\uffff\1\166\1"+
+        "\144\1\uffff\1\71\1\172\1\165\1\154\1\uffff\1\172\1\uffff\1\154"+
+        "\2\uffff\1\151\1\145\1\172\1\145\1\143\1\163\1\154\1\145\1\150\2"+
+        "\172\1\71\1\172\1\uffff\1\145\1\154\1\uffff\1\165\1\160\1\172\1"+
+        "\uffff\1\141\1\172\2\145\1\141\1\172\3\uffff\3\172\1\144\1\164\1"+
+        "\uffff\1\143\1\uffff\2\172\1\164\4\uffff\1\145\1\172\1\150\1\uffff"+
+        "\2\172\1\uffff\1\172\3\uffff";
     static final String DFA18_acceptS =
-        "\2\uffff\1\2\1\3\1\4\12\uffff\1\23\1\24\1\25\1\26\1\27\2\uffff\1"+
+        "\1\uffff\1\1\1\2\1\3\13\uffff\1\23\1\24\1\25\1\26\1\27\2\uffff\1"+
         "\34\1\uffff\1\36\2\uffff\1\42\1\43\3\uffff\1\52\1\53\1\54\1\55\1"+
-        "\56\1\1\1\41\16\uffff\1\31\1\30\1\33\1\32\1\35\2\uffff\1\44\4\uffff"+
-        "\1\5\1\uffff\1\7\1\uffff\1\16\1\12\15\uffff\1\45\2\uffff\1\6\3\uffff"+
-        "\1\14\6\uffff\1\37\1\40\1\46\5\uffff\1\13\1\uffff\1\22\3\uffff\1"+
-        "\21\1\47\1\50\1\51\3\uffff\1\17\2\uffff\1\11\1\uffff\1\20\1\10\1"+
-        "\15";
+        "\56\1\uffff\1\5\1\41\15\uffff\1\31\1\30\1\33\1\32\1\35\2\uffff\1"+
+        "\44\4\uffff\1\4\1\uffff\1\7\1\uffff\1\16\1\12\15\uffff\1\45\2\uffff"+
+        "\1\6\3\uffff\1\14\6\uffff\1\37\1\40\1\46\5\uffff\1\13\1\uffff\1"+
+        "\22\3\uffff\1\21\1\47\1\50\1\51\3\uffff\1\17\2\uffff\1\11\1\uffff"+
+        "\1\20\1\10\1\15";
     static final String DFA18_specialS =
         "\177\uffff}>";
     static final String[] DFA18_transitionS = {
             "\1\44\1\43\2\uffff\1\43\22\uffff\1\44\1\23\1\34\1\33\1\40\2"+
-            "\uffff\1\34\1\17\1\20\1\30\1\26\1\21\1\27\1\5\1\2\12\35\1\1"+
-            "\1\uffff\1\24\1\22\1\25\1\uffff\1\41\32\42\1\3\1\uffff\1\4\1"+
+            "\uffff\1\34\1\17\1\20\1\30\1\26\1\21\1\27\1\4\1\1\12\35\1\5"+
+            "\1\uffff\1\24\1\22\1\25\1\uffff\1\41\32\42\1\2\1\uffff\1\3\1"+
             "\uffff\1\42\1\uffff\1\6\2\42\1\31\1\12\1\13\2\42\1\10\3\42\1"+
             "\32\1\37\1\7\1\16\1\42\1\15\1\11\1\36\2\42\1\14\3\42\u1fad\uffff"+
             "\2\43",
+            "",
+            "",
+            "",
             "\1\45",
-            "",
-            "",
-            "",
-            "\1\47",
+            "\1\46",
             "\1\50",
             "\1\51",
             "\1\53\7\uffff\1\52",
@@ -2283,9 +2286,9 @@ public class GremlinLexer extends Lexer {
             "",
             "",
             "",
-            "",
-            "",
             "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
+            "",
             "\1\102",
             "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
             "\2\42\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\2\42"+
