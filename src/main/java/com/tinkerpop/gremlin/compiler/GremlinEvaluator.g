@@ -432,36 +432,6 @@ function_call returns [Atom value]
         }
 	;
 
-/*
-collection returns [Operation op]
-    @init {
-        Atom<Object> root = null;
-        List<Pipe> pipes = new ArrayList<Pipe>();
-        List<Operation> predicates = new ArrayList<Operation>();
-    }
-    : ^(COLLECTION_CALL ^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )+ )))
-    {
-        final Atom tokenAtom = $token.atom;
-        final PathLibrary paths = this.context.getPathLibrary();
-
-        if (tokenAtom != null) {
-            if (tokenAtom instanceof DynamicEntity) {
-                root = tokenAtom;
-            } else if (paths.isPath(tokenAtom.toString())) {
-                pipes.addAll(paths.getPath(tokenAtom.toString()));
-                root = this.getVariable(Tokens.ROOT_VARIABLE);
-            } else {
-                root = tokenAtom;
-            }
-
-            pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
-        }
-        
-        $op = new GPathOperation(pipes, root, this.context);
-    }
-    ;
-*/
-
 atom returns [Atom value]
 	:   ^(INT G_INT)                                                { $value = new Atom<Integer>(new Integer($G_INT.text)); }
 	|   ^(LONG G_LONG)                                              {
