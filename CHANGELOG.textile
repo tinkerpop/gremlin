@@ -33,6 +33,8 @@ bc. <dependency>
 ** Added @g:version()@ function to retrieve version information
 ** Added @g:group()@ to replace @()@ model in Gremlin 0.2.2
 * Print stream can be dynamically set in @GremlinScriptContext@
+* true(), false(), and null() are now keywords--true, false, null
+* String concatenation is supported with the + operation
 
 ==<hr/>==
 
