@@ -68,14 +68,14 @@ public class FromJsonFunctionTest extends BaseTest {
         Function<Object> function = new FromJsonFunction();
 
         this.stopWatch();
-        Object object = function.compute(createUnaryArgs("{\"key1\":[1,2,3], \"key2\":\"marko\"}"), context).getValue();
+        Object object = function.compute(createUnaryArgs("{\"key1\":[1,2.0,true], \"key2\":\"marko\"}"), context).getValue();
         printPerformance(function.getFunctionName() + " function", 1, "evaluations - map", this.stopWatch());
         assertTrue(object instanceof Map);
         Map map = (Map) object;
         List array = (List) map.get("key1");
         assertEquals(array.get(0), 1l);
-        assertEquals(array.get(1), 2l);
-        assertEquals(array.get(2), 3l);
+        assertEquals(array.get(1), 2.0d);
+        assertEquals(array.get(2), true);
         assertEquals(map.get("key2"), "marko");
     }
 

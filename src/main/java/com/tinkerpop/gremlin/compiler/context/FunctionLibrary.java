@@ -14,9 +14,19 @@ public class FunctionLibrary extends HashMap<String, Functions> {
 
     public FunctionLibrary() {
         final ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
-        
+
         for (final Functions functions : functionsService) {
             this.registerFunctions(functions);
+        }
+    }
+
+    public void loadFunctions(final String functionsClassName) throws RuntimeException {
+        try {
+            Class functionsClass = Class.forName(functionsClassName);
+            Functions functions = (Functions) functionsClass.getConstructor().newInstance();
+            this.registerFunctions(functions);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to load " + functionsClassName);
         }
     }
 

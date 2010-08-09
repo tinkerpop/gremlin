@@ -36,6 +36,7 @@ bc. <dependency>
 * true(), false(), and null() are now keywords--true, false, null
 * String concatenation is supported with the + operation
 * Range filter support through @[1..10]@ type syntax
+* Test cases now provide performance statistics
 
 ==<hr/>==
 

@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.pipes.PipeHelper;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,10 +29,10 @@ public class IntersectFunction extends AbstractFunction<Iterable> {
                 if (object instanceof Iterable) {
                     if (null == set) {
                         set = new HashSet();
-                        fillCollection(set, ((Iterable) object).iterator());
+                        PipeHelper.fillCollection(((Iterable) object).iterator(), set);
                     } else {
                         Set temp = new HashSet();
-                        fillCollection(temp, ((Iterable) object).iterator());
+                        PipeHelper.fillCollection(((Iterable) object).iterator(), temp);
                         set.retainAll(temp);
                     }
                 } else {

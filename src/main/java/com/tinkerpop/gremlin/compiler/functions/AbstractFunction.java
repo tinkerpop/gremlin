@@ -22,12 +22,6 @@ public abstract class AbstractFunction<T> implements Function<T> {
         return list;
     }
 
-    protected static void fillCollection(Collection collection, Iterator itty) {
-        while (itty.hasNext()) {
-            collection.add(itty.next());
-        }
-    }
-
     protected String createUnsupportedArgumentMessage() {
         return UNSUPPORTED_MESSAGE + this.getFunctionName() + " function";
     }
