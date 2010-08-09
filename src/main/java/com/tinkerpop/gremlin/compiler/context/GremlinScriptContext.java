@@ -49,4 +49,12 @@ public class GremlinScriptContext extends SimpleScriptContext {
             throw new RuntimeException(e);
         }
     }
+
+    public void writeError(String message) throws RuntimeException {
+        try {
+            this.getErrorWriter().write(message + "\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

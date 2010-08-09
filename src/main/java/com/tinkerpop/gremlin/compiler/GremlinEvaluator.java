@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-09 14:31:19
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-09 23:29:44
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -3432,7 +3432,7 @@ public class GremlinEvaluator extends TreeParser {
                         try {
                             retval.value = new Func(this.getFunction((ns!=null?ns.getText():null), (fn_name!=null?fn_name.getText():null)), params, this.context);
                         } catch(Exception e) {
-                            System.err.println(e.getMessage());
+                            this.context.writeError(e.getMessage());
                         }
                     
 

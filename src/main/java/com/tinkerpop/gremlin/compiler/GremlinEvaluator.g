@@ -427,7 +427,7 @@ function_call returns [Atom value]
             try {
                 $value = new Func(this.getFunction($ns.text, $fn_name.text), params, this.context);
             } catch(Exception e) {
-                System.err.println(e.getMessage());
+                this.context.writeError(e.getMessage());
             }
         }
 	;

@@ -48,7 +48,8 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
             // evaluate script
             result = this.evaluate(script, (GremlinScriptContext) context);
-            // flushing output stream
+            
+            // flushing output streams
             context.getWriter().flush();
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());

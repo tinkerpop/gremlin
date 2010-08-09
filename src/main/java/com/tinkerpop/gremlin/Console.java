@@ -94,6 +94,7 @@ public class Console {
             try {
                 engine.eval(line, context);
             } catch (Exception e) {
+                context.getErrorWriter().flush();
                 System.err.println(e.getMessage());
                 //e.printStackTrace();
             }
