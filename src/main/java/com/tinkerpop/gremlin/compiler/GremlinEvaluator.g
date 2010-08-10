@@ -70,6 +70,7 @@ options {
     public  static boolean EMBEDDED = false;
 
     private boolean isGPath = false;
+    private int gpathScope = 0;
 
     private Pattern rangePattern = Pattern.compile("^(\\d+)..(\\d+)");
 
@@ -169,7 +170,7 @@ options {
         if (token instanceof DynamicEntity) {
             return token;
         } else if (token.isIdentifier() && token.getValue().equals(".")) {
-            return this.getVariable(Tokens.ROOT_VARIABLE);
+            return (gpathScope > 1) ? new Id<String>(".") : this.getVariable(Tokens.ROOT_VARIABLE);
         } else if(paths.isPath(token.toString())) {
             return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
         } else {
@@ -298,10 +299,12 @@ gpath_statement returns [Atom value]
     }
     @init {
         isGPath = true;
+        gpathScope++;
         $gpath_statement::steps = new LinkedHashMap<Atom<Object>, List<Operation>>();
     }
     @after {
         isGPath = false;
+        gpathScope--;
     }
 	:	^(GPATH (step)+) 
         {

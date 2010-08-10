@@ -19,9 +19,10 @@ import java.util.Set;
  */
 final public class GPath extends DynamicEntity implements Iterable {
 
-    private final List<Pipe> pipes;
     private final Atom<Object> root;
     private Object persistentRoot = null;
+    
+    private final List<Pipe> pipes;
     private Pipeline pipeline;
     private final Set<Object> previouslyFetched;
 
@@ -107,6 +108,16 @@ final public class GPath extends DynamicEntity implements Iterable {
 
     public List<Pipe> getPipes() {
         return this.pipes;
+    }
+
+    /**
+     * This method should be used only inside of Pipes
+     * @param point "pointer to the updated root" 
+     */
+    public void setRoot(Object point) {
+        if (root.isIdentifier() && root.toString().equals(".")) {
+            this.persistentRoot = point;
+        }
     }
     
     public String toString() {

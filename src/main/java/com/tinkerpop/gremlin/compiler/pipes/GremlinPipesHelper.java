@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 import com.tinkerpop.gremlin.compiler.types.Func;
 import com.tinkerpop.gremlin.compiler.types.Range;
 import com.tinkerpop.pipes.IdentityPipe;
@@ -116,46 +117,9 @@ public class GremlinPipesHelper {
 
             final Atom operandA = operands[0].compute();
             final Atom operandB = operands[1].compute();
-
-            /* is there are any functions in operands? */
-            if (operandA instanceof Func || operandB instanceof Func) {
-                Func functionCall = null;
-                
-                Function function;
-                List<Operation> parameters;
-                List<Integer> pipeObjectIndices;
-                Object objectProperty = null;
-
-                if (operandA instanceof Func) {
-                    functionCall = (Func) operandA;
-                    objectProperty = operandB.getValue();
-                }
-
-                if (operandB instanceof Func) {
-                    functionCall = (Func) operandB;
-                    objectProperty = operandA.getValue();
-                }
-
-                function = functionCall.getFunction();
-                parameters = functionCall.getParameters();
-                pipeObjectIndices = functionCall.pipeObjectIndicesInFunctionParams();
-
-                Filter filter = null;
-
-                if (predicate instanceof Equality)
-                    filter = Filter.NOT_EQUAL;
-                else if (predicate instanceof UnEquality)
-                    filter = Filter.EQUAL;
-                else if (predicate instanceof GreaterThan)
-                    filter = Filter.LESS_THAN;
-                else if (predicate instanceof GreaterThanOrEqual)
-                    filter = Filter.LESS_THAN_EQUAL;
-                else if (predicate instanceof LessThan)
-                    filter = Filter.GREATER_THAN;
-                else if (predicate instanceof LessThanOrEqual)
-                    filter = Filter.GREATER_THAN_EQUAL;
-
-                return new FunctionComparisonFilterPipe(function, parameters, pipeObjectIndices, filter, objectProperty, context);
+    
+            if (operandA instanceof DynamicEntity || operandB instanceof DynamicEntity) {
+                return new GremlinObjectFilterPipe(operandA, operandB, context);   
             }
             
             final String key = (String) operandA.getValue();
