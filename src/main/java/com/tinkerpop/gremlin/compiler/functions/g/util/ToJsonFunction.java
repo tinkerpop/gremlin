@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class ToJsonFunction extends AbstractFunction<String> {
 
-    public static final String FUNCTION_NAME = "to-json";
+    private static final String FUNCTION_NAME = "to-json";
     private static final String _ID = "_id";
     private static final String _PROPERTIES = "_properties";
     private static final String _TYPE = "_type";

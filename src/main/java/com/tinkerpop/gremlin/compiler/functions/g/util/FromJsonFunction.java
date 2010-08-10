@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class FromJsonFunction extends AbstractFunction<Object> {
 
-    public static final String FUNCTION_NAME = "from-json";
+    private static final String FUNCTION_NAME = "from-json";
     private static final JSONParser parser = new JSONParser();
 
     public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
