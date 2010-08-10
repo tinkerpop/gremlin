@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.compiler.pipes;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.PathLibrary;
-import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
@@ -27,7 +26,7 @@ import java.util.List;
  * @author Pavel A. Yaskevich
  */
 public class GremlinPipesHelper {
-    
+
     public static List<Pipe> pipesForStep(final Atom token, final List<Operation> predicates, final GremlinScriptContext context) throws RuntimeException {
         final List<Pipe> pipes = new ArrayList<Pipe>();
         final String tokenString = (String) token.getValue();
@@ -38,7 +37,7 @@ public class GremlinPipesHelper {
             pipes.add(tokenPipe);
         } else {
             PathLibrary paths = context.getPathLibrary();
-            
+
             if (paths.isPath(tokenString)) {
                 pipes.addAll(paths.getPath(tokenString));
             } else {
@@ -115,13 +114,31 @@ public class GremlinPipesHelper {
             else if (predicate instanceof Or)
                 return orFilterPipe(context, operands);
 
+            Filter filter;
+
+            if (predicate instanceof Equality) {
+                filter = Filter.NOT_EQUAL;
+            } else if (predicate instanceof UnEquality) {
+                filter = Filter.EQUAL;
+            } else if (predicate instanceof GreaterThan) {
+                filter = Filter.LESS_THAN;
+            } else if (predicate instanceof GreaterThanOrEqual) {
+                filter = Filter.LESS_THAN_EQUAL;
+            } else if (predicate instanceof LessThan) {
+                filter = Filter.GREATER_THAN;
+            } else if (predicate instanceof LessThanOrEqual) {
+                filter = Filter.GREATER_THAN_EQUAL;
+            } else {
+                throw new RuntimeException("Unknown predicate type");
+            }
+
             final Atom operandA = operands[0].compute();
             final Atom operandB = operands[1].compute();
-    
+
             if (operandA instanceof DynamicEntity || operandB instanceof DynamicEntity) {
-                return new GremlinObjectFilterPipe(operandA, operandB, context);   
+                return new DynamicObjectFilterPipe(operandA, operandB, filter, context);
             }
-            
+
             final String key = (String) operandA.getValue();
 
             final Object storedObject;
@@ -131,24 +148,7 @@ public class GremlinPipesHelper {
             else
                 storedObject = (operandB.isNull()) ? null : operandB.getValue();
 
-            if (predicate instanceof Equality)
-                return propertyFilterPipe(key, storedObject, Filter.NOT_EQUAL);
-
-            if (predicate instanceof UnEquality)
-                return propertyFilterPipe(key, storedObject, Filter.EQUAL);
-
-            if (predicate instanceof GreaterThan)
-                return propertyFilterPipe(key, storedObject, Filter.LESS_THAN);
-
-            if (predicate instanceof GreaterThanOrEqual)
-                return propertyFilterPipe(key, storedObject, Filter.LESS_THAN_EQUAL);
-
-            if (predicate instanceof LessThan)
-                return propertyFilterPipe(key, storedObject, Filter.GREATER_THAN);
-
-            if (predicate instanceof LessThanOrEqual)
-                return propertyFilterPipe(key, storedObject, Filter.GREATER_THAN_EQUAL);
-
+            return propertyFilterPipe(key, storedObject, filter);
         } else {
             // unary operation like var def or premitive type
             final UnaryOperation operation = (UnaryOperation) predicate;

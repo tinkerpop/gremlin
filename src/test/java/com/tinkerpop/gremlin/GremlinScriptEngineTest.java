@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -215,14 +216,16 @@ public class GremlinScriptEngineTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
         assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
         assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
-        // TODO: make sure these all work
-        /*
-        evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign('$x',.)]", context, true);
-        assertEquals(context.getVariableByName("x").getValue(), 3);
-        //evaluateGremlinScriptPrimitive("g:group(g:list(1,2,3))[g:assign('$x',.)]", context, true);
-        //assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
 
-        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
+        evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign($x,.)]", context, true);
+        //assertEquals(context.getVariableByName("$x").getValue(), 3);
+        evaluateGremlinScriptPrimitive("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
+        assertEquals(context.getVariableByName("$x").getValue().getClass(), ArrayList.class);
+        assertEquals(((List)context.getVariableByName("$x").getValue()).get(0), 1);
+        assertEquals(((List)context.getVariableByName("$x").getValue()).get(1), 2);
+        assertEquals(((List)context.getVariableByName("$x").getValue()).get(2), 3);
+
+        /*List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
         assertEquals(results.size(), 2);
         assertTrue(results.contains(2));
         assertTrue(results.contains(3));
@@ -235,10 +238,10 @@ public class GremlinScriptEngineTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
         context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
-        // TODO: make sure these all work
-        /*assertEquals(count(evaluateGremlinScriptIterable("./outE[./@label = 'knows']", context, true)), 3);
+        assertEquals(count(evaluateGremlinScriptIterable("./outE[./@label = 'knows']", context, true)), 2);
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV[@name = 'vadas']/@name = 'vadas']/inV/@name", context, true), "vadas");
-        */
+        assertEquals(evaluateGremlinScriptPrimitive(".[g:count(./outE/inV/@name) = 3l]/@name", context, true), "marko");
+        // TODO: assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age > 2]/@name", context, true), "marko");
     }
 }

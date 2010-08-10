@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class GremlinScriptContext extends SimpleScriptContext {
 
-    // used by GremlinObjectFilterPipe & GremlinObjectFilterPipe
+    // used by DynamicObjectFilterPipe & DynamicObjectFilterPipe
     private Object currentPoint;
     
     protected VariableLibrary variables;

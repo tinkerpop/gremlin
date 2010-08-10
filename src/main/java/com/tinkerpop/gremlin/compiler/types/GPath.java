@@ -17,20 +17,20 @@ import java.util.Set;
 /**
  * @author Pavel A. Yaskevich
  */
-final public class GPath extends DynamicEntity implements Iterable {
+final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
     private final Atom<Object> root;
     private Object persistentRoot = null;
-    
+
     private final List<Pipe> pipes;
     private Pipeline pipeline;
     private final Set<Object> previouslyFetched;
 
     public GPath(final Atom<Object> root, final List<Pipe> pipes, final GremlinScriptContext context) {
-        this.root  = root;
+        this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
-        
+
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
                 final VariableLibrary variables = context.getVariableLibrary();
@@ -43,7 +43,7 @@ final public class GPath extends DynamicEntity implements Iterable {
         Object top;
         Iterator pipeline = this.iterator();
 
-        if(pipeline.hasNext())
+        if (pipeline.hasNext())
             top = pipeline.next();
         else
             return null;
@@ -54,9 +54,9 @@ final public class GPath extends DynamicEntity implements Iterable {
         } else
             return top;
     }
-    
+
     public Iterator iterator() {
-        for(Pipe p : this.pipes) {
+        for (Pipe p : this.pipes) {
             if (p instanceof GremlinRangeFilterPipe) {
                 ((GremlinRangeFilterPipe) p).reset();
             }
@@ -65,22 +65,30 @@ final public class GPath extends DynamicEntity implements Iterable {
         if (this.pipeline == null || !this.pipeline.hasNext()) {
             this.pipeline = new Pipeline(this.pipes);
             this.pipeline.setStarts(this.pipelineRoot());
-        } else if (this.pipeline.hasNext()) { 
+        } else if (this.pipeline.hasNext()) {
             return new MultiIterator<Object>(this.previouslyFetched.iterator(), pipeline);
         }
-        
+
         return this.pipeline;
     }
-    
+
     private Iterator pipelineRoot() {
         final Object root = (persistentRoot == null) ? this.root.getValue() : this.persistentRoot;
-        
+
         if (root instanceof Iterable) {
             return ((Iterable) root).iterator();
         } else if (root instanceof Iterator) {
             return (Iterator) root;
         } else {
             return new SingleIterator<Object>(root);
+        }
+    }
+
+    public int compareTo(Object object) {
+        if (object instanceof Comparable) {
+            return ((Comparable) object).compareTo(this.iterator().next());
+        } else {
+            return 0;
         }
     }
 
@@ -102,7 +110,7 @@ final public class GPath extends DynamicEntity implements Iterable {
             if (itty.hasNext()) return false;
         } else
             return super.equals(o);
-        
+
         return true;
     }
 
@@ -112,17 +120,18 @@ final public class GPath extends DynamicEntity implements Iterable {
 
     /**
      * This method should be used only inside of Pipes
-     * @param point "pointer to the updated root" 
+     *
+     * @param point "pointer to the updated root"
      */
     public void setRoot(Object point) {
         if (root.isIdentifier() && root.toString().equals(".")) {
             this.persistentRoot = point;
         }
     }
-    
+
     public String toString() {
         String result = "";
-        
+
         for (Object o : this)
             result += o.toString() + ", ";
 

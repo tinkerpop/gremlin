@@ -31,7 +31,7 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
     }
 
     public S processNextStart() {
-        while (this.starts.hasNext()) {
+        while (true) {
             S s = this.starts.next();
             if (null != pipeObjectIndices) {
                 for (Integer index : this.pipeObjectIndices)
@@ -42,6 +42,5 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
                 return s;
             }
         }
-        throw new NoSuchElementException();
     }
 }
