@@ -11,6 +11,9 @@ import java.io.IOException;
  */
 public class GremlinScriptContext extends SimpleScriptContext {
 
+    // used by GremlinObjectFilterPipe & GremlinObjectFilterPipe
+    private Object currentPoint;
+    
     protected VariableLibrary variables;
 
     protected final FunctionLibrary functions;
@@ -57,4 +60,13 @@ public class GremlinScriptContext extends SimpleScriptContext {
             throw new RuntimeException(e);
         }
     }
+
+    public void setCurrentPoint(Object point) {
+        this.currentPoint = point;
+    }
+
+    public Object getCurrentPoint() {
+        return this.currentPoint;
+    }
+    
 }
