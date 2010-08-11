@@ -32,8 +32,8 @@ public class DynamicObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, 
 
             final Object leftValue = getSideValue(this.leftHandSide);
             final Object rightValue = getSideValue(this.rightHandSide);
-
-            if (this.compareObjects(leftValue, rightValue)) {
+            
+            if (!this.compareObjects(leftValue, rightValue)) {
                 return s;
             }
         }

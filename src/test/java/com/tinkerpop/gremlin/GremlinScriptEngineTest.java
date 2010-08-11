@@ -8,7 +8,6 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -226,14 +225,30 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
         assertEquals(((List)context.getVariableByName("x").getValue()).get(0), 1);
         assertEquals(((List)context.getVariableByName("x").getValue()).get(1), 2);
-        assertEquals(((List)context.getVariableByName("x").getValue()).get(2), 3);
+        assertEquals(((List)context.getVariableByName("x").getValue()).get(2), 3);*/
 
-        /*List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
+        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
         assertEquals(results.size(), 2);
-        assertTrue(results.contains(2));
-        assertTrue(results.contains(3));
-        */
+        assertEquals(results.get(0), new Integer(2));
+        assertEquals(results.get(1), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. >= 2]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(2));
+        assertEquals(results.get(1), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. >= 1]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+        assertEquals(results.get(2), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. < 3]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
     }
+
 
     public void testGPathInExpressionGraph() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
@@ -245,6 +260,6 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV[@name = 'vadas']/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive(".[g:count(./outE/inV/@name) = 3l]/@name", context, true), "marko");
-        // TODO: assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age > 2]/@name", context, true), "marko");
+        // TODO make word: assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age >= 27]/@name", context, true), "marko");
     }
 }

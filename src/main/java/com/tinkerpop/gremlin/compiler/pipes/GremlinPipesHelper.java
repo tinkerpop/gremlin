@@ -121,15 +121,15 @@ public class GremlinPipesHelper {
             } else if (predicate instanceof UnEquality) {
                 filter = Filter.EQUAL;
             } else if (predicate instanceof GreaterThan) {
-                filter = Filter.LESS_THAN;
-            } else if (predicate instanceof GreaterThanOrEqual) {
                 filter = Filter.LESS_THAN_EQUAL;
+            } else if (predicate instanceof GreaterThanOrEqual) {
+                filter = Filter.LESS_THAN;
             } else if (predicate instanceof LessThan) {
-                filter = Filter.GREATER_THAN;
-            } else if (predicate instanceof LessThanOrEqual) {
                 filter = Filter.GREATER_THAN_EQUAL;
+            } else if (predicate instanceof LessThanOrEqual) {
+                filter = Filter.GREATER_THAN;
             } else {
-                throw new RuntimeException("Unknown predicate type");
+                throw new RuntimeException("Unknown relation");
             }
 
             final Atom operandA = operands[0].compute();
