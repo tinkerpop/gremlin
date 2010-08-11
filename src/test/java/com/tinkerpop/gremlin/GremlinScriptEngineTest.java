@@ -217,13 +217,16 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
         assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
 
-        evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign($x,.)]", context, true);
+        /*evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign($x,.)]", context, true);
         //assertEquals(context.getVariableByName("$x").getValue(), 3);
-        evaluateGremlinScriptPrimitive("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
-        assertEquals(context.getVariableByName("$x").getValue().getClass(), ArrayList.class);
-        assertEquals(((List)context.getVariableByName("$x").getValue()).get(0), 1);
-        assertEquals(((List)context.getVariableByName("$x").getValue()).get(1), 2);
-        assertEquals(((List)context.getVariableByName("$x").getValue()).get(2), 3);
+        List results = evaluateGremlinScriptIterable("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
+        assertEquals(((List)context.getVariableByName("x").getValue()).get(0), 1);
+        assertEquals(((List)context.getVariableByName("x").getValue()).get(1), 2);
+        assertEquals(((List)context.getVariableByName("x").getValue()).get(2), 3);
 
         /*List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
         assertEquals(results.size(), 2);
