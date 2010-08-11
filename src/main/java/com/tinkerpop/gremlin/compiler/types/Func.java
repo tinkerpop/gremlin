@@ -14,53 +14,33 @@ import java.util.List;
 public class Func extends DynamicEntity {
 
     private final Function function;
-    private final List<Operation> parameters;
+    private List<Operation> arguments;
     private final GremlinScriptContext context;
     
-    public Func(final Function function, final List<Operation> parameters, final GremlinScriptContext context) {
+    public Func(final Function function, final List<Operation> arguments, final GremlinScriptContext context) {
         this.function = function;
-        this.parameters = parameters;
+        this.arguments = arguments;
         this.context = context;
     }
 
     protected Object value() {
-        return function.compute(parameters, context).getValue();
+        return function.compute(this.arguments, this.context).getValue();
     }
 
     public Function getFunction() {
         return function;
     }
 
-    public List<Operation> getParameters() {
-        return parameters;
+    public List<Operation> getArguments() {
+        return arguments;
     }
 
+    public GremlinScriptContext getContext() {
+        return this.context;
+    }
+    
     public int hashCode() {
         return this.function.hashCode();   
     }
 
-    /*
-     * Used to return positions of "." identifiers in function params
-     */
-    public List<Integer> pipeObjectIndicesInFunctionParams() {
-        List<Integer> pipeObjectIndices = new ArrayList<Integer>();
-
-        int position = 0;
-        for (Operation parameter : parameters) {
-            Atom atom = parameter.compute();
-
-            if (atom.isIdentifier()) {
-                String token = atom.getValue().toString();
-
-                if (token.equals(".")) {
-                    pipeObjectIndices.add(position);
-                }
-            }
-
-            position++;
-        }
-
-        return pipeObjectIndices;
-    }
-    
 }

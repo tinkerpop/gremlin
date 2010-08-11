@@ -7,10 +7,7 @@ import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
-import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
-import com.tinkerpop.gremlin.compiler.types.Func;
-import com.tinkerpop.gremlin.compiler.types.Range;
+import com.tinkerpop.gremlin.compiler.types.*;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
@@ -136,7 +133,7 @@ public class GremlinPipesHelper {
             final Atom operandB = operands[1].compute();
 
             if (operandA instanceof DynamicEntity || operandB instanceof DynamicEntity) {
-                return new DynamicObjectFilterPipe(operandA, operandB, filter, context);
+                return new DynamicPredicateFilterPipe(operandA, operandB, filter, context);
             }
 
             final String key = (String) operandA.getValue();
@@ -157,7 +154,7 @@ public class GremlinPipesHelper {
 
             if (unaryAtom instanceof Func) {
                 Func functionCall = (Func) unaryAtom;
-                return new FunctionFilterPipe(functionCall.getFunction(), functionCall.getParameters(), functionCall.pipeObjectIndicesInFunctionParams(), context);
+                return new FunctionFilterPipe(functionCall.getFunction(), functionCall.getArguments(), context);
             }
 
             if (unaryAtom.isNumber()) {
@@ -203,5 +200,46 @@ public class GremlinPipesHelper {
         } else {
             return new PropertyFilterPipe(key, storedObject, filter);
         }
+    }
+
+    public static List<Operation> updateArguments(final List<Operation> currentArguments, final Object currentIterationPoint) {
+        List<Operation> arguments = new ArrayList<Operation>();
+
+        for (Operation argumentOperation : currentArguments) {
+            final Atom argument = argumentOperation.compute();
+
+            if (argument instanceof DynamicEntity) {
+                Operation operation = null;
+                
+                if (argument instanceof Var) {
+                    final String name = ((Var) argument).getVariableName();
+
+                    if (name.equals(".")) {
+                        final Atom<Object> currentPoint = new Atom<Object>(currentIterationPoint);
+                        operation = new UnaryOperation(currentPoint);
+                    } else {
+                        operation = argumentOperation;
+                    }
+                } else if (argument instanceof GPath) {
+                    final GPath path = (GPath) argument;
+                    path.setRoot(currentIterationPoint);
+                    
+                    operation = new UnaryOperation(path);
+                } else if (argument instanceof Func) {
+                    final Func function = (Func) argument;
+                    final List<Operation> functionArguments = function.getArguments();
+                    final List<Operation> newArguments = updateArguments(functionArguments, currentIterationPoint);
+                    final Func replacement = new Func(function.getFunction(), newArguments, function.getContext());
+                    
+                    operation = new UnaryOperation(replacement);
+                }
+
+                arguments.add(operation);
+            } else {
+                arguments.add(argumentOperation);
+            }
+        }
+
+        return arguments;
     }
 }
