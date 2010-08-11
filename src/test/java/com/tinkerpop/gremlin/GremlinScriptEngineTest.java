@@ -36,8 +36,14 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(result, -1);
 
         // TODO: bad that substraction requires spacing.
-        //result = evaluateGremlinScriptPrimitive("1-2", context, true);
-        //assertEquals(result, -1);
+        /*result = evaluateGremlinScriptPrimitive("1-2", context, true);
+        assertEquals(result, -1);*/
+    }
+
+    public void testGPathInExpression() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
     }
 
     public void testBasicGraphStatements() throws Exception {
@@ -116,6 +122,66 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.size(), 2);
         name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("ripple") || name.equals("lop"));
+    }
+
+    public void testBasicListOperations() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(2));
+        assertEquals(results.get(1), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. >= 2]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(2));
+        assertEquals(results.get(1), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. >= 1]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+        assertEquals(results.get(2), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. < 3]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. = 1 or . = 2]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[. < 4 and . >= 2]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), new Integer(2));
+        assertEquals(results.get(1), new Integer(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[. < 3 or (. > 5 and . <= 7)]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+        assertEquals(results.get(2), new Integer(6));
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6,7,8)[. < 3 or (. > 5 and . <= 7 and . != 7) or . = 8]", context, true);
+        assertEquals(results.size(), 4);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+        assertEquals(results.get(2), new Integer(6));
+        assertEquals(results.get(3), new Integer(8));
+
+        /*evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign($x,.)]", context, true);
+       //assertEquals(context.getVariableByName("$x").getValue(), 3);
+       List results = evaluateGremlinScriptIterable("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
+       assertEquals(results.get(0), 1);
+       assertEquals(results.get(1), 2);
+       assertEquals(results.get(2), 3);
+       assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
+       assertEquals(((List)context.getVariableByName("x").getValue()).get(0), 1);
+       assertEquals(((List)context.getVariableByName("x").getValue()).get(1), 2);
+       assertEquals(((List)context.getVariableByName("x").getValue()).get(2), 3);*/
+
     }
 
     public void testEmbeddedListMaps() throws Exception {
@@ -210,45 +276,6 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(results.contains("12"));
 
     }
-
-    public void testGPathInExpression() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
-        assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
-
-        /*evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign($x,.)]", context, true);
-        //assertEquals(context.getVariableByName("$x").getValue(), 3);
-        List results = evaluateGremlinScriptIterable("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
-        assertEquals(results.get(0), 1);
-        assertEquals(results.get(1), 2);
-        assertEquals(results.get(2), 3);
-        assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
-        assertEquals(((List)context.getVariableByName("x").getValue()).get(0), 1);
-        assertEquals(((List)context.getVariableByName("x").getValue()).get(1), 2);
-        assertEquals(((List)context.getVariableByName("x").getValue()).get(2), 3);*/
-
-        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[. > 1]", context, true);
-        assertEquals(results.size(), 2);
-        assertEquals(results.get(0), new Integer(2));
-        assertEquals(results.get(1), new Integer(3));
-
-        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. >= 2]", context, true);
-        assertEquals(results.size(), 2);
-        assertEquals(results.get(0), new Integer(2));
-        assertEquals(results.get(1), new Integer(3));
-
-        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. >= 1]", context, true);
-        assertEquals(results.size(), 3);
-        assertEquals(results.get(0), new Integer(1));
-        assertEquals(results.get(1), new Integer(2));
-        assertEquals(results.get(2), new Integer(3));
-
-        results = evaluateGremlinScriptIterable("g:list(1,2,3)[. < 3]", context, true);
-        assertEquals(results.size(), 2);
-        assertEquals(results.get(0), new Integer(1));
-        assertEquals(results.get(1), new Integer(2));
-    }
-
 
     public void testGPathInExpressionGraph() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
