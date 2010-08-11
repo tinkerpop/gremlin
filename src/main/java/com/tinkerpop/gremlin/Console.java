@@ -3,7 +3,10 @@ package com.tinkerpop.gremlin;
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import jline.ConsoleReader;
+import jline.History;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 
 /**
@@ -15,7 +18,9 @@ public class Console {
     private static final String QUIT = "quit";
     private static final String INDENT = "\t   ";
     private static final String THREE_SPACES = "   ";
-
+    private static final String HISTORY_FILE = ".gremlin_history";
+    private static final String HISTORY_ERROR = "Error: Can't set history file to " + HISTORY_FILE;
+    
     private static final String[] compoundStatements = {"if", "while", "repeat", "foreach", "func", "path"};
 
     public static void main(String[] args) throws Exception {
@@ -27,6 +32,15 @@ public class Console {
 
         final ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
+        reader.setUseHistory(true);
+        
+        try {
+            History history = new History();
+            history.setHistoryFile(new File(HISTORY_FILE));
+            reader.setHistory(history);
+        } catch (IOException e) {
+            System.err.println(HISTORY_ERROR);
+        }
 
         output.println();
         output.println("         \\,,,/");
@@ -34,7 +48,7 @@ public class Console {
         output.println("-----oOOo-(_)-oOOo-----");
 
         String line = "";
-        String prompt = "";
+        String prompt;
 
         int codeDepth = 0;
 
