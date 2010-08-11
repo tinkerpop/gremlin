@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-10 23:22:04
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-11 14:35:37
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -293,7 +293,7 @@ public class GremlinEvaluator extends TreeParser {
             if (token instanceof DynamicEntity) {
                 return token;
             } else if (token.isIdentifier() && token.getValue().equals(".")) {
-                return (gpathScope > 1) ? new Id<String>(".") : this.getVariable(Tokens.ROOT_VARIABLE);
+                return (gpathScope > 1) ? new Var(Tokens.IDENTITY, this.context) : this.getVariable(Tokens.ROOT_VARIABLE);
             } else if(paths.isPath(token.toString())) {
                 return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
             } else {

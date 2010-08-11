@@ -4,7 +4,7 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.GPath;
-import com.tinkerpop.gremlin.compiler.types.Id;
+import com.tinkerpop.gremlin.compiler.types.Var;
 import com.tinkerpop.pipes.filter.AbstractComparisonFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
 
@@ -33,7 +33,6 @@ public class DynamicObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, 
             final Object leftValue = getSideValue(this.leftHandSide);
             final Object rightValue = getSideValue(this.rightHandSide);
 
-
             if (this.compareObjects(leftValue, rightValue)) {
                 return s;
             }
@@ -41,10 +40,10 @@ public class DynamicObjectFilterPipe<S> extends AbstractComparisonFilterPipe<S, 
     }
 
     private Object getSideValue(final Atom side) {
-        if (side instanceof Id) {
-            Id identifier = (Id) side;
+        if (side instanceof Var) {
+            Var variable = (Var) side;
 
-            if (identifier.getValue().equals(Tokens.IDENTITY)) {
+            if (variable.getVariableName().equals(Tokens.IDENTITY)) {
                 return this.context.getCurrentPoint();
             }
         } else if (side instanceof GPath) {

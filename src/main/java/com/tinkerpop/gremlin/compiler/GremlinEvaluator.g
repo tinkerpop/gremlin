@@ -170,7 +170,7 @@ options {
         if (token instanceof DynamicEntity) {
             return token;
         } else if (token.isIdentifier() && token.getValue().equals(".")) {
-            return (gpathScope > 1) ? new Id<String>(".") : this.getVariable(Tokens.ROOT_VARIABLE);
+            return (gpathScope > 1) ? new Var(Tokens.IDENTITY, this.context) : this.getVariable(Tokens.ROOT_VARIABLE);
         } else if(paths.isPath(token.toString())) {
             return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
         } else {
