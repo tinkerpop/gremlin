@@ -55,8 +55,8 @@ public class Console {
         String compoundStatementParts = "";
         boolean inCompoundStatement = false;
 
-        final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
+        final GremlinScriptEngine engine = new GremlinScriptEngine(context);
         
         while (line != null) {
 

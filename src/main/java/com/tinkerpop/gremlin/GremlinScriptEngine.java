@@ -16,17 +16,35 @@ import javax.script.AbstractScriptEngine;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngineFactory;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 
 /**
  * @author Pavel A. Yaskevich
  */
 public class GremlinScriptEngine extends AbstractScriptEngine {
 
+    public static final String GREMLIN_RC_FILE = ".gremlinrc";
+
+    /**
+     * This constructor used only by GremlinScriptEngineFactory
+     * is you don't want to evaluate .gremlinrc file you can use it too
+     */
     public GremlinScriptEngine() {
+    }
+
+    /**
+     * This constructor used to initialize GremlinScriptEngine
+     * and to evaluate .gremlinrc file on its' start up
+     * @param context GremlinScriptContext
+     */
+    public GremlinScriptEngine(final GremlinScriptContext context) {
+        try {
+            this.eval(new FileReader(GREMLIN_RC_FILE), context);
+        } catch (FileNotFoundException e) {
+            // we do nothing if .gremlinrc is not found.
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Bindings createBindings() {
@@ -88,7 +106,9 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
         final CommonTree t = (CommonTree) r.getTree();
 
-        //System.out.println(t.toStringTree());
+        if (t.toStringTree().trim().isEmpty()) {
+            return null;
+        }
 
         final CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
         final GremlinEvaluator walker = new GremlinEvaluator(nodes, context);

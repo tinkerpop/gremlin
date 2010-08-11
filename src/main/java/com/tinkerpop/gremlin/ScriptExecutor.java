@@ -14,9 +14,9 @@ public class ScriptExecutor {
     public static void main(final String[] args) throws IOException {
         final PrintStream output = System.out;
 
-        final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
-        
+        final GremlinScriptEngine engine = new GremlinScriptEngine(context);
+
         if (args.length != 1) {
             output.println("Parameters: <path_to_grm_script>");
         } else {
