@@ -21,17 +21,20 @@ public class RetainFunctionTest extends BaseTest {
         assertTrue(list.contains("pavel"));
 
         this.stopWatch();
-        Atom<Boolean> atom = function.compute(createUnaryArgs("pavel", list), context);
+        context.setCurrentPoint(list);
+        Atom<Boolean> atom = function.compute(createUnaryArgs("pavel"), context);
         printPerformance(function.getFunctionName() + " function", 1, "list check", this.stopWatch());
         assertTrue(atom.getValue());
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("pavel", "pavel"), context);
+        context.setCurrentPoint("pavel");
+        atom = function.compute(createUnaryArgs("pavel"), context);
         printPerformance(function.getFunctionName() + " function", 1, "single object check", this.stopWatch());
         assertTrue(atom.getValue());
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("marko", list), context);
+        context.setCurrentPoint(list);
+        atom = function.compute(createUnaryArgs("marko"), context);
         printPerformance(function.getFunctionName() + " function", 1, "list check", this.stopWatch());
         assertFalse(atom.getValue());
 

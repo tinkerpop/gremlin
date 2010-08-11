@@ -210,6 +210,18 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][2]", context, true), "c");
     }
 
+    public void testEmbeddedFunctions() throws Exception {
+
+        assertTrue(true);
+        //GremlinScriptContext context = new GremlinScriptContext();
+        //List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(. > 1)]", context, true);
+        //assertEquals(results.size(), 3);
+        //assertEquals(results.get(0), new Integer(1));
+        //assertEquals(results.get(1), new Integer(2));
+        //assertEquals(results.get(2), new Integer(3));
+
+    }
+
     public void testIdAndLabelProperties() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
