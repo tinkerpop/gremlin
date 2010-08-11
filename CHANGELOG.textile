@@ -32,11 +32,13 @@ bc. <dependency>
 ** @g:key()@ changed to @g:key-v()@
 ** Added @g:version()@ function to retrieve version information
 ** Added @g:group()@ to replace @()@ model in Gremlin 0.2.2
-* Print stream can be dynamically set in @GremlinScriptContext@
+* Print streams can be dynamically set in @GremlinScriptContext@
 * true(), false(), and null() are now keywords--true, false, null
 * String concatenation is supported with the + operation
 * Range filter support through @[1..10]@ type syntax
+* Index of lists starts at 0 instead of 1 as in Gremlin 0.2.2
 * Test cases now provide performance statistics
+* Removed the 'show all aspects' * step (i.e. @./outE/inV/*@)
 
 ==<hr/>==
 
