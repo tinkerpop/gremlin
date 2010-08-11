@@ -15,9 +15,9 @@ public class BooleanFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "boolean";
 
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            Object object = arguments.get(0).compute().getValue();
             if (object instanceof Number) {
                 if (((Number) object).doubleValue() > 0)
                     return new Atom<Boolean>(true);

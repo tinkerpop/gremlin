@@ -16,13 +16,13 @@ public class AutoTransactionFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "auto-tx";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0, context);
-        if (parameters.size() == 1) {
-            graph.setAutoTransactions((Boolean) parameters.get(0).compute().getValue());
-        } else if (parameters.size() == 2) {
-            graph.setAutoTransactions((Boolean) parameters.get(1).compute().getValue());
+        final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(arguments, 0, context);
+        if (arguments.size() == 1) {
+            graph.setAutoTransactions((Boolean) arguments.get(0).compute().getValue());
+        } else if (arguments.size() == 2) {
+            graph.setAutoTransactions((Boolean) arguments.get(1).compute().getValue());
         } else {
             throw new RuntimeException(createUnsupportedArgumentMessage());
         }

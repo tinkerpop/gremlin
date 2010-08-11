@@ -19,13 +19,13 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final int size = parameters.size();
+        final int size = arguments.size();
         if (size == 0) {
             return new Atom<Graph>(new SailGraph(new MemoryStore()));
         } else if (size == 1) {
-            return new Atom<Graph>(new SailGraph(new NativeStore(new File((String) parameters.get(0).compute().getValue()))));
+            return new Atom<Graph>(new SailGraph(new NativeStore(new File((String) arguments.get(0).compute().getValue()))));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

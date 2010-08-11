@@ -15,9 +15,9 @@ public class NotFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "not";
 
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            return new Atom<Boolean>(!((Boolean) parameters.get(0).compute().getValue()));
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            return new Atom<Boolean>(!((Boolean) arguments.get(0).compute().getValue()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage("One boolean argument required"));
         }

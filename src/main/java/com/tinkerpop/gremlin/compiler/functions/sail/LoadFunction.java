@@ -18,31 +18,31 @@ public class LoadFunction extends AbstractFunction<Boolean> {
     private final String FUNCTION_NAME = "load";
     private final String EMPTY_STRING = "";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final int size = parameters.size();
-        final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0, context);
+        final int size = arguments.size();
+        final SailGraph graph = (SailGraph) FunctionHelper.getGraph(arguments, 0, context);
 
         final String file;
         final String format;
         final String baseGraph;
 
         if (size == 2) {
-            file = (String) parameters.get(0).compute().getValue();
-            format = (String) parameters.get(1).compute().getValue();
+            file = (String) arguments.get(0).compute().getValue();
+            format = (String) arguments.get(1).compute().getValue();
             baseGraph = null;
-        } else if (size == 3 && parameters.get(0).compute().getValue() instanceof SailGraph) {
-            file = (String) parameters.get(1).compute().getValue();
-            format = (String) parameters.get(2).compute().getValue();
+        } else if (size == 3 && arguments.get(0).compute().getValue() instanceof SailGraph) {
+            file = (String) arguments.get(1).compute().getValue();
+            format = (String) arguments.get(2).compute().getValue();
             baseGraph = null;
         } else if (size == 3) {
-            file = (String) parameters.get(0).compute().getValue();
-            format = (String) parameters.get(1).compute().getValue();
-            baseGraph = (String) parameters.get(2).compute().getValue();
+            file = (String) arguments.get(0).compute().getValue();
+            format = (String) arguments.get(1).compute().getValue();
+            baseGraph = (String) arguments.get(2).compute().getValue();
         } else if (size == 4) {
-            file = (String) parameters.get(1).compute().getValue();
-            format = (String) parameters.get(2).compute().getValue();
-            baseGraph = (String) parameters.get(3).compute().getValue();
+            file = (String) arguments.get(1).compute().getValue();
+            format = (String) arguments.get(2).compute().getValue();
+            baseGraph = (String) arguments.get(3).compute().getValue();
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

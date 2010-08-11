@@ -18,12 +18,12 @@ public class SortFunction extends AbstractFunction<Object> {
     private static final String KEY = "key";
     private static final String KEY_VALUE_ERROR = "Must specify whether to sort by key or by value";
 
-    public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 2) {
             // sort iterable
-            final Iterable iterable = (Iterable) parameters.get(0).compute().getValue();
-            final Boolean reverse = (Boolean) parameters.get(1).compute().getValue();
+            final Iterable iterable = (Iterable) arguments.get(0).compute().getValue();
+            final Boolean reverse = (Boolean) arguments.get(1).compute().getValue();
             final List sortedList = new ArrayList();
             FunctionHelper.fillCollection(iterable, sortedList);
             Collections.sort(sortedList);
@@ -32,9 +32,9 @@ public class SortFunction extends AbstractFunction<Object> {
             return new Atom<Object>(sortedList);
         } else if (size == 3) {
             // sort map
-            final Map map = (Map) parameters.get(0).compute().getValue();
-            final String keyOrValue = (String) parameters.get(1).compute().getValue();
-            final Boolean reverse = (Boolean) parameters.get(2).compute().getValue();
+            final Map map = (Map) arguments.get(0).compute().getValue();
+            final String keyOrValue = (String) arguments.get(1).compute().getValue();
+            final Boolean reverse = (Boolean) arguments.get(2).compute().getValue();
             if (keyOrValue.equals(VALUE)) {
                 return new Atom<Object>(sortByValue(map, reverse));
             } else if (keyOrValue.equals(KEY)) {

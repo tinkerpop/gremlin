@@ -17,18 +17,18 @@ public class IdVertexFunction extends AbstractFunction<Vertex> {
 
     private final static String FUNCTION_NAME = "id-v";
 
-    public Atom<Vertex> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Vertex> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         final Object identifer;
 
         if (size == 2) {
-            identifer = parameters.get(1).compute().getValue();
+            identifer = arguments.get(1).compute().getValue();
         } else {
-            identifer = parameters.get(0).compute().getValue();
+            identifer = arguments.get(0).compute().getValue();
         }
 
         return new Atom<Vertex>(graph.getVertex(identifer));

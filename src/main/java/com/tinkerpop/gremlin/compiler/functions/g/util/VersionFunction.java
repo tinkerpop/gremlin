@@ -16,9 +16,9 @@ public class VersionFunction extends AbstractFunction<String> {
     private static final String GREMLIN_SPACE = "Gremlin ";
     private static final String FUNCTION_NAME = "version";
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 0) {
+        if (arguments.size() == 0) {
             return new Atom<String>(GREMLIN_SPACE + Tokens.VERSION);
         } else
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

@@ -18,11 +18,11 @@ import java.util.List;
 public class GroupFunction extends AbstractFunction<Iterator> {
     private final static String FUNCTION_NAME = "group";
 
-    public Atom<Iterator> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() != 1)
+    public Atom<Iterator> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        Object path = parameters.get(0).compute().getValue();
+        Object path = arguments.get(0).compute().getValue();
         return new Atom<Iterator>(new SingleIterator<Object>(path));
     }
 

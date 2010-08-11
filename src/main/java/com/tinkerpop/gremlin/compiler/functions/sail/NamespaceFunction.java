@@ -16,17 +16,17 @@ public class NamespaceFunction extends AbstractFunction<String> {
 
     private final String FUNCTION_NAME = "ns";
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final int size = parameters.size();
-        final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0, context);
+        final int size = arguments.size();
+        final SailGraph graph = (SailGraph) FunctionHelper.getGraph(arguments, 0, context);
 
         final String prefixURI;
 
         if (size == 1) {
-            prefixURI = (String) parameters.get(0).compute().getValue();
+            prefixURI = (String) arguments.get(0).compute().getValue();
         } else if (size == 2) {
-            prefixURI = (String) parameters.get(1).compute().getValue();
+            prefixURI = (String) arguments.get(1).compute().getValue();
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

@@ -15,10 +15,10 @@ public class ContainsFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "contains";
 
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 2) {
-            final String base = (String) parameters.get(0).compute().getValue();
-            final String check = (String) parameters.get(1).compute().getValue();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 2) {
+            final String base = (String) arguments.get(0).compute().getValue();
+            final String check = (String) arguments.get(1).compute().getValue();
             return new Atom<Boolean>(base.contains(check));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

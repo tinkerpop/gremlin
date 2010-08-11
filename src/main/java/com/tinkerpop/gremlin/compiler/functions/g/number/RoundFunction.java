@@ -14,10 +14,10 @@ public class RoundFunction extends AbstractFunction<Long> {
 
     public static final String FUNCTION_NAME = "round";
 
-    public Atom<Long> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Long> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 1) {
-            return new Atom<Long>(Math.round(((Number) parameters.get(0).compute().getValue()).doubleValue()));
+        if (arguments.size() == 1) {
+            return new Atom<Long>(Math.round(((Number) arguments.get(0).compute().getValue()).doubleValue()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

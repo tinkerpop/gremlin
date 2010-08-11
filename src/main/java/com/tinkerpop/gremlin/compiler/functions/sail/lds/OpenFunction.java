@@ -21,9 +21,9 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final int size = parameters.size();
+        final int size = arguments.size();
         if (size == 0) {
             try {
                 Ripple.initialize();
@@ -40,7 +40,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
             try {
                 Ripple.initialize();
                 final URIMap uriMap = new URIMap();
-                final Sail sail = new LinkedDataSail(((SailGraph) parameters.get(0).compute().getValue()).getSail(), uriMap);
+                final Sail sail = new LinkedDataSail(((SailGraph) arguments.get(0).compute().getValue()).getSail(), uriMap);
                 return new Atom<Graph>(new SailGraph(sail));
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());

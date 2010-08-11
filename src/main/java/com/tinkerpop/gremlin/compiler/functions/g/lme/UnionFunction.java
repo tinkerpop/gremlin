@@ -16,13 +16,13 @@ public class UnionFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "union";
 
-    public Atom<Iterable> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() < 2) {
+        if (arguments.size() < 2) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
             final Set set = new HashSet();
-            for (Operation operation : parameters) {
+            for (Operation operation : arguments) {
                 final Object object = operation.compute().getValue();
                 if (object instanceof Iterable) {
                     for (Object object2 : (Iterable) object) {

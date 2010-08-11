@@ -24,14 +24,14 @@ public class OperateValueFunction extends AbstractFunction<Number> {
     private static final String MODULO = "mod";
     private static final String OPERATION_ERROR = "First argument must be +, -, *, div, or mod";
 
-    public Atom<Number> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() != 4)
+    public Atom<Number> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() != 4)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final String operation = (String) parameters.get(0).compute().getValue();
-        final Object struct = parameters.get(1).compute().getValue();
-        final Object key = parameters.get(2).compute().getValue();
-        final Number amount = (Number) parameters.get(3).compute().getValue();
+        final String operation = (String) arguments.get(0).compute().getValue();
+        final Object struct = arguments.get(1).compute().getValue();
+        final Object key = arguments.get(2).compute().getValue();
+        final Number amount = (Number) arguments.get(3).compute().getValue();
 
         if (struct instanceof Map) {
             return new Atom<Number>(this.opValue(operation, (Map) struct, key, amount));

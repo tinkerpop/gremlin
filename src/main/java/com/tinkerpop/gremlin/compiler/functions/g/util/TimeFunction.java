@@ -16,12 +16,12 @@ public class TimeFunction extends AbstractFunction<Double> {
 
     private static final double ONE_MILLION = 1000000d;
 
-    public Atom<Double> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Double> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 0) {
             return new Atom<Double>(System.nanoTime() / ONE_MILLION);
         } else if (size == 1) {
-            final Number time = (Number) parameters.get(0).compute().getValue();
+            final Number time = (Number) arguments.get(0).compute().getValue();
             return new Atom<Double>((System.nanoTime() / ONE_MILLION) - time.doubleValue());
         }
 

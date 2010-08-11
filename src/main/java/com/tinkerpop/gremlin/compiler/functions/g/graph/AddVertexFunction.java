@@ -19,20 +19,20 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
 
     private final static String FUNCTION_NAME = "add-v";
 
-    public Atom<Vertex> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Vertex> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         final Object identifier;
 
         if (size == 0)
             return new Atom<Vertex>(graph.addVertex(null));
-        else if (size == 1 && !parameters.get(0).compute().isGraph())
-            identifier = parameters.get(0).compute().getValue();
+        else if (size == 1 && !arguments.get(0).compute().isGraph())
+            identifier = arguments.get(0).compute().getValue();
         else
-            identifier = parameters.get(1).compute().getValue();
+            identifier = arguments.get(1).compute().getValue();
 
         if (identifier instanceof Map) {
             final Map map = (Map) identifier;

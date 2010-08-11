@@ -19,18 +19,18 @@ public class RemoveVertexEdgeFunction extends AbstractFunction<Boolean> {
 
     private final static String FUNCTION_NAME = "remove-ve";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         final Element element;
 
         if (size == 1)
-            element = (Element) parameters.get(0).compute().getValue();
+            element = (Element) arguments.get(0).compute().getValue();
         else
-            element = (Element) parameters.get(1).compute().getValue();
+            element = (Element) arguments.get(1).compute().getValue();
 
         if (element instanceof Vertex) {
             graph.removeVertex((Vertex) element);

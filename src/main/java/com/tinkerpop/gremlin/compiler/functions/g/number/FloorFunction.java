@@ -14,10 +14,10 @@ public class FloorFunction extends AbstractFunction<Long> {
 
     public static final String FUNCTION_NAME = "floor";
 
-    public Atom<Long> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Long> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 1) {
-            return new Atom<Long>(((Double)Math.floor(((Number) parameters.get(0).compute().getValue()).doubleValue())).longValue());
+        if (arguments.size() == 1) {
+            return new Atom<Long>(((Double)Math.floor(((Number) arguments.get(0).compute().getValue()).doubleValue())).longValue());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

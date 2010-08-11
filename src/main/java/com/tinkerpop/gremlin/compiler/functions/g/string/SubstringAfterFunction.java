@@ -15,10 +15,10 @@ public class SubstringAfterFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "substring-after";
 
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 2) {
-            String base = (String) parameters.get(0).compute().getValue();
-            String check = (String) parameters.get(1).compute().getValue();
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 2) {
+            String base = (String) arguments.get(0).compute().getValue();
+            String check = (String) arguments.get(1).compute().getValue();
             return new Atom<String>(base.substring(base.indexOf(check)+check.length()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

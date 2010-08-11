@@ -17,13 +17,13 @@ public class GetNamespacesFunction extends AbstractFunction<Map<String, String>>
 
     private final String FUNCTION_NAME = "get-ns";
 
-    public Atom<Map<String, String>> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Map<String, String>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() > 1) {
+        if (arguments.size() > 1) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
 
-        return new Atom<Map<String, String>>(((SailGraph) FunctionHelper.getGraph(parameters, 0, context)).getNamespaces());
+        return new Atom<Map<String, String>>(((SailGraph) FunctionHelper.getGraph(arguments, 0, context)).getNamespaces());
     }
 
     public String getFunctionName() {

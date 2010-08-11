@@ -27,9 +27,9 @@ public class ToJsonFunction extends AbstractFunction<String> {
     private static final String EDGE = "edge";
     private static final String VERTEX = "vertex";
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            Object object = parameters.get(0).compute().getValue();
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            Object object = arguments.get(0).compute().getValue();
             if (object instanceof List) {
                 return new Atom<String>(createJSONList((List) object).toJSONString());
             } else if (object instanceof Map) {

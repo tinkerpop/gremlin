@@ -14,7 +14,7 @@ public class PathFunction extends AbstractFunction<Boolean> {
 
     private static final String FUNCTION_NAME = "p";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         return new Atom<Boolean>(true);
     }
 

@@ -16,9 +16,9 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 0) {
+        if (arguments.size() == 0) {
             return new Atom<Graph>(new TinkerGraph());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

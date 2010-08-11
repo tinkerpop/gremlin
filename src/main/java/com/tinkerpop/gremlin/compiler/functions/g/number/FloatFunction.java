@@ -14,9 +14,9 @@ public class FloatFunction extends AbstractFunction<Float> {
 
     private static final String FUNCTION_NAME = "float";
 
-    public Atom<Float> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            final Object object = parameters.get(0).compute().getValue();
+    public Atom<Float> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            final Object object = arguments.get(0).compute().getValue();
             return new Atom<Float>(Float.valueOf(object.toString()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage("One float convertible object required"));

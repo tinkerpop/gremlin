@@ -21,10 +21,10 @@ public class FromJsonFunction extends AbstractFunction<Object> {
     private static final String FUNCTION_NAME = "from-json";
     private static final JSONParser parser = new JSONParser();
 
-    public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 1) {
-            String jsonString = (String) parameters.get(0).compute().getValue();
+        if (arguments.size() == 1) {
+            String jsonString = (String) arguments.get(0).compute().getValue();
             ContainerFactory containerFactory = new ContainerFactory() {
                 public List creatArrayContainer() {
                     return new ArrayList();

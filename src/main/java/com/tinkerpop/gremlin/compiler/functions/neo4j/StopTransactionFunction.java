@@ -16,13 +16,13 @@ public class StopTransactionFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "stop-tx";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0, context);
-        if (parameters.size() == 1) {
-            graph.stopTransaction((Boolean) parameters.get(0).compute().getValue());
-        } else if (parameters.size() == 2) {
-            graph.stopTransaction((Boolean) parameters.get(1).compute().getValue());
+        final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(arguments, 0, context);
+        if (arguments.size() == 1) {
+            graph.stopTransaction((Boolean) arguments.get(0).compute().getValue());
+        } else if (arguments.size() == 2) {
+            graph.stopTransaction((Boolean) arguments.get(1).compute().getValue());
         } else {
             throw new RuntimeException(createUnsupportedArgumentMessage());
         }

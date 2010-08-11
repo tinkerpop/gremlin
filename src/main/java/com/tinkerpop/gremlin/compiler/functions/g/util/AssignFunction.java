@@ -17,22 +17,22 @@ public class AssignFunction extends AbstractFunction<Boolean> {
 
     private static final String FUNCTION_NAME = "assign";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 2) {
-            final Atom variable = parameters.get(0).compute();
+            final Atom variable = arguments.get(0).compute();
             
             if (!(variable instanceof Var))
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("Two argument evaluation requires first argument to be a variable"));
 
-            final Atom atom = parameters.get(1).compute();
+            final Atom atom = arguments.get(1).compute();
             context.getVariableLibrary().declare(((Var) variable).getVariableName(), atom);
             
             return new Atom<Boolean>(true);
         } else if (size == 3) {
-            final Object object = parameters.get(0).compute().getValue();
-            final Object key = parameters.get(1).compute().getValue();
-            final Object value = parameters.get(2).compute().getValue();
+            final Object object = arguments.get(0).compute().getValue();
+            final Object key = arguments.get(1).compute().getValue();
+            final Object value = arguments.get(2).compute().getValue();
             if (object instanceof Map) {
                 ((Map) object).put(key, value);
             } else if (object instanceof List) {

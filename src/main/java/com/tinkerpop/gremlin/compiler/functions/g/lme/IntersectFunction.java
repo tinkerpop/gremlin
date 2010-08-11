@@ -18,13 +18,13 @@ public class IntersectFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "intersect";
 
-    public Atom<Iterable> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() < 2) {
+        if (arguments.size() < 2) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
             Set set = null;
-            for (Operation operation : parameters) {
+            for (Operation operation : arguments) {
                 final Object object = operation.compute().getValue();
                 if (object instanceof Iterable) {
                     if (null == set) {

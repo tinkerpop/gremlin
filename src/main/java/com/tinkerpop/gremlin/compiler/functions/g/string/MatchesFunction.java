@@ -15,10 +15,10 @@ public class MatchesFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "matches";
 
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 2) {
-            final String string = (String) parameters.get(0).compute().getValue();
-            final String regex = (String) parameters.get(1).compute().getValue();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 2) {
+            final String string = (String) arguments.get(0).compute().getValue();
+            final String regex = (String) arguments.get(1).compute().getValue();
             return new Atom<Boolean>(string.matches(regex));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

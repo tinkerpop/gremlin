@@ -16,10 +16,10 @@ public class StartTransactionFunction extends AbstractFunction<Boolean> {
 
     private final String FUNCTION_NAME = "start-tx";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() > 1) {
-            Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(parameters, 0, context);
+        if (arguments.size() > 1) {
+            Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(arguments, 0, context);
             graph.startTransaction();
             return new Atom<Boolean>(true);
         } else {

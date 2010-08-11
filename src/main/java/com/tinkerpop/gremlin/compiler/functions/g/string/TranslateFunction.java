@@ -15,11 +15,11 @@ public class TranslateFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "translate";
 
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 3) {
-            String base = (String) parameters.get(0).compute().getValue();
-            String check = (String) parameters.get(1).compute().getValue();
-            String replace = (String) parameters.get(2).compute().getValue();
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 3) {
+            String base = (String) arguments.get(0).compute().getValue();
+            String check = (String) arguments.get(1).compute().getValue();
+            String replace = (String) arguments.get(2).compute().getValue();
             return new Atom<String>(base.replace(check, replace));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

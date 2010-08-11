@@ -17,13 +17,13 @@ public class RandomNaturalFunction extends AbstractFunction<Integer> {
     private static final Random random = new Random();
 
 
-    public Atom<Integer> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Integer> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
 
-        if (parameters.size() == 0) {
+        if (arguments.size() == 0) {
             return new Atom<Integer>(random.nextInt());
-        } else if (parameters.size() == 1) {
-            Atom atom = parameters.get(0).compute();
+        } else if (arguments.size() == 1) {
+            Atom atom = arguments.get(0).compute();
             if (atom.isInteger()) {
                 return new Atom<Integer>(random.nextInt((Integer) atom.getValue()));
             } else {

@@ -15,9 +15,9 @@ public class StringFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "string";
 
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            return new Atom<String>(parameters.get(0).compute().getValue().toString());
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            return new Atom<String>(arguments.get(0).compute().getValue().toString());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

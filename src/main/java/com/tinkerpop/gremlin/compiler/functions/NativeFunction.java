@@ -24,17 +24,17 @@ public class NativeFunction implements Function<Object> {
         this.body = body;
     }
 
-    public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (this.arguments.size() != parameters.size())
-            throw new RuntimeException("Wrong number of arguments (" + parameters.size() + " of " + this.arguments.size() + ")");
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (this.arguments.size() != arguments.size())
+            throw new RuntimeException("Wrong number of arguments (" + arguments.size() + " of " + this.arguments.size() + ")");
 
         // cloning variable library
         // all changes in variables will stay inside function + full access to current state of global variables
         VariableLibrary varLib = context.getVariableLibrary().cloneLibrary();
 
-        // mapping arguments to parameters
+        // mapping arguments
         for (int i = 0; i < this.arguments.size(); i++) {
-            final Atom computedParam = parameters.get(i).compute();
+            final Atom computedParam = arguments.get(i).compute();
             final Atom argumentValue = (computedParam instanceof DynamicEntity) ? new Atom<Object>(computedParam.getValue()) : computedParam;
             context.getVariableLibrary().declare(this.arguments.get(i), argumentValue);
         }

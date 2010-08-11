@@ -23,10 +23,10 @@ public class TypeFunction extends AbstractFunction<String> {
     private static final String VERTEX = "vertex";
     private static final String EDGE = "edge";
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 1) {
-            final Object object = parameters.get(0).compute().getValue();
+        if (arguments.size() == 1) {
+            final Object object = arguments.get(0).compute().getValue();
             if (object instanceof Iterable)
                 return new Atom<String>(ITERABLE);
             else if (object instanceof Map)

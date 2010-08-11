@@ -16,18 +16,18 @@ public class AddIndexFunction extends AbstractFunction<Boolean> {
 
     private final static String FUNCTION_NAME = "add-idx";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         final String index;
 
         if (size == 2) {
-            index = (String) parameters.get(1).compute().getValue();
+            index = (String) arguments.get(1).compute().getValue();
         } else {
-            index = (String) parameters.get(0).compute().getValue();
+            index = (String) arguments.get(0).compute().getValue();
         }
 
         graph.getIndex().addIndexKey(index);

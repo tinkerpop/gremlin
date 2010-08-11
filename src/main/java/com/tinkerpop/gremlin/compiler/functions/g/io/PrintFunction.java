@@ -16,9 +16,9 @@ public class PrintFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "print";
 
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         
-        for (Operation operation : parameters) {
+        for (Operation operation : arguments) {
             Atom atom = operation.compute();
             Object operationValue = atom.getValue();
             

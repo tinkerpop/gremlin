@@ -14,9 +14,9 @@ public class DoubleFunction extends AbstractFunction<Double> {
 
     private static final String FUNCTION_NAME = "double";
 
-    public Atom<Double> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            final Object object = parameters.get(0).compute().getValue();
+    public Atom<Double> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            final Object object = arguments.get(0).compute().getValue();
             return new Atom<Double>(Double.valueOf(object.toString()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage("One double convertible object required"));

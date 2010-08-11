@@ -16,10 +16,10 @@ public class OpenFunction extends AbstractFunction<Graph> {
 
     private final String FUNCTION_NAME = "open";
 
-    public Atom<Graph> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Graph> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 1) {
-            return new Atom<Graph>(new Neo4jGraph((String) parameters.get(0).compute().getValue()));
+        if (arguments.size() == 1) {
+            return new Atom<Graph>(new Neo4jGraph((String) arguments.get(0).compute().getValue()));
         } else {
             throw new RuntimeException(createUnsupportedArgumentMessage());
         }

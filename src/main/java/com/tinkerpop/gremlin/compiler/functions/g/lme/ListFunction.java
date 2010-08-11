@@ -15,10 +15,10 @@ public class ListFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "list";
 
-    public Atom<Iterable> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final List<Object> list = new ArrayList<Object>();
-        for (Operation operation : parameters) {
+        for (Operation operation : arguments) {
             list.add(operation.compute().getValue());
         }
 

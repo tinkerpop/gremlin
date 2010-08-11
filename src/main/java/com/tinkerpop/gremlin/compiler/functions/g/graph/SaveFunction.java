@@ -19,18 +19,18 @@ public class SaveFunction extends AbstractFunction<Boolean> {
 
     private static final String FUNCTION_NAME = "save";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         final String filename;
 
         if (size == 2) {
-            filename = (String) parameters.get(1).compute().getValue();
+            filename = (String) arguments.get(1).compute().getValue();
         } else {
-            filename = (String) parameters.get(0).compute().getValue();
+            filename = (String) arguments.get(0).compute().getValue();
         }
 
         try {

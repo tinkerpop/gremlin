@@ -17,9 +17,9 @@ public class RandomRealFunction extends AbstractFunction<Double> {
     private static final Random random = new Random();
 
 
-    public Atom<Double> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Double> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() == 0) {
+        if (arguments.size() == 0) {
             return new Atom<Double>(random.nextDouble());
         }
 

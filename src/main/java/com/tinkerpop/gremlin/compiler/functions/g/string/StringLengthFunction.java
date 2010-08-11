@@ -15,9 +15,9 @@ public class StringLengthFunction extends AbstractFunction<Integer> {
     private static final String FUNCTION_NAME = "string-length";
 
 
-    public Atom<Integer> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            return new Atom<Integer>(((String) parameters.get(0).compute().getValue()).length());
+    public Atom<Integer> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            return new Atom<Integer>(((String) arguments.get(0).compute().getValue()).length());
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

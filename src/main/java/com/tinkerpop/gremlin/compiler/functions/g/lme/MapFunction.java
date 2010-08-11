@@ -17,11 +17,11 @@ public class MapFunction extends AbstractFunction<Map> {
 
     private static final String FUNCTION_NAME = "map";
 
-    public Atom<Map> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Map> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final Map map = new HashMap();
-        final int size = parameters.size();
+        final int size = arguments.size();
         if (size == 1) {
-            final Object object = parameters.get(0).compute().getValue();
+            final Object object = arguments.get(0).compute().getValue();
             if (object instanceof Map) {
                 final Map<?, ?> map2 = (Map) object;
                 for (Map.Entry<?, ?> entry : map2.entrySet()) {
@@ -48,7 +48,7 @@ public class MapFunction extends AbstractFunction<Map> {
 
         } else if (size % 2 == 0) {
             for (int i = 0; i < size; i += 2) {
-                map.put(parameters.get(i).compute().getValue(), parameters.get(i + 1).compute().getValue());
+                map.put(arguments.get(i).compute().getValue(), arguments.get(i + 1).compute().getValue());
             }
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage("Argument size must be divisible by 2"));

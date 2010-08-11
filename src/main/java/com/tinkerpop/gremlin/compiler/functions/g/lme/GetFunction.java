@@ -16,11 +16,11 @@ public class GetFunction extends AbstractFunction<Object> {
 
     private static final String FUNCTION_NAME = "get";
 
-    public Atom<Object> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() != 2)
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        List<Object> objects = generateObjects(parameters);
+        List<Object> objects = generateObjects(arguments);
         if (objects.get(0) instanceof Map) {
             return new Atom(((Map) objects.get(0)).get(objects.get(1)));
         } else if (objects.get(0) instanceof List) {

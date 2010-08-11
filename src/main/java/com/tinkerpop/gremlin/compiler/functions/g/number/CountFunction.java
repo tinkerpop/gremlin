@@ -15,11 +15,11 @@ public class CountFunction extends AbstractFunction<Long> {
 
     private static final String FUNCTION_NAME = "count";
 
-    public Atom<Long> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() != 1)
+    public Atom<Long> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage("One countable argument required"));
 
-        final Atom result = parameters.get(0).compute();
+        final Atom result = arguments.get(0).compute();
         if (result.isIterable()) {
             return new Atom<Long>(PipeHelper.counter(((Iterable<?>) result.getValue()).iterator()));
         } else

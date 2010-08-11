@@ -15,12 +15,12 @@ public class ExceptFunction extends AbstractFunction<Boolean> {
 
     private static final String FUNCTION_NAME = "except";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() != 2)
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Object object = parameters.get(0).compute().getValue();
-        final Object check = parameters.get(1).compute().getValue();
+        final Object object = arguments.get(0).compute().getValue();
+        final Object check = arguments.get(1).compute().getValue();
         if (check instanceof Collection) {
             return new Atom<Boolean>(!((Collection) check).contains(object));
         } else if (check instanceof Iterable) {

@@ -15,11 +15,11 @@ public class ClearFunction extends AbstractFunction<Boolean> {
 
     private final static String FUNCTION_NAME = "clear";
 
-    public Atom<Boolean> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() > 1)
+    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() > 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        FunctionHelper.getGraph(parameters, 0, context).clear();
+        FunctionHelper.getGraph(arguments, 0, context).clear();
         return new Atom<Boolean>(true);
     }
 

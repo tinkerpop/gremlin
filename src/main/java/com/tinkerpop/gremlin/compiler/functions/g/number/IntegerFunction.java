@@ -14,9 +14,9 @@ public class IntegerFunction extends AbstractFunction<Integer> {
 
     private static final String FUNCTION_NAME = "integer";
 
-    public Atom<Integer> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 1) {
-            final Object object = parameters.get(0).compute().getValue();
+    public Atom<Integer> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 1) {
+            final Object object = arguments.get(0).compute().getValue();
             final Double temp = Double.valueOf(object.toString());
             return new Atom<Integer>(temp.intValue());
         } else {

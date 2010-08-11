@@ -17,12 +17,12 @@ public class ValuesFunction extends AbstractFunction<Iterable> {
 
     private static final String FUNCTION_NAME = "values";
 
-    public Atom<Iterable> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Iterable> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (parameters.size() != 1) {
+        if (arguments.size() != 1) {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         } else {
-            final Object object = parameters.get(0).compute().getValue();
+            final Object object = arguments.get(0).compute().getValue();
             if (object instanceof Map) {
                 return new Atom<Iterable>(((Map) object).values());
             } else if (object instanceof Element) {

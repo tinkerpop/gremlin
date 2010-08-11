@@ -20,13 +20,13 @@ public class AddEdgeFunction extends AbstractFunction<Edge> {
 
     private final static String FUNCTION_NAME = "add-e";
 
-    public Atom<Edge> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        final int size = parameters.size();
+    public Atom<Edge> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        final int size = arguments.size();
         if (size < 3 || size > 5)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(parameters, 0, context);
-        List<Object> objects = generateObjects(parameters);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        List<Object> objects = generateObjects(arguments);
 
         if (size == 5) {
             return createEdge(graph, objects.get(1), (Vertex) objects.get(2), (String) objects.get(3), (Vertex) objects.get(4));

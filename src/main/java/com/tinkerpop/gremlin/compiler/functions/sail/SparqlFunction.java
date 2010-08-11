@@ -30,17 +30,17 @@ public class SparqlFunction extends AbstractFunction<List<Map<String, Vertex>>> 
     private static final String COLON_LESSTHAN = ": <";
     private static final String GREATERTHAN_NEWLINE = ">\n";
 
-    public Atom<List<Map<String, Vertex>>> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<List<Map<String, Vertex>>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final int size = parameters.size();
-        final SailGraph graph = (SailGraph) FunctionHelper.getGraph(parameters, 0, context);
+        final int size = arguments.size();
+        final SailGraph graph = (SailGraph) FunctionHelper.getGraph(arguments, 0, context);
 
         final String sparqlQuery;
 
         if (size == 1) {
-            sparqlQuery = (String) parameters.get(0).compute().getValue();
+            sparqlQuery = (String) arguments.get(0).compute().getValue();
         } else if (size == 2) {
-            sparqlQuery = (String) parameters.get(1).compute().getValue();
+            sparqlQuery = (String) arguments.get(1).compute().getValue();
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

@@ -15,11 +15,11 @@ public class ReplaceFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "replace";
 
 
-    public Atom<String> compute(final List<Operation> parameters, final GremlinScriptContext context) throws RuntimeException {
-        if (parameters.size() == 3) {
-            final String string = (String) parameters.get(0).compute().getValue();
-            final String regex = (String) parameters.get(1).compute().getValue();
-            final String replace = (String) parameters.get(2).compute().getValue();
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if (arguments.size() == 3) {
+            final String string = (String) arguments.get(0).compute().getValue();
+            final String regex = (String) arguments.get(1).compute().getValue();
+            final String replace = (String) arguments.get(2).compute().getValue();
             return new Atom<String>(string.replaceAll(regex, replace));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
