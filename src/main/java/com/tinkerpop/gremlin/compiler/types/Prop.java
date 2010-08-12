@@ -1,8 +1,5 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import com.tinkerpop.gremlin.compiler.pipes.GremlinPropertyPipe;
-import com.tinkerpop.pipes.Pipe;
-
 import java.util.Random;
 
 /**
@@ -10,7 +7,8 @@ import java.util.Random;
  */
 public class Prop<String> extends Atom<String> {
 
-    private final int hashCode = new Random().nextInt();
+    private static final Random random = new Random();
+    private final int hashCode = random.nextInt();
 
     public Prop(String value) {
         super(value);

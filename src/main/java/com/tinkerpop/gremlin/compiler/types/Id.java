@@ -7,7 +7,8 @@ import java.util.Random;
  */
 public class Id<String> extends Atom<String> {
 
-    private final int hashCode = new Random().nextInt();
+    private static final Random random = new Random();
+    private final int hashCode = random.nextInt();
     
     public Id(String value) {
         super(value);
