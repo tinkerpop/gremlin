@@ -11,11 +11,11 @@ options {
     import java.io.FileReader;
     
     import java.util.ArrayList;
-    
+    import java.util.LinkedList;
+   
     import java.util.Map;
     import java.util.HashMap;
     import java.util.Iterator;
-    import java.util.LinkedHashMap;
     
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
@@ -62,6 +62,9 @@ options {
     import com.tinkerpop.pipes.filter.FutureFilterPipe;
     
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
+
+    // util
+    import com.tinkerpop.gremlin.compiler.util.Pair;
 }
 
 @members {
@@ -102,13 +105,14 @@ options {
         return new GPath(root, pipes, this.context);
     }
 
-    private Atom compileGPathCall(final Map<Atom<Object>, List<Operation>> steps) {
+    private Atom compileGPathCall(final List<Pair<Atom<Object>, List<Operation>>> steps) {
         Atom<Object> root = null;
         List<Pipe> pipes = new ArrayList<Pipe>();
 
         long count = 0;
-        for (final Atom<Object> token : steps.keySet()) {
-            final List<Operation> predicates = steps.get(token);
+        for (final Pair<Atom<Object>, List<Operation>> pair : steps) {
+            final Atom<Object> token = pair.getA();
+            final List<Operation> predicates = pair.getB();
             
             if (count == 0) {
                 root = makePipelineRoot(token, pipes);
@@ -295,12 +299,12 @@ path_definition_statement returns [Operation op]
 gpath_statement returns [Atom value]
     scope {
         int pipeCount;
-        Map<Atom<Object>, List<Operation>> steps;
+        List<Pair<Atom<Object>, List<Operation>>> steps;
     }
     @init {
         isGPath = true;
         gpathScope++;
-        $gpath_statement::steps = new LinkedHashMap<Atom<Object>, List<Operation>>();
+        $gpath_statement::steps = new LinkedList<Pair<Atom<Object>, List<Operation>>>();
     }
     @after {
         isGPath = false;
@@ -308,14 +312,16 @@ gpath_statement returns [Atom value]
     }
 	:	^(GPATH (step)+) 
         {
-            Map<Atom<Object>, List<Operation>> stepMap = $gpath_statement::steps;
+            List<Pair<Atom<Object>, List<Operation>>> stepList = $gpath_statement::steps;
 
-            if (stepMap.size() == 1) {
-                Atom<Object> token = stepMap.keySet().iterator().next();
-                List<Operation> predicates = stepMap.get(token);
+            if (stepList.size() == 1) {
+                Pair<Atom<Object>, List<Operation>> currentPair = stepList.get(0);
+
+                Atom<Object> token = currentPair.getA();
+                List<Operation> predicates = currentPair.getB();
                 $value = (predicates.size() == 0) ? singleGPathStep(token) : compileCollectionCall(token, predicates);
             } else {
-                $value = compileGPathCall(stepMap);
+                $value = compileGPathCall(stepList);
             }
         }
 	;
@@ -326,7 +332,7 @@ step
     }
     :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ))
         {
-            $gpath_statement::steps.put($token.atom, predicates);
+            $gpath_statement::steps.add(new Pair($token.atom, predicates));
         }
     ;
 
