@@ -1,13 +1,12 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class GreaterThan extends BinaryOperation {
+public class GreaterThan extends LogicOperation {
 
     public GreaterThan(final Operation... operands) {
         super(operands);
@@ -24,9 +23,4 @@ public class GreaterThan extends BinaryOperation {
         }
 
     }
-
-    public Type getType() {
-        return Type.LOGIC;
-    }
-
 }

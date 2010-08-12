@@ -7,7 +7,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 /**
  * @author Pavel A. Yaskevich
  */
-public class Or extends BinaryOperation {
+public class Or extends LogicOperation {
 
     public Or(final Operation... operands) {
         super(operands);
@@ -33,10 +33,6 @@ public class Or extends BinaryOperation {
         }
 
         return new Atom<Boolean>(exprResult);
-    }
-
-    public Type getType() {
-        return Type.LOGIC;
     }
 
 }

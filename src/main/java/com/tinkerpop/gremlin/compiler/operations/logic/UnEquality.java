@@ -1,13 +1,12 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class UnEquality extends BinaryOperation {
+public class UnEquality extends LogicOperation {
 
     public UnEquality(final Operation... operands) {
         super(operands);
@@ -22,11 +21,6 @@ public class UnEquality extends BinaryOperation {
             return new Atom<Boolean>(true);
         else
             return new Atom<Boolean>(!a.equals(b));
-    }
-
-
-    public Type getType() {
-        return Type.LOGIC;
     }
 
 }

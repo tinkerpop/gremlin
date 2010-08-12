@@ -41,6 +41,25 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(result, -1);*/
     }
 
+     public void testBasicTruthStatements() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        Object result = evaluateGremlinScriptPrimitive("true or false", context, true);
+        assertTrue((Boolean)result);
+
+        result = evaluateGremlinScriptPrimitive("true and false", context, true);
+        //TODO: make work -- assertFalse((Boolean)result);
+
+        result = evaluateGremlinScriptPrimitive("true or (true and false)", context, true);
+        assertTrue((Boolean)result);
+
+        result = evaluateGremlinScriptPrimitive("true and (true or false)", context, true);
+        assertTrue((Boolean)result);
+
+        result = evaluateGremlinScriptPrimitive("false or (false and true) or (true and (false and true))", context, true);
+        //TODO: make work -- assertFalse((Boolean)result);
+    }
+
     public void testGPathInExpression() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
         assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
@@ -83,6 +102,20 @@ public class GremlinScriptEngineTest extends BaseTest {
         name = (String) results.get(1).getProperty("name");
         assertTrue(name.equals("josh") || name.equals("vadas"));
 
+        results = evaluateGremlinScriptIterable("./outE[./@weight >= 0.5]/inV/././.", context, true);
+        assertEquals(results.size(), 2);
+        name = (String) results.get(0).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh"));
+        name = (String) results.get(1).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh"));
+
+        results = evaluateGremlinScriptIterable("./outE[./@weight >= $_/outE/@weight[0]]/inV", context, true);
+        assertEquals(results.size(), 2);
+        name = (String) results.get(0).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh"));
+        name = (String) results.get(1).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh"));
+
         results = evaluateGremlinScriptIterable("./inE", context, true);
         assertNull(results);
 
@@ -122,6 +155,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         results = evaluateGremlinScriptIterable("./outE/inV/outE/inV[@name='ripple' or @name='lop' or @name='blah']/../../outE/inV", context, true);
         assertEquals(results.size(), 2);
         name = (String) results.get(0).getProperty("name");
+        assertTrue(name.equals("ripple") || name.equals("lop"));
+        name = (String) results.get(1).getProperty("name");
         assertTrue(name.equals("ripple") || name.equals("lop"));
     }
 
@@ -179,9 +214,9 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(1), new Integer(2));
         assertEquals(results.get(2), new Integer(3));
         assertEquals(context.getVariableByName("$x").getValue().getClass(), ArrayList.class);
-        assertEquals(((List)context.getVariableByName("$x").getValue()).get(0), 1);
-        assertEquals(((List)context.getVariableByName("$x").getValue()).get(1), 2);
-        assertEquals(((List)context.getVariableByName("$x").getValue()).get(2), 3);
+        assertEquals(((List) context.getVariableByName("$x").getValue()).get(0), 1);
+        assertEquals(((List) context.getVariableByName("$x").getValue()).get(1), 2);
+        assertEquals(((List) context.getVariableByName("$x").getValue()).get(2), 3);
 
     }
 

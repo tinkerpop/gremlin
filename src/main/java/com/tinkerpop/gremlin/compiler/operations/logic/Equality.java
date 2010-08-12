@@ -1,13 +1,12 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class Equality extends BinaryOperation {
+public class Equality extends LogicOperation {
 
     public Equality(final Operation... operands) {
         super(operands);
@@ -22,10 +21,6 @@ public class Equality extends BinaryOperation {
             return new Atom<Boolean>(false);
         else
             return new Atom<Boolean>(a.equals(b));
-    }
-
-    public Type getType() {
-        return Type.LOGIC;
     }
 
 }

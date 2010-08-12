@@ -1,13 +1,12 @@
 package com.tinkerpop.gremlin.compiler.operations.math;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class Addition extends BinaryOperation {
+public class Addition extends MathOperation {
 
     public Addition(final Operation... operands) {
         super(operands);
@@ -20,11 +19,11 @@ public class Addition extends BinaryOperation {
         if (a instanceof String || b instanceof String) {
             return new Atom<String>(a.toString() + b.toString());
         } else {
-            return new Atom<Number>(add((Number) a, (Number) b));
+            return new Atom<Number>(doOperation((Number) a, (Number) b));
         }
     }
 
-    private Number add(Number a, Number b) {
+    protected Number doOperation(final Number a, final Number b) {
         if (a instanceof Double || b instanceof Double)
             return a.doubleValue() + b.doubleValue();
 
@@ -38,10 +37,6 @@ public class Addition extends BinaryOperation {
             return a.intValue() + b.intValue();
 
         return null;
-    }
-
-    public Type getType() {
-        return Type.MATH;
     }
 
 }

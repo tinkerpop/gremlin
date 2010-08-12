@@ -233,7 +233,7 @@ public class GremlinPipesHelper {
                 if (argument instanceof Var) {
                     final String name = ((Var) argument).getVariableName();
 
-                    if (name.equals(".")) {
+                    if (name.equals(Tokens.IDENTITY)) {
                         final Atom<Object> currentPoint = new Atom<Object>(currentIterationPoint);
                         operation = new UnaryOperation(currentPoint);
                     } else {

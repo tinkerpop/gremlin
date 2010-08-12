@@ -1,13 +1,12 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class And extends BinaryOperation {
+public class And extends LogicOperation {
 
     public And(final Operation... operands) {
         super(operands);
@@ -34,9 +33,4 @@ public class And extends BinaryOperation {
 
         return new Atom<Boolean>(exprResult);
     }
-
-    public Type getType() {
-        return Type.LOGIC;
-    }
-
 }

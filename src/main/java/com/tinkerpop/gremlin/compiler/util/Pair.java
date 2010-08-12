@@ -8,7 +8,7 @@ public class Pair<A, B> {
     private final A a;
     private final B b;
 
-    public Pair(A a, B b) {
+    public Pair(final A a, final B b) {
         this.a = a;
         this.b = b;
     }

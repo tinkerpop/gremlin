@@ -21,9 +21,11 @@ public class Atom<T> {
 
     private static final String NULL = "null";
     private static final String EMPTY_STRING = "";
+    private static final char DOUBLE_QUOTE = '"';
+    private static final char SINGLE_QUOTE = '\'';
 
     public Atom() {
-        this.value = null;    
+        this.value = null;
     }
 
     public Atom(T value) {
@@ -36,7 +38,7 @@ public class Atom<T> {
 
             for (int i = 0; i < stringValue.length(); i++) {
                 final Character currentCharacter = stringValue.charAt(i);
-                if ((i == 0 || i == stringValue.length() - 1) && (currentCharacter.equals('"') || currentCharacter.equals('\'')))
+                if ((i == 0 || i == stringValue.length() - 1) && (currentCharacter.equals(DOUBLE_QUOTE) || currentCharacter.equals(SINGLE_QUOTE)))
                     continue;
                 result += stringValue.charAt(i);
             }
@@ -108,7 +110,7 @@ public class Atom<T> {
     public boolean isEdge() {
         return isClassOf(Edge.class);
     }
-    
+
     public boolean isIdentifier() {
         return this.identifier;
     }

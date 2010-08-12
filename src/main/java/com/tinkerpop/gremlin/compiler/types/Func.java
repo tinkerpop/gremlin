@@ -1,11 +1,9 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +14,7 @@ public class Func extends DynamicEntity {
     private final Function function;
     private List<Operation> arguments;
     private final GremlinScriptContext context;
-    
+
     public Func(final Function function, final List<Operation> arguments, final GremlinScriptContext context) {
         this.function = function;
         this.arguments = arguments;
@@ -38,9 +36,9 @@ public class Func extends DynamicEntity {
     public GremlinScriptContext getContext() {
         return this.context;
     }
-    
+
     public int hashCode() {
-        return this.function.hashCode();   
+        return this.function.hashCode();
     }
 
 }

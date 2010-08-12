@@ -1,13 +1,11 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import java.util.Random;
-
 /**
  * @author Pavel A. Yaskevich
  */
 public class Prop<String> extends Atom<String> {
 
-    public Prop(String value) {
+    public Prop(final String value) {
         super(value);
     }
 

@@ -24,7 +24,7 @@ public class DeclareVariable implements Operation {
         final Atom atom = this.valueOperation.compute();
         final Atom value = (!(atom instanceof DynamicEntity)) ? atom : new Atom<Object>(atom.getValue());
         
-        context.getVariableLibrary().declare(this.name, value);
+        this.context.getVariableLibrary().declare(this.name, value);
         return atom;
     }
     

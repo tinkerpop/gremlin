@@ -1,19 +1,18 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class GreaterThanOrEqual extends BinaryOperation {
+public class GreaterThanOrEqual extends LogicOperation {
 
     public GreaterThanOrEqual(final Operation... operands) {
         super(operands);
     }
 
- public Atom<Boolean> compute() {
+    public Atom<Boolean> compute() {
         Object a = this.operands[0].compute().getValue();
         Object b = this.operands[1].compute().getValue();
         if (a instanceof Comparable) {
@@ -23,10 +22,6 @@ public class GreaterThanOrEqual extends BinaryOperation {
             throw new RuntimeException(a + " and " + b + " are incomparable objects");
         }
 
-    }
-
-    public Type getType() {
-        return Type.LOGIC;
     }
 
 }
