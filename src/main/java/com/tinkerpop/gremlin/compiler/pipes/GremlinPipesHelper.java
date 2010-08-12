@@ -16,7 +16,9 @@ import com.tinkerpop.pipes.filter.OrFilterPipe;
 import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -206,6 +208,23 @@ public class GremlinPipesHelper {
         List<Operation> arguments = new ArrayList<Operation>();
 
         for (Operation argumentOperation : currentArguments) {
+
+            if (argumentOperation instanceof BinaryOperation) {
+                final BinaryOperation op = (BinaryOperation) argumentOperation;
+                final List<Operation> currOperands = Arrays.asList(op.getOperands());
+                final List<Operation> operands = updateArguments(currOperands, currentIterationPoint);
+
+                try {
+                    final Constructor repl = op.getClass().getConstructor((new Operation[0]).getClass());
+                    arguments.add((Operation) repl.newInstance(new Object[] { operands.toArray(new Operation[2]) }));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
+                continue;
+            }
+            
+
             final Atom argument = argumentOperation.compute();
 
             if (argument instanceof DynamicEntity) {
