@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -171,16 +172,16 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(2), new Integer(6));
         assertEquals(results.get(3), new Integer(8));
 
-        /*evaluateGremlinScriptPrimitive("g:list(1,2,3)[g:assign($x,.)]", context, true);
-       //assertEquals(context.getVariableByName("$x").getValue(), 3);
-       List results = evaluateGremlinScriptIterable("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
-       assertEquals(results.get(0), 1);
-       assertEquals(results.get(1), 2);
-       assertEquals(results.get(2), 3);
-       assertEquals(context.getVariableByName("x").getValue().getClass(), ArrayList.class);
-       assertEquals(((List)context.getVariableByName("x").getValue()).get(0), 1);
-       assertEquals(((List)context.getVariableByName("x").getValue()).get(1), 2);
-       assertEquals(((List)context.getVariableByName("x").getValue()).get(2), 3);*/
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($x,.)]", context, true);
+        assertEquals(context.getVariableByName("$x").getValue(), 3);
+        results = evaluateGremlinScriptIterable("g:group(g:list(1,2,3))[g:assign($x,.)]", context, true);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+        assertEquals(results.get(2), new Integer(3));
+        assertEquals(context.getVariableByName("$x").getValue().getClass(), ArrayList.class);
+        assertEquals(((List)context.getVariableByName("$x").getValue()).get(0), 1);
+        assertEquals(((List)context.getVariableByName("$x").getValue()).get(1), 2);
+        assertEquals(((List)context.getVariableByName("$x").getValue()).get(2), 3);
 
     }
 
@@ -211,14 +212,12 @@ public class GremlinScriptEngineTest extends BaseTest {
     }
 
     public void testEmbeddedFunctions() throws Exception {
-
-        assertTrue(true);
-        //GremlinScriptContext context = new GremlinScriptContext();
-        //List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(. > 1)]", context, true);
-        //assertEquals(results.size(), 3);
-        //assertEquals(results.get(0), new Integer(1));
-        //assertEquals(results.get(1), new Integer(2));
-        //assertEquals(results.get(2), new Integer(3));
+        GremlinScriptContext context = new GremlinScriptContext();
+        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(. > 1)]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), new Integer(1));
+        assertEquals(results.get(1), new Integer(2));
+        assertEquals(results.get(2), new Integer(3));
 
     }
 
@@ -299,6 +298,6 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV[@name = 'vadas']/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive(".[g:count(./outE/inV/@name) = 3l]/@name", context, true), "marko");
-        // TODO make word: assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age >= 27]/@name", context, true), "marko");
+        assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age >= 27]/@name", context, true), "marko");
     }
 }
