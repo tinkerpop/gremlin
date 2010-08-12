@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 
 import java.util.List;
 
@@ -15,6 +16,16 @@ public class PathFunction extends AbstractFunction<Boolean> {
     private static final String FUNCTION_NAME = "p";
 
     public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        try {
+            for (Operation o : arguments) {
+                final Atom atom = o.compute();
+                
+                if (atom instanceof DynamicEntity) {
+                    atom.getValue();
+                }
+            }
+        } catch (Exception e) { /* returning true anyway */ }
+        
         return new Atom<Boolean>(true);
     }
 
