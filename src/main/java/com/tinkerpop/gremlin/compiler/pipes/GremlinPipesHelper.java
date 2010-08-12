@@ -206,7 +206,7 @@ public class GremlinPipesHelper {
 
     public static List<Operation> updateArguments(final List<Operation> currentArguments, final Object currentIterationPoint) {
         List<Operation> arguments = new ArrayList<Operation>();
-
+        
         for (Operation argumentOperation : currentArguments) {
 
             if (argumentOperation instanceof BinaryOperation) {

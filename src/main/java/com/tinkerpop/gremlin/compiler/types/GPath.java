@@ -30,11 +30,12 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
-
+        
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
                 final VariableLibrary variables = context.getVariableLibrary();
-                this.persistentRoot = ((Atom) variables.get(Tokens.ROOT_VARIABLE)).getValue();
+                final Atom rootVariable = (Atom) variables.get(Tokens.ROOT_VARIABLE); 
+                this.persistentRoot = (rootVariable == null) ? null : rootVariable.getValue();
             }
         }
     }
