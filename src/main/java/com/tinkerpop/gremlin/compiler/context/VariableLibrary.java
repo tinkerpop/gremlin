@@ -24,7 +24,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
         super.remove(variable);
     }
 
-    public void setHistoryVariable(Atom value) {
+    public void setLastVariable(Atom value) {
         super.put(Tokens.LAST_VARIABLE, value);    
     }
 
@@ -37,5 +37,5 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
 
         return dupLibrary;
     }
-    
+
 }

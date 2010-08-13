@@ -13,7 +13,7 @@ public class GremlinScriptContext extends SimpleScriptContext {
 
     // used by DynamicPredicateFilterPipe & DynamicPredicateFilterPipe
     private Object currentPoint;
-    
+
     protected VariableLibrary variables;
 
     protected final FunctionLibrary functions;
@@ -45,13 +45,22 @@ public class GremlinScriptContext extends SimpleScriptContext {
         return new Var(name, this);
     }
 
-    public void writeOutput(Object o) throws RuntimeException {
+    public void writeOutputLine(Object o) throws RuntimeException {
         try {
             this.getWriter().write(o.toString() + "\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public void writeOutput(Object o) throws RuntimeException {
+        try {
+            this.getWriter().write(o.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void writeError(String message) throws RuntimeException {
         try {
@@ -68,5 +77,5 @@ public class GremlinScriptContext extends SimpleScriptContext {
     public Object getCurrentPoint() {
         return this.currentPoint;
     }
-    
+
 }

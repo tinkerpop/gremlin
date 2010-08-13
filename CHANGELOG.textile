@@ -31,7 +31,7 @@ bc. <dependency>
 ** @g:id()@ changed to @g:id-v()@ and @g:id-e()@ for getting vertices and edges, respectively
 ** @g:key()@ changed to @g:key-v()@
 ** Added @g:version()@ function to retrieve version information
-** Added @g:group()@ to replace @()@ model in Gremlin 0.2.2
+** Added @g:g()@ (group) to replace @()@ model in Gremlin 0.2.2
 ** Added @g:flatten()@ to flatten embedded iterables
 ** Added @g:includes()@ to determine if an object is an iterable
 * Print streams can be dynamically set in @GremlinScriptContext@

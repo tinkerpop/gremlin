@@ -21,6 +21,9 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
     private final Atom<Object> root;
     private Object persistentRoot = null;
+    private static final String COMMA_SPACE = ", ";
+    private static final String LEFT_ANGLE = "<";
+    private static final String RIGHT_ANGLE = ">";
 
     private final List<Pipe> pipes;
     private Pipeline pipeline;
@@ -134,8 +137,8 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         String result = "";
 
         for (Object o : this)
-            result += o.toString() + ", ";
+            result += o.toString() + COMMA_SPACE;
 
-        return "[" + result.substring(0, result.length() - 2) + "]";
+        return LEFT_ANGLE + result.substring(0, result.length() - 2) + RIGHT_ANGLE;
     }
 }

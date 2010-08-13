@@ -8,7 +8,6 @@
     import java.util.LinkedList;
    
     import java.util.Map;
-    import java.util.HashMap;
     import java.util.Iterator;
     
     import java.util.regex.Pattern;
@@ -16,16 +15,12 @@
 
     import java.util.Collections;
 
-    import java.util.ServiceLoader;
-
     import com.tinkerpop.gremlin.GremlinScriptEngine;
     
     import com.tinkerpop.gremlin.compiler.Tokens;
 
     import com.tinkerpop.gremlin.compiler.context.*;
 
-    import com.tinkerpop.gremlin.compiler.functions.Functions;
-    
     // types
     import com.tinkerpop.gremlin.compiler.types.*;
 
@@ -42,15 +37,11 @@
     import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
 
     // blueprints
-    import com.tinkerpop.blueprints.pgm.Vertex;
 
     // pipes
     import com.tinkerpop.pipes.Pipe;
     import com.tinkerpop.pipes.Pipeline;
 
-    import com.tinkerpop.pipes.SingleIterator;
-    import com.tinkerpop.pipes.MultiIterator;
-    
     import com.tinkerpop.pipes.pgm.PropertyPipe;
     import com.tinkerpop.pipes.filter.FilterPipe;
     import com.tinkerpop.pipes.filter.FutureFilterPipe;
@@ -64,7 +55,6 @@
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;import java.util.Stack;
 import java.util.List;
-import java.util.ArrayList;
 
 
 public class GremlinEvaluator extends TreeParser {
@@ -321,29 +311,29 @@ public class GremlinEvaluator extends TreeParser {
             if (value != null && DEBUG) {
                 if (value instanceof Iterable) {
                     for(Object o : (Iterable) value) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + o);
+                        this.context.writeOutputLine(Tokens.RESULT_PROMPT + o);
                     }
                 } else if (value instanceof Map) {
                     Map map = (Map) value;
                     if (map.isEmpty()) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + "{}");
+                        this.context.writeOutputLine(Tokens.RESULT_PROMPT + "{}");
                     } else {
                         for (Object key : map.keySet()) {
-                            this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                            this.context.writeOutputLine(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
                         }
                     }
                 } else if(value instanceof Iterator) {
                     Iterator itty = (Iterator) value;
                     
                     while(itty.hasNext()) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next());
+                        this.context.writeOutputLine(Tokens.RESULT_PROMPT + itty.next());
                     }
                 } else {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + value);
+                    this.context.writeOutputLine(Tokens.RESULT_PROMPT + value);
                 }
             }
 
-            this.context.getVariableLibrary().setHistoryVariable(new Atom<Object>(value));
+            this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
         }
 
 
