@@ -29,7 +29,7 @@ public class DijkstraShortestPathFunction extends AbstractFunction<List<Edge>> {
     invert = true
     */
 
-    public Atom<List<Edge>> compute(List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<List<Edge>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         if (null == graph)

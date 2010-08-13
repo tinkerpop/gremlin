@@ -31,7 +31,7 @@ public class PageRankFunction extends AbstractFunction<Map<Vertex, Double>> {
 
     private static final String FUNCTION_NAME = "pagerank";
 
-    public Atom<Map<Vertex, Double>> compute(List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Map<Vertex, Double>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         if (null == graph)
             throw new RuntimeException(this.createUnsupportedArgumentMessage("No graph available"));

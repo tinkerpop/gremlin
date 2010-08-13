@@ -19,7 +19,7 @@ public class JungFunctionHelper {
     static final String NORMALIZE = "normalize";
     static final String INVERT = "invert";
 
-    public static Set<String> makeSetList(List list) {
+    public static Set<String> makeSetList(final List list) {
         Set<String> set = null;
         if (null != list) {
             set = new HashSet<String>();
@@ -32,7 +32,7 @@ public class JungFunctionHelper {
         return set;
     }
 
-    public static Transformer<Edge, Number> makeTransformer(Set<String> labels, Boolean filterLabels, Number filterValue, Boolean probability, String weightKey, Boolean normalizeWeights, Boolean invertWeights) {
+    public static Transformer<Edge, Number> makeTransformer(final Set<String> labels, final Boolean filterLabels, final Number filterValue, final Boolean probability, final String weightKey, final Boolean normalizeWeights, final Boolean invertWeights) {
         if (labels != null && weightKey != null) {
             return new EdgeLabelWeightTransformer(labels, filterLabels, weightKey, normalizeWeights, invertWeights);
         } else if (labels != null) {
@@ -51,7 +51,7 @@ public class JungFunctionHelper {
         private Boolean normalizeWeights;
         private Boolean invertWeights;
 
-        public EdgeLabelWeightTransformer(Set<String> labels, Boolean filterLabels, String weightKey, Boolean normalizeWeights, Boolean invertWeights) {
+        public EdgeLabelWeightTransformer(final Set<String> labels, final Boolean filterLabels, final String weightKey, final Boolean normalizeWeights, final Boolean invertWeights) {
             this.labels = labels;
             if (null == filterLabels)
                 this.filterLabels = false;
@@ -69,7 +69,7 @@ public class JungFunctionHelper {
 
         }
 
-        public Double transform(Edge edge) {
+        public Double transform(final Edge edge) {
             if (labels.contains(edge.getLabel())) {
                 if (filterLabels) {
                     return 0.0d;
@@ -116,7 +116,7 @@ public class JungFunctionHelper {
         private Number filterValue;
         private Boolean probability;
 
-        public EdgeLabelTransformer(Set<String> labels, Boolean filterLabels, Number filterValue, Boolean probability) {
+        public EdgeLabelTransformer(final Set<String> labels, final Boolean filterLabels, final Number filterValue, final Boolean probability) {
             this.labels = labels;
             if (null == filterLabels)
                 this.filter = false;
@@ -126,7 +126,7 @@ public class JungFunctionHelper {
             this.probability = probability;
         }
 
-        public Number transform(Edge edge) {
+        public Number transform(final Edge edge) {
             if (labels.contains(edge.getLabel())) {
                 if (filter) {
                     return this.filterValue;
@@ -159,7 +159,7 @@ public class JungFunctionHelper {
         private Boolean normalize;
         private Boolean invert;
 
-        public EdgeWeightTransformer(String weightKey, Boolean normalizeWeights, Boolean invertWeights) {
+        public EdgeWeightTransformer(final String weightKey, final Boolean normalizeWeights, final Boolean invertWeights) {
             this.weightKey = weightKey;
             if (null == normalizeWeights)
                 this.normalize = false;
@@ -171,7 +171,7 @@ public class JungFunctionHelper {
                 this.invert = invertWeights;
         }
 
-        public Double transform(Edge edge) {
+        public Double transform(final Edge edge) {
             Object object = edge.getProperty(this.weightKey);
             if (object instanceof Number) {
                 Double weight = ((Number) object).doubleValue();
