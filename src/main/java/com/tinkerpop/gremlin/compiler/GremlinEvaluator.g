@@ -9,7 +9,8 @@ options {
     package com.tinkerpop.gremlin.compiler;
 
     import java.io.FileReader;
-    
+    import java.io.FileNotFoundException;
+
     import java.util.ArrayList;
     import java.util.LinkedList;
    
@@ -198,29 +199,29 @@ options {
         if (value != null && DEBUG) {
             if (value instanceof Iterable) {
                 for(Object o : (Iterable) value) {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + o);
+                    this.context.writeOutput(Tokens.RESULT_PROMPT + o + "\n");
                 }
             } else if (value instanceof Map) {
                 Map map = (Map) value;
                 if (map.isEmpty()) {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + "{}");
+                    this.context.writeOutput(Tokens.RESULT_PROMPT + "{}\n");
                 } else {
                     for (Object key : map.keySet()) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key));
+                        this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key) + "\n");
                     }
                 }
             } else if(value instanceof Iterator) {
                 Iterator itty = (Iterator) value;
                 
                 while(itty.hasNext()) {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next());
+                    this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next() + "\n");
                 }
             } else {
-                this.context.writeOutput(Tokens.RESULT_PROMPT + value);
+                this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
             }
         }
 
-        this.context.getVariableLibrary().setHistoryVariable(new Atom<Object>(value));
+        this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
     }
 }
 
@@ -255,11 +256,18 @@ script_statement returns [Atom result]
             $result = new Atom<Boolean>(true);
 
             String filename = $StringLiteral.text;
+            filename = filename.substring(1, filename.length() - 1);
+
             try {
                 final GremlinScriptEngine engine = new GremlinScriptEngine();
-                engine.eval(new FileReader(filename.substring(1, filename.length() - 1)), this.context);
-            } catch(Exception e) {
+                engine.eval(new FileReader(filename), this.context);
+            } catch(FileNotFoundException e) {
+                this.context.writeError("File '" + filename + "' does not exist");
+                this.context.flushErrorStream();
+
                 $result = new Atom<Boolean>(false);
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage());
             }
       }
     ;
@@ -273,8 +281,10 @@ include_statement returns [Atom result]
             try {
                 this.context.getFunctionLibrary().loadFunctions(className);
             } catch(Exception e) {
+                this.context.writeError("Functions " + className + " do not exist");
+                this.context.flushErrorStream();
+
                 $result = new Atom<Boolean>(false);
-                this.context.writeError(e.getMessage());
             }
         }
 	;

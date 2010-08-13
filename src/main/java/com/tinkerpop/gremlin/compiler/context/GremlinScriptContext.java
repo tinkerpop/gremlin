@@ -70,6 +70,14 @@ public class GremlinScriptContext extends SimpleScriptContext {
         }
     }
 
+    public void flushErrorStream() {
+        try {
+            this.getErrorWriter().flush();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public void setCurrentPoint(Object point) {
         this.currentPoint = point;
     }

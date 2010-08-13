@@ -27,7 +27,7 @@ public class FunctionLibrary extends HashMap<String, Functions> {
             Functions functions = (Functions) functionsClass.getConstructor().newInstance();
             this.registerFunctions(functions);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new RuntimeException("Unable to load " + functionsClassName);
         }
     }
