@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin.compiler.operations;
 
+import com.tinkerpop.gremlin.compiler.types.Atom;
+
 /**
  * @author Pavel A. Yaskevich
  */
@@ -15,4 +17,12 @@ public abstract class BinaryOperation implements Operation {
         return this.operands;
     }
 
+    protected boolean parseBoolean(Atom atom) {
+        Object object = atom.getValue();
+
+        if (object instanceof Number) {
+            return ((Number) object).doubleValue() > 0;
+        } else
+            return Boolean.parseBoolean(object.toString());
+    }
 }
