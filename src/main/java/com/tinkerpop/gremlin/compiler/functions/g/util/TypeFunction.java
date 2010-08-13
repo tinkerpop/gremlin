@@ -10,6 +10,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -17,7 +18,8 @@ import java.util.Map;
 public class TypeFunction extends AbstractFunction<String> {
 
     private static final String FUNCTION_NAME = "type";
-    private static final String ITERABLE = "iterable";
+    private static final String LIST = "list";
+    private static final String SET = "set";
     private static final String MAP = "map";
     private static final String GRAPH = "graph";
     private static final String VERTEX = "vertex";
@@ -27,8 +29,10 @@ public class TypeFunction extends AbstractFunction<String> {
 
         if (arguments.size() == 1) {
             final Object object = arguments.get(0).compute().getValue();
-            if (object instanceof Iterable)
-                return new Atom<String>(ITERABLE);
+            if (object instanceof List)
+                return new Atom<String>(LIST);
+            else if (object instanceof Set)
+                return new Atom<String>(SET);
             else if (object instanceof Map)
                 return new Atom<String>(MAP);
             else if (object instanceof Graph)

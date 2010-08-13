@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.compiler.functions;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.ListFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.MapFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.ime.ListFunction;
+import com.tinkerpop.gremlin.compiler.functions.g.ime.MapFunction;
 
 import java.util.*;
 

@@ -5,7 +5,7 @@ import com.tinkerpop.gremlin.compiler.functions.g.bool.BooleanFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.bool.NotFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.*;
 import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
-import com.tinkerpop.gremlin.compiler.functions.g.lme.*;
+import com.tinkerpop.gremlin.compiler.functions.g.ime.*;
 import com.tinkerpop.gremlin.compiler.functions.g.number.*;
 import com.tinkerpop.gremlin.compiler.functions.g.string.*;
 import com.tinkerpop.gremlin.compiler.functions.g.util.*;
@@ -37,7 +37,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new SaveFunction());
         // io
         functions.add(new PrintFunction());
-        // lme
+        // ime
         functions.add(new DeduplicateFunction());
         functions.add(new DifferenceFunction());
         functions.add(new ExceptFunction());
@@ -51,7 +51,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new MapFunction());
         functions.add(new OperateValueFunction());
         functions.add(new RetainFunction());
-        //functions.add(new SetFunction());
+        functions.add(new SetFunction());
         functions.add(new SortFunction());
         functions.add(new UnionFunction());
         functions.add(new ValuesFunction());
