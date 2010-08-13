@@ -45,19 +45,19 @@ public class GremlinScriptEngineTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
 
         Object result = evaluateGremlinScriptPrimitive("true or false", context, true);
-        assertTrue((Boolean)result);
+        assertTrue((Boolean) result);
 
         result = evaluateGremlinScriptPrimitive("true and false", context, true);
-        //TODO: make work -- assertFalse((Boolean)result);
+        assertFalse((Boolean) result);
 
         result = evaluateGremlinScriptPrimitive("true or (true and false)", context, true);
-        assertTrue((Boolean)result);
+        assertTrue((Boolean) result);
 
         result = evaluateGremlinScriptPrimitive("true and (true or false)", context, true);
-        assertTrue((Boolean)result);
+        assertTrue((Boolean) result);
 
         result = evaluateGremlinScriptPrimitive("false or (false and true) or (true and (false and true))", context, true);
-        //TODO: make work -- assertFalse((Boolean)result);
+        assertFalse((Boolean) result);
     }
 
     public void testGPathInExpression() throws Exception {
