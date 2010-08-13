@@ -32,6 +32,8 @@ bc. <dependency>
 ** @g:key()@ changed to @g:key-v()@
 ** Added @g:version()@ function to retrieve version information
 ** Added @g:group()@ to replace @()@ model in Gremlin 0.2.2
+** Added @g:flatten()@ to flatten embedded iterables
+** Added @g:includes()@ to determine if an object is an iterable
 * Print streams can be dynamically set in @GremlinScriptContext@
 * true(), false(), and null() are now keywords--true, false, null
 * String concatenation is supported with the + operation

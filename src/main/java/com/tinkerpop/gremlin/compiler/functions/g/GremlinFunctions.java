@@ -41,8 +41,10 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new DeduplicateFunction());
         functions.add(new DifferenceFunction());
         functions.add(new ExceptFunction());
+        functions.add(new FlattenFunction());
         functions.add(new GetFunction());
         functions.add(new GroupFunction());
+        functions.add(new IncludesFunction());
         functions.add(new IntersectFunction());
         functions.add(new KeysFunction());
         functions.add(new ListFunction());

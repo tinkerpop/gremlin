@@ -16,7 +16,7 @@ import java.util.List;
  * @author Pavel A. Yaskevich
  */
 public class GroupFunction extends AbstractFunction<Iterator> {
-    private final static String FUNCTION_NAME = "group";
+    private final static String FUNCTION_NAME = "g";
 
     public Atom<Iterator> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         if (arguments.size() != 1)

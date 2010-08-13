@@ -87,7 +87,7 @@ public class OperateValueFunctionTest extends BaseTest {
         assertEquals(marko.getProperty("counter2"), 0.0);
     }
 
-     public void testOperateValueList() {
+    public void testOperateValueList() {
         GremlinScriptContext context = new GremlinScriptContext();
 
         Function<Number> function = new OperateValueFunction();
@@ -118,5 +118,36 @@ public class OperateValueFunctionTest extends BaseTest {
         assertEquals(atom.getValue(), 0.0);
         assertEquals(list.get(0), 1);
         assertEquals(list.get(1), 0.0);
+    }
+
+    public void testOperateValueInline() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        Map map = new HashMap();
+        context.getVariableLibrary().declare("$m", new Atom<Map>(map));
+
+        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:op-value('+',$m,.,1.0)]", context, true);
+        assertNull(results);
+        assertEquals(map.get(1), 4.0f);
+        assertEquals(map.get(2), 5.0f);
+        assertNull(map.get(3));
+
+        results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:p(g:op-value('+',$m,.,1.0))]", context, true);
+        assertEquals(results.size(), 9);
+        assertEquals(map.get(1), 8.0f);
+        assertEquals(map.get(2), 10.0f);
+        assertNull(map.get(3));
+
+        map = new HashMap();
+        context.getVariableLibrary().declare("$m", new Atom<Map>(map));
+        results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:p(g:p(g:op-value('+',$m,.,1.0)))][0..3]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 1);
+        assertEquals(results.get(2), 2);
+        assertEquals(map.get(1), 4.0f);
+        assertEquals(map.get(2), 5.0f);
+        assertNull(map.get(3));
+
+
     }
 }

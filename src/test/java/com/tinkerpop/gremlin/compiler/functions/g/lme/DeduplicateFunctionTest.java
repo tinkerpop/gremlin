@@ -38,4 +38,12 @@ public class DeduplicateFunctionTest extends BaseTest {
         assertTrue(list.contains(2.0d));
 
     }
+
+    public void testDeduplicateInline() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        List results = evaluateGremlinScriptIterable("g:dedup(g:list(1,1,2,1,1,2,2,2,2))", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+    }
 }

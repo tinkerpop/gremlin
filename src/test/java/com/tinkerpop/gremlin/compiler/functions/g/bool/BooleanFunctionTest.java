@@ -28,12 +28,24 @@ public class BooleanFunctionTest extends BaseTest {
         assertFalse(atom.getValue());
     }
 
-    public void testInline() throws Exception {
+    public void testBooleanInline() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
         List results = evaluateGremlinScriptIterable("g:list(-1,0,1,2)[g:boolean(.)]", context, true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
+
+        results = evaluateGremlinScriptIterable("g:list(-1,0,1,2)[g:boolean(.)][g:boolean(true)]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+
+        results = evaluateGremlinScriptIterable("g:list(-1,0,1,2)[g:boolean(.)][g:boolean(true)][g:boolean(.)]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+
+        assertNull(evaluateGremlinScriptPrimitive("g:list(-1,0,1,2)[g:boolean(.)][g:boolean(.)][g:boolean(false)]", context, true));
     }
 
     public void testIllegalArguments() {

@@ -19,19 +19,19 @@ public class RetainFunction extends AbstractFunction<Boolean> {
         if (arguments.size() != 1)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Object object = arguments.get(0).compute().getValue();
-         final Object check = context.getCurrentPoint();
+        final Object check = arguments.get(0).compute().getValue();
+        final Object point = context.getCurrentPoint();
 
         if (check instanceof Collection) {
-            return new Atom<Boolean>(((Collection) check).contains(object));
+            return new Atom<Boolean>(((Collection) check).contains(point));
         } else if (check instanceof Iterable) {
-            for (Object check2 : (Iterable<Atom>) check) {
-                if (check2.equals(object))
+            for (Object check2 : (Iterable) check) {
+                if (check2.equals(point))
                     return new Atom<Boolean>(true);
             }
             return new Atom<Boolean>(false);
         } else {
-            return new Atom<Boolean>(check.equals(object));
+            return new Atom<Boolean>(check.equals(point));
         }
     }
 

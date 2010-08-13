@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.compiler.functions.g.lme;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.GremlinScriptEngine;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -115,34 +114,35 @@ public class MapFunctionTest extends BaseTest {
         }
     }
 
-    public void testMapGremlin() throws Exception {
-        final GremlinScriptEngine engine = new GremlinScriptEngine();
+    public void testMapInline() throws Exception {
         final GremlinScriptContext context = new GremlinScriptContext();
 
-        this.stopWatch();
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k1", context, true), "v1");
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k2", context, true), "v2");
+        assertNull(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k3", context, true));
 
-        String script = "g:map('k1','v1','k2','v2')/@k1";
-        String result = (String) ((Iterable) engine.eval(script, context)).iterator().next();
-        printPerformance(script, 1, "pipe constructed", this.stopWatch());
-        this.stopWatch();
-        printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(result, "v1");
+        Map results = (Map) evaluateGremlinScriptPrimitive("g:map(1,2,'k2',g:list(1,2,g:map('k1','v1','k2',g:list(1+2))))", context, true);
 
-        this.stopWatch();
-        script = "g:map('k1','v1','k2','v2')/@k2";
-        result = (String) ((Iterable) engine.eval(script, context)).iterator().next();
-        printPerformance(script, 1, "pipe constructed", this.stopWatch());
-        this.stopWatch();
-        printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertEquals(result, "v2");
+        assertEquals(results.get(1), 2);
+        assertEquals(((List) (results.get("k2"))).get(0), 1);
+        assertEquals(((List) (results.get("k2"))).get(1), 2);
+        assertTrue(((List) (results.get("k2"))).get(2) instanceof Map);
+        assertEquals(((Map) ((List) (results.get("k2"))).get(2)).get("k1"), "v1");
+        assertEquals(((List) ((Map) ((List) (results.get("k2"))).get(2)).get("k2")).get(0), 3);
+        assertNull(((Map) ((List) (results.get("k2"))).get(2)).get("k3"));
 
-        this.stopWatch();
-        script = "g:map('k1','v1','k2','v2')/@k3";
-        Object nullResult = ((Iterable) engine.eval(script, context)).iterator().next();
-        printPerformance(script, 1, "pipe constructed", this.stopWatch());
-        this.stopWatch();
-        printPerformance(script, 1, "pipe listed", this.stopWatch());
-        assertNull(nullResult);
+        String embedd = "g:map('k1','v1','k2',g:list(1,2,g:map('k11','v11','k22',g:list('a','b','c'))))";
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k1", context, true), "v1");
+        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(0), 1);
+        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(1), 2);
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][0]", context, true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][1]", context, true), 2);
+        assertEquals(((Map) evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]", context, true)).get("k11"), "v11");
+
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k11", context, true), "v11");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][0]", context, true), "a");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][1]", context, true), "b");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][2]", context, true), "c");
 
     }
 }

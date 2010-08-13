@@ -18,7 +18,7 @@ public class KeysFunctionTest extends BaseTest {
 
     public void testMapKeys() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Map map = new HashMap();
         map.put("marko", 30.0d);
         map.put("jen", 26.0d);
@@ -35,7 +35,7 @@ public class KeysFunctionTest extends BaseTest {
     public void testElementKeys() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Iterable> function = new KeysFunction();
         this.stopWatch();
         Atom<Iterable> atom = function.compute(createUnaryArgs(graph.getVertex("1")), context);
@@ -45,4 +45,17 @@ public class KeysFunctionTest extends BaseTest {
         assertTrue(list.contains("age"));
         assertTrue(list.contains("name"));
     }
+
+    public void testKeysInline() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        List results = evaluateGremlinScriptIterable("g:keys(g:map('marko',1,\"pavel\",2,'peter',3))", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), "marko");
+        assertEquals(results.get(1), "peter");
+        assertEquals(results.get(2), "pavel");
+
+        assertEquals(evaluateGremlinScriptPrimitive("g:get(g:map('marko',1,\"pavel\",2,'peter',3), g:keys(g:map('marko',1,\"pavel\",2,'peter',3))[0])", context, true), 1);
+
+    }
+
 }

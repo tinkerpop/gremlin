@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class GroupFunctionTest extends BaseTest {
 
-    public void testGet() {
+    public void testGroup() {
         GremlinScriptContext context = new GremlinScriptContext();
         
         Function<Object> function = new GetFunction();

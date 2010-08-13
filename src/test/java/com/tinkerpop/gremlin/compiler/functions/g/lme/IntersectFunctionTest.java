@@ -14,9 +14,9 @@ import java.util.List;
 public class IntersectFunctionTest extends BaseTest {
     public void testIntersect() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Iterable> function = new IntersectFunction();
-        List list1 = Arrays.asList("marko","pavel", "peter", "josh");
+        List list1 = Arrays.asList("marko", "pavel", "peter", "josh");
         List list2 = Arrays.asList("marko", "pavel");
         List list3 = Arrays.asList("marko");
 
@@ -64,5 +64,22 @@ public class IntersectFunctionTest extends BaseTest {
             assertTrue(true);
         }
     }
+
+    public void testIntersectInline() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        List results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2),g:list(2,3))", context, true);
+        assertEquals(results.size(), 1);
+        assertEquals(results.get(0), 2);
+
+        results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2,2,3),g:list(2,2,2,2,3))", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), 2);
+        assertEquals(results.get(1), 3);
+
+        results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2,2),2)", context, true);
+        assertEquals(results.size(), 1);
+        assertEquals(results.get(0), 2);
+    }
+
 
 }

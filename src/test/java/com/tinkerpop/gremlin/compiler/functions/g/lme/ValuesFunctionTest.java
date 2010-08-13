@@ -43,4 +43,15 @@ public class ValuesFunctionTest extends BaseTest {
         assertTrue(list.contains(29));
         assertTrue(list.contains("marko"));
     }
+
+    public void testValuesInline() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        List results = evaluateGremlinScriptIterable("g:values(g:map('marko',1,\"pavel\",2,'peter',3))", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 3);
+        assertEquals(results.get(2), 2);
+
+
+    }
 }

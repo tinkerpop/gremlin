@@ -35,6 +35,26 @@ public class UnionFunctionTest extends BaseTest {
         assertEquals(list.size(), 2);
         assertTrue(list.contains(1.0d));
         assertTrue(list.contains(2.0d));
+    }
 
+    public void testUnionInline() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        List results = evaluateGremlinScriptIterable("g:union(g:list(1,2),g:list(2,3))", context, true);
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains(1));
+        assertTrue(results.contains(2));
+        assertTrue(results.contains(3));
+
+
+        results = evaluateGremlinScriptIterable("g:union(g:list(1,2,2,3),g:list(2,2,2,2,3))", context, true);
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains(1));
+        assertTrue(results.contains(2));
+        assertTrue(results.contains(3));
+
+        results = evaluateGremlinScriptIterable("g:union(g:list(1,2,2),2)", context, true);
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(1));
+        assertTrue(results.contains(2));
     }
 }
