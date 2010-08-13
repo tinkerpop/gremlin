@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler.context;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.functions.Functions;
 import com.tinkerpop.gremlin.compiler.functions.NativeFunctions;
+import com.tinkerpop.gremlin.compiler.util.StringHelper;
 
 import java.util.HashMap;
 import java.util.ServiceLoader;
@@ -22,10 +23,11 @@ public class FunctionLibrary extends HashMap<String, Functions> {
 
     public void loadFunctions(final String functionsClassName) throws RuntimeException {
         try {
-            Class functionsClass = Class.forName(functionsClassName);
+            Class functionsClass = Class.forName(StringHelper.clearQuotes(functionsClassName));
             Functions functions = (Functions) functionsClass.getConstructor().newInstance();
             this.registerFunctions(functions);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Unable to load " + functionsClassName);
         }
     }

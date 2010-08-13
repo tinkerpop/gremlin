@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.gremlin.compiler.util.StringHelper;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,9 +21,6 @@ public class Atom<T> {
     private boolean property = false;
 
     private static final String NULL = "null";
-    private static final String EMPTY_STRING = "";
-    private static final char DOUBLE_QUOTE = '"';
-    private static final char SINGLE_QUOTE = '\'';
 
     public Atom() {
         this.value = null;
@@ -32,19 +30,8 @@ public class Atom<T> {
         this.value = value;
 
         // string preprocessing
-        if (this.isString()) {
-            String result = EMPTY_STRING;
-            String stringValue = (String) this.value;
-
-            for (int i = 0; i < stringValue.length(); i++) {
-                final Character currentCharacter = stringValue.charAt(i);
-                if ((i == 0 || i == stringValue.length() - 1) && (currentCharacter.equals(DOUBLE_QUOTE) || currentCharacter.equals(SINGLE_QUOTE)))
-                    continue;
-                result += stringValue.charAt(i);
-            }
-
-            this.value = (T) result;
-        }
+        if (this.isString())
+            this.value = (T) StringHelper.clearQuotes((String) this.value);
     }
 
     public T getValue() {

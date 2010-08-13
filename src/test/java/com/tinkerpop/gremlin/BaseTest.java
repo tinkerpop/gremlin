@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 import org.antlr.runtime.RecognitionException;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -136,7 +135,7 @@ public abstract class BaseTest extends TestCase {
         return args;
     }
 
-    public static Class[] getClasses(String packageName) throws ClassNotFoundException, IOException {
+    public static Class[] getClasses(final String packageName) throws Exception {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
         String path = packageName.replace('.', '/');
@@ -153,7 +152,7 @@ public abstract class BaseTest extends TestCase {
         return classes.toArray(new Class[classes.size()]);
     }
 
-    public static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
+    public static List<Class> findClasses(final File directory, final String packageName) throws Exception {
         List<Class> classes = new ArrayList<Class>();
         if (!directory.exists()) {
             return classes;
