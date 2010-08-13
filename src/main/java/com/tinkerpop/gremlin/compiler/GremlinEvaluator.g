@@ -271,15 +271,10 @@ include_statement returns [Atom result]
 
             String className = $StringLiteral.text;
             try {
-                final Class toLoad = Class.forName(className);
-                final ServiceLoader<Functions> functionsService = ServiceLoader.load(toLoad);
-
-                for (final Functions functionsToLoad : functionsService) {
-                    this.context.getFunctionLibrary().registerFunctions(functionsToLoad);
-                }
+                this.context.getFunctionLibrary().loadFunctions(className);
             } catch(Exception e) {
                 $result = new Atom<Boolean>(false);
-                e.printStackTrace();
+                this.context.writeError(e.getMessage());
             }
         }
 	;
