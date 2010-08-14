@@ -173,6 +173,12 @@ options {
         final PathLibrary paths = this.context.getPathLibrary();
 
         if (token instanceof DynamicEntity) {
+            if (gpathScope == 1 && token instanceof Func) {
+                Func function = (Func) token;
+                Object root = this.getVariable(Tokens.ROOT_VARIABLE).getValue();
+                List<Operation> arguments = GremlinPipesHelper.updateArguments(function.getArguments(), root);
+                return new Func(function.getFunction(), arguments, this.context);
+            }
             return token;
         } else if (token.isProperty()) {
             return (gpathScope == 1) ? new Atom<Object>(null) : token;
