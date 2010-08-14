@@ -26,5 +26,6 @@ public class Tokens {
     public static final String E = "E";
     public static final String LABEL = "label";
     public static final String ID = "id";
+    public static final String HISTORY = "..";
 
 }

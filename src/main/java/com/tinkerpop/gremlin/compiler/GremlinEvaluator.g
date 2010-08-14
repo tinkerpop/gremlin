@@ -174,13 +174,21 @@ options {
 
         if (token instanceof DynamicEntity) {
             return token;
-        } else if (token.isIdentifier() && token.getValue().equals(".")) {
-            return (gpathScope > 1) ? new Var(Tokens.IDENTITY, this.context) : this.getVariable(Tokens.ROOT_VARIABLE);
+        } else if (token.isProperty()) {
+            return (gpathScope == 1) ? new Atom<Object>(null) : token;
+        } else if (token.isIdentifier()) {
+            String identifier = (String) token.getValue();
+
+            if (identifier.equals(Tokens.IDENTITY)) {
+                return (gpathScope > 1) ? new Var(Tokens.IDENTITY, this.context) : this.getVariable(Tokens.ROOT_VARIABLE);
+            } else {
+                return new Atom<Object>(null);
+            }
         } else if(paths.isPath(token.toString())) {
             return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
-        } else {
-            return token;
         }
+
+        return token;
     }
 
     private void formProgramResult(List<Object> resultList, Operation currentOperation) {
@@ -434,12 +442,12 @@ function_definition_statement returns [Operation op]
 	
 function_call returns [Atom value]
     @init {
-        List<Operation> params = new ArrayList<Operation>();
+        List<Operation> arguments = new ArrayList<Operation>();
     }
-	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG st=statement { params.add($st.op); }) )* ))
+	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG st=statement { arguments.add($st.op); }) )* ))
         {
             try {
-                $value = new Func(this.getFunction($ns.text, $fn_name.text), params, this.context);
+                $value = new Func(this.getFunction($ns.text, $fn_name.text), arguments, this.context);
             } catch(Exception e) {
                 this.context.writeError(e.getMessage());
             }
