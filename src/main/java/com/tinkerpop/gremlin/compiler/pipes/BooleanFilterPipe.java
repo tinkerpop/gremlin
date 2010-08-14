@@ -3,11 +3,9 @@ package com.tinkerpop.gremlin.compiler.pipes;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
-import java.util.NoSuchElementException;
-
 /**
  * [true]
- * 
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class BooleanFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
@@ -19,10 +17,12 @@ public class BooleanFilterPipe<S> extends AbstractPipe<S, S> implements FilterPi
     }
 
     public S processNextStart() {
-        if (this.filter) {
-            throw new NoSuchElementException();
-        } else {
-            return this.starts.next();
+        while (true) {
+            if (this.filter) {
+                this.starts.next();
+            } else {
+                return this.starts.next();
+            }
         }
     }
 }

@@ -41,6 +41,7 @@ bc. <dependency>
 * Index of lists starts at 0 instead of 1 as in Gremlin 0.2.2
 * Test cases now provide performance statistics
 * Removed the 'show all aspects' * step (i.e. @./outE/inV/*@)
+* Allow for the use of assignment and other operations within a path (e.g. ./outE/inV[g:p($x := .)]
 
 ==<hr/>==
 

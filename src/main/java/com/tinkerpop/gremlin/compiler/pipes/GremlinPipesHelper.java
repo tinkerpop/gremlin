@@ -174,7 +174,7 @@ public class GremlinPipesHelper {
             }
         }
 
-        throw new RuntimeException("No pipe for  " + predicate.getClass());
+        throw new RuntimeException("No pipe for " + predicate.getClass());
     }
 
     private static List<Pipe> pipesForAndOrOperations(final GremlinScriptContext context, final Operation... operands) {

@@ -8,9 +8,7 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -41,7 +39,7 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(result, -1);*/
     }
 
-     public void testBasicTruthStatements() throws Exception {
+    public void testBasicTruthStatements() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
 
         Object result = evaluateGremlinScriptPrimitive("true or false", context, true);
@@ -58,6 +56,19 @@ public class GremlinScriptEngineTest extends BaseTest {
 
         result = evaluateGremlinScriptPrimitive("false or (false and true) or (true and (false and true))", context, true);
         assertFalse((Boolean) result);
+    }
+
+    public void testSideEffects() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($x,.)]", context, true);
+        assertEquals(context.getVariableByName("$x").getValue(), 3);
+
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($y,.)][true]", context, true);
+        assertEquals(context.getVariableByName("$y").getValue(), 3);
+
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($z,.)][false]", context, true);
+        assertEquals(context.getVariableByName("$z").getValue(), 3);
     }
 
     public void testGPathInExpression() throws Exception {

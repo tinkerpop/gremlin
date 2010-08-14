@@ -58,17 +58,15 @@ public abstract class BaseTest extends TestCase {
         return list;
     }
 
-    public List evaluateGremlinScriptIterable(String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
-        this.stopWatch();
+    public List evaluateGremlinScriptIterable(final String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
 
         final GremlinScriptEngine engine = new GremlinScriptEngine();
-
         Iterable itty = null;
 
+        this.stopWatch();
         try {
             itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
 
         if (printStatistics)
             printPerformance(script, 1, "pipe constructed", this.stopWatch());
@@ -89,7 +87,7 @@ public abstract class BaseTest extends TestCase {
         return results;
     }
 
-    public Object evaluateGremlinScriptPrimitive(String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
+    public Object evaluateGremlinScriptPrimitive(final String script, final GremlinScriptContext context, boolean printStatistics) throws RecognitionException {
         this.stopWatch();
         final GremlinScriptEngine engine = new GremlinScriptEngine();
 
