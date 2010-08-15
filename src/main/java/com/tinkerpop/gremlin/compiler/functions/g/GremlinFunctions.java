@@ -4,8 +4,8 @@ import com.tinkerpop.gremlin.compiler.functions.AbstractFunctions;
 import com.tinkerpop.gremlin.compiler.functions.g.bool.BooleanFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.bool.NotFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.graph.*;
-import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.ime.*;
+import com.tinkerpop.gremlin.compiler.functions.g.io.PrintFunction;
 import com.tinkerpop.gremlin.compiler.functions.g.number.*;
 import com.tinkerpop.gremlin.compiler.functions.g.string.*;
 import com.tinkerpop.gremlin.compiler.functions.g.util.*;
@@ -63,6 +63,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new FloorFunction());
         functions.add(new IntegerFunction());
         functions.add(new LongFunction());
+        functions.add(new PowerFunction());
         functions.add(new RandomNaturalFunction());
         functions.add(new RandomRealFunction());
         functions.add(new SumFunction());

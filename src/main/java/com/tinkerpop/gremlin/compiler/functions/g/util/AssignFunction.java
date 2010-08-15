@@ -13,22 +13,21 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AssignFunction extends AbstractFunction<Boolean> {
+public class AssignFunction extends AbstractFunction<Object> {
 
     private static final String FUNCTION_NAME = "assign";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final int size = arguments.size();
         if (size == 2) {
             final Atom variable = arguments.get(0).compute();
-            
+
             if (!(variable instanceof Var))
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("Two argument evaluation requires first argument to be a variable"));
 
-            final Atom atom = arguments.get(1).compute();
+            final Atom<Object> atom = arguments.get(1).compute();
             context.getVariableLibrary().declare(((Var) variable).getVariableName(), atom);
-            
-            return new Atom<Boolean>(true);
+            return atom;
         } else if (size == 3) {
             final Object object = arguments.get(0).compute().getValue();
             final Object key = arguments.get(1).compute().getValue();
@@ -42,7 +41,7 @@ public class AssignFunction extends AbstractFunction<Boolean> {
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("Three argument evaluation required the first argument to be a list, map, or element"));
             }
-            return new Atom<Boolean>(true);
+            return new Atom<Object>(value);
 
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());

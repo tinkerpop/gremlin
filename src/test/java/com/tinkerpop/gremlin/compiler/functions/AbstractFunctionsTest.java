@@ -45,22 +45,23 @@ public class AbstractFunctionsTest extends BaseTest {
 
     public void testScanTiming() {
         Random random = new Random();
-        int count = 50;
-        for (int j = 0; j < 10; j++) {
-            List<String> uuids = generateUUIDs(count);
+        int count = 10;
+        for (int j = 1; j < 10; j++) {
+            int total = count * j;
+            List<String> uuids = generateUUIDs(total);
             this.stopWatch();
-            for (int i = 0; i < 250; i++) {
+            for (int i = 0; i < 500; i++) {
                 uuids.contains(uuids.get(random.nextInt(uuids.size())));
             }
-            printPerformance("ArrayList scan", count, "look ups", this.stopWatch());
+            printPerformance("ArrayList scan", total, "size/500 look ups", this.stopWatch());
 
             Set<String> uuids2 = new HashSet<String>();
             uuids2.addAll(uuids);
             this.stopWatch();
-            for (int i = 0; i < 250; i++) {
+            for (int i = 0; i < 500; i++) {
                 uuids2.contains(uuids.get(random.nextInt(uuids.size())));
             }
-            printPerformance("HashSet scan", count, "lookups", this.stopWatch());
+            printPerformance("HashSet scan", total, "size/500 look ups", this.stopWatch());
         }
     }
 
