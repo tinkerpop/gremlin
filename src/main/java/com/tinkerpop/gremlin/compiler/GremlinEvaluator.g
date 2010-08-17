@@ -258,7 +258,7 @@ statement returns [Operation op]
 	|	function_definition_statement       { $op = $function_definition_statement.op; }
 	|	include_statement                   { $op = new UnaryOperation($include_statement.result); }
 	|   script_statement                    { $op = new UnaryOperation($script_statement.result); }
-	|	^(VAR VARIABLE s=statement)         { $op = new DeclareVariable($VARIABLE.text, $s.op, this.context); }
+	|	^(VAR atom s=statement)             { $op = new DeclareVariable($atom.value, $s.op, this.context); }
     |   ^('and' a=statement b=statement)    { $op = new And($a.op, $b.op); }
     |   ^('or'  a=statement b=statement)    { $op = new Or($a.op, $b.op); }
     |   expression                          { $op = $expression.expr; }

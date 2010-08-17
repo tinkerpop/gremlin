@@ -8,7 +8,9 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -259,5 +261,34 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV[@name = 'vadas']/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive(".[g:count(./outE/inV/@name) = 3l]/@name", context, true), "marko");
         assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age >= 27]/@name", context, true), "marko");
+    }
+
+    public void testAssignmentOperation() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        assertEquals(evaluateGremlinScriptPrimitive("$x := 1", context, true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive("$x := $x + 1", context, true), 2);
+        assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 2);
+        assertEquals(evaluateGremlinScriptPrimitive("./@name := 'name'", context, true), "name");
+        assertEquals(evaluateGremlinScriptPrimitive("./@name", context, true), "name");
+        assertEquals(evaluateGremlinScriptPrimitive("./outE/inV[0]/@name := 'vname'", context, true), "vname");
+        assertEquals(evaluateGremlinScriptPrimitive("./outE/inV[0]/@name", context, true), "vname");
+        assertEquals(evaluateGremlinScriptIterable("./outE/inV/@age := 20", context, true), Arrays.asList(20, null, 32));
+        assertEquals(evaluateGremlinScriptIterable("./outE/inV/@age := g:list(21, 30, 31)", context, true), Arrays.asList(21, 30, 31));
+
+        evaluateGremlinScriptPrimitive("$m := g:map()", context, false);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@a := 5", context, true), 5);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@a", context, true), 5);        
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@b := (($m/@a + 6) - 4) div 2.67", context, true), 2.6217227715275007);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@b", context, true), 2.6217227715275007);
+
+        Map m = (Map) evaluateGremlinScriptPrimitive("$m", context, false);
+        assertEquals(m.get("a"), 5);
+        assertEquals(m.get("b"), 2.6217227715275007);
     }
 }

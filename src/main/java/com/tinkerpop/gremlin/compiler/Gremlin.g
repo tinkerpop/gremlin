@@ -99,7 +99,7 @@ statement
 	|	function_definition_statement
 	|	include_statement
 	|   script_statement
-    |   VARIABLE ':=' statement  -> ^(VAR VARIABLE statement)	
+    |   atom ':=' statement  -> ^(VAR atom statement)	
 	|	expression (('and'^|'or'^) expression)*
 	;
 

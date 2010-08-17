@@ -1,17 +1,12 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
-import com.tinkerpop.gremlin.compiler.types.*;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * [g:func()]

@@ -27,4 +27,8 @@ public class GremlinPropertyPipe<E> extends AbstractPipe<Object, E> {
             throw new RuntimeException(ILLEGAL_START);
         }
     }
+
+    public Object getPropertyKey() {
+        return this.key;
+    }
 }

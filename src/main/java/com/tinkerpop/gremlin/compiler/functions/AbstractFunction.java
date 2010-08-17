@@ -3,8 +3,6 @@ package com.tinkerpop.gremlin.compiler.functions;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 /**

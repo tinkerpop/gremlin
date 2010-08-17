@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.compiler.operations.logic;
 
-import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 

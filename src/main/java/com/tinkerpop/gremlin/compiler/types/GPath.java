@@ -122,6 +122,9 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         return this.pipes;
     }
 
+    public Atom<Object> getRoot() {
+        return (persistentRoot == null) ? this.root : new Atom<Object>(this.persistentRoot);
+    }
     /**
      * This method should be used only inside of Pipes
      *

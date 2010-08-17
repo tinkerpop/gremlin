@@ -1,13 +1,7 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-08 18:45:03
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-15 20:12:13
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-
 import org.antlr.runtime.tree.*;
 
 public class GremlinParser extends Parser {
@@ -622,7 +616,7 @@ public class GremlinParser extends Parser {
                 if ( (LA7_1==96) ) {
                     alt7=1;
                 }
-                else if ( (LA7_1==EOF||LA7_1==NULL||(LA7_1>=COMMENT && LA7_1<=BOOLEAN)||(LA7_1>=64 && LA7_1<=67)||(LA7_1>=69 && LA7_1<=76)||(LA7_1>=78 && LA7_1<=95)) ) {
+                else if ( (LA7_1==EOF||LA7_1==NULL||(LA7_1>=COMMENT && LA7_1<=BOOLEAN)||(LA7_1>=64 && LA7_1<=76)||(LA7_1>=78 && LA7_1<=95)) ) {
                     alt7=5;
                 }
                 else {
@@ -842,14 +836,13 @@ public class GremlinParser extends Parser {
     };
 
     // $ANTLR start "statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:93:1: statement : ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | VARIABLE ':=' statement -> ^( VAR VARIABLE statement ) | expression ( ( 'and' | 'or' ) expression )* );
+    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:93:1: statement : ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | atom ':=' statement -> ^( VAR atom statement ) | expression ( ( 'and' | 'or' ) expression )* );
     public final GremlinParser.statement_return statement() throws RecognitionException {
         GremlinParser.statement_return retval = new GremlinParser.statement_return();
         retval.start = input.LT(1);
 
         CommonTree root_0 = null;
 
-        Token VARIABLE25=null;
         Token string_literal26=null;
         Token string_literal29=null;
         Token string_literal30=null;
@@ -869,6 +862,8 @@ public class GremlinParser extends Parser {
 
         GremlinParser.script_statement_return script_statement24 = null;
 
+        GremlinParser.atom_return atom25 = null;
+
         GremlinParser.statement_return statement27 = null;
 
         GremlinParser.expression_return expression28 = null;
@@ -876,15 +871,14 @@ public class GremlinParser extends Parser {
         GremlinParser.expression_return expression31 = null;
 
 
-        CommonTree VARIABLE25_tree=null;
         CommonTree string_literal26_tree=null;
         CommonTree string_literal29_tree=null;
         CommonTree string_literal30_tree=null;
         RewriteRuleTokenStream stream_68=new RewriteRuleTokenStream(adaptor,"token 68");
-        RewriteRuleTokenStream stream_VARIABLE=new RewriteRuleTokenStream(adaptor,"token VARIABLE");
         RewriteRuleSubtreeStream stream_statement=new RewriteRuleSubtreeStream(adaptor,"rule statement");
+        RewriteRuleSubtreeStream stream_atom=new RewriteRuleSubtreeStream(adaptor,"rule atom");
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:94:5: ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | VARIABLE ':=' statement -> ^( VAR VARIABLE statement ) | expression ( ( 'and' | 'or' ) expression )* )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:94:5: ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | atom ':=' statement -> ^( VAR atom statement ) | expression ( ( 'and' | 'or' ) expression )* )
             int alt10=10;
             alt10 = dfa10.predict(input);
             switch (alt10) {
@@ -1001,11 +995,14 @@ public class GremlinParser extends Parser {
                     }
                     break;
                 case 9 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:102:9: VARIABLE ':=' statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:102:9: atom ':=' statement
                     {
-                    VARIABLE25=(Token)match(input,VARIABLE,FOLLOW_VARIABLE_in_statement543); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_VARIABLE.add(VARIABLE25);
+                    pushFollow(FOLLOW_atom_in_statement543);
+                    atom25=atom();
 
+                    state._fsp--;
+                    if (state.failed) return retval;
+                    if ( state.backtracking==0 ) stream_atom.add(atom25.getTree());
                     string_literal26=(Token)match(input,68,FOLLOW_68_in_statement545); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_68.add(string_literal26);
 
@@ -1018,7 +1015,7 @@ public class GremlinParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, VARIABLE
+                    // elements: statement, atom
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -1029,14 +1026,14 @@ public class GremlinParser extends Parser {
                     RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
                     root_0 = (CommonTree)adaptor.nil();
-                    // 102:34: -> ^( VAR VARIABLE statement )
+                    // 102:30: -> ^( VAR atom statement )
                     {
-                        // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:102:37: ^( VAR VARIABLE statement )
+                        // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:102:33: ^( VAR atom statement )
                         {
                         CommonTree root_1 = (CommonTree)adaptor.nil();
                         root_1 = (CommonTree)adaptor.becomeRoot((CommonTree)adaptor.create(VAR, "VAR"), root_1);
 
-                        adaptor.addChild(root_1, stream_VARIABLE.nextNode());
+                        adaptor.addChild(root_1, stream_atom.nextTree());
                         adaptor.addChild(root_1, stream_statement.nextTree());
 
                         adaptor.addChild(root_0, root_1);
@@ -3738,6 +3735,27 @@ public class GremlinParser extends Parser {
     }
     // $ANTLR end "range"
 
+    // $ANTLR start synpred20_Gremlin
+    public final void synpred20_Gremlin_fragment() throws RecognitionException {   
+        // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:102:9: ( atom ':=' statement )
+        // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:102:9: atom ':=' statement
+        {
+        pushFollow(FOLLOW_atom_in_synpred20_Gremlin543);
+        atom();
+
+        state._fsp--;
+        if (state.failed) return ;
+        match(input,68,FOLLOW_68_in_synpred20_Gremlin545); if (state.failed) return ;
+        pushFollow(FOLLOW_statement_in_synpred20_Gremlin547);
+        statement();
+
+        state._fsp--;
+        if (state.failed) return ;
+
+        }
+    }
+    // $ANTLR end synpred20_Gremlin
+
     // $ANTLR start synpred42_Gremlin
     public final void synpred42_Gremlin_fragment() throws RecognitionException {   
         // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:194:6: ( G_INT )
@@ -3794,25 +3812,41 @@ public class GremlinParser extends Parser {
         state.failed=false;
         return success;
     }
+    public final boolean synpred20_Gremlin() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred20_Gremlin_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
 
 
     protected DFA10 dfa10 = new DFA10(this);
     protected DFA24 dfa24 = new DFA24(this);
     static final String DFA10_eotS =
-        "\14\uffff";
+        "\27\uffff";
     static final String DFA10_eofS =
-        "\11\uffff\1\12\2\uffff";
+        "\27\uffff";
     static final String DFA10_minS =
-        "\1\44\10\uffff\1\44\2\uffff";
+        "\1\44\10\uffff\14\0\2\uffff";
     static final String DFA10_maxS =
-        "\1\122\10\uffff\1\137\2\uffff";
+        "\1\122\10\uffff\14\0\2\uffff";
     static final String DFA10_acceptS =
-        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\uffff\1\12\1\11";
+        "\1\uffff\1\1\1\2\1\3\1\4\1\5\1\6\1\7\1\10\14\uffff\1\11\1\12";
     static final String DFA10_specialS =
-        "\14\uffff}>";
+        "\11\uffff\1\0\1\1\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11\1\12\1\13\2"+
+        "\uffff}>";
     static final String[] DFA10_transitionS = {
-            "\1\12\6\uffff\2\12\1\11\6\12\17\uffff\1\12\3\uffff\1\7\1\10"+
-            "\1\1\2\uffff\1\2\1\uffff\1\3\1\4\1\5\1\6\1\12",
+            "\1\23\6\uffff\1\16\1\17\1\20\1\15\1\11\1\12\1\13\1\14\1\22\17"+
+            "\uffff\1\21\3\uffff\1\7\1\10\1\1\2\uffff\1\2\1\uffff\1\3\1\4"+
+            "\1\5\1\6\1\24",
             "",
             "",
             "",
@@ -3821,7 +3855,18 @@ public class GremlinParser extends Parser {
             "",
             "",
             "",
-            "\1\12\4\uffff\13\12\14\uffff\4\12\1\13\10\12\1\uffff\22\12",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
+            "\1\uffff",
             "",
             ""
     };
@@ -3856,7 +3901,198 @@ public class GremlinParser extends Parser {
             this.transition = DFA10_transition;
         }
         public String getDescription() {
-            return "93:1: statement : ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | VARIABLE ':=' statement -> ^( VAR VARIABLE statement ) | expression ( ( 'and' | 'or' ) expression )* );";
+            return "93:1: statement : ( if_statement | foreach_statement | while_statement | repeat_statement | path_definition_statement | function_definition_statement | include_statement | script_statement | atom ':=' statement -> ^( VAR atom statement ) | expression ( ( 'and' | 'or' ) expression )* );";
+        }
+        public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
+            TokenStream input = (TokenStream)_input;
+        	int _s = s;
+            switch ( s ) {
+                    case 0 : 
+                        int LA10_9 = input.LA(1);
+
+                         
+                        int index10_9 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_9);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
+                        int LA10_10 = input.LA(1);
+
+                         
+                        int index10_10 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_10);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 2 : 
+                        int LA10_11 = input.LA(1);
+
+                         
+                        int index10_11 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_11);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
+                        int LA10_12 = input.LA(1);
+
+                         
+                        int index10_12 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_12);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 4 : 
+                        int LA10_13 = input.LA(1);
+
+                         
+                        int index10_13 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_13);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA10_14 = input.LA(1);
+
+                         
+                        int index10_14 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_14);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
+                        int LA10_15 = input.LA(1);
+
+                         
+                        int index10_15 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_15);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 7 : 
+                        int LA10_16 = input.LA(1);
+
+                         
+                        int index10_16 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_16);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 8 : 
+                        int LA10_17 = input.LA(1);
+
+                         
+                        int index10_17 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_17);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 9 : 
+                        int LA10_18 = input.LA(1);
+
+                         
+                        int index10_18 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_18);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 10 : 
+                        int LA10_19 = input.LA(1);
+
+                         
+                        int index10_19 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_19);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 11 : 
+                        int LA10_20 = input.LA(1);
+
+                         
+                        int index10_20 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred20_Gremlin()) ) {s = 21;}
+
+                        else if ( (true) ) {s = 22;}
+
+                         
+                        input.seek(index10_20);
+                        if ( s>=0 ) return s;
+                        break;
+            }
+            if (state.backtracking>0) {state.failed=true; return -1;}
+            NoViableAltException nvae =
+                new NoViableAltException(getDescription(), 10, _s, input);
+            error(nvae);
+            throw nvae;
         }
     }
     static final String DFA24_eotS =
@@ -3874,8 +4110,7 @@ public class GremlinParser extends Parser {
     static final String[] DFA24_transitionS = {
             "\1\7\6\uffff\4\5\1\1\1\2\1\3\1\4\1\6\17\uffff\1\5\16\uffff\1"+
             "\10",
-            "\1\12\4\uffff\13\12\16\uffff\1\12\1\11\1\uffff\10\12\1\uffff"+
-            "\22\12",
+            "\1\12\4\uffff\13\12\16\uffff\1\12\1\11\11\12\1\uffff\22\12",
             "",
             "",
             "",
@@ -3883,8 +4118,8 @@ public class GremlinParser extends Parser {
             "",
             "",
             "",
-            "\1\12\4\uffff\6\12\1\13\4\12\14\uffff\2\12\1\uffff\1\12\1\uffff"+
-            "\10\12\1\uffff\22\12",
+            "\1\12\4\uffff\6\12\1\13\4\12\14\uffff\2\12\1\uffff\12\12\1"+
+            "\uffff\22\12",
             "",
             "\1\uffff",
             ""
@@ -3975,7 +4210,7 @@ public class GremlinParser extends Parser {
     public static final BitSet FOLLOW_function_definition_statement_in_statement521 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_include_statement_in_statement526 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_script_statement_in_statement533 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_VARIABLE_in_statement543 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_atom_in_statement543 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
     public static final BitSet FOLLOW_68_in_statement545 = new BitSet(new long[]{0x000FF81000000000L,0x000000000007D388L});
     public static final BitSet FOLLOW_statement_in_statement547 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_expression_in_statement564 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000060L});
@@ -4045,9 +4280,9 @@ public class GremlinParser extends Parser {
     public static final BitSet FOLLOW_92_in_operation1097 = new BitSet(new long[]{0x000FF81000000000L,0x000000000007D388L});
     public static final BitSet FOLLOW_binary_operation_in_operation1101 = new BitSet(new long[]{0x0000000000000002L,0x0000000018000000L});
     public static final BitSet FOLLOW_atom_in_binary_operation1115 = new BitSet(new long[]{0x0000000000000002L,0x00000000E0000000L});
-    public static final BitSet FOLLOW_93_in_binary_operation1119 = new BitSet(new long[]{0x000FF81000000000L,0x000000000007D388L});
-    public static final BitSet FOLLOW_94_in_binary_operation1122 = new BitSet(new long[]{0x000FF81000000000L,0x000000000007D388L});
-    public static final BitSet FOLLOW_95_in_binary_operation1125 = new BitSet(new long[]{0x000FF81000000000L,0x000000000007D388L});
+    public static final BitSet FOLLOW_93_in_binary_operation1119 = new BitSet(new long[]{0x000FF81000000000L,0x0000000000040008L});
+    public static final BitSet FOLLOW_94_in_binary_operation1122 = new BitSet(new long[]{0x000FF81000000000L,0x0000000000040008L});
+    public static final BitSet FOLLOW_95_in_binary_operation1125 = new BitSet(new long[]{0x000FF81000000000L,0x0000000000040008L});
     public static final BitSet FOLLOW_atom_in_binary_operation1129 = new BitSet(new long[]{0x0000000000000002L,0x00000000E0000000L});
     public static final BitSet FOLLOW_function_name_in_function_call1143 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
     public static final BitSet FOLLOW_82_in_function_call1145 = new BitSet(new long[]{0x000FF81000000000L,0x00000000000FD388L});
@@ -4074,6 +4309,9 @@ public class GremlinParser extends Parser {
     public static final BitSet FOLLOW_G_INT_in_range1604 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
     public static final BitSet FOLLOW_67_in_range1606 = new BitSet(new long[]{0x0000800000000000L});
     public static final BitSet FOLLOW_G_INT_in_range1610 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_atom_in_synpred20_Gremlin543 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000010L});
+    public static final BitSet FOLLOW_68_in_synpred20_Gremlin545 = new BitSet(new long[]{0x000FF81000000000L,0x000000000007D388L});
+    public static final BitSet FOLLOW_statement_in_synpred20_Gremlin547 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_G_INT_in_synpred42_Gremlin1267 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_range_in_synpred46_Gremlin1361 = new BitSet(new long[]{0x0000000000000002L});
 
