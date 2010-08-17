@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class PowerFunction extends AbstractFunction<Double> {
 
-    public static final String FUNCTION_NAME = "pow";
+    public static final String FUNCTION_NAME = "power";
 
     public Atom<Double> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 

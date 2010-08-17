@@ -34,7 +34,7 @@ bc. <dependency>
 ** Added @g:g()@ (group) to semi-replace @()@ model in Gremlin 0.2.2
 ** Added @g:flatten()@ to flatten embedded iterables
 ** Added @g:includes()@ to determine if an object is an iterable
-** Added @g:pow()@ to implement raising a number by a power
+** Added @g:power()@ to implement raising a number by a power
 * Print streams can be dynamically set in @GremlinScriptContext@
 * true(), false(), and null() are now keywords--true, false, null
 * String concatenation is supported with the + operation
