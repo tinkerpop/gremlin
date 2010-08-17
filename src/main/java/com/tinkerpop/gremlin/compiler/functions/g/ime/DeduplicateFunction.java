@@ -4,6 +4,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.pipes.PipeHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,9 +26,7 @@ public class DeduplicateFunction extends AbstractFunction<Set> {
             for (Operation operation : arguments) {
                 final Object object = operation.compute().getValue();
                 if (object instanceof Iterable) {
-                    for (Object object2 : (Iterable) object) {
-                        set.add(object2);
-                    }
+                    PipeHelper.fillCollection(((Iterable) object).iterator(), set);
                 } else {
                     set.add(object);
                 }

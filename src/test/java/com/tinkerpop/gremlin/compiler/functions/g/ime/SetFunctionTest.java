@@ -15,13 +15,22 @@ import java.util.Set;
  */
 public class SetFunctionTest extends BaseTest {
 
-    public void testEmptySet() {
+    public void testSet() {
         GremlinScriptContext context = new GremlinScriptContext();
         Function<Set> function = new SetFunction();
         this.stopWatch();
         Atom<Set> atom = function.compute(new ArrayList<Operation>(), context);
         printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
         assertEquals(count(atom.getValue()), 0);
+
+        this.stopWatch();
+        atom = function.compute(createUnaryArgs(1,1,2,2,2,3,3,3,3,4,4,4,4,4), context);
+        printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
+        assertEquals(count(atom.getValue()), 4);
+        assertTrue(atom.getValue().contains(1));
+        assertTrue(atom.getValue().contains(2));
+        assertTrue(atom.getValue().contains(3));
+        assertTrue(atom.getValue().contains(4));
     }
 
      public void testSetInline() throws Exception {
