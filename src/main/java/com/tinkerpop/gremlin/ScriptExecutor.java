@@ -24,7 +24,7 @@ public class ScriptExecutor {
                 engine.eval(new FileReader(args[0]), context);
             } catch (Exception e) {
                 context.getErrorWriter().flush();
-                System.out.println(e.getMessage());
+                System.out.println(GremlinScriptEngine.getExceptionCauseMessage(e));
             }
         }
     }

@@ -115,4 +115,14 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
         return walker.program().results;
     }
+
+    public static String getExceptionCauseMessage(final Exception exception) {
+        final Throwable cause = exception.getCause();
+        return (cause == null) ? exception.getMessage() : getExceptionCauseMessage(exception.getCause());
+    }
+
+    public static String getExceptionCauseMessage(Throwable cause) {
+        final Throwable parentCause = cause.getCause();
+        return (parentCause == null) ? cause.getMessage() : getExceptionCauseMessage(parentCause);
+    }
 }
