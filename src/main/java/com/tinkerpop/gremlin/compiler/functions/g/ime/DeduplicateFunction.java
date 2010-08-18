@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.pipes.PipeHelper;
 
 import java.util.HashSet;
 import java.util.List;
@@ -24,13 +23,7 @@ public class DeduplicateFunction extends AbstractFunction<Set> {
         } else {
             final Set set = new HashSet();
             for (Operation operation : arguments) {
-                final Object object = operation.compute().getValue();
-                if (object instanceof Iterable) {
-                    PipeHelper.fillCollection(((Iterable) object).iterator(), set);
-                } else {
-                    set.add(object);
-                }
-
+                FlattenFunction.flatten(set, operation.compute().getValue());
             }
             return new Atom<Set>(set);
         }

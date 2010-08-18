@@ -65,11 +65,11 @@ public class DifferenceFunctionTest extends BaseTest {
 
     public void testDifferenceInline() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:difference(g:list(1,1,2),g:list(1))", context, true);
+        List results = evaluateGremlinScriptIterable("g:diff(g:list(1,1,2),g:list(1))", context, true);
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 2);
 
-        results = evaluateGremlinScriptIterable("g:difference(g:list(1,1,2),g:difference(g:list(1,2,3),g:list(2,3)))", context, true);
+        results = evaluateGremlinScriptIterable("g:diff(g:list(1,1,2),g:diff(g:list(1,2,3),g:list(2,3)))", context, true);
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 2);
     }

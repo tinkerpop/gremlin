@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class FlattenFunction extends AbstractFunction<List> {
         return new Atom<List>(results);
     }
 
-    private static void flatten(List current, Object object) {
+    public static void flatten(Collection current, Object object) {
         if (object instanceof Iterable) {
             for (Object o : (Iterable) object) {
                 flatten(current, o);

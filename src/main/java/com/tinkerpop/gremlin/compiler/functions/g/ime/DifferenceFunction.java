@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public class DifferenceFunction extends AbstractFunction<Set> {
 
-    private static final String FUNCTION_NAME = "difference";
+    private static final String FUNCTION_NAME = "diff";
 
     public Atom<Set> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
