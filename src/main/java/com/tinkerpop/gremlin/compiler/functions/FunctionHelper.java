@@ -33,7 +33,14 @@ public class FunctionHelper {
             if (atom.isGraph())
                 return (Graph) atom.getValue();
         }
-        return (Graph) context.getVariableByName(Tokens.GRAPH_VARIABLE).getValue();
+
+        Object object = context.getVariableByName(Tokens.GRAPH_VARIABLE).getValue();
+        if (object instanceof Graph)
+            return (Graph) object;
+        else
+            throw new RuntimeException("No graph referenced by $_g");
+
+
     }
 
     public static void fillCollection(Iterable itty, Collection collection) {

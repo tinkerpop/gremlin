@@ -20,8 +20,8 @@ bc. <dependency>
 </dependency>
 
 * A complete redesign and implementation of the Gremlin compiler
-** Compiler written using "ANTLR":http://www.antlr.org/ 3.2
-** Virtual machine written using "Pipes":http://pipes.tinkerpop.com 0.1 and "JSR 223":http://jcp.org/en/jsr/detail?id=223.
+** Compiler written using "ANTLR 3.2":http://www.antlr.org/
+** Virtual machine written using "Pipes 0.1":http://pipes.tinkerpop.com and "JSR 223":http://jcp.org/en/jsr/detail?id=223.
 * Significant performance improvements
 ** Order of magnitude increase in speed for numerous operations
 ** Lazy evaluation for better memory usage
@@ -37,13 +37,13 @@ bc. <dependency>
 ** Added @g:power()@ to implement raising a number by a power
 ** Changed @g:difference()@ to @g:diff()@ (abbreviation policy enacted for function names)
 * Print streams can be dynamically set in @GremlinScriptContext@
-* true(), false(), and null() are now keywords--true, false, null
+* @true()@, @false()@, and @null()@ are now keywords--@true@, @false@, @null@
 * String concatenation is supported with the + operation
 * Range filter support through @[1..10]@ type syntax
 * Index of lists starts at 0 instead of 1 as in Gremlin 0.2.2
 * Test cases now provide performance statistics
 * Removed the 'show all aspects' * step (i.e. @./outE/inV/*@)
-* Allow for the use of assignment and other operations within a path (e.g. ./outE/inV[g:p($x := .)]
+* Allow for the use of assignment and other operations within a path (e.g. @./outE/inV[g:p($x := .)@]
 
 ==<hr/>==
 
