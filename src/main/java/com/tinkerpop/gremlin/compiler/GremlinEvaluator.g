@@ -119,9 +119,9 @@ options {
                 root = makePipelineRoot(token, pipes);
                 pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
             } else if (token.isIdentifier() && token.getValue().equals("..")) {
-                List<Pipe> history = new ArrayList<Pipe>();
-                List<Pipe> newPipes = new ArrayList<Pipe>();
                 List<Pipe> currPipes = pipes;
+                List<Pipe> newPipes = new ArrayList<Pipe>();
+                LinkedList<Pipe> history = new LinkedList<Pipe>();
 
                 if ((currPipes.size() == 1 && (currPipes.get(0) instanceof FutureFilterPipe)) || currPipes.size() == 0) {
                     pipes = new ArrayList();
@@ -130,7 +130,7 @@ options {
                             
                     for (idx = currPipes.size() - 1; idx >= 0; idx--) {
                         Pipe currentPipe = currPipes.get(idx);
-                        history.add(currentPipe);
+                        history.addFirst(currentPipe);
 
                         if (!(currentPipe instanceof FilterPipe)) break;
                     }
@@ -139,7 +139,6 @@ options {
                         newPipes.add(currPipes.get(i));
                     }
 
-                    Collections.reverse(history);
                     newPipes.add(new FutureFilterPipe(new Pipeline(history)));
                         
                     pipes = newPipes;

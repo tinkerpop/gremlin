@@ -1,38 +1,71 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-15 20:31:23
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-19 21:09:22
 
     package com.tinkerpop.gremlin.compiler;
 
-import com.tinkerpop.gremlin.GremlinScriptEngine;
-import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.context.PathLibrary;
-import com.tinkerpop.gremlin.compiler.functions.Function;
-import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
-import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
-import com.tinkerpop.gremlin.compiler.operations.logic.*;
-import com.tinkerpop.gremlin.compiler.operations.math.*;
-import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
-import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
-import com.tinkerpop.gremlin.compiler.statements.Foreach;
-import com.tinkerpop.gremlin.compiler.statements.If;
-import com.tinkerpop.gremlin.compiler.statements.Repeat;
-import com.tinkerpop.gremlin.compiler.statements.While;
-import com.tinkerpop.gremlin.compiler.types.*;
-import com.tinkerpop.gremlin.compiler.util.Pair;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.filter.FutureFilterPipe;
-import com.tinkerpop.pipes.pgm.PropertyPipe;
-import org.antlr.runtime.BitSet;
-import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;
+    import java.io.FileReader;
+    import java.io.FileNotFoundException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+    import java.util.ArrayList;
+    import java.util.LinkedList;
+   
+    import java.util.Map;
+    import java.util.HashMap;
+    import java.util.Iterator;
+    
+    import java.util.regex.Pattern;
+    import java.util.regex.Matcher;
+
+    import java.util.Collections;
+
+    import java.util.ServiceLoader;
+
+    import com.tinkerpop.gremlin.GremlinScriptEngine;
+    
+    import com.tinkerpop.gremlin.compiler.Tokens;
+
+    import com.tinkerpop.gremlin.compiler.context.*;
+
+    import com.tinkerpop.gremlin.compiler.functions.Functions;
+    
+    // types
+    import com.tinkerpop.gremlin.compiler.types.*;
+
+    // operations
+    import com.tinkerpop.gremlin.compiler.operations.Operation;
+    import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
+
+    import com.tinkerpop.gremlin.compiler.statements.*;
+    import com.tinkerpop.gremlin.compiler.operations.math.*;
+    import com.tinkerpop.gremlin.compiler.operations.logic.*;
+    import com.tinkerpop.gremlin.compiler.operations.util.*;
+
+    import com.tinkerpop.gremlin.compiler.functions.Function;
+    import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
+
+    // blueprints
+    import com.tinkerpop.blueprints.pgm.Vertex;
+
+    // pipes
+    import com.tinkerpop.pipes.Pipe;
+    import com.tinkerpop.pipes.Pipeline;
+
+    import com.tinkerpop.pipes.SingleIterator;
+    import com.tinkerpop.pipes.MultiIterator;
+    
+    import com.tinkerpop.pipes.pgm.PropertyPipe;
+    import com.tinkerpop.pipes.filter.FilterPipe;
+    import com.tinkerpop.pipes.filter.FutureFilterPipe;
+    
+    import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
+
+    // util
+    import com.tinkerpop.gremlin.compiler.util.Pair;
+
+
+import org.antlr.runtime.*;
+import org.antlr.runtime.tree.*;import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class GremlinEvaluator extends TreeParser {
@@ -209,7 +242,7 @@ public class GremlinEvaluator extends TreeParser {
                     root = makePipelineRoot(token, pipes);
                     pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
                 } else if (token.isIdentifier() && token.getValue().equals("..")) {
-                    List<Pipe> history = new ArrayList<Pipe>();
+                    LinkedList<Pipe> history = new LinkedList<Pipe>();
                     List<Pipe> newPipes = new ArrayList<Pipe>();
                     List<Pipe> currPipes = pipes;
 
@@ -220,7 +253,7 @@ public class GremlinEvaluator extends TreeParser {
                                 
                         for (idx = currPipes.size() - 1; idx >= 0; idx--) {
                             Pipe currentPipe = currPipes.get(idx);
-                            history.add(currentPipe);
+                            history.addFirst(currentPipe);
 
                             if (!(currentPipe instanceof FilterPipe)) break;
                         }
@@ -229,7 +262,7 @@ public class GremlinEvaluator extends TreeParser {
                             newPipes.add(currPipes.get(i));
                         }
 
-                        Collections.reverse(history);
+                        //Collections.reverse(history);
                         newPipes.add(new FutureFilterPipe(new Pipeline(history)));
                             
                         pipes = newPipes;
