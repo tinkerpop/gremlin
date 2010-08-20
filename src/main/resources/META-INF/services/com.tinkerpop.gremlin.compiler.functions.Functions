@@ -2,6 +2,7 @@ com.tinkerpop.gremlin.compiler.functions.g.GremlinFunctions
 com.tinkerpop.gremlin.compiler.functions.tg.TinkerGraphFunctions
 com.tinkerpop.gremlin.compiler.functions.neo4j.Neo4jFunctions
 com.tinkerpop.gremlin.compiler.functions.sail.SailFunctions
+com.tinkerpop.gremlin.compiler.functions.orientdb.OrientDBFunctions
 com.tinkerpop.gremlin.compiler.functions.sail.lds.LinkedDataSailFunctions
 com.tinkerpop.gremlin.compiler.functions.sail.neo4jsail.Neo4jSailFunctions
 com.tinkerpop.gremlin.compiler.functions.jung.JungFunctions
