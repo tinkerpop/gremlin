@@ -68,12 +68,12 @@ public class AddVertexFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getProperty("name"), "marko");
 
 
-        this.stopWatch();
+        /*this.stopWatch();
         atom = function.compute(createUnaryArgs(graph, vertexPavel), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "23");
-        assertEquals(atom.getValue().getProperty("name"), "pavel");
+        assertEquals(atom.getValue().getProperty("name"), "pavel");*/
 
     }
 }

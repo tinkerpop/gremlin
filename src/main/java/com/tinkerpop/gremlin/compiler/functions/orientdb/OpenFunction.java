@@ -26,7 +26,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
             if (!directory.exists())
                 directory.mkdirs();
 
-            OrientGraph graph = new OrientGraph("local:" + url + "/graph");
+            OrientGraph graph = new OrientGraph("local:" + url);
             if (graph.exists()) {
                 graph.open(ADMIN, ADMIN);
             } else
@@ -40,5 +40,4 @@ public class OpenFunction extends AbstractFunction<Graph> {
     public String getFunctionName() {
         return this.FUNCTION_NAME;
     }
-
 }
