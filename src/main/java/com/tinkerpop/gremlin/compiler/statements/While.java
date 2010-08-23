@@ -2,9 +2,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.Func;
-
-import java.util.List;
+import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
 /**
  * @author Pavel A. Yaskevich
@@ -12,7 +10,7 @@ import java.util.List;
 public class While implements Operation {
 
     private final Operation condition;
-    private final List<Operation> statements;
+    private final CodeBlock body;
 
     /*
       * $x := 0
@@ -22,9 +20,9 @@ public class While implements Operation {
       * end
       */
 
-    public While(final Operation condition, final List<Operation> statements) {
+    public While(final Operation condition, final CodeBlock body) {
         this.condition = condition;
-        this.statements = statements;
+        this.body = body;
     }
 
     public Atom compute() {
@@ -41,11 +39,7 @@ public class While implements Operation {
             }
 
             if (repeatIteration) {
-                for (Operation operation : statements) {
-                    Atom atom = operation.compute();
-                    if (atom instanceof Func)
-                        atom.getValue();
-                }
+                this.body.invoke();
             }
         }
 

@@ -1,71 +1,39 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-19 21:09:22
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-23 15:21:04
 
     package com.tinkerpop.gremlin.compiler;
 
-    import java.io.FileReader;
-    import java.io.FileNotFoundException;
-
-    import java.util.ArrayList;
-    import java.util.LinkedList;
-   
-    import java.util.Map;
-    import java.util.HashMap;
-    import java.util.Iterator;
-    
-    import java.util.regex.Pattern;
-    import java.util.regex.Matcher;
-
-    import java.util.Collections;
-
-    import java.util.ServiceLoader;
-
-    import com.tinkerpop.gremlin.GremlinScriptEngine;
-    
-    import com.tinkerpop.gremlin.compiler.Tokens;
-
-    import com.tinkerpop.gremlin.compiler.context.*;
-
-    import com.tinkerpop.gremlin.compiler.functions.Functions;
-    
-    // types
-    import com.tinkerpop.gremlin.compiler.types.*;
-
-    // operations
-    import com.tinkerpop.gremlin.compiler.operations.Operation;
-    import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
-
-    import com.tinkerpop.gremlin.compiler.statements.*;
-    import com.tinkerpop.gremlin.compiler.operations.math.*;
-    import com.tinkerpop.gremlin.compiler.operations.logic.*;
-    import com.tinkerpop.gremlin.compiler.operations.util.*;
-
-    import com.tinkerpop.gremlin.compiler.functions.Function;
-    import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
-
-    // blueprints
-    import com.tinkerpop.blueprints.pgm.Vertex;
-
-    // pipes
-    import com.tinkerpop.pipes.Pipe;
-    import com.tinkerpop.pipes.Pipeline;
-
-    import com.tinkerpop.pipes.SingleIterator;
-    import com.tinkerpop.pipes.MultiIterator;
-    
-    import com.tinkerpop.pipes.pgm.PropertyPipe;
-    import com.tinkerpop.pipes.filter.FilterPipe;
-    import com.tinkerpop.pipes.filter.FutureFilterPipe;
-    
-    import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
-
-    // util
-    import com.tinkerpop.gremlin.compiler.util.Pair;
-
-
+import com.tinkerpop.gremlin.GremlinScriptEngine;
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.PathLibrary;
+import com.tinkerpop.gremlin.compiler.functions.Function;
+import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
+import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
+import com.tinkerpop.gremlin.compiler.operations.logic.*;
+import com.tinkerpop.gremlin.compiler.operations.math.*;
+import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
+import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
+import com.tinkerpop.gremlin.compiler.statements.Foreach;
+import com.tinkerpop.gremlin.compiler.statements.If;
+import com.tinkerpop.gremlin.compiler.statements.Repeat;
+import com.tinkerpop.gremlin.compiler.statements.While;
+import com.tinkerpop.gremlin.compiler.types.*;
+import com.tinkerpop.gremlin.compiler.util.CodeBlock;
+import com.tinkerpop.gremlin.compiler.util.Pair;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.filter.FutureFilterPipe;
+import com.tinkerpop.pipes.pgm.PropertyPipe;
+import org.antlr.runtime.BitSet;
 import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.tree.*;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class GremlinEvaluator extends TreeParser {
@@ -242,9 +210,9 @@ public class GremlinEvaluator extends TreeParser {
                     root = makePipelineRoot(token, pipes);
                     pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
                 } else if (token.isIdentifier() && token.getValue().equals("..")) {
-                    LinkedList<Pipe> history = new LinkedList<Pipe>();
-                    List<Pipe> newPipes = new ArrayList<Pipe>();
                     List<Pipe> currPipes = pipes;
+                    List<Pipe> newPipes = new ArrayList<Pipe>();
+                    LinkedList<Pipe> history = new LinkedList<Pipe>();
 
                     if ((currPipes.size() == 1 && (currPipes.get(0) instanceof FutureFilterPipe)) || currPipes.size() == 0) {
                         pipes = new ArrayList();
@@ -262,7 +230,6 @@ public class GremlinEvaluator extends TreeParser {
                             newPipes.add(currPipes.get(i));
                         }
 
-                        //Collections.reverse(history);
                         newPipes.add(new FutureFilterPipe(new Pipeline(history)));
                             
                         pipes = newPipes;
@@ -1880,7 +1847,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
 
-                        retval.op = new If((cond!=null?cond.op:null), (if_block!=null?if_block.operations:null), (else_block!=null?else_block.operations:null));
+                        retval.op = new If((cond!=null?cond.op:null), (if_block!=null?if_block.cb:null), (else_block!=null?else_block.cb:null));
                     
 
             }
@@ -1980,7 +1947,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
 
-                        retval.op = new While((cond!=null?cond.op:null), (block44!=null?block44.operations:null));
+                        retval.op = new While((cond!=null?cond.op:null), (block44!=null?block44.cb:null));
                     
 
             }
@@ -2069,7 +2036,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
 
-                        retval.op = new Foreach((VARIABLE46!=null?VARIABLE46.getText():null), (arr!=null?arr.op:null), (block47!=null?block47.operations:null), this.context);
+                        retval.op = new Foreach((VARIABLE46!=null?VARIABLE46.getText():null), (arr!=null?arr.op:null), (block47!=null?block47.cb:null), this.context);
                     
 
             }
@@ -2150,7 +2117,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
 
-                        retval.op = new Repeat((timer!=null?timer.op:null), (block49!=null?block49.operations:null));
+                        retval.op = new Repeat((timer!=null?timer.op:null), (block49!=null?block49.cb:null));
                     
 
             }
@@ -2169,13 +2136,13 @@ public class GremlinEvaluator extends TreeParser {
     // $ANTLR end "repeat_statement"
 
     public static class block_return extends TreeRuleReturnScope {
-        public List<Operation> operations;
+        public CodeBlock cb;
         CommonTree tree;
         public Object getTree() { return tree; }
     };
 
     // $ANTLR start "block"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:406:1: block returns [List<Operation> operations] : ^( BLOCK ( statement )+ ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:406:1: block returns [CodeBlock cb] : ^( BLOCK ( statement )+ ) ;
     public final GremlinEvaluator.block_return block() throws RecognitionException {
         GremlinEvaluator.block_return retval = new GremlinEvaluator.block_return();
         retval.start = input.LT(1);
@@ -2192,7 +2159,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree BLOCK50_tree=null;
 
 
-                List<Operation> operationList = new ArrayList<Operation>();
+                List<Tree> statements = new LinkedList<Tree>();
             
         try {
             // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:410:5: ( ^( BLOCK ( statement )+ ) )
@@ -2236,7 +2203,7 @@ public class GremlinEvaluator extends TreeParser {
             	    state._fsp--;
 
             	    adaptor.addChild(root_1, statement51.getTree());
-            	     operationList.add((statement51!=null?statement51.op:null)); 
+            	     statements.add((statement51!=null?((CommonTree)statement51.tree):null)); 
 
             	    }
             	    break;
@@ -2254,7 +2221,7 @@ public class GremlinEvaluator extends TreeParser {
             match(input, Token.UP, null); adaptor.addChild(root_0, root_1);_last = _save_last_1;
             }
 
-             retval.operations = operationList; 
+             retval.cb = new CodeBlock(statements, this.context); 
 
             }
 
@@ -3242,7 +3209,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
 
-                        NativeFunction fn = new NativeFunction((fn_name!=null?fn_name.getText():null), params, (block73!=null?block73.operations:null));
+                        NativeFunction fn = new NativeFunction((fn_name!=null?fn_name.getText():null), params, (block73!=null?block73.cb:null));
                         this.registerFunction((ns!=null?ns.getText():null), fn);
 
                         retval.op = new UnaryOperation(new Atom<Boolean>(true));

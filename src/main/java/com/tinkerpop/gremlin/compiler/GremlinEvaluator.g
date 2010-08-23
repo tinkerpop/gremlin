@@ -66,6 +66,7 @@ options {
 
     // util
     import com.tinkerpop.gremlin.compiler.util.Pair;
+    import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 }
 
 @members {
@@ -377,36 +378,36 @@ token returns [Atom atom]
 if_statement returns [Operation op]
 	:	^(IF ^(COND cond=statement) if_block=block ( ^(ELSE else_block=block ) )? )
         {
-            $op = new If($cond.op, $if_block.operations, $else_block.operations);
+            $op = new If($cond.op, $if_block.cb, $else_block.cb);
         }
 	;
 
 while_statement returns [Operation op]
 	:	^(WHILE ^(COND cond=statement) block)
         {
-            $op = new While($cond.op, $block.operations);
+            $op = new While($cond.op, $block.cb);
         }
 	;
 
 foreach_statement returns [Operation op]
 	:	^(FOREACH VARIABLE arr=statement block)
         {
-            $op = new Foreach($VARIABLE.text, $arr.op, $block.operations, this.context);
+            $op = new Foreach($VARIABLE.text, $arr.op, $block.cb, this.context);
         }
 	;
 	
 repeat_statement returns [Operation op]
 	:	^(REPEAT timer=statement block)
         {
-            $op = new Repeat($timer.op, $block.operations);
+            $op = new Repeat($timer.op, $block.cb);
         }
 	;
 
-block returns [List<Operation> operations]
+block returns [CodeBlock cb]
     @init {
-        List<Operation> operationList = new ArrayList<Operation>();
+        List<Tree> statements = new LinkedList<Tree>();
     }
-    :	^(BLOCK ( statement { operationList.add($statement.op); } )+) { $operations = operationList; }
+    :	^(BLOCK ( statement { statements.add($statement.tree); } )+) { $cb = new CodeBlock(statements, this.context); }
     ;
 
 expression returns [Operation expr]
@@ -438,7 +439,7 @@ function_definition_statement returns [Operation op]
     }
 	:	^(FUNC ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG VARIABLE { params.add($VARIABLE.text); }) )*) block)
         {
-            NativeFunction fn = new NativeFunction($fn_name.text, params, $block.operations);
+            NativeFunction fn = new NativeFunction($fn_name.text, params, $block.cb);
             this.registerFunction($ns.text, fn);
 
             $op = new UnaryOperation(new Atom<Boolean>(true));

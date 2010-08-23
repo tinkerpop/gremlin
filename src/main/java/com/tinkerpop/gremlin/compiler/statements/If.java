@@ -2,9 +2,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.Func;
-
-import java.util.List;
+import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
 /**
  * @author Pavel A. Yaskevich
@@ -12,8 +10,8 @@ import java.util.List;
 public class If implements Operation {
 
     private final Operation condition;
-    private final List<Operation> statements;
-    private final List<Operation> alternatives;
+    private final CodeBlock body;
+    private final CodeBlock alternative;
     
     /*
       * $x := 0
@@ -25,10 +23,10 @@ public class If implements Operation {
       * end
       */
 
-    public If(final Operation condition, final List<Operation> statements, final List<Operation> alternatives) {
+    public If(final Operation condition, final CodeBlock body, final CodeBlock alternative) {
         this.condition = condition;
-        this.statements = statements;
-        this.alternatives = alternatives;
+        this.body = body;
+        this.alternative = alternative;
     }
 
     public Atom compute() {
@@ -36,22 +34,13 @@ public class If implements Operation {
 
         if (!condResult.isNull()) {
             if ((Boolean) condResult.getValue()) {
-                this.evaluateBody(this.statements);
-            } else if (null != alternatives) {
-                this.evaluateBody(this.alternatives);
+                this.body.invoke();
+            } else if (null != this.alternative) {
+                this.alternative.invoke();
             }
         }
 
         return new Atom<Object>(null);
-    }
-
-    private void evaluateBody(List<Operation> body) {
-        for (Operation operation : body) {
-            final Atom atom = operation.compute();
-
-            if (atom instanceof Func)
-                atom.getValue();
-        }    
     }
 
     public Type getType() {

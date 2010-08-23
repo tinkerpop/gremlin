@@ -2,9 +2,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.Func;
-
-import java.util.List;
+import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
 /**
  * @author Pavel A. Yaskevich
@@ -12,7 +10,7 @@ import java.util.List;
 public class Repeat implements Operation {
 
     private final Operation counterOperation;
-    private final List<Operation> statements;
+    private final CodeBlock block;
 
     /*
       * $x := 6
@@ -22,9 +20,9 @@ public class Repeat implements Operation {
       * end
       */
 
-    public Repeat(final Operation counterOperation, final List<Operation> statements) {
+    public Repeat(final Operation counterOperation, final CodeBlock block) {
         this.counterOperation = counterOperation;
-        this.statements = statements;
+        this.block = block;
     }
 
     public Atom compute() {
@@ -35,12 +33,7 @@ public class Repeat implements Operation {
                 Number times = (Number) counter.getValue();
 
                 for (int i = 0; i < times.intValue(); i++) {
-                    for (Operation operation : statements) {
-                        Atom atom = operation.compute();
-                        
-                        if (atom instanceof Func)
-                            atom.getValue();
-                    }
+                    this.block.invoke();
                 }
             }
         }

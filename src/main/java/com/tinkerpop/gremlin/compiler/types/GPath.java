@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
 import com.tinkerpop.pipes.MultiIterator;
 import com.tinkerpop.pipes.Pipe;
@@ -19,7 +18,7 @@ import java.util.Set;
  */
 final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
-    private final Atom<Object> root;
+    private Atom root;
     private Object persistentRoot = null;
     private static final String COMMA_SPACE = ", ";
     private static final String LEFT_ANGLE = "<";
@@ -28,23 +27,24 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private final List<Pipe> pipes;
     private Pipeline pipeline;
     private final Set<Object> previouslyFetched;
-
-    public GPath(final Atom<Object> root, final List<Pipe> pipes, final GremlinScriptContext context) {
+    private boolean startsFromRootIdentifier = false;
+    
+    public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
-        
+
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
-                final VariableLibrary variables = context.getVariableLibrary();
-                final Atom rootVariable = (Atom) variables.get(Tokens.ROOT_VARIABLE); 
-                this.persistentRoot = (rootVariable == null) ? null : rootVariable.getValue();
+                this.root = context.getVariableByName(Tokens.ROOT_VARIABLE);
+                this.startsFromRootIdentifier = true;
             }
         }
     }
-
+    
     protected Object value() {
         Object top;
+
         Iterator pipeline = this.iterator();
 
         if (pipeline.hasNext())
@@ -59,7 +59,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             return top;
     }
 
-    public Iterator iterator() {
+    public Iterator iterator() {        
         if (this.pipeline == null || !this.pipeline.hasNext()) {
             for (Pipe p : this.pipes) {
                 if (p instanceof GremlinRangeFilterPipe) {
@@ -77,7 +77,11 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     }
 
     private Iterator pipelineRoot() {
-        final Object root = (persistentRoot == null) ? this.root.getValue() : this.persistentRoot;
+        if (this.persistentRoot == null) {
+            this.persistentRoot = this.root.getValue();
+        }
+        
+        final Object root = this.persistentRoot;
 
         if (root instanceof Iterable) {
             return ((Iterable) root).iterator();
@@ -122,26 +126,31 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         return this.pipes;
     }
 
-    public Atom<Object> getRoot() {
+    public Atom getRoot() {
         return (persistentRoot == null) ? this.root : new Atom<Object>(this.persistentRoot);
     }
+
     /**
-     * This method should be used only inside of Pipes
-     *
      * @param point "pointer to the updated root"
      */
     public void setRoot(Object point) {
-        if (root.isIdentifier() && root.toString().equals(".")) {
+        if (this.startsFromRootIdentifier) {
             this.persistentRoot = point;
         }
     }
-
+    
     public String toString() {
-        String result = "";
+        final Object result = this.getValue();
 
-        for (Object o : this)
-            result += o.toString() + COMMA_SPACE;
+        if (result instanceof Iterable) {
+            String out = "";
+            
+            for (Object o : (Iterable) this.getValue())
+                out += o.toString() + COMMA_SPACE;
 
-        return LEFT_ANGLE + result.substring(0, result.length() - 2) + RIGHT_ANGLE;
+            return LEFT_ANGLE + out.substring(0, out.length() - 2) + RIGHT_ANGLE;
+        }
+
+        return result.toString();
     }
 }

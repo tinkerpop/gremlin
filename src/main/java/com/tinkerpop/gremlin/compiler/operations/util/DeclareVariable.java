@@ -94,7 +94,7 @@ public class DeclareVariable implements Operation {
         return Type.STATEMENT;
     }
 
-    private Atom<Object> dynamicValue(final Atom atom) {
+    private Atom dynamicValue(final Atom atom) {
         if (atom instanceof Var) {
             final Var variable = (Var) atom;
             if (variable.getVariableName().equals(Tokens.IDENTITY)) {
