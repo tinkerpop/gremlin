@@ -1,8 +1,13 @@
 package com.tinkerpop.gremlin.compiler.statements;
 
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinScriptEngine;
+import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.List;
 
@@ -36,6 +41,30 @@ public class RepeatTest extends BaseTest {
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 0);
         assertEquals(results.get(1), 100);
+    }
+
+    public void testGraphRepeat() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        this.stopWatch();
+        List results = (List) engine.eval("repeat 2\n$_ := ./outE/inV\nend", context);
+        printPerformance("repeat statement", 2, "iterations over graph", this.stopWatch());
+        assertEquals(results.size(), 0);
+
+        assertTrue(asList((Iterable)context.getVariableByName(Tokens.ROOT_VARIABLE).getValue()).contains(graph.getVertex(5)));
+        assertTrue(asList((Iterable)context.getVariableByName(Tokens.ROOT_VARIABLE).getValue()).contains(graph.getVertex(3)));
+
+        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        this.stopWatch();
+        results = (List) engine.eval("repeat 2\n$_ := ./outE\nif g:includes(g:flatten($_),g:id-e(10))\n$_ := g:diff($_,g:id-e(10))\nend\n$_ := ./inV\nend", context);
+        printPerformance("repeat statement", 2, "iterations over graph with edge filtering using functions", this.stopWatch());
+        assertEquals(results.size(), 0);
+        assertEquals(context.getVariableByName(Tokens.ROOT_VARIABLE).getValue(), graph.getVertex(3));
+
     }
 
 }
