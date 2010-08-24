@@ -4,8 +4,11 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.PipeHelper;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -19,7 +22,7 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
     private final List<Operation> arguments;
     private final GremlinScriptContext context;
     private int counter = -1;
-    private int index = -1;
+    private Collection indices;
     private boolean numberMode = false;
 
     public FunctionFilterPipe(Function function, List<Operation> arguments, final GremlinScriptContext context) {
@@ -35,18 +38,34 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
 
             if (this.numberMode) {
                 this.counter++;
-                if (this.counter == this.index) {
+                if (this.indices.contains(this.counter)) {
                     return s;
                 }
+
             } else {
                 Object functionReturn = this.function.compute(GremlinPipesHelper.updateArguments(this.arguments, s), this.context).getValue();
                 if (functionReturn instanceof Boolean && ((Boolean) functionReturn)) {
                     return s;
                 } else if (functionReturn instanceof Number) {
                     this.numberMode = true;
-                    this.index = ((Number) functionReturn).intValue();
+                    this.indices = new HashSet();
+                    int index = ((Number) functionReturn).intValue();
+                    this.indices.add(index);
                     this.counter++;
-                    if (this.counter == this.index) {
+                    if (this.counter == index) {
+                        return s;
+                    }
+                } else if (functionReturn instanceof Iterable) {
+                    this.numberMode = true;
+                    if (functionReturn instanceof Collection) {
+                        this.indices = (Collection) functionReturn;
+                    } else {
+                        this.indices = new HashSet();
+                        PipeHelper.fillCollection(((Iterable) functionReturn).iterator(), this.indices);
+                    }
+
+                    this.counter++;
+                    if (this.indices.contains(this.counter)) {
                         return s;
                     }
                 }

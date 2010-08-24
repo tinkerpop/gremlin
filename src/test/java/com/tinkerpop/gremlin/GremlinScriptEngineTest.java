@@ -138,10 +138,21 @@ public class GremlinScriptEngineTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
         context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.compiler.functions.PlayFunctions");
         assertNotNull(context.getFunctionLibrary().getFunction("play", "play-number"));
-        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3,4)[play:play-number(2)]", context, true),3);
+        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3,4)[play:play-number(2)]", context, true), 3);
 
         // only one number should be returned
         assertNotNull(evaluateGremlinScriptPrimitive("g:list(1,2,3,4)[g:rand-nat(4)]", context, true));
+
+        List results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:set(0,3,4)]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 4);
+        assertEquals(results.get(2), 5);
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:set(0,3,4)[0..2]]", context, true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 4);
     }
 
     // GRAPH RELATED TEST CASES
