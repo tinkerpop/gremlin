@@ -191,11 +191,10 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(0), 2);
         assertEquals(results.get(1), 3);
 
-        // TODO: make work
-        /*results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:set(0,3,4)[0..2]]", context, true);
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:set(0,3,4)[0..2]]", context, true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 1);
-        assertEquals(results.get(1), 4);*/
+        assertEquals(results.get(1), 4);
 
     }
 

@@ -159,7 +159,7 @@ public class GremlinPipesHelper {
 
             if (unaryAtom.isNumber()) {
                 int idx = ((Number) unaryAtom.getValue()).intValue();
-                return new GremlinRangeFilterPipe(idx, idx + 1);
+                return new GremlinRangeFilterPipe(generateRange(idx, idx + 1));
             }
 
             if (unaryAtom.isBoolean()) {
@@ -167,18 +167,9 @@ public class GremlinPipesHelper {
             }
 
             final Object value = unaryAtom.getValue();
-            
+
             if (value instanceof Iterable) {
-                final Iterator collection = ((Iterable) value).iterator();
-
-                final Integer min = (Integer) collection.next();
-
-                int max = min + 1;
-                while(collection.hasNext()) {
-                    max = (Integer) collection.next();
-                }
-                
-                return new GremlinRangeFilterPipe(min, max + 1);
+                return new GremlinRangeFilterPipe((Iterable) value);
             }
         }
 
@@ -214,7 +205,7 @@ public class GremlinPipesHelper {
 
     public static List<Operation> updateArguments(final List<Operation> currentArguments, final Object currentIterationPoint) {
         List<Operation> arguments = new ArrayList<Operation>();
-        
+
         for (Operation argumentOperation : currentArguments) {
 
             if (argumentOperation instanceof BinaryOperation) {
@@ -224,20 +215,20 @@ public class GremlinPipesHelper {
 
                 try {
                     final Constructor repl = op.getClass().getConstructor((new Operation[0]).getClass());
-                    arguments.add((Operation) repl.newInstance(new Object[] { operands.toArray(new Operation[2]) }));
+                    arguments.add((Operation) repl.newInstance(new Object[]{operands.toArray(new Operation[2])}));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
                 continue;
             }
-            
+
 
             final Atom argument = argumentOperation.compute();
 
             if (argument instanceof DynamicEntity) {
                 Operation operation = null;
-                
+
                 if (argument instanceof Var) {
                     final String name = ((Var) argument).getVariableName();
 
@@ -250,14 +241,14 @@ public class GremlinPipesHelper {
                 } else if (argument instanceof GPath) {
                     final GPath path = (GPath) argument;
                     path.setRoot(currentIterationPoint);
-                    
+
                     operation = new UnaryOperation(path);
                 } else if (argument instanceof Func) {
                     final Func function = (Func) argument;
                     final List<Operation> functionArguments = function.getArguments();
                     final List<Operation> newArguments = updateArguments(functionArguments, currentIterationPoint);
                     final Func replacement = new Func(function.getFunction(), newArguments, function.getContext());
-                    
+
                     operation = new UnaryOperation(replacement);
                 }
 
@@ -268,5 +259,13 @@ public class GremlinPipesHelper {
         }
 
         return arguments;
+    }
+
+    private static Set generateRange(int min, int max) {
+        Set range = new HashSet();
+        for (int i = min; i < max; i++) {
+            range.add(i);
+        }
+        return range;
     }
 }
