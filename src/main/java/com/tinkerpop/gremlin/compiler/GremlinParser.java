@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-24 01:25:39
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-24 20:44:33
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
@@ -136,7 +136,7 @@ public class GremlinParser extends Parser {
 
                 /* ANTLR guys by default just print exceptions into System.err, we don't need that */
                 public void reportError(RecognitionException e) {
-                    throw new RuntimeException("Error at " + e.line + ":" + e.charPositionInLine + " -> " + this.getErrorMessage(e, this.getTokenNames()));
+                    throw new RuntimeException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
                 }
             
 
@@ -1559,7 +1559,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, VARIABLE, block
+            // elements: block, statement, VARIABLE
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1780,7 +1780,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, statement
+            // elements: statement, block
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3002,7 +3002,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: function_call_params, function_name
+            // elements: function_name, function_call_params
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3103,7 +3103,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ln, ns
+            // elements: ns, ln
             // token labels: ln, ns
             // rule labels: retval
             // token list labels: 
@@ -3696,7 +3696,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: min, max
+            // elements: max, min
             // token labels: min, max
             // rule labels: retval
             // token list labels: 

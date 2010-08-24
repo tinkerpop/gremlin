@@ -67,7 +67,7 @@ tokens {
         {
             /* ANTLR guys by default just print exceptions into System.err, we don't need that */
             public void reportError(RecognitionException e) {
-                throw new RuntimeException("Error at " + e.line + ":" + e.charPositionInLine + " -> " + this.getErrorMessage(e, this.getTokenNames()));
+                throw new RuntimeException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
             }
         }
 
@@ -75,7 +75,7 @@ tokens {
         {
             /* ANTLR guys by default just print exceptions into System.err, we don't need that */
             public void reportError(RecognitionException e) {
-                throw new RuntimeException("Error at " + e.line + ":" + e.charPositionInLine + " -> " + this.getErrorMessage(e, this.getTokenNames()));
+                throw new RuntimeException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
             }
         }
 

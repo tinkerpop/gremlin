@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-24 01:25:40
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-08-24 20:44:33
 package com.tinkerpop.gremlin.compiler;
 
 import org.antlr.runtime.*;
@@ -104,7 +104,7 @@ public class GremlinLexer extends Lexer {
 
                 /* ANTLR guys by default just print exceptions into System.err, we don't need that */
                 public void reportError(RecognitionException e) {
-                    throw new RuntimeException("Error at " + e.line + ":" + e.charPositionInLine + " -> " + this.getErrorMessage(e, this.getTokenNames()));
+                    throw new RuntimeException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
                 }
             
 
