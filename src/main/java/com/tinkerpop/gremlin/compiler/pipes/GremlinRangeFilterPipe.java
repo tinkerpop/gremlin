@@ -1,8 +1,11 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.PipeHelper;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -10,16 +13,16 @@ import java.util.Iterator;
  */
 public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final int low;
-    private final int high;
+    private final Collection range;
     private int counter = -1;
     Iterator tempInterator = null;
 
-    public GremlinRangeFilterPipe(final int low, final int high) {
-        this.low = low;
-        this.high = high;
-        if (this.low != -1 && this.high != -1 && this.low > this.high) {
-            throw new IllegalArgumentException("Not a legal range: [" + low + ", " + high + "]");
+    public GremlinRangeFilterPipe(Iterable range) {
+        if (range instanceof Collection)
+            this.range = (Collection) range;
+        else {
+            this.range = new HashSet();
+            PipeHelper.fillCollection(range.iterator(), this.range);
         }
     }
 
@@ -39,7 +42,7 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
         while (true) {
             S s = this.starts.next();
             this.counter++;
-            if ((this.low == -1 || this.counter >= this.low) && (this.high == -1 || this.counter < this.high)) {
+            if (this.range.contains(this.counter)) {
                 if (s instanceof Iterable) {
                     this.tempInterator = ((Iterable) s).iterator();
                     return this.processNextStart();
@@ -49,4 +52,6 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
             }
         }
     }
+
+
 }

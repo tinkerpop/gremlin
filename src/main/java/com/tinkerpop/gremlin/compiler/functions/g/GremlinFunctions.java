@@ -66,6 +66,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new PowerFunction());
         functions.add(new RandomNaturalFunction());
         functions.add(new RandomRealFunction());
+        functions.add(new RangeFunction());
         functions.add(new SumFunction());
         functions.add(new RoundFunction());
         // string

@@ -35,6 +35,7 @@ bc. <dependency>
 ** Added @g:flatten()@ to flatten embedded iterables
 ** Added @g:includes()@ to determine if an object is an iterable
 ** Added @g:power()@ to implement raising a number by a power
+** Added @g:range()@ to allow for integer ranges to be created
 ** Changed @g:difference()@ to @g:diff()@ (abbreviation policy enacted for function names)
 * Print streams can be dynamically set in @GremlinScriptContext@
 * @true()@, @false()@, and @null()@ are now keywords--@true@, @false@, @null@
