@@ -19,6 +19,7 @@ import com.tinkerpop.pipes.util.HasNextPipe;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -168,9 +169,14 @@ public class GremlinPipesHelper {
                 return new BooleanFilterPipe(!((Boolean) unaryAtom.getValue()));
             }
 
-            if (unaryAtom.getValue() instanceof Range) {
-                Range range = (Range) unaryAtom.getValue();
-                return new GremlinRangeFilterPipe(range.getMinimum(), range.getMaximum());
+            final Object value = unaryAtom.getValue();
+            
+            if (value instanceof Collection) {
+                final Collection collection = (Collection) value;
+                final Object[] range = collection.toArray();
+                
+                final int lastId = collection.size() - 1;
+                return new GremlinRangeFilterPipe((Integer) range[0], (Integer) range[lastId] + 1);
             }
         }
 

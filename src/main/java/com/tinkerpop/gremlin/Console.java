@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import jline.ConsoleReader;
 import jline.History;
-import org.antlr.runtime.RecognitionException;
 
 import java.io.File;
 import java.io.IOException;

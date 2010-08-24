@@ -14,6 +14,9 @@ options {
 
     import java.util.ArrayList;
     import java.util.LinkedList;
+
+    import java.util.Set;
+    import java.util.LinkedHashSet;
    
     import java.util.Map;
     import java.util.HashMap;
@@ -197,6 +200,19 @@ options {
         return token;
     }
 
+    private Set createRange(final String min, final String max) throws RuntimeException {
+        final int minimum = new Integer(min);
+        final int maximum = new Integer(max);
+        
+        final Set<Integer> range = new LinkedHashSet<Integer>();
+
+        for (int i = minimum; i < maximum; i++) {
+            range.add(i);
+        }
+
+        return range;
+    }
+
     private void formProgramResult(List<Object> resultList, Operation currentOperation) {
         Atom result  = currentOperation.compute();
         Object value = null;
@@ -366,7 +382,7 @@ token returns [Atom atom]
                                                                         
 	        if (idText.matches("^[\\d]+..[\\d]+")) {
                     Matcher range = rangePattern.matcher(idText);
-                    $atom = (range.matches()) ? new Atom<Range>(new Range(range.group(1), range.group(2))) : new Atom<Object>(null);
+                    $atom = (range.matches()) ? new Atom<Set>(this.createRange(range.group(1), range.group(2))) : new Atom<Object>(null);
 	        } else {
                     $atom = new Id<String>($IDENTIFIER.text);
             }
@@ -471,7 +487,6 @@ atom returns [Atom value]
 	                                                                    String doubleStr = $G_DOUBLE.text;
 	                                                                    $value = new Atom<Double>(new Double(doubleStr.substring(0, doubleStr.length() - 1)));
 	                                                                }
-	|   ^(RANGE min=G_INT max=G_INT)                                { $value = new Atom<Range>(new Range($min.text, $max.text)); }
     |   gpath_statement                                             { $value = $gpath_statement.value; }
     |   ^(BOOL b=BOOLEAN)                                           { $value = new Atom<Boolean>(new Boolean($b.text)); }
     |   NULL                                                        { $value = new Atom<Object>(null); }

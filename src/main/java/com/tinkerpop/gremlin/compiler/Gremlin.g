@@ -98,14 +98,13 @@ step
     ;
 
 token
-	:   function_call 
+	:   function_call
     |   StringLiteral	-> ^(STR StringLiteral)
 	|	PROPERTY	    -> ^(PROPERTY_CALL PROPERTY)
 	|	VARIABLE        -> ^(VARIABLE_CALL VARIABLE)
 	|   IDENTIFIER
     |   '..'
 	;
-
 
 statement
     :   if_statement
@@ -212,7 +211,6 @@ atom
 	|   G_LONG          -> ^(LONG G_LONG)
 	|   G_FLOAT         -> ^(FLOAT G_FLOAT)
 	|   G_DOUBLE        -> ^(DOUBLE G_DOUBLE)
-	|   range
     |   gpath_statement
     |   b=BOOLEAN       -> ^(BOOL $b)
     |   NULL
@@ -248,10 +246,6 @@ BOOLEAN
 
 NULL
     : 'null'
-    ;
-
-range
-    :   min=G_INT '..' max=G_INT  -> ^(RANGE $min $max)
     ;
 
 VARIABLE
