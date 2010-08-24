@@ -60,7 +60,24 @@ tokens {
 }
 
 @lexer::header  {package com.tinkerpop.gremlin.compiler;}
+
 @parser::header {package com.tinkerpop.gremlin.compiler;}
+
+@lexer::members 
+        {
+            /* ANTLR guys by default just print exceptions into System.err, we don't need that */
+            public void reportError(RecognitionException e) {
+                throw new RuntimeException("Error at " + e.line + ":" + e.charPositionInLine + " -> " + this.getErrorMessage(e, this.getTokenNames()));
+            }
+        }
+
+@parser::members 
+        {
+            /* ANTLR guys by default just print exceptions into System.err, we don't need that */
+            public void reportError(RecognitionException e) {
+                throw new RuntimeException("Error at " + e.line + ":" + e.charPositionInLine + " -> " + this.getErrorMessage(e, this.getTokenNames()));
+            }
+        }
 
 program	
     :	COMMENT+

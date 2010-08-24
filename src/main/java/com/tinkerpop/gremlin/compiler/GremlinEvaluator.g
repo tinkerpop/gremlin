@@ -1,6 +1,7 @@
 tree grammar GremlinEvaluator;
 
 options {
+    output=AST;
 	tokenVocab=Gremlin;
 	ASTLabelType=CommonTree;
 }
@@ -72,7 +73,6 @@ options {
 @members {
     // debug mode
     public  static boolean DEBUG = false;
-    public  static boolean EMBEDDED = false;
 
     private boolean isGPath = false;
     private int gpathScope = 0;
@@ -207,7 +207,7 @@ options {
             throw new RuntimeException(e);
         }
 
-        if (EMBEDDED && (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT)) 
+        if (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT) 
             resultList.add(value);
 
         if (value != null && DEBUG) {

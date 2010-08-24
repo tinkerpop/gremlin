@@ -43,13 +43,6 @@ public class Foreach implements Operation {
             context.getVariableLibrary().declare(this.variable, value);
 
             this.body.invoke();
-            /*
-            for (Operation operation : this.statements) {
-                Atom atom = operation.compute();
-                if (atom instanceof Func)
-                    atom.getValue();
-            }
-            */
         }
 
         context.getVariableLibrary().free(this.variable);

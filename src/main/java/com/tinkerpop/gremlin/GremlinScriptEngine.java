@@ -12,10 +12,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 
-import javax.script.AbstractScriptEngine;
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngineFactory;
+import javax.script.*;
 import java.io.*;
 
 /**
@@ -51,27 +48,25 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return new VariableLibrary();
     }
 
-    public Object eval(final Reader reader, final ScriptContext context) {
+    public Object eval(final Reader reader, ScriptContext context) {
 
         String line;
-        String script = "";
-        Iterable result = null;
+        Iterable result;
+        StringBuilder script = new StringBuilder();
         BufferedReader bReader = new BufferedReader(reader);
         
         try {
             // read whole script before evaluation
             while ((line = bReader.readLine()) != null) {
-                script += line + "\n";
+                script.append(line).append("\n");
             }
 
             // evaluate script
-            result = this.evaluate(script, (GremlinScriptContext) context);
+            result = this.evaluate(script.toString(), (GremlinScriptContext) context);
             
             // flushing output streams
             context.getWriter().flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        } catch (RecognitionException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
         
@@ -89,8 +84,6 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
     private Iterable evaluate(final String code, final GremlinScriptContext context)
             throws RecognitionException
     {
-        GremlinEvaluator.EMBEDDED = true;
-
         ANTLRStringStream input = new ANTLRStringStream(code + "\n");
         return evaluate(input, context);
     }
@@ -100,10 +93,8 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
     {
         final GremlinLexer lexer = new GremlinLexer(input);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
-
         final GremlinParser parser = new GremlinParser(tokens);
         final GremlinParser.program_return r = parser.program();
-
         final CommonTree t = (CommonTree) r.getTree();
 
         if (t.toStringTree().trim().isEmpty()) {
@@ -121,7 +112,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return (cause == null) ? exception.getMessage() : getExceptionCauseMessage(exception.getCause());
     }
 
-    public static String getExceptionCauseMessage(Throwable cause) {
+    public static String getExceptionCauseMessage(final Throwable cause) {
         final Throwable parentCause = cause.getCause();
         return (parentCause == null) ? cause.getMessage() : getExceptionCauseMessage(parentCause);
     }
