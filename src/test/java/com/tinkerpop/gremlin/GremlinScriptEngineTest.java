@@ -134,6 +134,27 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(((Map) ((List) (m.get("others"))).get(1)).get("peter"), 10);
     }
 
+    public void testRanges() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        List results = evaluateGremlinScriptIterable("1..4", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+
+        assertEquals(evaluateGremlinScriptPrimitive("g:type(1..4)", context, true), "set");
+
+        results = evaluateGremlinScriptIterable("g:union(1..3,4..6)", context, true);
+        assertEquals(results.size(), 4);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 4);
+        assertEquals(results.get(3), 5);
+
+
+    }
+
     public void testNumberFunctions() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
         context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.compiler.functions.PlayFunctions");
@@ -148,6 +169,22 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 4);
         assertEquals(results.get(2), 5);
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:flatten(0..3,4..6)]", context, true);
+        assertEquals(results.size(), 5);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(results.get(3), 5);
+        assertEquals(results.get(4), 6);
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:union(0..3,4..1000)]", context, true);
+        assertEquals(results.size(), 5);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(results.get(3), 5);
+        assertEquals(results.get(4), 6);
 
         results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5,6)[g:set(0,3,4)[0..2]]", context, true);
         assertEquals(results.size(), 2);
