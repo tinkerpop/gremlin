@@ -17,10 +17,7 @@ import com.tinkerpop.pipes.pgm.*;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Pavel A. Yaskevich
@@ -171,12 +168,17 @@ public class GremlinPipesHelper {
 
             final Object value = unaryAtom.getValue();
             
-            if (value instanceof Collection) {
-                final Collection collection = (Collection) value;
-                final Object[] range = collection.toArray();
+            if (value instanceof Iterable) {
+                final Iterator collection = ((Iterable) value).iterator();
+
+                final Integer min = (Integer) collection.next();
+
+                int max = min + 1;
+                while(collection.hasNext()) {
+                    max = (Integer) collection.next();
+                }
                 
-                final int lastId = collection.size() - 1;
-                return new GremlinRangeFilterPipe((Integer) range[0], (Integer) range[lastId] + 1);
+                return new GremlinRangeFilterPipe(min, max + 1);
             }
         }
 
