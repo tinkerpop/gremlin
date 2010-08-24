@@ -73,7 +73,7 @@ public class ListFunctionTest extends BaseTest {
 
         assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3,4,5,6,7,8)[0]", context, true), new Integer(1));
 
-        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($x,.)]", context, true);
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(g:assign($x,.))]", context, true);
         assertEquals(context.getVariableByName("$x").getValue(), 3);
         results = evaluateGremlinScriptIterable("g:g(g:list(1,2,3))[g:p($x := .)]", context, true);
         assertEquals(results.get(0), new Integer(1));

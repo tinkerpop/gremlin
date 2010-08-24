@@ -9,14 +9,13 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PlayFunction extends AbstractFunction<String> {
+public class PlayStringFunction extends AbstractFunction<String> {
 
     public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         return new Atom<String>("Goodbye.");
-
     }
 
     public String getFunctionName() {
-        return "play";
+        return "play-string";
     }
 }

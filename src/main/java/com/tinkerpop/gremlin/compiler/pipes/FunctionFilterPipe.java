@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * [g:func()]
- * 
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
@@ -18,6 +18,9 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
     private final Function function;
     private final List<Operation> arguments;
     private final GremlinScriptContext context;
+    private int counter = -1;
+    private int index = -1;
+    private boolean numberMode = false;
 
     public FunctionFilterPipe(Function function, List<Operation> arguments, final GremlinScriptContext context) {
         this.function = function;
@@ -30,9 +33,23 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
             S s = this.starts.next();
             this.context.setCurrentPoint(s);
 
-            Object functionReturn = this.function.compute(GremlinPipesHelper.updateArguments(this.arguments, s), this.context).getValue();
-            if (functionReturn instanceof Boolean && ((Boolean) functionReturn)) {
-                return s;
+            if (this.numberMode) {
+                this.counter++;
+                if (this.counter == this.index) {
+                    return s;
+                }
+            } else {
+                Object functionReturn = this.function.compute(GremlinPipesHelper.updateArguments(this.arguments, s), this.context).getValue();
+                if (functionReturn instanceof Boolean && ((Boolean) functionReturn)) {
+                    return s;
+                } else if (functionReturn instanceof Number) {
+                    this.numberMode = true;
+                    this.index = ((Number) functionReturn).intValue();
+                    this.counter++;
+                    if (this.counter == this.index) {
+                        return s;
+                    }
+                }
             }
         }
     }

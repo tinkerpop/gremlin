@@ -6,7 +6,8 @@ package com.tinkerpop.gremlin.compiler.functions;
 public class PlayFunctions extends AbstractFunctions {
 
     public PlayFunctions() {
-        functions.add(new PlayFunction());
+        functions.add(new PlayStringFunction());
+        functions.add(new PlayNumberFunction());
     }
 
     public String getNamespace() {

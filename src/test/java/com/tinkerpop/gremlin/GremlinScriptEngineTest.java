@@ -69,13 +69,13 @@ public class GremlinScriptEngineTest extends BaseTest {
     public void testSideEffects() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
 
-        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($x,.)]", context, true);
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(g:assign($x,.))]", context, true);
         assertEquals(context.getVariableByName("$x").getValue(), 3);
 
-        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($y,.)][true]", context, true);
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(g:assign($y,.))][true]", context, true);
         assertEquals(context.getVariableByName("$y").getValue(), 3);
 
-        evaluateGremlinScriptIterable("g:list(1,2,3)[g:assign($z,.)][false]", context, true);
+        evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(g:assign($z,.))][false]", context, true);
         assertEquals(context.getVariableByName("$z").getValue(), 3);
     }
 
@@ -132,6 +132,16 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(((Map) ((List) (m.get("others"))).get(1)).get("peter"), 2);
         assertEquals(evaluateGremlinScriptPrimitive("$m/@others[0][1]/@peter := 10", context, true), 10);
         assertEquals(((Map) ((List) (m.get("others"))).get(1)).get("peter"), 10);
+    }
+
+    public void testNumberFunctions() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.compiler.functions.PlayFunctions");
+        assertNotNull(context.getFunctionLibrary().getFunction("play", "play-number"));
+        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3,4)[play:play-number(2)]", context, true),3);
+
+        // only one number should be returned
+        assertNotNull(evaluateGremlinScriptPrimitive("g:list(1,2,3,4)[g:rand-nat(4)]", context, true));
     }
 
     // GRAPH RELATED TEST CASES
