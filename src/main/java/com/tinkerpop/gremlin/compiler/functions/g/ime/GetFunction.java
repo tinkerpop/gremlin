@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.ime;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
+import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
@@ -20,7 +21,7 @@ public class GetFunction extends AbstractFunction<Object> {
         if (arguments.size() != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        List<Object> objects = generateObjects(arguments);
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
         if (objects.get(0) instanceof Map) {
             return new Atom(((Map) objects.get(0)).get(objects.get(1)));
         } else if (objects.get(0) instanceof List) {

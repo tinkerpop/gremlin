@@ -5,9 +5,9 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -41,8 +41,20 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "pavel"), "marko");
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"), "pavel");
         assertEquals(((List) engine.eval("$name")).get(0), "pavel");
-
     }
+
+    // TODO: make work.
+    /*public void testEmbeddedEngineBindingsGraph() throws Exception {
+        ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_g", graph);
+        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_", graph.getVertex(1));
+        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("name", "josh");
+        engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name");
+        List results = (List) engine.eval("./outE/inV[@name=$name]");
+        assertEquals(results.get(0), graph.getVertex(4));
+    }*/
+
 
     public void testBasicMathStatements() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();

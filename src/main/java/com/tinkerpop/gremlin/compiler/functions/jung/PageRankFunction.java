@@ -36,7 +36,7 @@ public class PageRankFunction extends AbstractFunction<Map<Vertex, Double>> {
         if (null == graph)
             throw new RuntimeException(this.createUnsupportedArgumentMessage("No graph available"));
 
-        List<Object> objects = AbstractFunction.generateObjects(arguments);
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
         Map parameterMap;
         if (objects.size() == 0) {
             parameterMap = new HashMap();

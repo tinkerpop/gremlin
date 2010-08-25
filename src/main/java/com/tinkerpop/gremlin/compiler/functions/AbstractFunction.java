@@ -12,14 +12,6 @@ public abstract class AbstractFunction<T> implements Function<T> {
 
     private static final String UNSUPPORTED_MESSAGE = "Unsupported arguments for ";
 
-    protected static List<Object> generateObjects(List<Operation> operations) {
-        final List<Object> list = new ArrayList<Object>();
-        for (Operation operation : operations) {
-            list.add(operation.compute().getValue());
-        }
-        return list;
-    }
-
     protected String createUnsupportedArgumentMessage() {
         return UNSUPPORTED_MESSAGE + this.getFunctionName() + " function";
     }

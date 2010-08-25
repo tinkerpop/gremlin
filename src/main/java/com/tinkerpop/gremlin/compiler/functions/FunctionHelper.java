@@ -75,4 +75,12 @@ public class FunctionHelper {
         }
         return total;
     }
+
+    public static List<Object> generateObjects(List<Operation> operations) {
+        final List<Object> list = new ArrayList<Object>();
+        for (Operation operation : operations) {
+            list.add(operation.compute().getValue());
+        }
+        return list;
+    }
 }

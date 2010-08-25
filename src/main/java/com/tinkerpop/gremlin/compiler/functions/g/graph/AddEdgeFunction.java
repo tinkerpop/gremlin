@@ -26,7 +26,7 @@ public class AddEdgeFunction extends AbstractFunction<Edge> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
         final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
-        List<Object> objects = generateObjects(arguments);
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
 
         if (size == 5) {
             return createEdge(graph, objects.get(1), (Vertex) objects.get(2), (String) objects.get(3), (Vertex) objects.get(4));

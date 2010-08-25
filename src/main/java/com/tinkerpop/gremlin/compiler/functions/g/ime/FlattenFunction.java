@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.functions.g.ime;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.functions.AbstractFunction;
+import com.tinkerpop.gremlin.compiler.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
@@ -21,7 +22,7 @@ public class FlattenFunction extends AbstractFunction<List> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
         List results = new ArrayList();
-        flatten(results, generateObjects(arguments));
+        flatten(results, FunctionHelper.generateObjects(arguments));
         return new Atom<List>(results);
     }
 

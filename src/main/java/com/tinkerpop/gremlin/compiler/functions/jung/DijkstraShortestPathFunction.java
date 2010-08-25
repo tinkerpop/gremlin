@@ -35,7 +35,7 @@ public class DijkstraShortestPathFunction extends AbstractFunction<List<Edge>> {
         if (null == graph)
             throw new RuntimeException(this.createUnsupportedArgumentMessage("No graph available"));
 
-        List<Object> objects = AbstractFunction.generateObjects(arguments);
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
         Vertex sourceVertex;
         Vertex targetVertex;
         Map parameterMap;
