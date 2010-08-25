@@ -13,10 +13,10 @@ public class GremlinScriptContextTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
         VariableLibrary variables = context.getVariableLibrary();
         
-        variables.declare("w", new Atom<Double>(1.0d));
-        variables.declare("x", new Atom(null));
-        variables.declare("y", new Atom<String>("1"));
-        variables.declare("z", new Atom<Boolean>(true));
+        variables.putAtom("w", new Atom<Double>(1.0d));
+        variables.putAtom("x", new Atom(null));
+        variables.putAtom("y", new Atom<String>("1"));
+        variables.putAtom("z", new Atom<Boolean>(true));
         printPerformance("evaluator", 4, "variable declarations", this.stopWatch());
 
         this.stopWatch();
@@ -27,10 +27,10 @@ public class GremlinScriptContextTest extends BaseTest {
         printPerformance("evaluator", 4, "variable gets", this.stopWatch());
 
         this.stopWatch();
-        variables.free("w");
-        variables.free("x");
-        variables.free("y");
-        variables.free("z");
+        variables.remove("w");
+        variables.remove("x");
+        variables.remove("y");
+        variables.remove("z");
         printPerformance("evaluator", 4, "variable undeclarations", this.stopWatch());
         assertNull(context.getVariableByName("w").getValue());
         assertNull(context.getVariableByName("x").getValue());

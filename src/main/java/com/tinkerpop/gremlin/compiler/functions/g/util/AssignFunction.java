@@ -26,7 +26,7 @@ public class AssignFunction extends AbstractFunction<Object> {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("Two argument evaluation requires first argument to be a variable"));
 
             final Atom<Object> atom = arguments.get(1).compute();
-            context.getVariableLibrary().declare(((Var) variable).getVariableName(), atom);
+            context.getVariableLibrary().putAtom(((Var) variable).getVariableName(), atom);
             return atom;
         } else if (size == 3) {
             final Object object = arguments.get(0).compute().getValue();

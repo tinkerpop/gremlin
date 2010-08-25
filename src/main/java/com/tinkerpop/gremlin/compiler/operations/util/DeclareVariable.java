@@ -40,7 +40,7 @@ public class DeclareVariable implements Operation {
 
         if (this.object instanceof Var) {
             String name = ((Var) this.object).getVariableName();
-            this.context.getVariableLibrary().declare(name, value);
+            this.context.getVariableLibrary().putAtom(name, value);
         } else if (this.object instanceof GPath) {
             GPath path = (GPath) this.object;
             List<Pipe> pipes = path.getPipes();

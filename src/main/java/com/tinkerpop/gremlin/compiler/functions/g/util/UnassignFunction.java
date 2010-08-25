@@ -25,7 +25,7 @@ public class UnassignFunction extends AbstractFunction<Boolean> {
             if (!(variable instanceof Var))
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-            context.getVariableLibrary().free(((Var) variable).getVariableName());
+            context.getVariableLibrary().remove(((Var) variable).getVariableName());
             return new Atom<Boolean>(true);
         } else if (size == 2) {
             final Object object = arguments.get(0).compute().getValue();

@@ -17,7 +17,7 @@ public class NamespaceFunctionTest extends BaseTest {
     public void testNamespace() {
         SailGraph graph = new SailGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<String> function = new NamespaceFunction();
         this.stopWatch();

@@ -17,7 +17,7 @@ public class PrefixFunctionTest extends BaseTest {
     public void testPrefix() {
         SailGraph graph = new SailGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<String> function = new PrefixFunction();
         this.stopWatch();

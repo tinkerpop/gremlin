@@ -16,7 +16,7 @@ public class ClearFunctionTest extends BaseTest {
     public void testClear() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         assertEquals(count(graph.getVertices()), 6);
         assertEquals(count(graph.getEdges()), 6);
@@ -35,7 +35,7 @@ public class ClearFunctionTest extends BaseTest {
     public void testClearNoArgument() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         assertEquals(count(graph.getVertices()), 6);
         assertEquals(count(graph.getEdges()), 6);
         Function<Boolean> function = new ClearFunction();

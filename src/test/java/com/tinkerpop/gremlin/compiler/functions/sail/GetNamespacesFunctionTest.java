@@ -19,7 +19,7 @@ public class GetNamespacesFunctionTest extends BaseTest {
     public void testGetNamespaces() {
         SailGraph graph = new SailGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<Map<String, String>> function = new GetNamespacesFunction();
         this.stopWatch();

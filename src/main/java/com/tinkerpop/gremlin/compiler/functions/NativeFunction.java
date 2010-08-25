@@ -37,7 +37,7 @@ public class NativeFunction implements Function<Object> {
         for (int i = 0; i < this.arguments.size(); i++) {
             final Atom computedParam = arguments.get(i).compute();
             final Atom argumentValue = (computedParam instanceof DynamicEntity) ? new Atom<Object>(computedParam.getValue()) : computedParam;
-            context.getVariableLibrary().declare(this.arguments.get(i), argumentValue);
+            context.getVariableLibrary().putAtom(this.arguments.get(i), argumentValue);
         }
         
         // getting evaluation result

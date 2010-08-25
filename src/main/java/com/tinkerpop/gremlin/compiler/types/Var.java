@@ -22,10 +22,9 @@ public class Var extends DynamicEntity {
     public int hashCode() {
         return this.var.hashCode();
     }
-    
+
     protected Object value() {
-        Atom atom = (Atom) this.context.getVariableLibrary().get(this.var);
-        return (atom == null) ? null : atom.getValue();
+        return this.context.getVariableLibrary().get(this.var);
     }
 
 }

@@ -49,8 +49,8 @@ public class WhileTest extends BaseTest {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         this.stopWatch();
         List results = (List) engine.eval("$i := 0\nwhile $i < 2\n$_ := ./outE/inV\n$i := $i + 1\nend", context);
@@ -61,7 +61,7 @@ public class WhileTest extends BaseTest {
         assertTrue(asList((Iterable) context.getVariableByName(Tokens.ROOT_VARIABLE).getValue()).contains(graph.getVertex(5)));
         assertTrue(asList((Iterable) context.getVariableByName(Tokens.ROOT_VARIABLE).getValue()).contains(graph.getVertex(3)));
 
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
         this.stopWatch();
         results = (List) engine.eval("$i := 0\nwhile $i < 2\n$_ := ./outE\nif g:includes(g:flatten($_),g:id-e(10))\n$_ := g:diff($_,g:id-e(10))\nend\n$_ := ./inV\n$i := $i + 1\nend", context);
         printPerformance("repeat statement", 2, "iterations over graph with edge filtering using functions", this.stopWatch());

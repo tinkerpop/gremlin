@@ -17,7 +17,7 @@ public class RemoveNamespaceFunctionTest extends BaseTest {
     public void testRemoveNamespace() {
         SailGraph graph = new SailGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<Boolean> function = new RemoveNamespaceFunction();
         assertNotNull(graph.getNamespaces().get("rdf"));

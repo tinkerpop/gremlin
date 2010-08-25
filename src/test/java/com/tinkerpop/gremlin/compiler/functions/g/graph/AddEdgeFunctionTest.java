@@ -20,7 +20,7 @@ public class AddEdgeFunctionTest extends BaseTest {
     public void testAddEdge() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<Edge> function = new AddEdgeFunction();
         assertEquals(function.getFunctionName(), "add-e");

@@ -24,7 +24,7 @@ import java.io.*;
 public class GremlinScriptEngine extends AbstractScriptEngine {
 
     public static final String GREMLIN_RC_FILE = ".gremlinrc";
-    private ScriptContext context;
+    private GremlinScriptContext context;
 
     /**
      * This constructor used only by GremlinScriptEngineFactory
@@ -55,8 +55,13 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return new VariableLibrary();
     }
 
-    public Object eval(final String script) {
-        return this.eval(script, this.context);
+    public Object eval(final Reader reader) {
+        return this.eval(reader, this.context);
+    }
+
+    public Object eval(final Reader reader, final Bindings bindings) {
+        this.context.setVariableLibrary(new VariableLibrary(bindings));
+        return this.eval(reader);
     }
 
     public Object eval(final Reader reader, ScriptContext context) {
@@ -84,25 +89,46 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return result;
     }
 
+    public Object eval(final String script) {
+        return this.eval(script, this.context);
+    }
+
     public Object eval(final String script, final ScriptContext context) {
         return this.eval(new StringReader(script), context);
+    }
+
+    public Object get(final String key) {
+        return this.context.getVariableLibrary().get(key);
+    }
+
+    public Bindings getBindings(int scope) {
+        return this.context.getVariableLibrary();
     }
 
     public ScriptContext getContext() {
         return this.context;
     }
 
-    public void setContext(ScriptContext context) {
-        if (context instanceof GremlinScriptContext) {
-            this.context = context;
-        } else {
-            throw new RuntimeException("Must provide a GremlinScriptContext to a GremlinScriptEngine");
-        }
-    }
-
     public ScriptEngineFactory getFactory() {
         return new GremlinScriptEngineFactory();
     }
+
+    public void put(final String key, final Object value) {
+        this.context.getVariableLibrary().put(key, value);
+    }
+
+    public void setBindings(final Bindings bindings, int scope) {
+        this.context.setVariableLibrary(new VariableLibrary(bindings));
+    }
+
+    public void setContext(final ScriptContext context) {
+        if (context instanceof GremlinScriptContext) {
+            this.context = (GremlinScriptContext) context;
+        } else {
+            this.context.setVariableLibrary(new VariableLibrary(context.getBindings(ScriptContext.ENGINE_SCOPE)));
+        }
+    }
+
 
     private Iterable evaluate(final String code, final GremlinScriptContext context) throws RecognitionException {
         ANTLRStringStream input = new ANTLRStringStream(code + "\n");

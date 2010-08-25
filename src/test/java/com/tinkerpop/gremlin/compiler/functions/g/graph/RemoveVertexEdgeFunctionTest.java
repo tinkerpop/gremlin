@@ -16,7 +16,7 @@ public class RemoveVertexEdgeFunctionTest extends BaseTest {
     public void testAddVertex() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<Boolean> function = new RemoveVertexEdgeFunction();
         assertEquals(function.getFunctionName(), "remove-ve");

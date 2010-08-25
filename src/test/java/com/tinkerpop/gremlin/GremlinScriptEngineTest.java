@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import java.util.Arrays;
 import java.util.List;
@@ -21,16 +22,25 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testBasicEmbeddedEngine() throws Exception {
         ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
-        assertEquals(((List)engine.eval("1+2")).get(0),3);
-        assertEquals(((List)engine.eval("$_g := tg:open()")).get(0).getClass(), TinkerGraph.class);
+        assertEquals(((List) engine.eval("1+2")).get(0), 3);
+        assertEquals(((List) engine.eval("$_g := tg:open()")).get(0).getClass(), TinkerGraph.class);
         engine.eval("$a := g:add-v(0)");
         engine.eval("$b := g:add-v(1)");
         engine.eval("$c := g:add-v(2)");
         engine.eval("g:add-e($a,'knows',$b)");
         engine.eval("g:add-e($a,'knows',$c)");
         engine.eval("$_ := $a");
-        assertEquals(asList(((Iterable)((List)engine.eval("./outE/inV/@id")).get(0))).get(0), "2");
-        assertEquals(asList(((Iterable)((List)engine.eval("./outE/inV/@id")).get(0))).get(1), "1");
+        assertEquals(asList(((Iterable) ((List) engine.eval("./outE/inV/@id")).get(0))).get(0), "2");
+        assertEquals(asList(((Iterable) ((List) engine.eval("./outE/inV/@id")).get(0))).get(1), "1");
+
+    }
+
+    public void testEmbeddedEngineBindings() throws Exception {
+        GremlinScriptEngine engine = (GremlinScriptEngine) new GremlinScriptEngineFactory().getScriptEngine();
+        assertNull(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "marko"));
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "pavel"), "marko");
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"), "pavel");
+        assertEquals(((List) engine.eval("$name")).get(0), "pavel");
 
     }
 
@@ -116,8 +126,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
 
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         assertEquals(evaluateGremlinScriptPrimitive("$x := 1", context, true), 1);
         assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 1);
@@ -221,8 +231,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV", context, true);
         assertEquals(results.size(), 3);
@@ -281,8 +291,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         Vertex result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/../..", context, true);
         String name = (String) result.getProperty("name");
@@ -314,8 +324,8 @@ public class GremlinScriptEngineTest extends BaseTest {
     public void testIdAndLabelProperties() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         String result = (String) evaluateGremlinScriptPrimitive("./@id", context, true);
         assertEquals(result, "1");
@@ -336,8 +346,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         List<Element> results = evaluateGremlinScriptIterable("$_g/V", context, true);
         assertEquals(results.size(), 6);
@@ -382,8 +392,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().declare(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
         assertEquals(count(evaluateGremlinScriptIterable("./outE[./@label = 'knows']", context, true)), 2);
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV/@name = 'vadas']/inV/@name", context, true), "vadas");
         assertEquals(evaluateGremlinScriptPrimitive("./outE[./inV[@name = 'vadas']/@name = 'vadas']/inV/@name", context, true), "vadas");

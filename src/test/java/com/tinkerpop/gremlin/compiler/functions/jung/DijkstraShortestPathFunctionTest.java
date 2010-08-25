@@ -23,7 +23,7 @@ public class DijkstraShortestPathFunctionTest extends JungTest {
     public void testNoParameters() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         Function<List<Edge>> function = new DijkstraShortestPathFunction();
         this.stopWatch();
         Atom<List<Edge>> atom = function.compute(this.createUnaryArgs(graph.getVertex(1), graph.getVertex(5)), context);
@@ -39,7 +39,7 @@ public class DijkstraShortestPathFunctionTest extends JungTest {
     public void testGraphParameter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         Function<List<Edge>> function = new DijkstraShortestPathFunction();
         this.stopWatch();
         Atom<List<Edge>> atom = function.compute(this.createUnaryArgs(graph, graph.getVertex(1), graph.getVertex(5)), context);
@@ -66,7 +66,7 @@ public class DijkstraShortestPathFunctionTest extends JungTest {
         graph.addEdge("e", v3, v5, "knows");
         graph.addEdge("f", v5, v4, "knows");
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<List<Edge>> function = new DijkstraShortestPathFunction();
         this.stopWatch();

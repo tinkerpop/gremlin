@@ -22,7 +22,7 @@ public class SparqlFunctionTest extends BaseTest {
     public void testSparql() {
         SailGraph graph = SailGraphFactory.createTinkerGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<List<Map<String, Vertex>>> function = new SparqlFunction();
         String query = "SELECT ?x ?y WHERE { ?x tg:knows ?y }";

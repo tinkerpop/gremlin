@@ -24,9 +24,9 @@ public class UnassignFunctionTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
         VariableLibrary variables = context.getVariableLibrary();
         
-        variables.declare("x", new Atom<Integer>(1));
-        variables.declare("y", new Atom<Integer>(2));
-        variables.declare("z", new Atom<Integer>(3));
+        variables.putAtom("x", new Atom<Integer>(1));
+        variables.putAtom("y", new Atom<Integer>(2));
+        variables.putAtom("z", new Atom<Integer>(3));
 
         assertEquals(context.getVariableByName("x").getValue(), 1);
         assertEquals(context.getVariableByName("y").getValue(), 2);

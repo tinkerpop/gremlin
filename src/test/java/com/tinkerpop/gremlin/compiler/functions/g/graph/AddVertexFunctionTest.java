@@ -21,7 +21,7 @@ public class AddVertexFunctionTest extends BaseTest {
     public void testAddVertex() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<Vertex> function = new AddVertexFunction();
         assertEquals(function.getFunctionName(), "add-v");
@@ -59,7 +59,7 @@ public class AddVertexFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getProperty("name"), "pavel");
         Vertex vertexPavel = atom.getValue();
 
-        context.getVariableLibrary().declare(Tokens.GRAPH_VARIABLE, new Atom<Graph>(new TinkerGraph()));
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(new TinkerGraph()));
         this.stopWatch();
         atom = function.compute(createUnaryArgs(vertexMarko), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());

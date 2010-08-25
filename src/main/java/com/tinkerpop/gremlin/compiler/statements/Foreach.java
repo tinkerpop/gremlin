@@ -14,13 +14,13 @@ public class Foreach implements Operation {
     private final Operation parameter;
     private final CodeBlock body;
     private final GremlinScriptContext context;
-    
+
     /**
      * $z := 0
      * $x := g:list(1, 2, 3)
-     * 
+     * <p/>
      * foreach $y in $x
-     *   $z := $z + $y
+     * $z := $z + $y
      * end
      */
 
@@ -39,13 +39,13 @@ public class Foreach implements Operation {
             return new Atom<Object>(null);
 
         for (Object currentParam : (Iterable) paramsAtom.getValue()) {
-            final Atom value = (currentParam instanceof Atom) ? (Atom) currentParam : new Atom(currentParam); 
-            context.getVariableLibrary().declare(this.variable, value);
+            final Atom value = (currentParam instanceof Atom) ? (Atom) currentParam : new Atom(currentParam);
+            context.getVariableLibrary().putAtom(this.variable, value);
 
             this.body.invoke();
         }
 
-        context.getVariableLibrary().free(this.variable);
+        context.getVariableLibrary().remove(this.variable);
 
         return new Atom<Object>(null);
     }
