@@ -165,6 +165,9 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
     public static String exceptionInPrintableFormat(final Exception exception) {
         String message = getExceptionCauseMessage(exception);
         if (message == null) return "";
-        return message.replaceAll("\\w+\\.(?! )", "").replaceAll("^\\w+:\\s{1}", "");
+
+        // remove all package names and down case
+        message = message.replaceAll("\\w+\\.(?! )", "").toLowerCase();
+        return "Evaluation error: " + message.replaceAll("^\\w+:\\s", "");
     }
 }

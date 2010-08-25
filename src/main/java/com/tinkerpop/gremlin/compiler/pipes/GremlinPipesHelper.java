@@ -149,7 +149,7 @@ public class GremlinPipesHelper {
             return propertyFilterPipe(key, storedObject, filter);
         } else {
             if (predicate instanceof DeclareVariable)
-                throw new RuntimeException("Sorry, you can't use assignment directly, use g:p() as wrapper.");
+                throw new RuntimeException("use g:p() as wrapper for assignment operation");
 
             // unary operation like var def or premitive type
             final Atom unaryAtom = predicate.compute();
