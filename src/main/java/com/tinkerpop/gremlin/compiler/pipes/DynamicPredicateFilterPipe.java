@@ -43,7 +43,7 @@ public class DynamicPredicateFilterPipe<S> extends AbstractComparisonFilterPipe<
     private Object getSideValue(final Atom side) {
         if (side instanceof DynamicEntity) {
             final Object currentPoint = this.context.getCurrentPoint();
-            
+
             if (side instanceof Var) {
                 Var variable = (Var) side;
 
