@@ -36,7 +36,7 @@ public class GremlinScriptEngineTest extends BaseTest {
     }
 
     public void testEmbeddedEngineBindings() throws Exception {
-        GremlinScriptEngine engine = (GremlinScriptEngine) new GremlinScriptEngineFactory().getScriptEngine();
+        ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
         assertNull(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "marko"));
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "pavel"), "marko");
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"), "pavel");
