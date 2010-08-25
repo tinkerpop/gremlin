@@ -66,7 +66,8 @@ public abstract class BaseTest extends TestCase {
         this.stopWatch();
         try {
             itty = (Iterable) ((Iterable) engine.eval(script, context)).iterator().next();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         if (printStatistics)
             printPerformance(script, 1, "pipe constructed", this.stopWatch());

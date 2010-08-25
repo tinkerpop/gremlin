@@ -24,22 +24,26 @@ import java.io.*;
 public class GremlinScriptEngine extends AbstractScriptEngine {
 
     public static final String GREMLIN_RC_FILE = ".gremlinrc";
+    private ScriptContext context;
 
     /**
      * This constructor used only by GremlinScriptEngineFactory
      * is you don't want to evaluate .gremlinrc file you can use it too
      */
     public GremlinScriptEngine() {
+        this.context = new GremlinScriptContext();
     }
 
     /**
      * This constructor used to initialize GremlinScriptEngine
      * and to evaluate .gremlinrc file on its' start up
+     *
      * @param context GremlinScriptContext
      */
     public GremlinScriptEngine(final GremlinScriptContext context) {
+        this.context = context;
         try {
-            this.eval(new FileReader(GREMLIN_RC_FILE), context);
+            this.eval(new FileReader(GREMLIN_RC_FILE), this.context);
         } catch (FileNotFoundException e) {
             // we do nothing if .gremlinrc is not found.
         } catch (IOException e) {
@@ -51,13 +55,17 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return new VariableLibrary();
     }
 
+    public Object eval(final String script) {
+        return this.eval(script, this.context);
+    }
+
     public Object eval(final Reader reader, ScriptContext context) {
 
         String line;
         Iterable result;
         StringBuilder script = new StringBuilder();
         BufferedReader bReader = new BufferedReader(reader);
-        
+
         try {
             // read whole script before evaluation
             while ((line = bReader.readLine()) != null) {
@@ -66,13 +74,13 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
             // evaluate script
             result = this.evaluate(script.toString(), (GremlinScriptContext) context);
-            
+
             // flushing output streams
             context.getWriter().flush();
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-        
+
         return result;
     }
 
@@ -80,20 +88,28 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return this.eval(new StringReader(script), context);
     }
 
+    public ScriptContext getContext() {
+        return this.context;
+    }
+
+    public void setContext(ScriptContext context) {
+        if (context instanceof GremlinScriptContext) {
+            this.context = context;
+        } else {
+            throw new RuntimeException("Must provide a GremlinScriptContext to a GremlinScriptEngine");
+        }
+    }
+
     public ScriptEngineFactory getFactory() {
         return new GremlinScriptEngineFactory();
     }
 
-    private Iterable evaluate(final String code, final GremlinScriptContext context)
-            throws RecognitionException
-    {
+    private Iterable evaluate(final String code, final GremlinScriptContext context) throws RecognitionException {
         ANTLRStringStream input = new ANTLRStringStream(code + "\n");
         return evaluate(input, context);
     }
 
-    private Iterable evaluate(final CharStream input, final GremlinScriptContext context)
-            throws RecognitionException
-    {
+    private Iterable evaluate(final CharStream input, final GremlinScriptContext context) throws RecognitionException {
         final GremlinLexer lexer = new GremlinLexer(input);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final GremlinParser parser = new GremlinParser(tokens);

@@ -3,11 +3,13 @@ package com.tinkerpop.gremlin;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptEngine;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,21 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GremlinScriptEngineTest extends BaseTest {
+
+    public void testBasicEmbeddedEngine() throws Exception {
+        ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
+        assertEquals(((List)engine.eval("1+2")).get(0),3);
+        assertEquals(((List)engine.eval("$_g := tg:open()")).get(0).getClass(), TinkerGraph.class);
+        engine.eval("$a := g:add-v(0)");
+        engine.eval("$b := g:add-v(1)");
+        engine.eval("$c := g:add-v(2)");
+        engine.eval("g:add-e($a,'knows',$b)");
+        engine.eval("g:add-e($a,'knows',$c)");
+        engine.eval("$_ := $a");
+        assertEquals(asList(((Iterable)((List)engine.eval("./outE/inV/@id")).get(0))).get(0), "2");
+        assertEquals(asList(((Iterable)((List)engine.eval("./outE/inV/@id")).get(0))).get(1), "1");
+
+    }
 
     public void testBasicMathStatements() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
