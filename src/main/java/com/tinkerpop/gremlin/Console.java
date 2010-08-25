@@ -109,7 +109,7 @@ public class Console {
                 engine.eval(line, context);
             } catch (Exception e) {
                 context.getErrorWriter().flush();
-                System.err.println(GremlinScriptEngine.getExceptionCauseMessage(e));
+                System.err.println(GremlinScriptEngine.exceptionInPrintableFormat(e));
                 //e.printStackTrace();
             }
         }

@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.context;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import javax.script.Bindings;
 import java.util.HashMap;

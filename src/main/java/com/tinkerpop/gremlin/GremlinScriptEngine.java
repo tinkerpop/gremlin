@@ -161,4 +161,10 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         final Throwable parentCause = cause.getCause();
         return (parentCause == null) ? cause.getMessage() : getExceptionCauseMessage(parentCause);
     }
+
+    public static String exceptionInPrintableFormat(final Exception exception) {
+        String message = getExceptionCauseMessage(exception);
+        if (message == null) return "";
+        return message.replaceAll("\\w+\\.(?! )", "").replaceAll("^\\w+:\\s{1}", "");
+    }
 }

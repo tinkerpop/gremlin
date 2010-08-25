@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.compiler.operations.util;
 
 import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinPropertyPipe;
@@ -9,6 +8,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 

@@ -1,13 +1,14 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.PathLibrary;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.logic.*;
+import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 import com.tinkerpop.gremlin.compiler.types.*;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
@@ -147,10 +148,11 @@ public class GremlinPipesHelper {
 
             return propertyFilterPipe(key, storedObject, filter);
         } else {
-            // unary operation like var def or premitive type
-            final UnaryOperation operation = (UnaryOperation) predicate;
+            if (predicate instanceof DeclareVariable)
+                throw new RuntimeException("Sorry, you can't use assignment directly, use g:p() as wrapper.");
 
-            final Atom unaryAtom = operation.compute();
+            // unary operation like var def or premitive type
+            final Atom unaryAtom = predicate.compute();
 
             if (unaryAtom instanceof Func) {
                 Func functionCall = (Func) unaryAtom;

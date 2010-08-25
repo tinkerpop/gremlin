@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.compiler.types;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.MultiIterator;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;

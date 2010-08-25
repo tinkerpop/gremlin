@@ -31,7 +31,7 @@ options {
 
     import com.tinkerpop.gremlin.GremlinScriptEngine;
     
-    import com.tinkerpop.gremlin.compiler.Tokens;
+    import com.tinkerpop.gremlin.compiler.util.Tokens;
 
     import com.tinkerpop.gremlin.compiler.context.*;
 

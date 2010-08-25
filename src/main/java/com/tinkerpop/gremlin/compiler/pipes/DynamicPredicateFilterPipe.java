@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.*;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.filter.AbstractComparisonFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe;
 

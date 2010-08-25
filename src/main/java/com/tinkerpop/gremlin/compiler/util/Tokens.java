@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.compiler;
+package com.tinkerpop.gremlin.compiler.util;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

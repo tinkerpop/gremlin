@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.compiler.Tokens;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
