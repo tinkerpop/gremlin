@@ -43,17 +43,20 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(((List) engine.eval("$name")).get(0), "pavel");
     }
 
-    // TODO: make work.
-    /*public void testEmbeddedEngineBindingsGraph() throws Exception {
+    public void testEmbeddedEngineBindingsGraph() throws Exception {
         ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_g", graph);
-        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_", graph.getVertex(1));
-        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("name", "josh");
-        engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name");
+        assertNull(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_g", graph));
+        assertNull(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_", graph.getVertex(1)));
+        assertNull(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "josh"));
+        assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"), "josh");
         List results = (List) engine.eval("./outE/inV[@name=$name]");
         assertEquals(results.get(0), graph.getVertex(4));
-    }*/
+        results = (List) engine.eval("./outE/inV[@id=g:string(4)]");
+        assertEquals(results.get(0), graph.getVertex(4));
+        results = (List) engine.eval("./outE[@label=g:string('knows')]/inV[@id='4']");
+        assertEquals(results.get(0), graph.getVertex(4));
+    }
 
 
     public void testBasicMathStatements() throws Exception {
