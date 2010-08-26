@@ -170,7 +170,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         if (message == null) return "";
 
         // remove all package names and down case
-        message = message.replaceAll("\\w+\\.(?! )", "");
+        message = message.replaceAll("\\w+\\.(?! )", "").toLowerCase();
         return "Evaluation error: " + message.replaceAll("^\\w+:\\s", "");
     }
 }
