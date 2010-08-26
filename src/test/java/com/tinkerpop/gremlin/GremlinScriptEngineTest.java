@@ -54,7 +54,7 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(0), graph.getVertex(4));
         results = (List) engine.eval("./outE/inV[@id=g:string(4)]");
         assertEquals(results.get(0), graph.getVertex(4));
-        results = (List) engine.eval("./outE[@label=g:string('knows')]/inV[@id='4']");
+        results = (List) engine.eval("./outE[@label=g:string('knows') or @label=g:string(g:string('created'))]/inV[@id='4' and @name=$name]");
         assertEquals(results.get(0), graph.getVertex(4));
     }
 

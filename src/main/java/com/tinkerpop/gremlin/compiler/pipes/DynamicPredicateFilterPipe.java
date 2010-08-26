@@ -69,7 +69,7 @@ public class DynamicPredicateFilterPipe<S> extends AbstractComparisonFilterPipe<
                 return ((Map) point).get(side.getValue());
             else if (point instanceof Element) {
                 String property = side.getValue().toString();
-                if (property.equals(Tokens.LABEL))
+                if (property.equals(Tokens.LABEL) && point instanceof Edge)
                     return ((Edge) point).getLabel();
                 else if (property.equals(Tokens.ID))
                     return ((Element) point).getId();
