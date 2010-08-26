@@ -26,7 +26,7 @@ public class DeclareVariable implements Operation {
     private final Operation valueOperation;
     private final GremlinScriptContext context;
 
-    private final String UNSUPPORTED_ARGUMENT = "Unsupported first argument, can only be variable or gpath ending with property e.g. ./outE/inV/@name.";
+    private final String UNSUPPORTED_ARGUMENT = "left hand side value must be a variable or a path reference to a map or element";
     
     public DeclareVariable(final Atom<Object> object, final Operation valueOp, final GremlinScriptContext context) {
         this.object = object;
