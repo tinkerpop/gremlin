@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
 import jline.ConsoleReader;
 import jline.History;
 
@@ -107,10 +108,12 @@ public class Console {
 
             try {
                 engine.eval(line, context);
+            } catch (SyntaxErrorException e) {
+                System.err.println(e.getMessage());   
             } catch (Exception e) {
                 context.getErrorWriter().flush();
-                System.err.println(GremlinScriptEngine.exceptionInPrintableFormat(e));
-                //e.printStackTrace();
+                String message = GremlinScriptEngine.exceptionInPrintableFormat(e);
+                if (!message.isEmpty()) System.err.println(message);
             }
         }
     }

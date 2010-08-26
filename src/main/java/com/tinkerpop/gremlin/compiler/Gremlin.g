@@ -59,23 +59,30 @@ tokens {
 	COLLECTION_CALL;
 }
 
-@lexer::header  {package com.tinkerpop.gremlin.compiler;}
 
-@parser::header {package com.tinkerpop.gremlin.compiler;}
+@lexer::header  {
+            package com.tinkerpop.gremlin.compiler;
+
+            import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
+}
+
+@parser::header {
+            package com.tinkerpop.gremlin.compiler;
+            
+            import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
+}
 
 @lexer::members 
         {
-            /* ANTLR guys by default just print exceptions into System.err, we don't need that */
             public void reportError(RecognitionException e) {
-                throw new RuntimeException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
+                throw new SyntaxErrorException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
             }
         }
 
 @parser::members 
         {
-            /* ANTLR guys by default just print exceptions into System.err, we don't need that */
             public void reportError(RecognitionException e) {
-                throw new RuntimeException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
+                throw new SyntaxErrorException("Syntax error at " + e.line + "-" + e.charPositionInLine + ": " + this.getErrorMessage(e, this.getTokenNames()));
             }
         }
 

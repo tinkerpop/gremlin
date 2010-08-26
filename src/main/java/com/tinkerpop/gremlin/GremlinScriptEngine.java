@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.compiler.GremlinLexer;
 import com.tinkerpop.gremlin.compiler.GremlinParser;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
+import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -82,6 +83,8 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
             // flushing output streams
             context.getWriter().flush();
+        } catch (SyntaxErrorException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -167,7 +170,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         if (message == null) return "";
 
         // remove all package names and down case
-        message = message.replaceAll("\\w+\\.(?! )", "").toLowerCase();
+        message = message.replaceAll("\\w+\\.(?! )", "");
         return "Evaluation error: " + message.replaceAll("^\\w+:\\s", "");
     }
 }
