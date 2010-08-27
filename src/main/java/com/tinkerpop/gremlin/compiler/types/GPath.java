@@ -28,12 +28,14 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private Pipeline pipeline;
     private final Set<Object> previouslyFetched;
     private boolean startsFromRootIdentifier = false;
+    private final GremlinScriptContext context;
     
     public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
-
+        this.context = context;
+        
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
                 this.root = context.getVariableByName(Tokens.ROOT_VARIABLE);
@@ -76,6 +78,13 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         return this.pipeline;
     }
 
+    /** Simple method just to iterate over GPath
+     *  used in com.tinkerpop.gremlin.functions.g.ime.ForceFunction
+     */
+    public void iterate() {
+        Iterator itty = this.iterator();
+        while (itty.hasNext()) itty.next();
+    }
     private Iterator pipelineRoot() {
         if (this.persistentRoot == null) {
             this.persistentRoot = this.root.getValue();
