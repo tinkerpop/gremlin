@@ -67,17 +67,16 @@ public class IntersectFunctionTest extends BaseTest {
     }
 
     public void testIntersectInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2),g:list(2,3))", context, true);
+        List results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2),g:list(2,3))", true);
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 2);
 
-        results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2,2,3),g:list(2,2,2,2,3))", context, true);
+        results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2,2,3),g:list(2,2,2,2,3))", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 2);
         assertEquals(results.get(1), 3);
 
-        results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2,2),2)", context, true);
+        results = evaluateGremlinScriptIterable("g:intersect(g:list(1,2,2),2)", true);
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 2);
     }

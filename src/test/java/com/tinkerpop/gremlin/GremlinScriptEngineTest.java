@@ -12,6 +12,7 @@ import com.tinkerpop.gremlin.compiler.util.Tokens;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,51 +61,49 @@ public class GremlinScriptEngineTest extends BaseTest {
 
 
     public void testBasicMathStatements() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
 
-        Object result = evaluateGremlinScriptPrimitive("1 + 2", context, true);
+        Object result = evaluateGremlinScriptPrimitive("1 + 2", true);
         assertEquals(result, 3);
 
-        result = evaluateGremlinScriptPrimitive("1 div (2 * 2)", context, true);
+        result = evaluateGremlinScriptPrimitive("1 div (2 * 2)", true);
         assertEquals(result.getClass(), Double.class);
         assertEquals(result, 0.25d);
 
-        result = evaluateGremlinScriptPrimitive("(1l - 2) * 2.0d", context, true);
+        result = evaluateGremlinScriptPrimitive("(1l - 2) * 2.0d", true);
         assertEquals(result, -2.0d);
 
-        result = evaluateGremlinScriptPrimitive("2 + (4l * 2.0d) - 7", context, true);
+        result = evaluateGremlinScriptPrimitive("2 + (4l * 2.0d) - 7", true);
         assertEquals(result, 3.0d);
 
-        result = evaluateGremlinScriptPrimitive("-2 + 1", context, true);
+        result = evaluateGremlinScriptPrimitive("-2 + 1", true);
         assertEquals(result, -1);
 
         // TODO: bad that substraction requires spacing.
-        /*result = evaluateGremlinScriptPrimitive("1-2", context, true);
+        /*result = evaluateGremlinScriptPrimitive("1-2", true);
         assertEquals(result, -1);*/
     }
 
     public void testBasicTruthStatements() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
 
-        Object result = evaluateGremlinScriptPrimitive("true or false", context, true);
+        Object result = evaluateGremlinScriptPrimitive("true or false", true);
         assertTrue((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("true and false", context, true);
+        result = evaluateGremlinScriptPrimitive("true and false", true);
         assertFalse((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("false or false", context, true);
+        result = evaluateGremlinScriptPrimitive("false or false", true);
         assertFalse((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("false and false", context, true);
+        result = evaluateGremlinScriptPrimitive("false and false", true);
         assertFalse((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("true or (true and false)", context, true);
+        result = evaluateGremlinScriptPrimitive("true or (true and false)", true);
         assertTrue((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("true and (true or false)", context, true);
+        result = evaluateGremlinScriptPrimitive("true and (true or false)", true);
         assertTrue((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("false or (false and true) or (true and (false and true))", context, true);
+        result = evaluateGremlinScriptPrimitive("false or (false and true) or (true and (false and true))", true);
         assertFalse((Boolean) result);
     }
 
@@ -122,14 +121,12 @@ public class GremlinScriptEngineTest extends BaseTest {
     }
 
     public void testGPathInExpression() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", context, true), 12);
-        assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", context, true), 12);
+        assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3)[1] + 10", true), 12);
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('marko',2)/@marko + 10", true), 12);
     }
 
     public void testEmbeddedFunctions() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(. > 1)]", context, true);
+        List<Integer> results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(. > 1)]", true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
@@ -176,18 +173,42 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(((Map) ((List) (m.get("others"))).get(1)).get("peter"), 10);
     }
 
-    public void testRanges() throws Exception {
+    public void testEmbeddedAssignment() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
+        List results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p($x := g:list(.))]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(((List) context.getVariableLibrary().get("$x")).get(0), 3);
 
-        List results = evaluateGremlinScriptIterable("1..4", context, true);
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p($x := g:list(g:string(.)))]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(((List) context.getVariableLibrary().get("$x")).get(0), "3");
+
+
+        context.getVariableLibrary().put("$m", new HashMap());
+        results = evaluateGremlinScriptIterable("g:list(1,2,3)[g:p($m/@marko := g:list(g:string(g:double(.))))]", context, true);
+        assertEquals(results.size(), 3);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(((List) ((Map) context.getVariableLibrary().get("$m")).get("marko")).get(0), "3.0");
+    }
+
+    public void testRanges() throws Exception {
+        List results = evaluateGremlinScriptIterable("1..4", true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
         assertEquals(results.get(2), 3);
 
-        assertEquals(evaluateGremlinScriptPrimitive("g:type(1..4)", context, true), "set");
+        assertEquals(evaluateGremlinScriptPrimitive("g:type(1..4)", true), "set");
 
-        results = evaluateGremlinScriptIterable("g:union(1..3,4..6)", context, true);
+        results = evaluateGremlinScriptIterable("g:union(1..3,4..6)", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);

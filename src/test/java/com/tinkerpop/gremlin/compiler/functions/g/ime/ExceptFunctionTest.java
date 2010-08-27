@@ -42,22 +42,21 @@ public class ExceptFunctionTest extends BaseTest {
     }
 
     public void testExceptInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:except(2)]", context, true);
+        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:except(2)]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 1);
         assertEquals(results.get(2), 1);
         assertEquals(results.get(3), 1);
 
-        results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:except(g:list(2))][g:except(2)]/.[g:except(2)]", context, true);
+        results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:except(g:list(2))][g:except(2)]/.[g:except(2)]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 1);
         assertEquals(results.get(2), 1);
         assertEquals(results.get(3), 1);
 
-        results = evaluateGremlinScriptIterable("g:list(1,2,3,3,4,g:list(3,1))[g:except(g:list(3,1))]", context, true);
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,3,4,g:list(3,1))[g:except(g:list(3,1))]", true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), 2);
         assertEquals(results.get(1), 4);

@@ -42,22 +42,21 @@ public class RetainFunctionTest extends BaseTest {
     }
 
      public void testInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:retain(1)]", context, true);
+        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:retain(1)]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 1);
         assertEquals(results.get(2), 1);
         assertEquals(results.get(3), 1);
 
-        results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:retain(g:list(1))][g:retain(1)]/.[g:retain(1)]", context, true);
+        results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:retain(g:list(1))][g:retain(1)]/.[g:retain(1)]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 1);
         assertEquals(results.get(2), 1);
         assertEquals(results.get(3), 1);
 
-        results = evaluateGremlinScriptIterable("g:list(1,2,3,3,4,g:list(3,1))[g:retain(g:list(2,4))]", context, true);
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,3,4,g:list(3,1))[g:retain(g:list(2,4))]", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 2);
         assertEquals(results.get(1), 4);

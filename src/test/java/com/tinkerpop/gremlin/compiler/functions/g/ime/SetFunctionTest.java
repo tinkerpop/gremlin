@@ -34,53 +34,52 @@ public class SetFunctionTest extends BaseTest {
     }
 
      public void testSetInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
 
-        List<Integer> results = evaluateGremlinScriptIterable("g:set(1,2,3)[. > 1]", context, true);
+        List<Integer> results = evaluateGremlinScriptIterable("g:set(1,2,3)[. > 1]", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), new Integer(2));
         assertEquals(results.get(1), new Integer(3));
 
-        results = evaluateGremlinScriptIterable("g:set(1,2,2,2,2,3)[. >= 2]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,2,2,2,2,3)[. >= 2]", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), new Integer(2));
         assertEquals(results.get(1), new Integer(3));
 
-        results = evaluateGremlinScriptIterable("g:set(1,1,1,1,2,3)[. >= 1]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,1,1,1,2,3)[. >= 1]", true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
         assertEquals(results.get(2), new Integer(3));
 
-        results = evaluateGremlinScriptIterable("g:set(1,2,2,2,3,3,3)[. < 3]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,2,2,2,3,3,3)[. < 3]", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
 
-        results = evaluateGremlinScriptIterable("g:set(1,2,3,3,3,2,1,1,1)[. = 1 or . = 2]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,2,3,3,3,2,1,1,1)[. = 1 or . = 2]", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
 
-        results = evaluateGremlinScriptIterable("g:set(1,2,3,4,5,6)[. < 4 and . >= 2]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,2,3,4,5,6)[. < 4 and . >= 2]", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), new Integer(2));
         assertEquals(results.get(1), new Integer(3));
 
-        results = evaluateGremlinScriptIterable("g:set(1,2,3,4,5,6)[. < 3 or (. > 5 and . <= 7)]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,2,3,4,5,6)[. < 3 or (. > 5 and . <= 7)]", true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
         assertEquals(results.get(2), new Integer(6));
 
-        results = evaluateGremlinScriptIterable("g:set(1,2,3,4,5,6,7,8)[. < 3 or (. > 5 and . <= 7 and . != 7) or . = 8]", context, true);
+        results = evaluateGremlinScriptIterable("g:set(1,2,3,4,5,6,7,8)[. < 3 or (. > 5 and . <= 7 and . != 7) or . = 8]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
         assertEquals(results.get(2), new Integer(6));
         assertEquals(results.get(3), new Integer(8));
 
-        assertEquals(evaluateGremlinScriptPrimitive("g:set(1,2,3,4,5,6,7,8)[0]", context, true), new Integer(1));
+        assertEquals(evaluateGremlinScriptPrimitive("g:set(1,2,3,4,5,6,7,8)[0]", true), new Integer(1));
 
 
     }

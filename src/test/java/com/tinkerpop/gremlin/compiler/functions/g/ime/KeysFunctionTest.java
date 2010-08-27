@@ -47,14 +47,13 @@ public class KeysFunctionTest extends BaseTest {
     }
 
     public void testKeysInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:keys(g:map('marko',1,\"pavel\",2,'peter',3))", context, true);
+        List results = evaluateGremlinScriptIterable("g:keys(g:map('marko',1,\"pavel\",2,'peter',3))", true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), "marko");
         assertEquals(results.get(1), "peter");
         assertEquals(results.get(2), "pavel");
 
-        assertEquals(evaluateGremlinScriptPrimitive("g:get(g:map('marko',1,\"pavel\",2,'peter',3), g:keys(g:map('marko',1,\"pavel\",2,'peter',3))[0])", context, true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive("g:get(g:map('marko',1,\"pavel\",2,'peter',3), g:keys(g:map('marko',1,\"pavel\",2,'peter',3))[0])", true), 1);
 
     }
 

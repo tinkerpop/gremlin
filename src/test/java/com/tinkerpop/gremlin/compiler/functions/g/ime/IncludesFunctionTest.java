@@ -31,14 +31,13 @@ public class IncludesFunctionTest extends BaseTest {
     }
 
     public void testIncludesInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        Object result = evaluateGremlinScriptPrimitive("g:includes(g:set(1,2,3),1)", context, true);
+        Object result = evaluateGremlinScriptPrimitive("g:includes(g:set(1,2,3),1)", true);
         assertTrue((Boolean) result);
 
-        result = evaluateGremlinScriptPrimitive("g:includes(g:list(g:list(1),2,3),1)", context, true);
+        result = evaluateGremlinScriptPrimitive("g:includes(g:list(g:list(1),2,3),1)", true);
         assertFalse((Boolean) result);
 
-        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:includes(g:set(1),.)]", context, true);
+        List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:includes(g:set(1),.)]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 1);

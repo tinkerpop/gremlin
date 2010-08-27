@@ -100,6 +100,14 @@ public abstract class BaseTest extends TestCase {
         return object;
     }
 
+    public List evaluateGremlinScriptIterable(final String script, boolean printStatistics) throws RecognitionException {
+        return this.evaluateGremlinScriptIterable(script, new GremlinScriptContext(), printStatistics);
+    }
+
+    public Object evaluateGremlinScriptPrimitive(final String script, boolean printStatistics) throws RecognitionException {
+        return this.evaluateGremlinScriptPrimitive(script, new GremlinScriptContext(), printStatistics);
+    }
+
 
     public double stopWatch() {
         if (this.timer == -1.0d) {

@@ -52,12 +52,11 @@ public class GetFunctionTest extends BaseTest {
     }
 
     public void testGetInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        Object result = evaluateGremlinScriptPrimitive("g:get(g:list(1,2,3),1)", context, true);
+        Object result = evaluateGremlinScriptPrimitive("g:get(g:list(1,2,3),1)", true);
         assertEquals(result, 2);
-        result = evaluateGremlinScriptPrimitive("g:get(g:list(1,2,3),g:get(g:list(1,2,3),0))", context, true);
+        result = evaluateGremlinScriptPrimitive("g:get(g:list(1,2,3),g:get(g:list(1,2,3),0))", true);
         assertEquals(result, 2);
-        result = evaluateGremlinScriptPrimitive("g:get(g:map('marko',1,'pavel',2),'marko')", context, true);
+        result = evaluateGremlinScriptPrimitive("g:get(g:map('marko',1,'pavel',2),'marko')", true);
         assertEquals(result, 1);
     }
 }

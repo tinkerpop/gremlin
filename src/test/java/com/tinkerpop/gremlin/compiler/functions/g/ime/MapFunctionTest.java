@@ -115,13 +115,12 @@ public class MapFunctionTest extends BaseTest {
     }
 
     public void testMapInline() throws Exception {
-        final GremlinScriptContext context = new GremlinScriptContext();
 
-        assertEquals(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k1", context, true), "v1");
-        assertEquals(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k2", context, true), "v2");
-        assertNull(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k3", context, true));
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k1", true), "v1");
+        assertEquals(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k2", true), "v2");
+        assertNull(evaluateGremlinScriptPrimitive("g:map('k1','v1','k2','v2')/@k3", true));
 
-        Map results = (Map) evaluateGremlinScriptPrimitive("g:map(1,2,'k2',g:list(1,2,g:map('k1','v1','k2',g:list(1+2))))", context, true);
+        Map results = (Map) evaluateGremlinScriptPrimitive("g:map(1,2,'k2',g:list(1,2,g:map('k1','v1','k2',g:list(1+2))))", true);
 
         assertEquals(results.get(1), 2);
         assertEquals(((List) (results.get("k2"))).get(0), 1);
@@ -132,17 +131,17 @@ public class MapFunctionTest extends BaseTest {
         assertNull(((Map) ((List) (results.get("k2"))).get(2)).get("k3"));
 
         String embedd = "g:map('k1','v1','k2',g:list(1,2,g:map('k11','v11','k22',g:list('a','b','c'))))";
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k1", context, true), "v1");
-        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(0), 1);
-        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", context, true)).get(1), 2);
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][0]", context, true), 1);
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][1]", context, true), 2);
-        assertEquals(((Map) evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]", context, true)).get("k11"), "v11");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k1", true), "v1");
+        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", true)).get(0), 1);
+        assertEquals(((List) evaluateGremlinScriptPrimitive(embedd + "/@k2", true)).get(1), 2);
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][0]", true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][1]", true), 2);
+        assertEquals(((Map) evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]", true)).get("k11"), "v11");
 
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k11", context, true), "v11");
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][0]", context, true), "a");
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][1]", context, true), "b");
-        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][2]", context, true), "c");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k11", true), "v11");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][0]", true), "a");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][1]", true), "b");
+        assertEquals(evaluateGremlinScriptPrimitive(embedd + "/@k2[0][2]/@k22[0][2]", true), "c");
 
     }
 }

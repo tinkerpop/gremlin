@@ -51,22 +51,21 @@ public class FlattenFunctionTest extends BaseTest {
     }
 
     public void testFlattenInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:flatten(g:list(1,2,3,4))", context, true);
+        List results = evaluateGremlinScriptIterable("g:flatten(g:list(1,2,3,4))", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
         assertEquals(results.get(2), 3);
         assertEquals(results.get(3), 4);
 
-        results = evaluateGremlinScriptIterable("g:flatten(g:list(g:flatten(g:list(1,2,3)),4))", context, true);
+        results = evaluateGremlinScriptIterable("g:flatten(g:list(g:flatten(g:list(1,2,3)),4))", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
         assertEquals(results.get(2), 3);
         assertEquals(results.get(3), 4);
 
-        results = evaluateGremlinScriptIterable("g:flatten(g:list(g:list(g:list(1,g:list(g:list(g:list(2)),g:list(3)))),g:list(g:list(g:list(4)))))", context, true);
+        results = evaluateGremlinScriptIterable("g:flatten(g:list(g:list(g:list(1,g:list(g:list(g:list(2)),g:list(3)))),g:list(g:list(g:list(4)))))", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);

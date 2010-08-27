@@ -41,8 +41,7 @@ public class DeduplicateFunctionTest extends BaseTest {
     }
 
     public void testDeduplicateInline() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
-        List results = evaluateGremlinScriptIterable("g:dedup(g:list(1,1,2,1,1,2,2,2,2))", context, true);
+        List results = evaluateGremlinScriptIterable("g:dedup(g:list(1,1,2,1,1,2,2,2,2))", true);
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
