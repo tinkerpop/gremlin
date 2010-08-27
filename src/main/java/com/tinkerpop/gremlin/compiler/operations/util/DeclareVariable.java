@@ -12,6 +12,7 @@ import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 
+import javax.script.ScriptContext;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -119,5 +120,17 @@ public class DeclareVariable implements Operation {
         Pipeline pipeline = new Pipeline(Arrays.asList(pipe));
         pipeline.setStarts(root);
         return pipeline;
+    }
+
+    public Operation valueOperation() {
+        return this.valueOperation;
+    }
+
+    public Atom<Object> getVarDef() {
+        return this.object;
+    }
+
+    public GremlinScriptContext getContext() {
+        return this.context;
     }
 }

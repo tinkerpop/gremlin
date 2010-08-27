@@ -225,6 +225,12 @@ public class GremlinPipesHelper {
                 continue;
             }
 
+            if (argumentOperation instanceof DeclareVariable) {
+                DeclareVariable var = (DeclareVariable) argumentOperation;
+                List<Operation> values = updateArguments(Arrays.asList(var.valueOperation()), currentIterationPoint);
+                arguments.add(new DeclareVariable(var.getVarDef(), values.get(0), var.getContext()));
+                continue;
+            }
 
             final Atom argument = argumentOperation.compute();
 
