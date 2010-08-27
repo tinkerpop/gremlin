@@ -6,7 +6,7 @@ Gremlin is a "Turing-complete":http://en.wikipedia.org/wiki/Turing_completeness,
 * "Neo4j":http://neo4j.org/ graph database
 * "OrientDB":http://www.orientechnologies.com/ graph database
 * "Sesame 2.0":http://www.openrdf.org compliant RDF stores
-  ** MemoryStore, NativeStore, Neo4jSail
+  ** "MemoryStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e705, "NativeStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e746, "Neo4jSail":http://components.neo4j.org/neo4j-rdf-sail/
 
 Extension support for the following packages:
   
