@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AutoTransactionFunction extends AbstractFunction<Boolean> {
+public class AutoTransactionFunction extends AbstractFunction<Object> {
 
     private final String FUNCTION_NAME = "auto-tx";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(arguments, 0, context);
         if (arguments.size() == 1) {
@@ -26,7 +26,7 @@ public class AutoTransactionFunction extends AbstractFunction<Boolean> {
         } else {
             throw new RuntimeException(createUnsupportedArgumentMessage());
         }
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

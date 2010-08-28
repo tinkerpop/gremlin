@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AddNamespaceFunction extends AbstractFunction<Boolean> {
+public class AddNamespaceFunction extends AbstractFunction<Object> {
 
     private final String FUNCTION_NAME = "add-ns";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final int size = arguments.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(arguments, 0, context);
@@ -34,7 +34,7 @@ public class AddNamespaceFunction extends AbstractFunction<Boolean> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
         graph.addNamespace(prefix, namespace);
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

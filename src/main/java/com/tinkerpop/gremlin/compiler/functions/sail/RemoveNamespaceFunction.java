@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RemoveNamespaceFunction extends AbstractFunction<Boolean> {
+public class RemoveNamespaceFunction extends AbstractFunction<Object> {
 
     private final String FUNCTION_NAME = "remove-ns";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final int size = arguments.size();
         final SailGraph graph = (SailGraph) FunctionHelper.getGraph(arguments, 0, context);
@@ -31,7 +31,7 @@ public class RemoveNamespaceFunction extends AbstractFunction<Boolean> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }
         graph.removeNamespace(namespace);
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

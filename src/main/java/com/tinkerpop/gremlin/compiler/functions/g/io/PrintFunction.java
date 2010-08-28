@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * @author Pavel A. Yaskevich
  */
-public class PrintFunction extends AbstractFunction<Boolean> {
+public class PrintFunction extends AbstractFunction<Object> {
 
     private static final String FUNCTION_NAME = "print";
 
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         for (Operation operation : arguments) {
             Atom atom = operation.compute();
@@ -23,7 +23,7 @@ public class PrintFunction extends AbstractFunction<Boolean> {
         }
         context.writeOutputLine("");
 
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

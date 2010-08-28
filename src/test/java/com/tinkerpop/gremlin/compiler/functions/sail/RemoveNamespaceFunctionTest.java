@@ -19,19 +19,19 @@ public class RemoveNamespaceFunctionTest extends BaseTest {
         GremlinScriptContext context = new GremlinScriptContext();
         context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
-        Function<Boolean> function = new RemoveNamespaceFunction();
+        Function<Object> function = new RemoveNamespaceFunction();
         assertNotNull(graph.getNamespaces().get("rdf"));
         this.stopWatch();
-        Atom<Boolean> atom = function.compute(createUnaryArgs(graph, "rdf"), context);
+        Atom<Object> atom = function.compute(createUnaryArgs(graph, "rdf"), context);
         printPerformance(function.getFunctionName() + " function", 1, "namespace removed", this.stopWatch());
-        assertTrue(atom.getValue());
+        assertNull(atom.getValue());
         assertNull(graph.getNamespaces().get("rdf"));
 
         assertNotNull(graph.getNamespaces().get("rdfs"));
         this.stopWatch();
         atom = function.compute(createUnaryArgs("rdfs"), context);
         printPerformance(function.getFunctionName() + " function", 1, "namespace removed", this.stopWatch());
-        assertTrue(atom.getValue());
+        assertTrue(atom.isNull());
         assertNull(graph.getNamespaces().get("rdfs"));
 
         graph.shutdown();

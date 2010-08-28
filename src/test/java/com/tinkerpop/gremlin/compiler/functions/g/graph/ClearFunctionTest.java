@@ -20,12 +20,12 @@ public class ClearFunctionTest extends BaseTest {
 
         assertEquals(count(graph.getVertices()), 6);
         assertEquals(count(graph.getEdges()), 6);
-        Function<Boolean> function = new ClearFunction();
+        Function<Object> function = new ClearFunction();
         assertEquals(function.getFunctionName(), "clear");
         this.stopWatch();
-        Atom<Boolean> atom = function.compute(createUnaryArgs(graph), context);
+        Atom<Object> atom = function.compute(createUnaryArgs(graph), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
-        assertTrue(atom.isBoolean());
+        assertTrue(atom.isNull());
         assertEquals(count(graph.getVertices()), 0);
         assertEquals(count(graph.getEdges()), 0);
 
@@ -38,12 +38,12 @@ public class ClearFunctionTest extends BaseTest {
         context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         assertEquals(count(graph.getVertices()), 6);
         assertEquals(count(graph.getEdges()), 6);
-        Function<Boolean> function = new ClearFunction();
+        Function<Object> function = new ClearFunction();
         assertEquals(function.getFunctionName(), "clear");
         this.stopWatch();
-        Atom<Boolean> atom = function.compute(createUnaryArgs(), context);
+        Atom<Object> atom = function.compute(createUnaryArgs(), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
-        assertTrue(atom.getValue());
+        assertNull(atom.getValue());
         assertEquals(count(graph.getVertices()), 0);
         assertEquals(count(graph.getEdges()), 0);
 

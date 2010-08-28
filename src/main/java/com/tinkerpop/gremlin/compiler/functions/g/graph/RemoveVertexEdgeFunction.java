@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RemoveVertexEdgeFunction extends AbstractFunction<Boolean> {
+public class RemoveVertexEdgeFunction extends AbstractFunction<Object> {
 
     private final static String FUNCTION_NAME = "remove-ve";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final int size = arguments.size();
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -38,7 +38,7 @@ public class RemoveVertexEdgeFunction extends AbstractFunction<Boolean> {
             graph.removeEdge((Edge) element);
         }
 
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

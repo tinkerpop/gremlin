@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RemoveIndexFunction extends AbstractFunction<Boolean> {
+public class RemoveIndexFunction extends AbstractFunction<Object> {
 
     private final static String FUNCTION_NAME = "remove-idx";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final int size = arguments.size();
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -31,7 +31,7 @@ public class RemoveIndexFunction extends AbstractFunction<Boolean> {
         }
 
         graph.getIndex().removeIndexKey(index);
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

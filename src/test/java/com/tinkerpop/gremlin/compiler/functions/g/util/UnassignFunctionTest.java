@@ -20,10 +20,10 @@ import java.util.Map;
 public class UnassignFunctionTest extends BaseTest {
 
     public void testUnassign() {
-        Function<Boolean> function = new UnassignFunction();
+        Function<Object> function = new UnassignFunction();
         GremlinScriptContext context = new GremlinScriptContext();
         VariableLibrary variables = context.getVariableLibrary();
-        
+
         variables.putAtom("x", new Atom<Integer>(1));
         variables.putAtom("y", new Atom<Integer>(2));
         variables.putAtom("z", new Atom<Integer>(3));
@@ -33,33 +33,34 @@ public class UnassignFunctionTest extends BaseTest {
         assertEquals(context.getVariableByName("z").getValue(), 3);
 
         this.stopWatch();
-        assertTrue(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
-        assertTrue(function.compute(createUnaryArgs(new Var("y", context)), context).getValue());
-        assertTrue(function.compute(createUnaryArgs(new Var("z", context)), context).getValue());
-        assertTrue(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
+        assertEquals(function.compute(createUnaryArgs(new Var("x", context)), context).getValue(), 1);
+        assertEquals(function.compute(createUnaryArgs(new Var("y", context)), context).getValue(), 2);
+        assertEquals(function.compute(createUnaryArgs(new Var("z", context)), context).getValue(), 3);
+        assertNull(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
         assertNull(context.getVariableByName("x").getValue());
         assertNull(context.getVariableByName("y").getValue());
         assertNull(context.getVariableByName("z").getValue());
     }
 
-     public void testUnassignMapListElement() {
+    public void testUnassignMapListElement() {
         Map map = new HashMap();
-        map.put("key","value");
+        map.put("key", "value");
         List list = new ArrayList();
         list.add(0);
         Vertex vertex = TinkerGraphFactory.createTinkerGraph().getVertex(1);
 
-        Function<Boolean> function = new UnassignFunction();
+        Function<Object> function = new UnassignFunction();
         GremlinScriptContext context = new GremlinScriptContext();
         this.stopWatch();
-        assertTrue(function.compute(createUnaryArgs(map, "key"), context).getValue());
-        assertTrue(function.compute(createUnaryArgs(list, 0), context).getValue());
-        assertTrue(function.compute(createUnaryArgs(vertex, "name"), context).getValue());
+        assertEquals(function.compute(createUnaryArgs(map, "key"), context).getValue(), "value");
+        assertEquals(function.compute(createUnaryArgs(list, 0), context).getValue(), 0);
+        assertEquals(function.compute(createUnaryArgs(vertex, "name"), context).getValue(), "marko");
+        assertNull(function.compute(createUnaryArgs(vertex, "name"), context).getValue());
         printPerformance(function.getFunctionName() + " function", 3, "evaluations: map, list, element", this.stopWatch());
 
         assertNull(map.get("key"));
-        assertEquals(list.size(),0);
+        assertEquals(list.size(), 0);
         assertNull(vertex.getProperty("name"));
     }
 }
