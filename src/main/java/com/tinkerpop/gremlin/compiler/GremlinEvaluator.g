@@ -249,6 +249,13 @@ options {
             } else {
                 this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
             }
+        } else if (!DEBUG) {
+           if (value instanceof Iterable) {
+               for(Object o : (Iterable) value) {}
+           } else if(value instanceof Iterator) {
+                Iterator itty = (Iterator) value;
+                while(itty.hasNext()) itty.next();
+            } 
         }
 
         this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
