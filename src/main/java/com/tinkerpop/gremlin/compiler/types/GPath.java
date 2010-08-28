@@ -145,6 +145,9 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     public void setRoot(Object point) {
         if (this.startsFromRootIdentifier) {
             this.persistentRoot = point;
+        } else if (this.root instanceof Var) {
+            // re-caching root variable
+            this.persistentRoot = this.root.getValue();
         }
     }
     
