@@ -5,10 +5,12 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Func;
+import com.tinkerpop.gremlin.compiler.types.GPath;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,9 +39,16 @@ public class CodeBlock {
             try {
                 currentOperation = walker.statement().op;
                 result = currentOperation.compute();
-                
-                if (result instanceof Func) {
-                    result.getValue();
+
+                Object value = result.getValue();
+
+                // auto iteration
+                if (value instanceof Iterable) {
+                    for (Object o : (Iterable) value) {}
+                } else if(value instanceof Iterator) {
+                    Iterator itty = (Iterator) value;
+
+                    while (itty.hasNext()) itty.next();
                 }
             } catch (RecognitionException e) {
                 throw new RuntimeException(e);
