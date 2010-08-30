@@ -437,4 +437,25 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age >= 27]/@name", context, true), "marko");
     }
 
+    public void testStringVsPath() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("path simple\n./outE/inV\nend", context, true));
+        assertEquals(evaluateGremlinScriptPrimitive("'simple'", context, true), "simple");
+        assertNull(evaluateGremlinScriptPrimitive("'simple'[1]", context, true));
+
+        List<Vertex> results = evaluateGremlinScriptIterable("./simple", context, true);
+        assertEquals(results.size(), 3);
+        String name = (String) results.get(0).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
+        name = (String) results.get(1).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
+        name = (String) results.get(2).getProperty("name");
+        assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
+    }
+
 }

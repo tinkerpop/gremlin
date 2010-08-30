@@ -164,7 +164,7 @@ options {
 
         if (token instanceof DynamicEntity) {
             return token;
-        } else if (paths.isPath(token.toString())) {
+        } else if (token.isIdentifier() && paths.isPath(token.toString())) {
             pipes.addAll(paths.getPath(token.toString()));
             return this.getVariable(Tokens.ROOT_VARIABLE);
         } else {
@@ -190,11 +190,11 @@ options {
 
             if (identifier.equals(Tokens.IDENTITY)) {
                 return (gpathScope > 1) ? new Var(Tokens.IDENTITY, this.context) : this.getVariable(Tokens.ROOT_VARIABLE);
+             } else if(paths.isPath(token.toString())) {
+                return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
             } else {
                 return new Atom<Object>(null);
             }
-        } else if(paths.isPath(token.toString())) {
-            return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
         }
 
         return token;
@@ -249,14 +249,14 @@ options {
             } else {
                 this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
             }
-        } else if (!DEBUG) {
+        }/* else if (!DEBUG) {
            if (value instanceof Iterable) {
                for(Object o : (Iterable) value) {}
            } else if(value instanceof Iterator) {
                 Iterator itty = (Iterator) value;
                 while(itty.hasNext()) itty.next();
             } 
-        }
+        }*/
 
         this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
     }
