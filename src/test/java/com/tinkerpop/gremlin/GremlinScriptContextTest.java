@@ -15,7 +15,7 @@ public class GremlinScriptContextTest extends BaseTest {
         } catch (Exception e) {
             assertTrue(true);
         }
-        context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.compiler.functions.PlayFunctions");
+        context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.functions.PlayFunctions");
         assertNotNull(context.getFunctionLibrary().getFunction("play", "play-string"));
         assertEquals(context.getFunctionLibrary().getFunction("play", "play-string").compute(createUnaryArgs(), context).getValue(), "Goodbye.");
     }
@@ -33,7 +33,7 @@ public class GremlinScriptContextTest extends BaseTest {
 
     public void testFunctionsLoadingInlineWorking() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
-        assertTrue((Boolean) evaluateGremlinScriptPrimitive("include 'com.tinkerpop.gremlin.compiler.functions.PlayFunctions'", context, true));
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("include 'com.tinkerpop.gremlin.functions.PlayFunctions'", context, true));
         assertEquals(evaluateGremlinScriptPrimitive("play:play-string()", context, true), "Goodbye.");
     }
 

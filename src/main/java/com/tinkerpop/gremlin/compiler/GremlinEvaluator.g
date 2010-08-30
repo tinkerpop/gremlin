@@ -35,7 +35,7 @@ options {
 
     import com.tinkerpop.gremlin.compiler.context.*;
 
-    import com.tinkerpop.gremlin.compiler.functions.Functions;
+    import com.tinkerpop.gremlin.functions.Functions;
     
     // types
     import com.tinkerpop.gremlin.compiler.types.*;
@@ -49,8 +49,8 @@ options {
     import com.tinkerpop.gremlin.compiler.operations.logic.*;
     import com.tinkerpop.gremlin.compiler.operations.util.*;
 
-    import com.tinkerpop.gremlin.compiler.functions.Function;
-    import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
+    import com.tinkerpop.gremlin.functions.Function;
+    import com.tinkerpop.gremlin.functions.NativeFunction;
 
     // blueprints
     import com.tinkerpop.blueprints.pgm.Vertex;

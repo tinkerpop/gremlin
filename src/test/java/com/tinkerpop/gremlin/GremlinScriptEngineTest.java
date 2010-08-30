@@ -220,7 +220,7 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testNumberFunctions() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.compiler.functions.PlayFunctions");
+        context.getFunctionLibrary().loadFunctions("com.tinkerpop.gremlin.functions.PlayFunctions");
         assertNotNull(context.getFunctionLibrary().getFunction("play", "play-number"));
         assertEquals(evaluateGremlinScriptPrimitive("g:list(1,2,3,4)[play:play-number(2)]", context, true), 3);
 

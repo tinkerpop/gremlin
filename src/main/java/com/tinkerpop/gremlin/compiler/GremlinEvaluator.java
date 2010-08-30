@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-30 18:17:35
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-08-30 20:09:49
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -28,7 +28,7 @@
 
     import com.tinkerpop.gremlin.compiler.context.*;
 
-    import com.tinkerpop.gremlin.compiler.functions.Functions;
+    import com.tinkerpop.gremlin.functions.Functions;
     
     // types
     import com.tinkerpop.gremlin.compiler.types.*;
@@ -42,8 +42,8 @@
     import com.tinkerpop.gremlin.compiler.operations.logic.*;
     import com.tinkerpop.gremlin.compiler.operations.util.*;
 
-    import com.tinkerpop.gremlin.compiler.functions.Function;
-    import com.tinkerpop.gremlin.compiler.functions.NativeFunction;
+    import com.tinkerpop.gremlin.functions.Function;
+    import com.tinkerpop.gremlin.functions.NativeFunction;
 
     // blueprints
     import com.tinkerpop.blueprints.pgm.Vertex;
