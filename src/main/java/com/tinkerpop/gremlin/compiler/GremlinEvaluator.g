@@ -75,7 +75,10 @@ options {
 
 @members {
     // debug mode
-    public  static boolean DEBUG = false;
+    public static boolean DEBUG = false;
+
+    // script mode - for ScriptExecutor
+    public static boolean SCRIPT_MODE = false;
 
     private boolean isGPath = false;
     private int gpathScope = 0;
@@ -249,14 +252,14 @@ options {
             } else {
                 this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
             }
-        }/* else if (!DEBUG) {
+        } else if (SCRIPT_MODE) {
            if (value instanceof Iterable) {
                for(Object o : (Iterable) value) {}
            } else if(value instanceof Iterator) {
                 Iterator itty = (Iterator) value;
                 while(itty.hasNext()) itty.next();
             } 
-        }*/
+        }
 
         this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
     }

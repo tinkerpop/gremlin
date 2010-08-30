@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 
 import java.io.FileReader;
@@ -14,6 +15,9 @@ public class ScriptExecutor {
     public static void main(final String[] args) throws IOException {
         final PrintStream output = System.out;
 
+        // every Iterable/Iterator statement will be iterated
+        GremlinEvaluator.SCRIPT_MODE = true;
+        
         final GremlinScriptContext context = new GremlinScriptContext();
         final GremlinScriptEngine engine = new GremlinScriptEngine(context);
 
