@@ -13,10 +13,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 
 import javax.script.ScriptContext;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Pavel A. Yaskevich
@@ -101,6 +98,19 @@ public class DeclareVariable implements Operation {
             if (variable.getVariableName().equals(Tokens.IDENTITY)) {
                 return new Atom<Object>(this.context.getCurrentPoint());
             }
+        } else if (atom instanceof GPath) {
+            List<Object> list = new LinkedList<Object>();
+            Object value = atom.getValue();
+
+            if (value instanceof Iterable) {
+                for (Object o : (Iterable) value) {
+                    list.add(o);
+                }
+
+                return new Atom<Iterable>(list);
+            }
+
+            return new Atom<Object>(value);
         }
 
         return new Atom<Object>(atom.getValue());
