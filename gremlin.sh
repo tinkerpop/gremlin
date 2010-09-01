@@ -17,7 +17,16 @@ fi
 
 # Launch the application
 if [ "$1" = "-e" ]; then
-  $JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.ScriptExecutor $2
+  k=$2
+  if [ $# > 2 ]; then
+    for (( i=3 ; i < $# + 1 ; i++ ))
+    do
+      eval a=\$$i
+      k="$k \"$a\""
+    done
+  fi
+
+  eval "$JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.ScriptExecutor $k"
 else
   if [ "$1" = "-v" ]; then
     echo "Gremlin 0.5"
