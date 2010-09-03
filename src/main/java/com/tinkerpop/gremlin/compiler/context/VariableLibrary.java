@@ -23,7 +23,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
     }
 
 
-    public void putAtom(final String key, final Atom value) {
+    private void putAtom(final String key, final Atom value) {
         if (key.equals(Tokens.GRAPH_VARIABLE) && !value.isGraph())
             throw new RuntimeException(GRAPH_VARIABLE_ERROR);
 
