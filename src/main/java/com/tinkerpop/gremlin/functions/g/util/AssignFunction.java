@@ -2,11 +2,12 @@ package com.tinkerpop.gremlin.functions.g.util;
 
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.functions.AbstractFunction;
 
+import javax.script.ScriptContext;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class AssignFunction extends AbstractFunction<Object> {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("Two argument evaluation requires first argument to be a variable"));
 
             final Atom<Object> atom = arguments.get(1).compute();
-            context.getVariableLibrary().putAtom(((Var) variable).getVariableName(), atom);
+            context.getBindings(ScriptContext.ENGINE_SCOPE).put(((Var) variable).getVariableName(), atom);
             return atom;
         } else if (size == 3) {
             final Object object = arguments.get(0).compute().getValue();

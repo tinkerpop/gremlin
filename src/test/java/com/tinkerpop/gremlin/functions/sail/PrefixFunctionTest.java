@@ -9,6 +9,8 @@ import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import org.openrdf.sail.memory.MemoryStore;
 
+import javax.script.ScriptContext;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -17,7 +19,7 @@ public class PrefixFunctionTest extends BaseTest {
     public void testPrefix() {
         SailGraph graph = new SailGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<String> function = new PrefixFunction();
         this.stopWatch();

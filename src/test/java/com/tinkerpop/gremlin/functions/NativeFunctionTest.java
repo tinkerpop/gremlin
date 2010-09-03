@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import org.antlr.runtime.RecognitionException;
 
+import javax.script.ScriptContext;
 import java.util.Map;
 
 /**
@@ -158,8 +159,8 @@ public class NativeFunctionTest extends BaseTest {
      */
     public void testNativeFunctionWorkWithGPath() throws RecognitionException {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         assertTrue((Boolean) this.evaluateGremlinScriptPrimitive("func g:vadas-edge($edges)\nforeach $edge in $edges\nif $edge/inV/@name = 'vadas'\n$result := $edge\nend\nend\n$result\nend", context, false));
         assertEquals(this.evaluateGremlinScriptPrimitive("g:vadas-edge(./outE)", context, true), graph.getEdge("7"));

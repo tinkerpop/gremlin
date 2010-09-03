@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
 import java.util.List;
 
 /**
@@ -47,23 +48,23 @@ public class RepeatTest extends BaseTest {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
         this.stopWatch();
         List results = (List) engine.eval("repeat 2\n$_ := ./outE/inV\nend", context);
         printPerformance("repeat statement", 2, "iterations over graph", this.stopWatch());
         assertEquals(results.size(), 0);
 
-        assertTrue(asList((Iterable)context.getVariableByName(Tokens.ROOT_VARIABLE).getValue()).contains(graph.getVertex(5)));
-        assertTrue(asList((Iterable)context.getVariableByName(Tokens.ROOT_VARIABLE).getValue()).contains(graph.getVertex(3)));
+        assertTrue(asList((Iterable)context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE)).contains(graph.getVertex(5)));
+        assertTrue(asList((Iterable)context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE)).contains(graph.getVertex(3)));
 
-        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
         this.stopWatch();
         results = (List) engine.eval("repeat 2\n$_ := ./outE\nif g:includes(g:flatten($_),g:id-e(10))\n$_ := g:diff($_,g:id-e(10))\nend\n$_ := ./inV\nend", context);
         printPerformance("repeat statement", 2, "iterations over graph with edge filtering using functions", this.stopWatch());
         assertEquals(results.size(), 0);
-        assertEquals(context.getVariableByName(Tokens.ROOT_VARIABLE).getValue(), graph.getVertex(3));
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE), graph.getVertex(3));
 
     }
 

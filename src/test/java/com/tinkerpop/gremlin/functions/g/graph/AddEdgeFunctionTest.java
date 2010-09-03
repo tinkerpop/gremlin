@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class AddEdgeFunctionTest extends BaseTest {
     public void testAddEdge() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<Edge> function = new AddEdgeFunction();
         assertEquals(function.getFunctionName(), "add-e");

@@ -1,10 +1,11 @@
 package com.tinkerpop.gremlin.functions.g.io;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.AbstractFunction;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,7 +22,11 @@ public class PrintFunction extends AbstractFunction<Object> {
             Atom atom = operation.compute();
             context.writeOutput(atom);
         }
-        context.writeOutputLine("");
+        try {
+            context.getWriter().write("\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
         return new Atom<Object>(null);
     }

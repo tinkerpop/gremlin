@@ -8,6 +8,8 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -16,7 +18,7 @@ public class RemoveVertexEdgeFunctionTest extends BaseTest {
     public void testAddVertex() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<Object> function = new RemoveVertexEdgeFunction();
         assertEquals(function.getFunctionName(), "remove-ve");

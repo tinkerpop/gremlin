@@ -30,21 +30,6 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
         super.put(key, value);
     }
 
-    public void setLastVariable(final Atom value) {
-        super.put(Tokens.LAST_VARIABLE, value);
-    }
-
-    public VariableLibrary cloneLibrary() {
-        VariableLibrary dupLibrary = new VariableLibrary();
-
-        for (String k : super.keySet()) {
-            dupLibrary.putAtom(k, (Atom) super.get(k));
-        }
-
-        return dupLibrary;
-    }
-
-
     public Object get(final Object key) {
         Atom atom = (Atom) super.get(key);
         if (null != atom)

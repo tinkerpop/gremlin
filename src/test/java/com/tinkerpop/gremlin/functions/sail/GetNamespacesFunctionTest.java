@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import org.openrdf.sail.memory.MemoryStore;
 
+import javax.script.ScriptContext;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ public class GetNamespacesFunctionTest extends BaseTest {
     public void testGetNamespaces() {
         SailGraph graph = new SailGraph(new MemoryStore());
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         
         Function<Map<String, String>> function = new GetNamespacesFunction();
         this.stopWatch();

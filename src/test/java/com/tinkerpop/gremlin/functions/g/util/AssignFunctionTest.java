@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Var;
 
+import javax.script.ScriptContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +27,9 @@ public class AssignFunctionTest extends BaseTest {
         assertEquals(function.compute(createUnaryArgs(new Var("z", context), 3), context).getValue(), 3);
         assertEquals(function.compute(createUnaryArgs(new Var("x", context), 4), context).getValue(), 4);
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
-        assertEquals(context.getVariableByName("x").getValue(), 4);
-        assertEquals(context.getVariableByName("y").getValue(), 2);
-        assertEquals(context.getVariableByName("z").getValue(), 3);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("x"), 4);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("y"), 2);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("z"), 3);
     }
 
     public void testAssignListMapElement() {

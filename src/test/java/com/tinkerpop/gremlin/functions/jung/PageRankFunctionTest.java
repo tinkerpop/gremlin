@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
 import java.util.*;
 
 /**
@@ -18,7 +19,7 @@ public class PageRankFunctionTest extends JungTest {
     public void testOnlyAlphaParameter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<Map<Vertex, Double>> function = new PageRankFunction();
         this.stopWatch();
@@ -47,7 +48,7 @@ public class PageRankFunctionTest extends JungTest {
     public void testOnlyLabelFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         Map parameters = new HashMap();
         parameters.put("labels", Arrays.asList("knows"));
         Function<Map<Vertex, Double>> function = new PageRankFunction();
@@ -62,7 +63,7 @@ public class PageRankFunctionTest extends JungTest {
     public void testOnlyLabelWeightFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         Map parameters = new HashMap();
         parameters.put("weight-key", "weight");
         parameters.put("normalize", true);

@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Var;
 
+import javax.script.ScriptContext;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,8 @@ public class UnassignFunction extends AbstractFunction<Object> {
             if (!(variable instanceof Var))
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-            final Object ret = context.getVariableLibrary().get(((Var) variable).getVariableName());
-            context.getVariableLibrary().remove(((Var) variable).getVariableName());
+            final Object ret = context.getBindings(ScriptContext.ENGINE_SCOPE).get(((Var) variable).getVariableName());
+            context.getBindings(ScriptContext.ENGINE_SCOPE).remove(((Var) variable).getVariableName());
             return new Atom<Object>(ret);
         } else if (size == 2) {
             final Object object = arguments.get(0).compute().getValue();

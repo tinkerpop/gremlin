@@ -8,6 +8,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.SingleIterator;
 
+import javax.script.ScriptContext;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +39,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
-                this.root = context.getVariableByName(Tokens.ROOT_VARIABLE);
+                this.root = new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE));
                 this.startsFromRootIdentifier = true;
             }
         }

@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
+import javax.script.ScriptContext;
 import java.util.List;
 
 /**
@@ -31,20 +32,20 @@ public class NativeFunction implements Function<Object> {
 
         // cloning variable library
         // all changes in globalBindings will stay inside function + full access to current state of global globalBindings
-        VariableLibrary varLib = context.getVariableLibrary().cloneLibrary();
+        VariableLibrary varLib = new VariableLibrary(context.getBindings(ScriptContext.ENGINE_SCOPE));
 
         // mapping arguments
         for (int i = 0; i < this.arguments.size(); i++) {
             final Atom computedParam = arguments.get(i).compute();
             final Atom argumentValue = (computedParam instanceof DynamicEntity) ? new Atom<Object>(computedParam.getValue()) : computedParam;
-            context.getVariableLibrary().putAtom(this.arguments.get(i), argumentValue);
+            context.getBindings(ScriptContext.ENGINE_SCOPE).put(this.arguments.get(i), argumentValue);
         }
-        
+
         // getting evaluation result
         final Object result = this.body.invoke().getValue();
 
         // setting variable library back to original
-        context.setVariableLibrary(varLib);
+        context.setBindings(varLib, ScriptContext.ENGINE_SCOPE);
 
         return new Atom<Object>(result);
     }

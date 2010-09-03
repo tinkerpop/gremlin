@@ -5,6 +5,8 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
+import javax.script.ScriptContext;
+
 /**
  * @author Pavel A. Yaskevich
  */
@@ -40,12 +42,12 @@ public class Foreach implements Operation {
 
         for (Object currentParam : (Iterable) paramsAtom.getValue()) {
             final Atom value = (currentParam instanceof Atom) ? (Atom) currentParam : new Atom(currentParam);
-            context.getVariableLibrary().putAtom(this.variable, value);
+            context.getBindings(ScriptContext.ENGINE_SCOPE).put(this.variable, value);
 
             this.body.invoke();
         }
 
-        context.getVariableLibrary().remove(this.variable);
+        context.getBindings(ScriptContext.ENGINE_SCOPE).remove(this.variable);
 
         return new Atom<Object>(null);
     }

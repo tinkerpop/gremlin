@@ -7,6 +7,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 
+import javax.script.ScriptContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Set;
 public class FunctionHelper {
 
     public static Graph getGraph(final Operation parameter, final GremlinScriptContext context) {
-        final Atom<Graph> graphGlobalVariable = context.getVariableByName(Tokens.GRAPH_VARIABLE);
+        final Atom<Graph> graphGlobalVariable = new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.GRAPH_VARIABLE));
         if (parameter == null)
             return graphGlobalVariable.getValue();
 
@@ -34,7 +35,7 @@ public class FunctionHelper {
                 return (Graph) atom.getValue();
         }
 
-        Object object = context.getVariableByName(Tokens.GRAPH_VARIABLE).getValue();
+        Object object = context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.GRAPH_VARIABLE);
         if (object instanceof Graph)
             return (Graph) object;
         else

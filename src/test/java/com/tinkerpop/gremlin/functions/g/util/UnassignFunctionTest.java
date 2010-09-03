@@ -4,11 +4,11 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.functions.Function;
 
+import javax.script.ScriptContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +22,14 @@ public class UnassignFunctionTest extends BaseTest {
     public void testUnassign() {
         Function<Object> function = new UnassignFunction();
         GremlinScriptContext context = new GremlinScriptContext();
-        VariableLibrary variables = context.getVariableLibrary();
 
-        variables.putAtom("x", new Atom<Integer>(1));
-        variables.putAtom("y", new Atom<Integer>(2));
-        variables.putAtom("z", new Atom<Integer>(3));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("x", new Atom<Integer>(1));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("y", new Atom<Integer>(2));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("z", new Atom<Integer>(3));
 
-        assertEquals(context.getVariableByName("x").getValue(), 1);
-        assertEquals(context.getVariableByName("y").getValue(), 2);
-        assertEquals(context.getVariableByName("z").getValue(), 3);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("x"), 1);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("y"), 2);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("z"), 3);
 
         this.stopWatch();
         assertEquals(function.compute(createUnaryArgs(new Var("x", context)), context).getValue(), 1);
@@ -38,9 +37,9 @@ public class UnassignFunctionTest extends BaseTest {
         assertEquals(function.compute(createUnaryArgs(new Var("z", context)), context).getValue(), 3);
         assertNull(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
-        assertNull(context.getVariableByName("x").getValue());
-        assertNull(context.getVariableByName("y").getValue());
-        assertNull(context.getVariableByName("z").getValue());
+        assertNull(context.getBindings(ScriptContext.ENGINE_SCOPE).get("x"));
+        assertNull(context.getBindings(ScriptContext.ENGINE_SCOPE).get("y"));
+        assertNull(context.getBindings(ScriptContext.ENGINE_SCOPE).get("z"));
     }
 
     public void testUnassignMapListElement() {

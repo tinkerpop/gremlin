@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,15 +74,15 @@ public class ListFunctionTest extends BaseTest {
 
         GremlinScriptContext context = new GremlinScriptContext();
         evaluateGremlinScriptIterable("g:list(1,2,3)[g:p(g:assign($x,.))]", context, true);
-        assertEquals(context.getVariableByName("$x").getValue(), 3);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("$x"), 3);
         results = evaluateGremlinScriptIterable("g:g(g:list(1,2,3))[g:p($x := .)]", context, true);
         assertEquals(results.get(0), new Integer(1));
         assertEquals(results.get(1), new Integer(2));
         assertEquals(results.get(2), new Integer(3));
-        assertEquals(context.getVariableByName("$x").getValue().getClass(), ArrayList.class);
-        assertEquals(((List) context.getVariableByName("$x").getValue()).get(0), 1);
-        assertEquals(((List) context.getVariableByName("$x").getValue()).get(1), 2);
-        assertEquals(((List) context.getVariableByName("$x").getValue()).get(2), 3);
+        assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("$x").getClass(), ArrayList.class);
+        assertEquals(((List) context.getBindings(ScriptContext.ENGINE_SCOPE).get("$x")).get(0), 1);
+        assertEquals(((List) context.getBindings(ScriptContext.ENGINE_SCOPE).get("$x")).get(1), 2);
+        assertEquals(((List) context.getBindings(ScriptContext.ENGINE_SCOPE).get("$x")).get(2), 3);
 
 
     }

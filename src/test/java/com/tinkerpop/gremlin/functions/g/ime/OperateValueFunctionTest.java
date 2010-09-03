@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
+import javax.script.ScriptContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +58,7 @@ public class OperateValueFunctionTest extends BaseTest {
     public void testOperateValueElement() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
         Function<Number> function = new OperateValueFunction();
         Vertex marko = graph.getVertex(1);
@@ -123,7 +124,7 @@ public class OperateValueFunctionTest extends BaseTest {
     public void testOperateValueInline() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
         Map map = new HashMap();
-        context.getVariableLibrary().putAtom("$m", new Atom<Map>(map));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("$m", new Atom<Map>(map));
 
         List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:not(g:p(g:op-value('+',$m,.,1.0)))]", context, true);
         assertNull(results);
@@ -138,7 +139,7 @@ public class OperateValueFunctionTest extends BaseTest {
         assertNull(map.get(3));
 
         map = new HashMap();
-        context.getVariableLibrary().putAtom("$m", new Atom<Map>(map));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("$m", new Atom<Map>(map));
         results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:p(g:p(g:op-value('+',$m,.,1.0)))][0..3]", context, true);
         assertEquals(results.size(), 3);
         assertEquals(results.get(0), 1);

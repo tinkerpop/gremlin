@@ -67,7 +67,10 @@
 
 
 import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;import java.util.Stack;
+import org.antlr.runtime.tree.*;
+
+    import javax.script.ScriptContext;
+    import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -215,7 +218,7 @@ public class GremlinEvaluator extends TreeParser {
         }
 
         private Atom getVariable(String name) {
-            return this.context.getVariableByName(name);
+            return new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(name));
         }
 
         private Function getFunction(final String ns, final String functionName) {
@@ -383,7 +386,7 @@ public class GremlinEvaluator extends TreeParser {
                 } 
             }
 
-            this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
+            this.context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.LAST_VARIABLE, new Atom<Object>(value));
         }
 
 

@@ -2,6 +2,8 @@ package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 
+import javax.script.ScriptContext;
+
 /**
  * @author Pavel A. Yaskevich
  */
@@ -24,7 +26,6 @@ public class Var extends DynamicEntity {
     }
 
     protected Object value() {
-        return this.context.getVariableLibrary().get(this.var);
+        return this.context.getBindings(ScriptContext.ENGINE_SCOPE).get(this.var);
     }
-
 }
