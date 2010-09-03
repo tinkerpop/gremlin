@@ -26,22 +26,8 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
     public static final String GREMLIN_RC_FILE = ".gremlinrc";
 
-    /**
-     * This constructor used only by GremlinScriptEngineFactory
-     * is you don't want to evaluate .gremlinrc file you can use it too
-     */
     public GremlinScriptEngine() {
         this.context = new GremlinScriptContext();
-    }
-
-    /**
-     * This constructor used to initialize GremlinScriptEngine
-     * and to evaluate .gremlinrc file on its' start up
-     *
-     * @param context GremlinScriptContext
-     */
-    public GremlinScriptEngine(final ScriptContext context) {
-        this.context = context;
         try {
             this.eval(new FileReader(GREMLIN_RC_FILE), this.context);
         } catch (FileNotFoundException e) {
@@ -95,37 +81,12 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return this.eval(new StringReader(script), context);
     }
 
-    public Object get(final String key) {
-        return this.context.getBindings(ScriptContext.ENGINE_SCOPE).get(key);
-    }
-
-    public Bindings getBindings(int scope) {
-        return this.context.getBindings(scope);
-    }
-
-    public ScriptContext getContext() {
-        return this.context;
-    }
-
     public ScriptEngineFactory getFactory() {
         return new GremlinScriptEngineFactory();
     }
 
-    public void put(final String key, final Object value) {
-        this.context.getBindings(ScriptContext.ENGINE_SCOPE).put(key, value);
-    }
-
-    public void setBindings(final Bindings bindings, int scope) {
-        this.context.setBindings(bindings, scope);
-    }
-
     public void setContext(final ScriptContext context) {
-        if (context instanceof GremlinScriptContext)
-            this.context = context;
-        else {
-            this.context = new GremlinScriptContext();
-            this.context.setBindings(context.getBindings(ScriptContext.ENGINE_SCOPE), ScriptContext.ENGINE_SCOPE);
-        }
+        this.context = convertContext(context);
     }
 
     private Iterable evaluate(final String code, final GremlinScriptContext context) throws RecognitionException {

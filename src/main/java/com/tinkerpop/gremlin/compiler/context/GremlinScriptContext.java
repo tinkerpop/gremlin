@@ -15,9 +15,6 @@ public class GremlinScriptContext extends SimpleScriptContext {
     // used by DynamicPredicateFilterPipe
     private Object currentPoint;
 
-    //protected Bindings globalBindings;
-    //protected Bindings engineBindings;
-
     protected final FunctionLibrary functions;
     protected final PathLibrary paths;
 

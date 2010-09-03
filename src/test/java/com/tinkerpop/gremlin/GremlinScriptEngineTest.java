@@ -44,6 +44,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "pavel"), "marko");
         assertEquals(engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name"), "pavel");
         assertEquals(((List) engine.eval("$name")).get(0), "pavel");
+        engine.put("$test1", "marko");
+        assertEquals(engine.get("$test1"), engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$test1"));
     }
 
     public void testEmbeddedEngineBindingsGraph() throws Exception {
@@ -70,7 +72,6 @@ public class GremlinScriptEngineTest extends BaseTest {
         manager.setBindings(globalBindings);
 
         ScriptEngine engine = manager.getEngineByName("gremlin");
-
         assertEquals(engine.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "global");
         //System.out.println(engine.eval("$name", manager.getBindings()));
 

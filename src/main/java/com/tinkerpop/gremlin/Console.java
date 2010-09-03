@@ -56,8 +56,7 @@ public class Console {
         String compoundStatementParts = "";
         boolean inCompoundStatement = false;
 
-        final GremlinScriptContext context = new GremlinScriptContext();
-        final GremlinScriptEngine engine = new GremlinScriptEngine(context);
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
         
         while (line != null) {
 
@@ -107,11 +106,11 @@ public class Console {
             }
 
             try {
-                engine.eval(line, context);
+                engine.eval(line);
             } catch (SyntaxErrorException e) {
                 System.err.println(e.getMessage());   
             } catch (Exception e) {
-                context.getErrorWriter().flush();
+                engine.getContext().getErrorWriter().flush();
                 String message = GremlinScriptEngine.exceptionInPrintableFormat(e);
                 if (!message.isEmpty()) System.err.println(message);
             }
