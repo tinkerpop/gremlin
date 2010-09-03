@@ -54,15 +54,6 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return new VariableLibrary();
     }
 
-    public Object eval(final Reader reader) {
-        return this.eval(reader, this.context);
-    }
-
-    public Object eval(final Reader reader, final Bindings bindings) {
-        this.context.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
-        return this.eval(reader);
-    }
-
     private static GremlinScriptContext convertContext(ScriptContext context) {
         if (context instanceof GremlinScriptContext)
             return (GremlinScriptContext) context;
@@ -98,10 +89,6 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         }
 
         return result;
-    }
-
-    public Object eval(final String script) {
-        return this.eval(script, this.context);
     }
 
     public Object eval(final String script, final ScriptContext context) {
