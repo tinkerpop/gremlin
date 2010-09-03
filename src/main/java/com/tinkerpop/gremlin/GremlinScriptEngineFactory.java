@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import java.util.Arrays;
@@ -72,17 +71,15 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
 
     public String getProgram(final String... statements) {
         String program = "";
-        
+
         for (String statement : statements) {
             program = program + statement + "\n";
         }
-        
+
         return program;
     }
 
     public ScriptEngine getScriptEngine() {
-        GremlinScriptEngine engine = new GremlinScriptEngine();
-        //engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
-        return engine;
+        return new GremlinScriptEngine();
     }
 }

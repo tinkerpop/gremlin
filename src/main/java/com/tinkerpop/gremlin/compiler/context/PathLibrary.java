@@ -14,15 +14,15 @@ public class PathLibrary {
         this.paths = new HashMap<String, List<Pipe>>();
     }
 
-    public void registerPath(String id, List<Pipe> pipes) {
+    public void registerPath(final String id, final List<Pipe> pipes) {
         this.paths.put(id, pipes);
     }
 
-    public List<Pipe> getPath(String id) {
+    public List<Pipe> getPath(final String id) {
         return this.paths.get(id);
     }
 
-    public boolean isPath(String id) {
+    public boolean isPath(final String id) {
         return (this.paths.get(id) == null) ? false : true;
     }
 }

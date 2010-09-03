@@ -40,7 +40,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return new VariableLibrary();
     }
 
-    private static GremlinScriptContext convertContext(ScriptContext context) {
+    private static GremlinScriptContext convertContext(final ScriptContext context) {
         if (context instanceof GremlinScriptContext)
             return (GremlinScriptContext) context;
         else {
@@ -50,7 +50,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         }
     }
 
-    public Object eval(final Reader reader, ScriptContext context) {
+    public Object eval(final Reader reader, final ScriptContext context) {
 
         String line;
         Iterable result;
