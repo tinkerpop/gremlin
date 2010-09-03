@@ -18,8 +18,8 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
         super();
     }
 
-    public VariableLibrary(final Bindings bindings) {
-        super(bindings);
+    public VariableLibrary(final Map<? extends String, ? extends Object> map) {
+        super(map);
     }
 
 
@@ -42,9 +42,10 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
         Object ret = this.get(key);
 
         if (value instanceof Atom)
-            value = ((Atom) value).getValue();
+            this.putAtom(key, (Atom) value);
+        else
+            this.putAtom(key, new Atom(value));
 
-        this.putAtom(key, new Atom(value));
         return ret;
     }
 

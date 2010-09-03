@@ -80,8 +80,7 @@ public class GremlinScriptEngineTest extends BaseTest {
 
         ScriptEngine engine = manager.getEngineByName("gremlin");
         assertEquals(engine.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "global");
-        //System.out.println(engine.eval("$name", manager.getBindings()));
-
+        assertEquals(((List) (engine.eval("$name", manager.getBindings()))).get(0), "global");
     }
 
 
