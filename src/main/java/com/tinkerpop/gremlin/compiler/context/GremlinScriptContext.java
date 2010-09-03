@@ -3,30 +3,33 @@ package com.tinkerpop.gremlin.compiler.context;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.Var;
 
+import javax.script.ScriptContext;
 import javax.script.SimpleScriptContext;
 import java.io.IOException;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class GremlinScriptContext extends SimpleScriptContext {
 
-    // used by DynamicPredicateFilterPipe & DynamicPredicateFilterPipe
+    // used by DynamicPredicateFilterPipe
     private Object currentPoint;
 
-    protected VariableLibrary variables;
+    //protected Bindings globalBindings;
+    //protected Bindings engineBindings;
 
     protected final FunctionLibrary functions;
     protected final PathLibrary paths;
 
     public GremlinScriptContext() {
-        this.variables = new VariableLibrary();
+        super();
+        this.setBindings(new VariableLibrary(), ScriptContext.ENGINE_SCOPE);
         this.functions = new FunctionLibrary();
         this.paths = new PathLibrary();
     }
 
     public VariableLibrary getVariableLibrary() {
-        return this.variables;
+        return (VariableLibrary) this.getBindings(ScriptContext.ENGINE_SCOPE);
     }
 
     public FunctionLibrary getFunctionLibrary() {
@@ -38,7 +41,7 @@ public class GremlinScriptContext extends SimpleScriptContext {
     }
 
     public void setVariableLibrary(final VariableLibrary newLibrary) {
-        this.variables = newLibrary;
+        this.setBindings(newLibrary, ScriptContext.ENGINE_SCOPE);
     }
 
     public Atom getVariableByName(String name) {
@@ -77,7 +80,7 @@ public class GremlinScriptContext extends SimpleScriptContext {
             throw new RuntimeException(e);
         }
     }
-    
+
     public void setCurrentPoint(Object point) {
         this.currentPoint = point;
     }

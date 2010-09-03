@@ -30,7 +30,7 @@ public class NativeFunction implements Function<Object> {
             throw new RuntimeException("Wrong number of arguments (" + arguments.size() + " of " + this.arguments.size() + ")");
 
         // cloning variable library
-        // all changes in variables will stay inside function + full access to current state of global variables
+        // all changes in globalBindings will stay inside function + full access to current state of global globalBindings
         VariableLibrary varLib = context.getVariableLibrary().cloneLibrary();
 
         // mapping arguments

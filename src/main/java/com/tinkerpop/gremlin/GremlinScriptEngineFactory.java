@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class GremlinScriptEngineFactory implements ScriptEngineFactory {
 
-    private static final String ENGINE_NAME = "TinkerPop Gremlin Engine";
+    private static final String ENGINE_NAME = "gremlin";
     private static final String LANGUAGE_NAME = "gremlin";
     private static final String VERSION_NUMBER = Tokens.VERSION;
     private static final String PLAIN = "plain";
@@ -82,7 +82,7 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
 
     public ScriptEngine getScriptEngine() {
         GremlinScriptEngine engine = new GremlinScriptEngine();
-        engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
+        //engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
         return engine;
     }
 }

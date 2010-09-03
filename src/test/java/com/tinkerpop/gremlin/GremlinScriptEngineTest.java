@@ -11,6 +11,8 @@ import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.SimpleBindings;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +59,21 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(0), graph.getVertex(4));
         results = (List) engine.eval("./outE[@label=g:string('knows') or @label=g:string(g:string('created'))]/inV[@id='4' and @name=$name]");
         assertEquals(results.get(0), graph.getVertex(4));
+    }
+
+    public void testGlobalAndEngineScoping() throws Exception {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        manager.registerEngineName("gremlin", new GremlinScriptEngineFactory());
+        SimpleBindings globalBindings = new SimpleBindings();
+        globalBindings.put("$name", "global");
+        globalBindings.put("$type", "global bindings");
+        manager.setBindings(globalBindings);
+
+        ScriptEngine engine = manager.getEngineByName("gremlin");
+
+        assertEquals(engine.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "global");
+        //System.out.println(engine.eval("$name", manager.getBindings()));
+
     }
 
 

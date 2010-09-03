@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class VariableLibrary extends HashMap<String, Object> implements Bindings {
 
@@ -19,15 +19,14 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
     }
 
     public VariableLibrary(final Bindings bindings) {
-        super();
-        this.putAll(bindings);
+        super(bindings);
     }
 
 
     public void putAtom(final String key, final Atom value) {
-        if (key.equals(Tokens.GRAPH_VARIABLE) && !value.isGraph()) {
+        if (key.equals(Tokens.GRAPH_VARIABLE) && !value.isGraph())
             throw new RuntimeException(GRAPH_VARIABLE_ERROR);
-        }
+
         super.put(key, value);
     }
 
@@ -56,6 +55,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
 
     public Object put(final String key, Object value) {
         Object ret = this.get(key);
+
         if (value instanceof Atom)
             value = ((Atom) value).getValue();
 

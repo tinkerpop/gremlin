@@ -20,12 +20,11 @@ import javax.script.ScriptEngineFactory;
 import java.io.*;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class GremlinScriptEngine extends AbstractScriptEngine {
 
     public static final String GREMLIN_RC_FILE = ".gremlinrc";
-    private GremlinScriptContext context;
 
     /**
      * This constructor used only by GremlinScriptEngineFactory
@@ -41,14 +40,13 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
      *
      * @param context GremlinScriptContext
      */
-    public GremlinScriptEngine(final GremlinScriptContext context) {
+    public GremlinScriptEngine(final ScriptContext context) {
         this.context = context;
         try {
             this.eval(new FileReader(GREMLIN_RC_FILE), this.context);
         } catch (FileNotFoundException e) {
-            // we do nothing if .gremlinrc is not found.
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -61,8 +59,18 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
     }
 
     public Object eval(final Reader reader, final Bindings bindings) {
-        this.context.setVariableLibrary(new VariableLibrary(bindings));
+        this.context.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
         return this.eval(reader);
+    }
+
+    private static GremlinScriptContext convertContext(ScriptContext context) {
+        if (context instanceof GremlinScriptContext)
+            return (GremlinScriptContext) context;
+        else {
+            GremlinScriptContext context2 = new GremlinScriptContext();
+            context2.setBindings(context.getBindings(ScriptContext.ENGINE_SCOPE), ScriptContext.ENGINE_SCOPE);
+            return context2;
+        }
     }
 
     public Object eval(final Reader reader, ScriptContext context) {
@@ -79,7 +87,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
             }
 
             // evaluate script
-            result = this.evaluate(script.toString(), (GremlinScriptContext) context);
+            result = this.evaluate(script.toString(), convertContext(context));
 
             // flushing output streams
             context.getWriter().flush();
@@ -101,11 +109,11 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
     }
 
     public Object get(final String key) {
-        return this.context.getVariableLibrary().get(key);
+        return this.context.getBindings(ScriptContext.ENGINE_SCOPE).get(key);
     }
 
     public Bindings getBindings(int scope) {
-        return this.context.getVariableLibrary();
+        return this.context.getBindings(scope);
     }
 
     public ScriptContext getContext() {
@@ -117,21 +125,21 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
     }
 
     public void put(final String key, final Object value) {
-        this.context.getVariableLibrary().put(key, value);
+        this.context.getBindings(ScriptContext.ENGINE_SCOPE).put(key, value);
     }
 
     public void setBindings(final Bindings bindings, int scope) {
-        this.context.setVariableLibrary(new VariableLibrary(bindings));
+        this.context.setBindings(bindings, scope);
     }
 
     public void setContext(final ScriptContext context) {
-        if (context instanceof GremlinScriptContext) {
-            this.context = (GremlinScriptContext) context;
-        } else {
-            this.context.setVariableLibrary(new VariableLibrary(context.getBindings(ScriptContext.ENGINE_SCOPE)));
+        if (context instanceof GremlinScriptContext)
+            this.context = context;
+        else {
+            this.context = new GremlinScriptContext();
+            this.context.setBindings(context.getBindings(ScriptContext.ENGINE_SCOPE), ScriptContext.ENGINE_SCOPE);
         }
     }
-
 
     private Iterable evaluate(final String code, final GremlinScriptContext context) throws RecognitionException {
         ANTLRStringStream input = new ANTLRStringStream(code + "\n");
@@ -155,12 +163,12 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
         return walker.program().results;
     }
 
-    public static String getExceptionCauseMessage(final Exception exception) {
+    private static String getExceptionCauseMessage(final Exception exception) {
         final Throwable cause = exception.getCause();
         return (cause == null) ? exception.getMessage() : getExceptionCauseMessage(exception.getCause());
     }
 
-    public static String getExceptionCauseMessage(final Throwable cause) {
+    private static String getExceptionCauseMessage(final Throwable cause) {
         final Throwable parentCause = cause.getCause();
         return (parentCause == null) ? cause.getMessage() : getExceptionCauseMessage(parentCause);
     }
