@@ -9,10 +9,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.SimpleBindings;
+import javax.script.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -75,12 +72,32 @@ public class GremlinScriptEngineTest extends BaseTest {
         manager.registerEngineName("gremlin", new GremlinScriptEngineFactory());
         SimpleBindings globalBindings = new SimpleBindings();
         globalBindings.put("$name", "global");
-        globalBindings.put("$type", "global bindings");
         manager.setBindings(globalBindings);
 
         ScriptEngine engine = manager.getEngineByName("gremlin");
+        engine.put("$name", "engine");
         assertEquals(engine.getBindings(ScriptContext.GLOBAL_SCOPE).get("$name"), "global");
         assertEquals(((List) (engine.eval("$name", manager.getBindings()))).get(0), "global");
+        assertEquals(((List) (engine.eval("g:concat($name,'-test')", manager.getBindings()))).get(0), "global-test");
+        assertEquals(((List) (engine.eval("$name"))).get(0), "engine");
+
+        assertEquals(((List)engine.eval("$name := 'redefined global'", engine.getBindings(ScriptContext.GLOBAL_SCOPE))).get(0), "redefined global");
+        assertEquals(manager.getBindings().get("$name"), "redefined global");
+        assertEquals(((List) (engine.eval("g:concat($name,'-test')", manager.getBindings()))).get(0), "redefined global-test");
+        assertEquals(((List) (engine.eval("$name"))).get(0), "engine");
+        assertEquals(((List) (engine.eval("$name", engine.getContext()))).get(0), "engine");
+
+    }
+
+    public void testInvocable() throws Exception {
+        Invocable engine = new GremlinScriptEngine();
+        assertEquals(engine.invokeFunction("g:power", 2, 3), 8.0d);
+        try {
+            engine.invokeFunction("g:fake-method", 2, 3);
+            assertFalse(true);
+        } catch (NoSuchMethodException e) {
+            assertTrue(true);
+        }
     }
 
 

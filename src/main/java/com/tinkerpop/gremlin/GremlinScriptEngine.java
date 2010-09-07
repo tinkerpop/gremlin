@@ -6,6 +6,10 @@ import com.tinkerpop.gremlin.compiler.GremlinParser;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
+import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
+import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -13,16 +17,15 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 
-import javax.script.AbstractScriptEngine;
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngineFactory;
+import javax.script.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez
  */
-public class GremlinScriptEngine extends AbstractScriptEngine {
+public class GremlinScriptEngine extends AbstractScriptEngine implements Invocable {
 
     public static final String GREMLIN_RC_FILE = ".gremlinrc";
 
@@ -45,8 +48,26 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
             return (GremlinScriptContext) context;
         else {
             GremlinScriptContext context2 = new GremlinScriptContext();
-            context2.setBindings(context.getBindings(ScriptContext.ENGINE_SCOPE), ScriptContext.ENGINE_SCOPE);
+            for (int scope : context.getScopes()) {
+                context2.setBindings(context.getBindings(scope), scope);
+            }
             return context2;
+        }
+    }
+
+
+
+    private static void typeCastContextBindings(final ScriptContext context) {
+        for (int scope : context.getScopes()) {
+            Bindings bindings = context.getBindings(scope);
+            if (!(bindings instanceof VariableLibrary) && null != bindings) {
+                for (String key : bindings.keySet()) {
+                    Object object = bindings.get(key);
+                    if (object instanceof Atom) {
+                        bindings.put(key, ((Atom) object).getValue());
+                    }
+                }
+            }
         }
     }
 
@@ -68,6 +89,8 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
             // flushing output streams
             context.getWriter().flush();
+            typeCastContextBindings(context);
+
         } catch (SyntaxErrorException e) {
             throw e;
         } catch (Exception e) {
@@ -87,6 +110,44 @@ public class GremlinScriptEngine extends AbstractScriptEngine {
 
     public void setContext(final ScriptContext context) {
         this.context = convertContext(context);
+    }
+
+    public <T> T getInterface(Class<T> clazz) {
+        throw new UnsupportedOperationException();
+    }
+
+    public <T> T getInterface(Object thiz, Class<T> clazz) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Object invokeFunction(String name, Object... args) throws NoSuchMethodException, ScriptException {
+        GremlinScriptContext ctx = (GremlinScriptContext) this.getContext();
+        int colonIndex = name.indexOf(":");
+        Function function;
+        try {
+            function = ctx.getFunctionLibrary().getFunction(name.substring(0, colonIndex), name.substring(colonIndex + 1));
+        } catch (RuntimeException e) {
+            throw new NoSuchMethodException();
+        }
+
+        List<Operation> arguments = new ArrayList<Operation>();
+        for (Object arg : args) {
+            arguments.add(new UnaryOperation(new Atom(arg)));
+        }
+        try {
+            Atom ret = function.compute(arguments, ctx);
+            if (ret.isNull())
+                return null;
+            else
+                return ret.getValue();
+        } catch (Exception e) {
+            throw new ScriptException(e.getMessage());
+        }
+
+    }
+
+    public Object invokeMethod(Object thiz, String name, Object... args) {
+        throw new UnsupportedOperationException("Gremlin is not an object oriented language");
     }
 
     private Iterable evaluate(final String code, final GremlinScriptContext context) throws RecognitionException {

@@ -19,7 +19,8 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
     }
 
     public VariableLibrary(final Map<? extends String, ? extends Object> map) {
-        super(map);
+        super();
+        this.putAll(map);
     }
 
 
