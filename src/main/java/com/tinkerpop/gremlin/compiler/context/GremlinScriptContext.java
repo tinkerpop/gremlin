@@ -33,22 +33,6 @@ public class GremlinScriptContext extends SimpleScriptContext {
         return this.paths;
     }
 
-    /*public void setAttribute(String name, Object value, int scope) {
-        Bindings bindings = this.getBindings(scope);
-        if (value instanceof Atom)
-            bindings.put(name, ((Atom) value).getValue());
-        else
-            bindings.put(name, value);
-    }
-
-    public Object getAttribute(String name, int scope) {
-        return this.getBindings(scope).get(name);
-    }
-
-    public Object getAttribute(String name) {
-        return this.getAttribute(name, ScriptContext.ENGINE_SCOPE);
-    }*/
-
     public void writeOutput(Object o) throws RuntimeException {
         try {
             this.getWriter().write(o.toString());
