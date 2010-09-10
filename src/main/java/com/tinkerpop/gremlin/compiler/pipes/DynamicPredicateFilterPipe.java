@@ -47,10 +47,10 @@ public class DynamicPredicateFilterPipe<S> extends AbstractComparisonFilterPipe<
         if (side instanceof DynamicEntity) {
             final Object currentPoint = this.context.getCurrentPoint();
 
-            if (side instanceof Var) {
+            if (side instanceof Var && !(side instanceof RootVar)) {
                 Var variable = (Var) side;
 
-                if (variable.getVariableName().equals(Tokens.IDENTITY)) {
+                if (variable.getVariableName().equals(Tokens.ROOT_VARIABLE)) {
                     return currentPoint;
                 }
             } else if (side instanceof GPath) {

@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.PipeHelper;
 import com.tinkerpop.pipes.filter.FilterPipe;

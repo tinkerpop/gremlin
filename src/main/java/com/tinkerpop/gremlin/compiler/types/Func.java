@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.List;
 

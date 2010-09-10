@@ -2,9 +2,9 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.AbstractFunction;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.AbstractFunction;
 
 import java.util.ArrayList;
 import java.util.List;

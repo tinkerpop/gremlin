@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.compiler.context;
 
+import com.tinkerpop.gremlin.compiler.util.StringHelper;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.Functions;
 import com.tinkerpop.gremlin.functions.NativeFunctions;
-import com.tinkerpop.gremlin.compiler.util.StringHelper;
 
 import java.util.HashMap;
 import java.util.ServiceLoader;

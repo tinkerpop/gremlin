@@ -4,11 +4,11 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.AbstractFunction;
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
+import com.tinkerpop.gremlin.functions.AbstractFunction;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 
 import java.util.List;
 import java.util.Map;

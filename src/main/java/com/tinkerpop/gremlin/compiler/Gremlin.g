@@ -105,12 +105,18 @@ step
     ;
 
 token
-	:   function_call
+	:   G_INT           -> ^(INT G_INT)
+	|   G_LONG          -> ^(LONG G_LONG)
+	|   G_FLOAT         -> ^(FLOAT G_FLOAT)
+	|   G_DOUBLE        -> ^(DOUBLE G_DOUBLE)
+    |   function_call
     |   StringLiteral	-> ^(STR StringLiteral)
 	|	PROPERTY	    -> ^(PROPERTY_CALL PROPERTY)
 	|	VARIABLE        -> ^(VARIABLE_CALL VARIABLE)
 	|   IDENTIFIER
     |   '..'
+    |   b=BOOLEAN       -> ^(BOOL $b)
+    |	'('! statement ')'!
 	;
 
 statement
@@ -214,14 +220,12 @@ function_call_param
     ;
 	
 atom
-	:   G_INT           -> ^(INT G_INT)
+	:   gpath_statement
+    |   G_INT           -> ^(INT G_INT)
 	|   G_LONG          -> ^(LONG G_LONG)
 	|   G_FLOAT         -> ^(FLOAT G_FLOAT)
 	|   G_DOUBLE        -> ^(DOUBLE G_DOUBLE)
-    |   gpath_statement
-    |   b=BOOLEAN       -> ^(BOOL $b)
     |   NULL
-	|	'('! statement ')'!
 	;
 
 StringLiteral

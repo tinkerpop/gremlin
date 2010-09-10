@@ -12,7 +12,6 @@ import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 
-import javax.script.ScriptContext;
 import java.util.*;
 
 /**

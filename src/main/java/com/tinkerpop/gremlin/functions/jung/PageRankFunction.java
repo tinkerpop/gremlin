@@ -5,10 +5,10 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.jung.JungGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.AbstractFunction;
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.AbstractFunction;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 import edu.uci.ics.jung.algorithms.scoring.PageRank;
 import org.apache.commons.collections15.Transformer;
 

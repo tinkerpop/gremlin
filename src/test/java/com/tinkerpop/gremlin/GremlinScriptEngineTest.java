@@ -499,4 +499,26 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
     }
 
+    public void testExpressionsInGPath() throws Exception {
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("true[0]", true));
+        assertFalse((Boolean) evaluateGremlinScriptPrimitive("false[0]", true));
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("(true or false)[0]", true));
+        assertFalse((Boolean) evaluateGremlinScriptPrimitive("(true and false)[0]", true));
+        assertFalse((Boolean) evaluateGremlinScriptPrimitive("(true and (false and true))[0]", true));
+
+        assertEquals(evaluateGremlinScriptPrimitive("(1 + 2)[0]", true), 3);
+        assertEquals(evaluateGremlinScriptPrimitive("(1 + (2 - 3))[0]", true), 0);
+
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Integer>(1));
+        assertEquals(evaluateGremlinScriptPrimitive("(. + (2 - 3))[0]", context, true), 0);
+        assertEquals(evaluateGremlinScriptPrimitive("((.) + (2 div 1))[0]", context, true), 3.0d);
+        assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[0]", context, true), 7.0d);
+        assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[. = 7.0d]", context, true), 7.0d);
+        assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[g:p($x := . + 1)]", context, true), 7.0d);
+        assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 8.0d);
+        assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[. = (5.0d + (1 div 0.5)[0])[0]]", context, true), 7.0d);
+
+    }
+
 }

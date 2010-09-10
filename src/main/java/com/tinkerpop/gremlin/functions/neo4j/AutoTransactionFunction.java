@@ -2,10 +2,10 @@ package com.tinkerpop.gremlin.functions.neo4j;
 
 import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.AbstractFunction;
-import com.tinkerpop.gremlin.functions.FunctionHelper;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.AbstractFunction;
+import com.tinkerpop.gremlin.functions.FunctionHelper;
 
 import java.util.List;
 

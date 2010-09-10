@@ -158,7 +158,7 @@ options {
 
             count++;
         }
-        
+
         return (pipes.size() == 0) ? new Atom<Object>(null) : new GPath(root, pipes, this.context);
     }
 
@@ -192,7 +192,7 @@ options {
             String identifier = (String) token.getValue();
 
             if (identifier.equals(Tokens.IDENTITY)) {
-                return (gpathScope > 1) ? new Var(Tokens.IDENTITY, this.context) : this.getVariable(Tokens.ROOT_VARIABLE);
+                return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
              } else if(paths.isPath(token.toString())) {
                 return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
             } else {
@@ -384,7 +384,7 @@ step
 token returns [Atom atom]
     :   function_call               { $atom = $function_call.value; }
     |   ^(STR StringLiteral)        { $atom = new Atom<String>($StringLiteral.text); }
-	|	^(VARIABLE_CALL VARIABLE)   { $atom = new Var($VARIABLE.text, this.context); }
+	|	^(VARIABLE_CALL VARIABLE)   { $atom = $VARIABLE.text.equals(Tokens.ROOT_VARIABLE) ? new RootVar(context) : new Var($VARIABLE.text, this.context); }
 	|	^(PROPERTY_CALL PROPERTY)   { $atom = new Prop<String>($PROPERTY.text.substring(1)); }
     |	IDENTIFIER                                                  
         {
@@ -398,6 +398,14 @@ token returns [Atom atom]
             }
         }
 	|   '..' { $atom = new Id<String>(".."); }
+    |   ^(BOOL b=BOOLEAN) { $atom = new Atom<Boolean>(new Boolean($b.text)); }
+	|	statement {
+            try {
+                $atom = $statement.op.compute();
+            } catch (Exception e) {
+                $atom = new Atom<Operation>($statement.op);
+            }
+        }
     ;
 
 
@@ -498,8 +506,6 @@ atom returns [Atom value]
 	                                                                    $value = new Atom<Double>(new Double(doubleStr.substring(0, doubleStr.length() - 1)));
 	                                                                }
     |   gpath_statement                                             { $value = $gpath_statement.value; }
-    |   ^(BOOL b=BOOLEAN)                                           { $value = new Atom<Boolean>(new Boolean($b.text)); }
     |   NULL                                                        { $value = new Atom<Object>(null); }
-	|	'('! statement ')'!
 	;
 

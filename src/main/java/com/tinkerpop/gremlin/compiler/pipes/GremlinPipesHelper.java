@@ -103,7 +103,7 @@ public class GremlinPipesHelper {
     }
 
     private static Pipe pipeForPredicate(final Operation predicate, final GremlinScriptContext context) throws RuntimeException {
-
+       
         if (predicate instanceof BinaryOperation) {
             final Operation[] operands = ((BinaryOperation) predicate).getOperands();
 
@@ -173,6 +173,10 @@ public class GremlinPipesHelper {
             if (value instanceof Iterable) {
                 return new GremlinRangeFilterPipe((Iterable) value);
             }
+
+            if (value instanceof Operation) {
+                return pipeForPredicate((Operation) value, context);
+            }
         }
 
         throw new RuntimeException("No pipe for " + predicate.getClass());
@@ -182,8 +186,10 @@ public class GremlinPipesHelper {
         final List<Pipe> pipes = new ArrayList<Pipe>();
 
         for (Operation operation : operands) {
-            pipes.add(new HasNextPipe(pipeForPredicate(operation, context)));
+            Pipe pipe = pipeForPredicate(operation, context);
+            pipes.add(new HasNextPipe(pipe));
         }
+
         return pipes;
     }
 
@@ -238,14 +244,17 @@ public class GremlinPipesHelper {
                 Operation operation = null;
 
                 if (argument instanceof Var) {
+                    if (argument instanceof RootVar) {
+                        operation = argumentOperation;
+                    } else {
                     final String name = ((Var) argument).getVariableName();
 
-                    if (name.equals(Tokens.IDENTITY)) {
+                    if (name.equals(Tokens.ROOT_VARIABLE)) {
                         final Atom<Object> currentPoint = new Atom<Object>(currentIterationPoint);
                         operation = new UnaryOperation(currentPoint);
                     } else {
                         operation = argumentOperation;
-                    }
+                    }}
                 } else if (argument instanceof GPath) {
                     final GPath path = (GPath) argument;
                     path.setRoot(currentIterationPoint);
