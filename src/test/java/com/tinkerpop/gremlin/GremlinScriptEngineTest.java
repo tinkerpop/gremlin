@@ -510,7 +510,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("(1 + (2 - 3))[0]", true), 0);
 
         GremlinScriptContext context = new GremlinScriptContext();
-        context.getVariableLibrary().putAtom(Tokens.ROOT_VARIABLE, new Atom<Integer>(1));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Integer>(1));
+        
         assertEquals(evaluateGremlinScriptPrimitive("(. + (2 - 3))[0]", context, true), 0);
         assertEquals(evaluateGremlinScriptPrimitive("((.) + (2 div 1))[0]", context, true), 3.0d);
         assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[0]", context, true), 7.0d);

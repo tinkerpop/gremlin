@@ -71,6 +71,8 @@ options {
     // util
     import com.tinkerpop.gremlin.compiler.util.Pair;
     import com.tinkerpop.gremlin.compiler.util.CodeBlock;
+
+    import javax.script.ScriptContext;
 }
 
 @members {
@@ -93,7 +95,7 @@ options {
     }
 
     private Atom getVariable(String name) {
-        return this.context.getVariableByName(name);
+        return new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(name));
     }
 
     private Function getFunction(final String ns, final String functionName) {
@@ -261,7 +263,7 @@ options {
             } 
         }
 
-        this.context.getVariableLibrary().setLastVariable(new Atom<Object>(value));
+        this.context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.LAST_VARIABLE, new Atom<Object>(value));
     }
 }
 
