@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
-import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
 import jline.ConsoleReader;
 import jline.History;

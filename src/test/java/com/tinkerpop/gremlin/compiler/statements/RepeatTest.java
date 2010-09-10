@@ -65,6 +65,15 @@ public class RepeatTest extends BaseTest {
         printPerformance("repeat statement", 2, "iterations over graph with edge filtering using functions", this.stopWatch());
         assertEquals(results.size(), 0);
         assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE), graph.getVertex(3));
+    }
+
+    public void testEmptyRepeat() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        engine.eval("repeat 5\nend", context);
+        printPerformance("repeat statement", 5, "iterations (with empty block)", this.stopWatch());
 
     }
 

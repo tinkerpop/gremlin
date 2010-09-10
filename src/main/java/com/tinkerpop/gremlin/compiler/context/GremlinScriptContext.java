@@ -1,8 +1,5 @@
 package com.tinkerpop.gremlin.compiler.context;
 
-import com.tinkerpop.gremlin.compiler.types.Atom;
-
-import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.SimpleScriptContext;
 import java.io.IOException;

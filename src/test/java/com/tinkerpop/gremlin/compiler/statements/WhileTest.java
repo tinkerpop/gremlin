@@ -65,10 +65,9 @@ public class WhileTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
         this.stopWatch();
         results = (List) engine.eval("$i := 0\nwhile $i < 2\n$_ := ./outE\nif g:includes(g:flatten($_),g:id-e(10))\n$_ := g:diff($_,g:id-e(10))\nend\n$_ := ./inV\n$i := $i + 1\nend", context);
-        printPerformance("repeat statement", 2, "iterations over graph with edge filtering using functions", this.stopWatch());
+        printPerformance("while statement", 2, "iterations over graph with edge filtering using functions", this.stopWatch());
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 0);
         assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE), graph.getVertex(3));
-
     }
 }

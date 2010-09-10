@@ -443,7 +443,7 @@ block returns [CodeBlock cb]
     @init {
         List<Tree> statements = new LinkedList<Tree>();
     }
-    :	^(BLOCK ( statement { statements.add($statement.tree); } )+) { $cb = new CodeBlock(statements, this.context); }
+    :	^(BLOCK ( statement { statements.add($statement.tree); } )* ) { $cb = new CodeBlock(statements, this.context); }
     ;
 
 expression returns [Operation expr]
