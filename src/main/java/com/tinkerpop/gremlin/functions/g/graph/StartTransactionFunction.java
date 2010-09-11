@@ -1,6 +1,5 @@
-package com.tinkerpop.gremlin.functions.neo4j;
+package com.tinkerpop.gremlin.functions.g.graph;
 
-import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -19,8 +18,7 @@ public class StartTransactionFunction extends AbstractFunction<Boolean> {
     public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         if (arguments.size() > 1) {
-            Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(arguments, 0, context);
-            graph.startTransaction();
+            FunctionHelper.getGraph(arguments, 0, context).startTransaction();
             return new Atom<Boolean>(true);
         } else {
             throw new RuntimeException(createUnsupportedArgumentMessage());

@@ -1,5 +1,6 @@
-package com.tinkerpop.gremlin.functions.neo4j;
+package com.tinkerpop.gremlin.functions.g.graph;
 
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -18,7 +19,7 @@ public class StopTransactionFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final Neo4jGraph graph = (Neo4jGraph) FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         if (arguments.size() == 1) {
             graph.stopTransaction((Boolean) arguments.get(0).compute().getValue());
         } else if (arguments.size() == 2) {

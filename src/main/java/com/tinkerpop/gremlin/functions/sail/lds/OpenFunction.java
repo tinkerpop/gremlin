@@ -40,7 +40,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
             try {
                 Ripple.initialize();
                 final URIMap uriMap = new URIMap();
-                final Sail sail = new LinkedDataSail(((SailGraph) arguments.get(0).compute().getValue()).getSail(), uriMap);
+                final Sail sail = new LinkedDataSail(((SailGraph) arguments.get(0).compute().getValue()).getRawGraph(), uriMap);
                 return new Atom<Graph>(new SailGraph(sail));
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
