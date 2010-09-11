@@ -519,7 +519,34 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[g:p($x := . + 1)]", context, true), 7.0d);
         assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 8.0d);
         assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[. = (5.0d + (1 div 0.5)[0])[0]]", context, true), 7.0d);
+    }
 
+    public void testPropertyNamesWithSpaces() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("$m", new Atom<Map>(new HashMap()));
+
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@'name w/ space' := 1", context, true), 1);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@'name w/ space' + 3", context, true), 4);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@'another name' := $m/@\"name w/ space\" + 3", context, true), 4);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@\"another name\"", context, true), 4);
+
+        Map mResults = (Map) evaluateGremlinScriptPrimitive("$m", context, true);
+        assertEquals(mResults.size(), 2);
+        assertEquals(mResults.get("name w/ space"), 1);
+        assertEquals(mResults.get("another name"), 4);        
+        
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        List<String> results = evaluateGremlinScriptIterable("./outE/inV/@'name'", context, true);
+        assertEquals(results.size(), 3);
+        String name = results.get(0);
+        assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
+        name = results.get(1);
+        assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
+        name = results.get(2);
+        assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
     }
 
 }

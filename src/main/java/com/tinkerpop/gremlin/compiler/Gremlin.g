@@ -264,7 +264,7 @@ VARIABLE
     ;
 
 PROPERTY
-	:	'@' IDENTIFIER	
+	:	'@' ( IDENTIFIER | StringLiteral )
 	;
 	
 IDENTIFIER 

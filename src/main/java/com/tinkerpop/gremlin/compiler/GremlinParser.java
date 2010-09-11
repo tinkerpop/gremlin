@@ -1,9 +1,17 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-09-02 14:32:06
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g 2010-09-12 01:23:07
 
             package com.tinkerpop.gremlin.compiler;
+            
+            import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
 
-import com.tinkerpop.gremlin.compiler.exceptions.SyntaxErrorException;
+
 import org.antlr.runtime.*;
+import java.util.Stack;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
 import org.antlr.runtime.tree.*;
 
 public class GremlinParser extends Parser {
@@ -1198,7 +1206,7 @@ public class GremlinParser extends Parser {
 
 
                     // AST REWRITE
-                    // elements: statement, atom
+                    // elements: atom, statement
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -1588,7 +1596,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, if_block, else_block
+            // elements: else_block, if_block, statement
             // token labels: 
             // rule labels: if_block, retval, else_block
             // token list labels: 
@@ -1837,7 +1845,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, statement
+            // elements: statement, block
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1951,7 +1959,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: statement, block
+            // elements: block, statement
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2210,7 +2218,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: formal_arguments, block, function_name
+            // elements: formal_arguments, function_name, block
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3173,7 +3181,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: function_name, function_call_params
+            // elements: function_call_params, function_name
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3274,7 +3282,7 @@ public class GremlinParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ns, ln
+            // elements: ln, ns
             // token labels: ln, ns
             // rule labels: retval
             // token list labels: 
