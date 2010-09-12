@@ -15,7 +15,7 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
 
     private final Collection range;
     private int counter = -1;
-    Iterator tempInterator = null;
+    Iterator tempIterator = null;
 
     public GremlinRangeFilterPipe(Iterable range) {
         if (range instanceof Collection)
@@ -31,11 +31,11 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
     }
 
     protected S processNextStart() {
-        if (null != this.tempInterator) {
-            if (this.tempInterator.hasNext()) {
-                return (S) this.tempInterator.next();
+        if (null != this.tempIterator) {
+            if (this.tempIterator.hasNext()) {
+                return (S) this.tempIterator.next();
             } else {
-                this.tempInterator = null;
+                this.tempIterator = null;
             }
         }
 
@@ -44,7 +44,7 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
             this.counter++;
             if (this.range.contains(this.counter)) {
                 if (s instanceof Iterable) {
-                    this.tempInterator = ((Iterable) s).iterator();
+                    this.tempIterator = ((Iterable) s).iterator();
                     return this.processNextStart();
                 } else {
                     return s;

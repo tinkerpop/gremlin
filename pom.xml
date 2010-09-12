@@ -77,7 +77,7 @@
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-rdf</artifactId>
             <version>0.7-SNAPSHOT</version>
-            <type>jar</type>
+            <type>jar</type>           
         </dependency>
         <dependency>
             <groupId>net.fortytwo</groupId>

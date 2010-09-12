@@ -208,9 +208,9 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(m.get("marko"), 0);
         assertEquals(evaluateGremlinScriptPrimitive("$m/@marko := 5", context, true), 5);
         assertEquals(m.get("marko"), 5);
-        assertEquals(evaluateGremlinScriptPrimitive("$m/@others[0][1]/@peter", context, true), 2);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@others[1]/@peter", context, true), 2);
         assertEquals(((Map) ((List) (m.get("others"))).get(1)).get("peter"), 2);
-        assertEquals(evaluateGremlinScriptPrimitive("$m/@others[0][1]/@peter := 10", context, true), 10);
+        assertEquals(evaluateGremlinScriptPrimitive("$m/@others[1]/@peter := 10", context, true), 10);
         assertEquals(((Map) ((List) (m.get("others"))).get(1)).get("peter"), 10);
     }
 
