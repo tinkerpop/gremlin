@@ -29,7 +29,7 @@ public class GremlinPropertyPipe extends AbstractPipe<Object, Object> {
         }
 
         Object start = this.starts.next();
-        Object end = null;
+        Object end;
         if (start instanceof Element) {
             end = ((Element) start).getProperty((String) this.key);
         } else if (start instanceof Map) {
