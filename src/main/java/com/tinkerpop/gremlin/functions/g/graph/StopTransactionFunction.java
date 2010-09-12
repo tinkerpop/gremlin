@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.impls.neo4j.Neo4jGraph;
+import com.tinkerpop.blueprints.pgm.TransactionalGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -20,13 +20,18 @@ public class StopTransactionFunction extends AbstractFunction<Boolean> {
     public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
-        if (arguments.size() == 1) {
-            graph.stopTransaction((Boolean) arguments.get(0).compute().getValue());
-        } else if (arguments.size() == 2) {
-            graph.stopTransaction((Boolean) arguments.get(1).compute().getValue());
+        if (graph instanceof TransactionalGraph) {
+            if (arguments.size() == 1) {
+                ((TransactionalGraph) graph).stopTransaction((Boolean) arguments.get(0).compute().getValue());
+            } else if (arguments.size() == 2) {
+                ((TransactionalGraph) graph).stopTransaction((Boolean) arguments.get(1).compute().getValue());
+            } else {
+                throw new RuntimeException(createUnsupportedArgumentMessage());
+            }
         } else {
-            throw new RuntimeException(createUnsupportedArgumentMessage());
+            throw new RuntimeException("Graph does not support transactions");
         }
+
         return new Atom<Boolean>(true);
     }
 
