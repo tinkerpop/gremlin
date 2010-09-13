@@ -3,10 +3,10 @@ package com.tinkerpop.gremlin.functions.g.graph;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
+import com.tinkerpop.gremlin.functions.Function;
 
 import javax.script.ScriptContext;
 
@@ -19,7 +19,7 @@ public class RemoveVertexEdgeFunctionTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        
+
         Function<Object> function = new RemoveVertexEdgeFunction();
         assertEquals(function.getFunctionName(), "remove-ve");
         assertEquals(count(graph.getVertex("3").getInEdges()), 3);

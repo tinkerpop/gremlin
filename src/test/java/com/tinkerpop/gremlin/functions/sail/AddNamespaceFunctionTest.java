@@ -2,12 +2,12 @@ package com.tinkerpop.gremlin.functions.sail;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
+import com.tinkerpop.blueprints.pgm.impls.sail.impls.MemoryStoreSailGraph;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
-import org.openrdf.sail.memory.MemoryStore;
+import com.tinkerpop.gremlin.functions.Function;
 
 import javax.script.ScriptContext;
 
@@ -17,7 +17,7 @@ import javax.script.ScriptContext;
 public class AddNamespaceFunctionTest extends BaseTest {
 
     public void testAddNamespace() {
-        SailGraph graph = new SailGraph(new MemoryStore());
+        SailGraph graph = new MemoryStoreSailGraph();
         GremlinScriptContext context = new GremlinScriptContext();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
 
@@ -36,5 +36,6 @@ public class AddNamespaceFunctionTest extends BaseTest {
         assertEquals(graph.getNamespaces().get("tp"), "http://tinkerpop.com");
 
         graph.shutdown();
+
     }
 }

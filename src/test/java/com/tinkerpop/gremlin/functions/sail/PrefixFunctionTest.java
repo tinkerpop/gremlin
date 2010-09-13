@@ -2,12 +2,12 @@ package com.tinkerpop.gremlin.functions.sail;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph;
+import com.tinkerpop.blueprints.pgm.impls.sail.impls.MemoryStoreSailGraph;
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import org.openrdf.sail.memory.MemoryStore;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
+import com.tinkerpop.gremlin.functions.Function;
 
 import javax.script.ScriptContext;
 
@@ -17,10 +17,10 @@ import javax.script.ScriptContext;
 public class PrefixFunctionTest extends BaseTest {
 
     public void testPrefix() {
-        SailGraph graph = new SailGraph(new MemoryStore());
+        SailGraph graph = new MemoryStoreSailGraph();
         GremlinScriptContext context = new GremlinScriptContext();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
-        
+
         Function<String> function = new PrefixFunction();
         this.stopWatch();
         Atom<String> atom = function.compute(createUnaryArgs(graph, "http://www.w3.org/1999/02/22-rdf-syntax-ns#test"), context);

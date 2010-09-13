@@ -103,7 +103,7 @@ public class GremlinPipesHelper {
     }
 
     private static Pipe pipeForPredicate(final Operation predicate, final GremlinScriptContext context) throws RuntimeException {
-       
+
         if (predicate instanceof BinaryOperation) {
             final Operation[] operands = ((BinaryOperation) predicate).getOperands();
 
@@ -247,14 +247,15 @@ public class GremlinPipesHelper {
                     if (argument instanceof RootVar) {
                         operation = argumentOperation;
                     } else {
-                    final String name = ((Var) argument).getVariableName();
+                        final String name = ((Var) argument).getVariableName();
 
-                    if (name.equals(Tokens.ROOT_VARIABLE)) {
-                        final Atom<Object> currentPoint = new Atom<Object>(currentIterationPoint);
-                        operation = new UnaryOperation(currentPoint);
-                    } else {
-                        operation = argumentOperation;
-                    }}
+                        if (name.equals(Tokens.ROOT_VARIABLE)) {
+                            final Atom<Object> currentPoint = new Atom<Object>(currentIterationPoint);
+                            operation = new UnaryOperation(currentPoint);
+                        } else {
+                            operation = argumentOperation;
+                        }
+                    }
                 } else if (argument instanceof GPath) {
                     final GPath path = (GPath) argument;
                     path.setRoot(currentIterationPoint);

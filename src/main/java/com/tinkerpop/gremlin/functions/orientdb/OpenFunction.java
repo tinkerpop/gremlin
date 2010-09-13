@@ -26,12 +26,16 @@ public class OpenFunction extends AbstractFunction<Graph> {
             if (!directory.exists())
                 directory.mkdirs();
 
-            OrientGraph graph = new OrientGraph("local:" + url);
-            if (graph.exists()) {
-                graph.open(ADMIN, ADMIN);
-            } else
-                graph.create();
-            return new Atom<Graph>(graph);
+            try {
+                OrientGraph graph = new OrientGraph("local:" + url);
+                if (graph.exists()) {
+                    graph.open(ADMIN, ADMIN);
+                } else
+                    graph.create();
+                return new Atom<Graph>(graph);
+            } catch (Error e) {
+                throw new RuntimeException("Dependencies not available for this graph");
+            }
         } else {
             throw new RuntimeException(createUnsupportedArgumentMessage());
         }

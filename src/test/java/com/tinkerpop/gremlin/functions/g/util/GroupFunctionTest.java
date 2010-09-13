@@ -4,9 +4,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.functions.g.ime.GetFunction;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class GroupFunctionTest extends BaseTest {
 
     public void testGroup() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Object> function = new GetFunction();
         List list = Arrays.asList("pavel", 23);
         Map map = new HashMap();
@@ -46,7 +46,7 @@ public class GroupFunctionTest extends BaseTest {
         try {
             function.compute(createUnaryArgs(list, "bad"), context);
             assertTrue(false);
-        } catch(Exception e) {
+        } catch (Exception e) {
             assertTrue(true);
         }
 

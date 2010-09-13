@@ -16,7 +16,7 @@
         <dependencySet>
             <outputDirectory>/</outputDirectory>
             <unpack>true</unpack>
-            <scope>runtime</scope>
+            <scope>compile</scope>
         </dependencySet>
     </dependencySets>
 

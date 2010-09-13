@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.g.string;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -14,11 +14,11 @@ public class SubstringFunctionTest extends BaseTest {
         Function<String> function = new SubstringFunction();
         this.stopWatch();
         GremlinScriptContext context = new GremlinScriptContext();
-        Atom<String> atom = function.compute(createUnaryArgs("marko",0,3), context);
+        Atom<String> atom = function.compute(createUnaryArgs("marko", 0, 3), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "mar");
         this.stopWatch();
-        atom = function.compute(createUnaryArgs("marko",4), context);
+        atom = function.compute(createUnaryArgs("marko", 4), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(atom.getValue(), "o");
     }

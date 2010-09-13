@@ -30,13 +30,13 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private final Set<Object> previouslyFetched;
     private boolean startsFromRootIdentifier = false;
     private final GremlinScriptContext context;
-    
+
     public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
         this.context = context;
-        
+
         if (!(root instanceof DynamicEntity)) {
             if (root.toString().equals(".") && root.isIdentifier()) {
                 this.root = new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE));
@@ -44,7 +44,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             }
         }
     }
-    
+
     protected Object value() {
         Object top;
 
@@ -62,7 +62,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             return top;
     }
 
-    public Iterator iterator() {        
+    public Iterator iterator() {
         if (this.pipeline == null || !this.pipeline.hasNext()) {
             for (Pipe p : this.pipes) {
                 if (p instanceof GremlinRangeFilterPipe) {
@@ -79,18 +79,20 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         return this.pipeline;
     }
 
-    /** Simple method just to iterate over GPath
-     *  used in com.tinkerpop.gremlin.functions.g.ime.ForceFunction
+    /**
+     * Simple method just to iterate over GPath
+     * used in com.tinkerpop.gremlin.functions.g.ime.ForceFunction
      */
     public void iterate() {
         Iterator itty = this.iterator();
         while (itty.hasNext()) itty.next();
     }
+
     private Iterator pipelineRoot() {
         if (this.persistentRoot == null) {
             this.persistentRoot = this.root.getValue();
         }
-        
+
         final Object root = this.persistentRoot;
 
         if (root instanceof Iterable) {
@@ -151,13 +153,13 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             this.persistentRoot = this.root.getValue();
         }
     }
-    
+
     public String toString() {
         final Object result = this.getValue();
 
         if (result instanceof Iterable) {
             String out = "";
-            
+
             for (Object o : (Iterable) this.getValue())
                 out += o.toString() + COMMA_SPACE;
 

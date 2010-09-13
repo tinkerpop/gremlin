@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.functions.g.util;
 
 import com.tinkerpop.gremlin.BaseTest;
-import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.functions.Function;
 
 /**

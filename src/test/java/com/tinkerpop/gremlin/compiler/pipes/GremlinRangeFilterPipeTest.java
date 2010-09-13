@@ -16,10 +16,10 @@ import java.util.Map;
 public class GremlinRangeFilterPipeTest extends BaseTest {
 
     public void testEmbeddedIterator() {
-        List list = Arrays.asList(1,2, Arrays.asList(3,4),5);
+        List list = Arrays.asList(1, 2, Arrays.asList(3, 4), 5);
         Pipe pipe = new GremlinRangeFilterPipe(Arrays.asList(2));
         pipe.setStarts(list);
-        while(pipe.hasNext()) {
+        while (pipe.hasNext()) {
             Object object = pipe.next();
             assertTrue(object.equals(3) || object.equals(4));
         }
@@ -28,15 +28,15 @@ public class GremlinRangeFilterPipeTest extends BaseTest {
 
     public void testMapIterator() {
         Map map = new HashMap();
-        map.put("marko",Arrays.asList(3,4));
+        map.put("marko", Arrays.asList(3, 4));
         Pipe pipe1 = new GremlinPropertyPipe("marko");
         Pipe pipe2 = new GremlinRangeFilterPipe(Arrays.asList(1));
-        Pipe pipeline = new Pipeline(pipe1,pipe2);
+        Pipe pipeline = new Pipeline(pipe1, pipe2);
         pipeline.setStarts(new SingleIterator(map));
         assertTrue(pipeline.hasNext());
-        while(pipeline.hasNext()) {
+        while (pipeline.hasNext()) {
             Object object = pipeline.next();
-            assertEquals(object,4);
+            assertEquals(object, 4);
         }
     }
 }

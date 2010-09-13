@@ -25,7 +25,7 @@ public class DeclareVariable implements Operation {
     private final GremlinScriptContext context;
 
     private final String UNSUPPORTED_ARGUMENT = "left hand side value must be a variable or a path reference to a map or element";
-    
+
     public DeclareVariable(final Atom<Object> object, final Operation valueOp, final GremlinScriptContext context) {
         this.object = object;
         this.valueOperation = valueOp;
@@ -47,7 +47,7 @@ public class DeclareVariable implements Operation {
             Pipe lastPipe = pipes.get(size);
 
             Object subPathValue;
-            
+
             if (size == 0) {
                 subPathValue = path.getRoot().getValue();
             } else {

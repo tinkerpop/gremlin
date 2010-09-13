@@ -16,7 +16,7 @@ public class SortFunctionTest extends BaseTest {
 
     public void testSortFunctionMap() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Map map = new HashMap();
         map.put("marko", 2);
         map.put("josh", 1);
@@ -70,7 +70,7 @@ public class SortFunctionTest extends BaseTest {
         list.add(3);
 
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Object> function = new SortFunction();
         this.stopWatch();
         List sortedList = (List) (function.compute(createUnaryArgs(list, true), context)).getValue();

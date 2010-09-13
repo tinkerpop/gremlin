@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ public class RetainFunctionTest extends BaseTest {
 
     public void testRetain() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Boolean> function = new RetainFunction();
         List list = Arrays.asList("pavel", 23);
         assertTrue(list.contains("pavel"));
@@ -41,7 +41,7 @@ public class RetainFunctionTest extends BaseTest {
 
     }
 
-     public void testInline() throws Exception {
+    public void testInline() throws Exception {
         List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:retain(1)]", true);
         assertEquals(results.size(), 4);
         assertEquals(results.get(0), 1);

@@ -21,7 +21,7 @@ public class ExceptFunction extends AbstractFunction<Boolean> {
 
         final Object check = arguments.get(0).compute().getValue();
         final Object point = context.getCurrentPoint();
-        
+
         if (check instanceof Collection) {
             return new Atom<Boolean>(!((Collection) check).contains(point));
         } else if (check instanceof Iterable) {

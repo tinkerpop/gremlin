@@ -17,11 +17,14 @@ public class OpenFunction extends AbstractFunction<Graph> {
     private final String FUNCTION_NAME = "open";
 
     public Atom<Graph> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
-
-        if (arguments.size() == 1) {
-            return new Atom<Graph>(new Neo4jGraph((String) arguments.get(0).compute().getValue()));
-        } else {
-            throw new RuntimeException(createUnsupportedArgumentMessage());
+        try {
+            if (arguments.size() == 1) {
+                return new Atom<Graph>(new Neo4jGraph((String) arguments.get(0).compute().getValue()));
+            } else {
+                throw new RuntimeException(createUnsupportedArgumentMessage());
+            }
+        } catch (Error e) {
+            throw new RuntimeException("Dependencies not available for this graph");
         }
     }
 

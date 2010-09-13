@@ -2,9 +2,9 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class SetFunctionTest extends BaseTest {
         assertEquals(count(atom.getValue()), 0);
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(1,1,2,2,2,3,3,3,3,4,4,4,4,4), context);
+        atom = function.compute(createUnaryArgs(1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4), context);
         printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
         assertEquals(count(atom.getValue()), 4);
         assertTrue(atom.getValue().contains(1));
@@ -33,7 +33,7 @@ public class SetFunctionTest extends BaseTest {
         assertTrue(atom.getValue().contains(4));
     }
 
-     public void testSetInline() throws Exception {
+    public void testSetInline() throws Exception {
 
         List<Integer> results = evaluateGremlinScriptIterable("g:set(1,2,3)[. > 1]", true);
         assertEquals(results.size(), 2);

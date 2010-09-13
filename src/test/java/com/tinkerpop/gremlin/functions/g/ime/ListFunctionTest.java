@@ -2,9 +2,9 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 import javax.script.ScriptContext;
 import java.util.ArrayList;

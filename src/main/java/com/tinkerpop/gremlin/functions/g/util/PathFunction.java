@@ -19,13 +19,13 @@ public class PathFunction extends AbstractFunction<Boolean> {
         try {
             for (Operation o : arguments) {
                 final Atom atom = o.compute();
-                
+
                 if (atom instanceof DynamicEntity) {
                     atom.getValue();
                 }
             }
         } catch (Exception e) { /* returning true anyway */ }
-        
+
         return new Atom<Boolean>(true);
     }
 

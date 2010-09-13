@@ -12,16 +12,16 @@ public class If implements Operation {
     private final Operation condition;
     private final CodeBlock body;
     private final CodeBlock alternative;
-    
+
     /*
-      * $x := 0
-      * $y := 5
-      * $z := 7
-      *
-      * if $x > 0 or ($y + 2) <= 5 or ($z - 1) >= 6
-      *    ...do something...
-      * end
-      */
+    * $x := 0
+    * $y := 5
+    * $z := 7
+    *
+    * if $x > 0 or ($y + 2) <= 5 or ($z - 1) >= 6
+    *    ...do something...
+    * end
+    */
 
     public If(final Operation condition, final CodeBlock body, final CodeBlock alternative) {
         this.condition = condition;

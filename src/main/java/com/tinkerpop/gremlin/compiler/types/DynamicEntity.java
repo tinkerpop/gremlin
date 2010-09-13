@@ -10,11 +10,11 @@ public abstract class DynamicEntity extends Atom {
     public Object getValue() {
         return value();
     }
-    
+
     public boolean isNull() {
         return value() == null;
     }
-    
+
     protected boolean isClassOf(final Class klass) {
         return (!isNull()) && (klass.isAssignableFrom(value().getClass()));
     }

@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.g.number;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -13,7 +13,7 @@ public class IntegerFunctionTest extends BaseTest {
     public void testInteger() {
         Function<Integer> function = new IntegerFunction();
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         this.stopWatch();
         Atom<Integer> atom = function.compute(createUnaryArgs("1.02"), context);
         printPerformance(function.getFunctionName() + " function", 1, "long parse", this.stopWatch());

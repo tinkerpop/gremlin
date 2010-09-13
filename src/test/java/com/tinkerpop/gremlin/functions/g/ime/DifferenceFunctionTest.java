@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ public class DifferenceFunctionTest extends BaseTest {
 
     public void testDifference() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Set> function = new DifferenceFunction();
         List list1 = Arrays.asList("marko", "pavel", "peter", "josh");
         List list2 = Arrays.asList("marko", "pavel");

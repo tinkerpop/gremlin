@@ -56,7 +56,6 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
     }
 
 
-
     private static void typeCastContextBindings(final ScriptContext context) {
         for (int scope : context.getScopes()) {
             Bindings bindings = context.getBindings(scope);

@@ -12,9 +12,9 @@ public class TypeFunctionTest extends BaseTest {
     public void testType() {
         Function<String> function = new TypeFunction();
         this.stopWatch();
-        
+
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         String type = function.compute(createUnaryArgs("marko"), context).getValue();
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertEquals(type, "string");

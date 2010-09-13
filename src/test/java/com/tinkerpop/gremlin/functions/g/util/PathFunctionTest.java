@@ -13,7 +13,7 @@ public class PathFunctionTest extends BaseTest {
         Function<Boolean> function = new PathFunction();
         this.stopWatch();
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         assertTrue(function.compute(createUnaryArgs(), context).getValue());
         assertTrue(function.compute(createUnaryArgs(1), context).getValue());
         assertTrue(function.compute(createUnaryArgs(null), context).getValue());

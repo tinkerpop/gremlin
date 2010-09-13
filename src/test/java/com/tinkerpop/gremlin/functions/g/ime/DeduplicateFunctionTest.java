@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ public class DeduplicateFunctionTest extends BaseTest {
 
     public void testDeduplicateList() {
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Set> function = new DeduplicateFunction();
         this.stopWatch();
         Atom<Set> atom = function.compute(createUnaryArgs(Arrays.asList(1.0d, 2.0d, 3.0d, 4.0d)), context);

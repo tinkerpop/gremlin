@@ -19,7 +19,7 @@ public class SubstringAfterFunction extends AbstractFunction<String> {
         if (arguments.size() == 2) {
             String base = (String) arguments.get(0).compute().getValue();
             String check = (String) arguments.get(1).compute().getValue();
-            return new Atom<String>(base.substring(base.indexOf(check)+check.length()));
+            return new Atom<String>(base.substring(base.indexOf(check) + check.length()));
         } else {
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
         }

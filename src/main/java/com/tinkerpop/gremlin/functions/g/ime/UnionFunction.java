@@ -26,7 +26,7 @@ public class UnionFunction extends AbstractFunction<Set> {
             for (Operation operation : arguments) {
                 final Object object = operation.compute().getValue();
                 if (object instanceof Iterable) {
-                     PipeHelper.fillCollection(((Iterable) object).iterator(), set);
+                    PipeHelper.fillCollection(((Iterable) object).iterator(), set);
                 } else {
                     set.add(object);
                 }

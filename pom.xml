@@ -68,21 +68,20 @@
             <artifactId>jung-algorithms</artifactId>
             <version>2.0</version>
         </dependency>
+        <!-- SESAME ?? DEPENDENCIES -->
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-rdf-sail</artifactId>
-            <version>0.6-SNAPSHOT</version>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-sail-memory</artifactId>
+            <version>2.3.1</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-rdf</artifactId>
-            <version>0.7-SNAPSHOT</version>
-            <type>jar</type>           
-        </dependency>
-        <dependency>
-            <groupId>net.fortytwo</groupId>
-            <artifactId>linked-data-sail</artifactId>
-            <version>0.5</version>
+            <groupId>org.openrdf.sesame</groupId>
+            <artifactId>sesame-repository-sail</artifactId>
+            <version>2.3.1</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <!-- TESTING -->
         <dependency>

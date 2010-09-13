@@ -20,7 +20,7 @@ public class Console {
     private static final String THREE_SPACES = "   ";
     private static final String HISTORY_FILE = ".gremlin_history";
     private static final String HISTORY_ERROR = "Error: Can't set history file to " + HISTORY_FILE;
-    
+
     private static final String[] compoundStatements = {"if", "while", "repeat", "foreach", "func", "path"};
 
     public static void main(String[] args) throws Exception {
@@ -33,7 +33,7 @@ public class Console {
         final ConsoleReader reader = new ConsoleReader();
         reader.setBellEnabled(false);
         reader.setUseHistory(true);
-        
+
         try {
             History history = new History();
             history.setHistoryFile(new File(HISTORY_FILE));
@@ -56,7 +56,7 @@ public class Console {
         boolean inCompoundStatement = false;
 
         final GremlinScriptEngine engine = new GremlinScriptEngine();
-        
+
         while (line != null) {
 
             // set appropriate prompt
@@ -107,7 +107,7 @@ public class Console {
             try {
                 engine.eval(line);
             } catch (SyntaxErrorException e) {
-                System.err.println(e.getMessage());   
+                System.err.println(e.getMessage());
             } catch (Exception e) {
                 engine.getContext().getErrorWriter().flush();
                 String message = GremlinScriptEngine.exceptionInPrintableFormat(e);

@@ -5,9 +5,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.GremlinScriptEngine;
-import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import javax.script.ScriptContext;
 import java.util.List;
@@ -56,8 +56,8 @@ public class RepeatTest extends BaseTest {
         printPerformance("repeat statement", 2, "iterations over graph", this.stopWatch());
         assertEquals(results.size(), 0);
 
-        assertTrue(asList((Iterable)context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE)).contains(graph.getVertex(5)));
-        assertTrue(asList((Iterable)context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE)).contains(graph.getVertex(3)));
+        assertTrue(asList((Iterable) context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE)).contains(graph.getVertex(5)));
+        assertTrue(asList((Iterable) context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE)).contains(graph.getVertex(3)));
 
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
         this.stopWatch();

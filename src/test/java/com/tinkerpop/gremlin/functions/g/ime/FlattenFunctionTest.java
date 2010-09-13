@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.functions.g.ime;
 
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,14 +19,14 @@ public class FlattenFunctionTest extends BaseTest {
         Function<List> function = new FlattenFunction();
 
         this.stopWatch();
-        Atom<List> atom = function.compute(createUnaryArgs(1,2,3), context);
+        Atom<List> atom = function.compute(createUnaryArgs(1, 2, 3), context);
         printPerformance(function.getFunctionName() + " function", 1, "flat list flatten", this.stopWatch());
         assertEquals(atom.getValue().get(0), 1);
         assertEquals(atom.getValue().get(1), 2);
         assertEquals(atom.getValue().get(2), 3);
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(1,2, Arrays.asList(3,4,5)), context);
+        atom = function.compute(createUnaryArgs(1, 2, Arrays.asList(3, 4, 5)), context);
         printPerformance(function.getFunctionName() + " function", 1, "single embedded list flatten", this.stopWatch());
         assertEquals(atom.getValue().get(0), 1);
         assertEquals(atom.getValue().get(1), 2);
@@ -35,7 +35,7 @@ public class FlattenFunctionTest extends BaseTest {
         assertEquals(atom.getValue().get(4), 5);
 
         this.stopWatch();
-        atom = function.compute(createUnaryArgs(1,2, Arrays.asList(3,4,Arrays.asList(5,6,7),8,Arrays.asList(9),Arrays.asList(),10)), context);
+        atom = function.compute(createUnaryArgs(1, 2, Arrays.asList(3, 4, Arrays.asList(5, 6, 7), 8, Arrays.asList(9), Arrays.asList(), 10)), context);
         printPerformance(function.getFunctionName() + " function", 1, "double embedded list flatten", this.stopWatch());
         assertEquals(atom.getValue().get(0), 1);
         assertEquals(atom.getValue().get(1), 2);

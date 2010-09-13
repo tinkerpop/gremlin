@@ -5,8 +5,8 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.functions.Function;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.functions.Function;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,7 +16,7 @@ public class IdVertexFunctionTest extends BaseTest {
     public void testIdVertex() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
-        
+
         Function<Vertex> function = new IdVertexFunction();
         assertEquals(function.getFunctionName(), "id-v");
         this.stopWatch();

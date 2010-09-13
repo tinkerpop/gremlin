@@ -81,7 +81,7 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(((List) (engine.eval("g:concat($name,'-test')", manager.getBindings()))).get(0), "global-test");
         assertEquals(((List) (engine.eval("$name"))).get(0), "engine");
 
-        assertEquals(((List)engine.eval("$name := 'redefined global'", engine.getBindings(ScriptContext.GLOBAL_SCOPE))).get(0), "redefined global");
+        assertEquals(((List) engine.eval("$name := 'redefined global'", engine.getBindings(ScriptContext.GLOBAL_SCOPE))).get(0), "redefined global");
         assertEquals(manager.getBindings().get("$name"), "redefined global");
         assertEquals(((List) (engine.eval("g:concat($name,'-test')", manager.getBindings()))).get(0), "redefined global-test");
         assertEquals(((List) (engine.eval("$name"))).get(0), "engine");
@@ -511,7 +511,7 @@ public class GremlinScriptEngineTest extends BaseTest {
 
         GremlinScriptContext context = new GremlinScriptContext();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Integer>(1));
-        
+
         assertEquals(evaluateGremlinScriptPrimitive("(. + (2 - 3))[0]", context, true), 0);
         assertEquals(evaluateGremlinScriptPrimitive("((.) + (2 div 1))[0]", context, true), 3.0d);
         assertEquals(evaluateGremlinScriptPrimitive("((. + 2.5) div 0.5)[0]", context, true), 7.0d);
@@ -533,8 +533,8 @@ public class GremlinScriptEngineTest extends BaseTest {
         Map mResults = (Map) evaluateGremlinScriptPrimitive("$m", context, true);
         assertEquals(mResults.size(), 2);
         assertEquals(mResults.get("name w/ space"), 1);
-        assertEquals(mResults.get("another name"), 4);        
-        
+        assertEquals(mResults.get("another name"), 4);
+
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));

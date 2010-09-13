@@ -28,10 +28,10 @@ public class DifferenceFunction extends AbstractFunction<Set> {
                 if (object instanceof Iterable) {
                     if (null == set) {
                         set = new HashSet();
-                        PipeHelper.fillCollection(((Iterable)object).iterator(), set);
+                        PipeHelper.fillCollection(((Iterable) object).iterator(), set);
                     } else {
                         Set temp = new HashSet();
-                        PipeHelper.fillCollection(((Iterable)object).iterator(), temp);
+                        PipeHelper.fillCollection(((Iterable) object).iterator(), temp);
                         set.removeAll(temp);
                     }
                 } else {
