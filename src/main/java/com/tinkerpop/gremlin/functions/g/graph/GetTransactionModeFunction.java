@@ -13,31 +13,21 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AutoTransactionsFunction extends AbstractFunction<Object> {
+public class GetTransactionModeFunction extends AbstractFunction<String> {
 
-    private final String FUNCTION_NAME = "auto-tx";
+    private final String FUNCTION_NAME = "get-tx-mode";
 
-    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         if (graph instanceof TransactionalGraph) {
-            if (arguments.size() == 1) {
-                ((TransactionalGraph) graph).setAutoTransactions((Boolean) arguments.get(0).compute().getValue());
-            } else if (arguments.size() == 2) {
-                ((TransactionalGraph) graph).setAutoTransactions((Boolean) arguments.get(1).compute().getValue());
-            } else {
-                throw new RuntimeException(createUnsupportedArgumentMessage());
-            }
-
+            return new Atom<String>(((TransactionalGraph) graph).getTransactionMode().toString());
         } else {
             throw new RuntimeException("Graph does not support transactions");
         }
-
-        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {
         return this.FUNCTION_NAME;
     }
-
 }
