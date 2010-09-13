@@ -28,7 +28,7 @@ public class SetTransactionModeFunction extends AbstractFunction<Object> {
                 else if (modeString.equals("manual"))
                     ((TransactionalGraph) graph).setTransactionMode(TransactionalGraph.Mode.MANUAL);
                 else
-                    throw new RuntimeException(createUnsupportedArgumentMessage("Provide mode must be either automatic or manual"));
+                    throw new RuntimeException(createUnsupportedArgumentMessage("Provided mode must be either automatic or manual"));
 
 
             } else if (arguments.size() == 2) {
@@ -38,7 +38,7 @@ public class SetTransactionModeFunction extends AbstractFunction<Object> {
                 else if (modeString.equals("manual"))
                     ((TransactionalGraph) graph).setTransactionMode(TransactionalGraph.Mode.MANUAL);
                 else
-                    throw new RuntimeException(createUnsupportedArgumentMessage("Provide mode must be either automatic or manual"));
+                    throw new RuntimeException(createUnsupportedArgumentMessage("Provided mode must be either automatic or manual"));
             } else {
                 throw new RuntimeException(createUnsupportedArgumentMessage());
             }

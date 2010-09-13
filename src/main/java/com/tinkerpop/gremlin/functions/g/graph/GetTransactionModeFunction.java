@@ -21,7 +21,7 @@ public class GetTransactionModeFunction extends AbstractFunction<String> {
 
         final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         if (graph instanceof TransactionalGraph) {
-            return new Atom<String>(((TransactionalGraph) graph).getTransactionMode().toString());
+            return new Atom<String>(((TransactionalGraph) graph).getTransactionMode().toString().toLowerCase());
         } else {
             throw new RuntimeException("Graph does not support transactions");
         }

@@ -19,17 +19,14 @@ public class StartTransactionFunction extends AbstractFunction<Boolean> {
 
     public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        if (arguments.size() > 1) {
-
-            final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
-            if (graph instanceof TransactionalGraph)
-                ((TransactionalGraph) graph).startTransaction();
-            else
-                throw new RuntimeException("Graph does not support transactions");
-
-        } else {
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        if (null == graph)
             throw new RuntimeException(createUnsupportedArgumentMessage());
-        }
+
+        if (graph instanceof TransactionalGraph)
+            ((TransactionalGraph) graph).startTransaction();
+        else
+            throw new RuntimeException("Graph does not support transactions");
 
         return new Atom<Boolean>(true);
     }
