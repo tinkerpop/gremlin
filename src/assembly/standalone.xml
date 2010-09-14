@@ -17,6 +17,7 @@
             <outputDirectory>/</outputDirectory>
             <unpack>true</unpack>
             <scope>compile</scope>
+            <useTransitiveDependencies>true</useTransitiveDependencies>
         </dependencySet>
     </dependencySets>
 
