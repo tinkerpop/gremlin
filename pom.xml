@@ -74,7 +74,7 @@
         <!-- GRAPHDB SUPPORT -->
         <dependency>
             <groupId>com.tinkerpop</groupId>
-            <artifactId>graphdb-deps</artifactId>
+            <artifactId>graphdb-deps-all</artifactId>
             <version>0.1-SNAPSHOT</version>
             <type>pom</type>
             <scope>provided</scope>
