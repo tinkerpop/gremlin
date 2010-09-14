@@ -71,160 +71,14 @@
             <artifactId>jung-algorithms</artifactId>
             <version>2.0</version>
         </dependency>
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- NEO4J SUPPORT -->
+        <!-- GRAPHDB SUPPORT -->
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-kernel</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-index</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <!-- ORIENTDB SUPPORT -->
-        <dependency>
-            <groupId>com.orientechnologies</groupId>
-            <artifactId>orientdb-core</artifactId>
-            <version>0.9.22-SNAPSHOT</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.orientechnologies</groupId>
-            <artifactId>orient-commons</artifactId>
-            <version>0.9.22-SNAPSHOT</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-        <!-- SAIL SUPPORT -->
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame</artifactId>
-            <version>2.3.1</version>
+            <groupId>com.tinkerpop</groupId>
+            <artifactId>graphdb-deps</artifactId>
+            <version>0.1-SNAPSHOT</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-core</artifactId>
-            <version>2.3.1</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-model</artifactId>
-            <version>2.3.1</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-sail</artifactId>
-            <version>2.3.1</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-sail-api</artifactId>
-            <version>2.3.1</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-sail-memory</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-repository-sail</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-rio-ntriples</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-sail-nativerdf</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-queryparser-sparql</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-queryparser-api</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-queryalgebra-model</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openrdf.sesame</groupId>
-            <artifactId>sesame-queryalgebra-evaluation</artifactId>
-            <version>2.3.1</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <!-- NEO4J SAIL SUPPORT -->
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-rdf-sail</artifactId>
-            <version>0.6-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-rdf</artifactId>
-            <version>0.7-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <!-- LINKED DATA SAIL SUPPORT -->
-        <dependency>
-            <groupId>net.fortytwo</groupId>
-            <artifactId>linked-data-sail</artifactId>
-            <version>0.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
-        <!-- GRAPH ?? DEPENDENCIES -->
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -235,36 +89,9 @@
     </dependencies>
     <repositories>
         <repository>
-            <id>maven repository</id>
-            <url>http://mvnrepository.com</url>
-        </repository>
-        <repository>
             <id>tinkerpop-repository</id>
             <name>TinkerPop Maven2 Repository</name>
             <url>http://tinkerpop.com/maven2</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>aduna-repo</id>
-            <name>Aduna repository</name>
-            <url>http://repo.aduna-software.org/maven2/releases</url>
-        </repository>
-        <repository>
-            <id>neo4j-public-repository</id>
-            <name>Publicly available Maven 2 repository for Neo4j</name>
-            <url>http://m2.neo4j.org</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>orientechnologies-repository</id>
-            <name>Orient Technologies Maven2 Repository</name>
-            <url>http://www.orientechnologies.com/listing/m2</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
