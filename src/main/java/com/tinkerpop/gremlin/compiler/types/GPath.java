@@ -79,15 +79,6 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         return this.pipeline;
     }
 
-    /**
-     * Simple method just to iterate over GPath
-     * used in com.tinkerpop.gremlin.functions.g.ime.ForceFunction
-     */
-    public void iterate() {
-        Iterator itty = this.iterator();
-        while (itty.hasNext()) itty.next();
-    }
-
     private Iterator pipelineRoot() {
         if (this.persistentRoot == null) {
             this.persistentRoot = this.root.getValue();

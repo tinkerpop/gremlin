@@ -27,11 +27,21 @@ public class OpenFunction extends AbstractFunction<Graph> {
                 directory.mkdirs();
 
             try {
-                OrientGraph graph = new OrientGraph("local:" + url);
-                if (graph.exists()) {
-                    graph.open(ADMIN, ADMIN);
-                } else
-                    graph.create();
+                OrientGraph graph = new OrientGraph("local:" + url, ADMIN, ADMIN);
+                return new Atom<Graph>(graph);
+            } catch (Error e) {
+                throw new RuntimeException("Dependencies not available for this graph");
+            }
+        } else if (arguments.size() == 3) {
+            String url = (String) arguments.get(0).compute().getValue();
+            String username = (String) arguments.get(1).compute().getValue();
+            String password = (String) arguments.get(2).compute().getValue();
+            final File directory = new File(url);
+            if (!directory.exists())
+                directory.mkdirs();
+
+            try {
+                OrientGraph graph = new OrientGraph("local:" + url, username, password);
                 return new Atom<Graph>(graph);
             } catch (Error e) {
                 throw new RuntimeException("Dependencies not available for this graph");
