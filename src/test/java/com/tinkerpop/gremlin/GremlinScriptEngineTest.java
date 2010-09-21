@@ -522,7 +522,7 @@ public class GremlinScriptEngineTest extends BaseTest {
     }
 
     public void testPropertyNamesWithSpaces() throws Exception {
-        GremlinScriptContext context = new GremlinScriptContext();
+        final GremlinScriptContext context = new GremlinScriptContext();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put("$m", new Atom<Map>(new HashMap()));
 
         assertEquals(evaluateGremlinScriptPrimitive("$m/@'name w/ space' := 1", context, true), 1);
@@ -547,6 +547,24 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
         name = results.get(2);
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
+    }
+
+    public void testRecursiveFunctionDefinitionAndCall() throws Exception {
+        final GremlinScriptContext context = new GremlinScriptContext();
+        
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive(
+                                       "func ex:hello($x)\n" +
+                                       "  if $x = 10 or $x > 10\n" +
+                                       "    $x\n" +
+                                       "  else\n" +
+                                       "    ex:hello($x + 1)\n" +
+                                       "  end\n" +
+                                       "end", context, false));
+
+        assertEquals(evaluateGremlinScriptPrimitive("ex:hello(12)", context, true), 12);
+        assertEquals(evaluateGremlinScriptPrimitive("ex:hello(6)",  context, true), 10);
+        assertEquals(evaluateGremlinScriptPrimitive("ex:hello(20)", context, true), 20);
+        assertEquals(evaluateGremlinScriptPrimitive("ex:hello(9)",  context, true), 10);
     }
 
 }

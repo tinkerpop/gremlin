@@ -83,6 +83,8 @@ options {
     public static boolean SCRIPT_MODE = false;
 
     private boolean isGPath = false;
+    private boolean inBlock = false;
+
     private int gpathScope = 0;
 
     private Pattern rangePattern = Pattern.compile("^(\\d+)..(\\d+)");
@@ -359,16 +361,18 @@ gpath_statement returns [Atom value]
     }
 	:	^(GPATH (step)+) 
         {
-            List<Pair<Atom<Object>, List<Operation>>> stepList = $gpath_statement::steps;
+            if (!inBlock) {
+                List<Pair<Atom<Object>, List<Operation>>> stepList = $gpath_statement::steps;
 
-            if (stepList.size() == 1) {
-                Pair<Atom<Object>, List<Operation>> currentPair = stepList.get(0);
-
-                Atom<Object> token = currentPair.getA();
-                List<Operation> predicates = currentPair.getB();
-                $value = (predicates.size() == 0) ? singleGPathStep(token) : compileCollectionCall(token, predicates);
-            } else {
-                $value = compileGPathCall(stepList);
+                if (stepList.size() == 1) {
+                    Pair<Atom<Object>, List<Operation>> currentPair = stepList.get(0);
+                
+                    Atom<Object> token = currentPair.getA();
+                    List<Operation> predicates = currentPair.getB();
+                    $value = (predicates.size() == 0) ? singleGPathStep(token) : compileCollectionCall(token, predicates);
+                } else {
+                    $value = compileGPathCall(stepList);
+                }
             }
         }
 	;
@@ -441,7 +445,11 @@ repeat_statement returns [Operation op]
 
 block returns [CodeBlock cb]
     @init {
+        inBlock = true;
         List<Tree> statements = new LinkedList<Tree>();
+    }
+    @after {
+        inBlock = false;
     }
     :	^(BLOCK ( statement { statements.add($statement.tree); } )* ) { $cb = new CodeBlock(statements, this.context); }
     ;
@@ -488,10 +496,12 @@ function_call returns [Atom value]
     }
 	:	^(FUNC_CALL ^(FUNC_NAME ^(NS ns=IDENTIFIER) ^(NAME fn_name=IDENTIFIER)) ^(ARGS ( ^(ARG st=statement { arguments.add($st.op); }) )* ))
         {
-            try {
-                $value = new Func(this.getFunction($ns.text, $fn_name.text), arguments, this.context);
-            } catch(Exception e) {
-                this.context.writeError(e.getMessage());
+            if (!inBlock) { 
+                try {
+                    $value = new Func(this.getFunction($ns.text, $fn_name.text), arguments, this.context);
+                } catch(Exception e) {
+                    this.context.writeError(e.getMessage());
+                }
             }
         }
 	;

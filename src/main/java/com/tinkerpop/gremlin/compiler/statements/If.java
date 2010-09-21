@@ -34,9 +34,9 @@ public class If implements Operation {
 
         if (!condResult.isNull()) {
             if ((Boolean) condResult.getValue()) {
-                this.body.invoke();
+                return this.body.invoke();
             } else if (null != this.alternative) {
-                this.alternative.invoke();
+                return this.alternative.invoke();
             }
         }
 
@@ -44,6 +44,6 @@ public class If implements Operation {
     }
 
     public Type getType() {
-        return Type.CONTROL_STATEMENT;
+        return Type.STATEMENT;
     }
 }

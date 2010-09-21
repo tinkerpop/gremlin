@@ -15,8 +15,7 @@ import java.util.List;
  */
 public class NativeFunction implements Function<Object> {
 
-    private String FUNCTION_NAME;
-
+    private final String FUNCTION_NAME;
     private final List<String> arguments;
     private final CodeBlock body;
 

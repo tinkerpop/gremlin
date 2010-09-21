@@ -18,9 +18,10 @@ public class IfTest extends BaseTest {
         this.stopWatch();
         List results = (List) engine.eval("$x := 0\nif true\n$x := 10\nend\n$x\n", context);
         printPerformance("if statement", 1, "boolean check", this.stopWatch());
-        assertEquals(results.size(), 2);
+        assertEquals(results.size(), 3);
         assertEquals(results.get(0), 0);
         assertEquals(results.get(1), 10);
+        assertEquals(results.get(2), 10);
     }
 
     public void testIfElse() throws Exception {
@@ -30,9 +31,10 @@ public class IfTest extends BaseTest {
         this.stopWatch();
         List results = (List) engine.eval("$x := 0\nif false\n$x := 10\nelse\n$x := 20\nend\n$x\n", context);
         printPerformance("if statement", 1, "boolean check", this.stopWatch());
-        assertEquals(results.size(), 2);
+        assertEquals(results.size(), 3);
         assertEquals(results.get(0), 0);
         assertEquals(results.get(1), 20);
+        assertEquals(results.get(2), 20);
     }
 
     public void testEmbeddedIfElse() throws Exception {
@@ -42,8 +44,10 @@ public class IfTest extends BaseTest {
         this.stopWatch();
         List results = (List) engine.eval("$x := 0\nif false\n$x := 10\nelse\nif true\n$x := 30\nelse\n$x := 20\nend\nend\n$x\n", context);
         printPerformance("if statement", 2, "embedded boolean checks", this.stopWatch());
-        assertEquals(results.size(), 2);
+        assertEquals(results.size(), 3);
         assertEquals(results.get(0), 0);
         assertEquals(results.get(1), 30);
+        assertEquals(results.get(2), 30);
     }
+
 }
