@@ -11,12 +11,12 @@ bc. <repository>
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
 
-h3. Version 0.5 (Gremlivich -- NOT OFFICIALLY RELEASED YET)
+h3. Version 0.5 (Gremlivich -- September 22, 2010)
 
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
 </dependency>
 
 * A complete redesign and implementation of the Gremlin compiler
