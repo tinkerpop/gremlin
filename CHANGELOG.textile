@@ -9,6 +9,18 @@ bc. <repository>
 
 ==<hr/>==
 
+!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremalicious.png!
+
+h3. Version 0.6 (Gremalicious -- NOT OFFICIALLY RELEASED YET)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.6-SNAPSHOT</version>
+</dependency>
+
+==<hr/>==
+
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
 
 h3. Version 0.5 (Gremlivich -- September 22, 2010)
