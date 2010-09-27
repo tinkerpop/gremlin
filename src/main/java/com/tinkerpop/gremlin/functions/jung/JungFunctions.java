@@ -10,8 +10,15 @@ public class JungFunctions extends AbstractFunctions {
     private static final String NAMESPACE = "jung";
 
     public JungFunctions() {
-        this.functions.add(new PageRankFunction());
-        this.functions.add(new DijkstraShortestPathFunction());
+        try
+        {
+            this.functions.add(new PageRankFunction());
+            this.functions.add(new DijkstraShortestPathFunction());
+        }
+        catch (NoClassDefFoundError ignore)
+        {
+            // If jung.jar is not provided, proceed without adding functions.
+        }
     }
 
     public String getNamespace() {
