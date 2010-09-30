@@ -21,7 +21,7 @@ public class Console {
     private static final String HISTORY_FILE = ".gremlin_history";
     private static final String HISTORY_ERROR = "Error: Can't set history file to " + HISTORY_FILE;
 
-    private static final String[] compoundStatements = {"if", "while", "repeat", "foreach", "func", "path"};
+    private static final String[] compoundStatements = {"if", "while", "repeat", "foreach", "func", "step"};
 
     public static void main(String[] args) throws Exception {
 

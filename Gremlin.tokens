@@ -11,14 +11,13 @@ NAME=9
 T__92=92
 T__90=90
 ARG=5
-PATH=11
 G_INT=43
 SingleEscapeCharacter=59
 INCLUDE=27
 ARGS=6
 DOUBLE=32
 VAR=4
-GPATH=12
+GPATH=11
 COMMENT=41
 T__96=96
 T__95=95
@@ -78,6 +77,7 @@ STR=33
 BOOLEAN=51
 IDENTIFIER=50
 EscapeCharacter=61
+NATIVE_STEP=12
 COLLECTION_CALL=40
 G_FLOAT=45
 PROPERTY_CALL=38
@@ -105,12 +105,12 @@ VARIABLE_CALL=39
 'repeat'=81
 '='=85
 '+'=91
+'step'=82
 ')'=69
 'else'=76
 'func'=83
 'and'=71
 '<='=88
-'path'=82
 '!='=86
 '<'=87
 'if'=75

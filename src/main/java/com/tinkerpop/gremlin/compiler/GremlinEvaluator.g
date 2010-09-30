@@ -284,7 +284,7 @@ statement returns [Operation op]
 	|	foreach_statement                   { $op = $foreach_statement.op; }
     |	while_statement                     { $op = $while_statement.op; }
 	|	repeat_statement                    { $op = $repeat_statement.op; }
-	|	path_definition_statement           { $op = $path_definition_statement.op; }
+	|	native_step_definition_statement    { $op = $native_step_definition_statement.op; }
 	|	function_definition_statement       { $op = $function_definition_statement.op; }
 	|	include_statement                   { $op = new UnaryOperation($include_statement.result); }
 	|   script_statement                    { $op = new UnaryOperation($script_statement.result); }
@@ -333,15 +333,19 @@ include_statement returns [Atom result]
         }
 	;
 	
-path_definition_statement returns [Operation op]
+native_step_definition_statement returns [Operation op]
     @init {
         List<Pipe> pipes = new ArrayList<Pipe>();
     }
-	:	^(PATH path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPath) $gpath.value).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
+	: ^(NATIVE_STEP name=IDENTIFIER block) 
+      {
+          //throw new RuntimeException("not properly supported yet.");
+      } 	
+    /*^(NATIVE_STEP path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPath) $gpath.value).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
         {
             this.context.getPathLibrary().registerPath($path_name.text, pipes);
             $op = new UnaryOperation(new Atom<Boolean>(true));
-        }
+        }*/
 	;
 	
 

@@ -16,9 +16,9 @@ tokens {
 	NAME; // function local name
 	FUNC_NAME; // function name : namespace? : local_function_name
 	
-	PATH;
 	GPATH;
-	
+	NATIVE_STEP;
+
 	STEP;
 	TOKEN;
 	PREDICATE;
@@ -124,7 +124,7 @@ statement
 	|	foreach_statement
 	|	while_statement
 	|	repeat_statement
-	|	path_definition_statement
+	|	native_step_definition_statement
 	|	function_definition_statement
 	|	include_statement
 	|   script_statement
@@ -166,10 +166,10 @@ repeat_statement
 		'end' -> ^(REPEAT statement block)
 	;
 	
-path_definition_statement
-	:	'path' IDENTIFIER NEWLINE
-		   statement NEWLINE
-		'end' -> ^(PATH IDENTIFIER statement)
+native_step_definition_statement
+	:	'step' IDENTIFIER NEWLINE
+		   block
+		'end' -> ^(NATIVE_STEP IDENTIFIER block)
 	;
 	
 function_definition_statement
