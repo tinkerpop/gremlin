@@ -1,19 +1,17 @@
 package com.tinkerpop.gremlin.steps;
 
-import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
-import com.tinkerpop.pipes.AbstractPipe;
 
 /**
  * @author Pavel A. Yaskevich
  */
-public class NativeStep extends AbstractPipe<Object,Object> implements Step {
+public class NativeStep extends AbstractStep<Object, Object> {
 
-    private final String name;
+    private final String stepName;
     private final CodeBlock block;
 
-    public NativeStep(final String name, final CodeBlock block) {
-        this.name  = name;
+    public NativeStep(final String stepName, final CodeBlock block) {
+        this.stepName = stepName;
         this.block = block;
     }
 
@@ -21,8 +19,8 @@ public class NativeStep extends AbstractPipe<Object,Object> implements Step {
     public Object processNextStart() {
         return this.block.invoke();
     }
-    
+
     public String getStepName() {
-        return this.name;
+        return this.stepName;
     }
 }

@@ -5,7 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface Step extends Pipe<Object, Object> {
+public interface Step<S,E> extends Pipe<S,E> {
 
     public String getStepName();
 
