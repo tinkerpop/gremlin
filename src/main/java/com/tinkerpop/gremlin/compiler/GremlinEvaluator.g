@@ -21,7 +21,8 @@ options {
     import java.util.Map;
     import java.util.HashMap;
     import java.util.Iterator;
-    
+    import java.util.Arrays;
+
     import java.util.regex.Pattern;
     import java.util.regex.Matcher;
 
@@ -65,7 +66,8 @@ options {
     import com.tinkerpop.pipes.pgm.PropertyPipe;
     import com.tinkerpop.pipes.filter.FilterPipe;
     import com.tinkerpop.pipes.filter.FutureFilterPipe;
-    
+    import com.tinkerpop.pipes.util.EndSupportPipe;
+
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 
     // util
@@ -73,6 +75,10 @@ options {
     import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
     import javax.script.ScriptContext;
+
+    // steps
+    import com.tinkerpop.gremlin.steps.Step;
+    import com.tinkerpop.gremlin.steps.NativeStep;
 }
 
 @members {
@@ -167,12 +173,12 @@ options {
     }
 
     private Atom<Object> makePipelineRoot(final Atom<Object> token, final List<Pipe> pipes) {
-        final PathLibrary paths = this.context.getPathLibrary();
+        final StepLibrary steps = this.context.getStepLibrary();
 
         if (token instanceof DynamicEntity) {
             return token;
-        } else if (token.isIdentifier() && paths.isPath(token.toString())) {
-            pipes.addAll(paths.getPath(token.toString()));
+        } else if (token.isIdentifier() && steps.isStep(token.toString())) {
+            pipes.add(new EndSupportPipe(steps.getStep(token.toString())));
             return this.getVariable(Tokens.ROOT_VARIABLE);
         } else {
             return token;
@@ -180,7 +186,7 @@ options {
     }
 
     private Atom<Object> singleGPathStep(final Atom<Object> token) {
-        final PathLibrary paths = this.context.getPathLibrary();
+        final StepLibrary steps = this.context.getStepLibrary();
 
         if (token instanceof DynamicEntity) {
             if (gpathScope == 1 && token instanceof Func) {
@@ -197,8 +203,8 @@ options {
 
             if (identifier.equals(Tokens.IDENTITY)) {
                 return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
-             } else if(paths.isPath(token.toString())) {
-                return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), paths.getPath(token.toString()), this.context);
+             } else if(steps.isStep(token.toString())) {
+                return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), Arrays.asList((Pipe) new EndSupportPipe(steps.getStep(token.toString()))), this.context);
             } else {
                 return new Atom<Object>(null);
             }
@@ -339,11 +345,13 @@ native_step_definition_statement returns [Operation op]
     }
 	: ^(NATIVE_STEP name=IDENTIFIER block) 
       {
-          //throw new RuntimeException("not properly supported yet.");
+          Step nativeStep = new NativeStep($name.text, $block.cb);
+          this.context.getStepLibrary().registerStep($name.text, nativeStep);
+          $op = new UnaryOperation(new Atom<Boolean>(true));
       } 	
     /*^(NATIVE_STEP path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPath) $gpath.value).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
         {
-            this.context.getPathLibrary().registerPath($path_name.text, pipes);
+            this.context.getStepLibrary().registerPath($path_name.text, pipes);
             $op = new UnaryOperation(new Atom<Boolean>(true));
         }*/
 	;

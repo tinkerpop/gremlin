@@ -485,7 +485,7 @@ public class GremlinScriptEngineTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        assertTrue((Boolean) evaluateGremlinScriptPrimitive("path simple\n./outE/inV\nend", context, true));
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("step simple\n./outE/inV\nend", context, true));
         assertEquals(evaluateGremlinScriptPrimitive("'simple'", context, true), "simple");
         assertNull(evaluateGremlinScriptPrimitive("'simple'[1]", context, true));
 

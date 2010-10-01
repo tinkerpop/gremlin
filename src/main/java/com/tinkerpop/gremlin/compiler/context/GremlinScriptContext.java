@@ -13,21 +13,21 @@ public class GremlinScriptContext extends SimpleScriptContext {
     private Object currentPoint;
 
     protected final FunctionLibrary functions;
-    protected final PathLibrary paths;
+    protected final StepLibrary steps;
 
     public GremlinScriptContext() {
         super();
         this.setBindings(new VariableLibrary(), ScriptContext.ENGINE_SCOPE);
         this.functions = new FunctionLibrary();
-        this.paths = new PathLibrary();
+        this.steps = new StepLibrary();
     }
 
     public FunctionLibrary getFunctionLibrary() {
         return this.functions;
     }
 
-    public PathLibrary getPathLibrary() {
-        return this.paths;
+    public StepLibrary getStepLibrary() {
+        return this.steps;
     }
 
     public void writeOutput(Object o) throws RuntimeException {

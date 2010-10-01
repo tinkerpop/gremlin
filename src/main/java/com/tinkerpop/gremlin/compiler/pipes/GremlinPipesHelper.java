@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.pipes;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.context.PathLibrary;
+import com.tinkerpop.gremlin.compiler.context.StepLibrary;
 import com.tinkerpop.gremlin.compiler.operations.BinaryOperation;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
@@ -15,6 +15,7 @@ import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
 import com.tinkerpop.pipes.pgm.*;
+import com.tinkerpop.pipes.util.EndSupportPipe;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
 import java.lang.reflect.Constructor;
@@ -34,10 +35,10 @@ public class GremlinPipesHelper {
         if (tokenPipe != null) {
             pipes.add(tokenPipe);
         } else {
-            PathLibrary paths = context.getPathLibrary();
+            StepLibrary steps = context.getStepLibrary();
 
-            if (paths.isPath(tokenString)) {
-                pipes.addAll(paths.getPath(tokenString));
+            if (steps.isStep(tokenString)) {
+                pipes.add(new EndSupportPipe(steps.getStep(tokenString)));
             } else {
                 throw new RuntimeException("No pipe exists for '" + tokenString + "'");
             }
