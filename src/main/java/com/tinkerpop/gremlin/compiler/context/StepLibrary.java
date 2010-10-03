@@ -16,13 +16,13 @@ public class StepLibrary extends HashMap<String, Step> {
 
         for (final Steps steps : stepsService) {
             for (final Step step : steps.getSteps()) {
-                this.registerStep(step.getStepName(), step);
+                this.registerStep(step);
             }
         }
     }
 
-    public void registerStep(final String stepName, final Step step) {
-        this.put(stepName, step);
+    public void registerStep(final Step step) {
+        this.put(step.getStepName(), step);
     }
 
     public Step getStep(final String stepName) {

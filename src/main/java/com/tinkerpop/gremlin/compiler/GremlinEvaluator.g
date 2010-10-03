@@ -178,7 +178,13 @@ options {
         if (token instanceof DynamicEntity) {
             return token;
         } else if (token.isIdentifier() && steps.isStep(token.toString())) {
-            pipes.add(new EndSupportPipe(steps.getStep(token.toString())));
+            Step currentStep = steps.getStep(token.toString());
+            if (!(currentStep instanceof NativeStep)) {
+              try {
+                while (true) { currentStep.next(); }
+              } catch (Exception e) {}
+            }
+            pipes.add((currentStep instanceof NativeStep) ? new EndSupportPipe(currentStep) : currentStep);
             return this.getVariable(Tokens.ROOT_VARIABLE);
         } else {
             return token;
@@ -204,7 +210,9 @@ options {
             if (identifier.equals(Tokens.IDENTITY)) {
                 return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
              } else if(steps.isStep(token.toString())) {
-                return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), Arrays.asList((Pipe) new EndSupportPipe(steps.getStep(token.toString()))), this.context);
+                final Step currentStep = steps.getStep(token.toString());
+                final List<Pipe> pipes = Arrays.asList((Pipe) ((currentStep instanceof NativeStep) ? new EndSupportPipe(currentStep) : currentStep));
+                return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), pipes, this.context);
             } else {
                 return new Atom<Object>(null);
             }
@@ -346,14 +354,9 @@ native_step_definition_statement returns [Operation op]
 	: ^(NATIVE_STEP name=IDENTIFIER block) 
       {
           Step nativeStep = new NativeStep($name.text, $block.cb);
-          this.context.getStepLibrary().registerStep($name.text, nativeStep);
+          this.context.getStepLibrary().registerStep(nativeStep);
           $op = new UnaryOperation(new Atom<Boolean>(true));
       } 	
-    /*^(NATIVE_STEP path_name=IDENTIFIER (gpath=gpath_statement { pipes.addAll(((GPath) $gpath.value).getPipes()); } | ^(PROPERTY_CALL pr=PROPERTY) { pipes.add(new PropertyPipe($pr.text.substring(1))); }))
-        {
-            this.context.getStepLibrary().registerPath($path_name.text, pipes);
-            $op = new UnaryOperation(new Atom<Boolean>(true));
-        }*/
 	;
 	
 

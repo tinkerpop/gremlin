@@ -9,6 +9,9 @@ import com.tinkerpop.gremlin.compiler.operations.logic.*;
 import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 import com.tinkerpop.gremlin.compiler.types.*;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
+import com.tinkerpop.gremlin.steps.NativeStep;
+import com.tinkerpop.gremlin.steps.Step;
+import com.tinkerpop.gremlin.steps.g.*;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
@@ -29,19 +32,18 @@ public class GremlinPipesHelper {
     public static List<Pipe> pipesForStep(final Atom token, final List<Operation> predicates, final GremlinScriptContext context) throws RuntimeException {
         final List<Pipe> pipes = new ArrayList<Pipe>();
         final String tokenString = (String) token.getValue();
+        final StepLibrary steps = context.getStepLibrary();
 
         final Pipe tokenPipe = pipeForToken(token);
-
-        if (tokenPipe != null) {
-            pipes.add(tokenPipe);
-        } else {
-            StepLibrary steps = context.getStepLibrary();
-
+        if (tokenPipe == null) {
             if (steps.isStep(tokenString)) {
-                pipes.add(new EndSupportPipe(steps.getStep(tokenString)));
+                Step currentStep = steps.getStep(tokenString);
+                pipes.add((currentStep instanceof NativeStep) ? new EndSupportPipe(currentStep) : currentStep);
             } else {
                 throw new RuntimeException("No pipe exists for '" + tokenString + "'");
             }
+        } else {
+            pipes.add(tokenPipe);
         }
 
         for (final Operation operation : predicates) {
@@ -69,22 +71,22 @@ public class GremlinPipesHelper {
                 return new IdentityPipe();
             // outgoing edges
             if (value.equals(Tokens.OUT_E))
-                return new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES);
+                return new OutEdgesStep();
             // outgoing vertices
             if (value.equals(Tokens.OUT_V))
-                return new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX);
+                return new OutVertexStep();
             // ingoing edges
             if (value.equals(Tokens.IN_E))
-                return new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES);
+                return new InEdgesStep();
             // ingoing vertices
             if (value.equals(Tokens.IN_V))
-                return new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX);
+                return new InVertexStep();
             // both vertices
             if (value.equals(Tokens.BOTH_V))
-                return new EdgeVertexPipe(EdgeVertexPipe.Step.BOTH_VERTICES);
+                return new BothVerticesStep();
             // both edges
             if (value.equals(Tokens.BOTH_E))
-                return new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES);
+                return new BothEdgesStep();
             // vertex iterator
             if (value.equals(Tokens.V))
                 return new GraphElementPipe(GraphElementPipe.ElementType.VERTEX);
@@ -100,6 +102,7 @@ public class GremlinPipesHelper {
             else
                 return new GremlinPropertyPipe(tokenAtom.getValue());
         }
+        
         return null;
     }
 
