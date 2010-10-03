@@ -507,6 +507,15 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(name.equals("vadas") || name.equals("josh") || name.equals("lop"));
     }
 
+    public void testStepDeclaration() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+        evaluateGremlinScriptPrimitive("step test\ng:list(1,2,3)\nend", context, true);
+        List<Object> results = evaluateGremlinScriptIterable("./test", context, true);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+    }
+
     public void testExpressionsInGPath() throws Exception {
         assertTrue((Boolean) evaluateGremlinScriptPrimitive("true[0]", true));
         assertFalse((Boolean) evaluateGremlinScriptPrimitive("false[0]", true));

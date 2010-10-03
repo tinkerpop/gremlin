@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 public class NativePipe extends AbstractPipe<Object, Object> {
 
     private final CodeBlock block;
-    private boolean blockEvaluated = false;
     private Iterator<Object> tempIterator;
 
     public NativePipe(final CodeBlock block) {
@@ -21,19 +20,17 @@ public class NativePipe extends AbstractPipe<Object, Object> {
 
     public Object processNextStart() {
         while (true) {
-            if (this.blockEvaluated && null != this.tempIterator && this.tempIterator.hasNext())
+            if (null != this.tempIterator && this.tempIterator.hasNext())
                 return this.tempIterator.next();
-            else if (!this.blockEvaluated) {
-                Object object = this.block.invoke();
-                this.blockEvaluated = true;
+            else {
+                this.starts.next();
+                Object object = this.block.invoke().getValue();
                 if (object instanceof Iterator)
                     this.tempIterator = (Iterator<Object>) object;
                 else if (object instanceof Iterable)
                     this.tempIterator = ((Iterable<Object>) object).iterator();
                 else
                     return object;
-            } else {
-                throw new NoSuchElementException();
             }
         }
     }
