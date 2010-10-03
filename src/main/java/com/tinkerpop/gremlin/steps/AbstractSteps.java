@@ -24,19 +24,18 @@ public abstract class AbstractSteps implements Steps {
         this.steps.add(step);
     }
 
+    public Collection<Step> getSteps() {
+        return this.steps;
+    }
+
     private void removeByStepName(final String stepName) {
         int index = -1;
         for (int i = 0; i < this.steps.size(); i++) {
             final Step step = this.steps.get(i);
-
-            if (step.getStepName().equals(step))
+            if (step.getStepName().equals(stepName))
                 index = i;
         }
         if (index != -1)
             this.steps.remove(index);
-    }
-
-    public Collection<Step> getSteps() {
-        return this.steps;
     }
 }

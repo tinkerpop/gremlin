@@ -9,16 +9,14 @@ import com.tinkerpop.gremlin.compiler.operations.logic.*;
 import com.tinkerpop.gremlin.compiler.operations.util.DeclareVariable;
 import com.tinkerpop.gremlin.compiler.types.*;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
-import com.tinkerpop.gremlin.steps.NativeStep;
 import com.tinkerpop.gremlin.steps.Step;
-import com.tinkerpop.gremlin.steps.g.*;
-import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.AndFilterPipe;
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
-import com.tinkerpop.pipes.pgm.*;
-import com.tinkerpop.pipes.util.EndSupportPipe;
+import com.tinkerpop.pipes.pgm.IdFilterPipe;
+import com.tinkerpop.pipes.pgm.LabelFilterPipe;
+import com.tinkerpop.pipes.pgm.PropertyFilterPipe;
 import com.tinkerpop.pipes.util.HasNextPipe;
 
 import java.lang.reflect.Constructor;
@@ -34,17 +32,18 @@ public class GremlinPipesHelper {
         final String tokenString = (String) token.getValue();
         final StepLibrary steps = context.getStepLibrary();
 
-        final Pipe tokenPipe = pipeForToken(token);
-        if (tokenPipe == null) {
-            if (steps.isStep(tokenString)) {
-                Step currentStep = steps.getStep(tokenString);
-                pipes.add((currentStep instanceof NativeStep) ? new EndSupportPipe(currentStep) : currentStep);
-            } else {
-                throw new RuntimeException("No pipe exists for '" + tokenString + "'");
-            }
-        } else {
-            pipes.add(tokenPipe);
+
+        Step currentStep = steps.getStep(tokenString);
+        if (null != currentStep)
+            pipes.add(currentStep.createPipe());
+        else {
+            final Pipe tokenPipe = pipeForToken(token);
+            if (null == tokenPipe)
+                throw new RuntimeException("No step exists for '" + tokenString + "'");
+            else
+                pipes.add(tokenPipe);
         }
+
 
         for (final Operation operation : predicates) {
             pipes.add(pipeForPredicate(operation, context));
@@ -64,45 +63,9 @@ public class GremlinPipesHelper {
     }
 
     private static Pipe pipeForToken(final Atom tokenAtom) {
-
-        if (tokenAtom.isIdentifier()) {
-            String value = (String) tokenAtom.getValue();
-            if (value.equals(Tokens.IDENTITY))
-                return new IdentityPipe();
-            // outgoing edges
-            if (value.equals(Tokens.OUT_E))
-                return new OutEdgesStep();
-            // outgoing vertices
-            if (value.equals(Tokens.OUT_V))
-                return new OutVertexStep();
-            // ingoing edges
-            if (value.equals(Tokens.IN_E))
-                return new InEdgesStep();
-            // ingoing vertices
-            if (value.equals(Tokens.IN_V))
-                return new InVertexStep();
-            // both vertices
-            if (value.equals(Tokens.BOTH_V))
-                return new BothVerticesStep();
-            // both edges
-            if (value.equals(Tokens.BOTH_E))
-                return new BothEdgesStep();
-            // vertex iterator
-            if (value.equals(Tokens.V))
-                return new GraphElementPipe(GraphElementPipe.ElementType.VERTEX);
-            // edge iterator
-            if (value.equals(Tokens.E))
-                return new GraphElementPipe(GraphElementPipe.ElementType.EDGE);
-        } else if (tokenAtom.isProperty()) {
-            String value = (String) tokenAtom.getValue();
-            if (value.equals(Tokens.LABEL))
-                return new LabelPipe();
-            else if (value.equals(Tokens.ID))
-                return new IdPipe();
-            else
-                return new GremlinPropertyPipe(tokenAtom.getValue());
+        if (tokenAtom.isProperty()) {
+            return new GremlinPropertyPipe(tokenAtom.getValue());
         }
-        
         return null;
     }
 
@@ -155,7 +118,7 @@ public class GremlinPipesHelper {
             if (predicate instanceof DeclareVariable)
                 throw new RuntimeException("use g:p() as wrapper for assignment operation");
 
-            // unary operation like var def or premitive type
+            // unary operation like var def or primitive type
             final Atom unaryAtom = predicate.compute();
 
             if (unaryAtom instanceof Func) {

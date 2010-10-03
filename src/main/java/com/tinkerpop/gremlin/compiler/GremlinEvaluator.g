@@ -78,7 +78,7 @@ options {
 
     // steps
     import com.tinkerpop.gremlin.steps.Step;
-    import com.tinkerpop.gremlin.steps.NativeStep;
+    import com.tinkerpop.gremlin.steps.NativePipe;
 }
 
 @members {
@@ -177,14 +177,11 @@ options {
 
         if (token instanceof DynamicEntity) {
             return token;
-        } else if (token.isIdentifier() && steps.isStep(token.toString())) {
+        } else if (token.isIdentifier()) {
             Step currentStep = steps.getStep(token.toString());
-            if (!(currentStep instanceof NativeStep)) {
-              try {
-                while (true) { currentStep.next(); }
-              } catch (Exception e) {}
+            if(null != currentStep) {
+            	pipes.add(currentStep.createPipe());	
             }
-            pipes.add((currentStep instanceof NativeStep) ? new EndSupportPipe(currentStep) : currentStep);
             return this.getVariable(Tokens.ROOT_VARIABLE);
         } else {
             return token;
@@ -206,16 +203,16 @@ options {
             return (gpathScope == 1) ? new Atom<Object>(null) : token;
         } else if (token.isIdentifier()) {
             String identifier = (String) token.getValue();
-
             if (identifier.equals(Tokens.IDENTITY)) {
                 return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
-             } else if(steps.isStep(token.toString())) {
-                final Step currentStep = steps.getStep(token.toString());
-                final List<Pipe> pipes = Arrays.asList((Pipe) ((currentStep instanceof NativeStep) ? new EndSupportPipe(currentStep) : currentStep));
-                return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), pipes, this.context);
             } else {
-                return new Atom<Object>(null);
-            }
+            	final Step currentStep = steps.getStep(token.toString());
+                if(null != currentStep) {
+                	final List<Pipe> pipes = Arrays.asList(currentStep.createPipe());
+                	return new GPath(this.getVariable(Tokens.ROOT_VARIABLE), pipes, this.context);
+                } 
+             }
+             return new Atom<Object>(null);  
         }
 
         return token;
@@ -353,7 +350,7 @@ native_step_definition_statement returns [Operation op]
     }
 	: ^(NATIVE_STEP name=IDENTIFIER block) 
       {
-          Step nativeStep = new NativeStep($name.text, $block.cb);
+          Step nativeStep = new Step($name.text, NativePipe.class, new Object[]{$block.cb});
           this.context.getStepLibrary().registerStep(nativeStep);
           $op = new UnaryOperation(new Atom<Boolean>(true));
       } 	
