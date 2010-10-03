@@ -509,11 +509,18 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testStepDeclaration() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
-        evaluateGremlinScriptPrimitive("step test\ng:list(1,2,3)\nend", context, true);
-        List<Object> results = evaluateGremlinScriptIterable("./test", context, true);
+        evaluateGremlinScriptPrimitive("step makelist\ng:list(1,2,3)\nend", context, true);
+        List<Object> results = evaluateGremlinScriptIterable("./makelist", context, true);
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
         assertEquals(results.get(2), 3);
+
+        // TODO: MAKE THIS WORK
+        /*evaluateGremlinScriptPrimitive("step addone\n. + 1\nend", context, true);
+        results = evaluateGremlinScriptIterable("./makelist/addone", context, true);
+        assertEquals(results.get(0), 2);
+        assertEquals(results.get(1), 3);
+        assertEquals(results.get(2), 4);*/
     }
 
     public void testExpressionsInGPath() throws Exception {

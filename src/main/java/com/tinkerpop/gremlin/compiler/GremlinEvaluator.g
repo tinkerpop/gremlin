@@ -350,7 +350,7 @@ native_step_definition_statement returns [Operation op]
     }
 	: ^(NATIVE_STEP name=IDENTIFIER block) 
       {
-          Step nativeStep = new Step($name.text, NativePipe.class, new Object[]{$block.cb});
+          Step nativeStep = new Step($name.text, NativePipe.class, new Object[]{this.context, $block.cb});
           this.context.getStepLibrary().registerStep(nativeStep);
           $op = new UnaryOperation(new Atom<Boolean>(true));
       } 	

@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-10-03 11:28:48
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-10-03 14:34:14
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -1170,7 +1170,7 @@ public class GremlinEvaluator extends TreeParser {
             }
 
 
-                      Step nativeStep = new Step((name!=null?name.getText():null), NativePipe.class, new Object[]{(block21!=null?block21.cb:null)});
+                      Step nativeStep = new Step((name!=null?name.getText():null), NativePipe.class, new Object[]{this.context, (block21!=null?block21.cb:null)});
                       this.context.getStepLibrary().registerStep(nativeStep);
                       retval.op = new UnaryOperation(new Atom<Boolean>(true));
                   

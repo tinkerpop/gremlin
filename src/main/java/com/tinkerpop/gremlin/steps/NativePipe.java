@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.steps;
 
+import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * @author Pavel A. Yaskevich
@@ -12,9 +12,11 @@ import java.util.NoSuchElementException;
 public class NativePipe extends AbstractPipe<Object, Object> {
 
     private final CodeBlock block;
+    private final GremlinScriptContext context;
     private Iterator<Object> tempIterator;
 
-    public NativePipe(final CodeBlock block) {
+    public NativePipe(final GremlinScriptContext context, final CodeBlock block) {
+        this.context = context;
         this.block = block;
     }
 
@@ -23,7 +25,7 @@ public class NativePipe extends AbstractPipe<Object, Object> {
             if (null != this.tempIterator && this.tempIterator.hasNext())
                 return this.tempIterator.next();
             else {
-                this.starts.next();
+                this.context.setCurrentPoint(this.starts.next());
                 Object object = this.block.invoke().getValue();
                 if (object instanceof Iterator)
                     this.tempIterator = (Iterator<Object>) object;
