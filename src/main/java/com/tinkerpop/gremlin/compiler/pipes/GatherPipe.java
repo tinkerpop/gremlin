@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 
