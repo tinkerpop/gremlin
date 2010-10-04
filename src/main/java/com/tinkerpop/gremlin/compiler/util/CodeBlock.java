@@ -8,6 +8,8 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
 
+import javax.script.Bindings;
+import javax.script.ScriptContext;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +26,17 @@ public class CodeBlock {
     public CodeBlock(final List<Tree> statements, final GremlinScriptContext context) {
         this.statements = statements;
         this.context = context;
+    }
+
+    public synchronized Atom invoke(Object root) throws RuntimeException {
+        this.context.setCurrentPoint(root);
+        Bindings bindings = this.context.getBindings(ScriptContext.ENGINE_SCOPE);
+
+        bindings.put(Tokens.IN_BLOCK, true);
+        Atom value = this.invoke();
+        bindings.put(Tokens.IN_BLOCK, null);
+
+        return value;
     }
 
     public Atom invoke() throws RuntimeException {

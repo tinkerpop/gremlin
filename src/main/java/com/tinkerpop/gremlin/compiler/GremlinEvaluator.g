@@ -102,8 +102,12 @@ options {
         this.context = context;
     }
 
-    private Atom getVariable(String name) {
+    private Atom getVariable(final String name) {
         return new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(name));
+    }
+
+    private Object getVariableValue(final String name) {
+        return context.getBindings(ScriptContext.ENGINE_SCOPE).get(name);
     }
 
     private Function getFunction(final String ns, final String functionName) {
@@ -179,10 +183,12 @@ options {
             return token;
         } else if (token.isIdentifier()) {
             Step currentStep = steps.getStep(token.toString());
+
             if(null != currentStep) {
             	pipes.add(currentStep.createPipe());	
             }
-            return this.getVariable(Tokens.ROOT_VARIABLE);
+
+            return (this.getVariableValue(Tokens.IN_BLOCK) == null) ? this.getVariable(Tokens.ROOT_VARIABLE) : new Atom<Object>(this.context.getCurrentPoint());
         } else {
             return token;
         }
@@ -204,7 +210,11 @@ options {
         } else if (token.isIdentifier()) {
             String identifier = (String) token.getValue();
             if (identifier.equals(Tokens.IDENTITY)) {
-                return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
+                if (this.getVariableValue(Tokens.IN_BLOCK) == null) {
+                    return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
+                } else {
+                    return new Atom<Object>(this.context.getCurrentPoint());
+                }
             } else {
             	final Step currentStep = steps.getStep(token.toString());
                 if(null != currentStep) {
@@ -350,7 +360,7 @@ native_step_definition_statement returns [Operation op]
     }
 	: ^(NATIVE_STEP name=IDENTIFIER block) 
       {
-          Step nativeStep = new Step($name.text, NativePipe.class, new Object[]{this.context, $block.cb});
+          Step nativeStep = new Step($name.text, NativePipe.class, new Object[]{ $block.cb });
           this.context.getStepLibrary().registerStep(nativeStep);
           $op = new UnaryOperation(new Atom<Boolean>(true));
       } 	

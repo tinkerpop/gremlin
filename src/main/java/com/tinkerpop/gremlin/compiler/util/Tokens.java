@@ -29,4 +29,5 @@ public class Tokens {
     public static final String HISTORY = "..";
     public static final String GATHER = "gather";
 
+    public static final String IN_BLOCK = "in-block?";
 }

@@ -3,10 +3,7 @@ package com.tinkerpop.gremlin.compiler.types;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
-import com.tinkerpop.pipes.MultiIterator;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
+import com.tinkerpop.pipes.*;
 
 import javax.script.ScriptContext;
 import java.util.HashSet;
@@ -38,7 +35,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         this.context = context;
 
         if (!(root instanceof DynamicEntity)) {
-            if (root.toString().equals(".") && root.isIdentifier()) {
+            if (pipes.get(0) instanceof IdentityPipe) {
                 this.root = new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE));
                 this.startsFromRootIdentifier = true;
             }
