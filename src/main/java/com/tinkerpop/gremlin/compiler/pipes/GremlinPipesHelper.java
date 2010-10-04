@@ -33,17 +33,16 @@ public class GremlinPipesHelper {
         final StepLibrary steps = context.getStepLibrary();
 
 
-        Step currentStep = steps.getStep(tokenString);
-        if (null != currentStep)
+        try {
+            Step currentStep = steps.getStep(tokenString);
             pipes.add(currentStep.createPipe());
-        else {
+        } catch (RuntimeException e) {
             final Pipe tokenPipe = pipeForToken(token);
             if (null == tokenPipe)
                 throw new RuntimeException("No step exists for '" + tokenString + "'");
             else
                 pipes.add(tokenPipe);
         }
-
 
         for (final Operation operation : predicates) {
             pipes.add(pipeForPredicate(operation, context));
