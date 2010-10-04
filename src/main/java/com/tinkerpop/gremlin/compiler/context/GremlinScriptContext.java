@@ -1,5 +1,9 @@
 package com.tinkerpop.gremlin.compiler.context;
 
+import com.tinkerpop.gremlin.compiler.util.StringHelper;
+import com.tinkerpop.gremlin.functions.Functions;
+import com.tinkerpop.gremlin.steps.Steps;
+
 import javax.script.ScriptContext;
 import javax.script.SimpleScriptContext;
 import java.io.IOException;
@@ -30,11 +34,25 @@ public class GremlinScriptContext extends SimpleScriptContext {
         return this.steps;
     }
 
+    public void loadLibrary(String className) {
+        try {
+            Class libraryClass = Class.forName(StringHelper.clearQuotes(className));
+            if (Functions.class.isAssignableFrom(libraryClass))
+                this.getFunctionLibrary().loadFunctions(className);
+            else if (Steps.class.isAssignableFrom(libraryClass))
+                this.getStepLibrary().loadSteps(className);
+            else
+                throw new RuntimeException("Unable to load " + className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     public void writeOutput(Object o) throws RuntimeException {
         try {
             this.getWriter().write(o.toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -42,7 +60,7 @@ public class GremlinScriptContext extends SimpleScriptContext {
         try {
             this.getErrorWriter().write(message + "\n");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -50,7 +68,7 @@ public class GremlinScriptContext extends SimpleScriptContext {
         try {
             this.getErrorWriter().flush();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

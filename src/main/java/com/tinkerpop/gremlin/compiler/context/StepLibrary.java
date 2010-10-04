@@ -43,6 +43,10 @@ public class StepLibrary extends HashMap<String, Step> {
     }
 
     public Step getStep(final String stepName) {
-        return this.get(stepName);
+        Step step = this.get(stepName);
+        //if (null == step)
+        //    throw new RuntimeException("Unregistered step: " + stepName);
+        //else
+            return step;
     }
 }
