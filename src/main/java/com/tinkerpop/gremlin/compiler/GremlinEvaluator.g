@@ -248,7 +248,7 @@ options {
         try {
             value = result.getValue();
         } catch(Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
 
         if (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT) 
@@ -332,7 +332,7 @@ script_statement returns [Atom result]
 
                 $result = new Atom<Boolean>(false);
             } catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
+                throw new RuntimeException(e.getMessage(), e);
             }
       }
     ;

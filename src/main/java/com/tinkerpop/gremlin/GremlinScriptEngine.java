@@ -35,7 +35,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
             this.eval(new FileReader(GREMLIN_RC_FILE), this.context);
         } catch (FileNotFoundException e) {
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -93,7 +93,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
         } catch (SyntaxErrorException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
 
         return result;

@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-10-04 19:51:03
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-10-04 20:34:41
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -370,7 +370,7 @@ public class GremlinEvaluator extends TreeParser {
             try {
                 value = result.getValue();
             } catch(Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage(), e);
             }
 
             if (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT) 
@@ -1015,7 +1015,7 @@ public class GremlinEvaluator extends TreeParser {
 
                             retval.result = new Atom<Boolean>(false);
                         } catch (Exception e) {
-                            throw new RuntimeException(e.getMessage());
+                            throw new RuntimeException(e.getMessage(), e);
                         }
                   
 

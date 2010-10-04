@@ -63,7 +63,7 @@ public class CodeBlock {
                     while (itty.hasNext()) itty.next();
                 }
             } catch (RecognitionException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
 

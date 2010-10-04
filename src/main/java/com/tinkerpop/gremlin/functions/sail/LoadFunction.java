@@ -49,7 +49,7 @@ public class LoadFunction extends AbstractFunction<Boolean> {
         try {
             graph.loadRDF(new FileInputStream(file), EMPTY_STRING, format, baseGraph);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
         return new Atom<Boolean>(true);
     }

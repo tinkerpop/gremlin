@@ -191,7 +191,7 @@ public class GremlinPipesHelper {
                     final Constructor repl = op.getClass().getConstructor((new Operation[0]).getClass());
                     arguments.add((Operation) repl.newInstance(new Object[]{operands.toArray(new Operation[2])}));
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e.getMessage(), e);
                 }
 
                 continue;

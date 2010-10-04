@@ -25,7 +25,7 @@ public class PrintFunction extends AbstractFunction<Object> {
         try {
             context.getWriter().write("\n");
         } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
 
         return new Atom<Object>(null);
