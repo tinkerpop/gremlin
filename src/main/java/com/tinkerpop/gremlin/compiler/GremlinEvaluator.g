@@ -344,9 +344,9 @@ include_statement returns [Atom result]
 
             String className = $StringLiteral.text;
             try {
-                this.context.getFunctionLibrary().loadFunctions(className);
+                this.context.loadLibrary(className);
             } catch(Exception e) {
-                this.context.writeError("Functions " + className + " do not exist");
+                this.context.writeError("Library '" + className + "' does not exist");
                 this.context.flushErrorStream();
 
                 $result = new Atom<Boolean>(false);

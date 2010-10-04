@@ -93,12 +93,11 @@ public class GremlinScriptContextTest extends BaseTest {
         }
     }
 
-    // TODO: NEED TO CONNECT TO LOADLIBRARY()
-    /*public void testStepsLoadingInlineWorking() throws Exception {
+    public void testStepsLoadingInlineWorking() throws Exception {
         GremlinScriptContext context = new GremlinScriptContext();
         assertTrue((Boolean) evaluateGremlinScriptPrimitive("include 'com.tinkerpop.gremlin.steps.PlaySteps'", context, true));
         assertEquals(evaluateGremlinScriptPrimitive("'a'/play-string", context, true), "aa");
-    }*/
+    }
 
 
 }

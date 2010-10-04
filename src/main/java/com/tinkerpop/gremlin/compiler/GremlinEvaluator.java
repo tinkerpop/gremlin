@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-10-04 20:34:41
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-10-04 13:04:17
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -1091,9 +1091,9 @@ public class GremlinEvaluator extends TreeParser {
 
                         String className = (StringLiteral19!=null?StringLiteral19.getText():null);
                         try {
-                            this.context.getFunctionLibrary().loadFunctions(className);
+                            this.context.loadLibrary(className);
                         } catch(Exception e) {
-                            this.context.writeError("Functions " + className + " do not exist");
+                            this.context.writeError("Library '" + className + "' does not exist");
                             this.context.flushErrorStream();
 
                             retval.result = new Atom<Boolean>(false);
