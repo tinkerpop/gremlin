@@ -28,18 +28,19 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private final Set<Object> previouslyFetched;
     private boolean startsFromRootIdentifier = false;
     private final GremlinScriptContext context;
-
+    private final Bindings bindings;
+    
     public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
         this.context = context;
+        this.bindings = this.context.getBindings(ScriptContext.ENGINE_SCOPE);
 
-        final Bindings bindings = context.getBindings(ScriptContext.ENGINE_SCOPE);
-        
         if (!(root instanceof DynamicEntity)) {
-            if (pipes.get(0) instanceof IdentityPipe && bindings.get(Tokens.IN_BLOCK) == null) {
-                this.root = new Atom<Object>(bindings.get(Tokens.ROOT_VARIABLE));
+            if (pipes.get(0) instanceof IdentityPipe) {
+                if (this.bindings.get(Tokens.IN_BLOCK) == null)
+                    this.root = new Atom<Object>(bindings.get(Tokens.ROOT_VARIABLE));
                 this.startsFromRootIdentifier = true;
             }
         }
