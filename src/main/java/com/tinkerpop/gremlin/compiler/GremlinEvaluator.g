@@ -403,10 +403,16 @@ step
     @init {
         List<Operation> predicates = new ArrayList<Operation>();
     }
-    :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ))
+    :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ) ^(LOOPS ( inline_loop_definition )* ))
         {
             $gpath_statement::steps.add(new Pair($token.atom, predicates));
         }
+    ;
+
+inline_loop_definition returns [Pipe pipe]
+    : ^(REPEAT times=statement block) { }
+    | ^(WHILE ^(COND condition=statement) block) { }
+    | ^(FOREACH VARIABLE iterable=statement block) { }
     ;
 
 token returns [Atom atom]

@@ -24,6 +24,8 @@ tokens {
 	PREDICATE;
 	PREDICATES;
 	
+    LOOPS;
+
 	// tokens
 	SELF; // represents '.'
 	HISTORY; // represents '..'
@@ -101,7 +103,7 @@ gpath_statement
 	;
 
 step	
-    :	token ('[' statement ']')* -> ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)*))
+    :	token ('[' statement ']')* ( inline_loop_statement )* -> ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)*) ^(LOOPS ( inline_loop_statement )* ))
     ;
 
 token
@@ -118,6 +120,16 @@ token
     |   b=BOOLEAN       -> ^(BOOL $b)
     |	'('! statement ')'!
 	;
+
+inline_loop_definition
+    : 'repeat'  times=statement '=>' block -> ^(REPEAT $times block) 
+    | 'while'   condition=statement '=>' block -> ^(WHILE ^(COND $condition) block)
+    | 'foreach' VARIABLE 'in' iterable=statement '=>' block -> ^(FOREACH VARIABLE $iterable block)
+    ;
+
+inline_loop_statement 
+    : '{' loop_def=inline_loop_definition '}' -> $loop_def
+    ;
 
 statement
     :   if_statement
