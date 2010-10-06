@@ -42,6 +42,7 @@ public class GremlinFunctions extends AbstractFunctions {
         // io
         functions.add(new PrintFunction());
         // ime
+        functions.add(new AppendFunction());
         functions.add(new DeduplicateFunction());
         functions.add(new DifferenceFunction());
         functions.add(new ExceptFunction());
