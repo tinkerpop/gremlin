@@ -583,4 +583,12 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("ex:hello(9)", context, true), 10);
     }
 
+    public void testThatStepDoesNotOverrideGlobalVariables() throws Exception {
+        final GremlinScriptContext context = new GremlinScriptContext();
+        assertEquals(evaluateGremlinScriptPrimitive("$x := 2", context, true), 2);
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("step test-global-x-step\n$x := 7\nend", context, true));
+        assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 2);
+        assertEquals(evaluateGremlinScriptPrimitive("test-global-x-step", context, true), 7);
+        assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 2);
+    }
 }

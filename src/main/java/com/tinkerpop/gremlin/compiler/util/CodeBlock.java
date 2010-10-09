@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.compiler.util;
 
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
+import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import org.antlr.runtime.RecognitionException;
@@ -30,13 +31,17 @@ public class CodeBlock {
 
     public synchronized Atom invoke(Object root) throws RuntimeException {
         this.context.setCurrentPoint(root);
-        Bindings bindings = this.context.getBindings(ScriptContext.ENGINE_SCOPE);
-
+        
+        final Bindings bindings = this.context.getBindings(ScriptContext.ENGINE_SCOPE);
+        final VariableLibrary varLib = new VariableLibrary(bindings);
+        
         bindings.put(Tokens.IN_BLOCK, true);
-        Atom value = this.invoke();
+        final Object value = this.invoke().getValue();
         bindings.put(Tokens.IN_BLOCK, null);
-
-        return value;
+        
+        context.setBindings(varLib, ScriptContext.ENGINE_SCOPE);
+        
+        return new Atom<Object>(value);
     }
 
     public Atom invoke() throws RuntimeException {
