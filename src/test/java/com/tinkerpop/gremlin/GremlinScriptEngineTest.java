@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
@@ -371,28 +372,16 @@ public class GremlinScriptEngineTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        Vertex result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/../..", context, true);
-        String name = (String) result.getProperty("name");
-        assertEquals(name, "marko");
+        assertEquals(((Vertex) evaluateGremlinScriptPrimitive("./outE/inV/../..", context, true)).getProperty("name"), "marko");
+        assertNull(evaluateGremlinScriptIterable("./outE/inV/../../..", context, true));
+        assertEquals(((Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV/../..", context, true)).getProperty("name"), "josh");
+        assertEquals(((Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV[@name='lop']/../..", context, true)).getProperty("name"), "josh");
+        assertEquals(((Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV[@name='ripple']/../..", context, true)).getProperty("name"), "josh");
+        assertEquals(((Edge) evaluateGremlinScriptPrimitive("./outE/inV[@name='lop']/..", context, true)).getId(), "9");
 
-        List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV/../../..", context, true);
-        assertNull(results);
-
-        result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV/../..", context, true);
-        name = (String) result.getProperty("name");
-        assertEquals(name, "josh");
-
-        result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV[@name='lop']/../..", context, true);
-        name = (String) result.getProperty("name");
-        assertEquals(name, "josh");
-
-        result = (Vertex) evaluateGremlinScriptPrimitive("./outE/inV/outE/inV[@name='ripple']/../..", context, true);
-        name = (String) result.getProperty("name");
-        assertEquals(name, "josh");
-
-        results = evaluateGremlinScriptIterable("./outE/inV/outE/inV[@name='ripple' or @name='lop' or @name='blah']/../../outE/inV", context, true);
+        List<Vertex> results = evaluateGremlinScriptIterable("./outE/inV/outE/inV[@name='ripple' or @name='lop' or @name='blah']/../../outE/inV", context, true);
         assertEquals(results.size(), 2);
-        name = (String) results.get(0).getProperty("name");
+        String name = (String) results.get(0).getProperty("name");
         assertTrue(name.equals("ripple") || name.equals("lop"));
         name = (String) results.get(1).getProperty("name");
         assertTrue(name.equals("ripple") || name.equals("lop"));

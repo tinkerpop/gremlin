@@ -19,6 +19,11 @@ bc. <dependency>
   <version>0.6-SNAPSHOT</version>
 </dependency>
 
+* A rework of the user-defined step model
+** Renamed the concept of "path" to "step"
+** Users can now define computations in steps
+** Added @gather@ step to allow for the easy implementation breadth-first traversals
+
 ==<hr/>==
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
