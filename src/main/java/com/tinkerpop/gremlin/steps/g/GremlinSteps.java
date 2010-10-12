@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.steps.g;
 
 import com.tinkerpop.gremlin.compiler.pipes.GatherPipe;
+import com.tinkerpop.gremlin.compiler.pipes.ScatterPipe;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.steps.AbstractSteps;
 import com.tinkerpop.gremlin.steps.Step;
@@ -27,6 +28,7 @@ public class GremlinSteps extends AbstractSteps {
         this.steps.add(new Step(Tokens.ID, IdPipe.class, null));
         //
         this.steps.add(new Step(Tokens.GATHER, GatherPipe.class, null));
+        this.steps.add(new Step(Tokens.SCATTER, ScatterPipe.class, null));
     }
 
 }

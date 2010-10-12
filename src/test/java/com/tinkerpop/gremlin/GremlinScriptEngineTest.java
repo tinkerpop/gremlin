@@ -468,7 +468,7 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive(".[./outE/inV/@age >= 27]/@name", context, true), "marko");
     }
 
-    public void testStringVsPath() throws Exception {
+    public void testStepDeclarationInGraph() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         GremlinScriptContext context = new GremlinScriptContext();
@@ -579,5 +579,20 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 2);
         assertEquals(evaluateGremlinScriptPrimitive("test-global-x-step", context, true), 7);
         assertEquals(evaluateGremlinScriptPrimitive("$x", context, true), 2);
+    }
+
+    public void testScatterGatherSteps() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        List results = evaluateGremlinScriptIterable("./outE/inV", context, true);
+        assertEquals(results.size(), 3);
+        results = evaluateGremlinScriptIterable("./outE/inV/gather/gather", context, true);
+        assertEquals(results.size(), 1);
+        results = evaluateGremlinScriptIterable("./outE/inV/gather/scatter", context, true);
+        assertEquals(results.size(), 3);
     }
 }
