@@ -23,6 +23,8 @@ bc. <dependency>
 ** Renamed the concept of "path" to "step"
 ** Users can now define computations in steps
 ** Added @gather@ step to allow for the easy implementation breadth-first traversals
+* Added @gather@ and @scatter@ steps to allow for aggregation and unrolling of objects within a path
+* Added @g:append()@ function to concatenate objects to an iterable (e.g. list, set)
 
 ==<hr/>==
 
