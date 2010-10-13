@@ -1,12 +1,12 @@
 package com.tinkerpop.gremlin.steps.g;
 
 import com.tinkerpop.gremlin.compiler.pipes.GatherPipe;
-import com.tinkerpop.gremlin.compiler.pipes.ScatterPipe;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.steps.AbstractSteps;
 import com.tinkerpop.gremlin.steps.Step;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.pgm.*;
+import com.tinkerpop.pipes.util.ScatterPipe;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
