@@ -41,6 +41,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             if (pipes.get(0) instanceof IdentityPipe) {
                 if (this.bindings.get(Tokens.IN_BLOCK) == null)
                     this.root = new Atom<Object>(bindings.get(Tokens.ROOT_VARIABLE));
+                
                 this.startsFromRootIdentifier = true;
             }
         }
@@ -81,7 +82,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     }
 
     private Iterator pipelineRoot() {
-        if (this.persistentRoot == null) {
+        if (this.persistentRoot == null || bindings.get(Tokens.IN_BLOCK) != null) {
             this.persistentRoot = this.root.getValue();
         }
 
@@ -148,7 +149,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
     public String toString() {
         final Object result = this.getValue();
-
+        
         if (result instanceof Iterable) {
             String out = "";
 

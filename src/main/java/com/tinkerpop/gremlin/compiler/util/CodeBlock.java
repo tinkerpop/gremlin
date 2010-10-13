@@ -36,7 +36,14 @@ public class CodeBlock {
         final VariableLibrary varLib = new VariableLibrary(bindings);
         
         bindings.put(Tokens.IN_BLOCK, true);
-        final Object value = this.invoke().getValue();
+        Object value = null;
+        
+        try {
+            value = this.invoke().getValue();
+        } catch (Exception e) {
+            // doing nothing here
+        }
+        
         bindings.put(Tokens.IN_BLOCK, null);
         
         context.setBindings(varLib, ScriptContext.ENGINE_SCOPE);

@@ -595,4 +595,21 @@ public class GremlinScriptEngineTest extends BaseTest {
         results = evaluateGremlinScriptIterable("./outE/inV/gather/scatter", context, true);
         assertEquals(results.size(), 3);
     }
+
+    public void testNativeStepWithGPathInside() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        evaluateGremlinScriptPrimitive("$m := g:map()", context, false);
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("step assign-m\ng:assign($m, ./inV/@name, ./@weight)\n.\nend", context, true));
+        assertEquals(evaluateGremlinScriptPrimitive("g:count($m)", context, false), 1l);
+        evaluateGremlinScriptIterable("./outE/assign-m", context, true);
+        Map m = (Map) evaluateGremlinScriptPrimitive("$m", context, false);
+        assertEquals(m.get("lop"), 0.4f);
+        assertEquals(m.get("josh"), 1.0f);
+        assertEquals(m.get("vadas"), 0.5f);
+        assertEquals(evaluateGremlinScriptPrimitive(".", context, false), graph.getVertex(1));
+    }
 }
