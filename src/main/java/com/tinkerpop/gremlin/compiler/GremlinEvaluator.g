@@ -479,7 +479,8 @@ block returns [CodeBlock cb]
     @after {
         inBlock = false;
     }
-    :	^(BLOCK ( statement { statements.add($statement.tree); } )* ) { $cb = new CodeBlock(statements, this.context); }
+    :	^(BLOCK ( st=statement { statements.add($st.tree); } | ^(RETURN ret=statement { statements.add($ret.tree.getParent()); }) )* ) 
+        { $cb = new CodeBlock(statements, this.context); }
     ;
 
 expression returns [Operation expr]

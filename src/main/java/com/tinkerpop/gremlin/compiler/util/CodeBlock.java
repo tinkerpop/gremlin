@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.compiler.util;
 
 import com.tinkerpop.gremlin.compiler.GremlinEvaluator;
+import com.tinkerpop.gremlin.compiler.GremlinParser;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -55,7 +56,16 @@ public class CodeBlock {
         Atom result = null;
         Operation currentOperation;
 
+        boolean returnStatement = false;
+        
         for (Tree statement : statements) {
+
+            // if we have ^(RETURN $statement)
+            if (statement.getType() == GremlinParser.RETURN) {
+                statement = statement.getChild(0);
+                returnStatement = true;
+            }
+            
             final CommonTreeNodeStream nodes = new CommonTreeNodeStream(statement);
             final GremlinEvaluator walker = new GremlinEvaluator(nodes, this.context);
 
@@ -74,11 +84,22 @@ public class CodeBlock {
 
                     while (itty.hasNext()) itty.next();
                 }
+
+                if (returnStatement || result instanceof FunctionReturn) {
+                    return new FunctionReturn<Object>(value);
+                }
             } catch (RecognitionException e) {
                 throw new RuntimeException(e.getMessage(), e);
             }
         }
 
         return (result == null) ? new Atom<Object>(null) : result;
+    }
+
+    private class FunctionReturn<T> extends Atom<T> {
+
+        public FunctionReturn(T value) {
+            super(value);
+        }
     }
 }

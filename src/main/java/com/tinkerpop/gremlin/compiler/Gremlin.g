@@ -31,6 +31,7 @@ tokens {
 	HISTORY; // represents '..'
 	
 	FUNC_CALL;
+    RETURN;
 
 	IF;
 	ELSE;
@@ -186,7 +187,7 @@ native_step_definition_statement
 	
 function_definition_statement
 	:	'func' function_name '(' formal_arguments* ')' NEWLINE
-		   block
+            block
 		'end' -> ^(FUNC function_name ^(ARGS formal_arguments*) block) 
 	;
 	
@@ -200,7 +201,13 @@ block
 
 block_body
     : statement
+    | return_statement
     | COMMENT NEWLINE
+    ;
+
+return_statement
+    : 'return' statement
+        -> ^(RETURN statement)
     ;
 
 expression

@@ -612,4 +612,34 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(m.get("vadas"), 0.5f);
         assertEquals(evaluateGremlinScriptPrimitive(".", context, false), graph.getVertex(1));
     }
+
+    public void testFunctionReturn() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        /**
+         * func test:f($x)
+         *   if $x > 5
+         *     return $x + 5
+         *   end
+         *
+         *   return $x - 1
+         * end
+         */
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("func test:f($x)\nif $x > 5\nreturn $x + 5\nend\nreturn $x - 1\nend", context, false));
+        assertEquals(evaluateGremlinScriptPrimitive("test:f(3)", context, true), 2);
+        assertEquals(evaluateGremlinScriptPrimitive("test:f(6)", context, true), 11);
+
+/**
+         * func test:f($x)
+         *   if $x > 5
+         *     return null
+         *   end
+         *
+         *   return $x - 1
+         * end
+         */
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("func test:f($x)\nif $x > 5\nreturn null\nend\nreturn $x - 1\nend", context, false));
+        assertEquals(evaluateGremlinScriptPrimitive("test:f(5)", context, true), 4);
+        assertNull(evaluateGremlinScriptPrimitive("test:f(6)", context, true));
+    }
 }
