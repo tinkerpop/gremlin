@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.steps;
 
-import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 import com.tinkerpop.pipes.AbstractPipe;
 
@@ -25,7 +23,7 @@ public class NativePipe extends AbstractPipe<Object, Object> {
                 return this.tempIterator.next();
             } else {
                 Object object = this.block.invoke(this.starts.next()).getValue();
-                
+
                 if (object instanceof Iterator)
                     this.tempIterator = (Iterator<Object>) object;
                 else if (object instanceof Iterable)
