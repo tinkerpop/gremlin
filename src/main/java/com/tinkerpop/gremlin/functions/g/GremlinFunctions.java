@@ -23,7 +23,6 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new NotFunction());
         // graph
         functions.add(new AddEdgeFunction());
-        functions.add(new AddIndexFunction());
         functions.add(new AddVertexFunction());
         functions.add(new SetTransactionModeFunction());
         functions.add(new ClearFunction());
@@ -31,7 +30,6 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new GetTransactionModeFunction());
         functions.add(new IdEdgeFunction());
         functions.add(new IdVertexFunction());
-        functions.add(new IndexAllFunction());
         functions.add(new KeyVertexFunction());
         functions.add(new LoadFunction());
         functions.add(new RemoveIndexFunction());

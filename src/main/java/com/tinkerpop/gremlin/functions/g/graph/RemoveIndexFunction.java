@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -21,7 +22,7 @@ public class RemoveIndexFunction extends AbstractFunction<Object> {
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final IndexableGraph graph = (IndexableGraph) FunctionHelper.getGraph(arguments, 0, context);
         final String index;
 
         if (size == 2) {
@@ -30,7 +31,7 @@ public class RemoveIndexFunction extends AbstractFunction<Object> {
             index = (String) arguments.get(0).compute().getValue();
         }
 
-        graph.getIndex().removeIndexKey(index);
+        graph.dropIndex(index);
         return new Atom<Object>(null);
     }
 
