@@ -18,13 +18,13 @@ public class KeyVertexFunctionTest extends BaseTest {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
 
-        /*Function<Iterable<Vertex>> function = new KeyVertexFunction();
+        Function<Iterable<Vertex>> function = new KeyVertexFunction();
         assertEquals(function.getFunctionName(), "key-v");
         this.stopWatch();
         Atom<Iterable<Vertex>> atom = function.compute(createUnaryArgs(graph, "name", "marko"), context);
         printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
         assertTrue(atom.isIterable());
-        assertEquals(count(atom.getValue()), 1);*/
+        assertEquals(count(atom.getValue()), 1);
 
     }
 }
