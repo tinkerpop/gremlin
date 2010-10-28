@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
-import com.tinkerpop.blueprints.pgm.IndexableGraph;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.Element;
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -13,17 +13,17 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
+public class KeyVertexFunction extends AbstractFunction<Iterable<Element>> {
 
     private static final String FUNCTION_NAME = "key-v";
 
-    public Atom<Iterable<Vertex>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Iterable<Element>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final int size = arguments.size();
         if (size != 2 && size != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final IndexableGraph graph = (IndexableGraph) FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         final String key;
         final Object value;
 
@@ -35,7 +35,7 @@ public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
             value = arguments.get(1).compute().getValue();
         }
 
-        return new Atom<Iterable<Vertex>>(graph.getIndex(IndexableGraph.VERTICES, Vertex.class).get(key, value));
+        return new Atom<Iterable<Element>>(graph.getIndex().get(key, value));
     }
 
     public String getFunctionName() {

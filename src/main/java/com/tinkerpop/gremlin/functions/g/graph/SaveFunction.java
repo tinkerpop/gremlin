@@ -38,7 +38,7 @@ public class SaveFunction extends AbstractFunction<Boolean> {
             GraphMLWriter.outputGraph(graph, stream);
             return new Atom<Boolean>(true);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 

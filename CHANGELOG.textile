@@ -19,15 +19,23 @@ bc. <dependency>
   <version>0.6-SNAPSHOT</version>
 </dependency>
 
+==<hr/>==
+
+!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
+
+h3. Version 0.5.5 (Gremlivich -- October 28, 2010)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.5.5</version>
+</dependency>
+
 * A rework of the user-defined step model
 ** Renamed the concept of "path" to "step"
 ** Users can now define computations in steps
 * Added @gather@ and @scatter@ steps to allow for aggregation and unrolling of objects within a path
 * Added @g:append()@ function to concatenate objects to an iterable (e.g. list, set)
-
-==<hr/>==
-
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
 
 h3. Version 0.5 (Gremlivich -- September 22, 2010)
 
