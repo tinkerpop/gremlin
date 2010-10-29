@@ -20,6 +20,7 @@ public class TypeFunction extends AbstractFunction<String> {
     private static final String FUNCTION_NAME = "type";
     private static final String LIST = "list";
     private static final String SET = "set";
+    private static final String ITERABLE = "iterable";
     private static final String MAP = "map";
     private static final String GRAPH = "graph";
     private static final String VERTEX = "vertex";
@@ -33,6 +34,8 @@ public class TypeFunction extends AbstractFunction<String> {
                 return new Atom<String>(LIST);
             else if (object instanceof Set)
                 return new Atom<String>(SET);
+            else if (object instanceof Iterable)
+                return new Atom<String>(ITERABLE);
             else if (object instanceof Map)
                 return new Atom<String>(MAP);
             else if (object instanceof Graph)

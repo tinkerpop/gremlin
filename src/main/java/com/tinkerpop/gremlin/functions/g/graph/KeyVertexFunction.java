@@ -1,9 +1,6 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
-import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.IndexableGraph;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.*;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -37,7 +34,7 @@ public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
             value = arguments.get(1).compute().getValue();
         }
 
-        return new Atom<Iterable<Vertex>>(graph.getIndex(IndexableGraph.VERTICES, Vertex.class).get(key, value));
+        return new Atom<Iterable<Vertex>>(graph.getIndex(Index.VERTICES, Vertex.class).get(key, value));
     }
 
     public String getFunctionName() {
