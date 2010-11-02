@@ -23,8 +23,6 @@ tokens {
 	TOKEN;
 	PREDICATE;
 	PREDICATES;
-	
-    LOOPS;
 
 	// tokens
 	SELF; // represents '.'
@@ -37,7 +35,8 @@ tokens {
 	ELSE;
 	COND;
 	BLOCK;
-	
+	NATIVE;
+
 	FOREACH;
 	WHILE;
 	REPEAT;
@@ -104,7 +103,8 @@ gpath_statement
 	;
 
 step	
-    :	token ('[' statement ']')* ( inline_loop_statement )* -> ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)*) ^(LOOPS ( inline_loop_statement )* ))
+    :	token ('[' statement ']')* ( gremlin_native_path_statement )* 
+            -> ^(STEP ^(TOKEN token) ^(PREDICATES ^(PREDICATE statement)*) ( gremlin_native_path_statement )* )
     ;
 
 token
@@ -122,16 +122,10 @@ token
     |	'('! statement ')'!
 	;
 
-inline_loop_definition
-    : 'repeat'  times=statement '=>' block -> ^(REPEAT $times block) 
-    | 'while'   condition=statement '=>' block -> ^(WHILE ^(COND $condition) block)
-    | 'foreach' VARIABLE 'in' iterable=statement '=>' block -> ^(FOREACH VARIABLE $iterable block)
+gremlin_native_path_statement
+    : '{' statement (';' statement)* '}'
+        -> ^(NATIVE statement+)
     ;
-
-inline_loop_statement 
-    : '{' loop_def=inline_loop_definition '}' -> $loop_def
-    ;
-
 statement
     :   if_statement
 	|	foreach_statement
@@ -153,8 +147,13 @@ script_statement
     :   'script' StringLiteral -> ^(SCRIPT StringLiteral) 
     ;
 
+delimiter
+    : ';'
+    | NEWLINE
+    ;
+
 if_statement 
-	:	'if' statement NEWLINE 
+	:	'if' statement delimiter 
            if_block=block
         ('else'
            else_block=block)?
@@ -162,19 +161,19 @@ if_statement
 	;
 
 foreach_statement
-	:	'foreach' VARIABLE 'in' statement NEWLINE 
+	:	'foreach' VARIABLE 'in' statement delimiter 
 	       block 
 	    'end' -> ^(FOREACH VARIABLE statement block)
 	;
 	
 while_statement
-	:	'while' statement NEWLINE 
+	:	'while' statement delimiter 
 	       block 
 	    'end' -> ^(WHILE ^(COND statement) block)
 	;
 
 repeat_statement
-	:	'repeat' statement NEWLINE
+	:	'repeat' statement delimiter
 		   block
 		'end' -> ^(REPEAT statement block)
 	;
@@ -203,6 +202,7 @@ block_body
     : statement
     | return_statement
     | COMMENT NEWLINE
+    | ';'!
     ;
 
 return_statement
@@ -291,10 +291,10 @@ IDENTIFIER
     ;
 
 NEWLINE
-	: '\n'		// Line feed.
-	| '\r'		// Carriage return.
-	| '\u2028'	// Line separator.
-	| '\u2029'	// Paragraph separator.
+	: '\n'
+	| '\r'
+	| '\u2028'
+	| '\u2029'
 	;
 
 WS      

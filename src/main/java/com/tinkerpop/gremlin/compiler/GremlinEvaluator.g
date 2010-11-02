@@ -118,24 +118,26 @@ options {
         this.context.getFunctionLibrary().registerFunction(ns, func);
     }
     
-    private Atom compileCollectionCall(final Atom<Object> tokenAtom, final List<Operation> predicates) {
+    private Atom compileCollectionCall(final Atom<Object> tokenAtom, final List<Operation> predicates, final List<Pipe> nativeSteps) {
         final List<Pipe> pipes  = new ArrayList<Pipe>();
         final Atom<Object> root = makePipelineRoot(tokenAtom, pipes);
 
         pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
+        pipes.addAll(nativeSteps);
 
         return new GPath(root, pipes, this.context);
     }
 
-    private Atom compileGPathCall(final List<Pair<Atom<Object>, List<Operation>>> steps) {
+    private Atom compileGPathCall(final List<Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>>> steps) {
         Atom<Object> root = null;
         List<Pipe> pipes = new ArrayList<Pipe>();
 
         long count = 0;
-        for (final Pair<Atom<Object>, List<Operation>> pair : steps) {
+        for (final Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>> pair : steps) {
             final Atom<Object> token = pair.getA();
-            final List<Operation> predicates = pair.getB();
-            
+            final List<Operation> predicates = pair.getB().getA();
+            final List<Pipe> nativeSteps = pair.getB().getB();
+
             if (count == 0) {
                 root = makePipelineRoot(token, pipes);
                 pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
@@ -169,6 +171,8 @@ options {
             } else {
                 pipes.addAll(GremlinPipesHelper.pipesForStep(token, predicates, this.context));
             }
+
+            pipes.addAll(nativeSteps);
 
             count++;
         }
@@ -370,12 +374,12 @@ native_step_definition_statement returns [Operation op]
 gpath_statement returns [Atom value]
     scope {
         int pipeCount;
-        List<Pair<Atom<Object>, List<Operation>>> steps;
+        List<Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>>> steps;
     }
     @init {
         isGPath = true;
         gpathScope++;
-        $gpath_statement::steps = new LinkedList<Pair<Atom<Object>, List<Operation>>>();
+        $gpath_statement::steps = new LinkedList<Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>>>();
     }
     @after {
         isGPath = false;
@@ -384,14 +388,16 @@ gpath_statement returns [Atom value]
 	:	^(GPATH (step)+) 
         {
             if (!inBlock) {
-                List<Pair<Atom<Object>, List<Operation>>> stepList = $gpath_statement::steps;
+                List<Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>>> stepList = $gpath_statement::steps;
 
                 if (stepList.size() == 1) {
-                    Pair<Atom<Object>, List<Operation>> currentPair = stepList.get(0);
+                    Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>> currentPair = stepList.get(0);
                 
                     Atom<Object> token = currentPair.getA();
-                    List<Operation> predicates = currentPair.getB();
-                    $value = (predicates.size() == 0) ? singleGPathStep(token) : compileCollectionCall(token, predicates);
+                    List<Operation> predicates = currentPair.getB().getA();
+                    List<Pipe> nativeSteps = currentPair.getB().getB();
+
+                    $value = (predicates.size() == 0 && nativeSteps.size() == 0) ? singleGPathStep(token) : compileCollectionCall(token, predicates, nativeSteps);
                 } else {
                     $value = compileGPathCall(stepList);
                 }
@@ -402,17 +408,22 @@ gpath_statement returns [Atom value]
 step
     @init {
         List<Operation> predicates = new ArrayList<Operation>();
+        List<Pipe> nativeSteps = new ArrayList<Pipe>();
     }
-    :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ) ^(LOOPS ( inline_loop_definition )* ))
+    :	^(STEP ^(TOKEN token) ^(PREDICATES ( ^(PREDICATE statement { predicates.add($statement.op); }) )* ) ( nativeStep=gremlin_native_path_definition { nativeSteps.add($nativeStep.pipe); })* )
         {
-            $gpath_statement::steps.add(new Pair($token.atom, predicates));
+            $gpath_statement::steps.add(new Pair($token.atom, new Pair(predicates, nativeSteps)));
         }
     ;
 
-inline_loop_definition returns [Pipe pipe]
-    : ^(REPEAT times=statement block) { }
-    | ^(WHILE ^(COND condition=statement) block) { }
-    | ^(FOREACH VARIABLE iterable=statement block) { }
+gremlin_native_path_definition returns [Pipe pipe]
+    @init {
+        List<Tree> statements = new LinkedList<Tree>();
+    }
+    : ^(NATIVE (statement { statements.add($statement.tree); })+)
+      {
+            $pipe = new NativePipe(new CodeBlock(statements, this.context));
+      }
     ;
 
 token returns [Atom atom]
