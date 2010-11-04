@@ -35,7 +35,7 @@ public class ForeachTest extends BaseTest {
         assertEquals(results.get(1), 16);
     }
 
-    public void testEmptyForeachStatement() {
+    public void testEmptyForeach() {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
@@ -45,5 +45,17 @@ public class ForeachTest extends BaseTest {
 
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 3);
+    }
+
+    public void testSingleObjectForeach() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$x := 0\nforeach $e in 1\n$x := 1000\nend\n$x", context);
+        printPerformance("foreach statement", 0, "embedded iterations w/ returns (testing empty foreach)", this.stopWatch());
+
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(1), 1000);
     }
 }

@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
 import javax.script.ScriptContext;
+import java.util.Arrays;
 
 /**
  * @author Pavel A. Yaskevich
@@ -36,11 +37,14 @@ public class Foreach implements Operation {
     @SuppressWarnings("unchecked")
     public Atom compute() {
         final Atom paramsAtom = this.parameter.compute();
+        Iterable iterable;
+        if (!paramsAtom.isIterable()) {
+            iterable = Arrays.asList(paramsAtom.getValue());
+        } else {
+            iterable = (Iterable) paramsAtom.getValue();
+        }
 
-        if (!paramsAtom.isIterable())
-            return new Atom<Object>(null);
-
-        for (Object currentParam : (Iterable) paramsAtom.getValue()) {
+        for (Object currentParam : iterable) {
             final Atom value = (currentParam instanceof Atom) ? (Atom) currentParam : new Atom(currentParam);
             context.getBindings(ScriptContext.ENGINE_SCOPE).put(this.variable, value);
 
