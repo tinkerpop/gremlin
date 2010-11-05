@@ -6,6 +6,8 @@
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
     <version>0.6-SNAPSHOT</version>
+    <!-- DON'T FORGET TO UPDATE g:version() AT RELEASE -->
+    <!-- DON'T FORGET ABOUT BAT AND SH SCRIPT TOO -->
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph-Based Programming Language</name>

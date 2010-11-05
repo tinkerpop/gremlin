@@ -24,7 +24,7 @@ java %JAVA_OPTIONS% %JAVA_ARGS% -cp target/gremlin-*-standalone.jar com.tinkerpo
 goto :eof
 
 :version
-echo Gremlin 0.5
+echo Gremlin 0.6
 goto :eof
 
 :concat

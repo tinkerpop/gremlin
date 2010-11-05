@@ -29,7 +29,7 @@ if [ "$1" = "-e" ]; then
   eval "$JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.ScriptExecutor $k"
 else
   if [ "$1" = "-v" ]; then
-    echo "Gremlin 0.5"
+    echo "Gremlin 0.6"
   else
     $JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.Console
   fi
