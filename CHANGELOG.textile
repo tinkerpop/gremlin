@@ -19,6 +19,9 @@ bc. <dependency>
   <version>0.6-SNAPSHOT</version>
 </dependency>
 
+* Fixed @foreach@ bug that occurred on single object looping
+* Added anonymous step definitions using @/{ }/@ notation
+
 ==<hr/>==
 
 !http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
