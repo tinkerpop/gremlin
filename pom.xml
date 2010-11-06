@@ -12,9 +12,9 @@
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph-Based Programming Language</name>
     <description>Gremlin is a Turing-complete, graph-based programming language developed in Java 1.6+ for
-        key/value-pair multi-relational graphs called property graphs.
-        Gremlin makes use of a path-based syntax to support complex graph traversals.
-        This language has application in the areas of graph query, analysis, and manipulation.
+        key/value-pair multi-relational graphs called property graphs. Gremlin makes use of a path-based syntax to
+        support complex graph traversals. This language has application in the areas of graph query, analysis, and
+        manipulation.
     </description>
     <developers>
         <developer>
@@ -48,6 +48,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-lucene-index</artifactId>
+            <version>0.2-1.2.M03</version>
+        </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr</artifactId>

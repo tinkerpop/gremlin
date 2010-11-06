@@ -16,6 +16,7 @@ public class Console {
 
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
+    private static final String END = "end";
     private static final String INDENT = "\t   ";
     private static final String THREE_SPACES = "   ";
     private static final String HISTORY_FILE = ".gremlin_history";
@@ -74,7 +75,8 @@ public class Console {
             // read console line
             line = reader.readLine(prompt).trim();
 
-            if (line.isEmpty()) continue;
+            if (line.isEmpty())
+                continue;
 
             // analyze current statement
             for (final String statement : compoundStatements) {
@@ -92,7 +94,7 @@ public class Console {
                 break;
             }
 
-            if (inCompoundStatement && line.equals("end"))
+            if (inCompoundStatement && line.equals(END))
                 codeDepth--;
 
             if (inCompoundStatement && codeDepth > 0)
@@ -111,7 +113,8 @@ public class Console {
             } catch (Exception e) {
                 engine.getContext().getErrorWriter().flush();
                 String message = GremlinScriptEngine.exceptionInPrintableFormat(e);
-                if (!message.isEmpty()) System.err.println(message);
+                if (!message.isEmpty())
+                    System.err.println(message);
             }
         }
     }
