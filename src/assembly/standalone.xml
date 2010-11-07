@@ -14,8 +14,8 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/</outputDirectory>
-            <unpack>true</unpack>
+            <outputDirectory>/lib</outputDirectory>
+            <unpack>false</unpack>
             <scope>compile</scope>
         </dependencySet>
     </dependencySets>
