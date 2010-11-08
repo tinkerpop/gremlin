@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class VersionFunction extends AbstractFunction<String> {
 
-    private static final String GREMLIN_SPACE = "Gremlin ";
+    private static final String GREMLIN_SPACE = "gremlin ";
     private static final String FUNCTION_NAME = "version";
 
     public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {

@@ -6,8 +6,7 @@
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
     <version>0.6-SNAPSHOT</version>
-    <!-- DON'T FORGET TO UPDATE g:version() AT RELEASE -->
-    <!-- DON'T FORGET ABOUT BAT AND SH SCRIPT TOO -->
+    <!-- DON'T FORGET TO UPDATE Tokens.VERSION AT RELEASE -->
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph-Based Programming Language</name>
@@ -145,7 +144,7 @@
                 <configuration>
                     <descriptors>
                         <descriptor>src/assembly/standalone.xml</descriptor>
-                        <!--<descriptor>src/assembly/distribution.xml</descriptor>-->
+                        <descriptor>src/assembly/distribution.xml</descriptor>
                     </descriptors>
                     <finalName>gremlin-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
@@ -158,31 +157,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!--<plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <version>1.1</version>
-                <configuration>
-                    <repositoryName>lib</repositoryName>
-                    <repositoryLayout>flat</repositoryLayout>
-                    <generateRepository>true</generateRepository>
-                    <programs>
-                        <program>
-                            <mainClass>com.tinkerpop.gremlin.Console</mainClass>
-                            <name>gremlin</name>
-                        </program>
-                    </programs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>gremlin-appassemble</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assemble</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
         <extensions>
             <extension>

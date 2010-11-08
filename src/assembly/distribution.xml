@@ -28,10 +28,7 @@
             <directory>target/site</directory>
         </fileSet>
         <fileSet>
-            <directory>target</directory>
-            <includes>
-                <include>gremlin-*.jar</include>
-            </includes>
+            <directory>target/gremlin-*-standalone</directory>
         </fileSet>
     </fileSets>
 </assembly>
