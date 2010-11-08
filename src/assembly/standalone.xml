@@ -1,22 +1,32 @@
 <assembly>
   <id>standalone</id>
   <formats>
-    <format>jar</format>
+    <format>zip</format>
   </formats>
-  <includeBaseDirectory>false</includeBaseDirectory>
+  <includeBaseDirectory>true</includeBaseDirectory>
 
   <fileSets>
     <fileSet>
-      <directory>target/classes</directory>
-      <outputDirectory>/</outputDirectory>
+      <directory>src/main/bin</directory>
+      <outputDirectory>/bin</outputDirectory>
+      <fileMode>0755</fileMode>
+    </fileSet>
+    <fileSet>
+      <directory>target/*.jar</directory>
+      <outputDirectory>/lib</outputDirectory>
     </fileSet>
   </fileSets>
 
   <dependencySets>
     <dependencySet>
-      <outputDirectory>/</outputDirectory>
-      <unpack>true</unpack>
+      <outputDirectory>/lib</outputDirectory>
+      <unpack>false</unpack>
       <scope>compile</scope>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>/lib</outputDirectory>
+      <unpack>false</unpack>
+      <scope>provided</scope>
     </dependencySet>
   </dependencySets>
 </assembly>

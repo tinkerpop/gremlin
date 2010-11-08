@@ -145,7 +145,7 @@
                 <configuration>
                     <descriptors>
                         <descriptor>src/assembly/standalone.xml</descriptor>
-                        <descriptor>src/assembly/distribution.xml</descriptor>
+                        <!--<descriptor>src/assembly/distribution.xml</descriptor>-->
                     </descriptors>
                     <finalName>gremlin-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
@@ -158,7 +158,7 @@
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
                 <version>1.1</version>
@@ -182,7 +182,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
         <extensions>
             <extension>
