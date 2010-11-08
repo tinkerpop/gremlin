@@ -49,11 +49,6 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-lucene-index</artifactId>
-            <version>0.2-1.2.M03</version>
-        </dependency>
-        <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr</artifactId>
             <version>3.2</version>
