@@ -1,39 +1,12 @@
 #!/bin/bash
 
-# Path to JAR
-JAR=`dirname $0`/target/gremlin-*-standalone.jar
+NAME="gremlin-0.6-SNAPSHOT"
 
-# Find Java
-if [ "$JAVA_HOME" = "" ] ; then
-	JAVA="java -server"
+if [ -d "target/$NAME" ]
+then
+  target/$NAME/bin/gremlin $@
 else
-	JAVA="$JAVA_HOME/bin/java -server"
+  mvn clean package -Dmaven.test.skip=true && unzip target/$NAME-standalone.zip -d target
+  target/$NAME/bin/gremlin $@
 fi
 
-# Set Java options
-if [ "$JAVA_OPTIONS" = "" ] ; then
-	JAVA_OPTIONS="-Xms32M -Xmx512M"
-fi
-
-# Launch the application
-if [ "$1" = "-e" ]; then
-  k=$2
-  if [ $# > 2 ]; then
-    for (( i=3 ; i < $# + 1 ; i++ ))
-    do
-      eval a=\$$i
-      k="$k \"$a\""
-    done
-  fi
-
-  eval "$JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.ScriptExecutor $k"
-else
-  if [ "$1" = "-v" ]; then
-    echo "Gremlin 0.6"
-  else
-    $JAVA $JAVA_OPTIONS -cp $JAR com.tinkerpop.gremlin.Console
-  fi
-fi
-
-# Return the program's exit code
-exit $?
