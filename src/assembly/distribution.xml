@@ -28,7 +28,7 @@
             <directory>target/site</directory>
         </fileSet>
         <fileSet>
-            <directory>target/gremlin-*-standalone</directory>
+            <directory>target/gremlin-${project.version}-standalone</directory>
         </fileSet>
     </fileSets>
 </assembly>
