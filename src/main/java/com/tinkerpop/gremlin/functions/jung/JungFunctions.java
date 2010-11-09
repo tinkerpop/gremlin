@@ -10,13 +10,10 @@ public class JungFunctions extends AbstractFunctions {
     private static final String NAMESPACE = "jung";
 
     public JungFunctions() {
-        try
-        {
+        try {
             this.functions.add(new PageRankFunction());
             this.functions.add(new DijkstraShortestPathFunction());
-        }
-        catch (NoClassDefFoundError ignore)
-        {
+        } catch (NoClassDefFoundError ignore) {
             // If jung.jar is not provided, proceed without adding functions.
         }
     }

@@ -47,8 +47,7 @@ public class IntersectFunctionTest extends BaseTest {
         printPerformance(function.getFunctionName() + " function", 2, "list intersect", this.stopWatch());
         assertEquals(count(atom.getValue()), 4);
         for (Object object : atom.getValue()) {
-            assertTrue(object.equals("marko") || object.equals("pavel") ||
-                    object.equals("peter") || object.equals("josh"));
+            assertTrue(object.equals("marko") || object.equals("pavel") || object.equals("peter") || object.equals("josh"));
         }
 
         try {

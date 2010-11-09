@@ -32,23 +32,23 @@ public class CodeBlock {
 
     public synchronized Atom invoke(Object root) throws RuntimeException {
         this.context.setCurrentPoint(root);
-        
+
         final Bindings bindings = this.context.getBindings(ScriptContext.ENGINE_SCOPE);
         final VariableLibrary varLib = new VariableLibrary(bindings);
-        
+
         bindings.put(Tokens.IN_BLOCK, true);
         Object value = null;
-        
+
         try {
             value = this.invoke().getValue();
         } catch (Exception e) {
             // doing nothing here
         }
-        
+
         bindings.put(Tokens.IN_BLOCK, null);
-        
+
         context.setBindings(varLib, ScriptContext.ENGINE_SCOPE);
-        
+
         return new Atom<Object>(value);
     }
 
@@ -57,7 +57,7 @@ public class CodeBlock {
         Operation currentOperation;
 
         boolean returnStatement = false;
-        
+
         for (Tree statement : statements) {
 
             // if we have ^(RETURN $statement)
@@ -65,7 +65,7 @@ public class CodeBlock {
                 statement = statement.getChild(0);
                 returnStatement = true;
             }
-            
+
             final CommonTreeNodeStream nodes = new CommonTreeNodeStream(statement);
             final GremlinEvaluator walker = new GremlinEvaluator(nodes, this.context);
 
@@ -82,7 +82,8 @@ public class CodeBlock {
                 } else if (value instanceof Iterator) {
                     Iterator itty = (Iterator) value;
 
-                    while (itty.hasNext()) itty.next();
+                    while (itty.hasNext())
+                        itty.next();
                 }
 
                 if (returnStatement || result instanceof FunctionReturn) {

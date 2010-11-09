@@ -25,12 +25,15 @@ public class TypeFunction extends AbstractFunction<String> {
     private static final String GRAPH = "graph";
     private static final String VERTEX = "vertex";
     private static final String EDGE = "edge";
+    private static final String NULL = "null";
 
     public Atom<String> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         if (arguments.size() == 1) {
             final Object object = arguments.get(0).compute().getValue();
-            if (object instanceof List)
+            if (null == object)
+                return new Atom<String>(NULL);
+            else if (object instanceof List)
                 return new Atom<String>(LIST);
             else if (object instanceof Set)
                 return new Atom<String>(SET);

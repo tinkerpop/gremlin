@@ -27,8 +27,7 @@ public class OpenFunction extends AbstractFunction<Graph> {
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
             }
-        }
-        catch (Error e) {
+        } catch (Error e) {
             throw new RuntimeException("Dependencies not available for this graph");
         }
     }

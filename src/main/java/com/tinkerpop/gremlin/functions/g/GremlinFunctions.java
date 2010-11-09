@@ -22,19 +22,25 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new BooleanFunction());
         functions.add(new NotFunction());
         // graph
+        functions.add(new AddAutoIndexKeyFunction());
         functions.add(new AddEdgeFunction());
+        functions.add(new AddIndexFunction());
         functions.add(new AddVertexFunction());
-        functions.add(new SetTransactionModeFunction());
         functions.add(new ClearFunction());
         functions.add(new CloseFunction());
+        functions.add(new DropIndexFunction());
         functions.add(new GetTransactionModeFunction());
         functions.add(new IdEdgeFunction());
         functions.add(new IdVertexFunction());
+        functions.add(new KeyEdgeFunction());
         functions.add(new KeyVertexFunction());
         functions.add(new LoadFunction());
-        functions.add(new RemoveIndexFunction());
+        functions.add(new RemoveAutoIndexKeyFunction());
         functions.add(new RemoveVertexEdgeFunction());
         functions.add(new SaveFunction());
+        functions.add(new SetTransactionModeFunction());
+        functions.add(new ShowAutoIndexKeysFunction());
+        functions.add(new ShowIndicesFunction());
         functions.add(new StartTransactionFunction());
         functions.add(new StopTransactionFunction());
         // io

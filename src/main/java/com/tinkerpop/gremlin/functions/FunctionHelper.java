@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -42,6 +43,14 @@ public class FunctionHelper {
             throw new RuntimeException("No graph referenced by $_g");
 
 
+    }
+
+    public static IndexableGraph getIndexableGraph(final List<Operation> parameters, int index, final GremlinScriptContext context) {
+        try {
+            return (IndexableGraph) FunctionHelper.getGraph(parameters, index, context);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     public static void fillCollection(Iterable itty, Collection collection) {

@@ -183,7 +183,8 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
 
     public static String exceptionInPrintableFormat(final Exception exception) {
         String message = getExceptionCauseMessage(exception);
-        if (message == null) return "";
+        if (message == null)
+            return "";
 
         // remove all package names and down case
         message = message.replaceAll("\\w+\\.(?! )", "").toLowerCase();

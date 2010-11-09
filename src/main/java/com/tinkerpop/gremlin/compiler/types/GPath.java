@@ -29,7 +29,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private boolean startsFromRootIdentifier = false;
     private final GremlinScriptContext context;
     private final Bindings bindings;
-    
+
     public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
@@ -41,7 +41,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             if (pipes.get(0) instanceof IdentityPipe) {
                 if (this.bindings.get(Tokens.IN_BLOCK) == null)
                     this.root = new Atom<Object>(bindings.get(Tokens.ROOT_VARIABLE));
-                
+
                 this.startsFromRootIdentifier = true;
             }
         }
@@ -120,7 +120,8 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
             // if there are still elements left in the comparable object
             // when gpath is out of the elements return false
-            if (itty.hasNext()) return false;
+            if (itty.hasNext())
+                return false;
         } else
             return super.equals(o);
 
@@ -149,7 +150,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
     public String toString() {
         final Object result = this.getValue();
-        
+
         if (result instanceof Iterable) {
             String out = "";
 

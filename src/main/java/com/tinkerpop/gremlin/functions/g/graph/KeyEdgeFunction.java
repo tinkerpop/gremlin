@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
-import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -14,11 +14,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
+public class KeyEdgeFunction extends AbstractFunction<Iterable<Edge>> {
 
-    private static final String FUNCTION_NAME = "key-v";
+    private static final String FUNCTION_NAME = "key-e";
 
-    public Atom<Iterable<Vertex>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Iterable<Edge>> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final int size = arguments.size();
         if (size != 2 && size != 3 && size != 4)
@@ -30,13 +30,13 @@ public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
         final Object value;
 
         if (size == 2) {
-            indexName = Index.VERTICES;
+            indexName = Index.EDGES;
             key = (String) arguments.get(0).compute().getValue();
             value = arguments.get(1).compute().getValue();
         } else if (size == 3) {
             Object temp = arguments.get(0).compute().getValue();
             if (temp instanceof IndexableGraph) {
-                indexName = Index.VERTICES;
+                indexName = Index.EDGES;
                 key = (String) arguments.get(1).compute().getValue();
                 value = arguments.get(2).compute().getValue();
             } else {
@@ -50,7 +50,7 @@ public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
             value = arguments.get(3).compute().getValue();
         }
 
-        return new Atom<Iterable<Vertex>>(graph.getIndex(indexName, Vertex.class).get(key, value));
+        return new Atom<Iterable<Edge>>(graph.getIndex(indexName, Edge.class).get(key, value));
     }
 
     public String getFunctionName() {

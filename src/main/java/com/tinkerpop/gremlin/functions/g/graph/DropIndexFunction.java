@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
-import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -13,25 +12,24 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class RemoveIndexFunction extends AbstractFunction<Object> {
+public class DropIndexFunction extends AbstractFunction<Object> {
 
-    private final static String FUNCTION_NAME = "remove-idx";
+    private static final String FUNCTION_NAME = "drop-idx";
 
     public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final int size = arguments.size();
-        if (size == 0 || size > 2)
+        if (size != 1 && size != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final IndexableGraph graph = (IndexableGraph) FunctionHelper.getGraph(arguments, 0, context);
-        final String index;
-
-        if (size == 2) {
-            index = (String) arguments.get(1).compute().getValue();
+        final IndexableGraph graph = FunctionHelper.getIndexableGraph(arguments, 0, context);
+        String indexName;
+        if (size == 1) {
+            indexName = (String) arguments.get(0).compute().getValue();
         } else {
-            index = (String) arguments.get(0).compute().getValue();
+            indexName = (String) arguments.get(1).compute().getValue();
         }
 
-        graph.dropIndex(index);
+        graph.dropIndex(indexName);
         return new Atom<Object>(null);
     }
 

@@ -557,14 +557,7 @@ public class GremlinScriptEngineTest extends BaseTest {
     public void testRecursiveFunctionDefinitionAndCall() throws Exception {
         final GremlinScriptContext context = new GremlinScriptContext();
 
-        assertTrue((Boolean) evaluateGremlinScriptPrimitive(
-                "func ex:hello($x)\n" +
-                        "  if $x = 10 or $x > 10\n" +
-                        "    $x\n" +
-                        "  else\n" +
-                        "    ex:hello($x + 1)\n" +
-                        "  end\n" +
-                        "end", context, false));
+        assertTrue((Boolean) evaluateGremlinScriptPrimitive("func ex:hello($x)\n" + "  if $x = 10 or $x > 10\n" + "    $x\n" + "  else\n" + "    ex:hello($x + 1)\n" + "  end\n" + "end", context, false));
 
         assertEquals(evaluateGremlinScriptPrimitive("ex:hello(12)", context, true), 12);
         assertEquals(evaluateGremlinScriptPrimitive("ex:hello(6)", context, true), 10);
@@ -630,14 +623,14 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(evaluateGremlinScriptPrimitive("test:f(6)", context, true), 11);
 
 /**
-         * func test:f($x)
-         *   if $x > 5
-         *     return null
-         *   end
-         *
-         *   return $x - 1
-         * end
-         */
+ * func test:f($x)
+ *   if $x > 5
+ *     return null
+ *   end
+ *
+ *   return $x - 1
+ * end
+ */
         assertTrue((Boolean) evaluateGremlinScriptPrimitive("func test:f($x)\nif $x > 5\nreturn null\nend\nreturn $x - 1\nend", context, false));
         assertEquals(evaluateGremlinScriptPrimitive("test:f(5)", context, true), 4);
         assertNull(evaluateGremlinScriptPrimitive("test:f(6)", context, true));
