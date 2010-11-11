@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 CP=$( echo `dirname $0`/../lib/*.jar . | sed 's/ /:/g')
 #echo $CP
