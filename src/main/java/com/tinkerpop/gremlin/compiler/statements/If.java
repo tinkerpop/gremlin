@@ -10,8 +10,8 @@ import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 public class If implements Operation {
 
     private final Operation condition;
-    private final CodeBlock body;
-    private final CodeBlock alternative;
+    private final CodeBlock trueBody;
+    private final CodeBlock falseBody;
 
     /*
     * $x := 0
@@ -23,20 +23,19 @@ public class If implements Operation {
     * end
     */
 
-    public If(final Operation condition, final CodeBlock body, final CodeBlock alternative) {
+    public If(final Operation condition, final CodeBlock trueBody, final CodeBlock falseBody) {
         this.condition = condition;
-        this.body = body;
-        this.alternative = alternative;
+        this.trueBody = trueBody;
+        this.falseBody = falseBody;
     }
 
     public Atom compute() {
         Atom condResult = this.condition.compute();
-
         if (!condResult.isNull()) {
             if ((Boolean) condResult.getValue()) {
-                return this.body.invoke();
-            } else if (null != this.alternative) {
-                return this.alternative.invoke();
+                return this.trueBody.invoke();
+            } else if (null != this.falseBody) {
+                return this.falseBody.invoke();
             }
         }
 

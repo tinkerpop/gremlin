@@ -41,7 +41,7 @@ public class ForeachTest extends BaseTest {
 
         this.stopWatch();
         List results = (List) engine.eval("foreach $e in g:list(1, 2, 3)[g:p($x := .)]\nend\n$x", context);
-        printPerformance("foreach statement", 0, "embedded iterations w/ returns (testing empty foreach)", this.stopWatch());
+        printPerformance("foreach statement", 3, "iterations w/ variable assignment", this.stopWatch());
 
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), 3);
@@ -53,9 +53,54 @@ public class ForeachTest extends BaseTest {
 
         this.stopWatch();
         List results = (List) engine.eval("$x := 0\nforeach $e in 1\n$x := 1000\nend\n$x", context);
-        printPerformance("foreach statement", 0, "embedded iterations w/ returns (testing empty foreach)", this.stopWatch());
+        printPerformance("foreach statement", 1, "iteration for testing single object foreach", this.stopWatch());
 
         assertEquals(results.size(), 2);
         assertEquals(results.get(1), 1000);
     }
+
+    public void testNoEmbeddedBlockWithVariableAssignment() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$x := g:list()\nforeach $y in g:list(1,2,3)\ng:append($x,$y)\nend\n$x", context);
+        printPerformance("foreach statement", 3, "iterations w/ variable assignment", this.stopWatch());
+
+        assertEquals(results.size(), 2);
+        assertEquals(((List)results.get(1)).size(), 3);
+        assertEquals(((List)results.get(1)).get(0), 1);
+        assertEquals(((List)results.get(1)).get(1), 2);
+        assertEquals(((List)results.get(1)).get(2), 3);
+    }
+
+    public void testEmbeddedBlockWithFunctionCall() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$x := g:list()\nforeach $y in g:list(1,2,3)\nif true\ng:append($x,$y)\nend\nend\n$x", context);
+        printPerformance("foreach statement", 3, "iterations w/ function call", this.stopWatch());
+
+        assertEquals(results.size(), 2);
+        System.out.println(results);
+        assertEquals(((List)results.get(1)).size(), 3);
+        assertEquals(((List)results.get(1)).get(0), 1);
+        assertEquals(((List)results.get(1)).get(1), 2);
+        assertEquals(((List)results.get(1)).get(2), 3);
+    }
+
+    public void testEmbeddedBlockWithVariableAssignment() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$x := 0\nforeach $y in g:list(1,2,3)\nif true\nif true\n$x := $x + $y\nend\nend\nend\n$x", context);
+        printPerformance("foreach statement", 3, "iterations w/ variable assignment", this.stopWatch());
+
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(1), 6);
+
+    }
+
 }

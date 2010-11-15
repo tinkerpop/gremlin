@@ -72,19 +72,18 @@ public class CodeBlock {
             try {
                 currentOperation = walker.statement().op;
                 result = currentOperation.compute();
-
                 Object value = result.getValue();
 
-                // auto iteration
+                // begin auto iteration
                 if (value instanceof Iterable) {
                     for (Object o : (Iterable) value) {
                     }
                 } else if (value instanceof Iterator) {
                     Iterator itty = (Iterator) value;
-
                     while (itty.hasNext())
                         itty.next();
                 }
+                // end auto iteration
 
                 if (returnStatement || result instanceof FunctionReturn) {
                     return new FunctionReturn<Object>(value);

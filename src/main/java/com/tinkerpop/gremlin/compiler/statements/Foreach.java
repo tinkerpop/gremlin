@@ -18,7 +18,7 @@ public class Foreach implements Operation {
     private final CodeBlock body;
     private final GremlinScriptContext context;
 
-    /**
+    /*
      * $z := 0
      * $x := g:list(1, 2, 3)
      * <p/>
