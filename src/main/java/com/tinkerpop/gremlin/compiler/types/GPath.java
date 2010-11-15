@@ -27,15 +27,14 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private Pipeline pipeline;
     private final Set<Object> previouslyFetched;
     private boolean startsFromRootIdentifier = false;
-    private final GremlinScriptContext context;
     private final Bindings bindings;
+
 
     public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
         this.previouslyFetched = new HashSet<Object>();
-        this.context = context;
-        this.bindings = this.context.getBindings(ScriptContext.ENGINE_SCOPE);
+        this.bindings = context.getBindings(ScriptContext.ENGINE_SCOPE);
 
         if (!(root instanceof DynamicEntity)) {
             if (pipes.get(0) instanceof IdentityPipe) {
@@ -47,7 +46,11 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         }
     }
 
-    protected Object value() {
+    public boolean isNull() {
+        return this.getValue() == null;
+    }
+
+    public Object getValue() {
         Object top;
 
         Iterator pipeline = this.iterator();
@@ -142,7 +145,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     public void setRoot(Object point) {
         if (this.startsFromRootIdentifier) {
             this.persistentRoot = point;
-        } else if (this.root instanceof Var) {
+        } else if (this.root instanceof Variable) {
             // re-caching root variable
             this.persistentRoot = this.root.getValue();
         }

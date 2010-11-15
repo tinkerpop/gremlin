@@ -47,8 +47,8 @@ public class DynamicPredicateFilterPipe<S> extends AbstractComparisonFilterPipe<
         if (side instanceof DynamicEntity) {
             final Object currentPoint = this.context.getCurrentPoint();
 
-            if (side instanceof Var && !(side instanceof RootVar)) {
-                Var variable = (Var) side;
+            if (side instanceof Variable && !(side instanceof RootVariable)) {
+                Variable variable = (Variable) side;
 
                 if (variable.getVariableName().equals(Tokens.ROOT_VARIABLE)) {
                     return currentPoint;
@@ -64,7 +64,7 @@ public class DynamicPredicateFilterPipe<S> extends AbstractComparisonFilterPipe<
                 final Func replacement = new Func(function.getFunction(), newArguments, function.getContext());
                 return replacement.getValue();
             }
-        } else if (side instanceof Prop) {
+        } else if (side instanceof Property) {
             if (point instanceof Map)
                 return ((Map) point).get(side.getValue());
             else if (point instanceof Element) {

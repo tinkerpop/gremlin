@@ -209,11 +209,11 @@ public class GremlinPipesHelper {
             if (argument instanceof DynamicEntity) {
                 Operation operation = null;
 
-                if (argument instanceof Var) {
-                    if (argument instanceof RootVar) {
+                if (argument instanceof Variable) {
+                    if (argument instanceof RootVariable) {
                         operation = argumentOperation;
                     } else {
-                        final String name = ((Var) argument).getVariableName();
+                        final String name = ((Variable) argument).getVariableName();
 
                         if (name.equals(Tokens.ROOT_VARIABLE)) {
                             final Atom<Object> currentPoint = new Atom<Object>(currentIterationPoint);

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class Atom<T> {
 
-    private T value;
+    protected T value;
 
     /* identifier and property used in gpath */
     private boolean identifier = false;

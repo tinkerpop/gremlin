@@ -6,9 +6,9 @@ import com.tinkerpop.gremlin.compiler.util.Tokens;
 /**
  * @author Pavel A. Yaskevich
  */
-public class RootVar extends Var {
+public class RootVariable extends Variable {
 
-    public RootVar(final GremlinScriptContext context) {
+    public RootVariable(final GremlinScriptContext context) {
         super(Tokens.ROOT_VARIABLE, context);
     }
 

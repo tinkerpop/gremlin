@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.compiler.types.Variable;
 import com.tinkerpop.gremlin.functions.Function;
 
 import javax.script.ScriptContext;
@@ -22,10 +22,10 @@ public class AssignFunctionTest extends BaseTest {
         Function<Object> function = new AssignFunction();
         GremlinScriptContext context = new GremlinScriptContext();
         this.stopWatch();
-        assertEquals(function.compute(createUnaryArgs(new Var("x", context), 1), context).getValue(), 1);
-        assertEquals(function.compute(createUnaryArgs(new Var("y", context), 2), context).getValue(), 2);
-        assertEquals(function.compute(createUnaryArgs(new Var("z", context), 3), context).getValue(), 3);
-        assertEquals(function.compute(createUnaryArgs(new Var("x", context), 4), context).getValue(), 4);
+        assertEquals(function.compute(createUnaryArgs(new Variable("x", context), 1), context).getValue(), 1);
+        assertEquals(function.compute(createUnaryArgs(new Variable("y", context), 2), context).getValue(), 2);
+        assertEquals(function.compute(createUnaryArgs(new Variable("z", context), 3), context).getValue(), 3);
+        assertEquals(function.compute(createUnaryArgs(new Variable("x", context), 4), context).getValue(), 4);
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
         assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("x"), 4);
         assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("y"), 2);

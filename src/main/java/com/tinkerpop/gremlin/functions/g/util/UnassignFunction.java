@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.compiler.types.Variable;
 import com.tinkerpop.gremlin.functions.AbstractFunction;
 
 import javax.script.ScriptContext;
@@ -23,11 +23,11 @@ public class UnassignFunction extends AbstractFunction<Object> {
         if (size == 1) {
             final Atom variable = arguments.get(0).compute();
 
-            if (!(variable instanceof Var))
+            if (!(variable instanceof Variable))
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-            final Object ret = context.getBindings(ScriptContext.ENGINE_SCOPE).get(((Var) variable).getVariableName());
-            context.getBindings(ScriptContext.ENGINE_SCOPE).remove(((Var) variable).getVariableName());
+            final Object ret = context.getBindings(ScriptContext.ENGINE_SCOPE).get(((Variable) variable).getVariableName());
+            context.getBindings(ScriptContext.ENGINE_SCOPE).remove(((Variable) variable).getVariableName());
             return new Atom<Object>(ret);
         } else if (size == 2) {
             final Object object = arguments.get(0).compute().getValue();

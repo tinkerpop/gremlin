@@ -15,7 +15,6 @@ public class Func extends DynamicEntity {
     private List<Operation> arguments;
     private final GremlinScriptContext context;
     private boolean done = false;
-    private Object fValue = null;
 
     public Func(final Function function, final List<Operation> arguments, final GremlinScriptContext context) {
         this.function = function;
@@ -23,12 +22,12 @@ public class Func extends DynamicEntity {
         this.context = context;
     }
 
-    protected Object value() {
+    public Object getValue() {
         if (!done) {
-            this.fValue = function.compute(this.arguments, this.context).getValue();
+            internalCompute();
             this.done = true;
         }
-        return fValue;
+        return this.value;
     }
 
     public Function getFunction() {
@@ -45,6 +44,18 @@ public class Func extends DynamicEntity {
 
     public int hashCode() {
         return this.function.hashCode();
+    }
+
+    private void internalCompute() {
+        this.value = function.compute(this.arguments, this.context).getValue();
+    }
+
+    public boolean isNull() {
+        if (!done) {
+            internalCompute();
+            this.done = true;
+        }
+        return this.value == null;
     }
 
 }

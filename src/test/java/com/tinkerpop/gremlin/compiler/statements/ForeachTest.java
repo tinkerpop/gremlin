@@ -68,13 +68,13 @@ public class ForeachTest extends BaseTest {
         printPerformance("foreach statement", 3, "iterations w/ variable assignment", this.stopWatch());
 
         assertEquals(results.size(), 2);
-        assertEquals(((List)results.get(1)).size(), 3);
-        assertEquals(((List)results.get(1)).get(0), 1);
-        assertEquals(((List)results.get(1)).get(1), 2);
-        assertEquals(((List)results.get(1)).get(2), 3);
+        assertEquals(((List) results.get(1)).size(), 3);
+        assertEquals(((List) results.get(1)).get(0), 1);
+        assertEquals(((List) results.get(1)).get(1), 2);
+        assertEquals(((List) results.get(1)).get(2), 3);
     }
 
-    public void testEmbeddedBlockWithFunctionCall() {
+    public void testEmbeddedBlockWithFunctionCallAndIf() {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
@@ -84,13 +84,13 @@ public class ForeachTest extends BaseTest {
 
         assertEquals(results.size(), 2);
         System.out.println(results);
-        assertEquals(((List)results.get(1)).size(), 3);
-        assertEquals(((List)results.get(1)).get(0), 1);
-        assertEquals(((List)results.get(1)).get(1), 2);
-        assertEquals(((List)results.get(1)).get(2), 3);
+        assertEquals(((List) results.get(1)).size(), 3);
+        assertEquals(((List) results.get(1)).get(0), 1);
+        assertEquals(((List) results.get(1)).get(1), 2);
+        assertEquals(((List) results.get(1)).get(2), 3);
     }
 
-    public void testEmbeddedBlockWithVariableAssignment() {
+    public void testEmbeddedBlockWithVariableAssignmentAndIf() {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 

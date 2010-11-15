@@ -308,7 +308,7 @@ public class GremlinEvaluator extends TreeParser {
             String identifier = (String) token.getValue();
             if (identifier.equals(Tokens.IDENTITY)) {
                 if (this.getVariableValue(Tokens.IN_BLOCK) == null) {
-                    return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
+                    return (gpathScope > 1) ? new Variable(Tokens.ROOT_VARIABLE, this.context) : new RootVariable(this.context);
                 } else {
                     return new Atom<Object>(this.context.getCurrentPoint());
                 }
@@ -1850,7 +1850,7 @@ public class GremlinEvaluator extends TreeParser {
                         _last = _save_last_1;
                     }
 
-                    retval.atom = (VARIABLE36 != null ? VARIABLE36.getText() : null).equals(Tokens.ROOT_VARIABLE) ? new RootVar(context) : new Var((VARIABLE36 != null ? VARIABLE36.getText() : null), this.context);
+                    retval.atom = (VARIABLE36 != null ? VARIABLE36.getText() : null).equals(Tokens.ROOT_VARIABLE) ? new RootVariable(context) : new Variable((VARIABLE36 != null ? VARIABLE36.getText() : null), this.context);
 
                 }
                 break;
@@ -1884,7 +1884,7 @@ public class GremlinEvaluator extends TreeParser {
                         _last = _save_last_1;
                     }
 
-                    retval.atom = new Prop<String>((PROPERTY38 != null ? PROPERTY38.getText() : null).substring(1));
+                    retval.atom = new Property<String>((PROPERTY38 != null ? PROPERTY38.getText() : null).substring(1));
 
                 }
                 break;

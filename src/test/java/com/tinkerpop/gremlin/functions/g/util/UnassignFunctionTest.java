@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.compiler.types.Variable;
 import com.tinkerpop.gremlin.functions.Function;
 
 import javax.script.ScriptContext;
@@ -32,10 +32,10 @@ public class UnassignFunctionTest extends BaseTest {
         assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get("z"), 3);
 
         this.stopWatch();
-        assertEquals(function.compute(createUnaryArgs(new Var("x", context)), context).getValue(), 1);
-        assertEquals(function.compute(createUnaryArgs(new Var("y", context)), context).getValue(), 2);
-        assertEquals(function.compute(createUnaryArgs(new Var("z", context)), context).getValue(), 3);
-        assertNull(function.compute(createUnaryArgs(new Var("x", context)), context).getValue());
+        assertEquals(function.compute(createUnaryArgs(new Variable("x", context)), context).getValue(), 1);
+        assertEquals(function.compute(createUnaryArgs(new Variable("y", context)), context).getValue(), 2);
+        assertEquals(function.compute(createUnaryArgs(new Variable("z", context)), context).getValue(), 3);
+        assertNull(function.compute(createUnaryArgs(new Variable("x", context)), context).getValue());
         printPerformance(function.getFunctionName() + " function", 4, "evaluation", this.stopWatch());
         assertNull(context.getBindings(ScriptContext.ENGINE_SCOPE).get("x"));
         assertNull(context.getBindings(ScriptContext.ENGINE_SCOPE).get("y"));

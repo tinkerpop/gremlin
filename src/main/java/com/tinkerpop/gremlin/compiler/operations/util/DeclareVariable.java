@@ -7,7 +7,7 @@ import com.tinkerpop.gremlin.compiler.pipes.GremlinPropertyPipe;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.DynamicEntity;
 import com.tinkerpop.gremlin.compiler.types.GPath;
-import com.tinkerpop.gremlin.compiler.types.Var;
+import com.tinkerpop.gremlin.compiler.types.Variable;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
@@ -36,8 +36,8 @@ public class DeclareVariable implements Operation {
         final Atom atom = this.valueOperation.compute();
         final Atom value = (!(atom instanceof DynamicEntity)) ? atom : dynamicValue(atom);
 
-        if (this.object instanceof Var) {
-            String name = ((Var) this.object).getVariableName();
+        if (this.object instanceof Variable) {
+            String name = ((Variable) this.object).getVariableName();
             context.getBindings(ScriptContext.ENGINE_SCOPE).put(name, value);
         } else if (this.object instanceof GPath) {
             GPath path = (GPath) this.object;
@@ -93,8 +93,8 @@ public class DeclareVariable implements Operation {
     }
 
     private Atom dynamicValue(final Atom atom) {
-        if (atom instanceof Var) {
-            final Var variable = (Var) atom;
+        if (atom instanceof Variable) {
+            final Variable variable = (Variable) atom;
             if (variable.getVariableName().equals(Tokens.IDENTITY)) {
                 return new Atom<Object>(this.context.getCurrentPoint());
             }
