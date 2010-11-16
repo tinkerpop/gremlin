@@ -6,3 +6,4 @@ com.tinkerpop.gremlin.functions.orientdb.OrientDBFunctions
 com.tinkerpop.gremlin.functions.sail.lds.LinkedDataSailFunctions
 com.tinkerpop.gremlin.functions.sail.neo4jsail.Neo4jSailFunctions
 com.tinkerpop.gremlin.functions.jung.JungFunctions
+com.tinkerpop.gremlin.functions.rexster.RexsterFunctions
