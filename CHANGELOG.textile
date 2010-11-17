@@ -20,6 +20,7 @@ bc. <dependency>
 </dependency>
 
 * Fixed @foreach@ bug that occurred on single object looping
+* Fixed @if/else@ bug that occurred on function call
 * Added anonymous step definitions using @/{ }/@ notation
 
 ==<hr/>==
