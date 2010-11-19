@@ -9,6 +9,7 @@ import com.tinkerpop.pipes.Pipeline;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,11 +26,17 @@ public class PathsFunction extends AbstractFunction<List> {
             Operation op = arguments.get(0);
             Atom atom = op.compute();
             if (atom instanceof GPath) {
-                GPath path = (GPath) atom;
-                Pipeline pipeline = new Pipeline(path.getPipes());
+                GPath gPath = (GPath) atom;
+                Pipeline pipeline = new Pipeline(gPath.getPipes());
                 pipeline.enablePath();
                 List paths = new ArrayList();
-                pipeline.setStarts(Arrays.asList(path.getRoot().getValue()));
+                Object root = gPath.getRoot().getValue();
+                if (root instanceof Iterable)
+                    pipeline.setStarts((Iterable) root);
+                else if (root instanceof Iterator)
+                    pipeline.setStarts((Iterator) root);
+                else
+                    pipeline.setStarts(Arrays.asList(root));
                 for (Object object : pipeline) {
                     paths.add(pipeline.path());
                 }
