@@ -10,7 +10,7 @@ import com.tinkerpop.gremlin.functions.Function;
 public class PathFunctionTest extends BaseTest {
 
     public void testPath() {
-        Function<Boolean> function = new PathFunction();
+        Function<Boolean> function = new PFunction();
         this.stopWatch();
         GremlinScriptContext context = new GremlinScriptContext();
 

@@ -58,7 +58,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new ListFunction());
         functions.add(new MapFunction());
         functions.add(new OperateValueFunction());
-        functions.add(new PathsFunction());
+        functions.add(new PathFunction());
         functions.add(new RetainFunction());
         functions.add(new SetFunction());
         functions.add(new SortFunction());
@@ -94,7 +94,7 @@ public class GremlinFunctions extends AbstractFunctions {
         // util
         functions.add(new AssignFunction());
         functions.add(new FromJsonFunction());
-        functions.add(new PathFunction());
+        functions.add(new PFunction());
         functions.add(new TimeFunction());
         functions.add(new ToJsonFunction());
         functions.add(new TypeFunction());
