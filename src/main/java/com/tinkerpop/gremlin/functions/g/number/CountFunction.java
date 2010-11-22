@@ -9,7 +9,7 @@ import com.tinkerpop.pipes.PipeHelper;
 import java.util.List;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class CountFunction extends AbstractFunction<Long> {
 
@@ -17,13 +17,15 @@ public class CountFunction extends AbstractFunction<Long> {
 
     public Atom<Long> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         if (arguments.size() != 1)
-            throw new RuntimeException(this.createUnsupportedArgumentMessage("One countable argument required"));
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("A single countable argument required"));
 
         final Atom result = arguments.get(0).compute();
         if (result.isIterable()) {
-            return new Atom<Long>(PipeHelper.counter(((Iterable<?>) result.getValue()).iterator()));
-        } else
+            return new Atom<Long>(PipeHelper.counter(((Iterable) result.getValue()).iterator()));
+        } else if (!result.isNull()) {
             return new Atom<Long>(1l);
+        } else
+            return new Atom<Long>(0l);
     }
 
     public String getFunctionName() {

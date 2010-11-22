@@ -58,7 +58,6 @@ public class AddVertexFunctionTest extends BaseTest {
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "23");
         assertEquals(atom.getValue().getProperty("name"), "pavel");
-        Vertex vertexPavel = atom.getValue();
 
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(new TinkerGraph()));
         this.stopWatch();
@@ -67,14 +66,6 @@ public class AddVertexFunctionTest extends BaseTest {
         assertTrue(atom.isVertex());
         assertEquals(atom.getValue().getId(), "22");
         assertEquals(atom.getValue().getProperty("name"), "marko");
-
-
-        /*this.stopWatch();
-        atom = function.compute(createUnaryArgs(graph, vertexPavel), context);
-        printPerformance(function.getFunctionName() + " function", 1, "evaluation", this.stopWatch());
-        assertTrue(atom.isVertex());
-        assertEquals(atom.getValue().getId(), "23");
-        assertEquals(atom.getValue().getProperty("name"), "pavel");*/
 
     }
 }

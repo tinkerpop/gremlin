@@ -4,7 +4,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class Equality extends LogicOperation {
 
@@ -19,8 +19,13 @@ public class Equality extends LogicOperation {
             return new Atom<Boolean>(true);
         else if (a == null || b == null)
             return new Atom<Boolean>(false);
-        else
-            return new Atom<Boolean>(a.equals(b));
+        else {
+            //if (a instanceof Number && b instanceof Number) {
+            //    return new Atom<Boolean>(((Number) a).doubleValue() == ((Number) a).doubleValue());
+            //} else {
+                return new Atom<Boolean>(a.equals(b));
+            //}
+        }
     }
 
 }
