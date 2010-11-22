@@ -21,7 +21,7 @@ public class CountFunction extends AbstractFunction<Long> {
 
         final Atom result = arguments.get(0).compute();
         if (result.isIterable()) {
-            return new Atom<Long>(PipeHelper.counter(((Iterable) result.getValue()).iterator()));
+            return new Atom<Long>(PipeHelper.counter(((Iterable<?>) result.getValue()).iterator()));
         } else if (!result.isNull()) {
             return new Atom<Long>(1l);
         } else

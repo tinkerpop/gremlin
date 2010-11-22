@@ -2,16 +2,15 @@
 
 Gremlin is a "Turing-complete":http://en.wikipedia.org/wiki/Turing_completeness, "graph-based":http://en.wikipedia.org/wiki/Graph_%28mathematics%29 programming language developed in Java 1.6+ ("JSR 223":http://jcp.org/en/jsr/detail?id=223) for key/value-pair multi-relational graphs called property graphs. Gremlin makes use of a path-based syntax to support complex graph traversals using "Pipes":http://pipes.tinkerpop.com. This language has application in the areas of graph query, analysis, and manipulation. Connectors, provided by "Blueprints":http://blueprints.tinkerpop.com, exist for the following graph management systems:
 
-* "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
-* "Neo4j":http://neo4j.org/ graph database
-* "OrientDB":http://www.orientechnologies.com/ graph database
-* "Sesame 2.0":http://www.openrdf.org compliant RDF stores
-** "MemoryStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e705, "NativeStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e746, "Neo4jSail":http://components.neo4j.org/neo4j-rdf-sail/, "LinkedDataSail":http://code.google.com/p/ripple/wiki/LinkedDataSail
-
-Extension support for the following packages:
-
-* "GraphML":http://graphml.graphdrawing.org/ reader and writer
-* "Java Universal Network/Graph Framework":http://jung.sourceforge.net algorithms
-
+* Implementations:
+** "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
+** "Neo4j":http://neo4j.org/ graph database
+** "OrientDB":http://www.orientechnologies.com/ graph database
+** "Rexster":http://rexster.tinkerpop.com RESTful graph shell
+** "Sesame 2.0":http://www.openrdf.org compliant RDF stores
+**** "MemoryStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e705, "NativeStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e746, "Neo4jSail":http://components.neo4j.org/neo4j-rdf-sail/, "LinkedDataSail":http://code.google.com/p/ripple/wiki/LinkedDataSail
+* Supporting extensions:
+** "GraphML Reader/Writer":http://graphml.graphdrawing.org/ library
+** "Java Universal/Graph":http://jung.sourceforge.net/ framework
 
 The documentation for Gremlin can be found at this "location":http://gremlin.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.
