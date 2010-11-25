@@ -12,8 +12,10 @@ import java.util.ServiceLoader;
  */
 public class StepLibrary extends HashMap<String, Step> {
 
+    static private final ServiceLoader<Steps> stepsService = ServiceLoader.load(Steps.class);
+
     public StepLibrary() {
-        final ServiceLoader<Steps> stepsService = ServiceLoader.load(Steps.class);
+        //final ServiceLoader<Steps> stepsService = ServiceLoader.load(Steps.class);
 
         for (final Steps steps : stepsService) {
             for (final Step step : steps.getSteps()) {
