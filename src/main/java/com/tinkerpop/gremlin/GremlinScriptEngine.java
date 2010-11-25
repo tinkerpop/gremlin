@@ -80,7 +80,9 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
         try {
             // read whole script before evaluation
             while ((line = bReader.readLine()) != null) {
-                script.append(line).append("\n");
+                // ignore blank lines
+                if (line.trim().length() > 0)
+                    script.append(line).append("\n");
             }
 
             // evaluate script

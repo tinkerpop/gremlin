@@ -13,8 +13,8 @@ import java.util.ServiceLoader;
  */
 public class FunctionLibrary extends HashMap<String, Functions> {
 
-    static private ServiceLoader<Functions> functionsService=ServiceLoader.load(Functions.class);
-    
+    static private ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
+
     public FunctionLibrary() {
         //final ServiceLoader<Functions> functionsService = ServiceLoader.load(Functions.class);
 

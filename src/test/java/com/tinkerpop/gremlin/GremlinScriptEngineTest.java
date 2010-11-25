@@ -11,6 +11,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import javax.script.*;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -604,6 +605,12 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(m.get("josh"), 1.0f);
         assertEquals(m.get("vadas"), 0.5f);
         assertEquals(evaluateGremlinScriptPrimitive(".", context, false), graph.getVertex(1));
+    }
+
+    public void testCommentedSpacedScript() throws Exception {
+        String script = "# marko\n" + "\n" + "# marko\n" + "\n" + "1+2\n" + "\n" + "";
+        GremlinScriptEngine engine = new GremlinScriptEngine();
+        assertEquals(((Iterable) engine.eval(new StringReader(script))).iterator().next(), 3);
     }
 
     public void testFunctionReturn() throws Exception {
