@@ -142,6 +142,16 @@ public abstract class BaseTest extends TestCase {
         return args;
     }
 
+    public static Operation[] createUnaryArgsArray(Object... objects) {
+        Operation[] args = new Operation[objects.length];
+        if (null != objects) {
+            for (int i = 0; i < objects.length; i++) {
+                args[i] = createUnary(objects[i]);
+            }
+        }
+        return args;
+    }
+
     public static Class[] getClasses(final String packageName) throws Exception {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;

@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez
  */
 public class GreaterThan extends LogicOperation {
 
@@ -15,7 +16,9 @@ public class GreaterThan extends LogicOperation {
     public Atom<Boolean> compute() {
         Object a = this.operands[0].compute().getValue();
         Object b = this.operands[1].compute().getValue();
-        if (a instanceof Comparable) {
+        if (a instanceof Number && b instanceof Number) {
+            return new Atom<Boolean>(((Number) a).doubleValue() > ((Number) b).doubleValue());
+        } else if (a instanceof Comparable) {
             int comparison = ((Comparable) a).compareTo(b);
             return new Atom<Boolean>(comparison > 0);
         } else {

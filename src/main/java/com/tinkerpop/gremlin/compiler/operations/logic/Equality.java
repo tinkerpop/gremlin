@@ -20,11 +20,11 @@ public class Equality extends LogicOperation {
         else if (a == null || b == null)
             return new Atom<Boolean>(false);
         else {
-            //if (a instanceof Number && b instanceof Number) {
-            //    return new Atom<Boolean>(((Number) a).doubleValue() == ((Number) a).doubleValue());
-            //} else {
+            if (a instanceof Number && b instanceof Number) {
+                return new Atom<Boolean>(((Number) a).doubleValue() == ((Number) b).doubleValue());
+            } else {
                 return new Atom<Boolean>(a.equals(b));
-            //}
+            }
         }
     }
 
