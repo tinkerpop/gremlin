@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
+ * @author Marko A. Rodriguez
  * @author Pavel A. Yaskevich
  */
 public class Console {

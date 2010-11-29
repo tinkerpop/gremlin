@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.functions.g.bool;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.List;

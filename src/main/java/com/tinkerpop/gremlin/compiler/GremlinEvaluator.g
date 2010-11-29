@@ -215,7 +215,7 @@ options {
             String identifier = (String) token.getValue();
             if (identifier.equals(Tokens.IDENTITY)) {
                 if (this.getVariableValue(Tokens.IN_BLOCK) == null) {
-                    return (gpathScope > 1) ? new Var(Tokens.ROOT_VARIABLE, this.context) : new RootVar(this.context);
+                    return (gpathScope > 1) ? new Variable(Tokens.ROOT_VARIABLE, this.context) : new RootVariable(this.context);
                 } else {
                     return new Atom<Object>(this.context.getCurrentPoint());
                 }
@@ -258,7 +258,7 @@ options {
         if (currentOperation.getType() != Operation.Type.CONTROL_STATEMENT) 
             resultList.add(value);
 
-        if (value != null && DEBUG) {
+        if (DEBUG) {
             if (value instanceof Iterable) {
                 for(Object o : (Iterable) value) {
                     this.context.writeOutput(Tokens.RESULT_PROMPT + o + "\n");
@@ -429,8 +429,8 @@ gremlin_native_path_definition returns [Pipe pipe]
 token returns [Atom atom]
     :   function_call               { $atom = $function_call.value; }
     |   ^(STR StringLiteral)        { $atom = new Atom<String>($StringLiteral.text); }
-	|	^(VARIABLE_CALL VARIABLE)   { $atom = $VARIABLE.text.equals(Tokens.ROOT_VARIABLE) ? new RootVar(context) : new Var($VARIABLE.text, this.context); }
-	|	^(PROPERTY_CALL PROPERTY)   { $atom = new Prop<String>($PROPERTY.text.substring(1)); }
+	|	^(VARIABLE_CALL VARIABLE)   { $atom = $VARIABLE.text.equals(Tokens.ROOT_VARIABLE) ? new RootVariable(context) : new Variable($VARIABLE.text, this.context); }
+	|	^(PROPERTY_CALL PROPERTY)   { $atom = new Property<String>($PROPERTY.text.substring(1)); }
     |	IDENTIFIER                                                  
         {
             String idText = $IDENTIFIER.text;

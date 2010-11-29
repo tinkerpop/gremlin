@@ -29,7 +29,6 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     private boolean startsFromRootIdentifier = false;
     private final Bindings bindings;
 
-
     public GPath(final Atom root, final List<Pipe> pipes, final GremlinScriptContext context) {
         this.root = root;
         this.pipes = pipes;
