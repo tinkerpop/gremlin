@@ -28,6 +28,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new AddVertexFunction());
         functions.add(new ClearFunction());
         functions.add(new CloseFunction());
+        functions.add(new CopyVertexEdgeFunction());
         functions.add(new DropIndexFunction());
         functions.add(new GetTransactionModeFunction());
         functions.add(new IdEdgeFunction());

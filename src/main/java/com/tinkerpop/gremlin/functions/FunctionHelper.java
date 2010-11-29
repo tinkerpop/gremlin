@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.functions;
 
 import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
@@ -92,5 +93,11 @@ public class FunctionHelper {
             list.add(operation.compute().getValue());
         }
         return list;
+    }
+
+    public static void copyElementProperties(Element from, Element to) {
+        for (String key : from.getPropertyKeys()) {
+            to.setProperty(key, from.getProperty(key));
+        }
     }
 }
