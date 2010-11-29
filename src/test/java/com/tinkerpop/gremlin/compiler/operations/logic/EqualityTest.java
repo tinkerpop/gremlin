@@ -17,11 +17,17 @@ public class EqualityTest extends BaseTest {
         Equality equals = new Equality(createUnaryArgsArray(1.0, 1.0));
         assertTrue(equals.compute().getValue());
 
-        equals = new Equality(createUnaryArgsArray(1.0, 1l));
+        equals = new Equality(createUnaryArgsArray(1.0, 1));
+        assertTrue(equals.compute().getValue());
+
+        equals = new Equality(createUnaryArgsArray(1.0d, 1l));
         assertTrue(equals.compute().getValue());
 
         equals = new Equality(createUnaryArgsArray(2.0, 1l));
         assertFalse(equals.compute().getValue());
+
+        equals = new Equality(createUnaryArgsArray(2.451234, 2.451234d));
+        assertTrue(equals.compute().getValue());
 
         equals = new Equality(createUnaryArgsArray(2, 5));
         assertFalse(equals.compute().getValue());
