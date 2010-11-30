@@ -24,38 +24,43 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
         if (size > 4 || size == 0)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+
         final Element element;
         final String vertexIndexName;
         final String uniqueProperty;
 
         if (size == 1) {
-            element = (Element) arguments.get(0).compute().getValue();
+            element = (Element) objects.get(0);
             uniqueProperty = "_id";
             vertexIndexName = Index.VERTICES;
         } else if (size == 2) {
             // todo fix
-            Object object = arguments.get(0).compute().getValue();
+            Object object = objects.get(0);
             if (object instanceof Graph) {
-                element = (Element) arguments.get(1).compute().getValue();
+                element = (Element) objects.get(1);
                 uniqueProperty = "_id";
                 vertexIndexName = Index.VERTICES;
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("When providing an index, provide a property key to use"));
             }
         } else if (size == 3) {
-            Object object = arguments.get(0).compute().getValue();
-            if (object instanceof Graph) {
+            if (objects.get(0) instanceof Graph) {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("When providing an index, provide a property key to use"));
             } else {
-                element = (Element) arguments.get(0).compute().getValue();
-                vertexIndexName = (String) arguments.get(1).compute().getValue();
-                uniqueProperty = (String) arguments.get(2).compute().getValue();
+                element = (Element) objects.get(0);
+                vertexIndexName = (String) objects.get(1);
+                uniqueProperty = (String) objects.get(2);
             }
         } else {
-            element = (Element) arguments.get(1).compute().getValue();
-            vertexIndexName = (String) arguments.get(2).compute().getValue();
-            uniqueProperty = (String) arguments.get(3).compute().getValue();
+            element = (Element) objects.get(1);
+            vertexIndexName = (String) objects.get(2);
+            uniqueProperty = (String) objects.get(3);
         }
         if (element instanceof Vertex) {
             Vertex v1 = (Vertex) element;

@@ -24,15 +24,21 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
         if (size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+
         final Object identifier;
 
         if (size == 0)
             return new Atom<Vertex>(graph.addVertex(null));
-        else if (size == 1 && !arguments.get(0).compute().isGraph())
-            identifier = arguments.get(0).compute().getValue();
+        else if (size == 1 && !(objects.get(0) instanceof Graph))
+            identifier = objects.get(0);
         else
-            identifier = arguments.get(1).compute().getValue();
+            identifier = objects.get(1);
 
         if (identifier instanceof Map) {
             final Map map = (Map) identifier;

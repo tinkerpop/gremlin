@@ -60,5 +60,10 @@ public class RetainFunctionTest extends BaseTest {
         assertEquals(results.size(), 2);
         assertEquals(results.get(0), 2);
         assertEquals(results.get(1), 4);
+
+        results = evaluateGremlinScriptIterable("g:list(null,null,2)[g:retain(null)]", true);
+        assertEquals(results.size(), 2);
+        assertNull(results.get(0));
+        assertNull(results.get(1));
     }
 }

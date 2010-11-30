@@ -24,13 +24,19 @@ public class RemoveVertexEdgeFunction extends AbstractFunction<Object> {
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+
         final Element element;
 
         if (size == 1)
-            element = (Element) arguments.get(0).compute().getValue();
+            element = (Element) objects.get(0);
         else
-            element = (Element) arguments.get(1).compute().getValue();
+            element = (Element) objects.get(1);
 
         if (element instanceof Vertex) {
             graph.removeVertex((Vertex) element);

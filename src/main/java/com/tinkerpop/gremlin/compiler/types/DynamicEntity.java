@@ -1,7 +1,9 @@
 package com.tinkerpop.gremlin.compiler.types;
 
+import com.tinkerpop.gremlin.compiler.util.Tokens;
+
 /**
- * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public abstract class DynamicEntity extends Atom {
 
@@ -10,6 +12,9 @@ public abstract class DynamicEntity extends Atom {
     }
 
     public String toString() {
-        return this.getValue().toString();
+        if (null == this.getValue())
+            return Tokens.NULL;
+        else
+            return this.getValue().toString();
     }
 }

@@ -30,6 +30,8 @@ public class ExceptFunction extends AbstractFunction<Boolean> {
                     return new Atom<Boolean>(false);
             }
             return new Atom<Boolean>(true);
+        } else if (null == check) {
+            return new Atom<Boolean>(null != point);
         } else {
             return new Atom<Boolean>(!check.equals(point));
         }

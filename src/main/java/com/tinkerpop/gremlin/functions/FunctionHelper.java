@@ -20,13 +20,8 @@ import java.util.Set;
  */
 public class FunctionHelper {
 
-    public static Graph getGraph(final Operation parameter, final GremlinScriptContext context) {
-        final Atom<Graph> graphGlobalVariable = new Atom(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.GRAPH_VARIABLE));
-        if (parameter == null)
-            return graphGlobalVariable.getValue();
-
-        final Atom paramAtom = parameter.compute();
-        return (paramAtom.isGraph()) ? (Graph) paramAtom.getValue() : graphGlobalVariable.getValue();
+    public static Graph getGlobalGraph(final GremlinScriptContext context) {
+        return new Atom<Graph>((Graph) context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.GRAPH_VARIABLE)).getValue();
     }
 
     public static Graph getGraph(final List<Operation> parameters, int index, final GremlinScriptContext context) {

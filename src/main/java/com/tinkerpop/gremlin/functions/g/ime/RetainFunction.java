@@ -30,6 +30,8 @@ public class RetainFunction extends AbstractFunction<Boolean> {
                     return new Atom<Boolean>(true);
             }
             return new Atom<Boolean>(false);
+        } else if (null == check) {
+            return new Atom<Boolean>(null == point);
         } else {
             return new Atom<Boolean>(check.equals(point));
         }

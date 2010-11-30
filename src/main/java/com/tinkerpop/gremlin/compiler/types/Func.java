@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Func extends DynamicEntity {
 

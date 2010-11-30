@@ -1,9 +1,6 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Index;
-import com.tinkerpop.blueprints.pgm.IndexableGraph;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.*;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -25,18 +22,25 @@ public class AddIndexFunction extends AbstractFunction<Object> {
         if (size != 3 && size != 4)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final IndexableGraph graph = FunctionHelper.getIndexableGraph(arguments, 0, context);
+        final IndexableGraph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (IndexableGraph) objects.get(0);
+        else
+            graph = (IndexableGraph) FunctionHelper.getGlobalGraph(context);
+
+
         String indexName;
         String indexClassName;
         String indexTypeName;
         if (size == 3) {
-            indexName = (String) arguments.get(0).compute().getValue();
-            indexClassName = (String) arguments.get(1).compute().getValue();
-            indexTypeName = (String) arguments.get(2).compute().getValue();
+            indexName = (String) objects.get(0);
+            indexClassName = (String) objects.get(1);
+            indexTypeName = (String) objects.get(2);
         } else {
-            indexName = (String) arguments.get(1).compute().getValue();
-            indexClassName = (String) arguments.get(2).compute().getValue();
-            indexTypeName = (String) arguments.get(3).compute().getValue();
+            indexName = (String) objects.get(1);
+            indexClassName = (String) objects.get(2);
+            indexTypeName = (String) objects.get(3);
         }
 
         Class indexClass;

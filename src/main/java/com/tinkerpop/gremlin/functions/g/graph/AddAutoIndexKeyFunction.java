@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.AutomaticIndex;
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
@@ -23,15 +24,22 @@ public class AddAutoIndexKeyFunction extends AbstractFunction<Object> {
         if (size != 2 && size != 3)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final IndexableGraph graph = FunctionHelper.getIndexableGraph(arguments, 0, context);
+        final IndexableGraph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (IndexableGraph) objects.get(0);
+        else
+            graph = (IndexableGraph) FunctionHelper.getGlobalGraph(context);
+
+
         String indexName;
         String indexKey;
         if (size == 2) {
-            indexName = (String) arguments.get(0).compute().getValue();
-            indexKey = (String) arguments.get(1).compute().getValue();
+            indexName = (String) objects.get(0);
+            indexKey = (String) objects.get(1);
         } else {
-            indexName = (String) arguments.get(1).compute().getValue();
-            indexKey = (String) arguments.get(2).compute().getValue();
+            indexName = (String) objects.get(1);
+            indexKey = (String) objects.get(2);
         }
 
         AutomaticIndex autoIndex = null;

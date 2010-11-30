@@ -27,21 +27,26 @@ public class LoadFunction extends AbstractFunction<Boolean> {
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
-        final String filename;
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+        final String uri;
 
         if (size == 2) {
-            filename = (String) arguments.get(1).compute().getValue();
+            uri = (String) objects.get(1);
         } else {
-            filename = (String) arguments.get(0).compute().getValue();
+            uri = (String) objects.get(0);
         }
 
         try {
             InputStream stream;
             try {
-                stream = new URL(filename).openStream();
+                stream = new URL(uri).openStream();
             } catch (MalformedURLException urlEx) {
-                stream = new FileInputStream(filename);
+                stream = new FileInputStream(uri);
             }
 
             GraphMLReader.inputGraph(graph, stream);

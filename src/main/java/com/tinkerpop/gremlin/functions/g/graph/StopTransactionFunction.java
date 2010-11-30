@@ -13,27 +13,37 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class StopTransactionFunction extends AbstractFunction<Boolean> {
+public class StopTransactionFunction extends AbstractFunction<Object> {
 
     private final String FUNCTION_NAME = "stop-tx";
+    private static final String SUCCESS = "success";
+    private static final String FAILURE = "failure";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final int size = arguments.size();
+
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+
         if (graph instanceof TransactionalGraph) {
-            if (arguments.size() == 1) {
-                String conclusionString = (String) arguments.get(0).compute().getValue();
-                if (conclusionString.equals("success"))
+            if (size == 1) {
+                String conclusionString = (String) objects.get(0);
+                if (conclusionString.equals(SUCCESS))
                     ((TransactionalGraph) graph).stopTransaction(TransactionalGraph.Conclusion.SUCCESS);
-                else if (conclusionString.equals("failure"))
+                else if (conclusionString.equals(FAILURE))
                     ((TransactionalGraph) graph).stopTransaction(TransactionalGraph.Conclusion.FAILURE);
                 else
                     throw new RuntimeException(createUnsupportedArgumentMessage("Conclusion must be either success or failure"));
-            } else if (arguments.size() == 2) {
-                String conclusionString = (String) arguments.get(1).compute().getValue();
-                if (conclusionString.equals("success"))
+            } else if (size == 2) {
+                String conclusionString = (String) objects.get(1);
+                if (conclusionString.equals(SUCCESS))
                     ((TransactionalGraph) graph).stopTransaction(TransactionalGraph.Conclusion.SUCCESS);
-                else if (conclusionString.equals("failure"))
+                else if (conclusionString.equals(FAILURE))
                     ((TransactionalGraph) graph).stopTransaction(TransactionalGraph.Conclusion.FAILURE);
                 else
                     throw new RuntimeException(createUnsupportedArgumentMessage("Conclusion must be either success or failure"));
@@ -45,7 +55,7 @@ public class StopTransactionFunction extends AbstractFunction<Boolean> {
             throw new RuntimeException("Graph does not support transactions");
         }
 
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

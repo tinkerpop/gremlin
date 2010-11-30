@@ -18,7 +18,7 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
         super();
     }
 
-    public VariableLibrary(final Map<? extends String, ? extends Object> map) {
+    public VariableLibrary(final Map<? extends String, ?> map) {
         super();
         this.putAll(map);
     }
@@ -45,13 +45,13 @@ public class VariableLibrary extends HashMap<String, Object> implements Bindings
         if (value instanceof Atom)
             this.putAtom(key, (Atom) value);
         else
-            this.putAtom(key, new Atom(value));
+            this.putAtom(key, new Atom<Object>(value));
 
         return ret;
     }
 
-    public void putAll(final Map<? extends String, ? extends Object> toMerge) {
-        for (Map.Entry<? extends String, ? extends Object> entry : toMerge.entrySet()) {
+    public void putAll(final Map<? extends String, ?> toMerge) {
+        for (Map.Entry<? extends String, ?> entry : toMerge.entrySet()) {
             this.put(entry.getKey(), entry.getValue());
         }
     }

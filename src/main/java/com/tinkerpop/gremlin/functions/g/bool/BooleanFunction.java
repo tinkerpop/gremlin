@@ -25,7 +25,7 @@ public class BooleanFunction extends AbstractFunction<Boolean> {
             } else
                 return new Atom<Boolean>(Boolean.parseBoolean(object.toString()));
         } else {
-            throw new RuntimeException(this.createUnsupportedArgumentMessage("One boolean interpretable argument required"));
+            throw new RuntimeException(this.createUnsupportedArgumentMessage("A single boolean interpretable argument required"));
         }
     }
 

@@ -24,13 +24,19 @@ public class SaveFunction extends AbstractFunction<Boolean> {
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+
         final String filename;
 
         if (size == 2) {
-            filename = (String) arguments.get(1).compute().getValue();
+            filename = (String) objects.get(1);
         } else {
-            filename = (String) arguments.get(0).compute().getValue();
+            filename = (String) objects.get(0);
         }
 
         try {

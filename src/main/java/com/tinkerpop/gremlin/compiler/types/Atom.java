@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.compiler.util.StringHelper;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 
 import java.util.Collection;
 import java.util.Map;
@@ -19,8 +20,6 @@ public class Atom<T> {
     /* identifier and property used in gpath */
     private boolean identifier = false;
     private boolean property = false;
-
-    private static final String NULL = "null";
 
     public Atom() {
         this.value = null;
@@ -110,14 +109,6 @@ public class Atom<T> {
         return isClassOf(Comparable.class);
     }
 
-    public void setIdentifier(final boolean flag) {
-        this.identifier = flag;
-    }
-
-    public void setProperty(final boolean flag) {
-        this.property = flag;
-    }
-
     protected boolean isClassOf(final Class klass) {
         return (!this.isNull()) && (klass.isAssignableFrom(this.value.getClass()));
     }
@@ -131,7 +122,7 @@ public class Atom<T> {
     }
 
     public String toString() {
-        return (this.value == null) ? NULL : this.value.toString();
+        return (this.value == null) ? Tokens.NULL : this.value.toString();
     }
 
 }

@@ -34,4 +34,6 @@ public class Tokens {
     public static final String MANUAL = "manual";
     public static final String VERTEX = "vertex";
     public static final String EDGE = "edge";
+
+    public static final String NULL = "null";
 }

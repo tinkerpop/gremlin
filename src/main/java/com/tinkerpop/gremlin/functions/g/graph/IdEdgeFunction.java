@@ -22,13 +22,19 @@ public class IdEdgeFunction extends AbstractFunction<Edge> {
         if (size == 0 || size > 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
+        final Graph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (Graph) objects.get(0);
+        else
+            graph = FunctionHelper.getGlobalGraph(context);
+
         final Object identifer;
 
         if (size == 2) {
-            identifer = arguments.get(1).compute().getValue();
+            identifer = objects.get(1);
         } else {
-            identifer = arguments.get(0).compute().getValue();
+            identifer = objects.get(0);
         }
 
         return new Atom<Edge>(graph.getEdge(identifer));

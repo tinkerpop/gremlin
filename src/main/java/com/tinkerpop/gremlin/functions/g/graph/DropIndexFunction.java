@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
@@ -21,12 +22,18 @@ public class DropIndexFunction extends AbstractFunction<Object> {
         if (size != 1 && size != 2)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final IndexableGraph graph = FunctionHelper.getIndexableGraph(arguments, 0, context);
+        final IndexableGraph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (IndexableGraph) objects.get(0);
+        else
+            graph = (IndexableGraph) FunctionHelper.getGlobalGraph(context);
+
         String indexName;
         if (size == 1) {
-            indexName = (String) arguments.get(0).compute().getValue();
+            indexName = (String) objects.get(0);
         } else {
-            indexName = (String) arguments.get(1).compute().getValue();
+            indexName = (String) objects.get(1);
         }
 
         graph.dropIndex(indexName);

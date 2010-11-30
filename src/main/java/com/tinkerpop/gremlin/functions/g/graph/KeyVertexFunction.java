@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.blueprints.pgm.IndexableGraph;
 import com.tinkerpop.blueprints.pgm.Vertex;
@@ -24,30 +25,36 @@ public class KeyVertexFunction extends AbstractFunction<Iterable<Vertex>> {
         if (size != 2 && size != 3 && size != 4)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
 
-        final IndexableGraph graph = (IndexableGraph) FunctionHelper.getGraph(arguments, 0, context);
+
+        final IndexableGraph graph;
+        List<Object> objects = FunctionHelper.generateObjects(arguments);
+        if (objects.get(0) instanceof Graph)
+            graph = (IndexableGraph) objects.get(0);
+        else
+            graph = (IndexableGraph) FunctionHelper.getGlobalGraph(context);
+
         final String indexName;
         final String key;
         final Object value;
 
         if (size == 2) {
             indexName = Index.VERTICES;
-            key = (String) arguments.get(0).compute().getValue();
-            value = arguments.get(1).compute().getValue();
+            key = (String) objects.get(0);
+            value = objects.get(1);
         } else if (size == 3) {
-            Object temp = arguments.get(0).compute().getValue();
-            if (temp instanceof IndexableGraph) {
+            if (objects.get(0) instanceof Graph) {
                 indexName = Index.VERTICES;
-                key = (String) arguments.get(1).compute().getValue();
-                value = arguments.get(2).compute().getValue();
+                key = (String) objects.get(1);
+                value = objects.get(2);
             } else {
-                indexName = (String) arguments.get(0).compute().getValue();
-                key = (String) arguments.get(1).compute().getValue();
-                value = arguments.get(2).compute().getValue();
+                indexName = (String) objects.get(0);
+                key = (String) objects.get(1);
+                value = objects.get(2);
             }
         } else {
-            indexName = (String) arguments.get(1).compute().getValue();
-            key = (String) arguments.get(2).compute().getValue();
-            value = arguments.get(3).compute().getValue();
+            indexName = (String) objects.get(1);
+            key = (String) objects.get(2);
+            value = objects.get(3);
         }
 
         return new Atom<Iterable<Vertex>>(graph.getIndex(indexName, Vertex.class).get(key, value));

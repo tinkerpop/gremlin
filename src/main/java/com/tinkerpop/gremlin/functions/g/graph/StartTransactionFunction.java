@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class StartTransactionFunction extends AbstractFunction<Boolean> {
+public class StartTransactionFunction extends AbstractFunction<Object> {
 
     private final String FUNCTION_NAME = "start-tx";
 
-    public Atom<Boolean> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
 
         final Graph graph = FunctionHelper.getGraph(arguments, 0, context);
         if (null == graph)
@@ -28,7 +28,7 @@ public class StartTransactionFunction extends AbstractFunction<Boolean> {
         else
             throw new RuntimeException("Graph does not support transactions");
 
-        return new Atom<Boolean>(true);
+        return new Atom<Object>(null);
     }
 
     public String getFunctionName() {

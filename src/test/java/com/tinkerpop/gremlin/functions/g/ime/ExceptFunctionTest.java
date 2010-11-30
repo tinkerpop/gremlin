@@ -61,5 +61,10 @@ public class ExceptFunctionTest extends BaseTest {
         assertEquals(results.get(0), 2);
         assertEquals(results.get(1), 4);
         assertTrue(results.get(2) instanceof List);
+
+        results = evaluateGremlinScriptIterable("g:list(null,1,2)[g:except(null)]", true);
+        assertEquals(results.size(), 2);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
     }
 }

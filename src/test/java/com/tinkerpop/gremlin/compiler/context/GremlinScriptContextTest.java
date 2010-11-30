@@ -16,7 +16,7 @@ public class GremlinScriptContextTest extends BaseTest {
 
 
         context.getBindings(ScriptContext.ENGINE_SCOPE).put("w", new Atom<Double>(1.0d));
-        context.getBindings(ScriptContext.ENGINE_SCOPE).put("x", new Atom(null));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put("x", new Atom<Object>(null));
         context.getBindings(ScriptContext.ENGINE_SCOPE).put("y", new Atom<String>("1"));
         context.getBindings(ScriptContext.ENGINE_SCOPE).put("z", new Atom<Boolean>(true));
         printPerformance("evaluator", 4, "variable declarations", this.stopWatch());
