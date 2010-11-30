@@ -68,12 +68,6 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
     public Iterator iterator() {
         if (this.pipeline == null || !this.pipeline.hasNext()) {
-            for (Pipe p : this.pipes) {
-                if (p instanceof GremlinRangeFilterPipe) {
-                    ((GremlinRangeFilterPipe) p).reset();
-                }
-            }
-
             this.pipeline = new Pipeline(this.pipes);
             this.pipeline.setStarts(this.pipelineRoot());
         } else if (this.pipeline.hasNext()) {

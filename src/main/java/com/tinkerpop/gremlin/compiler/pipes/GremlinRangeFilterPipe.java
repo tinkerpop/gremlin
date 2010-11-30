@@ -7,6 +7,7 @@ import com.tinkerpop.pipes.filter.FilterPipe;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -26,10 +27,6 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
         }
     }
 
-    public void reset() {
-        this.counter = -1;
-    }
-
     protected S processNextStart() {
         if (null != this.tempIterator) {
             if (this.tempIterator.hasNext()) {
@@ -39,17 +36,22 @@ public class GremlinRangeFilterPipe<S> extends AbstractPipe<S, S> implements Fil
             }
         }
 
-        while (true) {
-            S s = this.starts.next();
-            this.counter++;
-            if (this.range.contains(this.counter)) {
-                if (s instanceof Iterable) {
-                    this.tempIterator = ((Iterable) s).iterator();
-                    return this.processNextStart();
-                } else {
-                    return s;
+        try {
+            while (true) {
+                S s = this.starts.next();
+                this.counter++;
+                if (this.range.contains(this.counter)) {
+                    if (s instanceof Iterable) {
+                        this.tempIterator = ((Iterable) s).iterator();
+                        return this.processNextStart();
+                    } else {
+                        return s;
+                    }
                 }
             }
+        } catch (NoSuchElementException e) {
+            this.counter = -1;
+            throw new NoSuchElementException();
         }
     }
 
