@@ -101,9 +101,9 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         }
     }
 
-    public boolean equals(Object o) {
-        if (o instanceof Iterable) {
-            Iterator itty = ((Iterable) o).iterator();
+    public boolean equals(Object object) {
+        if (object instanceof Iterable) {
+            Iterator itty = ((Iterable) object).iterator();
 
             for (Object element : this) {
                 if (itty.hasNext()) {
@@ -119,7 +119,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             if (itty.hasNext())
                 return false;
         } else
-            return super.equals(o);
+            return super.equals(object);
 
         return true;
     }

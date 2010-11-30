@@ -24,4 +24,16 @@ public class EmptySequence implements Iterable, Iterator {
         return false;
     }
 
+    public boolean equals(Object object) {
+        Iterator itty;
+        if (object instanceof Iterable)
+            itty = ((Iterable) object).iterator();
+        else if (object instanceof Iterator)
+            itty = (Iterator) object;
+        else
+            return false;
+
+        return (!itty.hasNext());
+    }
+
 }

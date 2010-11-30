@@ -649,13 +649,17 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertNull(evaluateGremlinScriptPrimitive("test:f(6)", context, true));
     }
 
-    public void testEmptyGPath() throws Exception {
+    public void testPathEquality() throws Exception {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinScriptContext context = new GremlinScriptContext();
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
 
-        List results = evaluateGremlinScriptIterable("./inE", context, true);
-        assertEquals(results.size(), 0);
+        Object results = evaluateGremlinScriptPrimitive("./outE/inV = ./outE/inV", context, true);
+        assertTrue((Boolean) results);
+        results = evaluateGremlinScriptPrimitive("./inE = ./inE", context, true);
+        assertTrue((Boolean) results);
+        results = evaluateGremlinScriptPrimitive("./outE[true]/inV[0..100]/.[true] = ./outE/inV", context, true);
+        assertTrue((Boolean) results);
     }
 }
