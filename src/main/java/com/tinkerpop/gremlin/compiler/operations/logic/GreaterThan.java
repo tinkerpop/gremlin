@@ -5,7 +5,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
- * @author Marko A. Rodriguez
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GreaterThan extends LogicOperation {
 

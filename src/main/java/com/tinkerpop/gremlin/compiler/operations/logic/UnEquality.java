@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
  * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class UnEquality extends LogicOperation {
 
@@ -19,8 +20,13 @@ public class UnEquality extends LogicOperation {
             return new Atom<Boolean>(false);
         else if (a == null || b == null)
             return new Atom<Boolean>(true);
-        else
-            return new Atom<Boolean>(!a.equals(b));
+        else {
+            if (a instanceof Number && b instanceof Number) {
+                return new Atom<Boolean>(((Number) a).doubleValue() != ((Number) b).doubleValue());
+            } else {
+                return new Atom<Boolean>(!a.equals(b));
+            }
+        }
     }
 
 }

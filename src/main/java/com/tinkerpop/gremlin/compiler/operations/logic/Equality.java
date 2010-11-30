@@ -4,7 +4,7 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 
 /**
- * @author Marko A. Rodriguez
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class Equality extends LogicOperation {
 

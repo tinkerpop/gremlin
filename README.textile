@@ -2,7 +2,7 @@
 
 Gremlin is a "Turing-complete":http://en.wikipedia.org/wiki/Turing_completeness, "graph-based":http://en.wikipedia.org/wiki/Graph_%28mathematics%29 programming language developed in Java 1.6+ ("JSR 223":http://jcp.org/en/jsr/detail?id=223) for key/value-pair multi-relational graphs called property graphs. Gremlin makes use of a path-based syntax to support complex graph traversals using "Pipes":http://pipes.tinkerpop.com. This language has application in the areas of graph query, analysis, and manipulation. Connectors, provided by "Blueprints":http://blueprints.tinkerpop.com, exist for the following graph management systems:
 
-* Implementations:
+* Graph database connectivity:
 ** "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
 ** "Neo4j":http://neo4j.org/ graph database
 ** "OrientDB":http://www.orientechnologies.com/ graph database
