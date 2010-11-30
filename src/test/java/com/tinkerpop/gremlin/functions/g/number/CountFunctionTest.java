@@ -26,13 +26,4 @@ public class CountFunctionTest extends BaseTest {
         assertEquals(function.compute(createUnaryArgs(Arrays.asList(1, 2, 3, 4, 5, 6)), context).getValue(), 6l);
         printPerformance(function.getFunctionName() + " function", 6, "arguments", this.stopWatch());
     }
-
-    public void testCountNull() {
-        Function function = new CountFunction();
-        GremlinScriptContext context = new GremlinScriptContext();
-        this.stopWatch();
-        Object object = null;
-        assertEquals(function.compute(createUnaryArgs(object), context).getValue(), 0l);
-        printPerformance(function.getFunctionName() + " function", 0, "arguments", this.stopWatch());
-    }
 }

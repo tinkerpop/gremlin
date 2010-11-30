@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.compiler.types;
 
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
-import com.tinkerpop.gremlin.compiler.pipes.GremlinRangeFilterPipe;
+import com.tinkerpop.gremlin.compiler.util.EmptySequence;
 import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.pipes.*;
 
@@ -57,7 +57,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
         if (pipeline.hasNext())
             top = pipeline.next();
         else
-            return null;
+            return new EmptySequence();
 
         if (pipeline.hasNext()) {
             this.previouslyFetched.add(top);

@@ -127,7 +127,7 @@ public class OperateValueFunctionTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put("$m", new Atom<Map>(map));
 
         List results = evaluateGremlinScriptIterable("g:list(1,1,2,1,1,2,2,2,2)[g:not(g:p(g:op-value('+',$m,.,1.0)))]", context, true);
-        assertNull(results);
+        assertEquals(results.size(), 0);
         assertEquals(map.get(1), 4.0f);
         assertEquals(map.get(2), 5.0f);
         assertNull(map.get(3));

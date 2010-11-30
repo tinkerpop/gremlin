@@ -363,10 +363,10 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue(name.equals("vadas") || name.equals("josh"));
 
         results = evaluateGremlinScriptIterable("./inE", context, true);
-        assertNull(results);
+        assertEquals(results.size(), 0);
 
         results = evaluateGremlinScriptIterable("./outE/inV[@blah != null]", context, true);
-        assertNull(results);
+        assertEquals(results.size(), 0);
 
         results = evaluateGremlinScriptIterable("./outE/inV[@blah = null]", context, true);
         assertEquals(results.size(), 3);
@@ -484,7 +484,7 @@ public class GremlinScriptEngineTest extends BaseTest {
 
         assertTrue((Boolean) evaluateGremlinScriptPrimitive("step simple\n./outE/inV\nend", context, true));
         assertEquals(evaluateGremlinScriptPrimitive("'simple'", context, true), "simple");
-        assertNull(evaluateGremlinScriptPrimitive("'simple'[1]", context, true));
+        assertEquals(count((Iterable) evaluateGremlinScriptPrimitive("'simple'[1]", context, true)), 0);
 
         List<Vertex> results = evaluateGremlinScriptIterable("./simple", context, true);
         assertEquals(results.size(), 3);
@@ -647,5 +647,15 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertTrue((Boolean) evaluateGremlinScriptPrimitive("func test:f($x)\nif $x > 5\nreturn null\nend\nreturn $x - 1\nend", context, false));
         assertEquals(evaluateGremlinScriptPrimitive("test:f(5)", context, true), 4);
         assertNull(evaluateGremlinScriptPrimitive("test:f(6)", context, true));
+    }
+
+    public void testEmptyGPath() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.ROOT_VARIABLE, new Atom<Vertex>(graph.getVertex(1)));
+
+        List results = evaluateGremlinScriptIterable("./inE", context, true);
+        assertEquals(results.size(), 0);
     }
 }

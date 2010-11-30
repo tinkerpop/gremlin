@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.functions.g.bool;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.gremlin.functions.Function;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class BooleanFunctionTest extends BaseTest {
         assertEquals(results.get(0), 1);
         assertEquals(results.get(1), 2);
 
-        assertNull(evaluateGremlinScriptPrimitive("g:list(-1,0,1,2)[g:boolean(.)][g:boolean(.)][g:boolean(false)]", context, true));
+        assertEquals(count((Iterable) evaluateGremlinScriptPrimitive("g:list(-1,0,1,2)[g:boolean(.)][g:boolean(.)][g:boolean(false)]", context, true)), 0);
     }
 
     public void testIllegalArguments() {

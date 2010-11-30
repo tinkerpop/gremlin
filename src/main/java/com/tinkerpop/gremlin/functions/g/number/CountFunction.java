@@ -20,12 +20,10 @@ public class CountFunction extends AbstractFunction<Long> {
             throw new RuntimeException(this.createUnsupportedArgumentMessage("A single countable argument required"));
 
         final Atom result = arguments.get(0).compute();
-        if (result.isIterable()) {
+        if (result.isIterable())
             return new Atom<Long>(PipeHelper.counter(((Iterable<?>) result.getValue()).iterator()));
-        } else if (!result.isNull()) {
+        else
             return new Atom<Long>(1l);
-        } else
-            return new Atom<Long>(0l);
     }
 
     public String getFunctionName() {
