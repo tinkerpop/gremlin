@@ -10,6 +10,7 @@ import com.tinkerpop.pipes.filter.FilterPipe;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * [g:func()]
@@ -32,44 +33,49 @@ public class FunctionFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
     }
 
     public S processNextStart() {
-        while (true) {
-            S s = this.starts.next();
-            this.context.setCurrentPoint(s);
+        try {
+            while (true) {
+                S s = this.starts.next();
+                this.context.setCurrentPoint(s);
 
-            if (this.numberMode) {
-                this.counter++;
-                if (this.indices.contains(this.counter)) {
-                    return s;
-                }
-
-            } else {
-                Object functionReturn = this.function.compute(GremlinPipesHelper.updateArguments(this.arguments, s), this.context).getValue();
-                if (functionReturn instanceof Boolean && ((Boolean) functionReturn)) {
-                    return s;
-                } else if (functionReturn instanceof Number) {
-                    this.numberMode = true;
-                    this.indices = new HashSet();
-                    int index = ((Number) functionReturn).intValue();
-                    this.indices.add(index);
-                    this.counter++;
-                    if (this.counter == index) {
-                        return s;
-                    }
-                } else if (functionReturn instanceof Iterable) {
-                    this.numberMode = true;
-                    if (functionReturn instanceof Collection) {
-                        this.indices = (Collection) functionReturn;
-                    } else {
-                        this.indices = new HashSet();
-                        PipeHelper.fillCollection(((Iterable) functionReturn).iterator(), this.indices);
-                    }
-
+                if (this.numberMode) {
                     this.counter++;
                     if (this.indices.contains(this.counter)) {
                         return s;
                     }
+
+                } else {
+                    Object functionReturn = this.function.compute(GremlinPipesHelper.updateArguments(this.arguments, s), this.context).getValue();
+                    if (functionReturn instanceof Boolean && ((Boolean) functionReturn)) {
+                        return s;
+                    } else if (functionReturn instanceof Number) {
+                        this.numberMode = true;
+                        this.indices = new HashSet();
+                        int index = ((Number) functionReturn).intValue();
+                        this.indices.add(index);
+                        this.counter++;
+                        if (this.counter == index) {
+                            return s;
+                        }
+                    } else if (functionReturn instanceof Iterable) {
+                        this.numberMode = true;
+                        if (functionReturn instanceof Collection) {
+                            this.indices = (Collection) functionReturn;
+                        } else {
+                            this.indices = new HashSet();
+                            PipeHelper.fillCollection(((Iterable) functionReturn).iterator(), this.indices);
+                        }
+
+                        this.counter++;
+                        if (this.indices.contains(this.counter)) {
+                            return s;
+                        }
+                    }
                 }
             }
+        } catch (NoSuchElementException e) {
+            this.counter = -1;
+            throw new NoSuchElementException();
         }
     }
 }

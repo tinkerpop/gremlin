@@ -265,6 +265,14 @@ public class GremlinScriptEngineTest extends BaseTest {
         assertEquals(results.get(2), 3);
         assertEquals(results.get(3), 4);
         assertEquals(results.get(4), 5);
+
+        results = evaluateGremlinScriptIterable("g:list(1,2,3,4,5)/.[g:list(1,2,3,4,5)[g:long(1)] = 2]/./.[true]", true);
+        assertEquals(results.size(), 5);
+        assertEquals(results.get(0), 1);
+        assertEquals(results.get(1), 2);
+        assertEquals(results.get(2), 3);
+        assertEquals(results.get(3), 4);
+        assertEquals(results.get(4), 5);
     }
 
     public void testNumberFunctions() throws Exception {
