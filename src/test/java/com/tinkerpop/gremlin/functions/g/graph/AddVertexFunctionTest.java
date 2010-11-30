@@ -68,4 +68,15 @@ public class AddVertexFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getProperty("name"), "marko");
 
     }
+
+    public void testAddVertexInline() throws Exception {
+        Graph graph = new TinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+
+        evaluateGremlinScriptPrimitive("g:add-v()", context, true);
+        evaluateGremlinScriptPrimitive("g:add-v($_g)", context, true);
+        assertEquals(((Vertex) evaluateGremlinScriptPrimitive("g:add-v($_g, 22)", context, true)).getId(), "22");
+        assertEquals(((Vertex) evaluateGremlinScriptPrimitive("g:add-v(23)", context, true)).getId(), "23");
+    }
 }

@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
@@ -49,5 +50,14 @@ public class ClearFunctionTest extends BaseTest {
         assertEquals(count(graph.getVertices()), 0);
         assertEquals(count(graph.getEdges()), 0);
 
+    }
+
+    public void testClearInline() throws Exception {
+        Graph graph = new TinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+
+        evaluateGremlinScriptPrimitive("g:clear()", context, true);
+        evaluateGremlinScriptPrimitive("g:clear($_g)", context, true);
     }
 }

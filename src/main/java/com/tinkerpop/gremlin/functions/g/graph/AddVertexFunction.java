@@ -37,6 +37,8 @@ public class AddVertexFunction extends AbstractFunction<Vertex> {
             return new Atom<Vertex>(graph.addVertex(null));
         else if (size == 1 && !(objects.get(0) instanceof Graph))
             identifier = objects.get(0);
+        else if (size == 1)
+            return new Atom<Vertex>(graph.addVertex(null));
         else
             identifier = objects.get(1);
 

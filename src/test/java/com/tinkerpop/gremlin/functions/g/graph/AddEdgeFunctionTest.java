@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
@@ -53,5 +54,16 @@ public class AddEdgeFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getLabel(), "co-worker");
         assertEquals(atom.getValue().getProperty("weight"), 0.5d);
 
+    }
+
+    public void testAddEdgeInline() throws Exception {
+        Graph graph = new TinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+
+        evaluateGremlinScriptPrimitive("g:add-e(g:add-v(),'knows', g:add-v())", context, true);
+        evaluateGremlinScriptPrimitive("g:add-e($_g, g:add-v(),'knows', g:add-v())", context, true);
+        assertEquals(((Edge) evaluateGremlinScriptPrimitive("g:add-e($_g, 21, g:add-v(),'knows', g:add-v())", context, true)).getId(), "21");
+        assertEquals(((Edge) evaluateGremlinScriptPrimitive("g:add-e(246, g:add-v(),'knows', g:add-v())", context, true)).getId(), "246");
     }
 }

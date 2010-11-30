@@ -6,7 +6,10 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.util.Tokens;
 import com.tinkerpop.gremlin.functions.Function;
+
+import javax.script.ScriptContext;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -26,5 +29,14 @@ public class IdEdgeFunctionTest extends BaseTest {
         assertEquals(atom.getValue().getProperty("weight"), 1.0f);
         assertEquals(atom.getValue().getLabel(), "knows");
         assertNull(atom.getValue().getProperty("blah"));
+    }
+
+    public void testIdEdgeInline() throws Exception {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(graph));
+
+        assertEquals(((Edge) evaluateGremlinScriptPrimitive("g:id-e(8)", context, true)).getId(), "8");
+        assertEquals(((Edge) evaluateGremlinScriptPrimitive("g:id-e($_g, 8)", context, true)).getId(), "8");
     }
 }
