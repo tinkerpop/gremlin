@@ -670,4 +670,24 @@ public class GremlinScriptEngineTest extends BaseTest {
         results = evaluateGremlinScriptPrimitive("./outE[true]/inV[0..100]/.[true] = ./outE/inV", context, true);
         assertTrue((Boolean) results);
     }
+
+    public void testInternalNullPointer() throws Exception {
+        GremlinScriptContext context = new GremlinScriptContext();
+
+        try {
+            evaluateGremlinScriptPrimitive("./outE", context, true);
+            assertFalse(true);
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+
+    }
+
+    public void testFrankError() throws Exception {
+        Graph graph = new TinkerGraph();
+        ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
+        engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_g", new Atom<Graph>(graph));
+        System.out.println(engine.eval("$n1 := g:add-v()"));
+
+    }
 }

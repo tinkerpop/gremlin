@@ -13,7 +13,6 @@ import com.tinkerpop.gremlin.functions.Function;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 
@@ -95,7 +94,10 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
         } catch (SyntaxErrorException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            if (e instanceof NullPointerException)
+                throw new RuntimeException("null pointer exception", e);
+            else
+                throw new RuntimeException(e.getMessage(), e);
         }
 
         return result;
@@ -151,12 +153,12 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
         throw new UnsupportedOperationException("Gremlin is not an object oriented language");
     }
 
-    private Iterable evaluate(final String code, final GremlinScriptContext context) throws RecognitionException {
+    private Iterable evaluate(final String code, final GremlinScriptContext context) throws Exception {
         ANTLRStringStream input = new ANTLRStringStream(code + "\n");
         return evaluate(input, context);
     }
 
-    private Iterable evaluate(final CharStream input, final GremlinScriptContext context) throws RecognitionException {
+    private Iterable evaluate(final CharStream input, final GremlinScriptContext context) throws Exception {
         final GremlinLexer lexer = new GremlinLexer(input);
         final CommonTokenStream tokens = new CommonTokenStream(lexer);
         final GremlinParser parser = new GremlinParser(tokens);
@@ -174,8 +176,12 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
     }
 
     private static String getExceptionCauseMessage(final Exception exception) {
-        final Throwable cause = exception.getCause();
-        return (cause == null) ? exception.getMessage() : getExceptionCauseMessage(exception.getCause());
+        String message = exception.getMessage();
+        if (null == message || message.trim().isEmpty()) {
+            return getExceptionCauseMessage(exception.getCause());
+        } else {
+            return message;
+        }
     }
 
     private static String getExceptionCauseMessage(final Throwable cause) {
@@ -186,7 +192,7 @@ public class GremlinScriptEngine extends AbstractScriptEngine implements Invocab
     public static String exceptionInPrintableFormat(final Exception exception) {
         String message = getExceptionCauseMessage(exception);
         if (message == null)
-            return "";
+            message = "An error occurred and there was no provided justification";
 
         // remove all package names and down case
         message = message.replaceAll("\\w+\\.(?! )", "").toLowerCase();

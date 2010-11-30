@@ -36,4 +36,8 @@ public class EmptySequence implements Iterable, Iterator {
         return (!itty.hasNext());
     }
 
+    public String toString() {
+        return "[]";
+    }
+
 }

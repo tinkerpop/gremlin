@@ -27,7 +27,7 @@ public class AddEdgeFunction extends AbstractFunction<Edge> {
 
         final Graph graph;
         List<Object> objects = FunctionHelper.generateObjects(arguments);
-        if (objects.get(0) instanceof Graph)
+        if (size > 0 && objects.get(0) instanceof Graph)
             graph = (Graph) objects.get(0);
         else
             graph = FunctionHelper.getGlobalGraph(context);

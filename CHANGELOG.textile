@@ -22,6 +22,18 @@ bc. <dependency>
 * Fixed @foreach@ bug that occurred on single object looping
 * Fixed @if/else@ bug that occurred on function call
 * Added anonymous step definitions using @/{ }/@ notation
+* @null@ and empty iterator/iterable result now printed in console
+* Empty path expression returns an empty iterable, not @null@
+* Added @g:copy-e()@ function that conveniently copies an element from one graph into another
+* Fixed numerous bugs in how functions were computing atoms
+* GPath optimization through auto-reset of Gremlin-specific range-based pipes
+* Comparing numbers is now possible without casting
+* Fixed a major bug in error message handling (many exceptions w/o message being provided in console)
+* Improved Gremlin evaluator load time with static function and step loading
+* Added support for Blueprints 0.3 multi-indexes
+** @g:add-aidx-key()@, @g:add-idx()@, @g:drop-idx()@, @g:show-aidx-keys()@, @g:show-idx()@
+* Added @return ?object@ to return from a user defined function or step
+* Added support for path generation through @g:path()@ (main body of work in "Pipes":http://pipes.tinkerpop.com)
 
 ==<hr/>==
 

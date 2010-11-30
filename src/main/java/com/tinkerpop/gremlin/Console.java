@@ -110,12 +110,12 @@ public class Console {
             try {
                 engine.eval(line);
             } catch (SyntaxErrorException e) {
-                System.err.println(e.getMessage());
-            } catch (Exception e) {
+                engine.getContext().getErrorWriter().write(e.getMessage() + "\n");
                 engine.getContext().getErrorWriter().flush();
+            } catch (Exception e) {
                 String message = GremlinScriptEngine.exceptionInPrintableFormat(e);
-                if (!message.isEmpty())
-                    System.err.println(message);
+                engine.getContext().getErrorWriter().write(message + "\n");
+                engine.getContext().getErrorWriter().flush();
             }
         }
     }

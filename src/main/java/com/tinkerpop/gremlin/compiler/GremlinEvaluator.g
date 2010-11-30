@@ -1,3 +1,5 @@
+// java -jar /Library/Java/Extensions/antlr-3.2.jar src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 
+
 tree grammar GremlinEvaluator;
 
 options {
@@ -267,7 +269,18 @@ options {
             }
             
             if(null == itty) {
-                this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
+                if (value instanceof Map) {
+                    Map map = (Map) value;
+                    if (map.isEmpty()) {
+                        this.context.writeOutput(Tokens.RESULT_PROMPT + "{}\n");
+                    } else {
+                        for (Object key : map.keySet()) {
+                            this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key) + "\n");
+                        }
+                    }
+                } else {
+                    this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
+                }
             } else {
             	if(!itty.hasNext()) {
             	    this.context.writeOutput(Tokens.RESULT_PROMPT + "[]\n");

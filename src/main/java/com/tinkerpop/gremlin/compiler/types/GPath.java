@@ -51,20 +51,24 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
     }
 
     public Object getValue() {
-        Object top;
+        try {
+            Object top;
 
-        Iterator pipeline = this.iterator();
+            Iterator pipeline = this.iterator();
 
-        if (pipeline.hasNext())
-            top = pipeline.next();
-        else
-            return new EmptySequence();
+            if (pipeline.hasNext())
+                top = pipeline.next();
+            else
+                return new EmptySequence();
 
-        if (pipeline.hasNext()) {
-            this.previouslyFetched.add(top);
-            return this;
-        } else
-            return top;
+            if (pipeline.hasNext()) {
+                this.previouslyFetched.add(top);
+                return this;
+            } else
+                return top;
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Pipe is unable to process null reference", e);
+        }
     }
 
     public Iterator iterator() {

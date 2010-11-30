@@ -24,7 +24,7 @@ public class DropIndexFunction extends AbstractFunction<Object> {
 
         final IndexableGraph graph;
         List<Object> objects = FunctionHelper.generateObjects(arguments);
-        if (objects.get(0) instanceof Graph)
+        if (size > 0 && objects.get(0) instanceof Graph)
             graph = (IndexableGraph) objects.get(0);
         else
             graph = (IndexableGraph) FunctionHelper.getGlobalGraph(context);
