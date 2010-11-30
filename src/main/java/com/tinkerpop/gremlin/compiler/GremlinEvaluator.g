@@ -259,27 +259,23 @@ options {
             resultList.add(value);
 
         if (DEBUG) {
+            Iterator itty = null;
             if (value instanceof Iterable) {
-                for(Object o : (Iterable) value) {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + o + "\n");
-                }
-            } else if (value instanceof Map) {
-                Map map = (Map) value;
-                if (map.isEmpty()) {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + "{}\n");
-                } else {
-                    for (Object key : map.keySet()) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key) + "\n");
-                    }
-                }
-            } else if(value instanceof Iterator) {
-                Iterator itty = (Iterator) value;
-                
-                while(itty.hasNext()) {
-                    this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next() + "\n");
-                }
-            } else {
+                itty = ((Iterable)value).iterator();
+            }  else if(value instanceof Iterator) {
+                itty = (Iterator) value;
+            }
+            
+            if(null == itty) {
                 this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
+            } else {
+            	if(!itty.hasNext()) {
+            	    this.context.writeOutput(Tokens.RESULT_PROMPT + "[]\n");
+            	} else {
+            	    while(itty.hasNext()) {
+                    this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next() + "\n");
+                  }
+                }
             }
         } else if (SCRIPT_MODE) {
            if (value instanceof Iterable) {

@@ -14,14 +14,15 @@ import java.util.Set;
 
 /**
  * @author Pavel A. Yaskevich
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 final public class GPath extends DynamicEntity implements Iterable, Comparable {
 
     private Atom root;
     private Object persistentRoot = null;
     private static final String COMMA_SPACE = ", ";
-    private static final String LEFT_ANGLE = "<";
-    private static final String RIGHT_ANGLE = ">";
+    private static final String LEFT_BRACKET = "[";
+    private static final String RIGHT_BRACKET = "]";
 
     private final List<Pipe> pipes;
     private Pipeline pipeline;
@@ -153,7 +154,7 @@ final public class GPath extends DynamicEntity implements Iterable, Comparable {
             for (Object o : (Iterable) this.getValue())
                 out += o.toString() + COMMA_SPACE;
 
-            return LEFT_ANGLE + out.substring(0, out.length() - 2) + RIGHT_ANGLE;
+            return LEFT_BRACKET + out.substring(0, out.length() - 2) + RIGHT_BRACKET;
         }
 
         return result.toString();

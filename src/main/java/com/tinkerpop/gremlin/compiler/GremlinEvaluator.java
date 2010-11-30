@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-11-29 13:36:12
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g 2010-11-30 11:41:07
 
     package com.tinkerpop.gremlin.compiler;
 
@@ -387,27 +387,23 @@ public class GremlinEvaluator extends TreeParser {
                 resultList.add(value);
 
             if (DEBUG) {
+                Iterator itty = null;
                 if (value instanceof Iterable) {
-                    for(Object o : (Iterable) value) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + o + "\n");
-                    }
-                } else if (value instanceof Map) {
-                    Map map = (Map) value;
-                    if (map.isEmpty()) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + "{}\n");
-                    } else {
-                        for (Object key : map.keySet()) {
-                            this.context.writeOutput(Tokens.RESULT_PROMPT + key + "=" + map.get(key) + "\n");
-                        }
-                    }
-                } else if(value instanceof Iterator) {
-                    Iterator itty = (Iterator) value;
-                    
-                    while(itty.hasNext()) {
-                        this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next() + "\n");
-                    }
-                } else {
+                    itty = ((Iterable)value).iterator();
+                }  else if(value instanceof Iterator) {
+                    itty = (Iterator) value;
+                }
+                
+                if(null == itty) {
                     this.context.writeOutput(Tokens.RESULT_PROMPT + value + "\n");
+                } else {
+                	if(!itty.hasNext()) {
+                	    this.context.writeOutput(Tokens.RESULT_PROMPT + "[]\n");
+                	} else {
+                	    while(itty.hasNext()) {
+                        this.context.writeOutput(Tokens.RESULT_PROMPT + itty.next() + "\n");
+                      }
+                    }
                 }
             } else if (SCRIPT_MODE) {
                if (value instanceof Iterable) {
@@ -429,7 +425,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "program"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:1: program returns [Iterable results] : ( statement ( NEWLINE )* )+ ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:293:1: program returns [Iterable results] : ( statement ( NEWLINE )* )+ ;
     public final GremlinEvaluator.program_return program() throws RecognitionException {
         GremlinEvaluator.program_return retval = new GremlinEvaluator.program_return();
         retval.start = input.LT(1);
@@ -449,12 +445,12 @@ public class GremlinEvaluator extends TreeParser {
                 List<Object> resultList = new ArrayList<Object>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:301:5: ( ( statement ( NEWLINE )* )+ )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:301:7: ( statement ( NEWLINE )* )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:5: ( ( statement ( NEWLINE )* )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:7: ( statement ( NEWLINE )* )+
             {
             root_0 = (CommonTree)adaptor.nil();
 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:301:7: ( statement ( NEWLINE )* )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:7: ( statement ( NEWLINE )* )+
             int cnt2=0;
             loop2:
             do {
@@ -468,7 +464,7 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt2) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:301:8: statement ( NEWLINE )*
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:8: statement ( NEWLINE )*
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_statement_in_program68);
@@ -478,7 +474,7 @@ public class GremlinEvaluator extends TreeParser {
 
             	    adaptor.addChild(root_0, statement1.getTree());
             	     formProgramResult(resultList, (statement1!=null?statement1.op:null)); 
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:301:68: ( NEWLINE )*
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:68: ( NEWLINE )*
             	    loop1:
             	    do {
             	        int alt1=2;
@@ -491,7 +487,7 @@ public class GremlinEvaluator extends TreeParser {
 
             	        switch (alt1) {
             	    	case 1 :
-            	    	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:301:68: NEWLINE
+            	    	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:297:68: NEWLINE
             	    	    {
             	    	    _last = (CommonTree)input.LT(1);
             	    	    NEWLINE2=(CommonTree)match(input,NEWLINE,FOLLOW_NEWLINE_in_program72); 
@@ -547,7 +543,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:307:1: statement returns [Operation op] : ( if_statement | foreach_statement | while_statement | repeat_statement | native_step_definition_statement | function_definition_statement | include_statement | script_statement | ^( VAR atom s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:303:1: statement returns [Operation op] : ( if_statement | foreach_statement | while_statement | repeat_statement | native_step_definition_statement | function_definition_statement | include_statement | script_statement | ^( VAR atom s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression );
     public final GremlinEvaluator.statement_return statement() throws RecognitionException {
         GremlinEvaluator.statement_return retval = new GremlinEvaluator.statement_return();
         retval.start = input.LT(1);
@@ -592,7 +588,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree string_literal14_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:308:2: ( if_statement | foreach_statement | while_statement | repeat_statement | native_step_definition_statement | function_definition_statement | include_statement | script_statement | ^( VAR atom s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:304:2: ( if_statement | foreach_statement | while_statement | repeat_statement | native_step_definition_statement | function_definition_statement | include_statement | script_statement | ^( VAR atom s= statement ) | ^( 'and' a= statement b= statement ) | ^( 'or' a= statement b= statement ) | expression )
             int alt3=12;
             switch ( input.LA(1) ) {
             case IF:
@@ -680,7 +676,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt3) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:308:4: if_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:304:4: if_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -696,7 +692,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:309:4: foreach_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:305:4: foreach_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -712,7 +708,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:310:7: while_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:306:7: while_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -728,7 +724,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:311:4: repeat_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:307:4: repeat_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -744,7 +740,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:4: native_step_definition_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:308:4: native_step_definition_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -760,7 +756,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:313:4: function_definition_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:309:4: function_definition_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -776,7 +772,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 7 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:314:4: include_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:310:4: include_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -792,7 +788,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 8 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:315:6: script_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:311:6: script_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -808,7 +804,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 9 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:316:4: ^( VAR atom s= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:312:4: ^( VAR atom s= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -848,7 +844,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 10 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:317:9: ^( 'and' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:313:9: ^( 'and' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -888,7 +884,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 11 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:318:9: ^( 'or' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:314:9: ^( 'or' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -928,7 +924,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 12 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:319:9: expression
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:315:9: expression
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -965,7 +961,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "script_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:322:1: script_statement returns [Atom result] : ^( SCRIPT StringLiteral ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:318:1: script_statement returns [Atom result] : ^( SCRIPT StringLiteral ) ;
     public final GremlinEvaluator.script_statement_return script_statement() throws RecognitionException {
         GremlinEvaluator.script_statement_return retval = new GremlinEvaluator.script_statement_return();
         retval.start = input.LT(1);
@@ -982,8 +978,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree StringLiteral17_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:323:5: ( ^( SCRIPT StringLiteral ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:323:7: ^( SCRIPT StringLiteral )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:319:5: ( ^( SCRIPT StringLiteral ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:319:7: ^( SCRIPT StringLiteral )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1051,7 +1047,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "include_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:344:1: include_statement returns [Atom result] : ^( INCLUDE StringLiteral ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:340:1: include_statement returns [Atom result] : ^( INCLUDE StringLiteral ) ;
     public final GremlinEvaluator.include_statement_return include_statement() throws RecognitionException {
         GremlinEvaluator.include_statement_return retval = new GremlinEvaluator.include_statement_return();
         retval.start = input.LT(1);
@@ -1068,8 +1064,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree StringLiteral19_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:345:2: ( ^( INCLUDE StringLiteral ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:345:4: ^( INCLUDE StringLiteral )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:341:2: ( ^( INCLUDE StringLiteral ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:341:4: ^( INCLUDE StringLiteral )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1132,7 +1128,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "native_step_definition_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:361:1: native_step_definition_statement returns [Operation op] : ^( NATIVE_STEP name= IDENTIFIER block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:357:1: native_step_definition_statement returns [Operation op] : ^( NATIVE_STEP name= IDENTIFIER block ) ;
     public final GremlinEvaluator.native_step_definition_statement_return native_step_definition_statement() throws RecognitionException {
         GremlinEvaluator.native_step_definition_statement_return retval = new GremlinEvaluator.native_step_definition_statement_return();
         retval.start = input.LT(1);
@@ -1154,8 +1150,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Pipe> pipes = new ArrayList<Pipe>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:365:2: ( ^( NATIVE_STEP name= IDENTIFIER block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:365:4: ^( NATIVE_STEP name= IDENTIFIER block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:361:2: ( ^( NATIVE_STEP name= IDENTIFIER block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:361:4: ^( NATIVE_STEP name= IDENTIFIER block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1223,7 +1219,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "gpath_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:374:1: gpath_statement returns [Atom value] : ^( GPATH ( step )+ ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:370:1: gpath_statement returns [Atom value] : ^( GPATH ( step )+ ) ;
     public final GremlinEvaluator.gpath_statement_return gpath_statement() throws RecognitionException {
         gpath_statement_stack.push(new gpath_statement_scope());
         GremlinEvaluator.gpath_statement_return retval = new GremlinEvaluator.gpath_statement_return();
@@ -1246,8 +1242,8 @@ public class GremlinEvaluator extends TreeParser {
                 ((gpath_statement_scope)gpath_statement_stack.peek()).steps = new LinkedList<Pair<Atom<Object>, Pair<List<Operation>, List<Pipe>>>>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:388:2: ( ^( GPATH ( step )+ ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:388:4: ^( GPATH ( step )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:384:2: ( ^( GPATH ( step )+ ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:384:4: ^( GPATH ( step )+ )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1264,7 +1260,7 @@ public class GremlinEvaluator extends TreeParser {
 
 
             match(input, Token.DOWN, null); 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:388:12: ( step )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:384:12: ( step )+
             int cnt4=0;
             loop4:
             do {
@@ -1278,7 +1274,7 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt4) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:388:13: step
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:384:13: step
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_step_in_gpath_statement551);
@@ -1348,7 +1344,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "step"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:408:1: step : ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) (nativeStep= gremlin_native_path_definition )* ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:404:1: step : ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) (nativeStep= gremlin_native_path_definition )* ) ;
     public final GremlinEvaluator.step_return step() throws RecognitionException {
         GremlinEvaluator.step_return retval = new GremlinEvaluator.step_return();
         retval.start = input.LT(1);
@@ -1379,8 +1375,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Pipe> nativeSteps = new ArrayList<Pipe>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:413:5: ( ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) (nativeStep= gremlin_native_path_definition )* ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:413:7: ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) (nativeStep= gremlin_native_path_definition )* )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:409:5: ( ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) (nativeStep= gremlin_native_path_definition )* ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:409:7: ^( STEP ^( TOKEN token ) ^( PREDICATES ( ^( PREDICATE statement ) )* ) (nativeStep= gremlin_native_path_definition )* )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1435,7 +1431,7 @@ public class GremlinEvaluator extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:413:42: ( ^( PREDICATE statement ) )*
+                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:409:42: ( ^( PREDICATE statement ) )*
                 loop5:
                 do {
                     int alt5=2;
@@ -1448,7 +1444,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     switch (alt5) {
                 	case 1 :
-                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:413:44: ^( PREDICATE statement )
+                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:409:44: ^( PREDICATE statement )
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    {
@@ -1489,7 +1485,7 @@ public class GremlinEvaluator extends TreeParser {
             }adaptor.addChild(root_1, root_2);_last = _save_last_2;
             }
 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:413:107: (nativeStep= gremlin_native_path_definition )*
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:409:107: (nativeStep= gremlin_native_path_definition )*
             loop6:
             do {
                 int alt6=2;
@@ -1502,7 +1498,7 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt6) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:413:109: nativeStep= gremlin_native_path_definition
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:409:109: nativeStep= gremlin_native_path_definition
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_gremlin_native_path_definition_in_step619);
@@ -1551,7 +1547,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "gremlin_native_path_definition"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:419:1: gremlin_native_path_definition returns [Pipe pipe] : ^( NATIVE ( statement )+ ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:415:1: gremlin_native_path_definition returns [Pipe pipe] : ^( NATIVE ( statement )+ ) ;
     public final GremlinEvaluator.gremlin_native_path_definition_return gremlin_native_path_definition() throws RecognitionException {
         GremlinEvaluator.gremlin_native_path_definition_return retval = new GremlinEvaluator.gremlin_native_path_definition_return();
         retval.start = input.LT(1);
@@ -1571,8 +1567,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Tree> statements = new LinkedList<Tree>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:423:5: ( ^( NATIVE ( statement )+ ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:423:7: ^( NATIVE ( statement )+ )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:419:5: ( ^( NATIVE ( statement )+ ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:419:7: ^( NATIVE ( statement )+ )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -1589,7 +1585,7 @@ public class GremlinEvaluator extends TreeParser {
 
 
             match(input, Token.DOWN, null); 
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:423:16: ( statement )+
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:419:16: ( statement )+
             int cnt7=0;
             loop7:
             do {
@@ -1603,7 +1599,7 @@ public class GremlinEvaluator extends TreeParser {
 
                 switch (alt7) {
             	case 1 :
-            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:423:17: statement
+            	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:419:17: statement
             	    {
             	    _last = (CommonTree)input.LT(1);
             	    pushFollow(FOLLOW_statement_in_gremlin_native_path_definition669);
@@ -1656,7 +1652,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "token"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:429:1: token returns [Atom atom] : ( function_call | ^( STR StringLiteral ) | ^( VARIABLE_CALL VARIABLE ) | ^( PROPERTY_CALL PROPERTY ) | IDENTIFIER | '..' | ^( BOOL b= BOOLEAN ) | statement );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:425:1: token returns [Atom atom] : ( function_call | ^( STR StringLiteral ) | ^( VARIABLE_CALL VARIABLE ) | ^( PROPERTY_CALL PROPERTY ) | IDENTIFIER | '..' | ^( BOOL b= BOOLEAN ) | statement );
     public final GremlinEvaluator.token_return token() throws RecognitionException {
         GremlinEvaluator.token_return retval = new GremlinEvaluator.token_return();
         retval.start = input.LT(1);
@@ -1693,7 +1689,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree BOOL41_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:430:5: ( function_call | ^( STR StringLiteral ) | ^( VARIABLE_CALL VARIABLE ) | ^( PROPERTY_CALL PROPERTY ) | IDENTIFIER | '..' | ^( BOOL b= BOOLEAN ) | statement )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:426:5: ( function_call | ^( STR StringLiteral ) | ^( VARIABLE_CALL VARIABLE ) | ^( PROPERTY_CALL PROPERTY ) | IDENTIFIER | '..' | ^( BOOL b= BOOLEAN ) | statement )
             int alt8=8;
             switch ( input.LA(1) ) {
             case FUNC_CALL:
@@ -1772,7 +1768,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt8) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:430:9: function_call
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:426:9: function_call
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1788,7 +1784,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:431:9: ^( STR StringLiteral )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:427:9: ^( STR StringLiteral )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1820,7 +1816,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:432:4: ^( VARIABLE_CALL VARIABLE )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:428:4: ^( VARIABLE_CALL VARIABLE )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1852,7 +1848,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:433:4: ^( PROPERTY_CALL PROPERTY )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:429:4: ^( PROPERTY_CALL PROPERTY )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1884,7 +1880,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:434:7: IDENTIFIER
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:430:7: IDENTIFIER
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1908,7 +1904,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:445:6: '..'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:441:6: '..'
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1923,7 +1919,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 7 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:446:9: ^( BOOL b= BOOLEAN )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:442:9: ^( BOOL b= BOOLEAN )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1955,7 +1951,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 8 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:447:4: statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:443:4: statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -1998,7 +1994,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "if_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:457:1: if_statement returns [Operation op] : ^( IF ^( COND cond= statement ) if_block= block ( ^( ELSE else_block= block ) )? ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:453:1: if_statement returns [Operation op] : ^( IF ^( COND cond= statement ) if_block= block ( ^( ELSE else_block= block ) )? ) ;
     public final GremlinEvaluator.if_statement_return if_statement() throws RecognitionException {
         GremlinEvaluator.if_statement_return retval = new GremlinEvaluator.if_statement_return();
         retval.start = input.LT(1);
@@ -2023,8 +2019,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree ELSE45_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:458:2: ( ^( IF ^( COND cond= statement ) if_block= block ( ^( ELSE else_block= block ) )? ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:458:4: ^( IF ^( COND cond= statement ) if_block= block ( ^( ELSE else_block= block ) )? )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:454:2: ( ^( IF ^( COND cond= statement ) if_block= block ( ^( ELSE else_block= block ) )? ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:454:4: ^( IF ^( COND cond= statement ) if_block= block ( ^( ELSE else_block= block ) )? )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2072,7 +2068,7 @@ public class GremlinEvaluator extends TreeParser {
             state._fsp--;
 
             adaptor.addChild(root_1, if_block.getTree());
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:458:47: ( ^( ELSE else_block= block ) )?
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:454:47: ( ^( ELSE else_block= block ) )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2081,7 +2077,7 @@ public class GremlinEvaluator extends TreeParser {
             }
             switch (alt9) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:458:49: ^( ELSE else_block= block )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:454:49: ^( ELSE else_block= block )
                     {
                     _last = (CommonTree)input.LT(1);
                     {
@@ -2143,7 +2139,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "while_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:464:1: while_statement returns [Operation op] : ^( WHILE ^( COND cond= statement ) block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:460:1: while_statement returns [Operation op] : ^( WHILE ^( COND cond= statement ) block ) ;
     public final GremlinEvaluator.while_statement_return while_statement() throws RecognitionException {
         GremlinEvaluator.while_statement_return retval = new GremlinEvaluator.while_statement_return();
         retval.start = input.LT(1);
@@ -2164,8 +2160,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree COND47_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:465:2: ( ^( WHILE ^( COND cond= statement ) block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:465:4: ^( WHILE ^( COND cond= statement ) block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:461:2: ( ^( WHILE ^( COND cond= statement ) block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:461:4: ^( WHILE ^( COND cond= statement ) block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2243,7 +2239,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "foreach_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:471:1: foreach_statement returns [Operation op] : ^( FOREACH VARIABLE arr= statement block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:467:1: foreach_statement returns [Operation op] : ^( FOREACH VARIABLE arr= statement block ) ;
     public final GremlinEvaluator.foreach_statement_return foreach_statement() throws RecognitionException {
         GremlinEvaluator.foreach_statement_return retval = new GremlinEvaluator.foreach_statement_return();
         retval.start = input.LT(1);
@@ -2264,8 +2260,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree VARIABLE50_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:472:2: ( ^( FOREACH VARIABLE arr= statement block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:472:4: ^( FOREACH VARIABLE arr= statement block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:468:2: ( ^( FOREACH VARIABLE arr= statement block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:468:4: ^( FOREACH VARIABLE arr= statement block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2332,7 +2328,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "repeat_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:478:1: repeat_statement returns [Operation op] : ^( REPEAT timer= statement block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:474:1: repeat_statement returns [Operation op] : ^( REPEAT timer= statement block ) ;
     public final GremlinEvaluator.repeat_statement_return repeat_statement() throws RecognitionException {
         GremlinEvaluator.repeat_statement_return retval = new GremlinEvaluator.repeat_statement_return();
         retval.start = input.LT(1);
@@ -2351,8 +2347,8 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree REPEAT52_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:479:2: ( ^( REPEAT timer= statement block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:479:4: ^( REPEAT timer= statement block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:475:2: ( ^( REPEAT timer= statement block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:475:4: ^( REPEAT timer= statement block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2413,7 +2409,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "block"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:485:1: block returns [CodeBlock cb] : ^( BLOCK (st= statement | ^( RETURN ret= statement ) )* ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:481:1: block returns [CodeBlock cb] : ^( BLOCK (st= statement | ^( RETURN ret= statement ) )* ) ;
     public final GremlinEvaluator.block_return block() throws RecognitionException {
         GremlinEvaluator.block_return retval = new GremlinEvaluator.block_return();
         retval.start = input.LT(1);
@@ -2438,8 +2434,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Tree> statements = new LinkedList<Tree>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:493:5: ( ^( BLOCK (st= statement | ^( RETURN ret= statement ) )* ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:493:7: ^( BLOCK (st= statement | ^( RETURN ret= statement ) )* )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:489:5: ( ^( BLOCK (st= statement | ^( RETURN ret= statement ) )* ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:489:7: ^( BLOCK (st= statement | ^( RETURN ret= statement ) )* )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -2457,7 +2453,7 @@ public class GremlinEvaluator extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:493:15: (st= statement | ^( RETURN ret= statement ) )*
+                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:489:15: (st= statement | ^( RETURN ret= statement ) )*
                 loop10:
                 do {
                     int alt10=3;
@@ -2473,7 +2469,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     switch (alt10) {
                 	case 1 :
-                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:493:17: st= statement
+                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:489:17: st= statement
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    pushFollow(FOLLOW_statement_in_block1079);
@@ -2487,7 +2483,7 @@ public class GremlinEvaluator extends TreeParser {
                 	    }
                 	    break;
                 	case 2 :
-                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:493:62: ^( RETURN ret= statement )
+                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:489:62: ^( RETURN ret= statement )
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    {
@@ -2555,7 +2551,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "expression"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:497:1: expression returns [Operation expr] : ( ^( '=' a= statement b= statement ) | ^( '!=' a= statement b= statement ) | ^( '<' a= statement b= statement ) | ^( '>' a= statement b= statement ) | ^( '<=' a= statement b= statement ) | ^( '>=' a= statement b= statement ) | operation );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:493:1: expression returns [Operation expr] : ( ^( '=' a= statement b= statement ) | ^( '!=' a= statement b= statement ) | ^( '<' a= statement b= statement ) | ^( '>' a= statement b= statement ) | ^( '<=' a= statement b= statement ) | ^( '>=' a= statement b= statement ) | operation );
     public final GremlinEvaluator.expression_return expression() throws RecognitionException {
         GremlinEvaluator.expression_return retval = new GremlinEvaluator.expression_return();
         retval.start = input.LT(1);
@@ -2586,7 +2582,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree string_literal61_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:498:5: ( ^( '=' a= statement b= statement ) | ^( '!=' a= statement b= statement ) | ^( '<' a= statement b= statement ) | ^( '>' a= statement b= statement ) | ^( '<=' a= statement b= statement ) | ^( '>=' a= statement b= statement ) | operation )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:494:5: ( ^( '=' a= statement b= statement ) | ^( '!=' a= statement b= statement ) | ^( '<' a= statement b= statement ) | ^( '>' a= statement b= statement ) | ^( '<=' a= statement b= statement ) | ^( '>=' a= statement b= statement ) | operation )
             int alt11=7;
             switch ( input.LA(1) ) {
             case 91:
@@ -2643,7 +2639,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt11) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:498:9: ^( '=' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:494:9: ^( '=' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2683,7 +2679,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:499:9: ^( '!=' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:495:9: ^( '!=' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2723,7 +2719,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:500:9: ^( '<' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:496:9: ^( '<' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2763,7 +2759,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:501:9: ^( '>' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:497:9: ^( '>' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2803,7 +2799,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:502:9: ^( '<=' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:498:9: ^( '<=' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2843,7 +2839,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:503:9: ^( '>=' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:499:9: ^( '>=' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2883,7 +2879,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 7 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:504:9: operation
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:500:9: operation
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -2920,7 +2916,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "operation"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:507:1: operation returns [Operation op] : ( ^( '+' a= statement b= statement ) | ^( '-' a= statement b= statement ) | binary_operation );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:503:1: operation returns [Operation op] : ( ^( '+' a= statement b= statement ) | ^( '-' a= statement b= statement ) | binary_operation );
     public final GremlinEvaluator.operation_return operation() throws RecognitionException {
         GremlinEvaluator.operation_return retval = new GremlinEvaluator.operation_return();
         retval.start = input.LT(1);
@@ -2943,7 +2939,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree char_literal64_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:508:5: ( ^( '+' a= statement b= statement ) | ^( '-' a= statement b= statement ) | binary_operation )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:504:5: ( ^( '+' a= statement b= statement ) | ^( '-' a= statement b= statement ) | binary_operation )
             int alt12=3;
             switch ( input.LA(1) ) {
             case 97:
@@ -2978,7 +2974,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt12) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:508:9: ^( '+' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:504:9: ^( '+' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3018,7 +3014,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:509:9: ^( '-' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:505:9: ^( '-' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3058,7 +3054,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:510:9: binary_operation
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:506:9: binary_operation
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3095,7 +3091,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "binary_operation"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:513:1: binary_operation returns [Operation operation] : ( ^( '*' a= statement b= statement ) | ^( 'div' a= statement b= statement ) | ^( 'mod' a= statement b= statement ) | atom );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:509:1: binary_operation returns [Operation operation] : ( ^( '*' a= statement b= statement ) | ^( 'div' a= statement b= statement ) | ^( 'mod' a= statement b= statement ) | atom );
     public final GremlinEvaluator.binary_operation_return binary_operation() throws RecognitionException {
         GremlinEvaluator.binary_operation_return retval = new GremlinEvaluator.binary_operation_return();
         retval.start = input.LT(1);
@@ -3120,7 +3116,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree string_literal68_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:514:5: ( ^( '*' a= statement b= statement ) | ^( 'div' a= statement b= statement ) | ^( 'mod' a= statement b= statement ) | atom )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:510:5: ( ^( '*' a= statement b= statement ) | ^( 'div' a= statement b= statement ) | ^( 'mod' a= statement b= statement ) | atom )
             int alt13=4;
             switch ( input.LA(1) ) {
             case 99:
@@ -3157,7 +3153,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt13) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:514:9: ^( '*' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:510:9: ^( '*' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3197,7 +3193,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:515:9: ^( 'div' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:511:9: ^( 'div' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3237,7 +3233,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:516:7: ^( 'mod' a= statement b= statement )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:512:7: ^( 'mod' a= statement b= statement )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3277,7 +3273,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:517:9: atom
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:513:9: atom
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3314,7 +3310,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "function_definition_statement"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:520:1: function_definition_statement returns [Operation op] : ^( FUNC ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG VARIABLE ) )* ) block ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:516:1: function_definition_statement returns [Operation op] : ^( FUNC ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG VARIABLE ) )* ) block ) ;
     public final GremlinEvaluator.function_definition_statement_return function_definition_statement() throws RecognitionException {
         GremlinEvaluator.function_definition_statement_return retval = new GremlinEvaluator.function_definition_statement_return();
         retval.start = input.LT(1);
@@ -3350,8 +3346,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<String> params = new ArrayList<String>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:524:2: ( ^( FUNC ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG VARIABLE ) )* ) block ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:524:4: ^( FUNC ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG VARIABLE ) )* ) block )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:520:2: ( ^( FUNC ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG VARIABLE ) )* ) block ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:520:4: ^( FUNC ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG VARIABLE ) )* ) block )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3445,7 +3441,7 @@ public class GremlinEvaluator extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:524:78: ( ^( ARG VARIABLE ) )*
+                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:520:78: ( ^( ARG VARIABLE ) )*
                 loop14:
                 do {
                     int alt14=2;
@@ -3458,7 +3454,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     switch (alt14) {
                 	case 1 :
-                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:524:80: ^( ARG VARIABLE )
+                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:520:80: ^( ARG VARIABLE )
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    {
@@ -3538,7 +3534,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "function_call"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:533:1: function_call returns [Atom value] : ^( FUNC_CALL ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG st= statement ) )* ) ) ;
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:529:1: function_call returns [Atom value] : ^( FUNC_CALL ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG st= statement ) )* ) ) ;
     public final GremlinEvaluator.function_call_return function_call() throws RecognitionException {
         GremlinEvaluator.function_call_return retval = new GremlinEvaluator.function_call_return();
         retval.start = input.LT(1);
@@ -3572,8 +3568,8 @@ public class GremlinEvaluator extends TreeParser {
                 List<Operation> arguments = new ArrayList<Operation>();
             
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:537:2: ( ^( FUNC_CALL ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG st= statement ) )* ) ) )
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:537:4: ^( FUNC_CALL ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG st= statement ) )* ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:533:2: ( ^( FUNC_CALL ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG st= statement ) )* ) ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:533:4: ^( FUNC_CALL ^( FUNC_NAME ^( NS ns= IDENTIFIER ) ^( NAME fn_name= IDENTIFIER ) ) ^( ARGS ( ^( ARG st= statement ) )* ) )
             {
             root_0 = (CommonTree)adaptor.nil();
 
@@ -3667,7 +3663,7 @@ public class GremlinEvaluator extends TreeParser {
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:537:83: ( ^( ARG st= statement ) )*
+                // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:533:83: ( ^( ARG st= statement ) )*
                 loop15:
                 do {
                     int alt15=2;
@@ -3680,7 +3676,7 @@ public class GremlinEvaluator extends TreeParser {
 
                     switch (alt15) {
                 	case 1 :
-                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:537:85: ^( ARG st= statement )
+                	    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:533:85: ^( ARG st= statement )
                 	    {
                 	    _last = (CommonTree)input.LT(1);
                 	    {
@@ -3757,7 +3753,7 @@ public class GremlinEvaluator extends TreeParser {
     };
 
     // $ANTLR start "atom"
-    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:549:1: atom returns [Atom value] : ( ^( INT G_INT ) | ^( LONG G_LONG ) | ^( FLOAT G_FLOAT ) | ^( DOUBLE G_DOUBLE ) | gpath_statement | NULL );
+    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:545:1: atom returns [Atom value] : ( ^( INT G_INT ) | ^( LONG G_LONG ) | ^( FLOAT G_FLOAT ) | ^( DOUBLE G_DOUBLE ) | gpath_statement | NULL );
     public final GremlinEvaluator.atom_return atom() throws RecognitionException {
         GremlinEvaluator.atom_return retval = new GremlinEvaluator.atom_return();
         retval.start = input.LT(1);
@@ -3790,7 +3786,7 @@ public class GremlinEvaluator extends TreeParser {
         CommonTree NULL93_tree=null;
 
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:550:2: ( ^( INT G_INT ) | ^( LONG G_LONG ) | ^( FLOAT G_FLOAT ) | ^( DOUBLE G_DOUBLE ) | gpath_statement | NULL )
+            // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:546:2: ( ^( INT G_INT ) | ^( LONG G_LONG ) | ^( FLOAT G_FLOAT ) | ^( DOUBLE G_DOUBLE ) | gpath_statement | NULL )
             int alt16=6;
             switch ( input.LA(1) ) {
             case INT:
@@ -3832,7 +3828,7 @@ public class GremlinEvaluator extends TreeParser {
 
             switch (alt16) {
                 case 1 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:550:6: ^( INT G_INT )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:546:6: ^( INT G_INT )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3864,7 +3860,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:551:6: ^( LONG G_LONG )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:547:6: ^( LONG G_LONG )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3899,7 +3895,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:555:6: ^( FLOAT G_FLOAT )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:551:6: ^( FLOAT G_FLOAT )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3931,7 +3927,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:556:6: ^( DOUBLE G_DOUBLE )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:552:6: ^( DOUBLE G_DOUBLE )
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3966,7 +3962,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:560:9: gpath_statement
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:556:9: gpath_statement
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
@@ -3982,7 +3978,7 @@ public class GremlinEvaluator extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:561:9: NULL
+                    // src/main/java/com/tinkerpop/gremlin/compiler/GremlinEvaluator.g:557:9: NULL
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
