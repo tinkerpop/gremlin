@@ -1,7 +1,9 @@
 package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.operations.Operation;
+import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.Func;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
 /**
@@ -29,6 +31,7 @@ public class While implements Operation {
         boolean repeatIteration = true;
 
         while (repeatIteration) {
+            StatementHelper.unlockFunc(this.condition);
             Atom currCondResult = this.condition.compute();
 
             if (currCondResult.isNull())

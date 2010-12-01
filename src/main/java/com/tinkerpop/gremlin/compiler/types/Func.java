@@ -59,4 +59,8 @@ public class Func extends DynamicEntity {
         return this.value == null;
     }
 
+    public void unlock() {
+        this.done = false;
+    }
+
 }

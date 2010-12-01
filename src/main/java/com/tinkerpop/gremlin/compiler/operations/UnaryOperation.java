@@ -25,4 +25,8 @@ public class UnaryOperation implements Operation {
         return new UnaryOperation(new Atom<T>(object));
     }
 
+    public Atom getOperand() {
+        return this.operand;
+    }
+
 }

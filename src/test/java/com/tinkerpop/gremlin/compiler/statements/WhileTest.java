@@ -70,4 +70,14 @@ public class WhileTest extends BaseTest {
         assertEquals(results.get(0), 0);
         assertEquals(context.getBindings(ScriptContext.ENGINE_SCOPE).get(Tokens.ROOT_VARIABLE), graph.getVertex(3));
     }
+
+    public void testFunctionWhile() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("$x := true\n" + "$c := 0\n" + "while g:boolean($x)\n" + "  $x := false\n" + "end ", context);
+        printPerformance("while statement", 1, "iteration with function call for test", this.stopWatch());
+        System.out.println(results);
+    }
 }

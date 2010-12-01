@@ -78,12 +78,21 @@ public class ForeachTest extends BaseTest {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
         final GremlinScriptContext context = new GremlinScriptContext();
 
+        /*
+           $x := g:list()
+           foreach $y in g:list(1,2,3)
+             if true
+               g:append($x,$y)
+             end
+           end
+           $x
+        */
+
         this.stopWatch();
         List results = (List) engine.eval("$x := g:list()\nforeach $y in g:list(1,2,3)\nif true\ng:append($x,$y)\nend\nend\n$x", context);
         printPerformance("foreach statement", 3, "iterations w/ function call", this.stopWatch());
-
-        assertEquals(results.size(), 2);
         System.out.println(results);
+        assertEquals(results.size(), 2);
         assertEquals(((List) results.get(1)).size(), 3);
         assertEquals(((List) results.get(1)).get(0), 1);
         assertEquals(((List) results.get(1)).get(1), 2);
