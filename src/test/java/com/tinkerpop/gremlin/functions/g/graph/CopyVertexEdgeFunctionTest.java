@@ -73,4 +73,22 @@ public class CopyVertexEdgeFunctionTest extends BaseTest {
         assertEquals(count(toGraph.getEdges()), 1);
 
     }
+
+    public void testCopyVertexUsingDoublePropertiesToThrowException() {
+        Graph fromGraph = TinkerGraphFactory.createTinkerGraph();
+        Graph toGraph = new TinkerGraph();
+        GremlinScriptContext context = new GremlinScriptContext();
+        context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(fromGraph));
+
+        Vertex v1 = fromGraph.getVertex(3);
+        Function<Object> function = new CopyVertexEdgeFunction();
+        function.compute(createUnaryArgs(toGraph, v1, "vertices", "lang"), context);
+
+        v1 = fromGraph.getVertex(5);
+        function = new CopyVertexEdgeFunction();
+        function.compute(createUnaryArgs(toGraph, v1, "vertices", "lang"), context);
+
+        assertEquals(count(toGraph.getVertices()), 1); // ripple and lop merge to the same
+
+    }
 }

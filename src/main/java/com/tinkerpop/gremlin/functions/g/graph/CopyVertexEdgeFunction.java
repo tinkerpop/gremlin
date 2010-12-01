@@ -6,8 +6,8 @@ import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.functions.AbstractFunction;
 import com.tinkerpop.gremlin.functions.FunctionHelper;
-import com.tinkerpop.pipes.PipeHelper;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,9 +15,10 @@ import java.util.List;
  */
 public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
 
-    private final static String FUNCTION_NAME = "copy-ve";
+    private static final String FUNCTION_NAME = "copy-ve";
+    private static final String _ID = "_id";
 
-    // g:copy-ve(graph?,element,string?)
+    // g:copy-ve(graph?,element,string?,string?)
 
     public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final int size = arguments.size();
@@ -37,14 +38,12 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
 
         if (size == 1) {
             element = (Element) objects.get(0);
-            uniqueProperty = "_id";
+            uniqueProperty = _ID;
             vertexIndexName = Index.VERTICES;
         } else if (size == 2) {
-            // todo fix
-            Object object = objects.get(0);
-            if (object instanceof Graph) {
+            if (objects.get(0) instanceof Graph) {
                 element = (Element) objects.get(1);
-                uniqueProperty = "_id";
+                uniqueProperty = _ID;
                 vertexIndexName = Index.VERTICES;
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage("When providing an index, provide a property key to use"));
@@ -101,20 +100,21 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
 
     }
 
-    private static Vertex getVertex(Graph graph, String vertexIndexName, Vertex v1, String uniqueProperty) {
-        Vertex v2 = null;
-        if (uniqueProperty.equals("_id")) {
-            v2 = graph.getVertex(v1.getId());
+    private static Vertex getVertex(final Graph graph, final String vertexIndexName, final Vertex v1, final String uniqueProperty) {
+        if (uniqueProperty.equals(_ID)) {
+            return graph.getVertex(v1.getId());
         } else {
-            Iterable<Vertex> results = ((IndexableGraph) graph).getIndex(vertexIndexName, Vertex.class).get(uniqueProperty, v1.getProperty(uniqueProperty));
-            long count = PipeHelper.counter(results.iterator());
-            if (count > 1) {
-                throw new RuntimeException("There is more than one vertex in target graph that has that unique property value");
-            } else if (count != 0) {
-                v2 = results.iterator().next();
+            Iterator<Vertex> results = ((IndexableGraph) graph).getIndex(vertexIndexName, Vertex.class).get(uniqueProperty, v1.getProperty(uniqueProperty)).iterator();
+            if (results.hasNext()) {
+                Vertex v2 = results.next();
+                if (results.hasNext())
+                    throw new RuntimeException("There is more than one vertex in the target graph that has that unique property value");
+                else
+                    return v2;
+            } else {
+                return null;
             }
         }
-        return v2;
     }
 
     public String getFunctionName() {
