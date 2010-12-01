@@ -78,6 +78,10 @@ public class WhileTest extends BaseTest {
         this.stopWatch();
         List results = (List) engine.eval("$x := true\n" + "$c := 0\n" + "while g:boolean($x)\n" + "  $x := false\n" + "end ", context);
         printPerformance("while statement", 1, "iteration with function call for test", this.stopWatch());
-        System.out.println(results);
+        //System.out.println(results);
+
+        results = (List) engine.eval("$x := true\n" + "$c := 0\n" + "while g:boolean($x) = true\n" + "  $x := false\n" + "end ", context);
+        printPerformance("while statement", 1, "iteration with function call for test", this.stopWatch());
+        //System.out.println(results);
     }
 }
