@@ -96,10 +96,4 @@ public class CodeBlock {
         return (result == null) ? new Atom<Object>(null) : result;
     }
 
-    private class FunctionReturn<T> extends Atom<T> {
-
-        public FunctionReturn(T value) {
-            super(value);
-        }
-    }
 }

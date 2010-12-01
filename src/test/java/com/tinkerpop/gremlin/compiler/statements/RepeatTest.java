@@ -77,4 +77,18 @@ public class RepeatTest extends BaseTest {
 
     }
 
+    public void testRepeatEmbeddedInFunctionWithReturn() {
+
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("func ex:test()   \n" + "  repeat 10\n" + "    return 10\n" + "  end\n" + "end \n" + "ex:test()", context);
+        printPerformance("repeat statement", 1, "return call in function in repeat body", this.stopWatch());
+        System.out.println(results);
+        assertTrue((Boolean) results.get(0));
+        assertEquals(results.get(1), 10);
+
+    }
+
 }

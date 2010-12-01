@@ -76,12 +76,25 @@ public class WhileTest extends BaseTest {
         final GremlinScriptContext context = new GremlinScriptContext();
 
         this.stopWatch();
-        List results = (List) engine.eval("$x := true\n" + "$c := 0\n" + "while g:boolean($x)\n" + "  $x := false\n" + "end ", context);
+        List results = (List) engine.eval("$x := true\n" + "while g:boolean($x)\n" + "  $x := false\n" + "end ", context);
         printPerformance("while statement", 1, "iteration with function call for test", this.stopWatch());
-        //System.out.println(results);
+        assertTrue((Boolean) results.get(0));
 
-        results = (List) engine.eval("$x := true\n" + "$c := 0\n" + "while g:boolean($x) = true\n" + "  $x := false\n" + "end ", context);
+        this.stopWatch();
+        results = (List) engine.eval("$x := true\n" + "while g:boolean($x) = true\n" + "  $x := false\n" + "end ", context);
         printPerformance("while statement", 1, "iteration with function call for test", this.stopWatch());
-        //System.out.println(results);
+        assertTrue((Boolean) results.get(0));
+    }
+
+    public void testWhileEmbeddedInFunctionWithReturn() {
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("func ex:test()   \n" + "  while true\n" + "    return 10\n" + "  end\n" + "end \n" + "ex:test()", context);
+        printPerformance("while statement", 1, "return call in function in while body", this.stopWatch());
+        System.out.println(results);
+        assertTrue((Boolean) results.get(0));
+        assertEquals(results.get(1), 10);
     }
 }

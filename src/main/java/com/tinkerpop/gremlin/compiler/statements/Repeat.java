@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.compiler.statements;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
+import com.tinkerpop.gremlin.compiler.util.FunctionReturn;
 
 /**
  * @author Pavel A. Yaskevich
@@ -33,7 +34,10 @@ public class Repeat implements Operation {
                 Number times = (Number) counter.getValue();
 
                 for (int i = 0; i < times.intValue(); i++) {
-                    this.block.invoke();
+                    Atom atom = this.block.invoke();
+                    if(atom instanceof FunctionReturn) {
+                        return atom;
+                    }
                 }
             }
         }

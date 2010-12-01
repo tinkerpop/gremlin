@@ -1,10 +1,9 @@
 package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.operations.Operation;
-import com.tinkerpop.gremlin.compiler.operations.UnaryOperation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.types.Func;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
+import com.tinkerpop.gremlin.compiler.util.FunctionReturn;
 
 /**
  * @author Pavel A. Yaskevich
@@ -42,7 +41,10 @@ public class While implements Operation {
             }
 
             if (repeatIteration) {
-                this.body.invoke();
+                Atom atom = this.body.invoke();
+                if (atom instanceof FunctionReturn) {
+                    return atom;
+                }
             }
         }
 

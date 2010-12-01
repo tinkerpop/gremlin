@@ -112,4 +112,17 @@ public class ForeachTest extends BaseTest {
 
     }
 
+    public void testRepeatEmbeddedInFunctionWithReturn() {
+
+        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinScriptContext context = new GremlinScriptContext();
+
+        this.stopWatch();
+        List results = (List) engine.eval("func ex:test()   \n" + "  foreach $x in g:list(1,2,3)\n" + "    return 10\n" + "  end\n" + "end \n" + "ex:test()", context);
+        printPerformance("foreach statement", 1, "return call in function in forearch body", this.stopWatch());
+        assertTrue((Boolean) results.get(0));
+        assertEquals(results.get(1), 10);
+
+    }
+
 }
