@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.context.VariableLibrary;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.Return;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.antlr.runtime.tree.Tree;
@@ -85,8 +86,8 @@ public class CodeBlock {
                 }
                 // end auto iteration
 
-                if (returnStatement || result instanceof FunctionReturn) {
-                    return new FunctionReturn<Object>(value);
+                if (returnStatement || result instanceof Return) {
+                    return new Return<Object>(value);
                 }
             } catch (RecognitionException e) {
                 throw new RuntimeException(e.getMessage(), e);

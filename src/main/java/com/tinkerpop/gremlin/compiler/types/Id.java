@@ -8,9 +8,4 @@ public class Id<String> extends Atom<String> {
     public Id(final String value) {
         super(value);
     }
-
-    public boolean isIdentifier() {
-        return true;
-    }
-
 }

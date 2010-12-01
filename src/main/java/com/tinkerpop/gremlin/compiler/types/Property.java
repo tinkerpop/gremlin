@@ -8,9 +8,4 @@ public class Property<String> extends Atom<String> {
     public Property(final String value) {
         super(value);
     }
-
-    public boolean isProperty() {
-        return true;
-    }
-
 }

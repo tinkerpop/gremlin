@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin.compiler.statements;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
+import com.tinkerpop.gremlin.compiler.types.Return;
 import com.tinkerpop.gremlin.compiler.util.CodeBlock;
-import com.tinkerpop.gremlin.compiler.util.FunctionReturn;
 
 import javax.script.ScriptContext;
 import java.util.Arrays;
@@ -50,7 +50,7 @@ public class Foreach implements Operation {
             context.getBindings(ScriptContext.ENGINE_SCOPE).put(this.variable, value);
 
             Atom atom = this.body.invoke();
-            if (atom instanceof FunctionReturn) {
+            if (atom instanceof Return) {
                 return atom;
             }
         }

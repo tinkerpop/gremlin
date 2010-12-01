@@ -143,7 +143,7 @@ options {
             if (count == 0) {
                 root = makePipelineRoot(token, pipes);
                 pipes.addAll(GremlinPipesHelper.pipesForStep(predicates, this.context));
-            } else if (token.isIdentifier() && token.getValue().equals("..")) {
+            } else if (token instanceof Id && token.getValue().equals("..")) {
                 List<Pipe> currPipes = pipes;
                 List<Pipe> newPipes = new ArrayList<Pipe>();
                 LinkedList<Pipe> history = new LinkedList<Pipe>();
@@ -187,7 +187,7 @@ options {
 
         if (token instanceof DynamicEntity) {
             return token;
-        } else if (token.isIdentifier()) {
+        } else if (token instanceof Id) {
             Step currentStep = steps.getStep(token.toString());
 
             if(null != currentStep) {
@@ -211,9 +211,9 @@ options {
                 return new Func(function.getFunction(), arguments, this.context);
             }
             return token;
-        } else if (token.isProperty()) {
+        } else if (token instanceof Property) {
             return (gpathScope == 1) ? new Atom<Object>(null) : token;
-        } else if (token.isIdentifier()) {
+        } else if (token instanceof Id) {
             String identifier = (String) token.getValue();
             if (identifier.equals(Tokens.IDENTITY)) {
                 if (this.getVariableValue(Tokens.IN_BLOCK) == null) {

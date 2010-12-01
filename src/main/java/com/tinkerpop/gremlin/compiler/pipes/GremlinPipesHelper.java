@@ -62,7 +62,7 @@ public class GremlinPipesHelper {
     }
 
     private static Pipe pipeForToken(final Atom tokenAtom) {
-        if (tokenAtom.isProperty()) {
+        if (tokenAtom instanceof Property) {
             return new GremlinPropertyPipe(tokenAtom.getValue());
         }
         return null;
