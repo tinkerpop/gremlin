@@ -6,9 +6,10 @@ import com.tinkerpop.gremlin.compiler.types.Atom;
 import com.tinkerpop.gremlin.compiler.types.GPath;
 import com.tinkerpop.gremlin.functions.AbstractFunction;
 import com.tinkerpop.pipes.PathSequence;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,13 +32,10 @@ public class PathFunction extends AbstractFunction<Iterable> {
 
                 Object root = gPath.getRoot().getValue();
                 if (root instanceof Iterable)
-                    pipeline.setStarts((Iterable) root);
-                else if (root instanceof Iterator)
-                    pipeline.setStarts((Iterator) root);
+                    return new Atom<Iterable>(new PathMaker((Iterable) root, pipeline));
                 else
-                    pipeline.setStarts(new SingleIterator(root));
+                    return new Atom<Iterable>(new PathMaker(Arrays.asList(root), pipeline));
 
-                return new Atom<Iterable>(new PathSequence(pipeline));
             } else {
                 throw new RuntimeException(this.createUnsupportedArgumentMessage());
             }
@@ -46,5 +44,21 @@ public class PathFunction extends AbstractFunction<Iterable> {
 
     public String getFunctionName() {
         return FUNCTION_NAME;
+    }
+
+    public class PathMaker implements Iterable<List> {
+
+        private Iterable root;
+        private Pipe pipe;
+
+        public PathMaker(Iterable root, Pipe pipe) {
+            this.root = root;
+            this.pipe = pipe;
+        }
+
+        public Iterator<List> iterator() {
+            pipe.setStarts(this.root);
+            return new PathSequence(this.pipe);
+        }
     }
 }

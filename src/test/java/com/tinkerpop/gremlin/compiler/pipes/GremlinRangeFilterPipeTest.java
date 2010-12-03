@@ -32,7 +32,7 @@ public class GremlinRangeFilterPipeTest extends BaseTest {
         Pipe pipe1 = new GremlinPropertyPipe("marko");
         Pipe pipe2 = new GremlinRangeFilterPipe(Arrays.asList(1));
         Pipe pipeline = new Pipeline(pipe1, pipe2);
-        pipeline.setStarts(new SingleIterator(map));
+        pipeline.setStarts(Arrays.asList(map));
         assertTrue(pipeline.hasNext());
         while (pipeline.hasNext()) {
             Object object = pipeline.next();
