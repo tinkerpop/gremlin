@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
@@ -25,7 +26,7 @@ public class CopyVertexEdgeFunctionTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(fromGraph));
 
         Vertex v1 = fromGraph.getVertex(1);
-        Function<Object> function = new CopyVertexEdgeFunction();
+        Function<Element> function = new CopyVertexEdgeFunction();
         function.compute(createUnaryArgs(toGraph, v1), context);
 
         Vertex v2 = toGraph.getVertex(1);
@@ -53,7 +54,7 @@ public class CopyVertexEdgeFunctionTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(fromGraph));
 
         Vertex v1 = fromGraph.getVertex(1);
-        Function<Object> function = new CopyVertexEdgeFunction();
+        Function<Element> function = new CopyVertexEdgeFunction();
         function.compute(createUnaryArgs(toGraph, v1, "vertices", "name"), context);
 
         Vertex v2 = toGraph.getVertex(1);
@@ -81,7 +82,7 @@ public class CopyVertexEdgeFunctionTest extends BaseTest {
         context.getBindings(ScriptContext.ENGINE_SCOPE).put(Tokens.GRAPH_VARIABLE, new Atom<Graph>(fromGraph));
 
         Vertex v1 = fromGraph.getVertex(3);
-        Function<Object> function = new CopyVertexEdgeFunction();
+        Function<Element> function = new CopyVertexEdgeFunction();
         function.compute(createUnaryArgs(toGraph, v1, "vertices", "lang"), context);
 
         v1 = fromGraph.getVertex(5);

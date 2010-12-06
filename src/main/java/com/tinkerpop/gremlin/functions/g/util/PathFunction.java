@@ -48,17 +48,20 @@ public class PathFunction extends AbstractFunction<Iterable> {
 
     public class PathMaker implements Iterable<List> {
 
-        private Iterable root;
-        private Pipe pipe;
+        private final Iterable root;
+        private final Pipe pipe;
 
-        public PathMaker(Iterable root, Pipe pipe) {
+        public PathMaker(final Iterable root, final Pipe pipe) {
             this.root = root;
             this.pipe = pipe;
         }
 
         public Iterator<List> iterator() {
-            pipe.setStarts(this.root);
+            this.pipe.setStarts(this.root);
             return new PathSequence(this.pipe);
+            /*Pipe pipeline = new Pipeline(this.pipe, new PathPipe());
+            pipeline.setStarts(this.root);
+            return pipeline;*/
         }
     }
 }

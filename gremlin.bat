@@ -1,1 +1,1 @@
-target/gremlin-*-standalone/bin/gremlin.bat %*
+ECHO "No support for Windows through script loader yet."

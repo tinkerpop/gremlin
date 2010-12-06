@@ -2,7 +2,7 @@
 
 CP=$( echo `dirname $0`/../lib/*.jar . | sed 's/ /:/g')
 #echo $CP
- 
+
 # Find Java
 if [ "$JAVA_HOME" = "" ] ; then
     JAVA="java -server"

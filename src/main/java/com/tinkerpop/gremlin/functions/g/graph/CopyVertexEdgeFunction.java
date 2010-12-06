@@ -13,14 +13,14 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
+public class CopyVertexEdgeFunction extends AbstractFunction<Element> {
 
     private static final String FUNCTION_NAME = "copy-ve";
     private static final String _ID = "_id";
 
     // g:copy-ve(graph?,element,string?,string?)
 
-    public Atom<Object> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+    public Atom<Element> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
         final int size = arguments.size();
         if (size > 4 || size == 0)
             throw new RuntimeException(this.createUnsupportedArgumentMessage());
@@ -35,6 +35,8 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
         final Element element;
         final String vertexIndexName;
         final String uniqueProperty;
+
+        // MANAGING ARGUMENTS
 
         if (size == 1) {
             element = (Element) objects.get(0);
@@ -61,6 +63,9 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
             vertexIndexName = (String) objects.get(2);
             uniqueProperty = (String) objects.get(3);
         }
+
+        // ELEMENT COPYING
+
         if (element instanceof Vertex) {
             Vertex v1 = (Vertex) element;
             Vertex v2 = CopyVertexEdgeFunction.getVertex(graph, vertexIndexName, v1, uniqueProperty);
@@ -68,6 +73,7 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
                 v2 = graph.addVertex(v1.getId());
                 FunctionHelper.copyElementProperties(v1, v2);
             }
+            return new Atom<Element>(v2);
 
         } else if (element instanceof Edge) {
             Edge e1 = (Edge) element;
@@ -78,7 +84,7 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
             if (null != v2Out && null != v2In) {
                 for (Edge e : v2Out.getOutEdges()) {
                     if (e.getInVertex().equals(v2In) && e.getLabel().equals(e1.getLabel())) {
-                        return new Atom<Object>(null);
+                        return new Atom<Element>(e);
                     }
                 }
             }
@@ -94,9 +100,11 @@ public class CopyVertexEdgeFunction extends AbstractFunction<Object> {
 
             Edge e2 = graph.addEdge(e1.getId(), v2Out, v2In, e1.getLabel());
             FunctionHelper.copyElementProperties(e1, e2);
+            return new Atom<Element>(e2);
+        } else {
+            throw new RuntimeException("The provided element is not a vertex or an edge");
         }
 
-        return new Atom<Object>(null);
 
     }
 
