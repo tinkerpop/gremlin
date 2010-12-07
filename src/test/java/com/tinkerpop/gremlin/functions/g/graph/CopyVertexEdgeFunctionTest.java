@@ -27,19 +27,23 @@ public class CopyVertexEdgeFunctionTest extends BaseTest {
 
         Vertex v1 = fromGraph.getVertex(1);
         Function<Element> function = new CopyVertexEdgeFunction();
-        function.compute(createUnaryArgs(toGraph, v1), context);
+        Element element = function.compute(createUnaryArgs(toGraph, v1), context).getValue();
 
         Vertex v2 = toGraph.getVertex(1);
+        assertEquals(element, v2);
         for (String key : v1.getPropertyKeys()) {
             assertEquals(v2.getProperty(key), v1.getProperty(key));
+            assertEquals(v2.getProperty(key), element.getProperty(key));
         }
 
         Edge e1 = fromGraph.getEdge(8);
-        function.compute(createUnaryArgs(toGraph, e1), context);
+        element = function.compute(createUnaryArgs(toGraph, e1), context).getValue();
 
         Edge e2 = toGraph.getEdge(8);
+        assertEquals(element, e2);
         for (String key : e1.getPropertyKeys()) {
             assertEquals(e2.getProperty(key), e1.getProperty(key));
+            assertEquals(e2.getProperty(key), element.getProperty(key));
         }
 
         assertEquals(count(toGraph.getVertices()), 2);
@@ -55,19 +59,23 @@ public class CopyVertexEdgeFunctionTest extends BaseTest {
 
         Vertex v1 = fromGraph.getVertex(1);
         Function<Element> function = new CopyVertexEdgeFunction();
-        function.compute(createUnaryArgs(toGraph, v1, "vertices", "name"), context);
+        Element element = function.compute(createUnaryArgs(toGraph, v1, "vertices", "name"), context).getValue();
 
         Vertex v2 = toGraph.getVertex(1);
+        assertEquals(element, v2);
         for (String key : v1.getPropertyKeys()) {
             assertEquals(v2.getProperty(key), v1.getProperty(key));
+            assertEquals(v2.getProperty(key), element.getProperty(key));
         }
 
         Edge e1 = fromGraph.getEdge(8);
-        function.compute(createUnaryArgs(toGraph, e1, "vertices", "name"), context);
+        element = function.compute(createUnaryArgs(toGraph, e1, "vertices", "name"), context).getValue();
 
         Edge e2 = toGraph.getEdge(8);
+        assertEquals(element, e2);
         for (String key : e1.getPropertyKeys()) {
             assertEquals(e2.getProperty(key), e1.getProperty(key));
+            assertEquals(e2.getProperty(key), element.getProperty(key));
         }
 
         assertEquals(count(toGraph.getVertices()), 2);
