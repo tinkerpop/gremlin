@@ -31,7 +31,7 @@ bc. <dependency>
 * Fixed a major bug in error message handling (many exceptions w/o message being provided in console)
 * Improved Gremlin evaluator load time with static function and step loading
 * Added support for Blueprints 0.3 multi-indexes
-** @g:add-aidx-key()@, @g:add-idx()@, @g:drop-idx()@, @g:show-aidx-keys()@, @g:show-idx()@
+** @g:add-aidx-key()@, @g:add-idx()@, @g:drop-idx()@, @g:show-aidx-keys()@, @g:show-idx()@, @g:remove-aidx-keys()@
 * Added @return ?object@ to return from a user defined function or step
 * Added support for path generation through @g:path()@ (main body of work in "Pipes":http://pipes.tinkerpop.com)
 
