@@ -1,0 +1,54 @@
+A "hypergraph":http://en.wikipedia.org/wiki/Hypergraph is a generalization of a graph in which an edge can connect 0 or more vertices. While there does exist specialized hypergraph databases[1], they are a rare breed. The property graphs articulated "Blueprints":http://blueprints.tinkerpop.com and diagrammed in [[Defining a Property Graph]] can only connect pairs of vertices. Thus, in order to model a hypergraph with a property graph, its important to provide an edge the ability to connect any arbitrary number of vertices. To do this, make edges vertices. This idea is diagrammed in the figure below, where edge @1@ connects vertices @a@,@b@, and @c@. Moreover, vertex @b@ is connected by edges @1@ and @2@ and thus, is adjacent to vertices @a@, @c@, @d@, and @e@.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/hypergraph-example.jpg!
+
+Below is a script to load the hypergraph diagrammed above into Gremlin.
+
+bc. $_g := tg:open()
+$va := g:add-v('a')
+$vb := g:add-v('b')
+$vc := g:add-v('c')
+$vd := g:add-v('d')
+$ve := g:add-v('e')
+$vf := g:add-v('f')
+$e1 := g:add-v('1')
+$e2 := g:add-v('2')
+$e3 := g:add-v('3')
+g:list($va,$vb,$vc)[g:add-e($e1,'contains',.)]
+g:list($vb,$vd,$ve)[g:add-e($e2,'contains',.)]
+g:list($vc,$vf)[g:add-e($e3,'contains',.)]
+
+Given this pseudo-hypergraph, lets define a path to help us navigate. To determine the hyperedges adjacent to a vertex, lets define the step @hyperE@.
+
+bc. gremlin> step hyperE
+  ./inE/outV
+  end
+
+Now we can use this path to get the hyperedges incident to a vertex.
+
+bc. gremlin> $va/hyperE
+==>v[1]
+gremlin> $vb/hyperE
+==>v[2]
+==>v[1]
+
+Next, we need to find the vertex incident to an edge. Lets define the step @hyperV@.
+
+bc. gremlin> step hyperV
+  ./outE/inV
+  end
+gremlin> $vb/hyperE/hyperV
+==>v[b]
+==>v[e]
+==>v[d]
+==>v[c]
+==>v[b]
+==>v[a]
+
+In essence, what we have done is defined a "higher order" relationship that simulates the modeling ability of a hypergraph. With the use of path definitions, we can move through a hypergraph in much the same way we move through a standard graph.
+
+While labeled hypergraphs are rarely considered, realize that adding labels to the edge vertices is possible in order to model such structures.
+
+==<hr/>==
+
+fn1. For more information on hypergraph databases, please see "HyperGraphDB":http://www.kobrix.com/hgdb.jsp.

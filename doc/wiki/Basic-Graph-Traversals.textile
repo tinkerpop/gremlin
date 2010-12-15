@@ -1,0 +1,80 @@
+This section will present basic graph traversals by way of examples on the simple property graph diagrammed below.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/graph-example-1.jpg!
+
+bc. gremlin> $_g := tg:open()                         
+==>tinkergraph[vertices:0 edges:0]
+gremlin> g:load('data/graph-example-1.xml')       
+==>true
+gremlin> $_g                                 
+==>tinkergraph[vertices:6 edges:6]
+gremlin> $_ := g:id-v(1)
+==>v[1]
+
+In Gremlin, it is possible to specify the root of a traversal (@$_@). This iterable can be a singleton, e.g. only vertex 1 (@$_ := g:id-v(1)@). The root can be traversed from, in Gremlin, using a directory structure-like notation. For example, the current root is identified with the following expression.
+
+bc. gremlin> .
+==>v[1]
+
+The symbol @v@ denotes that the element is a vertex and @1@ denotes the elements unique identifier. To determine all of the outgoing edges from the root, the following statement suffices.
+
+bc. gremlin> ./outE
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+
+As a convenience, Gremlin prints the outgoing and incoming vertex identifiers along with the edge label. To acquire the vertices at the head of these edges (known as the incoming vertices), apply another step in the path.
+
+bc. gremlin> ./outE/inV
+==>v[2]
+==>v[3]
+==>v[4]
+
+It is important to note that in Gremlin, vertices are adjacent to edges and edges are adjacent to vertices. The reason for this will become apparent later when making use of element properties in path expressions. The reserved terms for denoting adjacency selection are the steps @outE@, @inE@, @bothE@, @outV@, @inV@, and @bothV@ (see [[Cheat Sheet]]). The components of a property graph are diagrammed in the example sub-graph below.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/graph-model.jpg!
+
+The process of traversing a graph, in this manner, can continue indefinitely (granted, if there are loops in the graph).
+
+bc. gremlin> .
+==>v[1]
+gremlin> ./outE/inV/outE/inV
+==>v[5]
+==>v[3]
+
+Moreover, it is possible to make use of Gremlin's [[language statements]] to repeat patterns. For example, the previous example can be denoted as follows.
+
+bc. gremlin> repeat 2
+           $_ := ./outE/inV
+           end
+gremlin> .
+==>v[5]
+==>v[3]
+
+The variable @$_@ is a reserved variable that denotes the root list. In this way, the root list can be redefined.
+
+If the Gremlin graph data structure was only a directed graph, then outgoing/incoming edges and outgoing/incoming vertices would be the limits of what could be expressed. However, given that vertices and edges can have properties, it is possible to use these properties within a path expression. For example, suppose you want to know the name of vertex 1.
+
+bc. gremlin> $_ := g:id-v(1)
+==>v[1]
+gremlin> ./@name
+==>marko
+
+The @@name@ construct denotes the property key @name@ and returns the value of that key. The first component of the path is vertex 1. Thus, the @name@ of vertex 1 is "marko." Another, more complex example that uses vertex and edge properties is to determine the @name@ of the vertices that vertex 1 @knows@ and that are older than 30 years of age, is expressed as such.
+
+bc. gremlin> ./outE[@label='knows']/inV[@age > 30]/@name
+==>josh
+
+In this expression, the @[ ]@ notation serves to filter results of previous step in the path (see [[Path Functions]]). Thus, @./outE@ is filtered to only those edges that have a @label@ of "knows." With respect to the diagrammed graph, this leaves only two edges. Next, the incoming vertices at the head of these two edges are determined and then filtered to only those whose @age@ property is greater than 30. Given the diagram, this only leaves vertex 4. In the final segment of the path expression, the @name@ of vertex 4 is selected and what is returned is "josh."
+
+To conclude, let's do a more complicated graph traversal that uses backtracking and an in-line regular expression.
+
+bc. gremlin> ./outE[@label='knows']/inV[@age > 21]/@name[g:matches(.,'jo.{2}|JO.{2}')]/../@age
+==>32
+
+With the root vertex being vertex 1, this path expression returns the age of those vertices that vertex 1 knows, are older than 21, and whose names are 4 characters and start with a 'jo' or 'JO'. While contrived, it demonstrates regular expression matching using the function @boolean g:matches(string, string)@ on string properties as well as backtracking (known as a "future filter") @/..@ to a vertex previously visited.
+
+This expression does the same thing without backtracking. Both are provided in order to demonstrate the many ways in which to express the same thing.
+
+bc. gremlin> ./outE[@label='knows']/inV[@age > 21 and g:matches(./@name, 'jo.{2}|JO.{2}')]/@age   
+==>32

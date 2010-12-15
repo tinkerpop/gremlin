@@ -1,0 +1,162 @@
+Gremlin directly supports the property graph data model. In this abstract model, vertex and edges can be added and removed and properties can be manipulated. The Gremlin functions in the [[Gremlin function library]] that support this are nearly identical to the underlying Java methods in "Blueprints":http://blueprints.tinkerpop.com.
+
+# "Adding Vertices and Edges":#add_elements
+# "Removing Vertices and Edges":#remove_elements
+# "Handling Properties Like Maps":#maps
+# "Handling Properties in Paths":#paths
+
+h2(#add_elements). Adding Vertices and Edges
+
+Lets create two vertices and then add an edge between them.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> $v := g:add-v() 
+==>v[0]
+gremlin> $u := g:add-v()
+==>v[1]
+gremlin> $e := g:add-e($v,'adjacent_to',$u)
+==>e[2][0-adjacent_to->1]
+gremlin> $_g/V
+==>v[1]
+==>v[0]
+gremlin> $_g/E
+==>e[2][0-adjacent_to->1]
+
+Lets do a batch of edge connections. For example, suppose that some long path expression is taken that starts at some root vertex and ends at some sink vertices. Now, the root vertex is related to the sink vertices by the semantics of the path expression (see [[Graph Rewriting]]). For example, people in the toy graph diagrammed in [[Defining a Property Graph]] are related to each other if they share the same created software. This path expression is
+
+bc. ./outE[@label='created']/inV/inE[@label='created']/outV[g:except($_)]
+
+Lets create a batch of such edges for the root vertex 'josh'.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-1.xml')
+==>true
+gremlin> $_ := g:key-v('name','josh')[0]                                     
+==>v[4]
+gremlin> ./outE[@label='created']/inV/inE[@label='created']/outV[g:except($_)][g:p(g:add-e($_,'co-developer',.))]
+==>v[1]
+==>v[6]
+gremlin> $_g/E
+==>e[1][4-co-developer->6]
+==>e[10][4-created->5]
+==>e[0][4-co-developer->1]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+==>e[11][4-created->3]
+==>e[12][6-created->3]
+
+h2(#remove_elements). Removing Vertices and Edges
+
+When a vertex is removed, all of its incoming and outgoing edges are removed as well. For example, lets remove the 'josh' vertex (vertex 4) from the toy graph diagrammed in [[Defining a Property Graph]]. First lets load the graph and note all the edges in which vertex 4 participates.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load($_g, 'data/graph-example-1.xml')
+==>true
+gremlin> $_g/E
+==>e[10][4-created->5]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+==>e[11][4-created->3]
+==>e[12][6-created->3]
+
+There are three edges (one incoming and two outgoing) from vertex 4. Lets remove that vertex and check the edge list again.
+
+bc. gremlin> g:remove-ve(g:id-v(4))
+gremlin> $_g/E
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[12][6-created->3]
+
+Notice the number of vertices in the graph. Vertices are not removed even if they are not connected. 
+
+bc. gremlin> $_g/V
+==>v[3]
+==>v[2]
+==>v[1]
+==>v[6]
+==>v[5]
+
+h2(#maps). Handling Properties Like Maps 
+
+Vertices and edges both inherit from element in Gremlin (see [[Property Graph Model]]). All elements maintain a key/value pair map. The keys of an element are identified by strings and the values of an element are identified by objects. Manipulating element properties in Gremlin is relatively straightforward.
+
+The best way to explain how to deal with element properties is by way of example. Lets first create an empty [[TinkerGraph]] graph.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+
+Now lets add two vertices and connect them by a @related_to@ edge.
+
+bc. gremlin> $v := g:add-v()
+==>v[0]
+gremlin> $u := g:add-v()
+==>v[1]
+gremlin> $e := g:add-e($v, 'related_to', $u)
+==>e[2][0-related_to->1]
+
+Lets look at the properties of each of these three elements.
+
+bc. gremlin> g:map($v)
+==>{}
+gremlin> g:map($u)
+==>{}
+gremlin> g:map($e)
+==>{}
+
+None of these elements have any properties. Lets add some.
+
+bc. gremlin> $v/@name := 'chihuahua'
+==>chihuahua
+gremlin> $u/@name := 'pomeranian'
+==>pomeranian
+gremlin> $e/@weight := 0.2
+==>0.2
+
+Now lets look at the properties of each.
+
+bc. gremlin> g:map($v)
+==>name=chihuahua
+gremlin> g:map($u)
+==>name=pomeranian
+gremlin> g:map($e)
+==>weight=0.2
+
+h2(#paths). Handling Properties in Paths
+
+Many times it is useful to update element properties from within a path expression. Lets load up a the toy graph diagrammed in [[Defining a Property Graph]] and set the root to vertex 1.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-1.xml')
+==>true
+gremlin> $_ := g:id-v(1)
+==>v[1]
+
+Next lets update a @counter@ property for each vertex by adding one to it each time a path traverses through it. Lets iterate the path for 3 steps (which, given the toy graph, will cover the entire graph).
+
+bc. gremlin> repeat 3
+           $_ := ./outE/inV[g:p(g:op-value('+',.,'counter',1))]
+           end
+
+Lets see how many counters each vertex received. To do this, lets make map so its easy to view the results.
+
+bc. gremlin> $m := g:map()
+==>{}
+gremlin> foreach $v in $_g/V         
+           g:assign($m,$v/@name,$v/@counter)
+           end
+==>1.0
+gremlin> $m
+==>marko=null
+==>lop=2
+==>peter=null
+==>ripple=1
+==>josh=1
+==>vadas=1
+
+As we see, vertex 1 (@marko@) and vertex 6 (@peter@) did not get any counters. This is because the path was defined for outgoing edges from vertex 1 (@marko@). Thus, once leave the @marko@ vertex, there is no ability to increment the @counter@ property. For the @peter@ vertex, @peter@ has as no incoming edges. Thus, there is no path (as defined in the path expression) from @marko@ to @peter@. Note that after 3 steps, the @lop@ vertex (see "Linked Process":http://linkedprocess.org) received two counters -- one from each of the following paths.

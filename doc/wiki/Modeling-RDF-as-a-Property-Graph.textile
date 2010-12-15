@@ -1,0 +1,207 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/rdf-logo.gif!:http://www.w3.org/RDF/
+
+The "Resource Description Framework":http://www.w3.org/RDF/ can be modeled as a property graph. Moreover, it is possible to model "RDF quads":http://www.w3.org/2004/03/trix/ (triples within a named graph) as a property graph. This page articulates the mapping between RDF quads and the property graph model used by Gremlin (see [[Defining a Property Graph]]). This section also demonstrates how to work with named graph RDF in Gremlin.
+
+# "Mapping RDF to a Property Graph":#mapping_rdf
+# "Working with Named Graph RDF":#working_rdf
+
+h2(#mapping_rdf). Mapping RDF to a Property Graph
+
+An RDF quad statement is denoted by a subject, a predicate, an object, and a graph (the "spog" model for short). The set of subjects is the set of all Uniform Resource Identifiers (URIs) and blank nodes. The set of predicates is the set of all URIs. The set of objects is the set of all URIs, blank nodes, and literals. Finally, the set of graphs is the set of all URIs and blank nodes. The following diagram demonstrates how RDF is modeled using a property graph.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/rdf-graph-model.jpg!
+
+The identifier (@id@) of a vertex is the string representation of the RDF value that it is modeling/representing. A few examples are provided below:
+
+# URI
+  ** @http://markorodriguez.com@
+  ** @http://tinkerpop.com#ripple@
+  ** @urn:uuid:aa9d07d7-8ccf-454a-b08a-5e5a8c560154@
+# Blank Node
+  ** @_:A12345@
+  ** @_:anonymous-node@
+# Literal
+  ** @"hello"@
+  ** @"hello"@ @@en@
+  ** @"hello"^^<http://www.w3.org/2001/XMLSchema#string>@
+
+There are four properties that a literal has. Only two of which can be set. These properties are the *language* (@lang@), the *datatype* (@type@), the *typecasted value* (@value@) of the literal label, and the *kind* (@kind@) which is literal. Note that in RDF, a literal can have either a language, a datatype, or neither. Never can a literal have both a language and a datatype. The typecasted value is the object created by the casting of the label of the literal by its datatype. In other words the @value@ of @"6"^^<http://www.w3.org/2001/XMLSchema#int>@ is the integer 6. URIs and blank nodes have *kind* values of @"uri"@ and @"bnode"@, respectively.
+
+Finally, an edge in the property graph model represents an RDF statement. The identifier of an edge is the string representation of the RDF statement. Two examples are provided below. One where the RDF statement is a triple and the other where the statement is a quad.
+
+# Statement
+  ** @(http://tinkerpop.com#marko, http://someontology.com#age, "30"^^<http://www.w3.org/2001/XMLSchema#int>)@
+  ** @(http://tinkerpop.com#marko, http://www.w3.org/2002/07/owl#sameAs, http://markorodrigue.com#marko) [http://tinkerpop.com#graph]@
+
+Statements can only have a single property. Namely, the named graph property (@ng@).
+
+h2(#working_rdf). Working with Named Graph RDF
+
+This section will demonstrate some examples of how to work with a Sail-based graph in Gremlin. Note that beyond the [[Gremlin function library]], Sail graphs have a collection of Sail-specific functions. These functions are presented in the section entitled [[Sesame Sail Quad Store]]. All the examples in this section are run against a Sail "MemoryStore":http://www.openrdf.org/doc/sesame2/2.3.0/users/ch08.html#d0e705. The sub-sections of this section of documentation are itemized below.
+
+# "Opening a Sail-Based Graph and Loading RDF Data":#open_graph
+# "Handling Literal-Based Vertices and their Properties":#literal_vertices
+# "Handling the Named Graph Component of an Edge":#named_graphs
+
+h3(#open_graph). Opening a Sail-Based Graph and Loading RDF Data
+
+Creating a MemoryStore-based property graph is easy.
+
+bc. gremlin> $_g := sail:open()
+==>sailgraph[memorystore]
+
+Next, you will most likely want to register a namespace with that graph. 
+
+bc. sail:add-ns('tg', 'http://tinkerpop.com#')
+
+This is important because it enables you to write out the prefix-form of a URI instead of having to deal with long namespaces. For example, before registering @tg@ as @http://tinkerpop.com#@, grabbing a vertex would look like the following.
+
+bc. gremlin> g:id-v('http://tinkerpop.com#1')
+==>v[http://tinkerpop.com#1]
+
+By registering a namespace, its possible to use the abbreviate form.
+
+bc. gremlin> g:id-v('tg:1')
+==>v[http://tinkerpop.com#1]
+
+There is something important to notice here. A new MemoryStore-based property graph was created and then it was possible to get a vertex from that graph. However, there is no data in the property graph as it was just created. This is possible because RDF does not have a notion of vertices as RDF is more edge/statement based. Thus, in theory, the number of vertices in a newly created Sail property graph is infinite, while the number of edges is 0.
+
+bc. gremlin> $_ := g:id-v('tg:1')
+==>v[http://tinkerpop.com#1]
+gremlin> ./outE
+
+Let us load up the toy graph diagrammed in [[Defining a Property Graph]]. However, instead of using the GraphML representation, lets load up an N-Triple representation. Below is the raw representation of the N-Triple file to be loaded. Note that N-Triple is a triple format and does not support the named graph component of a triple. However, once loaded in Gremlin, as will be demonstrated, its possible to add named graphs.
+
+bc. <http://tinkerpop.com#1> <http://tinkerpop.com#knows> <http://tinkerpop.com#2> .
+<http://tinkerpop.com#1> <http://tinkerpop.com#knows> <http://tinkerpop.com#4> .
+<http://tinkerpop.com#1> <http://tinkerpop.com#created> <http://tinkerpop.com#3> .
+<http://tinkerpop.com#4> <http://tinkerpop.com#created> <http://tinkerpop.com#3> .
+<http://tinkerpop.com#4> <http://tinkerpop.com#created> <http://tinkerpop.com#5> .
+<http://tinkerpop.com#6> <http://tinkerpop.com#created> <http://tinkerpop.com#3> .
+<http://tinkerpop.com#1> <http://tinkerpop.com#name> "marko"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#1> <http://tinkerpop.com#age> "29"^^<http://www.w3.org/2001/XMLSchema#int> .
+<http://tinkerpop.com#2> <http://tinkerpop.com#name> "vadas"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#2> <http://tinkerpop.com#age> "27"^^<http://www.w3.org/2001/XMLSchema#int> .
+<http://tinkerpop.com#3> <http://tinkerpop.com#name> "lop"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#3> <http://tinkerpop.com#lang> "java"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#4> <http://tinkerpop.com#name> "josh"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#4> <http://tinkerpop.com#age> "32"^^<http://www.w3.org/2001/XMLSchema#int> .
+<http://tinkerpop.com#5> <http://tinkerpop.com#name> "ripple"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#5> <http://tinkerpop.com#lang> "java"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#6> <http://tinkerpop.com#name> "peter"^^<http://www.w3.org/2001/XMLSchema#string> .
+<http://tinkerpop.com#6> <http://tinkerpop.com#age> "35"^^<http://www.w3.org/2001/XMLSchema#int> .
+
+First load the file into the graph and then notice how the vertex @tg:1@ now has a set of outgoing edges. Again, there is an infinite number of vertices in a Sail-based RDF graph.
+
+bc. gremlin> sail:load('data/graph-example-1.ntriple', 'n-triples')
+==>true
+gremlin> ./outE
+==>e[tg:1 - tg:knows -> tg:2]
+==>e[tg:1 - tg:knows -> tg:4]
+==>e[tg:1 - tg:created -> tg:3]
+==>e[tg:1 - tg:name -> "marko"^^<xsd:string>]
+==>e[tg:1 - tg:age -> "29"^^<xsd:int>]
+
+However, note that the property graph diagrammed in [[Defining a Property Graph]] is not the same as the graph in RDF format. For one, what were properties are not vertices. This is necessary as to ensure that literal value relationships can be specified in a named graph. The diagram of the RDF representation of the toy graph is presented below.
+
+!http://github.com/tinkerpop/gremlin/raw/master/doc/images/graph-example-1-rdf.jpg!
+
+Notice how what were key/value properties are now vertices. Also, notice how literal-based vertices have a properties that decompose their component parts. 
+
+h3(#literal_vertices). Handling Literal-Based Vertices and their Properties
+
+Lets look at all the vertices adjacent to @tg:1@.
+
+bc. gremlin> ./outE/inV
+==>v[http://tinkerpop.com#2]
+==>v[http://tinkerpop.com#4]
+==>v[http://tinkerpop.com#3]
+==>v["marko"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["29"^^<http://www.w3.org/2001/XMLSchema#int>]
+
+What kind of vertices are these vertices?
+
+bc. gremlin> ./outE/inV/@kind
+==>uri
+==>uri
+==>uri
+==>literal
+==>literal
+
+Now, lets look at the vertex @"marko"^^<http://www.w3.org/2001/XMLSchema#string>@. A literal-based vertex has the following properties: @type@ (its datatype component), @lang@ (its language component), and @value@ (its datatype type-casted component.
+
+bc. gremlin> $_ := ./outE/inV[3]
+==>v["marko"^^<http://www.w3.org/2001/XMLSchema#string>]
+gremlin> .
+==>v["marko"^^<http://www.w3.org/2001/XMLSchema#string>]
+gremlin> ./@type
+==>http://www.w3.org/2001/XMLSchema#string
+gremlin> ./@lang
+gremlin> ./@value
+==>marko
+gremlin> g:type(./@value)
+==>string
+gremlin> ./@kind
+==>literal
+
+Note how an integer literal gets typecasted to a Gremlin number. It is important to note that there is a distinction between the id representation of the literal vertex and its typecasted value. Also, one thing to notice is how, in the first command, the double quotes that wrap @29@ are inside the single quotes that denote a string in Gremlin.
+
+bc. gremlin> $_ := g:id-v('"29"^^<xsd:int>')
+==>v["29"^^<http://www.w3.org/2001/XMLSchema#int>]
+gremlin> .
+==>v["29"^^<http://www.w3.org/2001/XMLSchema#int>]
+gremlin> ./@type
+==>http://www.w3.org/2001/XMLSchema#int
+gremlin> ./@lang
+gremlin> ./@value
+==>29
+gremlin> g:type(./@value)
+==>integer
+gremlin> ./@kind
+==>literal
+
+Finally, to deal with the language component of a literal, you can do the following.
+
+bc. gremlin> $_ := g:id-v('"marko"^^<http://www.w3.org/2001/XMLSchema#string>')
+==>v["marko"^^<http://www.w3.org/2001/XMLSchema#string>]
+gremlin> .
+==>v["marko"^^<http://www.w3.org/2001/XMLSchema#string>]
+gremlin> ./@lang := 'en'
+==>en
+gremlin> .
+==>v["marko"@en]
+
+In RDF, you can either have a language component, a datatype component, or neither. By adding a language component to @"marko"@, you remove its datatype component. The typecasted value of a literal with a language component is always a string.
+
+bc. gremlin> .
+==>v["marko"@en]
+gremlin> ./@value
+==>marko
+gremlin> g:type(./@value)
+==>string
+gremlin> ./@lang
+==>en
+
+h3(#named_graphs). Handling the Named Graph Component of an Edge
+
+The toy graph loaded from the N-Triple file does not have named graphs. This is because N-Triple does not support the named graph component in its spec. Other RDF file formats do though such as TriG and TriX. However, with the triple-based data loaded into the Gremlin graph, lets add named graph components to the edges. This is easy to do as the named graph component is simply a key/value property on the edge. The key is @ng@.
+
+bc. gremlin> $_ := g:id-v('tg:1')
+==>v[http://tinkerpop.com#1]
+gremlin> ./outE[4]
+==>e[tg:1 - tg:age -> "29"^^<xsd:int>]
+gremlin> ./outE[4]/@ng := 'tg:last_year_graph' 
+==>tg:last_year_graph
+gremlin> ./outE[4]
+==>e[tg:1 - tg:age -> "29"^^<xsd:int>]<tg:last_year_graph>
+gremlin> ./outE
+==>e[tg:1 - tg:knows -> tg:2]
+==>e[tg:1 - tg:knows -> tg:4]
+==>e[tg:1 - tg:created -> tg:3]
+==>e[tg:1 - tg:name -> "marko"@en]
+==>e[tg:1 - tg:age -> "29"^^<xsd:int>]<tg:last_year_graph>
+
+The last outgoing edge from @tg:1@ is now in the named graph @tg:last_year_graph@ which expands to the following.
+
+bc. gremlin> ./outE[4]/@ng
+==>http://tinkerpop.com#last_year_graph

@@ -1,0 +1,51 @@
+|_. object |_. step |_. description |_. example |
+{background:#ddd}. | graph | @V@ | the vertex iterator of the graph | @$g/V@ |
+| graph | @E@ | the edge iterator of the graph | @$g/E@ |
+{background:#ddd}. | vertex/edge | @@id@ | the identifier of the element | @$v/@@@id@ |
+| vertex | @outE@ | the outgoing edges of the vertex | @$v/outE@ |
+{background:#ddd}. | vertex | @inE@ | the incoming edges of the vertex | @$v/inE@ |
+| vertex | @bothE@ | both incoming and outgoing edges of the vertex | @$v/bothE@ |
+{background:#ddd}. | edge | @outV@ | the outgoing tail vertex of the edge | @$e/outV@ |
+| edge | @inV@ | the incoming head vertex of the edge | @$e/inV@ |
+{background:#ddd}. | edge | @bothV@ | both incoming and outgoing vertices of the edge | @$e/bothV@ |
+| edge | @@label@| the label of the edge | @$e/@@@label@ |
+{background:#ddd}. | object | @gather@ | collect all objects up to that step | @./outE/gather@ |
+| object | @scatter@ | unroll all objects in the iterable at that step | @./outE/scatter@ |
+|_. rdf graphs |
+{background:#ddd}. | rdf literal vertex | @@lang@| the language of the literal | @$v/@@@lang@ |
+| rdf literal vertex | @@type@| the data type of the literal | @$v/@@@type@ |
+{background:#ddd}. | rdf literal vertex | @@value@| the typecasted value of the literal | @$v/@@@value@ |
+| rdf vertex | @@kind@| whether the vertex is a uri, literal, or bnode | @$v/@@@ng@ |
+{background:#ddd}. | rdf edge | @@ng@| the named graph of the edge | @$e/@@@ng@ |
+
+
+|_. operation |_. example ||_. operation |_. example |
+{background:#ddd}. | add | @1 + 2@ || subtract | @1 - 2@ |
+| multiply | @1 * 2@ || divide | @1 div 2@ |
+{background:#ddd}. | modulo | @1 mod 2@ || greater than | @1 > 2@ |
+| less than | @1 < 2@ || greater than equals | @1 >= 2@ |
+{background:#ddd}. | less than equals | @1 <= 2@ || equals | @1 = 2@ |
+| not equals | @1 != 2@ ||||
+
+|_. variable |_. description |
+{background:#ddd}. | @$_@ | the root list |
+| @$_last@ | the result list of the last executed statement |
+{background:#ddd}. | @$_g@ | the current working graph |
+
+|_. action |_. example |
+{background:#ddd}. | set the root to element with ID 2 | @$_ := g:id-v($g,2)@ |
+| get the property map of an element | @g:map($v)@ |
+{background:#ddd}. | define functions, paths, and variables at startup | add statements to @.gremlinrc@ |
+
+|_. statement |_. example |
+{background:#ddd}. | comment | @# this is a comment@ |
+| gpath | @././.@ |
+{background:#ddd}. | assign | @$i := 'marko'@ |
+| if/else | @if 1=2@ |
+{background:#ddd}. | foreach | @foreach $i in $list@ |
+| repeat | @repeat 25@ |
+{background:#ddd}. | while | @while $i < 25@ |
+| function | @func ns:name($variable)@ |
+{background:#ddd}. | step | @step name@ |
+| include | @include 'com.ex.Functions'@ |
+{background:#ddd}. | script | @script 'script.grm'@ |

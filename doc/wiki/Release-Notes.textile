@@ -1,23 +1,26 @@
-Gremlin: A Graph-Based Programming Language
-"http://gremlin.tinkerpop.com":http://gremlin.tinkerpop.com
+All releases can be accessed through the TinkerPop Maven2 repository identified below.
 
-bc. <repository>
+```xml
+<repository>
   <id>tinkerpop-repository</id>
   <name>TinkerPop Maven2 Repository</name>
   <url>http://tinkerpop.com/maven2</url>
 </repository>
+```
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremalicious.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremalicious.png!
 
 h3. Version 0.6 (Gremalicious -- December 14, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.6</version>
 </dependency>
+```
 
 * Fixed @foreach@ bug that occurred on single object looping
 * Fixed @if/else@ bug that occurred on function call
@@ -36,15 +39,17 @@ bc. <dependency>
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
 
 h3. Version 0.5.5 (Gremlivich -- October 28, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.5.5</version>
 </dependency>
+```
 
 * A rework of the user-defined step model
 ** Renamed the concept of "path" to "step"
@@ -54,11 +59,15 @@ bc. <dependency>
 
 h3. Version 0.5 (Gremlivich -- September 22, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.5</version>
 </dependency>
+```
+
+Gremlin 0.5 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.5/api/
 
 * A complete redesign and implementation of the Gremlin compiler
 ** Compiler written using "ANTLR 3.2":http://www.antlr.org/
@@ -99,15 +108,19 @@ bc. <dependency>
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
 
 h3. Version 0.2.2 (Gremicide -- March 7, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.2.2</version>
 </dependency>
+```
+
+Gremlin 0.2.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.2.2/api/
 
 * Fixed a bug introduced in 0.2.1 having to do with variables copied from a parent path context
 * Added dependency on Neo4j RDF and SAIL SNAPSHOTS
@@ -115,11 +128,15 @@ bc. <dependency>
 
 h3. Version 0.2.1 (Gremicide -- February 25, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.2.1</version>
 </dependency>
+```
+
+Gremlin 0.2.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.2.1/api/
 
 * Instance naming convention for @Functions@ changed to @FunctionLibrary@
 * @list g:list(object+)@ is now @list g:list(object*)@
@@ -129,12 +146,15 @@ bc. <dependency>
 
 h3. Version 0.2 (Gremicide -- February 14, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.2</version>
 </dependency>
+```
 
+Gremlin 0.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.2/api/
 
 * Added user defined functions
 ** Gremlin and Java defined functions supported
@@ -150,30 +170,31 @@ bc. <dependency>
 * Added better support for vertex and edge property indexing
 * Added working graph @$_g@ variable and updated graph functions to support it
 * Added support for "SPARQL":http://www.w3.org/TR/rdf-sparql-query/ queries for SAIL-based graphs
-** @list sail:sparql(graph?, string)@ was added
+** @list sail:sparql(string)@ was added
 * Added support for Linked Data SAIL for real-time analysis of the Web of Data
 * Added support for script loading
 ** @script gremlin-script.grm@
 * Added support for JUNG algorithms over Gremlin graphs
-** @map jung:pagerank(graph?, map?)@
-** @list jung:dijkstra(graph?, vertex, vertex, map?)@
 * Renamed @g:append(object, object+)@ to @g:list(object+)@
 * Renamed the general graph model to property graph model
 ** Moved the model and its implementations to "Blueprints":http://blueprints.tinkerpop.com
-** Dependency is on Blueprints 0.1
+** Uses Blueprints 0.1
 * Various bug fixes and optimizations
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-xmas-alpha.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-xmas-alpha.png!
 
 h3. Version 0.1 (XMas Alpha -- December 25, 2009)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.1</version>
 </dependency>
+```
 
+Gremlin 0.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.1/api/
 
 * Initial release of the language and virtual machine

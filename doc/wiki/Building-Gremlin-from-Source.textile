@@ -1,0 +1,103 @@
+Gremlin releases come in steps (see [[Release Notes]]). In order to be up to data with the latest and greatest of Gremlin functionality and fixes, you can download the raw source and build it locally on your machine. This section of documentation will discuss how to build Gremlin from its source code.
+
+# "Downloading the Gremlin Source Code":#download
+  ** "Downloading using GIT":#git
+  ** "Downloading ZIP or TAR":#ziptar
+# "Building Gremlin with Maven":#maven
+# "Running Gremlin":#run
+
+h2(#download). Downloading the Gremlin Source Code
+
+In order to build the latest version of Gremlin, you must download the source code to your local machine. "GITHub":http://github.com/ (the Gremlin source code repository host) provides two means of doing this. Through the "GIT":http://git-scm.com/ protocol or by downloading a ZIP or TAR archive of the source. The two methods are discussed in the following sub-sections.
+
+h3(#git). Downloading using GIT
+
+In order to get the latest source, you must have GIT installed on your computer. Once you have GIT installed, simply execute the following command in the directory you wish the Gremlin code to be.
+
+bc. marko$ git clone http://github.com/tinkerpop/gremlin.git
+Initialized empty Git repository in /tmp/gremlin/.git/
+
+When this process completes, the source code is in the directory @gremlin/@. If you have already checked out the Gremlin source previously using GIT, then use @git pull@ to grab the latest changes.
+
+h3(#ziptar). Downloading using ZIP or TAR
+
+On the "master source page":http://github.com/tinkerpop/gremlin/tree/master, you can download the source code as a "ZIP":http://en.wikipedia.org/wiki/ZIP_%28file_format%29 archive or as a "TAR":http://en.wikipedia.org/wiki/Tar_%28file_format%29 archive. Once you have downloaded an archive, unpack it. Below is an example of unpacking the ZIP archive version of the Gremlin code base.
+
+bc. marko$ unzip tinkerpop-gremlin-238e90b.zip 
+Archive:  tinkerpop-gremlin-238e90b.zip
+238e90bfb52be23dc4abf53344a9f8fa260d9299
+   creating: tinkerpop-gremlin-238e90b/
+  inflating: tinkerpop-gremlin-238e90b/README.textile  
+   creating: tinkerpop-gremlin-238e90b/
+   creating: tinkerpop-gremlin-238e90b/doc/
+   creating: tinkerpop-gremlin-238e90b/doc/images/
+  inflating: tinkerpop-gremlin-238e90b/doc/images/co-followed_by-example.jpg  
+ extracting: tinkerpop-gremlin-238e90b/doc/images/co-followed_by.graffle  
+ extracting: tinkerpop-gremlin-238e90b/doc/images/dbpedia-logo.png  
+ extracting: tinkerpop-gremlin-238e90b/doc/images/grammar-example-1.graffle  
+  inflating: tinkerpop-gremlin-238e90b/doc/images/grammar-example-1.jpg  
+  inflating: tinkerpop-gremlin-238e90b/doc/images/grammar-map-example-1.jpg  
+  ...
+
+The source code will be in the newly created directory.
+
+h2(#maven). Building Gremlin with Maven
+
+Gremlin uses "Maven":http://maven.apache.org/ as its build manager. Before building the Gremlin source code, you must have Maven installed on your local machine. Once you have Maven installed, you can do build of the Gremlin source code by executing the command @mvn clean install@.
+
+bc. marko$ mvn clean install
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Gremlin: A Graph-Based Programming Language
+[INFO]    task-segment: [clean, install]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting directory /Users/marko/software/gremlin/target
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Compiling 146 source files to /Users/marko/software/gremlin/target/classes
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /Users/marko/software/gremlin/src/test/resources
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Compiling 90 source files to /Users/marko/software/gremlin/target/test-classes
+[INFO] [surefire:test {execution: default-test}]
+[INFO] Surefire report directory: /Users/marko/software/gremlin/target/surefire-reports
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.tinkerpop.gremlin.compiler.operations.math.DivisionTest
+	div operation: 2 doubles in 1.301025390625ms
+	div operation: 2 floats in 0.03173828125ms
+	div operation: 2 longs in 0.560791015625ms
+	div operation: 2 integers in 0.01220703125ms
+	div operation: 2 double/float in 0.010986328125ms
+	div operation: 2 float/long in 0.00732421875ms
+	div operation: 2 long/int in 0.005126953125ms
+	div operation: 2 int/double in 0.006103515625ms
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 sec
+Running com.tinkerpop.gremlin.compiler.functions.g.graph.IdVertexFunctionTest
+	id-v function: 1 evaluation in 593.58203125ms
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.623 sec
+Running com.tinkerpop.gremlin.compiler.functions.g.util.VersionFunctionTest
+	version function: 1 evaluation in 1.25ms
+...
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESSFUL
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 51 seconds
+[INFO] Finished at: Fri Aug 13 13:20:36 MDT 2010
+[INFO] Final Memory: 44M/99M
+[INFO] ------------------------------------------------------------------------
+
+h2(#run). Running Gremlin
+
+Once Gremlin is built, you will have created @gremlin-xx.jar@ and @gremlin-xx-standalone.jar@ in the @target/@ directory. The standalone has all the jar dependencies included. You can either use the @gremlin-xx.jar@ as a dependency in another one of your projects or use the shell script that comes with Gremlin to open the Gremlin console. There are two shell scripts, one for Unix-based systems (@gremlin.sh@) and one for Windows systems (@gremlin.bat@). Finally, the Gremlin "JavaDoc":http://en.wikipedia.org/wiki/Javadoc can be found in @target/site/apidocs/@ if you execute the @mvn site@ command.
+
+bc. marko$ ./gremlin.sh 
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin> 

@@ -1,0 +1,28 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/orientdb-logo.png!
+
+"Orient Technologies":http://www.orientechnologies.com/ are the developers of "OrientDB":http://www.orientechnologies.com/orient-db.htm. OrientDB is pure to the property graph model.
+
+<div style="width:425px" id="__ss_4476629"><strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/lvca/orient-db-introduction" title="OrientDB introduction - NoSQL">OrientDB introduction - NoSQL</a></strong><object id="__sse4476629" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=orientdbintroduction-100611113558-phpapp01&stripped_title=orient-db-introduction" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed name="__sse4476629" src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=orientdbintroduction-100611113558-phpapp01&stripped_title=orient-db-introduction" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="padding:5px 0 12px">View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/lvca">Luca Garulli</a>.</div></div>
+
+There is no impedance mismatch between Blueprints and OrientDB. However, there are a few peculiarities in OrientDB that make it not completely faithful to the "property graph model":http://github.com/tinkerpop/blueprints/wiki/Property-Graph-Model. These are itemized below.
+
+# *No user defined element identifiers*: OrientDB is the gatekeeper and creator of vertex and edge identifiers. Thus, when creating a new vertex or edge, the provided object identifier is ignored.
+
+The following is the list of @orientdb@ namespace functions that are provided with the Gremlin distribution.
+
+# "OrientDB Functions":#orientdb_functions
+  ** @graph orientdb:open(string)@
+
+h2(#orientdb_functions). OrientDB Functions
+
+h3. Open @graph orientdb:open(string, string?, string?)@
+
+This function opens up an OrientDB graph in the provided string directory. If an OrientDB graph already exists at that directory, then that graph is loaded. Note that the last component of the path is the name of the graph, not the directory where data will be stored. The two optional string parameters are the username and password for the graph. If none are provided, "admin:admin" are assumed.
+
+bc. gremlin> $_g := orientdb:open('/tmp/graph/test')
+==>orientgraph[/tmp/graph/test]
+
+While not an OrientDB function per se, its important to note that before quitting Gremlin, you should always shutdown your OrientDB graph instances to ensure that they are properly stored to disk. This rule of thumb goes for all non-memory based data management systems.
+
+bc. gremlin> g:close()
+==>true

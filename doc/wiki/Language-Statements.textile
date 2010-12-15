@@ -1,0 +1,194 @@
+Gremlin is a relatively simple language that makes use of an "XPath-like":http://www.w3.org/TR/xpath syntax for its operation (called GPath). This section reviews the various statements of the language.
+
+h3. Gremlin Grammar
+
+bc. statement ::= simple_statement | compound_statement
+simple_statement ::= comment | gpath | assignment | include | script
+compound_statement ::= if/else | repeat | while | foreach | func | step
+variable ::= '$' ('_' | [a..z] | [A..Z]) ([a..z] | [A..Z] | [0..9] | '_' | '-' | '.' )*
+
+The remaining sections will define the various statements presented above as production rules and with examples. Note that a @gpath_?@ denotes that an @gpath@ statement must be provided that returns a value of type @?@.
+
+# "Comment":#comment
+# "GPath":#gpath
+# "Assignment":#assignment
+# "If/Else":#ifelse
+# "Repeat":#repeat
+# "While":#while
+# "Foreach":#foreach
+# "Function":#function
+# "Step":#step
+# "Include":#include
+# "Script":#script
+
+h3(#comment). Comment
+
+A comment is an unevaluated line of code. A comment is proceeded by a @#@ symbol.
+
+bc. gremlin> # this is a comment
+gremlin> 
+
+h3(#gpath). GPath
+
+With GPath it is possible to do simple numeric operations like addition, subtraction, multiplication, etc. (see [[Math Operations]] for more information on numeric operations).
+
+bc. gremlin> 1 + 2
+==>3
+gremlin> 2 * 3
+==>6
+
+Functions can be called in GPath using the functional syntax of @function((argument (, argument)*)?)@ (see [[Gremlin Function Library]] for more information on functions).
+
+bc. gremlin> g:matches('marko','pavel')
+==>false
+
+GPath statements are intended to define paths through a graph structure. Path expressions are discussed at length in later sections of this documentation.
+
+h3(#assignment). Assignment
+
+The assignment operator is @:=@ and it is used to assign a value to a variable or an element to a list or map. Variables in Gremlin must be preceeded by a @$@ character.
+
+bc. (variable | gpath_list-element | gpath_map-key) := xpath
+
+bc. gremlin> $i := 1 + 5
+==>6
+gremlin> $i
+==>6
+
+For more information on assignment with respects to lists and maps, visit [[Handling Lists and Maps]].
+
+h3(#ifelse). If/Else
+
+The @if/else@ statement will execute its if-body if a condition is true or else it will execute its else-body. The generic structure and example of @if/else@ is provided below.
+
+bc. if gpath_boolean
+  statement*
+  (else 
+    statement *)?
+  end
+
+bc. gremlin> if true
+           $i := 1
+           else   
+           $i := 2
+           end
+gremlin> $i
+==>1
+
+bc. gremlin> if true
+           $i := 1
+           end
+gremlin> $i
+==>1
+
+h3(#repeat). Repeat
+
+The @repeat@ statement will loop over its body for the provided number of time steps. The generic structure and example of @repeat@ is provided below.
+
+bc. repeat gpath_integer
+  statement*
+  end
+
+bc. gremlin> $i := 0
+==>0
+gremlin> repeat 2 + 8
+           $i := $i + 1
+           end
+gremlin> $i
+==>10
+
+h3(#while). While
+
+The @while@ statement will loop over its body until the provided condition is met. The generic structure and example of @while@ is provided below.
+
+bc. while gpath_boolean
+  statement*
+  end
+
+bc. gremlin> $i := 'g'
+==>g
+gremlin> while g:not(g:matches($i,'ggg'))
+           $i := g:concat($i,'g')
+           end
+gremlin> $i
+==>ggg
+
+h3(#foreach). Foreach
+
+The @foreach@ statement will loop over its body the number of times as there are values in the provided loop list. Each item in the list is assigned to a variable and that variable can be referenced in the loop body. The generic structure and example of @foreach@ is provided below.
+
+bc. foreach variable in gpath_list
+  statement*
+  end
+
+bc. gremlin> $i := 0
+==>0
+gremlin> foreach $j in g:list(1,2,3)
+           $i := $i + $j
+           end
+gremlin> $i
+==>6
+
+The language statements can be composed to create complex Gremlin programs.
+
+h3(#function). Function
+
+The @function@ statement is used to define functions in Gremlin. The generic structure of the statement is below.
+
+bc. func string:string(variable?, variable*)
+  statement*
+  end
+
+bc. gremlin> func ex:hello($name)    
+           g:concat('hello ', $name) 
+           end
+==>true
+gremlin> ex:hello('pavel')
+==>hello pavel
+
+h3(#step). Step
+
+The @step@ statement is used to define steps in Gremlin. The generic structure of the statement is below.
+
+bc. step string
+  statement*
+  end
+
+bc. gremlin> step friend_name
+  ./outE[@label='knows']/inV/@name
+  end
+==>true
+gremlin> ./friend_name
+==>vadas
+==>josh
+
+h3(#include). Include
+
+The @include@ statement is used to load function and path definitions that are written in Java or in Gremlin into the current evaluator. The generic structure of the statement is below.
+
+bc. include gpath_string
+
+bc. gremlin> include 'com.tinkerpop.gremlin.functions.GremlinFunctions'            
+gremlin> g:list(1,2) 
+==>1
+==>2
+
+h3(#script). Script
+
+The @script@ statement is used to load a Gremlin script file. The generic structure of the statement is below.
+
+bc. script gpath_string
+
+Here is an example script file called @example.grm@.
+
+bc. $i := 10
+repeat 10
+  $i := $i + 1
+  end
+$i
+
+Now, you can load it with @script@ as such.
+
+bc. gremlin> script 'example.grm'
+==>10
+==>20

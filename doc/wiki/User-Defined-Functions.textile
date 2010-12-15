@@ -1,0 +1,72 @@
+It is possible for users to define their own custom functions in Gremlin and in Java (see [[Language Statements]]). This section will present some examples of how to define and execute such user-defined functions. 
+
+# "Defining a Function in Gremlin":#definegremlin
+# "Defining a Function in Java":#definejava
+
+h2(#definegremlin). Defining a Function in Gremlin
+
+Defining a function in Gremlin is relatively straightforward. Lets demonstrate with a simple example function that raises a provided numeric value to a provided numeric power.
+
+bc. gremlin> func ex:pow($value, $power)
+    $result := 1
+    repeat $power
+      $result := $result * $value
+    end 
+    $result
+  end
+
+What is returned by this function definition is @true@.[1] However, what is returned by the function when it is evaluated is the last result computed within the function body (or the value of a @return@ statement if used). Thus, for @ex:pow(number, number)@, the final call to @$result * $value@ is returned.
+
+Now that we have defined @ex:pow(number, number)@, we can use it like any other function in Gremlin.
+
+bc. gremlin> ex:pow(2,3)
+==>8
+gremlin> ex:pow(2,8)
+==>256
+gremlin> ex:pow(2,ex:pow(2,3))
+==>256
+
+h2(#definejava). Defining a Function in Java
+
+It is also possible to define functions in Java and then load the functions into the Gremlin evaluator using the @include@ language statement (see [[Language Statements]]). Gremlin comes with two interfaces for creating functions and function libraries: @Function@ and @Functions@ (both are in the package @com.tinkerpop.gremlin.compiler.functions@). Here is the previous @pow@ function written in Java.
+
+```java
+public class PowerFunction extends AbstractFunction<Number> {
+    public Atom<Number> compute(final List<Operation> arguments, final GremlinScriptContext context) throws RuntimeException {
+        if(arguments.size != 2)
+          throw new RuntimeException(this.createUnsupportedArgumentMessage("Requires two numbers"));
+        Double a = ((Number)arguments.get(0).compute().getValue()).doubleValue();
+        Double b = ((Number)arguments.get(1).compute().getValue()).doubleValue();
+        return Atom<Double>(Math.pow(a,b))
+    }
+    public String getFunctionName() {
+        return "pow";
+    }
+}
+```
+
+Be sure to use @AbstractFunction.createUnsupportedArgumentMessage()@ to throw unsupported argument exceptions. This will ensure that user defined functions have a similar look and feel to core Gremlin functions. Next create a  function library to hold your new functions (and any other functions you create).
+
+```java
+public class ExampleFunctions extends AbstractFunctions {
+    public ExampleFunctions() {
+        functions.add(new PowerFunction());
+    }
+    public String getNamespace() {
+        return "ex";
+    }
+}
+```
+
+Make sure your newly created classes are in your class path. Now you can use your newly defined Java functions in Gremlin.
+
+bc. gremlin> include 'com.example.ExampleFunctions'
+==>true
+gremlin> ex:pow(2,3)
+==>8.0
+
+There are a few benefits to writing your functions in Java. For one, you get access to the @GremlinScriptContext@ which allows you access to other aspects of the Gremlin virtual machine which gives you access to functions, paths, and variables. In short, you get more flexibility when defining functions in Java. The downside is that it requires much more effort and time to create Java-based functions over native Gremlin-based functions. Be sure to review @FunctionHelper@ for useful methods.
+
+Finally, a useful file is @.gremlinrc@ (recommended by "Ian Holsman":http://twitter.com/IanHolsman). Feel free to add common @include@, function definitions, path definitions, and variable definitions to this file. It will allow you to bypass always executing these behaviors when the Gremlin evaluator loads -- an auto-import of sorts.
+
+fn1. Future work in this area will provide direct support functions as first class citizens in Gremlin. In this model, @function@ will be added to the Gremlin type system.

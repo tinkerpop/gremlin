@@ -1,0 +1,196 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/lod-cloud.png!
+
+The Web of Data is the graph of RDF data out there on the World Wide Web.[1] Other terms used for the Web of Data include the "Semantic Web":http://www.w3.org/2001/sw/ and the "Linked Data":http://linkeddata.org/ Web.[2] Of particular interest to this section are those URIs on the Web of Data that are Linked Data URIs. A Linked Data URI is a URI that can be resolved in order to retrieve RDF data that pertains to that URI. In many cases, what is returned is the RDF statements (triples or quads) in which that URI is the subject or object. Thus, by resolving a Linked Data URI, more URIs are returned and in effect can be resolved as well. This process of resolving Linked Data URIs is the process of walking the Web of Data.
+
+The Web of Data can be processed using Gremlin. Gremlin comes with a connector to the LinkedData Sail developed by "Joshua Shinavier":http://fortytwo.net of "RPI":http://www.rpi.edu and "TinkerPop":http://tinkerpop.com. LinkedData Sail was originally developed to work with the functional language "Ripple":http://ripple.googlecode.com, but is generally useful for creating a Sail representation of the Web of Data.[3] To recap, Sail is a collection of interfaces developed by "OpenRDF":http://www.openrdf.org/ (see [[Sesame Sail Quad Store]]). LinkedData Sail is a particular implementation of the Sail interfaces that treats the Web of Data as a single RDF store. In other words, with Gremlin, through Sail, it is possible to process the Web of Data.
+
+# "The Mechanics of the LinkedData Sail":#mechanics
+# "A Recommendation Algorithm over DBPedia":#recommendation
+
+h2(#mechanics). The Mechanics of the LinkedData Sail 
+
+In order to understand how Gremlin works over the Web of Data, it is important to understand the LinkedData Sail. This explanation will come by way of examples. First lets open up a LinkedData Sail connection.
+
+bc. gremlin> $_g := lds:open()
+==>sailgraph[linkeddatasail]
+
+Next, lets set the root vertex to a Linked Data URI. We will use "Chris Bizer":http://www.wiwiss.fu-berlin.de/en/institute/pwo/bizer/ (one of the main advocates of Linked Data). One of his URIs is @http://www4.wiwiss.fu-berlin.de/is-group/resource/persons/Person4@.
+
+bc. gremlin> $_ := g:id-v('http://data.semanticweb.org/person/christian-bizer')
+==>v[http://data.semanticweb.org/person/christian-bizer]
+
+Now lets locate some of the articles that Bizer has written.
+
+bc. gremlin> ./outE[@label=sail:ns('foaf:made')]/inV
+==>v[http://data.semanticweb.org/conference/iswc-aswc/2007/tracks/in-use/papers/715]
+==>v[http://data.semanticweb.org/conference/eswc/2007/demo-3]
+==>v[http://data.semanticweb.org/conference/iswc/2006/paper-24]
+==>v[http://data.semanticweb.org/workshop/LDOW/2008/paper/6]
+==>v[http://data.semanticweb.org/workshop/ssws/2008/paper/main/4]
+==>v[http://data.semanticweb.org/conference/iswc/2009/paper/research/301]
+==>v[http://data.semanticweb.org/conference/iswc/2009/paper/research/306]
+
+What just happened is that the URI @http://data.semanticweb.org/person/christian-bizer@ was resolved. That is, it was treated as an address to a location where a document resource could be retrieved. This addressed document is an RDF document and thus, contains RDF statements. You can resolve a Linked Data URI by clicking on the link in your web browser. For example, click this link  "http://data.semanticweb.org/person/christian-bizer":http://data.semanticweb.org/person/christian-bizer and note the data that is returned. The RDF document that is returned is the same RDF document processed by Gremlin. A subset of this RDF document is presented below.
+
+bc. <rdf:RDF>
+  ...
+  <ns1:Person rdf:about="http://data.semanticweb.org/person/christian-bizer">
+   <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+   <ns2:affiliation rdf:resource="http://data.semanticweb.org/organization/freie-universitaet-berlin"/>
+   <ns2:affiliation rdf:resource="http://data.semanticweb.org/organization/freie-universitaet-berlin"/>
+   <rdfs:seeAlso rdf:resource="http://ontoworld.org/wiki/Special:ExportRDF/Chris_Bizer"/>
+   <rdfs:seeAlso rdf:resource="http://ontoworld.org/wiki/Special:ExportRDF/Chris_Bizer"/>
+   <owl:sameAs rdf:resource="http://ontoworld.org/wiki/Special:URIResolver/Chris_Bizer"/>
+   ...
+   <owl:sameAs rdf:resource="http://ontoworld.org/wiki/Special:URIResolver/Chris_Bizer"/>
+   <ns1:made rdf:resource="http://data.semanticweb.org/conference/iswc-aswc/2007/tracks/in-use/papers/715"/>
+   <ns1:made rdf:resource="http://data.semanticweb.org/conference/iswc-aswc/2007/tracks/in-use/papers/715"/>
+   <ns1:mbox_sha1sum>50c02ff93e7d477ace450e3fbddd63d228fb23f3</ns1:mbox_sha1sum>
+   <ns1:mbox_sha1sum>50c02ff93e7d477ace450e3fbddd63d228fb23f3</ns1:mbox_sha1sum>
+   <ns1:name>Chris Bizer</ns1:name>
+   <ns1:name>Chris Bizer</ns1:name>
+   ...
+</rdf:RDF>
+
+All the statements in the retrieved RDF document are stored in an RDF graph on your local machine. This RDF graphs grows as more URIs are resolved (as more RDF documents are processed) and serves as a cache to the Web of Data. Thus, starting from a root vertex, you can walk the Web of Data using Gremlin -- pulling RDF data over the wire and building up a local view of the Web of Data. This architecture is diagrammed below where each RDF document is identified by a Linked Data URI and the overlap of two documents signifies shared URI references.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/ldsail-arch.jpg!
+
+Lets determine the titles of these articles written by Chris Bizer.
+
+bc. gremlin> ./outE[@label=sail:ns('foaf:made')]/inV/outE[@label=sail:ns('dcterms:title')]/inV/@value
+==>DBpedia: A Nucleus for a Web of Open Data
+==>Fresnel: A Browser-Independent Presentation Vocabulary for RDF
+==>DBpedia Mobile: A Location-Enabled Linked Data Browser
+==>Benchmarking the Performance of Storage Systems that expose SPARQL Endpoints
+==>Executing SPARQL Queries over the Web of Linked Data
+==>Discovering and Maintaining Links on the Web of Data
+
+h2(#recommendation). A Recommendation Algorithm over DBPedia
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/dbpedia-logo.png!
+
+"DBPedia":http://dbpedia.org/ is an RDF representation of the popular "Wikipedia":http://www.wikipedia.org/ encyclopedia. For every Wikipedia entry, there is a corresponding DBPedia LinkedData URI. For example, here is the Wikipedia entry for the Grateful Dead "http://en.wikipedia.org/wiki/Grateful_Dead":http://en.wikipedia.org/wiki/Grateful_Dead. Next, here is the corresponding DBPedia entry "http://dbpedia.org/resource/Grateful_Dead":http://dbpedia.org/resource/Grateful_Dead. In general, by simply replacing @http://**.wikipedia.org/wiki/@ with @http://dbpedia.org/resource/@, you can find the RDF data associated with any particular Wikipedia entry.
+
+In this section, we will do a music recommendation. In short, lets find all those bands that are most related to the Grateful Dead according to how the Grateful Dead URI is embedded topologically within the greater Web of Data. First lets create a LinkedData Sail and set the DBPedia Grateful Dead URI as the root vertex. Next, lets add @http://dbpedia.org/resource/@ as a namespace with a prefix of @dbpedia@ to ensure that our results look concise.
+
+bc. gremlin> $_g := lds:open()                                 
+==>sailgraph[linkeddatasail]
+gremlin> $_ := g:id-v('http://dbpedia.org/resource/Grateful_Dead')
+==>v[http://dbpedia.org/resource/Grateful_Dead]
+gremlin> sail:add-ns('dbpedia','http://dbpedia.org/resource/')  
+
+Just to get an idea of the data associated with the Grateful Dead, lets look at all the outgoing edges emanating from the Grateful Dead URI vertex.
+
+bc. gremlin> ./outE
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:associatedBand -> dbpedia:The_Tubes]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:MusicalArtist/associatedMusicalArtist -> dbpedia:Bruce_Hornsby]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:MusicalArtist/associatedBand -> dbpedia:Jerry_Garcia_Acoustic_Band]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpprop:associatedActs -> dbpedia:Kingfish_%28band%29]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - rdfs:label -> "The Grateful Dead"@ru]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:MusicalArtist/associatedMusicalArtist -> dbpedia:Phil_Lesh_and_Friends]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:Artist/label -> dbpedia:Rhino_Entertainment]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:homeTown -> dbpedia:San_Francisco%2C_California]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - rdf:type -> http://sw.opencyc.org/2008/06/10/concept/Mx4r_HDs9FM-QdeX1oNHy2gkOw]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpprop:pastMembers -> dbpedia:Tom_Constanten]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:MusicalArtist/associatedBand -> dbpedia:Rhythm_Devils]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:associatedMusicalArtist -> dbpedia:The_Dead_%28band%29]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:Person/homeTown -> dbpedia:San_Francisco%2C_California]<dbpedia:Grateful_Dead>
+==>e[dbpedia:Grateful_Dead - dbpedia-owl:associatedBand -> dbpedia:Donna_Jean_Godchaux_Band]<dbpedia:Grateful_Dead>
+...
+
+The edge list goes on and on. However, lets identify a set of predicates (i.e. edge labels) that we feel is telling of band "relatedness." Again, we are trying to create a recommendation engine using the Web of Data. Thus, lets identify what types of relationships would help to determine if one band is similar to another? Here is a subjectively determined list.
+
+* @dbpprop:associatedActs@: if a band is associated with another act, then they must be related in some way.
+* @dbpedia-owl:associatedMusicalArtist@: if a band is associated with another musical artist, then they must be related.
+* @dbpedia-owl:MusicalArtist/associatedBand@: if a band is associated with another band, then they must be related.
+* @dbpprop:pastMembers@: if a past member is in another band, then the two bands should be related.
+* @owl:sameAs@: if a band URI is the same as another band URI, then they are identical.
+
+Lets save all these edge labels in a list for later use.
+
+bc. gremlin> $labels := g:list(sail:ns('dbpprop:associatedActs'), sail:ns('dbpedia-owl:associatedMusicalArtist'), sail:ns('dbpedia-owl:MusicalArtist/associatedBand'), sail:ns('dbpprop:pastMembers'), sail:ns('owl:sameAs'))
+==>http://dbpedia.org/property/associatedActs
+==>http://dbpedia.org/ontology/associatedMusicalArtist
+==>http://dbpedia.org/ontology/MusicalArtist/associatedBand
+==>http://dbpedia.org/property/pastMembers
+==>http://www.w3.org/2002/07/owl#sameAs
+
+Next, just for the purpose of testing, lets find all the resources related to the Grateful Dead by these types of edges and return their @foaf:name@s.
+
+bc. gremlin> g:dedup(./outE[g:includes($labels,./@label)]/inV/outE[@label=sail:ns('foaf:name')]/inV/@value)
+==>Keith Godchaux
+==>Phil Lesh
+==>Grateful Dead
+==>Bill Kreutzmann
+==>Jerry Garcia
+==>Tom Constanten
+==>Bob Weir
+==>The Other Ones
+==>Vince Welnick
+==>Ron "Pigpen" McKernan
+
+For those familiar with the Grateful Dead, this is a good set of artists related to the Grateful Dead. However, lets now do this process for many steps (not just to those directly adjacent to the Grateful Dead). Given the subjectively determined edge labels for "musical relatedness" presented previously, lets perform a grammar-based [[spreading activation]] in order to identify bands related to the Grateful Dead. Below is the code to perform a 5 step random walk over the Web of Data emanating from the Grateful Dead URI. Remember, vertices are deemed related to other vertices by the subjectively determined edge labels defined in @$labels@.
+
+bc. g:p()[g:p($e := 1.0d)][g:p($m := g:map())][g:p($_ := g:id-v('http://dbpedia.org/resource/Grateful_Dead'))]
+repeat 5
+  $_ := ./outE[g:includes($labels, ./@label)]/inV[g:rand-real() < $e][g:p(g:print(.))][g:p(g:op-value('+',$m,./outE[@label=sail:ns('foaf:name')]/inV/@value,$e))]
+  $e := $e * 0.85
+end
+
+The results of the spreading activation are stored in the map referenced by @$m@. Note that if you have a slow internet connection, this process may take some time. Please read about [[spreading activation]] to understand the algorithm in more detail. The call to @g:print(.)@ prints out each vertex traversed to allow the user to watch the walk happen in real-time. Please feel free to remove this without consequence to the computation. Finally, a sorted representation of the ranked results is presented below. The numeric value associated with each key in @$m@ is the total amount of energy (@$e@) that has flowed through each vertex over the spreading activation process. Thus, the vertices with more energy flow are deemed more related to the Grateful Dead.
+
+bc. gremlin> g:unassign($m,null)
+==>2246.0004953577536
+gremlin> g:sort($m,'value',true)
+gremlin> g:sort($m,'value',true)
+==>Grateful Dead=882.2989548281444
+==>The Other Ones=231.74619811086842
+==>Tom Constanten=187.20120101934822
+==>Donna Jean Godchaux=183.6093130936398
+==>Vince Welnick=182.43705685194874
+==>Jerry Garcia=181.1322006099835
+==>Phil Lesh=181.11307561552672
+==>Keith Godchaux=178.40699451806705
+==>Bill Kreutzmann=175.50647526310826
+==>Bob Weir=171.83543121614593
+==>Ron "Pigpen" McKernan=165.36979937405715
+==>Mickey Hart=163.96092417444112
+==>The Dead=163.7270126459611
+==>Jerry Garcia Band=94.23376989617388
+==>Bobby and the Midnites=83.99052535966663
+==>Heart of Gold Band=82.65676901617077
+==>Legion of Mary=59.708785880267676
+==>Jerry Garcia Acoustic Band=58.43176703968054
+==>New Riders of the Purple Sage=50.72088520724779
+==>The Tubes=43.87487852269417
+==>Donna Jean Godchaux Band=43.51575343763834
+==>Old and In the Way=41.956640870297015
+==>Kingfish=41.60112817519908
+==>Rhythm Devils=37.2278779430986
+==>Brent Mydland=23.319008090984866
+==>Furthur=20.01325150167946
+==>RatDog=16.220126202762163
+==>JGB=10.998257068526767
+
+For those familiar with the Grateful Dead, this is a good representation of related bands. Thus, using Gremlin over the Web of Data, we have created a music recommendation engine. With this engine, we have no data of our own --- only the data that exists out there on the Web of Data. The Web of Data creates a new application development paradigm in which there is a clean separation between data provider and data processor.[4] This distinction is identified in the diagram below, where *a* denotes the old paradigm where in which the data provider and data processor are tightly coupled and *b* denotes the Web of Data paradigm where these two actors are decoupled.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/structures-processes.jpg!
+
+Finally, note that we used the Grateful Dead in our examples, but any musical act URI would work. For example, try the above code again, but set @$_@ to another band. For example, try:
+
+* "http://dbpedia.org/resource/The_Postal_Service":http://dbpedia.org/resource/The_Postal_Service
+* "http://dbpedia.org/resource/Ryan_Adams":http://dbpedia.org/resource/Ryan_Adams (not Brian Adams)
+* "http://dbpedia.org/resource/Michael_Jackson":http://dbpedia.org/resource/Michael_Jackson
+
+What was presented was a recommendation algorithm for finding musical artists related to some source artist by the labels defined in @$labels@. Using the concepts presented here, its easy to create a recommendation service for other domains (e.g. related movies, TV shows, actors, restaurants, scholarly articles, etc.). Just redefine @$labels@ and pick an appropriate source vertex. Moreover, try the code with multiple source vertices to get the intersection of two spreading activation flows.
+
+==<hr/>==
+
+fn1. Rodriguez, M.A., "A Reflection on the Structure and Process of the Web of Data":http://arxiv.org/abs/0908.0373, Bulletin of the American Society for Information Science and Technology, volume 35, number 6, pages 38-43, American Society for Information Science and Technology, doi:10.1002/bult.2009.1720350611, ISSN:1550-8366, LA-UR-09-03724, August 2009.
+
+fn2. Rodriguez, M.A., "Interpretations of the Web of Data":http://arxiv.org/abs/0905.3378, Data Management in the Semantic Web, eds. H. Jin and Z. Lv, Nova Publishing, LA-UR-09-03344, 2010.
+
+fn3. Shinavier, J., "Functional Programs as Linked Data":http://sunsite.informatik.rwth-aachen.de/Publications/CEUR-WS/Vol-248/paper10.pdf, 3rd Workshop on Scripting for the Semantic Web, Innsbruck, Austria, June 2007.
+
+fn4. Rodriguez, M.A., Watkins, J., "Faith in the Algorithm, Part 2: Computational Eudaemonics":http://arxiv.org/abs/0904.0027, Proceedings of the International Conference on Knowledge-Based and Intelligent Information & Engineering Systems, Invited Session: Innovations in Intelligent Systems, eds. Velásquez, J.D., Howlett, R.J., and Jain, L.C., Lecture Notes in Artificial Intelligence, volume 5712, pages 813-820, doi:10.1007/978-3-642-04592-9_101, Springer-Verlag, LA-UR-09-02095, Santiago, Chile, ISBN:978-3-642-04591-2, April 2009.

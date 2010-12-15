@@ -1,0 +1,24 @@
+A graph function is a function that operates on a graph and usually has a graph as its first argument. The [[Gremlin function library]] comes with a collection of "graph functions":http://wiki.github.com/tinkerpop/gremlin/gremlin-function-library#graph_functions. Moreover, many of the graph connector frameworks have associated graph functions (see [[Sesame SAIL Quad Store]] for a connector with many such functions).
+
+All graph functions allow the user to optionally provide the graph argument. For example, lets look at the add vertex function. The function signature for add vertex is @vertex g:add-v(graph?, object?)@ (@?@ means that the parameter is optional). If the graph argument is not provided, then it is assumed that the graph to use is the one referenced by the reserved variable @$_g@. Here are some examples of the add vertex function in action.
+
+bc. gremlin> $g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:add-v($g,0)
+==>v[0]
+
+Now lets call the function without the graph parameter.
+
+bc. gremlin> g:add-v(1)
+Evaluation error: no graph referenced by $_g
+
+We get an evaluation error because we have not set the reserved variable @$_g@ to a graph. If you note, we set @$g@, but not @$_g@. The variable @$_g@ is useful when working with only one graph in Gremlin. It allows the user to assign a working graph that will be referenced by graph functions when no graph argument is provided. This makes Gremlin code more concise as graph function calls have one less argument. Lets set the variable @$_g@ to a graph and re-call the add vertex function.
+
+bc. gremlin> $_g := $g
+==>tinkergraph[vertices:1]
+gremlin> g:add-v(1)
+==>v[1]
+gremlin> $_g
+==>tinkergraph[vertices:2]
+
+Now, as can be seen, the add vertex function is working as expected.

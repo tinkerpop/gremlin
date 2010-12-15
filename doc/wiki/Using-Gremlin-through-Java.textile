@@ -1,0 +1,52 @@
+!http://weblogs.java.net/blog/terrencebarr/thumb-java-duke-guitar.png!
+
+One of the exciting developments that occurred in Java 1.6+ was the creation of a collection of interfaces that allow developers to tie other languages to the Java virtual machine ("JSR 223":http://www.jcp.org/en/jsr/detail?id=223). In this way, these languages, through a standard set of methods, can be used within any Java 1.6+ application. Thus, it's possible to capitalize on the features of another language when building a Java application. For Java applications that make use of graphs, Gremlin is a prime candidate for inclusion.
+
+# "An Introduction to JSR 223":introduction
+# "The Gremlin Implementation of JSR 223":gremlin
+
+h2(#introduction). An Introduction to JSR 223
+
+The reference implementation of JSR 223 deployed with Java 1.6+ is Mozilla's JavaScript implementation known as "Rhino":http://www.mozilla.org/rhino. Other popular implementations include "Jython":http://www.jython.org, "JRuby":http://jruby.org, and "Groovy":http://groovy.codehaus.org. For an excellent reference to other implementations of JSR 223, please see "https://scripting.dev.java.net":https://scripting.dev.java.net.
+
+Finally, you can learn more about JSR 223 from the articles below.
+
+* O'Conner, J., "Scripting for the Java Platform":http://java.sun.com/developer/technicalArticles/J2SE/Desktop/scripting/, July 2006. 
+* Wu, C., "Build Your Own Language for Java":http://www.javaworld.com/javaworld/jw-04-2006/jw-0424-scripting.html, April 2006.
+
+h2(#gremlin). The Gremlin Implementation of JSR 223
+
+Gremlin provides two classes that should be communicated with directly when using the Gremlin virtual machine from within a Java application.
+
+* @GremlinScriptEngine implements ScriptEngine@
+* @GremlinScriptEngineFactory implements ScriptEngineFactory@
+
+The common way in which to use Gremlin through these interfaces is as follows. First add a text file named @javax.script.ScriptEngineFactory@ to your @META-INF/services@ directory (@ScriptEngineFactory@ is a "service provider":http://java.sun.com/javase/6/docs/technotes/guides/jar/jar.html#Service%20Provider). In that file, add the line @com.tinkerpop.gremlin.GremlinScriptEngineFactory@. Now, the @GremlinScriptEngineFactory@ is available to the @ScriptEngineManager@.
+
+bc. ScriptEngineManager manager = new ScriptEngineManager();
+ScriptEngine engine = manager.getEngineByName("gremlin");
+// or, instead of above, simply do:
+//       ScriptEngine engine = new GremlinScriptEngineFactory().getScriptEngine();
+Graph graph = TinkerGraphFactory.createTinkerGraph();
+engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_g", graph);
+engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$_", graph.getVertex(1)); 
+engine.getBindings(ScriptContext.ENGINE_SCOPE).put("$name", "josh");
+engine.getBindings(ScriptContext.ENGINE_SCOPE).get("$name");
+...
+Iterable results = (Iterable) engine.eval("./outE/inV[@name=$name]");
+String script = "$i := 0\n" +
+                "repeat 10\n" +
+                "  $i := $i + 1\n" +
+                "end";
+engine.eval(script);
+engine.eval(new FileReader("script.grm"));
+
+* *ENGINE_SCOPE*:  Engine scope variables/bindings are visible during the lifetime of a single @ScriptEngine@ and a set of variables is maintained for each engine.
+* *GLOBAL_SCOPE*: Global scope variables/bindings are visible to all engines created by same @ScriptEngineManager@. This is a @SimpleBindings@ that allow various @ScriptEngine@ 's created from the same manager to communicate with one another through a "blackboard". For example, global scope bindings in a Jython engine can be used by a Gremlin engine and vice versa.
+
+!http://www.javaworld.com/javaworld/jw-04-2006/images/jw-0424-scripting3.gif!
+
+==<hr/>==
+
+* See the "JavaDoc":http://java.sun.com/javase/6/docs/api/javax/script/ScriptEngine.html on @ScriptEngine@ for all the methods exposed by @GremlinScriptEngine@.
+* See the "JavaDoc":http://java.sun.com/javase/6/docs/api/javax/script/ScriptEngineFactory.html on @ScriptEngineFactory@ for all the methods exposed by @GremlinScriptEngineFactory@.

@@ -1,0 +1,87 @@
+Gremlin comes with a connector to the "Java Universal Network/Graph Framework":http://jung.sourceforge.net/ (JUNG) that allows you to make use of the JUNG algorithms package on Gremlin property graphs. Below is a description of the JUNG algorithms package.
+
+bq. The current distribution of JUNG includes implementations of a number of algorithms from graph theory, data mining, and social network analysis, such as routines for clustering, decomposition, optimization, random graph generation, statistical analysis, and calculation of network distances, flows, and importance measures (centrality, PageRank, HITS, etc.). -- "JUNG development team":http://jung.sourceforge.net/team.html
+
+JUNG algorithms are intended for single-relational graphs (that is, graphs with unlabeled edges). Gremlin was developed to process multi-relational graphs (that is, graph with labeled edges -- aka. property graphs). Gremlin was intended to provide the expressibility of the path algebra defined "here":http://arxiv.org/abs/0806.2274, but through graph traversal techniques (not matrix techniques). While its possible to implement multi-relational graph algorithms in Gremlin (as thats its purpose), there exists a wealth of existing toolkits and packages that come with a rich set of already implemented algorithms (e.g. JUNG). The connector provided between Gremlin and JUNG allows one to make use of JUNG's algorithms package for processing Gremlin property graphs.[1]
+
+The following is a collection of Gremlin functions provided in the @jung@  namespace.
+
+# "JUNG Functions":#jung_functions
+  ** @map jung:pagerank(graph?, map?)@
+  ** @list jung:dijkstra(graph?, vertex, vertex, map?)@
+
+h2(#jung_functions). JUNG Functions
+
+h3. PageRank @map jung:pagerank(graph?, map?)@
+
+"PageRank":http://en.wikipedia.org/wiki/PageRank is an algorithm used to determine which vertices in a graph are most central/important. This algorithm returns a probability distribution created by a random walker moving from vertex to vertex. However, in order to ensure a strongly connected graph, an 'teleportation' probability (@alpha@) is included to allow the walker to randomly teleport from any vertex to any other vertex.
+
+The function to execute PageRank takes a graph and a map of configuration parameters. Below is the parameters that can be provided.
+
+* @alpha@: teleportation probability (defaults to @0.15@) [number]
+* @labels@: labels to allow or disallow (defaults to @null@) [list]
+* @filter@: whether to allow or disallow the provided labels (defaults to @false@) [boolean]
+* @weight-key@: an edge property key denoting a weight (defaults to @null@) [string]
+* @normalize@: if a weight key is used, should outgoing edge weights be normalized to form a probability distribution (defaults to @false@) [boolean]
+
+The function returns a ranking that maps a vertex to a number, where the number is the PageRank score for the vertex. Here are some examples of @map jung:pagerank(graph?, map?)@ in action.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-1.xml')
+==>true
+gremlin> jung:pagerank() 
+==>v[3]=0.30472082661863664
+==>v[2]=0.14598540145985392
+==>v[1]=0.11375485828040566
+==>v[6]=0.11375485828040566
+==>v[5]=0.1757986539008436
+==>v[4]=0.14598540145985392
+gremlin> jung:pagerank(g:map('alpha', 1.0))
+==>v[3]=0.16666666666666666
+==>v[2]=0.16666666666666666
+==>v[1]=0.16666666666666666
+==>v[6]=0.16666666666666666
+==>v[5]=0.16666666666666666
+==>v[4]=0.16666666666666666
+gremlin> jung:pagerank(g:map('labels', g:list('knows')))
+==>v[3]=0.04856333468231485
+==>v[2]=0.06920275192229866
+==>v[1]=0.04856333468231485
+==>v[6]=0.04856333468231485
+==>v[5]=0.04856333468231485
+==>v[4]=0.06920275192229866
+gremlin> jung:pagerank(g:map('labels', g:list('knows'),'filter',true))
+==>v[3]=0.3654970760233916
+==>v[2]=0.1169590643274853
+==>v[1]=0.1169590643274853
+==>v[6]=0.1169590643274853
+==>v[5]=0.16666666666666657
+==>v[4]=0.1169590643274853
+
+h3. Dijkstra's Shortest Path @list jung:dijkstra(graph?, vertex, vertex, map?)@
+
+"Dijkstra's shortest path algorithm":http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm finds the shortest path between two vertices. This algorithm can be used on weighted graphs where the higher the weight denotes a larger distance between the two vertices connected by the edge. Note that Dijkstra's algorithm does *not* allow for negative edge weights.
+
+The function to execute Dijkstra's shortest path algorithm takes a graph, a source vertex (start), a target vertex (end), and a map of configuration parameters. Below is the parameters that can be provided.
+
+* @labels@: labels to allow or disallow (defaults to @null@) [list]
+* @filter@: whether to allow or disallow the provided labels (defaults to @false@) [boolean]
+* @weight-key@: an edge property key denoting a weight (defaults to @null@) [string]
+* @invert@: if higher weights denote "closeness", then inverting them will denote a shortest distance (defaults to @false@) [boolean]
+
+The function returns an ordered list of edges denoting the path from the source vertex to the target vertex.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-1.xml')
+==>true
+gremlin> jung:dijkstra(g:id-v(1),g:id-v(5))
+==>e[8][1-knows->4]
+==>e[10][4-created->5]
+gremlin> jung:dijkstra(g:id-v(1),g:id-v(3))
+==>e[9][1-created->3]
+
+==<hr/>==
+
+fn1. A future release of this connector will allow for path definitions to be used. That is, instead of only allowing or disallowing an edge based on label, it will be possible to make use of a path definitions to define an edge on the fly.

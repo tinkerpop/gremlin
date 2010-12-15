@@ -1,0 +1,13 @@
+The Gremlin type system is simple. The following diagram represents each type in Gremlin and its inheritance relationship within a simple type hierarchy.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-type-system.png!
+
+* *graph*: a graph is composed of a set of vertices and a set of edges.
+* *vertex*: a vertex is composed of a set of outgoing edges, incoming edges, and a map of properties.
+* *edge*: an edge is composed of an outgoing vertex, incoming vertex, and a map of properties.
+* *boolean*: a boolean can either be true or false.
+* *number*: a number can be an integer (6), a long (6l), a float (6.0), or a double (6.0d).
+* *string*: a string is an array of characters.
+* *list*: a list is an ordered collection of objects and allows for duplicates.
+* *set*: a set is an unordered collection of objects and doesn't allow for duplicates
+* *map*: a map is an "associative array":http://en.wikipedia.org/wiki/Associative_array from a set of object keys to a collection of object values.

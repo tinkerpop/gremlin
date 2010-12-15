@@ -1,0 +1,111 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/neotech-logo.png!:http://neotechnology.com
+
+"Neo Technology":http://neotechnology.com are the developers of the "Neo4j graph database":http://neo4j.org. Neo4j makes use of the property graph data model. For a great summary of the Neo4j graph database, please review the following presentation before proceeding with how Gremlin connects to Neo4j.
+
+<div style="width:425px;text-align:left" id="__ss_1766972"><a style="font:14px Helvetica,Arial,Sans-serif;display:block;margin:12px 0 3px 0;text-decoration:underline;" href="http://www.slideshare.net/emileifrem/neo4j-the-benefits-of-graph-databases-oscon-2009" title="Neo4j - The Benefits of Graph Databases">Neo4j - The Benefits of Graph Databases</a><object style="margin:0px" width="425" height="355"><param name="movie" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=neo4j-graph-databases-oscon-2009-090724211513-phpapp02&stripped_title=neo4j-the-benefits-of-graph-databases-oscon-2009" /><param name="allowFullScreen" value="true"/><param name="allowScriptAccess" value="always"/><embed src="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=neo4j-graph-databases-oscon-2009-090724211513-phpapp02&stripped_title=neo4j-the-benefits-of-graph-databases-oscon-2009" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="355"></embed></object><div style="font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;">View more <a style="text-decoration:underline;" href="http://www.slideshare.net/">documents</a> from <a style="text-decoration:underline;" href="http://www.slideshare.net/emileifrem">Emil Eifrem</a>.</div></div>
+
+If you reviewed the Neo4j slides above (especially slide 15), you would have realized that Neo4j is a nearly-pure property graph. For this reason, there is no impedance mismatch between Gremlin and Neo4j. However, there are a few peculiarities in Neo4j that make it not completely faithful to the property graph data model used by Gremlin. These are itemized below.
+
+# *No user defined element identifiers*: Neo4j is the gatekeeper and creator of vertex and edge identifiers. Thus, when creating a new vertex or edge, the provided object identifier is ignored.
+# *No self-loops*: Neo4j does not allow a vertex to have an outgoing or incoming edge to itself.
+# *Only primitive property values*: Neo4j requires that the value objects in the property map of an element be Java primitives, @java.lang.String@s, or arrays of primitives and @java.lang.String@s.
+
+The following is the list of @neo4j@ namespace functions that are provided with the Gremlin distribution.
+
+# "Neo4j Functions":#neo4j_functions
+  ** @graph neo4j:open(string)@
+# "Working with Neo4j":#working_neo4j
+
+h2(#neo4j_functions). Neo4j Functions
+
+h3. Open @graph neo4j:open(string)@
+
+This function opens up a Neo graph in the provided string directory. If a Neo graph already exists at that directory, then that graph is loaded.
+
+bc. gremlin> $_g := neo4j:open('/tmp/neo4j')
+==>neograph[/tmp/neo4j]
+
+While not a Neo4j function per se, its important to note that before quitting Gremlin, you should always shutdown your Neo4j graph instances to ensure that they are properly stored to disk. This rule of thumb goes for all non-memory based data management systems.
+
+bc. gremlin> g:close($_g)
+==>true
+
+h2(#working_neo4j). Working with Neo4j
+
+This section will demonstrate Gremlin over "Neo4j":http://www.neo4j.org. Neo4j's data model is a property graph just like Gremlin's data model. Therefore, it should be relatively easy to pick up how to use Gremlin over Neo4j as opposed to a less faithful property graph representation like RDF (see [[Modeling RDF as a Property Graph]]).
+
+First lets open a Neo4j graph in the @/tmp/neo4j@ directory.
+
+bc. gremlin> $_g := neo4j:open('/tmp/neo4j')
+==>neograph[db:/tmp/neo4j]
+
+If you go to this directory, you will see the files that Neo4j has created.
+
+bc. marko$ cd /tmp/neo4j/
+marko$ ls
+active_tx_log
+lucene
+lucene-fulltext
+neostore
+neostore.id
+neostore.nodestore.db
+neostore.nodestore.db.id
+neostore.propertystore.db
+neostore.propertystore.db.arrays
+neostore.propertystore.db.arrays.id
+neostore.propertystore.db.id
+neostore.propertystore.db.index
+neostore.propertystore.db.index.id
+neostore.propertystore.db.index.keys
+neostore.propertystore.db.index.keys.id
+neostore.propertystore.db.strings
+neostore.propertystore.db.strings.id
+neostore.relationshipstore.db
+neostore.relationshipstore.db.id
+neostore.relationshiptypestore.db
+neostore.relationshiptypestore.db.id
+neostore.relationshiptypestore.db.names
+neostore.relationshiptypestore.db.names.id
+nioneo_logical.log.active
+tm_tx_log.1
+
+The first thing to note is that the Gremlin connector to Neo4j uses the "LuceneIndexService":http://wiki.neo4j.org/content/Indexing_with_IndexService.
+
+bc. marko$ cd lucene/
+marko$ ls
+lucene-store.db		lucene.log.1		lucene.log.active
+
+When vertices are added to a Neo4j graph, they are indexed by their properties. Lets demonstrate how this works. Lets load the toy graph diagrammed in [[Defining a Property Graph]] into Neo4j. This uses the GraphML reader to insert data, through Gremlin, into the Neo4j graph.
+
+bc. gremlin> g:load('data/graph-example-1.xml')    
+==>true
+gremlin> g:id-v(1)  
+==>v[1]
+
+Note that Neo4j uses @long@ (64-bit) values for their vertex identifiers. In Gremlin, you can pass a number or string and it will be converted to a long if possible.
+
+bc. gremlin> g:id-v('1')
+==>v[1]
+gremlin> g:id-v(1.0)
+==>v[1]
+
+Now, from the diagram in [[Defining a Property Graph]], we know that there are two software projects that are developed in Java. Lets get those by using the @g:key(graph?, string, object)@ function which grabs a vertex by its key/value map.
+
+bc. gremlin> $_ := g:key-v('lang','java')
+==>v[3]
+==>v[5]
+gremlin> ./@name
+==>lop
+==>ripple
+gremlin> ./inE/outV/@name
+==>marko
+==>josh
+==>peter
+==>josh
+
+Note that when using the @list g:key-v(string, object)@ function in Neo4j, you can make use of the "Lucene query syntax":http://wiki.neo4j.org/content/Indexing_with_IndexService#Fulltext_indexing. Thus, you can perform more complicated index searchers than simple direct equals matches.
+
+Again, be sure that when you are finished with your Neo4j graph instance, to shut it down.
+
+bc. gremlin> g:close()
+==>true

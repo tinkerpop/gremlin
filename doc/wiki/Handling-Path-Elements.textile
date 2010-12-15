@@ -1,0 +1,44 @@
+Understanding element collections during the execution of a path is important. This section will explain deduplication grouping sub-expressions of a path expression in order to create mid-path sets.  
+
+bc. gremlin> $_g := tg:open()                         
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-2.xml')       
+==>true
+gremlin> $_ := g:id-v(89)
+==>v[89]
+
+Given the example Grateful Dead graph presented in [[Defining a More Complex Property Graph]], lets demonstrate deduplication works. For the following examples, our root vertex will be vertex 89 -- the song Dark Star.
+
+bc. gremlin> .                                 
+==>v[89]
+gremlin> ./@name
+==>DARK STAR
+
+Lets find all the vertices connected to the Dark Star vertex. However, for the sake of brevity, instead of displaying all these vertices, lets just display the count.
+
+bc. gremlin> g:count(./outE/inV)
+==>36
+
+The collection of vertices adjacent to the Dark Star vertex does not contain duplicates. This can be demonstrated by the following example. This example uses the @g:dedup()@ function to create a non-duplicate list of the results of the path expression.
+
+bc. gremlin> g:count(g:dedup(./outE/inV))               
+==>36
+
+Now, lets find all the vertices adjacent to those vertices adjacent to the Dark Star vertex.
+
+bc. gremlin> g:count(./outE/inV/outE/inV)
+==>1629
+
+This result has duplicates. For one, there are only 809 vertices in the graph. Lets call the first collection of adjacent vertices to Dark Star collection @A@. Lets call the second collection of adjacent vertices to collection @A@ collection @B@. With respects to the 1629 vertices returned in the previous example (collection @B@), what happened is that the out-edges emanating from @A@ point to many of the same vertices. Thus, @B@ repeats vertices. How many unique vertices are there in @B@?
+
+bc. gremlin> g:count(g:dedup(./outE/inV/outE/inV))
+==>271
+
+This is important because as a path is traversed, and with the potential for graphs having loops, its possible to run into a combinatorial explosion as the same vertices are traversed over and over again. Thus, its important to be aware of when duplicates exist in sub-sections of a path expression.
+
+bc. gremlin> g:count(./outE/inV/outE/inV/outE/inV)
+==>70307
+gremlin> g:count(g:dedup(./outE/inV/outE/inV)/outE/inV)
+==>7203
+gremlin> g:count(g:dedup(g:dedup(./outE/inV/outE/inV)/outE/inV))
+==>412

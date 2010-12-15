@@ -1,0 +1,67 @@
+Path functions are functions that return either a *boolean* or *number*. These are called path functions because they determine whether the objects in a path traversal are continued on to the next stage of the path. In short, they can be used to control which actual paths in an abstract path expression are taken.
+
+bc. gremlin> .
+==>v[1]
+gremlin> ./outE   
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+
+Gremlin applies each stage of an expression (each @/@ and @[ ]@ component) to the object returned from the previous stage. This object is called the *path object* (see [[Path Object]]) as it is the object currently in the context of the executing path expression. For example, given some root vertex (@.@), @outE@ is to it to yield the outgoing edges the vertex. This alters @.@ to denote the current object being processed (@.@ changes for each edge as each edges is processed serially). Now, with functions in a path stage, its possible to exclude objects in the path expression from being considered in the next path component (the next stage of the path -- in the next definition of @.@). These types of functions are called path functions and must return either a boolean or a number.
+
+# "Boolean Path Functions":#boolean
+# "Number Path Functions":#number
+# "Forcing Path Functions":#force
+
+h2(#boolean). Boolean Path Functions
+
+bc. gremlin> ./outE[false]
+gremlin> ./outE[true] 
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> ./outE[@id = 8]
+==>e[8][1-knows->4]
+gremlin> ./outE[@weight <= 0.5]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+
+The boolean expressions @false@, @true@, @=@, and @<=@ are executed on each object of the path. If that function returns @true@ for that object, that object is passed to the next stage of the path. Moreover, it is possible to chain functions together within one stage as such.
+
+bc. gremlin> ./outE[true][true]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> ./outE[true][false]
+gremlin> ./outE[false][true] 
+
+h2(#number). Number Path Functions
+
+Path functions can also be functions that return a number. Numbers refer to an index of the collection of objects at that current location in the path, where @0@ is the first object of the collection.
+
+bc. gremlin> ./outE[0]     
+==>e[7][1-knows->2]
+gremlin> ./outE[1]
+==>e[9][1-created->3]
+gremlin> ./outE[2]
+==>e[8][1-knows->4]
+gremlin> ./outE[3]
+
+Now, its possible to do ranges by with the following syntax:
+
+bc. gremlin> ./outE[1..3]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+
+h2(#force). Forcing Path Functions
+
+Finally, to turn a non-boolean/number function into a path function, its possible to augment the function with a @and/or true@ or @and/or false@ expression. For the sake of syntactic brevity, there is a very useful function in the [[Gremlin function library]] that turns any function into a path function. This function is called @g:p(object*)@ and it takes any number of arguments and always returns @true@. Thus, for in-line functions that return numbers (but not indices), false (but not with semantics aimed at the current path object), or non-number/boolean objects, @g:p(object*)@ will ensure that the function does not interrupt the flow of the path expression. Moreover, @g:p(object*)@ allows you to compute with any function, in-line.
+
+bc. gremlin> ./outE[g:p($x := g:list(1,./@weight,3))]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> $x
+==>1
+==>0.4
+==>3

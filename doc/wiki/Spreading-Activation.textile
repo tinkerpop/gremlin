@@ -1,0 +1,155 @@
+This section discusses the use of "spreading activation":http://en.wikipedia.org/wiki/Spreading_activation for ranking vertices in a local region of a graph. The outline of this section is as follows.
+
+# "Defining Spreading Activation for Single-Relational  Graphs":#define_spreading_activation_single
+# "Defining Spreading Activation for Multi-Relational Graphs":#define_spreading_activation_multi
+# "Defining a Co-Followed By Grammar for the Grateful Dead Graph":#define_co_followed_by
+# "Executing Spreading Activation over the Grateful Dead Graph":#executing_spreading_activation
+
+h2(#define_spreading_activation_single). Defining Spreading Activation for Single-Relational Graphs
+
+"Spreading activation":http://en.wikipedia.org/wiki/Spreading_activation is a technique for searching a local region of graph starting from a root set of vertices. There are various forms of spreading activation, but in general, a spreading activation algorithm requires, as input, a graph !http://chart.apis.google.com/chart?cht=tx&chl=G=(V,E)%20!, a root set of vertices !http://chart.apis.google.com/chart?cht=tx&chl=R%20\subseteq%20V!, and some "energy" (i.e. some numeric quantity) to diffuse !http://chart.apis.google.com/chart?cht=tx&chl=\epsilon%20\in%20\mathbb{R}!. In exchange for this input, the algorithm returns a functional map !http://chart.apis.google.com/chart?cht=tx&chl=\lambda:V%20\rightarrow%20\mathbb{R}!, where those vertices with the highest !http://chart.apis.google.com/chart?cht=tx&chl=\mathbb{R}! value are considered most "similar" or "related" to the root set vertices !http://chart.apis.google.com/chart?cht=tx&chl=R!.
+
+The function signature for spreading activation is defined as:
+
+!http://chart.apis.google.com/chart?cht=tx&chl=s:\mathbb{G}\times\mathcal{P}(V)\times\mathbb{R}\rightarrow\Lambda!
+
+where
+
+!http://chart.apis.google.com/chart?cht=tx&chl=\mathbb{G}! is the set of all graphs, !http://chart.apis.google.com/chart?cht=tx&chl=\mathcal{P}(V)%20! is the powerset of vertices, and !http://chart.apis.google.com/chart?cht=tx&chl=\Lambda! is the set of all maps !http://chart.apis.google.com/chart?cht=tx&chl=V%20\rightarrow%20\mathbb{R}!.
+
+Initially, at timestep !http://chart.apis.google.com/chart?cht=tx&chl=t=0!, energy is distributed over the root set of vertices. At each time step, this energy migrates/traverses/diffuses to those vertices adjacent to the current vertex location as defined by the edges in the graph !http://chart.apis.google.com/chart?cht=tx&chl=E!. A record of the total amount of energy that has propagated through each vertex is updated with each time step. This record is a functional map defined as !http://chart.apis.google.com/chart?cht=tx&chl=\lambda%20:%20V%20\rightarrow%20\mathbb{R}!. Once all the energy has left the graph due to decay (i.e. !http://chart.apis.google.com/chart?cht=tx&chl=\epsilon%20\sim%200!) or a certain number of time steps has occurred (i.e. !http://chart.apis.google.com/chart?cht=tx&chl=t=x!), the spreading activation algorithm is complete. What is returned by the algorithm is the total amount of energy that has propagated through each vertex. In other words, it returns !http://chart.apis.google.com/chart?cht=tx&chl=\lambda!. Depending on the graph, the semantics of this !http://chart.apis.google.com/chart?cht=tx&chl=\lambda! map differ, but in general, those vertices with the higher energy values are considered the most "related" or "similar" to the root vertex set !http://chart.apis.google.com/chart?cht=tx&chl=R!. Thus, spreading activation can be used to find a set of vertices more related to an input set.
+
+h2(#define_spreading_activation_multi). Defining Spreading Activation for Multi-Relational Graphs
+
+What was described previously was a spreading activation algorithm where vertex adjacency was determined simply by the existence of an edge connecting two vertices. This is usually sufficient for single-relational (i.e. unlabeled edge) graphs. However, in Gremlin, graphs are multi-relational and thus, there are many ways in which two vertices can be adjacent to one another. Thus, for multi-relational graphs, its important to define a grammar to use when diffusing energy. The grammar chosen determines the semantics of the "similarity" of the root set vertex to the vertices with energy in !http://chart.apis.google.com/chart?cht=tx&chl=\lambda!. Moreover, if a graph has a high branch rate, then its possible to run into a combinatorial explosion as energy takes many branches repeatedly over each iteration. Thus, using a random walk version of the spreading activation algorithm is a fine way to get convergence without running into memory (space) and running time (time) issues (see [[Grammar-Based Random Walkers]]). The section [[PageRank]] discusses grammar-based random walkers. Note that the algorithm presented in this section can be augmented to be similar to the [[PageRank]] section algorithm. In this section, to reduce the potential for a combinatorial explosion, we will simply only follow heavily weighted edges.
+
+h2(#define_co_followed_by). Defining a Co-Followed By Grammar for the Grateful Dead Graph
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/terrapin-station.jpg!  !http://www.veryicon.com/icon/preview/Media/Buttons/Button%20Play%20Icon.jpg!:http://popup.lala.com/popup/360569470942674401&ei=CTolS8imFpL7nAeSp9nwCQ&sa=X&oi=music_play_track&resnum=1&ct=result&cd=2&ved=0CAsQ0wQoADAA&usg=AFQjCNE5i2xuhFAKCcVmdv5aDuktNYxKGg "Play Terrapin Station [right click and open in new tab]":http://popup.lala.com/popup/360569470942674401&ei=CTolS8imFpL7nAeSp9nwCQ&sa=X&oi=music_play_track&resnum=1&ct=result&cd=2&ved=0CAsQ0wQoADAA&usg=AFQjCNE5i2xuhFAKCcVmdv5aDuktNYxKGg
+
+This sub-section will present a grammar-based spreading activation algorithm of the Grateful Dead graph diagrammed in [[Defining a More Complex Property Graph]]. First, lets load the Grateful Dead graph and find the vertex with the name "Terrapin Station":http://en.wikipedia.org/wiki/Terrapin_Station. For fun, lets make sure that this is the correct vertex by ensuring that the song is sung by "Jerry Garcia":http://en.wikipedia.org/wiki/Jerry_Garcia. Note that we set the Terrapin Station vertex as the only vertex in our root vertex set !http://chart.apis.google.com/chart?cht=tx&chl=R! by assigning it to the reserved variable @$_@.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-2.xml')
+==>true
+gremlin> $_ := g:key-v('name', 'TERRAPIN STATION')  
+==>v[91]
+gremlin> ./outE[@label='sung_by']/inV/@name 
+==>Garcia
+
+Lets define "similarity" as those songs that are @co-followed_by@ each other. That is, a song is similar to another song if they both tend to be followed by the same song. This @co-followed_by@ relationship is diagrammed below.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/co-followed_by-example.jpg!
+
+Now, over the course of the 30 years in which the Grateful Dead played concerts, there are many songs that followed after Terrapin Station in concert -- 31 to be exact.
+
+bc. gremlin> g:count(./outE[@label='followed_by'])
+==>31
+
+However, some songs more frequently followed Terrapin Station than others.
+
+bc. gremlin> ./outE[@label='followed_by']/@weight
+==>1
+==>2
+==>3
+==>1
+==>192
+==>1
+==>2
+==>3
+...
+
+To reduce our computational load, lets only consider those songs that were followed by another song more than 40 times. For Terrapin Station, the only songs (in our dataset) that follow it more than 40 times are Drums and Playing in the Band.
+
+bc. gremlin> ./outE[@label='followed_by' and @weight > 40]/inV/@name
+==>DRUMS
+==>PLAYING IN THE BAND
+
+Finally, to complete our @co-followed_by-40@ path, we need the inverse relationship to find those songs that are @co-followed_by-40@ a song.
+
+bc. gremlin> g:dedup(./outE[@label='followed_by' and @weight > 40]/inV/inE[@label='followed_by' and @weight > 40]/outV)/@name     
+==>HES GONE
+==>TRUCKING
+==>TERRAPIN STATION
+==>I KNOW YOU RIDER
+==>SAINT OF CIRCUMSTANCE
+==>EYES OF THE WORLD
+==>PLAYING IN THE BAND
+==>UNCLE JOHNS BAND
+
+For those of your familiar with the Grateful Dead and their concert behavior (see "A Grateful Dead Analysis: The Relationship Between Concert and Listening Behavior":http://arxiv.org/abs/0807.2466), this set of songs is a classic sample of their second set behavior. However, note that Terrapin Station is @co-followed_by@ itself. To remove this concept, you can simply exclude it from the definition of @co-followed_by-40@.
+
+bc. gremlin> g:dedup(./outE[@label='followed_by' and @weight > 40]/inV/inE[@label='followed_by' and @weight > 40]/outV)[g:except($_)]/@name  
+==>HES GONE
+==>TRUCKING
+==>I KNOW YOU RIDER
+==>SAINT OF CIRCUMSTANCE
+==>EYES OF THE WORLD
+==>PLAYING IN THE BAND
+==>UNCLE JOHNS BAND
+
+The abstract/implicit @co-followed_by-40@ edge is now defined and can be applied within the larger context of diffusing energy over it.
+
+bc. path co-followed_by-40
+  ./outE[@label='followed_by' and @weight > 40]/inV/inE[@label='followed_by' and @weight > 40]/outV[g:except($_)]
+  end
+
+h2(#executing_spreading_activation). Executing Spreading Activation over the Grateful Dead Graph
+
+Now that we have defined the @co-followed_by-40@ grammar, lets diffuse energy over the Grateful Dead graph according to this grammar. The first set of Gremlin statements is "set up code" that creates a graph !http://chart.apis.google.com/chart?cht=tx&chl=G!, loads the Grateful Dead dataset into that graph, initializes the energy !http://chart.apis.google.com/chart?cht=tx&chl=\epsilon!, creates the !http://chart.apis.google.com/chart?cht=tx&chl=\lambda! map, and sets the root vertex set !http://chart.apis.google.com/chart?cht=tx&chl=R! to Terrapin Station.
+
+bc. $_g := tg:open()
+g:load('data/graph-example-2.xml')
+$e := 1.0
+$m := g:map()
+$_ := g:key-v('name', 'TERRAPIN STATION')  
+path co-followed_by-40
+  ./outE[@label='followed_by' and @weight > 40]/inV/inE[@label='followed_by' and @weight > 40]/outV[g:except($_)]
+  end
+
+The second set of Gremlin statements executes the spreading activation algorithm. The algorithm returns a ranked set of those songs most "similar" to Terrapin Station as defined by the abstract @co-followed_by-40@ edge over 25 iterations of energy diffusion with a 15% decay in energy each timestep.
+
+bc. repeat 25
+  $_ := g:dedup(./co-followed_by-40)
+  foreach $v in $_
+    g:op-value('+',$m,$v/@name,$e div g:count($_))
+  end
+  $e := $e * 0.85
+end
+
+The resultant !http://chart.apis.google.com/chart?cht=tx&chl=\lambda%20:%20V%20\rightarrow%20\mathbb{R}! map is shown below.
+
+bc. gremlin> $m
+==>SAINT OF CIRCUMSTANCE=0.4262933605128811
+==>I KNOW YOU RIDER=0.4262933605128811
+==>UNCLE JOHNS BAND=0.4262933605128811
+==>HES GONE=0.4262933605128811
+==>THE OTHER ONE=0.2834362176557382
+==>TERRAPIN STATION=1.0003630996992192
+==>DRUMS=1.0003630996992192
+==>SPACE=1.0003630996992192
+==>THROWING STONES=0.2834362176557382
+==>EYES OF THE WORLD=0.4262933605128811
+==>PLAYING IN THE BAND=0.4262933605128811
+==>TRUCKING=0.4262933605128811
+
+Now lets sort the result map by its values.
+
+bc. gremlin> g:sort($m,'value',true)  
+==>TERRAPIN STATION=1.0003630996992192
+==>DRUMS=1.0003630996992192
+==>SPACE=1.0003630996992192
+==>SAINT OF CIRCUMSTANCE=0.4262933605128811
+==>I KNOW YOU RIDER=0.4262933605128811
+==>UNCLE JOHNS BAND=0.4262933605128811
+==>HES GONE=0.4262933605128811
+==>EYES OF THE WORLD=0.4262933605128811
+==>PLAYING IN THE BAND=0.4262933605128811
+==>TRUCKING=0.4262933605128811
+==>THE OTHER ONE=0.2834362176557382
+==>THROWING STONES=0.2834362176557382
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/grateful-dead-concert.jpg!
+
+For those that know the Grateful Dead, Terrapin Station is a classic second set song. In the second set of their concerts, the Grateful Dead are known to play with an improvisational, explorative nature, and thus, we see those songs rising to the top of the rankings as defined by @co-followed_by-40@. In other words, our definition of "similarity" is a function of the structure of their concert set lists and more specifically, their second set behavior.

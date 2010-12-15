@@ -1,0 +1,73 @@
+The current path object is denoted @.@ and, like any other object, can be provided as an argument to a function or processed during a stage of a path expression. Understanding how to use path objects in both these situations is important when traversing a graph in Gremlin.
+
+# "Path Object as Function Argument":#argument
+# "Path Object in Path Stages":#stages
+
+h2(#argument). Path Object as Function Argument
+
+Before demonstrating how path context objects work, let's first perform some "set up" code that will be used for all the examples in the remainder of this section. Let's set the root object list (i.e. the start of objects for a path expression) to the vertex with the id of 1 diagrammed in [[Defining a Property Graph]]. To do so, Gremlin provides the reserved variable @$_@.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> g:load('data/graph-example-1.xml')
+==>true
+gremlin> $_ := g:id-v(1)
+==>v[1] 
+
+We can check to make sure that this is the root object by referencing it with @.@.
+
+bc. gremlin> .
+==>v[1]
+
+Our "set up" code is complete and valid.
+
+Functions in Gremlin can take arguments. Many times, it is desirable that an argument to these functions be the current path object. In order to pass the current path object as an argument to a function, reference it using the @.@ notation. Here is a simple example. Let's pass vertex 1 (the root object) into the @g:list(object*)@ function.
+
+bc. gremlin> .
+==>v[1]
+gremlin> g:list(.,.,.)
+==>v[1]
+==>v[1]
+==>v[1]
+
+h2(#stages). Path Object in Path Stages
+
+As different stages (i.e. @/@ and @[ ]@ components) of a path expression are evaluated, the objects that @.@ reference changes. In the following two examples below, each stage of the path expressions make a call to the @g:print(object*)@ function for each object in the path context. Note that the appending @false@ simply ensures that no objects are returned at the end of the expression (in order to reduce the amount of information printed in the Gremlin console).
+
+bc. gremlin> .[g:p(g:print('a:',.))]/outE[g:p(g:print('b:',.))]/inV[g:p(g:print('c:',.))][false]
+a:v[1]
+b:e[7][1-knows->2]
+c:v[2]
+b:e[9][1-created->3]
+c:v[3]
+b:e[8][1-knows->4]
+c:v[4]
+
+Here is another example that should also elucidate how path objects work.
+
+bc. gremlin> . 
+==>v[1]
+gremlin> ././././.
+==>v[1]
+
+Backtracking is used to return to a previous path objects. The previous path object is denoted @..@.
+
+bc. gremlin> ./outE
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> ./outE/..
+==>v[1]
+gremlin> ./outE/../outE/..
+==>v[1]
+gremlin> ./outE/../outE/../outE/inV
+==>v[2]
+==>v[3]
+==>v[4]
+
+Notice that the root object does not have a previous path object.
+
+bc. gremlin> .
+==>v[1]
+gremlin> ..
+gremlin>

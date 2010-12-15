@@ -1,0 +1,115 @@
+Gremlin was designed to work in concert with the property graph model provided by "Blueprints":http://blueprints.tinkerpop.com. In graph theoretic terms, a property graph can be seen as a *directed, labeled, attributed multi-graph*. This is a powerful modeling construct as it can be used to model various other graph structures by simply constraining certain aspects from making themselves apparent (see "Graph Morphisms":http://github.com/tinkerpop/blueprints/wiki/Graph-Morphisms). This section will discuss how to model common "undirected":http://en.wikipedia.org/wiki/Graph_%28mathematics%29#Undirected_graph and unlabeled graphs in Gremlin and thus, using property graphs.
+
+# "Undirected Graphs":#undirected
+# "Unlabeled Graphs":#unlabeled
+
+h2(#undirected). Undirected Graphs
+
+An undirected graph is a graph in which the directionality of the edges is not important. A directed graph is defined as !http://chart.apis.google.com/chart?cht=tx&chl=G=%28V,E\subseteq%28V%20\times%20V%29%29!, while an undirected graph is defined as !http://chart.apis.google.com/chart?cht=tx&chl=G=%28V,E\subseteq\{V%20\times%20V\}%29!. The distinction to realize is that the edge set is unordered for undirected graphs. In other words, !http://chart.apis.google.com/chart?cht=tx&chl=\{i,j\}! and !http://chart.apis.google.com/chart?cht=tx&chl=\{j,i\}! are in the same "equivalence class":http://en.wikipedia.org/wiki/Equivalence_class.
+
+A simple way to model undirected edges in Gremlin is to ignore edge directionality when selecting edges by using @bothE@. For example, suppose the following graph.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> $v := g:add-v()
+==>v[0]
+gremlin> $u := g:add-v()
+==>v[1]
+gremlin> g:add-e($v,'related',$u)
+==>e[2][0-related->1]
+
+To get the "undirected" edges adjacent to vertex @0@, use @bothE@, instead of the directed forms @inE@ or @outE@ (where it might not be known apriori whether the "undirected" edge is outgoing or incoming to the vertex).
+
+bc. gremlin> $v/inE
+gremlin> $v/outE
+==>e[2][0-related->1]
+gremlin> $v/bothE
+==>e[2][0-related->1]
+
+However, sometimes an edge is repeated in both directions to denote a symmetric relationship. Lets add a new symmetric edge to the previously defined graph.
+
+bc. gremlin> g:add-e($u,'related',$v)
+==>e[3][1-related->0]
+
+Now when calling @bothE@, the "same" edge is returned twice (one for each direction of the relationship).
+
+bc. gremlin> $v/bothE
+==>e[3][1-related->0]
+==>e[2][0-related->1]
+
+In many cases this is not an issue, but for such computations as vertex "degree":http://en.wikipedia.org/wiki/Degree_%28graph_theory%29 or "random walks":http://en.wikipedia.org/wiki/Random_walk#Random_walk_on_graphs, these repeated directed edges should be ignored. Lets define a step that will create an undirected edge set of a vertex.
+
+bc. step unE
+  $l := g:list()
+  foreach $e in ./bothE
+    $add := true
+    foreach $f in $l
+      if ($e/@label = $f/@label) and ($e/inV = $f/outV) and ($e/outV = $f/inV)
+        $add := false
+        end
+      end
+    if $add
+      $l := g:append($l, $e)
+      end
+  end
+  $l
+  end
+
+In this path, only edges that do not share the same label and tail and head vertices are returned.
+
+bc. gremlin> $v/unE
+==>e[3][1-related->0]
+gremlin> g:count($v/unE)
+==>1
+
+Thus, the degree of this vertex is 1 as @e[3][1-related->0]@ and @e[2][0-related->1]@ are considered the same edge. Again, they are considered the same because edge directionality should not be used as a determinant of uniqueness. There are many variations to this idea. In short, its important to define what one means when two edges of opposing directionality are "the same." For example, does edge label, edge properties, etc. matter? This is up to the developer.
+
+h2(#unlabeled). Unlabeled Graphs
+
+Adding labels to edges greatly increases the ability to model one's domain.[2] However, most graph theorists and original studies and applications of graphs were oriented towards unlabeled graphs. Unlabeled graphs are also known as single-relational graphs as there is only one type of relationship. In other words, all edges have the same meaning -- they can mean "friendship," "collaboration," "kinship," etc., but not all meanings together in the same graph. 
+
+In order to model an unlabeled graph with a labeled graph, simply use only one edge label. To view an already labeled graph (one with more than one edge label) as an unlabeled graph, do no make reference to the @@label@ attribute of the edges. However, like undirected edges, we may want to only see those edges that don't "repeat". For example, the graph below how two edges emanating from vertex @0@ and going to vertex @1@. From a labeled edge perspective, these are two different edges as they have two different labels. From an unlabeled perspective, they are the same edge.
+
+bc. gremlin> $_g := tg:open()
+==>tinkergraph[vertices:0]
+gremlin> $v := g:add-v()
+==>v[0]
+gremlin> $u := g:add-v()
+==>v[1]
+gremlin> g:add-e($v,'related-1',$u)
+==>e[2][0-related-1->1]
+gremlin> g:add-e($v,'related-2',$u)
+==>e[3][0-related-2->1]
+
+Lets define a step to view a graph from an unlabeled perspective. This path is called @srOutE@ for "single-relational outgoing edges."
+
+bc. step srOutE 
+  $l := g:list()
+  foreach $e in ./outE
+    $add := true
+    foreach $f in $l
+      if ($e/inV = $f/inV) and ($e/outV = $f/outV)
+        $add := false
+        end
+      end
+    if $add
+      $l := g:append($l, $e)
+      end
+    end
+  $l
+  end
+
+Now, lets look at our graph from a labeled and then unlabeled perspective.
+
+bc. gremlin> $v/outE
+==>e[3][0-related-2->1]
+==>e[2][0-related-1->1]
+gremlin> $v/srOutE
+==>e[3][0-related-2->1]
+gremlin> $v/srOutE/inV
+==>v[1]
+
+==<hr/>==
+
+fn2. This is not completely true, as its possible to model a labeled graph with an unlabeled graph by encoding the labels as topological features in the unlabeled graph. 
+  Rodriguez, M.A., "Mapping Semantic Networks to Undirected Networks":http://arxiv.org/abs/0804.0277, International Journal of Applied Mathematics and Computer Sciences, volume 5, issue 1, pages 39-42, ISSN:2070-3902, World Academy of Science Engineering and Technology, LA-UR-07-5287, 2009.

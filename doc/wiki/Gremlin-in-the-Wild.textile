@@ -1,0 +1,5 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-inthewild.png!
+
+This section provides an overview of the groups using Gremlin. If you use Gremlin and you are not on this list, please add yourself. If you don't have a "GitHub":http://github.com account, then email your usecase to us and we can add it.
+
+* "AT&Ti":http://attinteractive.com: Using Gremlin to manage their graph database backend and to evaluate recommendation algorithms. Other "TinkerPop":http://tinkerpop.com packages that are used are "Blueprints":http://blueprints.tinkerpop.com, "Pipes":http://pipes.tinkerpop.com, and "Rexster":http://rexster.tinkerpop.com.

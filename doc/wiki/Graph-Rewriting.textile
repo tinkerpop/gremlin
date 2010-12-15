@@ -1,0 +1,153 @@
+"Graph rewriting":http://en.wikipedia.org/wiki/Graph_rewriting is the process of taking one graph !http://chart.apis.google.com/chart?cht=tx&chl=G! and transforming it into a new graph !http://chart.apis.google.com/chart?cht=tx&chl=H!. To perform this process automatically, you need to create a machine that executes a set of *rewrite rules*. A rewrite rule, is defined as a map !http://chart.apis.google.com/chart?cht=tx&chl=r%20:%20L\rightarrow%20R!, where !http://chart.apis.google.com/chart?cht=tx&chl=L! is a sub-graph to look for in !http://chart.apis.google.com/chart?cht=tx&chl=G! and !http://chart.apis.google.com/chart?cht=tx&chl=R! is the sub-graph to write to in !http://chart.apis.google.com/chart?cht=tx&chl=H!. This section will discuss the use of such rules for the transformation of graphs using Gremlin.
+
+* "Hardcoded Rewriting":#hard
+* "The Copy Vertex/Edge Function":#copyve
+
+h2(#hard). Hardcoded Rewriting
+
+Given the simply 6 vertex/6 edge graph defined in [[Defining a Property Graph]] section of this documentation, one will notice that implicit in the explicit edges, exists other ways in which the vertices can be related. For example, software is related to other software if they share the same developers. Likewise, developers are related to other developers if they have created/developed the same software. For the latter example, lets denote this type of edge a @co-developer@ relationship. Moreover, lets find all examples of co-developing in the graph and create a new graph that denotes this type of relationship. This transformation is diagrammed below. 
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/grammar-map-example-1.jpg!
+
+In order to perform the above transformation, we need to define a set of rewrite rules. Actually, there is only one rewrite rule and its diagrammed below.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/grammar-map-rewrite.jpg!
+
+The graph on the left hand side of the rule states what we are looking for in !http://chart.apis.google.com/chart?cht=tx&chl=G!. It states that we are looking for some vertex denoted @a@ (a variable vertex) that is connected to some vertex denoted @b@ by a @created@ edge. This vertex @b@ must be also connected to a vertex @c@ (which can not be vertex @a@)  by a @created@ edge as well. Note that directionality of these edges in the diagram. If the aforementioned graph pattern is found, create a new graph, that does not include vertex @b@, but instead, both vertex @a@ and @c@ connected to each other by @co-developer@ edges. 
+
+To perform this transformation in Gremlin, we first need to represent the previously graph pattern as a path expression.
+
+bc. ./outE[@label='created']/inV/inE[@label='created']/outV[g:except($_)]
+
+Next, we need to find all occurrences of this expression in the graph !http://chart.apis.google.com/chart?cht=tx&chl=G!. One way to do this is to iterate through all vertices in !http://chart.apis.google.com/chart?cht=tx&chl=V! and locate all matches of the path expression emanating from !http://chart.apis.google.com/chart?cht=tx&chl=i%20\in%20V!. For each match, write the tail and head of that path expression to a new graph !http://chart.apis.google.com/chart?cht=tx&chl=H! with the corresponding edge labeled @co-developer@. The Gremlin code to perform this graph rewrite transformation is presented below.
+
+bc. $g := tg:open()
+$h := tg:open()
+g:load($g, 'data/graph-example-1.xml')
+foreach $v_g in $g/V
+  $v_h := g:id-v($h, $v_g/@id)
+  if $v_h = null
+     $v_h := g:add-v($h,$v_g)
+  end
+  foreach $u_g in $v_g/outE[@label='created']/inV/inE[@label='created']/outV[g:except($v_g)]
+     $u_h := g:id-v($h, $u_g/@id)
+     if $u_h = null
+       $u_h := g:add-v($h,$u_g)
+      end
+    g:add-e($h, $v_h,'co-developer', $u_h)
+  end
+end
+
+bc. gremlin> $h 
+==>tinkergraph[vertices:6 edges:6]
+gremlin> $h/E
+==>e[3][6-co-developer->4]
+==>e[2][6-co-developer->1]
+==>e[1][1-co-developer->6]
+==>e[0][1-co-developer->4]
+==>e[5][4-co-developer->6]
+==>e[4][4-co-developer->1]
+
+Some things to note about the above code is that it will create all vertices in the original graph !http://chart.apis.google.com/chart?cht=tx&chl=G! over to the new graph !http://chart.apis.google.com/chart?cht=tx&chl=H!. Second, when creating the new vertices, it will preserve their properties (i.e. their key/value maps).
+
+bc. gremlin> g:map(g:id-v($h,1))
+==>age=29
+==>name=marko
+
+h2(#copyve). The Copy Vertex/Edge Function
+
+Graph rewriting, in many cases, is easier using the @g:copy-ve()@ function of the [[Gremlin Function Library]]. This is a relatively high-level function, but for most rewrite use cases, it suffices. This function copies the elements of one graph to another graph. To copy over a graph completely, the following code suffices.
+
+bc. $g := tg:open()
+$h := tg:open()
+g:load($g, 'data/graph-example-1.xml')
+$g/E[g:copy-ve($h,.)]
+
+The most important line is the last. All the edges in the graph @$g@ are iterated through and each edge is copied into @$h@. After executing this code:
+
+bc. gremlin> $h/V
+==>v[3]
+==>v[2]
+==>v[1]
+==>v[6]
+==>v[5]
+==>v[4]
+gremlin> $h/E
+==>e[10][4-created->5]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+==>e[11][4-created->3]
+==>e[12][6-created->3]
+
+Whats nice about @g:copy-ve()@ is that properties are copied over as well.
+
+bc. gremlin> $h/V/@name
+==>lop
+==>vadas
+==>marko
+==>peter
+==>ripple
+==>josh
+gremlin> $h/E/@weight
+==>1.0
+==>0.5
+==>0.4
+==>1.0
+==>0.4
+==>0.2
+
+In many situations, the graph that is having elements inserted into it already contains vertices and edges. Or, in other cases, may not support user generated @id@ values. In such situations, its important to specify which properties of a vertex are unique. The following example will use the graph database "Neo4j":http://neo4j.org to demonstrate copying elements over as Neo4j does not support user generated @id@ values. Given the TinkerPop toy graph diagrammed in [[Defining a Property Graph]] (i.e. @data/graph-example-1.xml@), note that a vertex is unique according to its @name@ property. Thus, the @g:copy-ve()@ function looks as follows.
+
+bc. $g := neo4j:open('/tmp/neo4j1')
+$h := neo4j:open('/tmp/neo4j2')
+g:load($g, 'data/graph-example-1.xml')
+$g/E[g:copy-ve($h,.,'vertices','name')]
+
+The function is using the "vertices" index to locate vertices in @$h@ that have the same @name@ property as those in @$g@. In this way, @name@ is serving as a "foreign key":http://en.wikipedia.org/wiki/Foreign_key allowing the two graphs to be unified. Like previous, the properties of the elements are copied over as well.
+
+bc. gremlin> g:key-v($h,'vertices','name',$g/V[@name='marko']/@name)[0]
+==>v[1]
+
+*NOTE*: It is important to realize that @g:copy-ve()@ only considers edges unique if they have the same tail/head vertices and the same label. In this way, @g:copy-ve()@ is not generally applicable to all copy situations, but hopefully, for most practical scenarios, what is provided is sufficient.
+
+Next, lets use a non-standard index (as "vertices"/"edges" are standard indices). First, lets start from "scratch" with new "Neo4j":http://neo4j.org graph databases.
+
+bc. marko:/tmp$ rm -rf neo4j1/
+marko:/tmp$ rm -rf neo4j2/
+
+Back in Gremlin, evaluate the following.
+
+bc. $g := neo4j:open('/tmp/neo4j1')
+$h := neo4j:open('/tmp/neo4j2')
+g:load($g, 'data/graph-example-1.xml')
+
+Next, create an automatic index in graph @$h@.
+
+bc. gremlin> g:add-idx($h, 'anindex', 'vertex', 'auto')
+==>null
+gremlin> g:show-idx($h)                            
+==>[edges, edge, auto]
+==>[vertices, vertex, auto]
+==>[anindex, vertex, auto]
+
+Now lets copy over the elements from @$g@ to @$h@ where @anindex:name@ is the index/key maintaining the unique name values for newly inserted vertices into @$h@.
+
+bc. $g/E[g:copy-ve($h,.,'anindex','name')]
+==>[]
+gremlin> $h/V
+==>v[1]
+==>v[2]
+==>v[3]
+==>v[4]
+==>v[5]
+==>v[6]
+gremlin> $h/E
+==>e[0][1-knows->2]
+==>e[1][1-knows->3]
+==>e[2][1-created->4]
+==>e[3][3-created->5]
+==>e[4][3-created->4]
+==>e[5][6-created->4]
+
+

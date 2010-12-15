@@ -1,0 +1,11 @@
+This section provides a list of the people that have contributed in some way to the creation of Gremlin.
+
+# "Marko A. Rodriguez":http://markorodriguez.com -- designed, developed, tested, and documented Gremlin.
+# "Pavel Yaskevich":http://github.com/xedin -- designed and developed Gremlin 0.5 compiler and virtual machine.
+# "Peter Neubauer":http://www.linkedin.com/in/neubauer -- aided in the design and the evangelizing of Gremlin.
+# "Joshua Shinavier":http://fortytwo.net -- provided initial conceptual support for Gremlin.
+# "Ketrina Yim":http://csillustrated.berkeley.edu -- designed the Gremlin logo.
+
+Please review Gremlin's "pom.xml":http://github.com/tinkerpop/gremlin/blob/master/pom.xml. Gremlin would not be possible without the work done by others to create these useful packages.
+
+Join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users.
