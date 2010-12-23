@@ -18,7 +18,7 @@ public class Console {
     private static final String PROMPT = "gremlin> ";
     private static final String QUIT = "quit";
     private static final String END = "end";
-    private static final String INDENT = "\t   ";
+    private static final String INDENT = "         ";
     private static final String THREE_SPACES = "   ";
     private static final String HISTORY_FILE = ".gremlin_history";
     private static final String HISTORY_ERROR = "Error: Can't set history file to " + HISTORY_FILE;
@@ -64,10 +64,8 @@ public class Console {
             // set appropriate prompt
             if (inCompoundStatement) {
                 prompt = INDENT;
-                if (codeDepth > 1) {
-                    for (int i = 0; i < codeDepth; i++) {
-                        prompt += THREE_SPACES;
-                    }
+                for (int i = 0; i < codeDepth; i++) {
+                    prompt += THREE_SPACES;
                 }
             } else {
                 prompt = PROMPT;
