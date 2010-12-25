@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
-    <version>0.6</version>
+    <version>0.7-SNAPSHOT</version>
     <!-- DON'T FORGET TO UPDATE Tokens.VERSION AT RELEASE -->
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
@@ -77,6 +77,11 @@
             <artifactId>jung-algorithms</artifactId>
             <version>2.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>1.7.5</version>
+        </dependency>
         <!-- GRAPHDB SUPPORT -->
         <dependency>
             <groupId>com.tinkerpop</groupId>
@@ -92,6 +97,11 @@
             <version>4.5</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy.maven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
+            <version>1.0</version>
+        </dependency>        
     </dependencies>
     <repositories>
         <repository>
@@ -157,6 +167,21 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
         <extensions>
             <extension>
