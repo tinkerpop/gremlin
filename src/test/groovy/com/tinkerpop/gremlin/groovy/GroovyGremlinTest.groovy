@@ -5,18 +5,29 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import junit.framework.TestCase
 import com.tinkerpop.gremlin.groovy.Filters.F
+import com.tinkerpop.blueprints.pgm.parser.GraphMLReader
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
+import com.tinkerpop.pipes.PipeHelper
 
 class GroovyGremlinTest extends TestCase {
 
   public void testGremlinGroovy() {
     new GroovyGremlin();
+
+    /*Graph g = new TinkerGraph();
+    GraphMLReader.inputGraph(g, new FileInputStream("/Users/marko/software/gremlin/data/graph-example-2.xml"));
+    g.v(89).outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.each{}
+    g.v(89).outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.each{}
+    
+    long t = System.currentTimeMillis();
+    int counter = PipeHelper.counter(g.v(89).outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV);
+    t = System.currentTimeMillis() - t
+    System.out.println(t + ":" + counter);*/
+
     Graph g = TinkerGraphFactory.createTinkerGraph();
+    [g.v(1),g.v(2)]["name"].each{println it};
 
-    //g.v(1).outE[[label:'knows',weight:[F.gte,0.5f]]].inV.each{println it.name}
-
-    //g.v(1).outE.and(prop('label',F.eq,'knows'), prop('weight',F.gte,0.0f)).inV.each{println it};
-
-    g.v(1).step{return starts.next()}.each{}
+    //g.v(1).step{return starts.next()}.each{}
 
     //g.v(1).outE{it.label == 'knows' & it.weight >= 0.5f}.inV.each{println it.name}
 

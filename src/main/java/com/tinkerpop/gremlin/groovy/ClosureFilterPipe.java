@@ -11,14 +11,14 @@ public class ClosureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPi
 
     private final Closure closure;
 
-    public ClosureFilterPipe(Closure closure) {
+    public ClosureFilterPipe(final Closure closure) {
         this.closure = closure;
         this.closure.setDelegate(this);
     }
 
     public S processNextStart() {
         while (true) {
-            S start = this.starts.next();
+            final S start = this.starts.next();
             if ((Boolean) closure.call(start))
                 return start;
         }

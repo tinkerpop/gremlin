@@ -19,10 +19,6 @@ public class AndFutureFilterPipe<S>  extends AbstractPipe<S, S> implements Filte
         this.pipes = Arrays.asList(pipes);
     }
 
-    public AndFutureFilterPipe(final List<Pipe<S, ?>> pipes) {
-        this.pipes = pipes;
-    }
-
     public S processNextStart() {
         while (true) {
             S s = this.starts.next();

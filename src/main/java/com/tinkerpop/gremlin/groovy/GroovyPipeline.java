@@ -14,14 +14,14 @@ public class GroovyPipeline<S, E> implements Pipe<S, E> {
 
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
-    private List<Pipe> pipes = new ArrayList<Pipe>();
+    private final List<Pipe> pipes = new ArrayList<Pipe>();
 
 
     public List<Pipe> getPipes() {
         return this.pipes;
     }
 
-    public void addPipe(Pipe pipe) {
+    public void addPipe(final Pipe pipe) {
         this.pipes.add(pipe);
         this.setPipes(this.pipes);
 

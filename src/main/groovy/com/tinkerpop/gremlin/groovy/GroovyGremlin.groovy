@@ -4,6 +4,7 @@ package com.tinkerpop.gremlin.groovy;
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Graph
+import com.tinkerpop.gremlin.groovy.Filters.F
 import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
@@ -11,35 +12,61 @@ import com.tinkerpop.pipes.filter.FutureFilterPipe
 import com.tinkerpop.pipes.filter.RangeFilterPipe
 import com.tinkerpop.pipes.merge.RobinMergePipe
 import com.tinkerpop.pipes.split.CopySplitPipe
+import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.pipes.pgm.*
-import com.tinkerpop.gremlin.groovy.Filters.F
 
 class GroovyGremlin {
 
   private final String ID = "id";
   private final String LABEL = "label";
-  private final Set tokens = ["outE", "inE", "outV", "inV", "V", "E", "i", "propf", "andf", "orf", "step", "futuref"] as Set;
-
+  private final String V = "V";
+  private final String E = "E";
+  private Set tokens;
 
   GroovyGremlin() {
 
-    Object.metaClass.propertyMissing = {final String name ->
-      //println "marko! ${name}"
+    Pipe.metaClass.propertyMissing = {final String name ->
+      if (this.tokens.contains(name)) {
+        return delegate."$name"();
+      } else {
+        throw new MissingPropertyException(name, delegate.getClass());
+      }
+    }
+
+    Graph.metaClass.propertyMissing = {final String name ->
+      if (name.equals(V) | name.equals(E)) {
+        return delegate."$name"();
+      } else {
+        throw new MissingPropertyException(name, delegate.getClass());
+      }
+    }
+
+    Element.metaClass.propertyMissing = {final String name ->
       if (!tokens.contains(name)) {
         if (name.equals(ID)) {
-          return compose(delegate, new IdPipe());
-        } else if (name.equals(LABEL)) {
-          return compose(delegate, new LabelPipe());
+          return delegate.getId();
+        } else if (delegate instanceof Edge && name.equals(LABEL)) {
+          return delegate.getLabel();
         } else {
-          return compose(delegate, new PropertyPipe(name));
+          return delegate.getProperty(name)
         }
       } else {
         return delegate."$name"();
       }
     }
 
+    Iterator.metaClass.getAt = {final String name ->
+      if (name.equals(ID)) {
+        return compose(delegate, new IdPipe());
+      } else if (name.equals(LABEL)) {
+        return compose(delegate, new LabelPipe());
+      } else {
+        return compose(delegate, new PropertyPipe(name));
+      }
+    }
+
     Iterator.metaClass.getAt = {final Range range ->
-      return compose(delegate, new RangeFilterPipe(range.getFrom(), range.getTo()));
+      return compose(delegate, new RangeFilterPipe(range.getFrom(), range.getTo() + 1));
     }
 
     Iterator.metaClass.getAt = {final Map map ->
@@ -65,19 +92,9 @@ class GroovyGremlin {
       return pipeline;
     }
 
-    Element.metaClass.propertyMissing = {final String name ->
-      if (!tokens.contains(name)) {
-        if (name.equals(ID)) {
-          return delegate.getId();
-        } else if (delegate instanceof Edge && name.equals(LABEL)) {
-          return delegate.getLabel();
-        } else {
-          return delegate.getProperty(name)
-        }
-      } else {
-        return delegate."$name"();
-      }
-    }
+    /*
+     * PIPES THROUGH METACLASS EXTENSIONS
+     */
 
     Object.metaClass.split = {final Pipe ... pipes ->
       CopySplitPipe split = new CopySplitPipe(pipes.length);
@@ -90,10 +107,16 @@ class GroovyGremlin {
       return merge;
     }
 
+    /**
+     * FutureFilterPipe
+     */
     Object.metaClass.futuref = {final Pipe pipe ->
       return compose(delegate, new FutureFilterPipe(pipe), null)
     }
 
+    /**
+     * PropertyFilterPipe
+     */
     Object.metaClass.propf = {final String key, final F f, final Object value ->
       if (key.equals(ID)) {
         return compose(delegate, new IdFilterPipe(value, mapFilter(f)), null);
@@ -104,53 +127,94 @@ class GroovyGremlin {
       }
     }
 
+    /**
+     * AndFutureFilterPipe
+     */
     Object.metaClass.andf = {final Pipe ... pipes ->
       return compose(delegate, new AndFutureFilterPipe(pipes), null);
     }
 
+    /**
+     * OrFutureFilterPipe
+     */
     Object.metaClass.orf = {final Pipe ... pipes ->
       return compose(delegate, new OrFutureFilterPipe(pipes), null);
     }
 
+    /**
+     * ClosurePipe (Anonymous Step)
+     */
     Object.metaClass.step = {final Closure stepClosure ->
       return compose(delegate, new ClosurePipe(stepClosure), null);
     }
 
+    /**
+     * VertexEdgePipe (OUT_EDGES)
+     */
     Object.metaClass.outE = {final Closure closure ->
       return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES), closure)
     }
 
+    /**
+     * VertexEdgePipe (IN_EDGES)
+     */
     Object.metaClass.inE = {final Closure closure ->
       return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES), closure)
     }
 
+    /**
+     * EdgeVertexPipe (IN_VERTEX)
+     */
     Object.metaClass.inV = {final Closure closure ->
       return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX), closure)
     }
 
+    /**
+     * EdgeVertexPipe (OUT_VERTEX)
+     */
     Object.metaClass.outV = {final Closure closure ->
       return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
     }
 
-    Object.metaClass.V = {final Closure closure ->
-      return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.VERTEX), closure)
-    }
-
-    Object.metaClass.E = {final Closure closure ->
-      return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.EDGE), closure)
-    }
-
+    /**
+     * IdentityPipe
+     */
     Object.metaClass.i = {final Closure closure ->
       return compose(delegate, new IdentityPipe(), closure)
     }
 
+    /**
+     * GraphElementPipe (Vertex)
+     */
+    Object.metaClass.V = {final Closure closure ->
+      return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.VERTEX), closure)
+    }
+
+    /**
+     * GraphElementPipe (Edge)
+     */
+    Object.metaClass.E = {final Closure closure ->
+      return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.EDGE), closure)
+    }
+
+    /**
+     * getVertex()
+     */
     Graph.metaClass.v = {final Object id ->
       return delegate.getVertex(id);
     }
 
+    /**
+     * getEdge()
+     */
     Graph.metaClass.e = {final Object id ->
       return delegate.getEdge(id);
     }
+
+    this.tokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
+    this.tokens.remove("propertyMissing");
+    this.tokens.remove(V);
+    this.tokens.remove(E);
 
   }
 
