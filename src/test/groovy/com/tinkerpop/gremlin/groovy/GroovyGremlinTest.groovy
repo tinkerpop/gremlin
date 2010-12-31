@@ -8,6 +8,7 @@ import com.tinkerpop.gremlin.groovy.Filters.F
 import com.tinkerpop.blueprints.pgm.parser.GraphMLReader
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.pipes.PipeHelper
+import com.tinkerpop.pipes.Pipe
 
 class GroovyGremlinTest extends TestCase {
 
@@ -25,10 +26,10 @@ class GroovyGremlinTest extends TestCase {
     System.out.println(t + ":" + counter);*/
 
     Graph g = TinkerGraphFactory.createTinkerGraph();
-    [g.v(1),g.v(2)]["name"].each{println it};
-
+    //[g.v(1),g.v(2)]["name"].each{println it}
+    //GroovyGremlin.getSteps(Object.class).each{println it.name};
     //g.v(1).step{return starts.next()}.each{}
-
+    //g.v(1).outE[label:'followed_by',weight:0.5].each{println it}
     //g.v(1).outE{it.label == 'knows' & it.weight >= 0.5f}.inV.each{println it.name}
 
     //g.v(1).outE[[weight:[F.lt, 0.5f],label:'created']].each{println "${it.label} -- ${it.weight}"};

@@ -29,7 +29,7 @@ class GroovyGremlin {
       if (this.tokens.contains(name)) {
         return delegate."$name"();
       } else {
-        throw new MissingPropertyException(name, delegate.getClass());
+        return delegate.getAt(name);
       }
     }
 
@@ -66,7 +66,7 @@ class GroovyGremlin {
     }
 
     Iterator.metaClass.getAt = {final Range range ->
-      return compose(delegate, new RangeFilterPipe(range.getFrom(), range.getTo() + 1));
+      return compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
     }
 
     Iterator.metaClass.getAt = {final Map map ->
@@ -74,17 +74,17 @@ class GroovyGremlin {
       map.each {key, value ->
         if (key.equals(LABEL)) {
           if (value instanceof List) {
-            pipeline.addPipe(new LabelFilterPipe(value[1], mapFilter(value[0])))
+            pipeline.addPipe(new LabelFilterPipe((String)value[1], mapFilter(value[0])))
           } else {
-            pipeline.addPipe(new LabelFilterPipe(value, Filter.NOT_EQUAL));
+            pipeline.addPipe(new LabelFilterPipe((String)value, Filter.NOT_EQUAL));
           }
         } else if (key.equals(ID)) {
           pipeline.addPipe(new IdFilterPipe(value, Filter.NOT_EQUAL));
         } else {
           if (value instanceof List) {
-            pipeline.addPipe(new PropertyFilterPipe(key, value[1], mapFilter(value[0])))
+            pipeline.addPipe(new PropertyFilterPipe((String)key, value[1], mapFilter(value[0])))
           } else {
-            pipeline.addPipe(new PropertyFilterPipe(key, value, Filter.NOT_EQUAL))
+            pipeline.addPipe(new PropertyFilterPipe((String)key, value, Filter.NOT_EQUAL))
           }
         }
 
@@ -121,7 +121,7 @@ class GroovyGremlin {
       if (key.equals(ID)) {
         return compose(delegate, new IdFilterPipe(value, mapFilter(f)), null);
       } else if (key.equals(LABEL)) {
-        return compose(delegate, new LabelFilterPipe(value, mapFilter(f)), null)
+        return compose(delegate, new LabelFilterPipe((String)value, mapFilter(f)), null)
       } else {
         return compose(delegate, new PropertyFilterPipe(key, value, mapFilter(f)), null);
       }
@@ -186,14 +186,14 @@ class GroovyGremlin {
     /**
      * GraphElementPipe (Vertex)
      */
-    Object.metaClass.V = {final Closure closure ->
+    Graph.metaClass.V = {final Closure closure ->
       return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.VERTEX), closure)
     }
 
     /**
      * GraphElementPipe (Edge)
      */
-    Object.metaClass.E = {final Closure closure ->
+    Graph.metaClass.E = {final Closure closure ->
       return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.EDGE), closure)
     }
 
@@ -213,12 +213,9 @@ class GroovyGremlin {
 
     this.tokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
     this.tokens.remove("propertyMissing");
-    this.tokens.remove(V);
-    this.tokens.remove(E);
-
   }
 
-  public static Filter mapFilter(final f) {
+  private static Filter mapFilter(final f) {
     if (f == f.eq)
       return Filter.NOT_EQUAL; else if (f == f.neq)
       return Filter.EQUAL; else if (f == f.lt)
@@ -258,5 +255,9 @@ class GroovyGremlin {
       pipeline.addPipe(new ClosureFilterPipe(closure));
     }
     return pipeline;
+  }
+
+  public static Collection getSteps(Class clazz) {
+    return clazz.metaClass.methods.findAll {it instanceof ClosureMetaMethod & !it.name.equals("propertyMissing")}.collect{it};
   }
 }
