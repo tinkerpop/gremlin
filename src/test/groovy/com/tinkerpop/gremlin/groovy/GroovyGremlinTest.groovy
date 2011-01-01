@@ -3,12 +3,9 @@ package com.tinkerpop.gremlin.groovy
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import junit.framework.TestCase
 import com.tinkerpop.gremlin.groovy.Filters.F
-import com.tinkerpop.blueprints.pgm.parser.GraphMLReader
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.pipes.PipeHelper
-import com.tinkerpop.pipes.Pipe
+import junit.framework.TestCase
 
 class GroovyGremlinTest extends TestCase {
 
@@ -26,6 +23,7 @@ class GroovyGremlinTest extends TestCase {
     System.out.println(t + ":" + counter);*/
 
     Graph g = TinkerGraphFactory.createTinkerGraph();
+    //g.v(1).outE._(i()[[label:'created']] & (i()[[label:'blah']] | i()[[label:'knows']])).each{println it}
     //[g.v(1),g.v(2)]["name"].each{println it}
     //GroovyGremlin.getSteps(Object.class).each{println it.name};
     //g.v(1).step{return starts.next()}.each{}
@@ -36,6 +34,11 @@ class GroovyGremlinTest extends TestCase {
     //g.v(1).outE.and(i().inV[[name:'josh']].i{println it; return true}).inV.each{println it}
     //g.v(1).split(outE{true}, new IdentityPipe().outE.inV).i.each{println it}
     // | is or
+    def name = "jen";
+    g.v(1).outE().inV.paths.step {name = starts.next()[2]}.each {println it}
+    println name
+    //x.enablePath();
+    //x.each{println x.path}
   }
 
   public void testEmbeddedEngineBindingsGraph() throws Exception {
@@ -43,13 +46,67 @@ class GroovyGremlinTest extends TestCase {
     Graph g = TinkerGraphFactory.createTinkerGraph();
     String name = "josh";
     Vertex josh = g.v(4);
-    assertEquals(g.v(1).outE.inV[[name:name]][0], josh);
-    assertEquals(g.v(1).outE.inV[[id:'4']][0], josh);
+    assertEquals(g.v(1).outE.inV[[name: name]][0], josh);
+    assertEquals(g.v(1).outE.inV[[id: '4']][0], josh);
 
     assertEquals(g.v(1).outE {it.label == 'knows' | it.label == 'created'}.inV {it.id == '4' & it.name == name}[0], josh);
-    assertEquals(g.v(1).outE.orf(i()[[label:'knows']], i()[[label:'created']]).inV.andf(i()[[id:'4']], i()[[name:name]])[0], josh);
-    assertEquals(g.v(1).outE.orf(propf('label',F.eq,'knows'), propf('label',F.eq, 'created')).inV.andf(propf('id',F.eq,'4'), propf('name',F.eq, name))[0], josh);
+    assertEquals(g.v(1).outE._(i()[[label: 'knows']] | i()[[label: 'created']]).inV._(i()[[id: '4']] & i()[[name: name]])[0], josh);
+    assertEquals(g.v(1).outE._(propf('label', F.eq, 'knows') | propf('label', F.eq, 'created')).inV._(propf('id', F.eq, '4') & propf('name', F.eq, name))[0], josh);
+  }
 
+  public void testSideEffects() throws Exception {
+    new GroovyGremlin();
+    def x = 0;
+    [1, 2, 3].step {x = starts.next()}.each {}
+    assertEquals(x, 3);
+  }
 
+  public void testBasicGraphStatements() throws Exception {
+    new GroovyGremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals(PipeHelper.counter(g.v(1).outE.inV), 3);
+    assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[0].name));
+    assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[1].name));
+    assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[2].name));
+
+    assertEquals(PipeHelper.counter(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV), 3);
+    assertEquals(PipeHelper.counter(g.v(1).outE._(i()[[label: 'created']] | i()[[label: 'knows']]).inV), 3);
+    assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[0].name));
+    assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[1].name));
+    assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[2].name));
+
+    assertEquals(g.v(1).outE[[label: 'created']].inV['name'][0], "lop");
+    assertEquals(PipeHelper.counter(g.v(1).outE[[label: 'knows']].inV), 2);
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[label: 'knows']].inV[0].name));
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[label: 'knows']].inV[1].name));
+
+    assertEquals(PipeHelper.counter(g.v(1).outE[[weight: [F.gte, 0.5f]]].inV.i.i.i), 2);
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [F.gte, 0.5f]]].inV.i.i.i[0].name));
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [F.gte, 0.5f]]].inV.i.i.i[1].name));
+
+    assertEquals(PipeHelper.counter(g.v(1).outE {it.weight >= g.v(1).outE['weight'][0]}.inV), 2);
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE {it.weight >= g.v(1).outE['weight'][0]}.inV[0].name));
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE {it.weight >= g.v(1).outE['weight'][0]}.inV[1].name));
+
+    assertEquals(PipeHelper.counter(g.v(1).inE), 0);
+    assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: [F.neq, null]]]), 0)
+    assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: null]]), 3)
+
+  }
+
+  public void testFutureFilterOnGraph() throws Exception {
+    new GroovyGremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals(g.v(1)._(~outE().inV).name.next(), "marko");
+    assertEquals(g.v(1).outE.inV._(~outE().inV[[name: 'lop']]).name.next(), "josh");
+    assertEquals(g.v(1).outE.inV._(~outE().inV[[name: 'ripple']]).name.next(), "josh");
+    assertEquals(g.v(1).outE._(~inV()[[name: 'lop']]).id.next(), "9");
+
+    def list = ["ripple", "lop", "blah"]
+    assertEquals(PipeHelper.counter(g.v(1).outE.inV._(~outE().inV {list.contains(it.name)}).outE.inV), 2);
+    assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV._(~outE().inV {list.contains(it.name)}).outE.inV[0].name));
+    assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV._(~outE().inV {list.contains(it.name)}).outE.inV[1].name));
   }
 }

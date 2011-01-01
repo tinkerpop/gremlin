@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,11 +14,11 @@ import java.util.List;
  */
 public class OrFutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final List<Pipe<S, ?>> pipes;
+    private final List<Pipe<S, ?>> pipes = new ArrayList<Pipe<S,?>>();
 
 
     public OrFutureFilterPipe(final Pipe<S, ?>... pipes) {
-        this.pipes = Arrays.asList(pipes);
+        this.pipes.addAll(Arrays.asList(pipes));
     }
 
     public S processNextStart() {
@@ -31,6 +32,10 @@ public class OrFutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
                 }
             }
         }
+    }
+
+    public void addPipe(Pipe<S,?> pipe) {
+        this.pipes.add(pipe);
     }
 
 }

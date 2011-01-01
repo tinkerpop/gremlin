@@ -5,18 +5,19 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.SingleIterator;
 import com.tinkerpop.pipes.filter.FilterPipe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AndFutureFilterPipe<S>  extends AbstractPipe<S, S> implements FilterPipe<S> {
+public class AndFutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final List<Pipe<S, ?>> pipes;
+    private final List<Pipe<S, ?>> pipes = new ArrayList<Pipe<S, ?>>();
 
     public AndFutureFilterPipe(final Pipe<S, ?>... pipes) {
-        this.pipes = Arrays.asList(pipes);
+        this.pipes.addAll(Arrays.asList(pipes));
     }
 
     public S processNextStart() {
@@ -35,6 +36,10 @@ public class AndFutureFilterPipe<S>  extends AbstractPipe<S, S> implements Filte
             if (and)
                 return s;
         }
+    }
+
+    public void addPipe(Pipe<S, ?> pipe) {
+        this.pipes.add(pipe);
     }
 
 }
