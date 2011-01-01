@@ -4,17 +4,20 @@ package com.tinkerpop.gremlin.groovy;
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Graph
+import com.tinkerpop.gremlin.compiler.pipes.GatherPipe
 import com.tinkerpop.gremlin.groovy.Filters.F
 import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
+import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.filter.FutureFilterPipe
 import com.tinkerpop.pipes.filter.RangeFilterPipe
 import com.tinkerpop.pipes.merge.RobinMergePipe
 import com.tinkerpop.pipes.split.CopySplitPipe
+import com.tinkerpop.pipes.util.PathPipe
+import com.tinkerpop.pipes.util.ScatterPipe
 import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.pipes.pgm.*
-import com.tinkerpop.pipes.util.PathPipe
 
 class GroovyGremlin {
 
@@ -25,24 +28,6 @@ class GroovyGremlin {
   private Set tokens;
 
   GroovyGremlin() {
-
-    Pipe.metaClass.or = {final Pipe pipe ->
-      if (delegate instanceof OrFutureFilterPipe) {
-        delegate.addPipe(pipe);
-        return delegate;
-      } else {
-        return new OrFutureFilterPipe((Pipe) delegate, pipe);
-      }
-    }
-
-    Pipe.metaClass.and = {final Pipe pipe ->
-      if (delegate instanceof AndFutureFilterPipe) {
-        delegate.addPipe(pipe);
-        return delegate;
-      } else {
-        return new AndFutureFilterPipe((Pipe) delegate, pipe);
-      }
-    }
 
     Pipe.metaClass.propertyMissing = {final String name ->
       if (this.tokens.contains(name)) {
@@ -61,7 +46,9 @@ class GroovyGremlin {
     }
 
     Element.metaClass.propertyMissing = {final String name ->
-      if (!tokens.contains(name)) {
+      if (this.tokens.contains(name)) {
+        return delegate."$name"();
+      } else {
         if (name.equals(ID)) {
           return delegate.getId();
         } else if (delegate instanceof Edge && name.equals(LABEL)) {
@@ -69,12 +56,10 @@ class GroovyGremlin {
         } else {
           return delegate.getProperty(name)
         }
-      } else {
-        return delegate."$name"();
       }
     }
 
-    Iterator.metaClass.getAt = {final String name ->
+    Pipe.metaClass.getAt = {final String name ->
       if (name.equals(ID)) {
         return compose(delegate, new IdPipe());
       } else if (name.equals(LABEL)) {
@@ -84,11 +69,32 @@ class GroovyGremlin {
       }
     }
 
-    Iterator.metaClass.getAt = {final Range range ->
+    Iterator.metaClass.rightShift = {final Collection collection ->
+      PipeHelper.fillCollection((Iterator) delegate, collection);
+      return collection;
+    }
+
+    Iterator.metaClass.rightShift = {final Integer count ->
+      if (count == 1) {
+        return delegate.next();
+      } else {
+        List objects = new ArrayList();
+        for (int i = 0; i < count; i++) {
+          objects.add(delegate.next());
+        }
+        return objects;
+      }
+    }
+
+    Pipe.metaClass.getAt = {final Integer index ->
+      return compose(delegate, new RangeFilterPipe(index as Integer, index + 1 as Integer));
+    }
+
+    Pipe.metaClass.getAt = {final Range range ->
       return compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
     }
 
-    Iterator.metaClass.getAt = {final Map map ->
+    Pipe.metaClass.getAt = {final Map map ->
       GroovyPipeline pipeline = compose(delegate);
       map.each {key, value ->
         if (key.equals(LABEL)) {
@@ -120,7 +126,25 @@ class GroovyGremlin {
     }
 
     Pipe.metaClass.bitwiseNegate = {
-      return new FutureFilterPipe((Pipe)delegate);
+      return new FutureFilterPipe((Pipe) delegate);
+    }
+
+    Pipe.metaClass.or = {final Pipe pipe ->
+      if (delegate instanceof OrFutureFilterPipe) {
+        delegate.addPipe(pipe);
+        return delegate;
+      } else {
+        return new OrFutureFilterPipe((Pipe) delegate, pipe);
+      }
+    }
+
+    Pipe.metaClass.and = {final Pipe pipe ->
+      if (delegate instanceof AndFutureFilterPipe) {
+        delegate.addPipe(pipe);
+        return delegate;
+      } else {
+        return new AndFutureFilterPipe((Pipe) delegate, pipe);
+      }
     }
 
     Object.metaClass.split = {final Pipe ... pipes ->
@@ -147,15 +171,26 @@ class GroovyGremlin {
       }
     }
 
-    Object.metaClass.paths = {final Closure closure ->
-      return compose(delegate, new PathPipe(), closure); 
+    /**
+     * GatherPipe
+     */
+    Object.metaClass.gather = {final Closure closure ->
+      return compose(delegate, new GatherPipe(), closure);
     }
 
     /**
-     Object.metaClass.andf = {final Pipe ... pipes ->
-     return compose(delegate, new AndFutureFilterPipe(pipes), null);}Object.metaClass.orf = {final Pipe ... pipes ->
-     return compose(delegate, new OrFutureFilterPipe(pipes), null);}Object.metaClass.futuref = {final Pipe pipe ->
-     return compose(delegate, new FutureFilterPipe(pipe), null)}*/
+     * ScatterPipe
+     */
+    Object.metaClass.scatter = {final Closure closure ->
+      return compose(delegate, new ScatterPipe(), closure);
+    }
+
+    /**
+     * PathPipe
+     */
+    Object.metaClass.paths = {final Closure closure ->
+      return compose(delegate, new PathPipe(), closure);
+    }
 
     /**
      * ClosurePipe (Anonymous Step)
@@ -170,7 +205,6 @@ class GroovyGremlin {
     Object.metaClass.outE = {final Closure closure ->
       return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES), closure)
     }
-
     /**
      * VertexEdgePipe (IN_EDGES)
      */
@@ -228,6 +262,8 @@ class GroovyGremlin {
     }
 
     this.tokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
+    //this.tokens.addAll(Pipe.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
+    //this.tokens.addAll(Element.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
     this.tokens.remove("propertyMissing");
   }
 
@@ -242,15 +278,15 @@ class GroovyGremlin {
 
   }
 
-  private GroovyPipeline compose(final Object start) {
+  private static GroovyPipeline compose(final Object start) {
     return compose(start, null, null);
   }
 
-  private GroovyPipeline compose(final Object start, final Pipe pipe) {
+  private static GroovyPipeline compose(final Object start, final Pipe pipe) {
     return compose(start, pipe, null);
   }
 
-  private GroovyPipeline compose(final Object start, final Pipe pipe, final Closure closure) {
+  private static GroovyPipeline compose(final Object start, final Pipe pipe, final Closure closure) {
     GroovyPipeline pipeline;
     if (start instanceof GroovyPipeline) {
       pipeline = start;
@@ -271,6 +307,10 @@ class GroovyGremlin {
       pipeline.addPipe(new ClosureFilterPipe(closure));
     }
     return pipeline;
+  }
+
+  public static Pipe compile(String gremlin) {
+    return (Pipe) GroovyShell.newInstance().evaluate(gremlin);
   }
 
   public static Collection getSteps(Class clazz) {
