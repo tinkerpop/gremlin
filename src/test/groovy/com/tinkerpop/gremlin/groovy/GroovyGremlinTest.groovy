@@ -109,4 +109,51 @@ class GroovyGremlinTest extends TestCase {
     assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV._(~outE().inV {list.contains(it.name)}).outE.inV[0].name));
     assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV._(~outE().inV {list.contains(it.name)}).outE.inV[1].name));
   }
+
+  public void testIdAndLabelProperties() throws Exception {
+    new GroovyGremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    assertEquals(g.v(1).id, "1");
+    assertEquals(g.v(1)['id'], "1");
+
+    assertEquals(PipeHelper.counter(g.v(1).outE.inV.id), 3);
+    assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[0]));
+    assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[1]));
+    assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[2]));
+
+    assertEquals(PipeHelper.counter(g.v(1).outE.label), 3);
+    assertTrue(["created", "knows"].contains(g.v(1).outE.label[0]));
+    assertTrue(["created", "knows"].contains(g.v(1).outE.label[1]));
+    assertTrue(["created", "knows"].contains(g.v(1).outE.label[2]));
+  }
+
+  public void testVertexEdgeGraphProperties() throws Exception {
+    new GroovyGremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals(PipeHelper.counter(g.V), 6);
+    assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][0]));
+    assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[1]));
+    assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][2]));
+    assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[3]));
+    assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][4]));
+    assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[5]));
+
+    assertEquals(PipeHelper.counter(g.E), 6);
+    assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][0]));
+    assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[1]));
+    assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][2]));
+    assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[3]));
+    assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][4]));
+    assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[5]));
+  }
+
+  public void testPathEquality() throws Exception {
+    new GroovyGremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals(g.v(1).outE.inV, g.v(1).outE.inV);
+    assertEquals(g.v(1).outE.i.i.inV[0..100], g.v(1).outE.inV);
+    assertEquals(g.v(1).inE, g.v(1).inE);
+  }
 }

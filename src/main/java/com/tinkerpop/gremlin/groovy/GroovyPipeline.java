@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.groovy;
 
-import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class GroovyPipeline<S, E> implements Pipe<S, E> {
         this.setPipes(this.pipes);
 
     }
+
     private void setPipes(final List<Pipe> pipes) {
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
         this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);
@@ -66,5 +66,24 @@ public class GroovyPipeline<S, E> implements Pipe<S, E> {
 
     public Iterator<E> iterator() {
         return this;
+    }
+
+    public boolean equals(Object object) {
+        if (!(object instanceof GroovyPipeline))
+            return false;
+        else {
+            GroovyPipeline pipe = (GroovyPipeline) object;
+            if (pipe.hasNext() != this.hasNext())
+                return false;
+
+            while (this.hasNext()) {
+                if (!pipe.hasNext())
+                    return false;
+
+                if (pipe.next() != this.next())
+                    return false;
+            }
+            return true;
+        }
     }
 }
