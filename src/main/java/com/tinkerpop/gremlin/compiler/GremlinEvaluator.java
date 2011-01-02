@@ -59,7 +59,6 @@
     import com.tinkerpop.pipes.pgm.PropertyPipe;
     import com.tinkerpop.pipes.filter.FilterPipe;
     import com.tinkerpop.pipes.filter.FutureFilterPipe;
-    import com.tinkerpop.pipes.util.EndSupportPipe;
 
     import com.tinkerpop.gremlin.compiler.pipes.GremlinPipesHelper;
 
