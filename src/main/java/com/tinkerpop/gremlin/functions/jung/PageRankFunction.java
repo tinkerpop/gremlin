@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.functions.jung;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.jung.JungGraph;
+import com.tinkerpop.blueprints.pgm.oupls.jung.GraphJung;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -77,9 +77,9 @@ public class PageRankFunction extends AbstractFunction<Map<Vertex, Double>> {
         PageRank<Vertex, Edge> pageRank;
         Transformer<Edge, Number> transformer = JungFunctionHelper.makeTransformer(JungFunctionHelper.makeSetList(labels), filter, 0.0d, true, weightKey, normalize, false);
         if (null == transformer) {
-            pageRank = new PageRank<Vertex, Edge>(new JungGraph(graph), alpha);
+            pageRank = new PageRank<Vertex, Edge>(new GraphJung(graph), alpha);
         } else {
-            pageRank = new PageRank<Vertex, Edge>(new JungGraph(graph), transformer, alpha);
+            pageRank = new PageRank<Vertex, Edge>(new GraphJung(graph), transformer, alpha);
         }
         pageRank.evaluate();
         Map<Vertex, Double> scores = new HashMap<Vertex, Double>();

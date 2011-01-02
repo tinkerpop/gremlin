@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.functions.g.graph;
 
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.parser.GraphMLWriter;
+import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;

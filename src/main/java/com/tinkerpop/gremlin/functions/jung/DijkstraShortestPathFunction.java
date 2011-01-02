@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.functions.jung;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.jung.JungGraph;
+import com.tinkerpop.blueprints.pgm.oupls.jung.GraphJung;
 import com.tinkerpop.gremlin.compiler.context.GremlinScriptContext;
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
@@ -85,9 +85,9 @@ public class DijkstraShortestPathFunction extends AbstractFunction<List<Edge>> {
         DijkstraShortestPath<Vertex, Edge> dsp;
         Transformer<Edge, Number> transformer = JungFunctionHelper.makeTransformer(JungFunctionHelper.makeSetList(labels), filter, Double.MAX_VALUE, false, weightKey, null, invert);
         if (null == transformer) {
-            dsp = new DijkstraShortestPath<Vertex, Edge>(new JungGraph(graph), true);
+            dsp = new DijkstraShortestPath<Vertex, Edge>(new GraphJung(graph), true);
         } else {
-            dsp = new DijkstraShortestPath<Vertex, Edge>(new JungGraph(graph), transformer, true);
+            dsp = new DijkstraShortestPath<Vertex, Edge>(new GraphJung(graph), transformer, true);
 
         }
         return new Atom<List<Edge>>(dsp.getPath(sourceVertex, targetVertex));

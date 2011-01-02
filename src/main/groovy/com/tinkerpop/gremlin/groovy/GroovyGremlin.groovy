@@ -1,10 +1,8 @@
 package com.tinkerpop.gremlin.groovy;
 
-
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Graph
-import com.tinkerpop.gremlin.compiler.pipes.GatherPipe
 import com.tinkerpop.gremlin.groovy.Filters.F
 import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
@@ -14,6 +12,7 @@ import com.tinkerpop.pipes.filter.FutureFilterPipe
 import com.tinkerpop.pipes.filter.RangeFilterPipe
 import com.tinkerpop.pipes.merge.RobinMergePipe
 import com.tinkerpop.pipes.split.CopySplitPipe
+import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
 import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
