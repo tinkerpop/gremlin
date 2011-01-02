@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.compiler.pipes;
 import com.tinkerpop.gremlin.BaseTest;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.SingleIterator;
 
 import java.util.Arrays;
 import java.util.HashMap;

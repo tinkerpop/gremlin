@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class OrFutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPipe<S> {
 
-    private final List<Pipe<S, ?>> pipes = new ArrayList<Pipe<S,?>>();
+    private final List<Pipe<S, ?>> pipes = new ArrayList<Pipe<S, ?>>();
 
 
     public OrFutureFilterPipe(final Pipe<S, ?>... pipes) {
@@ -34,7 +34,7 @@ public class OrFutureFilterPipe<S> extends AbstractPipe<S, S> implements FilterP
         }
     }
 
-    public void addPipe(Pipe<S,?> pipe) {
+    public void addPipe(Pipe<S, ?> pipe) {
         this.pipes.add(pipe);
     }
 

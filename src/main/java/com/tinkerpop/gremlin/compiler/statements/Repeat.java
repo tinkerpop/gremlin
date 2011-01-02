@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.compiler.statements;
 
 import com.tinkerpop.gremlin.compiler.operations.Operation;
 import com.tinkerpop.gremlin.compiler.types.Atom;
-import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 import com.tinkerpop.gremlin.compiler.types.Return;
+import com.tinkerpop.gremlin.compiler.util.CodeBlock;
 
 /**
  * @author Pavel A. Yaskevich
@@ -35,7 +35,7 @@ public class Repeat implements Operation {
 
                 for (int i = 0; i < times.intValue(); i++) {
                     Atom atom = this.block.invoke();
-                    if(atom instanceof Return) {
+                    if (atom instanceof Return) {
                         return atom;
                     }
                 }

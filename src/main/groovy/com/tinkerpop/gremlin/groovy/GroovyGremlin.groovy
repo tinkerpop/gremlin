@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.groovy;
 
+
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Graph
