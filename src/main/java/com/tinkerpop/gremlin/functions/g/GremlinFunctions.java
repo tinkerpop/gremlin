@@ -36,6 +36,7 @@ public class GremlinFunctions extends AbstractFunctions {
         functions.add(new KeyEdgeFunction());
         functions.add(new KeyVertexFunction());
         functions.add(new LoadFunction());
+        functions.add(new ReIndexFunction());
         functions.add(new RemoveAutoIndexKeyFunction());
         functions.add(new RemoveVertexEdgeFunction());
         functions.add(new SaveFunction());
