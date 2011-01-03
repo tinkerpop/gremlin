@@ -30,6 +30,8 @@ if [ "$1" = "-e" ]; then
 else
   if [ "$1" = "-v" ]; then
     $JAVA $JAVA_OPTIONS -cp $CP com.tinkerpop.gremlin.Version
+  elif [ "$1" = "-g" ]; then
+    $JAVA $JAVA_OPTIONS -cp $CP com.tinkerpop.gremlin.groovy.Console
   else
     $JAVA $JAVA_OPTIONS -cp $CP com.tinkerpop.gremlin.Console
   fi

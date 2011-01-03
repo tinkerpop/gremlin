@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.groovy
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.groovy.Filters.F
+import com.tinkerpop.gremlin.groovy.Tokens.F
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import junit.framework.TestCase
@@ -13,26 +13,19 @@ class GroovyGremlinTest extends TestCase {
   public void testGremlinGroovy() {
     new GroovyGremlin();
 
-    /*Graph g = new TinkerGraph();
-    GraphMLReader.inputGraph(g, new FileInputStream("/Users/marko/software/gremlin/data/graph-example-2.xml"));
-    g.v(89).outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.each{}
-    g.v(89).outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.each{}
-    
-    long t = System.currentTimeMillis();
-    int counter = PipeHelper.counter(g.v(89).outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV.outE[[label:'followed_by']].inV);
-    t = System.currentTimeMillis() - t
-    System.out.println(t + ":" + counter);*/
-
     Graph g = TinkerGraphFactory.createTinkerGraph();
-    def name = "jen";
-    g.v(1).outE().inV.paths.step {name = starts.next()[2]}.each {println it}
-    println name
+    [g.v(1),g.v(2)].outE().each{println it}
+    //g.idx('vertices')[[name:'marko']].outE.inV.each{println it}
+  }
 
-    Pipe pipe = GroovyGremlin.compile("outE().inV.name.gather");
+  public void testCompilation() throws Exception {
+    new GroovyGremlin();
+    Graph g= TinkerGraphFactory.createTinkerGraph();
+
+    Pipe pipe = GroovyGremlin.compile("outE.inV.name");
     pipe.setStarts(g.v(1).iterator());
-    def list = [];
-    pipe >> list;
-    println list;
+    (pipe>>3).each{assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas") )}
+    assertFalse(pipe.hasNext());
   }
 
   public void testPipelineVariations() throws Exception {
@@ -52,9 +45,9 @@ class GroovyGremlinTest extends TestCase {
   public void testSideEffects() throws Exception {
     new GroovyGremlin();
     def x = 0;
-    [1, 2, 3].step {x = starts.next()}.each {}
+    [1, 2, 3].step {x = starts.next()}>>-1
     assertEquals(x, 3);
-    [3, 2, 1].step {x = starts.next()}.each {}
+    [3, 2, 1].step {x = starts.next()}>>-1
     assertEquals(x, 1);
   }
 
