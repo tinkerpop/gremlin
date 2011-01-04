@@ -17,7 +17,7 @@ if "%1" == "-e" goto script
 if "%1" == "-v" goto version
 
 :console
-java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.Console
+java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.console.Console
 goto :eof
 
 :script
@@ -28,7 +28,7 @@ FOR %%X IN (%*) DO (
 CALL :concat %%X %1 %2
 )
 
-java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.ScriptExecutor %strg%
+java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.jsr223.ScriptExecutor %strg%
 goto :eof
 
 :version
