@@ -9,7 +9,21 @@ bc. <repository>
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremalicious.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png!
+
+h3. Version 0.7 (Gremopoly -- NOT OFFICIALLY RELEASED)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.7-SNAPHOT</version>
+</dependency>
+
+* Changed to "Groovy":http://groovy.codehaus.org/ as the host language
+
+==<hr/>==
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremalicious.png!
 
 h3. Version 0.6 (Gremalicious -- December 14, 2010)
 
@@ -36,7 +50,7 @@ bc. <dependency>
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlivich.png!
 
 h3. Version 0.5.5 (Gremlivich -- October 28, 2010)
 
@@ -99,7 +113,7 @@ bc. <dependency>
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremicide.png!
 
 h3. Version 0.2.2 (Gremicide -- March 7, 2010)
 
@@ -165,7 +179,7 @@ bc. <dependency>
 
 ==<hr/>==
 
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-xmas-alpha.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-xmas-alpha.png!
 
 h3. Version 0.1 (XMas Alpha -- December 25, 2009)
 
