@@ -5,8 +5,10 @@ package com.tinkerpop.gremlin.groovy;
  */
 public class Tokens {
 
-    public enum F {
-        eq, neq, lt, lte, gt, gte
+    public enum T {
+        eq, neq, lt, lte, gt, gte,
+        v, e
     }
-    
+
+
 }

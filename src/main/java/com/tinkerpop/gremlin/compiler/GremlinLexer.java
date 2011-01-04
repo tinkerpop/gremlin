@@ -1800,7 +1800,7 @@ public class GremlinLexer extends Lexer {
     // $ANTLR start "HexDigit"
     public final void mHexDigit() throws RecognitionException {
         try {
-            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:2: ( DecimalDigit | ( 'a' .. 'f' ) | ( 'A' .. 'F' ) )
+            // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:2: ( DecimalDigit | ( 'a' .. 'f' ) | ( 'A' .. '_' ) )
             int alt18 = 3;
             switch (input.LA(1)) {
                 case '0':
@@ -1862,10 +1862,10 @@ public class GremlinLexer extends Lexer {
                 }
                 break;
                 case 3:
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:32: ( 'A' .. 'F' )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:32: ( 'A' .. '_' )
                 {
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:32: ( 'A' .. 'F' )
-                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:33: 'A' .. 'F'
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:32: ( 'A' .. '_' )
+                    // src/main/java/com/tinkerpop/gremlin/compiler/Gremlin.g:350:33: 'A' .. '_'
                     {
                         matchRange('A', 'F');
 

@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin.groovy;
 
 
-import com.tinkerpop.gremlin.groovy.Tokens.F
+import com.tinkerpop.gremlin.groovy.Tokens.T
+
 import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
@@ -23,11 +24,22 @@ class GroovyGremlin {
   private final String LABEL = "label";
   private final String V = "V";
   private final String E = "E";
+  private final String VERTICES = "vertices";
+  private final String EDGES = "edges"
   private Set tokens;
 
   GroovyGremlin() {
 
     Object.metaClass.propertyMissing = {final String name ->
+      if (this.tokens.contains(name)) {
+        return delegate."$name"();
+      } else {
+        throw new MissingPropertyException(name, delegate.getClass());
+      }
+    }
+
+    List.metaClass.propertyMissing = {final String name ->
+      println "heko!"
       if (this.tokens.contains(name)) {
         return delegate."$name"();
       } else {
@@ -168,7 +180,7 @@ class GroovyGremlin {
       return merge;
     }
 
-    Object.metaClass.propf = {final String key, final F f, final Object value ->
+    Object.metaClass.propf = {final String key, final T f, final Object value ->
       if (key.equals(ID)) {
         return compose(delegate, new IdFilterPipe(value, mapFilter(f)), null);
       } else if (key.equals(LABEL)) {
@@ -238,7 +250,13 @@ class GroovyGremlin {
       return delegate.getEdge(id);
     }
 
-    IndexableGraph.metaClass.idx = {final String name ->
+    IndexableGraph.metaClass.idx = {final Object idx ->
+      String name;
+      if (idx.equals(T.v))
+        name = VERTICES else if (idx.equals(T.e))
+        name = EDGES else
+        name = idx.toString()
+
       return delegate.getIndices().find {it.getIndexName().equals(name)}
     }
 
@@ -253,14 +271,14 @@ class GroovyGremlin {
     this.tokens.remove("propertyMissing");
   }
 
-  private static Filter mapFilter(final f) {
-    if (f == f.eq)
-      return Filter.NOT_EQUAL; else if (f == f.neq)
-      return Filter.EQUAL; else if (f == f.lt)
-        return Filter.GREATER_THAN_EQUAL; else if (f == f.lte)
-          return Filter.GREATER_THAN; else if (f == f.gt)
-            return Filter.LESS_THAN_EQUAL; else
-            return Filter.LESS_THAN;
+  private static Filter mapFilter(final t) {
+    if (t == t.eq)
+      return Filter.NOT_EQUAL else if (t == t.neq)
+      return Filter.EQUAL else if (t == t.lt)
+        return Filter.GREATER_THAN_EQUAL else if (t == t.lte)
+          return Filter.GREATER_THAN else if (t == t.gt)
+            return Filter.LESS_THAN_EQUAL else
+            return Filter.LESS_THAN
 
   }
 

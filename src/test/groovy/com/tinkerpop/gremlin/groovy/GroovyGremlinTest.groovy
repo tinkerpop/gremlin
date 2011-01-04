@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.groovy
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.groovy.Tokens.F
+import com.tinkerpop.gremlin.groovy.Tokens.T
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import junit.framework.TestCase
@@ -39,7 +39,7 @@ class GroovyGremlinTest extends TestCase {
 
     assertEquals(g.v(1).outE {it.label == 'knows' | it.label == 'created'}.inV {it.id == '4' & it.name == name}.next(), josh);
     assertEquals(g.v(1).outE._(i()[[label: 'knows']] | i()[[label: 'created']]).inV._(i()[[id: '4']] & i()[[name: name]]).next(), josh);
-    assertEquals(g.v(1).outE._(propf('label', F.eq, 'knows') | propf('label', F.eq, 'created')).inV._(propf('id', F.eq, '4') & propf('name', F.eq, name)).next(), josh);
+    assertEquals(g.v(1).outE._(propf('label', T.eq, 'knows') | propf('label', T.eq, 'created')).inV._(propf('id', T.eq, '4') & propf('name', T.eq, name)).next(), josh);
   }
 
   public void testSideEffects() throws Exception {
@@ -71,16 +71,16 @@ class GroovyGremlinTest extends TestCase {
     assertTrue(["vadas", "josh"].contains(g.v(1).outE[[label: 'knows']].inV[0].name >> 1));
     assertTrue(["vadas", "josh"].contains(g.v(1).outE[[label: 'knows']].inV[1].name >> 1));
 
-    assertEquals(PipeHelper.counter(g.v(1).outE[[weight: [F.gte, 0.5f]]].inV.i.i.i), 2);
-    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [F.gte, 0.5f]]].inV.i.i.i[0].name >> 1));
-    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [F.gte, 0.5f]]].inV.i.i.i[1].name >> 1));
+    assertEquals(PipeHelper.counter(g.v(1).outE[[weight: [T.gte, 0.5f]]].inV.i.i.i), 2);
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [T.gte, 0.5f]]].inV.i.i.i[0].name >> 1));
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [T.gte, 0.5f]]].inV.i.i.i[1].name >> 1));
 
     assertEquals(PipeHelper.counter(g.v(1).outE {it.weight >= g.v(1).outE['weight'][0] >> 1}.inV), 2);
     assertTrue(["vadas", "josh"].contains(g.v(1).outE {it.weight >= g.v(1).outE['weight'][0] >> 1}.inV[0].name >> 1));
-    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [F.gte, g.v(1).outE['weight'][0] >> 1]]].inV[1].name >> 1));
+    assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [T.gte, g.v(1).outE['weight'][0] >> 1]]].inV[1].name >> 1));
 
     assertEquals(PipeHelper.counter(g.v(1).inE), 0);
-    assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: [F.neq, null]]]), 0)
+    assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: [T.neq, null]]]), 0)
     assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: null]]), 3)
 
   }
@@ -118,7 +118,7 @@ class GroovyGremlinTest extends TestCase {
     assertTrue(["created", "knows"].contains(g.v(1).outE.label[2] >> 1));
   }
 
-  public void testVertexEdgeGraphProperties() throws Exception {
+  public void testVertexEdgeShortcuts() throws Exception {
     new GroovyGremlin();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
@@ -137,6 +137,14 @@ class GroovyGremlinTest extends TestCase {
     assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[3] >> 1));
     assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][4] >> 1));
     assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[5] >> 1));
+  }
+
+  public void testIndexShortcuts() throws Exception {
+    new GroovyGremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals((g.idx(T.v)[[name:'marko']] as List)[0], g.v(1));
+    assertEquals(g.idx(T.e)[[label:'created']].size(), 4);
   }
 
   public void testPathEquality() throws Exception {

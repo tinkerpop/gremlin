@@ -1,17 +1,18 @@
 package com.tinkerpop.gremlin.groovy;
 
 import com.tinkerpop.pipes.SingleIterator;
-import jline.ConsoleReader;
+import groovy.lang.Closure;
 import jline.History;
+import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 import org.codehaus.groovy.tools.shell.Groovysh;
 import org.codehaus.groovy.tools.shell.IO;
+import org.codehaus.groovy.tools.shell.InteractiveShellRunner;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -19,8 +20,6 @@ import java.util.Map;
 public class Console {
 
     private static final String PROMPT = "gremlin> ";
-    private static final String EMPTY = "";
-    private static final String QUIT = "quit";
     private static final String RETURN = "==>";
     private static final String HISTORY_FILE = ".gremlin_history";
     private static final String HISTORY_ERROR = "Error: Can't set history file to " + HISTORY_FILE;
@@ -29,17 +28,6 @@ public class Console {
     public static void main(String[] args) throws Exception {
         final PrintStream output = System.out;
 
-        final ConsoleReader reader = new ConsoleReader();
-        reader.setBellEnabled(false);
-        reader.setUseHistory(true);
-
-        try {
-            History history = new History();
-            history.setHistoryFile(new File(HISTORY_FILE));
-            reader.setHistory(history);
-        } catch (IOException e) {
-            System.err.println(HISTORY_ERROR);
-        }
 
         output.println();
         output.println("         \\,,,/");
@@ -47,50 +35,114 @@ public class Console {
         output.println("-----oOOo-(_)-oOOo-----");
 
 
-        Groovysh groovy = new Groovysh(new IO(System.in, new NullOutputStream(), System.err));
+        Groovysh groovy = new Groovysh(new IO(System.in, System.out, System.err));
+        groovy.setResultHook(new NullResultHookClosure(groovy));
+        groovy.execute("import com.tinkerpop.gremlin.groovy.*");
+        groovy.execute("import com.tinkerpop.gremlin.groovy.Tokens.T");
         groovy.execute("import com.tinkerpop.blueprints.pgm.*");
         groovy.execute("import com.tinkerpop.blueprints.pgm.impls.tg.*");
-        //groovy.execute("new GroovyGremlin()");
+        groovy.setResultHook(new ResultHookClosure(groovy));
+        groovy.setHistory(new History());
+        groovy.getHistory().setHistoryFile(new File(HISTORY_FILE));
+
+        InteractiveShellRunner runner = new InteractiveShellRunner(groovy, new PromptClosure(groovy));
+        runner.setErrorHandler(new ErrorHookClosure(runner));
+        //groovy.setRunner(runner);
 
         new GroovyGremlin();
-        String line = "";
-        while (line != null) {
-            try {
-                line = reader.readLine(PROMPT).trim();
-                if (line.equals(QUIT))
-                    return;
-                Object result = groovy.execute(line);
-                if (result == null) {
-                    while (result == null) {
-                        result = groovy.execute(reader.readLine(EMPTY).trim());
-                    }
-                }
+        try {
+            runner.run();
+        } catch (Error e) {
+            System.exit(0);
+        }
+    }
 
-                Iterator itty;
-                if (result instanceof Iterator) {
-                    itty = (Iterator) result;
-                } else if (result instanceof Iterable) {
-                    itty = ((Iterable) result).iterator();
-                } else if (result instanceof Map) {
-                    itty = ((Map) result).entrySet().iterator();
-                } else {
-                    itty = new SingleIterator<Object>(result);
-                }
+    private static class ArrayIterator implements Iterator {
 
-                while (itty.hasNext()) {
-                    output.println(RETURN + itty.next());
-                }
-            } catch (Exception e) {
-                output.println(e.getMessage().replace("startup failed:", "").replace("groovysh_parse:","").trim());
+        private Object[] array;
+        private int count = 0;
+
+        public ArrayIterator(final Object[] array) {
+            this.array = array;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        public Object next() {
+            if (count > array.length)
+                throw new NoSuchElementException();
+
+            return array[count++];
+        }
+
+        public boolean hasNext() {
+            return count < array.length;
+        }
+    }
+
+    private static class ErrorHookClosure extends Closure {
+        public ErrorHookClosure(Object owner) {
+            super(owner);
+        }
+
+        public Object call(Object[] args) {
+            MultipleCompilationErrorsException e = (MultipleCompilationErrorsException) args[0];
+            String message = e.getMessage();
+            message = message.replace("startup failed:", "");
+            System.out.println(message.trim());
+            return null;
+        }
+    }
+
+    private static class ResultHookClosure extends Closure {
+        public ResultHookClosure(Object owner) {
+            super(owner);
+        }
+
+        public Object call(Object[] args) {
+            Object result = args[0];
+            Iterator itty;
+            if (result instanceof Iterator) {
+                itty = (Iterator) result;
+            } else if (result instanceof Iterable) {
+                itty = ((Iterable) result).iterator();
+            } else if (result instanceof Object[]) {
+                itty = new ArrayIterator((Object[]) result);
+            } else if (result instanceof Map) {
+                itty = ((Map) result).entrySet().iterator();
+            } else {
+                itty = new SingleIterator<Object>(result);
             }
 
+            while (itty.hasNext()) {
+                System.out.println(RETURN + itty.next());
+            }
+
+            return null;
         }
     }
 
-    private static class NullOutputStream extends OutputStream {
-        public void write(int value) {
+    private static class NullResultHookClosure extends Closure {
+        public NullResultHookClosure(Object owner) {
+            super(owner);
+        }
 
+        public Object call(Object[] args) {
+            return null;
         }
     }
+
+    private static class PromptClosure extends Closure {
+        public PromptClosure(Object owner) {
+            super(owner);
+        }
+
+        public Object call() {
+            return PROMPT;
+        }
+    }
+
 
 }
