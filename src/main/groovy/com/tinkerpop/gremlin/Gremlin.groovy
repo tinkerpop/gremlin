@@ -43,15 +43,6 @@ class Gremlin {
       }
     }
 
-    List.metaClass.propertyMissing = {final String name ->
-      println "heko!"
-      if (this.tokens.contains(name)) {
-        return delegate."$name"();
-      } else {
-        throw new MissingPropertyException(name, delegate.getClass());
-      }
-    }
-
     Pipe.metaClass.propertyMissing = {final String name ->
       if (this.tokens.contains(name)) {
         return delegate."$name"();
