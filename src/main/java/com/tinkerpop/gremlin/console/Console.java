@@ -7,6 +7,7 @@ import org.codehaus.groovy.tools.shell.IO;
 import org.codehaus.groovy.tools.shell.InteractiveShellRunner;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,7 +16,7 @@ public class Console {
 
     private static final String HISTORY_FILE = ".gremlin_history";
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(final String[] args) {
         IO io = new IO(System.in, System.out, System.err);
         io.out.println();
         io.out.println("         \\,,,/");
@@ -40,8 +41,11 @@ public class Console {
 
         final InteractiveShellRunner runner = new InteractiveShellRunner(groovy, new PromptClosure(groovy));
         runner.setErrorHandler(new ErrorHookClosure(runner, io));
-        runner.setHistory(new History(new File(HISTORY_FILE)));
-        //runner.setHistoryFile(new File(HISTORY_FILE));
+        try {
+            runner.setHistory(new History(new File(HISTORY_FILE)));
+        } catch (IOException e) {
+            io.err.println("Unable to create history file: " + HISTORY_FILE);
+        }
 
         new Gremlin();
         try {
