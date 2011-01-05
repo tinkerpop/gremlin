@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.Tokens;
+import com.tinkerpop.gremlin.GremlinTokens;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Version {
 
     public static void main(final String[] arguments) throws IOException {
-        System.out.println("gremlin " + Tokens.VERSION);
+        System.out.println("gremlin " + GremlinTokens.VERSION);
     }
 }
 

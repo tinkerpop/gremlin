@@ -1,8 +1,7 @@
 package com.tinkerpop.gremlin;
 
 
-import com.tinkerpop.gremlin.Tokens.T
-
+import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
@@ -16,12 +15,8 @@ import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
 import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.blueprints.pgm.*
+import com.tinkerpop.gremlin.pipes.*
 import com.tinkerpop.pipes.pgm.*
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
-import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
-import com.tinkerpop.gremlin.pipes.ClosurePipe
-import com.tinkerpop.gremlin.pipes.OrFutureFilterPipe
-import com.tinkerpop.gremlin.pipes.AndFutureFilterPipe
 
 class Gremlin {
 
@@ -31,6 +26,7 @@ class Gremlin {
   private final String E = "E";
   private final String VERTICES = "vertices";
   private final String EDGES = "edges"
+
   private Set tokens;
 
   Gremlin() {
@@ -230,6 +226,26 @@ class Gremlin {
       return compose(delegate, new IdentityPipe(), closure)
     }
 
+    Element.metaClass.map = {
+      final Map<String, Object> map = new HashMap<String, Object>();
+      for (final String key: delegate.getPropertyKeys()) {
+        map.put(key, delegate.getProperty(key));
+      }
+      return map;
+    }
+
+    Element.metaClass.keys = {
+      return delegate.getPropertyKeys();
+    }
+
+    Element.metaClass.values = {
+      final List values = new ArrayList();
+      for(final String key: delegate.getPropertyKeys()) {
+        values.add(delegate.getProperty(key))
+      }
+      return values;
+    }
+ 
     Graph.metaClass.V = {final Closure closure ->
       return compose(delegate, new GraphElementPipe(GraphElementPipe.ElementType.VERTEX), closure)
     }

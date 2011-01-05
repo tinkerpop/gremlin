@@ -6,7 +6,7 @@
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
     <version>0.7-SNAPSHOT</version>
-    <!-- DON'T FORGET TO UPDATE Tokens.VERSION AT RELEASE -->
+    <!-- DON'T FORGET TO UPDATE GremlinTokens.VERSION AT RELEASE -->
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph Traversal Language</name>

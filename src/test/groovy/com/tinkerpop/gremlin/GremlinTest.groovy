@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.Tokens.T
+import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import junit.framework.TestCase
@@ -14,17 +14,17 @@ class GremlinTest extends TestCase {
     new Gremlin();
 
     Graph g = TinkerGraphFactory.createTinkerGraph();
-    [g.v(1),g.v(2)].outE().each{println it}
+    [g.v(1), g.v(2)].outE().each {println it}
     //g.idx('vertices')[[name:'marko']].outE.inV.each{println it}
   }
 
   public void testCompilation() throws Exception {
     new Gremlin();
-    Graph g= TinkerGraphFactory.createTinkerGraph();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
 
     Pipe pipe = Gremlin.compile("outE.inV.name");
     pipe.setStarts(g.v(1).iterator());
-    (pipe>>3).each{assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas") )}
+    (pipe >> 3).each {assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))}
     assertFalse(pipe.hasNext());
   }
 
@@ -45,9 +45,9 @@ class GremlinTest extends TestCase {
   public void testSideEffects() throws Exception {
     new Gremlin();
     def x = 0;
-    [1, 2, 3].step {x = starts.next()}>>-1
+    [1, 2, 3].step {x = starts.next()} >> -1
     assertEquals(x, 3);
-    [3, 2, 1].step {x = starts.next()}>>-1
+    [3, 2, 1].step {x = starts.next()} >> -1
     assertEquals(x, 1);
   }
 
@@ -143,8 +143,8 @@ class GremlinTest extends TestCase {
     new Gremlin();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
-    assertEquals((g.idx(T.v)[[name:'marko']] as List)[0], g.v(1));
-    assertEquals(g.idx(T.e)[[label:'created']].size(), 4);
+    assertEquals((g.idx(T.v)[[name: 'marko']] as List)[0], g.v(1));
+    assertEquals(g.idx(T.e)[[label: 'created']].size(), 4);
   }
 
   public void testPathEquality() throws Exception {

@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Tokens {
+public class GremlinTokens {
 
     public static final String VERSION = "0.7-SNAPSHOT";
 

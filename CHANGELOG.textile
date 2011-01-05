@@ -16,7 +16,7 @@ h3. Version 0.7 (Gremopoly -- NOT OFFICIALLY RELEASED)
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.7-SNAPHOT</version>
+  <version>0.7-SNAPSHOT</version>
 </dependency>
 
 * Changed to "Groovy":http://groovy.codehaus.org/ as the host language

@@ -26,7 +26,7 @@ public class Console {
         final Groovysh groovy = new Groovysh();
         groovy.setResultHook(new NullResultHookClosure(groovy));
         groovy.execute("import com.tinkerpop.gremlin.*");
-        groovy.execute("import com.tinkerpop.gremlin.Tokens.T");
+        groovy.execute("import com.tinkerpop.gremlin.GremlinTokens.T");
         groovy.execute("import com.tinkerpop.blueprints.pgm.*");
         groovy.execute("import com.tinkerpop.blueprints.pgm.impls.tg.*");
         groovy.execute("import com.tinkerpop.blueprints.pgm.impls.neo4j.*");
