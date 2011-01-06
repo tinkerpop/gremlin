@@ -40,8 +40,8 @@ class GremlinTest extends TestCase {
     assertEquals(g.v(1).outE.inV[[id: '4']].next(), josh);
 
     assertEquals(g.v(1).outE {it.label == 'knows' | it.label == 'created'}.inV {it.id == '4' & it.name == name}.next(), josh);
-    assertEquals(g.v(1).outE.link(_()[[label: 'knows']] | _()[[label: 'created']]).inV.link(_()[[id: '4']] & _()[[name: name]])>>1, josh);
-    assertEquals(g.v(1).outE.link(_().propf('label', T.eq, 'knows') | _().propf('label', T.eq, 'created')).inV.link(_().propf('id', T.eq, '4') & _().propf('name', T.eq, name)).next(), josh);
+    assertEquals(g.v(1).outE.orf(_()[[label: 'knows']],  _()[[label: 'created']]).inV.andf(_()[[id: '4']], _()[[name: name]])>>1, josh);
+    assertEquals(g.v(1).outE.orf(_().propf('label', T.eq, 'knows'), _().propf('label', T.eq, 'created')).inV.andf(_().propf('id', T.eq, '4'), _().propf('name', T.eq, name)).next(), josh);
   }
 
   public void testSideEffects() throws Exception {
@@ -63,7 +63,7 @@ class GremlinTest extends TestCase {
     assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[2].name >> 1));
 
     assertEquals(PipeHelper.counter(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV), 3);
-    assertEquals(PipeHelper.counter(g.v(1).outE.link(_()[[label: 'created']] | _()[[label: 'knows']]).inV), 3);
+    assertEquals(PipeHelper.counter(g.v(1).outE.orf(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
     assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[0].name >> 1));
     assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[1].name >> 1));
     assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[2].name >> 1));
@@ -149,7 +149,18 @@ class GremlinTest extends TestCase {
     assertEquals(g.idx(T.e)[[label: 'created']].size(), 4);
   }
 
-  public void testPathEquality() throws Exception {
+  public void testExceptPattern() throws Exception {
+    new Gremlin();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    def x = []
+    def results = [];
+    g.v(1).outE.inV{x << it}.outE.inV{!x.contains(it)} >> results
+    assertEquals(results.size(), 1);
+    assertEquals(results.get(0), g.v(5));
+  }
+
+  public void testPipelineEquality() throws Exception {
     new Gremlin();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 

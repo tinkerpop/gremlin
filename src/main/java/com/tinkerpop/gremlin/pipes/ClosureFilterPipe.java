@@ -19,7 +19,11 @@ public class ClosureFilterPipe<S> extends AbstractPipe<S, S> implements FilterPi
     public S processNextStart() {
         while (true) {
             final S start = this.starts.next();
-            if ((Boolean) closure.call(start))
+            Object result = closure.call(start);
+            if (result instanceof Boolean) {
+                if ((Boolean) result)
+                    return start;
+            } else if (null != result)
                 return start;
         }
     }
