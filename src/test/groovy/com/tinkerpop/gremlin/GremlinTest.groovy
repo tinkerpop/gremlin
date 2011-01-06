@@ -24,10 +24,16 @@ class GremlinTest extends TestCase {
     new Gremlin();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
+    // test imports
+    // todo: Gremlin.compile("new IdentityPipe()");
+
+    // test compilation
     Pipe pipe = Gremlin.compile("_.outE.inV.name");
     pipe.setStarts(g.v(1).iterator());
     (pipe >> 3).each {assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))}
     assertFalse(pipe.hasNext());
+
+
   }
 
   public void testPipelineVariations() throws Exception {

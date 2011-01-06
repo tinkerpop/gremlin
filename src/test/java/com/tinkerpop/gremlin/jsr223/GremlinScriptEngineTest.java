@@ -21,4 +21,9 @@ public class GremlinScriptEngineTest extends BaseTest {
         engine.eval("g.v(1).outE.inV >> list");
         assertEquals(list.size(), 3);
     }
+
+    public void testImports() throws Exception {
+        ScriptEngine engine = new GremlinScriptEngine();
+        //todo: engine.eval("new TinkerGraph()");
+    }
 }

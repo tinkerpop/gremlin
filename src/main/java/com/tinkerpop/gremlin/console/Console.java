@@ -25,17 +25,9 @@ public class Console {
 
         final Groovysh groovy = new Groovysh();
         groovy.setResultHook(new NullResultHookClosure(groovy));
-        groovy.execute("import com.tinkerpop.gremlin.*");
-        groovy.execute("import com.tinkerpop.gremlin.GremlinTokens.T");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.impls.tg.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.impls.neo4j.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.impls.orientdb.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.impls.rexster.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.impls.sail.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.util.*");
-        groovy.execute("import com.tinkerpop.blueprints.pgm.util.graphml.*");
+        for (String imps : Imports.getImports()) {
+            groovy.execute("import " + imps);
+        }
         groovy.setResultHook(new ResultHookClosure(groovy, io));
         groovy.setHistory(new History());
 
@@ -51,7 +43,7 @@ public class Console {
         try {
             runner.run();
         } catch (Error e) {
-            System.exit(0);
+            System.err.println(e.getMessage());
         }
     }
 }

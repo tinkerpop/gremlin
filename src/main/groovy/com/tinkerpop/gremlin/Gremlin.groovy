@@ -24,13 +24,12 @@ import com.tinkerpop.pipes.util.ScatterPipe
 import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.blueprints.pgm.*
 import com.tinkerpop.pipes.pgm.*
+import com.tinkerpop.gremlin.console.Imports
 
 class Gremlin {
 
   private final String ID = "id";
   private final String LABEL = "label";
-  private final String V = "V";
-  private final String E = "E";
   private final String VERTICES = "vertices";
   private final String EDGES = "edges"
 
@@ -178,7 +177,7 @@ class Gremlin {
       return compose(delegate, new SideEffectCapPipe(new CountCombinePipe()), closure)
     }
 
-    Pipe.metaClass.split = {final Pipe ... pipes ->
+    /*Pipe.metaClass.split = {final Pipe ... pipes ->
       CopySplitPipe split = new CopySplitPipe(pipes.length);
       for (int i = 0; i < pipes.length; i++) {
         pipes[i].setStarts((Iterator) split.getSplit(i));
@@ -187,7 +186,7 @@ class Gremlin {
       merge.setStarts(pipes.iterator());
       compose(delegate, split, null);
       return merge;
-    }
+    }*/
 
 
     Object.metaClass.andf = {final Pipe ... pipes ->
@@ -366,11 +365,9 @@ class Gremlin {
     return pipeline;
   }
 
-  public static Pipe compile(String gremlin) {
-    return (Pipe) GroovyShell.newInstance().evaluate(gremlin);
-  }
-
-  public static Collection getSteps(Class clazz) {
-    return clazz.metaClass.methods.findAll {it instanceof ClosureMetaMethod & !it.name.equals("propertyMissing")}.collect {it};
+  public static Pipe compile(final String gremlin) {
+    GroovyShell groovy = GroovyShell.newInstance()
+    Imports.getImports().each{groovy.evaluate("import " + it)}
+    return (Pipe) groovy.evaluate(gremlin);
   }
 }
