@@ -194,4 +194,30 @@ class GremlinTest extends TestCase {
 
     assertEquals(g.v(1).outE.gather{ starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
   }
+
+  public void testGroupCountStep() throws Exception {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    def m = g.E.bothV.group_count >> 1
+    def n = m.clone()
+    g.E.bothV.group_count(n) >>-1
+
+    m.each{key,value -> assertEquals(value / 1, n[key] / 2)};
+  }
+
+  public void testRightShiftSetStarts() throws Exception {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    def list = []
+    (g.v(1)>>_().outE.inV.name) >> list
+    assertTrue(list.contains("lop"));
+    assertTrue(list.contains("vadas"));
+    assertTrue(list.contains("josh"));
+
+    list = []
+    g.v(1)>>_().outE.inV.name>>list
+    assertTrue(list.contains("lop"));
+    assertTrue(list.contains("vadas"));
+    assertTrue(list.contains("josh"));
+  }
 }

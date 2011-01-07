@@ -10,7 +10,7 @@ import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
-import com.tinkerpop.pipes.sideeffect.CountCombinePipe
+import com.tinkerpop.pipes.sideeffect.GroupCountPipe
 import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
@@ -80,25 +80,42 @@ class Gremlin {
       }
     }
 
+    Object.metaClass.rightShift = {final Pipe pipe ->
+      compose(delegate, pipe);
+    }
+
     [Iterator, Iterable].each {
       it.metaClass.rightShift = {final Collection collection ->
-        PipeHelper.fillCollection((Iterator) delegate, collection);
+        final Iterator itty;
+        if (delegate instanceof Iterable) {
+          itty = delegate.iterator();
+        } else {
+          itty = (Iterator) delegate;
+        }
+        PipeHelper.fillCollection(itty, collection);
         return collection;
       }
     }
 
     [Iterator, Iterable].each {
       it.metaClass.rightShift = {final Integer count ->
+        final Iterator itty;
+        if (delegate instanceof Iterable) {
+          itty = delegate.iterator();
+        } else {
+          itty = (Iterator) delegate;
+        }
+
         if (count == -1) {
-          while (delegate.hasNext()) {
-            delegate.next();
+          while (itty.hasNext()) {
+            itty.next();
           }
         } else if (count == 1) {
-          return delegate.next();
+          return itty.next();
         } else {
           List objects = new ArrayList();
           for (int i = 0; i < count; i++) {
-            objects.add(delegate.next());
+            objects.add(itty.next());
           }
           return objects;
         }
@@ -163,8 +180,14 @@ class Gremlin {
     }
 
     [Iterator, Iterable].each {
-      it.metaClass.group_count = {final Closure closure ->
-        return compose(delegate, new SideEffectCapPipe(new CountCombinePipe()), closure)
+      it.metaClass.group_count = { final Map map ->
+        return compose(delegate, new SideEffectCapPipe(new GroupCountPipe(map)))
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.group_count = { ->
+        return compose(delegate, new SideEffectCapPipe(new GroupCountPipe()))
       }
     }
 
