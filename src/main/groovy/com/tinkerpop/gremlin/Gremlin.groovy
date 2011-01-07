@@ -206,7 +206,12 @@ class Gremlin {
 
     [Iterator, Iterable].each {
       it.metaClass.gather = {final Closure closure ->
-        return compose(delegate, new GatherPipe(), closure)
+        final GremlinPipeline pipeline = new GremlinPipeline();
+        pipeline.addPipe(new GatherPipe())
+        if (closure)
+          pipeline.addPipe(new ClosurePipe(closure));
+        return compose(delegate, pipeline)
+
       }
     }
 

@@ -178,13 +178,20 @@ class GremlinTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
-    def c = { _{def x = it}.outE[[label:'created']].inV.inE[[label:'created']].outV{ x != it} }
-    [Iterable,Iterator,Vertex].each{it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }}
+    def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
+    [Iterable, Iterator, Vertex].each {it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }}
 
     def list = []
     g.v(1).co_developer >> list
     assertTrue(list.contains(g.v(4)));
     assertTrue(list.contains(g.v(6)));
 
+  }
+
+  public void testGatherStep() throws Exception {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals(g.v(1).outE.gather{ starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
   }
 }
