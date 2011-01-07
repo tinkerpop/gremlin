@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.Gremlin;
 import com.tinkerpop.gremlin.console.Imports;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 
-import javax.script.ScriptContext;
 import javax.script.ScriptException;
 
 /**
@@ -15,12 +14,12 @@ public class GremlinScriptEngine extends GroovyScriptEngineImpl {
     public GremlinScriptEngine() {
         try {
             for (String imps : Imports.getImports()) {
-                this.eval("import " + imps);
+                this.eval("import " + imps + ";");
             }
         } catch (ScriptException e) {
             System.err.println(e.getMessage());
         }
-        new Gremlin();
+        Gremlin.load();
     }
 
 }

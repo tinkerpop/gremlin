@@ -39,7 +39,7 @@ public class Console {
             io.err.println("Unable to create history file: " + HISTORY_FILE);
         }
 
-        new Gremlin();
+        Gremlin.load();
         try {
             runner.run();
         } catch (Error e) {

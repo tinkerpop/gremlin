@@ -2,43 +2,36 @@ package com.tinkerpop.gremlin;
 
 
 import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.gremlin.console.Imports
 import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.ClosurePipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
-import com.tinkerpop.pipes.filter.AndFilterPipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
-import com.tinkerpop.pipes.filter.FutureFilterPipe
-import com.tinkerpop.pipes.filter.OrFilterPipe
-import com.tinkerpop.pipes.filter.RangeFilterPipe
-import com.tinkerpop.pipes.merge.RobinMergePipe
 import com.tinkerpop.pipes.sideeffect.CountCombinePipe
 import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe
-import com.tinkerpop.pipes.split.CopySplitPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
-import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.blueprints.pgm.*
+import com.tinkerpop.pipes.filter.*
 import com.tinkerpop.pipes.pgm.*
-import com.tinkerpop.gremlin.console.Imports
 
 class Gremlin {
 
-  private final String ID = "id";
-  private final String LABEL = "label";
-  private final String VERTICES = "vertices";
-  private final String EDGES = "edges"
+  private static final String ID = "id";
+  private static final String LABEL = "label";
+  private static final String VERTICES = "vertices";
+  private static final String EDGES = "edges"
 
 
-  Gremlin() {
+  public static void load() {
 
     Object.metaClass.propertyMissing = {final String name ->
-      def objectTokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      if (objectTokens.contains(name)) {
+      if (GremlinHelper.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
         throw new MissingPropertyException(name, delegate.getClass());
@@ -46,11 +39,7 @@ class Gremlin {
     }
 
     Pipe.metaClass.propertyMissing = {final String name ->
-      def objectTokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      def pipeTokens = new HashSet(Pipe.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      pipeTokens.addAll(objectTokens);
-
-      if (pipeTokens.contains(name)) {
+      if (GremlinHelper.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
         return delegate.getAt(name);
@@ -58,11 +47,7 @@ class Gremlin {
     }
 
     Graph.metaClass.propertyMissing = {final String name ->
-      def objectTokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      def graphTokens = new HashSet(Graph.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      graphTokens.addAll(objectTokens);
-
-      if (graphTokens.contains(name)) {
+      if (GremlinHelper.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
         throw new MissingPropertyException(name, delegate.getClass());
@@ -70,11 +55,7 @@ class Gremlin {
     }
 
     Vertex.metaClass.propertyMissing = {final String name ->
-      def objectTokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      def vertexTokens = new HashSet(Vertex.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      vertexTokens.addAll(objectTokens);
-
-      if (vertexTokens.contains(name)) {
+      if (GremlinHelper.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
         if (name.equals(ID)) {
@@ -86,11 +67,7 @@ class Gremlin {
     }
 
     Edge.metaClass.propertyMissing = {final String name ->
-      def objectTokens = new HashSet(Object.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      def edgeTokens = new HashSet(Edge.metaClass.methods.findAll {it instanceof ClosureMetaMethod}.collect {it.name});
-      edgeTokens.addAll(objectTokens);
-
-      if (edgeTokens.contains(name)) {
+      if (GremlinHelper.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
         if (name.equals(ID)) {
@@ -103,66 +80,78 @@ class Gremlin {
       }
     }
 
-    Pipe.metaClass.getAt = {final String name ->
-      if (name.equals(ID)) {
-        return compose(delegate, new IdPipe());
-      } else if (name.equals(LABEL)) {
-        return compose(delegate, new LabelPipe());
-      } else {
-        return compose(delegate, new PropertyPipe(name));
+    [Iterator, Iterable].each {
+      it.metaClass.rightShift = {final Collection collection ->
+        PipeHelper.fillCollection((Iterator) delegate, collection);
+        return collection;
       }
     }
 
-    Iterator.metaClass.rightShift = {final Collection collection ->
-      PipeHelper.fillCollection((Iterator) delegate, collection);
-      return collection;
-    }
-
-    Iterator.metaClass.rightShift = {final Integer count ->
-      if (count == -1) {
-        while (delegate.hasNext()) {
-          delegate.next();
-        }
-      } else if (count == 1) {
-        return delegate.next();
-      } else {
-        List objects = new ArrayList();
-        for (int i = 0; i < count; i++) {
-          objects.add(delegate.next());
-        }
-        return objects;
-      }
-    }
-
-    Pipe.metaClass.getAt = {final Integer index ->
-      return compose(delegate, new RangeFilterPipe(index as Integer, index + 1 as Integer));
-    }
-
-    Pipe.metaClass.getAt = {final Range range ->
-      return compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
-    }
-
-    Pipe.metaClass.getAt = {final Map map ->
-      GremlinPipeline pipeline = compose(delegate);
-      map.each {key, value ->
-        if (key.equals(LABEL)) {
-          if (value instanceof List) {
-            pipeline.addPipe(new LabelFilterPipe((String) value[1], mapFilter(value[0])))
-          } else {
-            pipeline.addPipe(new LabelFilterPipe((String) value, Filter.NOT_EQUAL));
+    [Iterator, Iterable].each {
+      it.metaClass.rightShift = {final Integer count ->
+        if (count == -1) {
+          while (delegate.hasNext()) {
+            delegate.next();
           }
-        } else if (key.equals(ID)) {
-          pipeline.addPipe(new IdFilterPipe(value, Filter.NOT_EQUAL));
+        } else if (count == 1) {
+          return delegate.next();
         } else {
-          if (value instanceof List) {
-            pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], mapFilter(value[0])))
-          } else {
-            pipeline.addPipe(new PropertyFilterPipe((String) key, value, Filter.NOT_EQUAL))
+          List objects = new ArrayList();
+          for (int i = 0; i < count; i++) {
+            objects.add(delegate.next());
           }
+          return objects;
         }
-
       }
-      return pipeline;
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.getAt = {final Integer index ->
+        return compose(delegate, new RangeFilterPipe(index as Integer, index + 1 as Integer));
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.getAt = {final Range range ->
+        return compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.getAt = {final Map map ->
+        GremlinPipeline pipeline = compose(delegate);
+        map.each {key, value ->
+          if (key.equals(LABEL)) {
+            if (value instanceof List) {
+              pipeline.addPipe(new LabelFilterPipe((String) value[1], mapFilter(value[0])))
+            } else {
+              pipeline.addPipe(new LabelFilterPipe((String) value, Filter.NOT_EQUAL));
+            }
+          } else if (key.equals(ID)) {
+            pipeline.addPipe(new IdFilterPipe(value, Filter.NOT_EQUAL));
+          } else {
+            if (value instanceof List) {
+              pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], mapFilter(value[0])))
+            } else {
+              pipeline.addPipe(new PropertyFilterPipe((String) key, value, Filter.NOT_EQUAL))
+            }
+          }
+
+        }
+        return pipeline;
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.getAt = {final String name ->
+        if (name.equals(ID)) {
+          return compose(delegate, new IdPipe());
+        } else if (name.equals(LABEL)) {
+          return compose(delegate, new LabelPipe());
+        } else {
+          return compose(delegate, new PropertyPipe(name));
+        }
+      }
     }
 
     /*
@@ -173,8 +162,16 @@ class Gremlin {
       return compose(delegate, new IdentityPipe(), closure)
     }
 
-    Pipe.metaClass.group_count = {final Closure closure ->
-      return compose(delegate, new SideEffectCapPipe(new CountCombinePipe()), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.group_count = {final Closure closure ->
+        return compose(delegate, new SideEffectCapPipe(new CountCombinePipe()), closure)
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.unique = {final Closure closure ->
+        return compose(delegate, new DuplicateFilterPipe())
+      }
     }
 
     /*Pipe.metaClass.split = {final Pipe ... pipes ->
@@ -189,86 +186,97 @@ class Gremlin {
     }*/
 
 
-    Object.metaClass.andf = {final Pipe ... pipes ->
-      return compose(delegate, new AndFilterPipe(pipes.collect {new HasNextPipe((Pipe) it)} as List))
-    }
-
-    Object.metaClass.orf = {final Pipe ... pipes ->
-      return compose(delegate, new OrFilterPipe(pipes.collect {new HasNextPipe((Pipe) it)} as List))
-    }
-
-    Object.metaClass.futuref = {final Pipe pipe ->
-      return compose(delegate, new FutureFilterPipe(pipe))
-    }
-
-    Object.metaClass.gather = {final Closure closure ->
-      return compose(delegate, new GatherPipe(), closure)
-    }
-
-    Object.metaClass.scatter = {final Closure closure ->
-      return compose(delegate, new ScatterPipe(), closure)
-    }
-
-    Object.metaClass.paths = {final Closure closure ->
-      return compose(delegate, new PathPipe(), closure)
-    }
-
-    Object.metaClass.step = {final Closure closure ->
-      return compose(delegate, new ClosurePipe(closure))
-    }
-
-    Object.metaClass.step = {final Pipe pipe ->
-      return compose(delegate, pipe);
-    }
-
-    def propfClosure = {final String key, final T f, final Object value ->
-      if (key.equals(ID)) {
-        return compose(delegate, new IdFilterPipe(value, mapFilter(f)), null);
-      } else if (key.equals(LABEL)) {
-        return compose(delegate, new LabelFilterPipe((String) value, mapFilter(f)), null)
-      } else {
-        return compose(delegate, new PropertyFilterPipe(key, value, mapFilter(f)), null);
+    [Iterator, Iterable].each {
+      it.metaClass.andf = {final Pipe ... pipes ->
+        return compose(delegate, new AndFilterPipe(pipes.collect {new HasNextPipe((Pipe) it)} as List))
       }
     }
-    Pipe.metaClass.propf = propfClosure;
-    Vertex.metaClass.propf = propfClosure;
-    Edge.metaClass.propf = propfClosure;
 
-    def outEClosure = {final Closure closure ->
-      return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.orf = {final Pipe ... pipes ->
+        return compose(delegate, new OrFilterPipe(pipes.collect {new HasNextPipe((Pipe) it)} as List))
+      }
     }
-    Pipe.metaClass.outE = outEClosure
-    Vertex.metaClass.outE = outEClosure
 
-    def inEClosure = {final Closure closure ->
-      return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.futuref = {final Pipe pipe ->
+        return compose(delegate, new FutureFilterPipe(pipe))
+      }
     }
-    Pipe.metaClass.inE = inEClosure
-    Vertex.metaClass.inE = inEClosure
 
-    def bothEClosure = {final Closure closure ->
-      return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.gather = {final Closure closure ->
+        return compose(delegate, new GatherPipe(), closure)
+      }
     }
-    Pipe.metaClass.bothE = bothEClosure
-    Vertex.metaClass.bothE = bothEClosure
 
-    def inVClosure = {final Closure closure ->
-      return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.scatter = {final Closure closure ->
+        return compose(delegate, new ScatterPipe(), closure)
+      }
     }
-    Pipe.metaClass.inV = inVClosure
-    Edge.metaClass.inV = inVClosure
 
-    def outVClosure = {final Closure closure ->
-      compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.paths = {final Closure closure ->
+        return compose(delegate, new PathPipe(), closure)
+      }
     }
-    Pipe.metaClass.outV = outVClosure
-    Edge.metaClass.outV = outVClosure
 
-    def bothVClosure = {final Closure closure ->
-      return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.BOTH_VERTICES), closure)
+    [Iterator, Iterable].each {
+      it.metaClass.step = {final Closure closure ->
+        return compose(delegate, new ClosurePipe(closure))
+      }
     }
-    Pipe.metaClass.bothV = bothVClosure
-    Edge.metaClass.bothV = bothVClosure
+
+
+    [Iterator, Iterable, Vertex, Edge].each {
+      it.metaClass.propf = {final String key, final T f, final Object value ->
+        if (key.equals(ID)) {
+          return compose(delegate, new IdFilterPipe(value, mapFilter(f)), null);
+        } else if (key.equals(LABEL)) {
+          return compose(delegate, new LabelFilterPipe((String) value, mapFilter(f)), null)
+        } else {
+          return compose(delegate, new PropertyFilterPipe(key, value, mapFilter(f)), null);
+        }
+      }
+    }
+
+    [Iterator, Iterable, Vertex].each {
+      it.metaClass.outE = {final Closure closure ->
+        return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES), closure)
+      }
+    }
+
+    [Iterator, Iterable, Vertex].each {
+      it.metaClass.inE = {final Closure closure ->
+        return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES), closure)
+      }
+    }
+
+    [Iterator, Iterable, Vertex].each {
+      it.metaClass.bothE = {final Closure closure ->
+        return compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES), closure)
+      }
+    }
+
+    [Iterator, Iterable, Edge].each {
+      it.metaClass.inV = {final Closure closure ->
+        return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX), closure)
+      }
+    }
+
+    [Iterator, Iterable, Edge].each {
+      it.metaClass.outV = {final Closure closure ->
+        compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
+      }
+    }
+
+
+    [Iterator, Iterable, Edge].each {
+      it.metaClass.bothV = {final Closure closure ->
+        return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.BOTH_VERTICES), closure)
+      }
+    }
 
     Element.metaClass.map = {
       final Map<String, Object> map = new HashMap<String, Object>();
@@ -367,7 +375,10 @@ class Gremlin {
 
   public static Pipe compile(final String gremlin) {
     GroovyShell groovy = GroovyShell.newInstance()
-    Imports.getImports().each{groovy.evaluate("import " + it)}
-    return (Pipe) groovy.evaluate(gremlin);
+    StringBuilder sb = new StringBuilder()
+    for (String importItem: Imports.getImports())
+      sb.append("import ").append(importItem).append("\n");
+    sb.append(gremlin);
+    return (Pipe) groovy.evaluate(sb.toString())
   }
 }

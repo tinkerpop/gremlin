@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin;
 
-import com.tinkerpop.gremlin.GremlinTokens;
-
 import java.io.IOException;
 
 /**
