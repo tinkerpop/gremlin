@@ -38,6 +38,7 @@ class Gremlin {
       }
     }
 
+    // todo: is this needed?
     Pipe.metaClass.propertyMissing = {final String name ->
       if (GremlinHelper.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
@@ -59,9 +60,9 @@ class Gremlin {
         return delegate."$name"();
       } else {
         if (name.equals(ID)) {
-          return delegate.getId();
+          return ((Vertex) delegate).getId();
         } else {
-          return delegate.getProperty(name)
+          return ((Vertex) delegate).getProperty(name)
         }
       }
     }
@@ -71,15 +72,16 @@ class Gremlin {
         return delegate."$name"();
       } else {
         if (name.equals(ID)) {
-          return delegate.getId();
+          return ((Edge) delegate).getId();
         } else if (name.equals(LABEL)) {
-          return delegate.getLabel();
+          return ((Edge) delegate).getLabel();
         } else {
-          return delegate.getProperty(name)
+          return ((Edge) delegate).getProperty(name)
         }
       }
     }
 
+    //todo: decide to keep or not
     Object.metaClass.rightShift = {final Pipe pipe ->
       compose(delegate, pipe);
     }
@@ -136,7 +138,7 @@ class Gremlin {
 
     [Iterator, Iterable].each {
       it.metaClass.getAt = {final Map map ->
-        GremlinPipeline pipeline = compose(delegate);
+        final GremlinPipeline pipeline = compose(delegate);
         map.each {key, value ->
           if (key.equals(LABEL)) {
             if (value instanceof List) {
@@ -145,7 +147,11 @@ class Gremlin {
               pipeline.addPipe(new LabelFilterPipe((String) value, Filter.NOT_EQUAL));
             }
           } else if (key.equals(ID)) {
-            pipeline.addPipe(new IdFilterPipe(value, Filter.NOT_EQUAL));
+            if (value instanceof List) {
+              pipeline.addPipe(new IdFilterPipe(value[1], mapFilter(value[0])))
+            } else {
+              pipeline.addPipe(new IdFilterPipe(value, Filter.NOT_EQUAL));
+            }
           } else {
             if (value instanceof List) {
               pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], mapFilter(value[0])))
@@ -180,13 +186,13 @@ class Gremlin {
     }
 
     [Iterator, Iterable].each {
-      it.metaClass.group_count = { final Map map ->
+      it.metaClass.group_count = {final Map map ->
         return compose(delegate, new SideEffectCapPipe(new GroupCountPipe(map)))
       }
     }
 
     [Iterator, Iterable].each {
-      it.metaClass.group_count = { ->
+      it.metaClass.group_count = {->
         return compose(delegate, new SideEffectCapPipe(new GroupCountPipe()))
       }
     }
@@ -197,6 +203,7 @@ class Gremlin {
       }
     }
 
+    // todo: add split/merge behavior when good design comes
     /*Pipe.metaClass.split = {final Pipe ... pipes ->
       CopySplitPipe split = new CopySplitPipe(pipes.length);
       for (int i = 0; i < pipes.length; i++) {
@@ -295,7 +302,7 @@ class Gremlin {
 
     [Iterator, Iterable, Edge].each {
       it.metaClass.outV = {final Closure closure ->
-        compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
+        return compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
       }
     }
 
@@ -335,26 +342,29 @@ class Gremlin {
     }
 
     Graph.metaClass.v = {final Object id ->
-      return delegate.getVertex(id);
+      return ((Graph)delegate).getVertex(id);
     }
 
     Graph.metaClass.e = {final Object id ->
-      return delegate.getEdge(id);
+      return ((Graph)delegate).getEdge(id);
     }
 
     IndexableGraph.metaClass.idx = {final Object idx ->
-      String name;
-      if (idx.equals(T.v))
-        name = VERTICES else if (idx.equals(T.e))
-        name = EDGES else
+      final String name;
+      if (idx.equals(T.v)) {
+        name = VERTICES
+      } else if (idx.equals(T.e)) {
+        name = EDGES
+      } else {
         name = idx.toString()
+      }
 
-      return delegate.getIndices().find {it.getIndexName().equals(name)}
+      return ((IndexableGraph)delegate).getIndices().find {it.getIndexName().equals(name)}
     }
 
     Index.metaClass.getAt = {final Map query ->
-      def entry = query.iterator().next();
-      return delegate.get(entry.key, entry.value);
+      Map.Entry entry = (Map.Entry) query.iterator().next();
+      return ((Index)delegate).get((String)entry.getKey(), entry.getValue());
     }
 
   }

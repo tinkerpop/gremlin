@@ -20,6 +20,7 @@ bc. <dependency>
 </dependency>
 
 * Changed to "Groovy":http://groovy.codehaus.org/ as the host language
+* Changed documentation to reflect changes.
 
 ==<hr/>==
 

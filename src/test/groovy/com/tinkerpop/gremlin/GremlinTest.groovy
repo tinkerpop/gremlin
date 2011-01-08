@@ -11,13 +11,7 @@ import junit.framework.TestCase
 class GremlinTest extends TestCase {
 
   public void testGremlinGroovy() {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    println g.v(1).outE
-    //[g.v(1), g.v(2)]._.outE.each {println it}
-    //g.idx('vertices')[[name:'marko']].outE.inV.each{println it}
-//    def m = g.v(1).outE.inV.outE.inV.group_count >> 1
-    //  println m
+    assertTrue(true);
   }
 
   public void testCompilation() throws Exception {
@@ -185,7 +179,6 @@ class GremlinTest extends TestCase {
     g.v(1).co_developer >> list
     assertTrue(list.contains(g.v(4)));
     assertTrue(list.contains(g.v(6)));
-
   }
 
   public void testGatherStep() throws Exception {
@@ -203,6 +196,18 @@ class GremlinTest extends TestCase {
     g.E.bothV.group_count(n) >>-1
 
     m.each{key,value -> assertEquals(value / 1, n[key] / 2)};
+  }
+
+  public void testKeysValuesMapOnElement() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    assertEquals(g.v(1).values.size(), 2);
+    assertEquals(g.v(1).keys.size(), 2);
+    assertEquals(g.v(1).map.keySet(), g.v(1).keys);
+    assertTrue(g.v(1).values().contains("marko"));
+    assertTrue(g.v(1).values().contains(29));
+    assertTrue(g.v(1).keys().contains("name"));
+    assertTrue(g.v(1).keys().contains("age"));
   }
 
   public void testRightShiftSetStarts() throws Exception {
