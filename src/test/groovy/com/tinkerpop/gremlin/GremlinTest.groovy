@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.Pipe
@@ -10,9 +11,16 @@ import junit.framework.TestCase
 
 class GremlinTest extends TestCase {
 
-  public void testGremlinGroovy() {
+  /*public void testGremlinGroovy() {
     assertTrue(true);
-  }
+
+    Gremlin.load()
+    Graph g = new TinkerGraph()
+    GraphMLReader.inputGraph(g, new FileInputStream('data/graph-example-2.xml'))
+
+    assertTrue((g.V.outE{it.label=='followed_by' | it.weight>0.0}.inV) == (g.V.outE.orf(_()[[label:'followed_by']], _()[[weight:[T.gt,0.0]]]).inV))
+    assertTrue((g.V.outE{it.label=='followed_by' | it.weight>0.0}.inV) == (g.V.outE.orf(_().propf('label',T.eq,'followed_by'), _().propf('weight',T.gt,0.0)).inV))
+  }*/
 
   public void testCompilation() throws Exception {
     Gremlin.load();
@@ -185,7 +193,7 @@ class GremlinTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
-    assertEquals(g.v(1).outE.gather{ starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
+    assertEquals(g.v(1).outE.gather { starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
   }
 
   public void testGroupCountStep() throws Exception {
@@ -193,9 +201,9 @@ class GremlinTest extends TestCase {
     Graph g = TinkerGraphFactory.createTinkerGraph();
     def m = g.E.bothV.group_count >> 1
     def n = m.clone()
-    g.E.bothV.group_count(n) >>-1
+    g.E.bothV.group_count(n) >> -1
 
-    m.each{key,value -> assertEquals(value / 1, n[key] / 2)};
+    m.each {key, value -> assertEquals(value / 1, n[key] / 2)};
   }
 
   public void testKeysValuesMapOnElement() {
@@ -214,15 +222,25 @@ class GremlinTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
     def list = []
-    (g.v(1)>>_().outE.inV.name) >> list
+    (g.v(1) >> _().outE.inV.name) >> list
     assertTrue(list.contains("lop"));
     assertTrue(list.contains("vadas"));
     assertTrue(list.contains("josh"));
 
     list = []
-    g.v(1)>>_().outE.inV.name>>list
+    g.v(1) >> _().outE.inV.name >> list
     assertTrue(list.contains("lop"));
     assertTrue(list.contains("vadas"));
     assertTrue(list.contains("josh"));
+  }
+
+  public void testMissingMethods() {
+    Gremlin.load();
+    Set tokens = Gremlin.getMissingMethods(TinkerGraph.class);
+    assertTrue(tokens.contains("V"))
+    assertTrue(tokens.contains("v"))
+    assertTrue(tokens.contains("E"))
+    assertTrue(tokens.contains("e"))
+    assertTrue(tokens.contains("_"))
   }
 }

@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.util
+package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.blueprints.pgm.impls.sail.impls.MemoryStoreSailGraph
 import junit.framework.TestCase
@@ -6,10 +6,10 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class SailSupportTest extends TestCase {
+class SailGraphLoaderTest extends TestCase {
 
   public void testNamespacePrefix() {
-    SailSupport.load();
+    SailGraphLoader.load();
 
     def g = new MemoryStoreSailGraph();
     g.addNamespace('tg', 'http://tinkerpop.com#');

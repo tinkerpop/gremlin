@@ -1,11 +1,11 @@
-package com.tinkerpop.gremlin.util
+package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class SailSupport {
+class SailGraphLoader {
 
   public static void load() {
 

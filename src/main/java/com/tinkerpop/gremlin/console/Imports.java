@@ -25,8 +25,8 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.impls.rexster.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.graphml.*");
+        imports.add("com.tinkerpop.blueprints.pgm.loaders.*");
+        imports.add("com.tinkerpop.blueprints.pgm.loaders.graphml.*");
 
         // pipes
         imports.add("com.tinkerpop.pipes.*");
@@ -35,7 +35,7 @@ public class Imports {
         imports.add("com.tinkerpop.pipes.pgm.*");
         imports.add("com.tinkerpop.pipes.sideeffect.*");
         imports.add("com.tinkerpop.pipes.split.*");
-        imports.add("com.tinkerpop.pipes.util.*");
+        imports.add("com.tinkerpop.pipes.loaders.*");
     }
 
     public static List<String> getImports() {
