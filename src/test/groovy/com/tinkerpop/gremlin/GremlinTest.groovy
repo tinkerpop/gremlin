@@ -160,9 +160,15 @@ class GremlinTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
-    def x = []
+    def x = [] as Set
     def results = [];
     g.v(1).outE.inV {x << it}.outE.inV {!x.contains(it)} >> results
+    assertEquals(results.size(), 1);
+    assertEquals(results.get(0), g.v(5));
+
+    x = [] as Set
+    results = []
+    g.v(1).outE.inV.aggregate(x).outE.inV{!x.contains(it)} >> results
     assertEquals(results.size(), 1);
     assertEquals(results.get(0), g.v(5));
   }

@@ -17,6 +17,7 @@ import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
 import com.tinkerpop.pipes.filter.*
 import com.tinkerpop.pipes.pgm.*
+import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -125,6 +126,12 @@ class PipeLoader {
     }
 
     // PIPES
+    [Iterator, Iterable].each {
+      it.metaClass.aggregate = {final Collection collection ->
+        return Gremlin.compose(delegate, new AggregatorPipe(collection))
+      }
+    }
+
 
     [Iterator, Iterable].each {
       it.metaClass.group_count = {final Map map ->
