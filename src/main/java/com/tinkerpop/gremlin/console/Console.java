@@ -43,7 +43,7 @@ public class Console {
         try {
             runner.run();
         } catch (Error e) {
-            System.err.println(e.getMessage());
+            //System.err.println(e.getMessage());
         }
     }
 }
