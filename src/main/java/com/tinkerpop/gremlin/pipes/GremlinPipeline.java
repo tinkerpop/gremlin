@@ -110,8 +110,10 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
         StringBuilder sb = new StringBuilder("[");
         for (Pipe pipe : this.pipes) {
             String pipeString = pipe.toString();
-            pipeString = pipeString.substring(0, pipeString.indexOf("@"));
-            pipeString = pipeString.substring(pipeString.lastIndexOf(".") + 1);
+            if (pipeString.contains("@"))
+                pipeString = pipeString.substring(0, pipeString.indexOf("@"));
+            if (pipeString.contains("."))
+                pipeString = pipeString.substring(pipeString.lastIndexOf(".") + 1);
             sb.append(pipeString).append(",");
         }
         return sb.toString().substring(0, sb.length() - 1) + "]";

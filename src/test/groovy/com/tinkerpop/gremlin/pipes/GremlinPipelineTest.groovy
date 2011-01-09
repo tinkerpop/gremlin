@@ -33,4 +33,12 @@ class GremlinPipelineTest extends TestCase {
     assertEquals(g.v(1).outE.orf(_()[[label: 'knows']], _()[[label: 'created']]).inV.andf(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
     assertEquals(g.v(1).outE.orf(_().propf('label', T.eq, 'knows'), _().propf('label', T.eq, 'created')).inV.andf(_().propf('id', T.eq, '4'), _().propf('name', T.eq, name)).next(), josh);
   }
+
+  public void testPipelineToString() throws Exception {
+   Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    println g.v(1).outE.inV.outE.inV
+    println g.V.outE[[label:'knows']].inV
+  }
 }

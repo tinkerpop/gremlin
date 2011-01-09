@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.ClosurePipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
@@ -90,12 +91,6 @@ class PipeLoader {
       }
     }
 
-    GremlinPipeline.metaClass.cap = {->
-      final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
-      pipeline.capPipe(pipeline.size() - 1);
-      return pipeline;
-    }
-
     [Iterator, Iterable].each {
       it.metaClass.getAt = {final Map map ->
         GremlinPipeline pipeline = Gremlin.compose(delegate);
@@ -127,13 +122,28 @@ class PipeLoader {
 
     [Iterator, Iterable].each {
       it.metaClass.getAt = {final String name ->
-        return getAtStringClosure(delegate, name);
+        if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+          return Gremlin.compose(delegate, new IdPipe());
+        } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+          return Gremlin.compose(delegate, new LabelPipe());
+        } else {
+          return Gremlin.compose(delegate, new PropertyPipe(name));
+        }
       }
     }
 
     ///////////////////////////
     ////////// PIPES //////////
     ///////////////////////////
+
+    GremlinPipeline.metaClass.cap = {final Closure closure ->
+      final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
+      pipeline.capPipe(pipeline.size() - 1);
+      if (closure) {
+        pipeline.addPipe(new ClosureFilterPipe(closure));
+      }
+      return pipeline;
+    }
 
     [Iterator, Iterable].each {
       it.metaClass.aggregate = {final Object ... params ->

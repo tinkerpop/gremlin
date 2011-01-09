@@ -32,4 +32,11 @@ class AggregatorPipeTest extends TestCase {
     x = []
     assertEquals(g.v(1).outE.inV.aggregate.cap >> 1, g.v(1).outE.inV >> x)
   }
+
+  public void testEqualityToGather() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    assertEquals(g.E.bothV.aggregate.cap >>1, g.E.bothV.gather >>1)
+  }
 }
