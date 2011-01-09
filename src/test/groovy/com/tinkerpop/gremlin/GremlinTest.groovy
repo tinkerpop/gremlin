@@ -16,7 +16,7 @@ class GremlinTest extends TestCase {
     Set x = [] as Set
     //println ((g.v(1).outE[[label:'knows']].aggregate(x) >>-1).effect)
     Map m = [:]
-    println(g.v(1).outE.inV.outE.inV.group_count[T.side] >> 1)
+    println(g.v(1).outE.inV.outE.inV.groupCount.cap() >> 1)
 
   }
 

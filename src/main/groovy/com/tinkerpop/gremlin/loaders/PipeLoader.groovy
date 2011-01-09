@@ -25,21 +25,17 @@ class PipeLoader {
 
   public static void load() {
 
-    final Closure getAtStringClosure = {final Object start, final String name ->
-      if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-        return Gremlin.compose(start, new IdPipe());
-      } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-        return Gremlin.compose(start, new LabelPipe());
-      } else {
-        return Gremlin.compose(start, new PropertyPipe(name));
-      }
-    }
-
     Pipe.metaClass.propertyMissing = {final String name ->
       if (Gremlin.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
-        return getAtStringClosure(delegate, name);
+        if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+          return Gremlin.compose(delegate, new IdPipe());
+        } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+          return Gremlin.compose(delegate, new LabelPipe());
+        } else {
+          return Gremlin.compose(delegate, new PropertyPipe(name));
+        }
       }
     }
 
@@ -91,14 +87,6 @@ class PipeLoader {
     [Iterator, Iterable].each {
       it.metaClass.getAt = {final Range range ->
         return Gremlin.compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
-      }
-    }
-
-    GremlinPipeline.metaClass.getAt = {final T token ->
-      if (token == T.side) {
-        final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
-        pipeline.capPipe(pipeline.size() - 1);
-        return pipeline;
       }
     }
 
@@ -159,7 +147,7 @@ class PipeLoader {
 
 
     [Iterator, Iterable].each {
-      it.metaClass.group_count = {final Object ... params ->
+      it.metaClass.groupCount = {final Object ... params ->
         if (params) {
           return Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]))
         } else {
