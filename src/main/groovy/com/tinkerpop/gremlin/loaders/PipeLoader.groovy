@@ -9,15 +9,14 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe
-import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
 import com.tinkerpop.pipes.filter.*
 import com.tinkerpop.pipes.pgm.*
-import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -25,12 +24,22 @@ import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 class PipeLoader {
 
   public static void load() {
-    // todo: is this needed?
+
+    final Closure getAtStringClosure = {final Object start, final String name ->
+      if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+        return Gremlin.compose(start, new IdPipe());
+      } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+        return Gremlin.compose(start, new LabelPipe());
+      } else {
+        return Gremlin.compose(start, new PropertyPipe(name));
+      }
+    }
+
     Pipe.metaClass.propertyMissing = {final String name ->
       if (Gremlin.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"();
       } else {
-        return delegate.getAt(name);
+        return getAtStringClosure(delegate, name);
       }
     }
 
@@ -60,10 +69,11 @@ class PipeLoader {
           while (itty.hasNext()) {
             itty.next();
           }
+          return delegate;
         } else if (count == 1) {
           return itty.next();
         } else {
-          List objects = new ArrayList();
+          List objects = new LinkedList();
           for (int i = 0; i < count; i++) {
             objects.add(itty.next());
           }
@@ -82,6 +92,20 @@ class PipeLoader {
       it.metaClass.getAt = {final Range range ->
         return Gremlin.compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
       }
+    }
+
+    GremlinPipeline.metaClass.getAt = {final T token ->
+      if (token == T.side) {
+        final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
+        pipeline.capPipe(pipeline.size() - 1);
+        return pipeline;
+      }
+    }
+
+    GremlinPipeline.metaClass.cap = {->
+      final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
+      pipeline.capPipe(pipeline.size() - 1);
+      return pipeline;
     }
 
     [Iterator, Iterable].each {
@@ -115,33 +139,32 @@ class PipeLoader {
 
     [Iterator, Iterable].each {
       it.metaClass.getAt = {final String name ->
-        if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-          return Gremlin.compose(delegate, new IdPipe());
-        } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-          return Gremlin.compose(delegate, new LabelPipe());
+        return getAtStringClosure(delegate, name);
+      }
+    }
+
+    ///////////////////////////
+    ////////// PIPES //////////
+    ///////////////////////////
+
+    [Iterator, Iterable].each {
+      it.metaClass.aggregate = {final Object ... params ->
+        if (params) {
+          return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]))
         } else {
-          return Gremlin.compose(delegate, new PropertyPipe(name));
+          return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()));
         }
       }
     }
 
-    // PIPES
-    [Iterator, Iterable].each {
-      it.metaClass.aggregate = {final Collection collection ->
-        return Gremlin.compose(delegate, new AggregatorPipe(collection))
-      }
-    }
-
 
     [Iterator, Iterable].each {
-      it.metaClass.group_count = {final Map map ->
-        return Gremlin.compose(delegate, new SideEffectCapPipe(new GroupCountPipe(map)))
-      }
-    }
-
-    [Iterator, Iterable].each {
-      it.metaClass.group_count = {->
-        return Gremlin.compose(delegate, new SideEffectCapPipe(new GroupCountPipe()))
+      it.metaClass.group_count = {final Object ... params ->
+        if (params) {
+          return Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]))
+        } else {
+          return Gremlin.compose(delegate, new GroupCountPipe(new HashMap()));
+        }
       }
     }
 
