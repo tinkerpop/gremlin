@@ -23,10 +23,10 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
         return this.pipes;
     }
 
-    public void capPipe(int indexOfPipe) {
-        SideEffectPipe pipe = (SideEffectPipe) this.pipes.get(indexOfPipe);
+    public void capPipe(final int indexOfPipe) {
+        final SideEffectPipe pipe = (SideEffectPipe) this.pipes.get(indexOfPipe);
         this.pipes.remove(indexOfPipe);
-        Pipe cap = new SideEffectCapPipe(pipe);
+        final Pipe cap = new SideEffectCapPipe(pipe);
         this.pipes.add(indexOfPipe, cap);
         this.setPipes(this.pipes);
     }
@@ -91,7 +91,7 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
         if (!(object instanceof GremlinPipeline))
             return false;
         else {
-            GremlinPipeline pipe = (GremlinPipeline) object;
+            final GremlinPipeline pipe = (GremlinPipeline) object;
             if (pipe.hasNext() != this.hasNext())
                 return false;
 
@@ -107,8 +107,8 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
     }
 
     private String getShortPipelineNotation() {
-        StringBuilder sb = new StringBuilder("[");
-        for (Pipe pipe : this.pipes) {
+        final StringBuilder sb = new StringBuilder("[");
+        for (final Pipe pipe : this.pipes) {
             String pipeString = pipe.toString();
             if (pipeString.contains("@"))
                 pipeString = pipeString.substring(0, pipeString.indexOf("@"));
