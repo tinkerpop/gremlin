@@ -11,7 +11,6 @@ public class Imports {
     private static final List<String> imports = new ArrayList<String>();
 
     static {
-
         // gremlin
         imports.add("com.tinkerpop.gremlin.*");
         imports.add("com.tinkerpop.gremlin.GremlinTokens.T");
@@ -25,8 +24,8 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.impls.rexster.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
-        imports.add("com.tinkerpop.blueprints.pgm.loaders.*");
-        imports.add("com.tinkerpop.blueprints.pgm.loaders.graphml.*");
+        imports.add("com.tinkerpop.blueprints.pgm.util.*");
+        imports.add("com.tinkerpop.blueprints.pgm.util.graphml.*");
 
         // pipes
         imports.add("com.tinkerpop.pipes.*");
@@ -35,7 +34,7 @@ public class Imports {
         imports.add("com.tinkerpop.pipes.pgm.*");
         imports.add("com.tinkerpop.pipes.sideeffect.*");
         imports.add("com.tinkerpop.pipes.split.*");
-        imports.add("com.tinkerpop.pipes.loaders.*");
+        imports.add("com.tinkerpop.pipes.util.*");
     }
 
     public static List<String> getImports() {

@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  */
 public class ArrayIterator implements Iterator {
 
-    private Object[] array;
+    private final Object[] array;
     private int count = 0;
 
     public ArrayIterator(final Object[] array) {
