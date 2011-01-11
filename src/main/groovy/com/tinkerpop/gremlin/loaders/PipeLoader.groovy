@@ -10,8 +10,10 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.merge.RobinMergePipe
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe
+import com.tinkerpop.pipes.split.CopySplitPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
@@ -136,6 +138,12 @@ class PipeLoader {
     ////////// PIPES //////////
     ///////////////////////////
 
+    [Iterator, Iterable].each {
+      it.metaClass.objectCount = {
+        return PipeHelper.counter(delegate.iterator())
+      }
+    }
+
     GremlinPipeline.metaClass.cap = {final Closure closure ->
       final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
       pipeline.capPipe(pipeline.size() - 1);
@@ -173,15 +181,17 @@ class PipeLoader {
     }
 
     // todo: add split/merge behavior when good design comes
-    /*Pipe.metaClass.split = {final Pipe ... pipes ->
-      CopySplitPipe split = new CopySplitPipe(pipes.length);
-      for (int i = 0; i < pipes.length; i++) {
-        pipes[i].setStarts((Iterator) split.getSplit(i));
+    /*[Iterator, Iterable].each {
+      it.metaClass.split = {final Pipe ... pipes ->
+        CopySplitPipe split = new CopySplitPipe(pipes.length);
+        for (int i = 0; i < pipes.length; i++) {
+          pipes[i].setStarts((Iterator) split.getSplit(i));
+        }
+        RobinMergePipe merge = new RobinMergePipe();
+        merge.setStarts(pipes.iterator());
+        Gremlin.compose(delegate, split, null);
+        return merge;
       }
-      RobinMergePipe merge = new RobinMergePipe();
-      merge.setStarts(pipes.iterator());
-      Gremlin.compose(delegate, split, null);
-      return merge;
     }*/
 
 
