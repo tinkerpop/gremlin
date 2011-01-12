@@ -52,7 +52,7 @@ class Gremlin {
       pipeline = new GremlinPipeline();
       if (null != pipe)
         pipeline.addPipe(pipe);
-      pipeline.setStarts(start.iterator());
+      pipeline.setStarts((Iterator) start.iterator());
     }
     if (closure) {
       pipeline.addPipe(new ClosureFilterPipe(closure));

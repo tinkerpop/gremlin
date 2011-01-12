@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
 
@@ -11,13 +10,10 @@ class GremlinTest extends TestCase {
 
   public void testGremlinGroovy() {
     assertTrue(true);
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    Set x = [] as Set
-    //println ((g.v(1).outE[[label:'knows']].aggregate(x) >>-1).effect)
-    Map m = [:]
-    println(g.v(1).outE.inV.outE.inV.groupCount.cap() >> 1)
-
+    /*Gremlin.load();
+    def g = new Neo4jGraph('/tmp/neo4jtest')
+    g.idx(T.v)[[name: 'DARK STAR']].outE.each{println it}
+    g.shutdown();*/
   }
 
   public void testCompilation() throws Exception {
