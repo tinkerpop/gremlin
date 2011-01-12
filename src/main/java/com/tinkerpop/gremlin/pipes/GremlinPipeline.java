@@ -103,10 +103,6 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
         return endPipe.next();
     }
 
-    public void enablePath() {
-        endPipe.enablePath();
-    }
-
     public List getPath() {
         return endPipe.getPath();
     }

@@ -11,6 +11,7 @@ import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
+import com.tinkerpop.pipes.sideeffect.CountPipe
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
@@ -18,7 +19,6 @@ import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
 import com.tinkerpop.pipes.filter.*
 import com.tinkerpop.pipes.pgm.*
-import com.tinkerpop.pipes.sideeffect.CountPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -190,21 +190,6 @@ class PipeLoader {
         return Gremlin.compose(delegate, new DuplicateFilterPipe())
       }
     }
-
-    // todo: add split/merge behavior when good design comes
-    /*[Iterator, Iterable].each {
-      it.metaClass.split = {final Pipe ... pipes ->
-        CopySplitPipe split = new CopySplitPipe(pipes.length);
-        for (int i = 0; i < pipes.length; i++) {
-          pipes[i].setStarts((Iterator) split.getSplit(i));
-        }
-        RobinMergePipe merge = new RobinMergePipe();
-        merge.setStarts(pipes.iterator());
-        Gremlin.compose(delegate, split, null);
-        return merge;
-      }
-    }*/
-
 
     [Iterator, Iterable].each {
       it.metaClass.andf = {final Pipe ... pipes ->
