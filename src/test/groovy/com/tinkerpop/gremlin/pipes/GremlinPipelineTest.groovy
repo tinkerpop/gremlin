@@ -11,6 +11,7 @@ import junit.framework.TestCase
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 class GremlinPipelineTest extends TestCase {
+
   public void testPipelineEquality() throws Exception {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -35,10 +36,10 @@ class GremlinPipelineTest extends TestCase {
   }
 
   public void testPipelineToString() throws Exception {
-   Gremlin.load();
+    Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
     println g.v(1).outE.inV.outE.inV
-    println g.V.outE[[label:'knows']].inV
+    println g.V.outE[[label: 'knows']].inV
   }
 }

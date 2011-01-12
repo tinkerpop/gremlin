@@ -11,9 +11,7 @@ public class GremlinTokens {
 
     public enum T {
         eq, neq, lt, lte, gt, gte,
-        v, e,
-        side
-    }
+        v, e, }
 
 
 }

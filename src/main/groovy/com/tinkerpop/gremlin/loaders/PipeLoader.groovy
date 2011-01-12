@@ -10,16 +10,15 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
-import com.tinkerpop.pipes.merge.RobinMergePipe
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe
-import com.tinkerpop.pipes.split.CopySplitPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
 import com.tinkerpop.pipes.filter.*
 import com.tinkerpop.pipes.pgm.*
+import com.tinkerpop.pipes.sideeffect.CountPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -140,7 +139,7 @@ class PipeLoader {
 
     [Iterator, Iterable].each {
       it.metaClass.objectCount = {
-        return PipeHelper.counter(delegate.iterator())
+        return Gremlin.compose(delegate, new CountPipe());
       }
     }
 
@@ -150,6 +149,18 @@ class PipeLoader {
       if (closure) {
         pipeline.addPipe(new ClosureFilterPipe(closure));
       }
+      return pipeline;
+    }
+
+    GremlinPipeline.metaClass.loop = {final Closure closure ->
+      final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
+      pipeline.loopPipe(closure)
+      return pipeline;
+    }
+
+    GremlinPipeline.metaClass.loop = {final Integer stepsAgo, final Closure closure ->
+      final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
+      pipeline.loopPipe(stepsAgo, closure)
       return pipeline;
     }
 
@@ -213,13 +224,18 @@ class PipeLoader {
       }
     }
 
+    GremlinPipeline.metaClass.back = {final Integer steps ->
+      ((GremlinPipeline) delegate).backPipe(steps);
+      return delegate;
+    }
+
     [Iterator, Iterable].each {
       it.metaClass.gather = {final Closure closure ->
-        final GremlinPipeline pipeline = new GremlinPipeline();
-        pipeline.addPipe(new GatherPipe())
+        GremlinPipeline pipeline;
+        pipeline = Gremlin.compose(delegate, new GatherPipe())
         if (closure)
-          pipeline.addPipe(new ClosurePipe(closure));
-        return Gremlin.compose(delegate, pipeline)
+          pipeline = Gremlin.compose(pipeline, new ClosurePipe(closure))
+        return pipeline;
 
       }
     }
@@ -241,7 +257,6 @@ class PipeLoader {
         return Gremlin.compose(delegate, new ClosurePipe(closure))
       }
     }
-
 
     [Iterator, Iterable, Vertex, Edge].each {
       it.metaClass.propf = {final String key, final T t, final Object value ->

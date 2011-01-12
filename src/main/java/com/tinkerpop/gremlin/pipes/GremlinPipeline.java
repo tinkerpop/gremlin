@@ -1,8 +1,11 @@
 package com.tinkerpop.gremlin.pipes;
 
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.filter.FutureFilterPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
+import groovy.lang.Closure;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,6 +20,7 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
     private final List<Pipe> pipes = new ArrayList<Pipe>();
+    private Iterator<S> starts;
 
 
     public List<Pipe> getPipes() {
@@ -29,6 +33,33 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
         final Pipe cap = new SideEffectCapPipe(pipe);
         this.pipes.add(indexOfPipe, cap);
         this.setPipes(this.pipes);
+    }
+
+    public void loopPipe(final Closure closure) {
+        this.loopPipe(this.pipes.size(), closure);
+    }
+
+    public void loopPipe(final int stepsAgo, final Closure closure) {
+        this.addPipe(new LoopPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo)), closure));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+    }
+
+    public void backPipe(final int stepsAgo) {
+        this.addPipe(new FutureFilterPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo))));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+    }
+
+    private List<Pipe> getPipesStepsAgo(final int stepsAgo) {
+        final List<Pipe> backPipes = new ArrayList<Pipe>();
+        for (int i = this.pipes.size() - 1; i > ((this.pipes.size() - 1) - stepsAgo); i--) {
+            backPipes.add(0, this.pipes.get(i));
+        }
+        for (int i = 0; i < stepsAgo; i++) {
+            this.pipes.remove(this.pipes.size() - 1);
+        }
+        return backPipes;
     }
 
     public int size() {
@@ -50,6 +81,7 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
     }
 
     public void setStarts(final Iterator<S> starts) {
+        this.starts = starts;
         this.startPipe.setStarts(starts);
     }
 
