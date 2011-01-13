@@ -19,11 +19,6 @@ class ObjectLoader {
       }
     }
 
-    //todo: decide to keep or not
-    Object.metaClass.rightShift = {final Pipe pipe ->
-      Gremlin.compose(delegate, pipe);
-    }
-
     // PIPES
 
     Object.metaClass._ = {final Closure closure ->

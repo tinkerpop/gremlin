@@ -19,6 +19,7 @@ class CollectionFilterPipeTest extends TestCase {
     g.v(1).outE.inV.aggregate(x).outE.inV.except(x) >> results
     assertEquals(results.size(), 1)
     assertTrue(results.contains(g.v(5)))
+
   }
 
   public void testRetaintPattern() {

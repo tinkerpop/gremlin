@@ -16,7 +16,6 @@ import java.util.List;
  */
 public class GremlinPipeline<S, E> implements Pipe<S, E> {
 
-    private static final String GREMLIN_PIPELINE = "GremlinPipeline";
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
     private final List<Pipe> pipes = new ArrayList<Pipe>();
@@ -112,7 +111,7 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
     }
 
     public String toString() {
-        return GREMLIN_PIPELINE + this.getShortPipelineNotation();
+        return this.pipes.toString();
     }
 
     public boolean equals(final Object object) {
@@ -132,19 +131,5 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
             }
             return true;
         }
-    }
-
-    private String getShortPipelineNotation() {
-        final StringBuilder sb = new StringBuilder("[");
-        for (final Pipe pipe : this.pipes) {
-            String pipeString = pipe.toString();
-            if (pipeString.contains("@"))
-                pipeString = pipeString.substring(0, pipeString.indexOf("@"));
-            if (pipeString.contains("."))
-                pipeString = pipeString.substring(pipeString.lastIndexOf(".") + 1);
-            sb.append(pipeString).append(",");
-        }
-        return sb.toString().substring(0, sb.length() - 1) + "]";
-
     }
 }

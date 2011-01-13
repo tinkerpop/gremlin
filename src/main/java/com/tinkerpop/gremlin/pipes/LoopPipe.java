@@ -36,4 +36,8 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
         this.expando = new ExpandableIterator<S>(iterator);
         this.toLoopPipe.setStarts(this.expando);
     }
+
+    public String toString() {
+        return super.toString() + "[" + this.toLoopPipe + "]";
+    }
 }
