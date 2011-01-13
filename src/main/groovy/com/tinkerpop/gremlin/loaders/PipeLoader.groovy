@@ -174,6 +174,17 @@ class PipeLoader {
       }
     }
 
+    [Iterator, Iterable].each {
+      it.metaClass.except = {final Collection collection ->
+        return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL));
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.retain = {final Collection collection ->
+        return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL));
+      }
+    }
 
     [Iterator, Iterable].each {
       it.metaClass.groupCount = {final Object ... params ->
