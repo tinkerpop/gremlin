@@ -32,7 +32,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
         }
     }
 
-    public void setStarts(Iterator iterator) {
+    public void setStarts(final Iterator<S> iterator) {
         this.expando = new ExpandableIterator<S>(iterator);
         this.toLoopPipe.setStarts(this.expando);
     }
