@@ -39,7 +39,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
     }
 
     public String toString() {
-        return super.toString() + "[" + this.toLoopPipe + "]";
+        return super.toString() + "<" + this.toLoopPipe + ">";
     }
 
     public List getPath() {
