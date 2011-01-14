@@ -22,7 +22,7 @@ class CollectionFilterPipeTest extends TestCase {
 
   }
 
-  public void testRetaintPattern() {
+  public void testRetainPattern() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
