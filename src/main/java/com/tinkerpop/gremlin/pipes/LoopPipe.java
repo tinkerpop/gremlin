@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.Pipe;
 import groovy.lang.Closure;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -39,5 +40,9 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
 
     public String toString() {
         return super.toString() + "[" + this.toLoopPipe + "]";
+    }
+
+    public List getPath() {
+        return this.toLoopPipe.getPath();
     }
 }

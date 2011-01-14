@@ -18,4 +18,8 @@ public class ClosurePipe<S, E> extends AbstractPipe<S, E> {
     public E processNextStart() {
         return (E) this.closure.call();
     }
+
+    public S s() {
+        return this.starts.next();
+    }
 }

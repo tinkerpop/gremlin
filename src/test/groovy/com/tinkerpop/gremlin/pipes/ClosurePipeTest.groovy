@@ -23,4 +23,16 @@ class ClosurePipeTest extends TestCase {
     assertTrue(list.contains(g.v(4)));
     assertTrue(list.contains(g.v(6)));
   }
+
+  public void testSMethod() throws Exception {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    def results = [];
+    g.v(1).outE.inV.step {s().name} >> results
+    assertTrue(results.contains("josh"))
+    assertTrue(results.contains("lop"))
+    assertTrue(results.contains("vadas"))
+    assertEquals(results.size(), 3)
+  }
 }
