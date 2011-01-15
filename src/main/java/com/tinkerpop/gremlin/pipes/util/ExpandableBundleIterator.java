@@ -36,16 +36,23 @@ public class ExpandableBundleIterator<T> implements Iterator<T> {
         return !this.queue.isEmpty() || this.iterator.hasNext();
     }
 
-    public void add(final T t, final List path) {
-        Bundle<T> bundle = new Bundle<T>(t, path);
+    public void add(final T t, final List path, final int loops) {
+        Bundle<T> bundle = new Bundle<T>(t, path, loops);
         this.queue.add(bundle);
     }
 
     public List getCurrentPath() {
-        if (null == this.current) {
+        if (null == this.current)
             return null;
-        } else {
+        else
             return this.current.getPath();
-        }
+
+    }
+
+    public int getCurrentLoops() {
+        if (null == this.current)
+            return 1;
+        else
+            return this.current.getLoops();
     }
 }

@@ -21,13 +21,14 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
     public LoopPipe(final Pipe<S, S> toLoopPipe, final Closure doLoopClosure) {
         this.toLoopPipe = toLoopPipe;
         this.doLoopClosure = doLoopClosure;
+        this.doLoopClosure.setDelegate(this);
     }
 
     protected S processNextStart() {
         while (true) {
             final S s = this.toLoopPipe.next();
             if ((Boolean) doLoopClosure.call(s)) {
-                this.expando.add(s, this.getPath());
+                this.expando.add(s, this.getPath(), this.getLoops() + 1);
             } else {
                 return s;
             }
@@ -41,6 +42,10 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
 
     public String toString() {
         return super.toString() + "<" + this.toLoopPipe + ">";
+    }
+
+    public int getLoops() {
+        return this.expando.getCurrentLoops();
     }
 
     public List getPath() {

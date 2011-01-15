@@ -45,7 +45,8 @@ class LoopPipeTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
     def results = []
-    g.v(1).outE.inV.loop(2) {it != g.v(5)}.paths >> results
+    def loops = 0;
+    g.v(1).outE.inV.loop(2) {assertTrue(delegate.loops >= loops); loops = delegate.loops; it != g.v(5)}.paths >> results
     results = results[0];
     assertEquals(results[0], g.v(1));
     assertEquals(results[1], g.e(8));
