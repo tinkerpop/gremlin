@@ -14,7 +14,7 @@ class LoopPipeTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
     int counter = 0;
-    g.v(1).outE.inV.loop {it.name != 'ripple'}.each {counter++; assertEquals(it, g.v(5))}
+    g.v(1).outE.inV.loop {it.object.name != 'ripple'}.each {counter++; assertEquals(it, g.v(5))}
     assertEquals(counter, 1);
   }
 
@@ -22,11 +22,11 @@ class LoopPipeTest extends TestCase {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
     def counter = 0;
-    g.V[['name': 'marko']].back(1).outE.inV.loop(2, {it.name != 'ripple'}).each {counter++; assertEquals(it, g.v(5))}
+    g.V[['name': 'marko']].back(1).outE.inV.loop(2, {it.object.name != 'ripple'}).each {counter++; assertEquals(it, g.v(5))}
     assertEquals(counter, 1);
 
     counter = 0;
-    g.V[['name': 'marko']].back(1).outE.inV.loop(2) {it.name != 'ripple'}.each {counter++; assertEquals(it, g.v(5))}
+    g.V[['name': 'marko']].back(1).outE.inV.loop(2) {it.object.name != 'ripple'}.each {counter++; assertEquals(it, g.v(5))}
     assertEquals(counter, 1);
   }
 
