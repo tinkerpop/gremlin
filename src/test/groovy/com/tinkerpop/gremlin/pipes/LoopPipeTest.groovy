@@ -41,9 +41,19 @@ class LoopPipeTest extends TestCase {
     assertEquals(counter, 1);
   }
 
-  /*private class IncrPipe extends AbstractPipe {
-    public def processNextStart() {
-      return this.starts.next() + 1;
-    }
-  }*/
+  public void testPathsInLoop() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    def results = []
+    g.v(1).outE.inV.loop(2) {it != g.v(5)}.paths >> results
+    results = results[0];
+    assertEquals(results[0], g.v(1));
+    assertEquals(results[1], g.e(8));
+    assertEquals(results[2], g.v(4));
+    assertEquals(results[3], g.e(10));
+    assertEquals(results[4], g.v(5));
+    println results;
+  }
+
+
 }

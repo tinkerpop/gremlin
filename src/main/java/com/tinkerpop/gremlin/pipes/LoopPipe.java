@@ -1,10 +1,11 @@
 package com.tinkerpop.gremlin.pipes;
 
+import com.tinkerpop.gremlin.pipes.util.ExpandableBundleIterator;
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.ExpandableIterator;
 import com.tinkerpop.pipes.Pipe;
 import groovy.lang.Closure;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
 
     private final Closure doLoopClosure;
     private final Pipe<S, S> toLoopPipe;
-    private ExpandableIterator<S> expando;
+    private ExpandableBundleIterator<S> expando;
 
     public LoopPipe(final Pipe<S, S> toLoopPipe, final Closure doLoopClosure) {
         this.toLoopPipe = toLoopPipe;
@@ -24,17 +25,17 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
 
     protected S processNextStart() {
         while (true) {
-            final S e = this.toLoopPipe.next();
-            if ((Boolean) doLoopClosure.call(e)) {
-                this.expando.add(e);
+            final S s = this.toLoopPipe.next();
+            if ((Boolean) doLoopClosure.call(s)) {
+                this.expando.add(s, this.getPath());
             } else {
-                return e;
+                return s;
             }
         }
     }
 
     public void setStarts(final Iterator<S> iterator) {
-        this.expando = new ExpandableIterator<S>(iterator);
+        this.expando = new ExpandableBundleIterator<S>(iterator);
         this.toLoopPipe.setStarts(this.expando);
     }
 
@@ -43,6 +44,13 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
     }
 
     public List getPath() {
-        return this.toLoopPipe.getPath();
+        final List path = new ArrayList();
+        final List currentPath = this.expando.getCurrentPath();
+        if (null != currentPath)
+            path.addAll(currentPath);
+        path.addAll(this.toLoopPipe.getPath());
+        return path;
     }
+
+
 }
