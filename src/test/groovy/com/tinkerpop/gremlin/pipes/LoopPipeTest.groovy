@@ -10,17 +10,6 @@ import junit.framework.TestCase
  */
 class LoopPipeTest extends TestCase {
 
-  /*public void testLoopPipe() {
-    Pipe pipe = new LoopPipe(new IncrPipe(), { it < 10 });
-    pipe.setStarts([1, 2, 3].iterator());
-    int counter = 0;
-    while (pipe.hasNext()) {
-      counter++;
-      assertEquals(pipe.next(), 10);
-    }
-    assertEquals(counter, 3);
-  }*/
-
   public void testFullLoop() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -46,14 +35,14 @@ class LoopPipeTest extends TestCase {
     Graph g = TinkerGraphFactory.createTinkerGraph();
     def results = []
     def loops = 0;
-    g.v(1).outE.inV.loop(2) {assertTrue(delegate.loops >= loops); loops = delegate.loops; it != g.v(5)}.paths >> results
+    g.v(1).outE.inV.loop(2) {assertTrue(it.loops >= loops); loops = it.loops; it.object != g.v(5)}.paths >> results
     results = results[0];
     assertEquals(results[0], g.v(1));
     assertEquals(results[1], g.e(8));
     assertEquals(results[2], g.v(4));
     assertEquals(results[3], g.e(10));
     assertEquals(results[4], g.v(5));
-    println results;
+    //println results;
   }
 
 

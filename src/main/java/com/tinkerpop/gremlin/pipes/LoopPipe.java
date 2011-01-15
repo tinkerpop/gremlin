@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes;
 
+import com.tinkerpop.gremlin.pipes.util.Bundle;
 import com.tinkerpop.gremlin.pipes.util.ExpandableBundleIterator;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.Pipe;
@@ -27,8 +28,9 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
     protected S processNextStart() {
         while (true) {
             final S s = this.toLoopPipe.next();
-            if ((Boolean) doLoopClosure.call(s)) {
-                this.expando.add(s, this.getPath(), this.getLoops() + 1);
+            Bundle<S> bundle = new Bundle<S>(s, this.getPath(), this.getLoops());
+            if ((Boolean) doLoopClosure.call(bundle)) {
+                this.expando.add(bundle);
             } else {
                 return s;
             }
@@ -45,7 +47,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
     }
 
     public int getLoops() {
-        return this.expando.getCurrentLoops();
+        return this.expando.getCurrentLoops() + 1;
     }
 
     public List getPath() {
