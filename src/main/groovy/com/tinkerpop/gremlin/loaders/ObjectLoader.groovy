@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.pipes.IdentityPipe
-import com.tinkerpop.pipes.Pipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

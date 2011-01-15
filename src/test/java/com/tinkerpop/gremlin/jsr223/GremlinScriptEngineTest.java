@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.jsr223;
 
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.BaseTest;
 
@@ -24,7 +25,14 @@ public class GremlinScriptEngineTest extends BaseTest {
 
     public void testImports() throws Exception {
         ScriptEngine engine = new GremlinScriptEngine();
-        //todo: engine.eval("new TinkerGraph()");
+        engine.eval("new TinkerGraph()");
+    }
+
+    public void testBindings() throws Exception {
+        ScriptEngine engine = new GremlinScriptEngine();
+        assertTrue(engine.eval("g = TinkerGraphFactory.createTinkerGraph()") instanceof TinkerGraph);
+        assertTrue(engine.get("g") instanceof TinkerGraph);
+        assertEquals(engine.eval("g.v(1)"), TinkerGraphFactory.createTinkerGraph().getVertex(1));
     }
 
 }
