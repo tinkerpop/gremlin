@@ -17,15 +17,20 @@ public class ErrorHookClosure extends Closure {
 
     public Object call(final Object[] args) {
         if (args.length > 0) {
-            final Exception e = (Exception) args[0];
-            String message = e.getMessage();
-            if (null != message) {
-                message = message.replace("startup failed:", "");
-                io.err.println(message.trim());
-            } else {
-                io.err.println(e);
+            try {
+                final Throwable e = (Throwable) args[0];
+                String message = e.getMessage();
+                if (null != message) {
+                    message = message.replace("startup failed:", "");
+                    io.err.println(message.trim());
+                } else {
+                    io.err.println(e);
+                }
+                return null;
+            } catch (Exception e) {
+                io.err.println("An undefined error has occurred: " + args[0]);
+                return null;
             }
-            return null;
         } else {
             io.err.println("An undefined error has occurred");
             return null;
