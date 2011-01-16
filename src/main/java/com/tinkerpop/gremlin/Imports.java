@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.console;
+package com.tinkerpop.gremlin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,8 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
         imports.add("com.tinkerpop.blueprints.pgm.util.*");
         imports.add("com.tinkerpop.blueprints.pgm.util.graphml.*");
+        imports.add("com.tinkerpop.blueprints.pgm.oupls.sail.*");
+        imports.add("com.tinkerpop.blueprints.pgm.oupls.jung.*");
 
         // pipes
         imports.add("com.tinkerpop.pipes.*");

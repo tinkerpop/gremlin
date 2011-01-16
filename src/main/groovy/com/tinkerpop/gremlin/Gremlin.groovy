@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
 
-import com.tinkerpop.gremlin.console.Imports
 import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
