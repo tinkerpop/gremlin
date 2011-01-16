@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.pipes
 
 import com.tinkerpop.blueprints.pgm.Graph
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
 import junit.framework.TestCase
@@ -43,6 +44,21 @@ class LoopPipeTest extends TestCase {
     assertEquals(results[3], g.e(10));
     assertEquals(results[4], g.v(5));
     //println results;
+  }
+
+  public void testLoopAndUnrolledEquiality() {
+    Gremlin.load();
+    Graph g = new TinkerGraph();
+    def a = g.addVertex(1)
+    def b = g.addVertex(2)
+    def c = g.addVertex(3)
+    g.addEdge(null, a, b, 'knows1');
+    g.addEdge(null, a, c, 'knows2');
+    g.addEdge(null, c, a, 'knows3');
+    g.addEdge(null, b, c, 'knows4');
+    assertEquals(g.v(1).outE.inV.loop(2) {it.loops < 5}, g.v(1).outE.inV.outE.inV.outE.inV.outE.inV)
+
+
   }
 
 
