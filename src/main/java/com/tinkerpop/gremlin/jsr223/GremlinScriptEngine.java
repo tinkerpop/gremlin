@@ -66,8 +66,8 @@ public class GremlinScriptEngine extends GroovyScriptEngineImpl {
     }
 
     private StringReader generateStringReader(final Reader reader) throws Exception {
-        StringBuilder sb = new StringBuilder(this.imports);
-        BufferedReader bf = new BufferedReader(reader);
+        final StringBuilder sb = new StringBuilder(this.imports);
+        final BufferedReader bf = new BufferedReader(reader);
         String line;
         while ((line = bf.readLine()) != null) {
             sb.append(line).append("\n");

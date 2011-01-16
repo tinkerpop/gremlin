@@ -21,4 +21,16 @@ class ElementLoadTest extends TestCase {
     assertTrue(g.v(1).keys().contains("name"));
     assertTrue(g.v(1).keys().contains("age"));
   }
+
+  public void testPropertiesOnElement() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph()
+    assertEquals(g.v(1).name, "marko")
+    assertEquals(g.v(1).age, 29)
+    def results = []
+    [g.v(1), g.v(2)].name >> results
+    assertEquals(results.size(), 2)
+    assertEquals(results.get(0), "marko")
+    assertEquals(results.get(1), "vadas")
+  }
 }

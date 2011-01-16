@@ -62,9 +62,9 @@ class Gremlin {
   public static Pipe compile(final String gremlin) {
     final String IMPORT = "import "
     final String NEWLINE = "\n"
-    GroovyShell groovy = GroovyShell.newInstance()
-    StringBuilder sb = new StringBuilder()
-    for (String importItem: Imports.getImports())
+    final GroovyShell groovy = GroovyShell.newInstance()
+    final StringBuilder sb = new StringBuilder()
+    for (final String importItem: Imports.getImports())
       sb.append(IMPORT).append(importItem).append(NEWLINE);
     sb.append(gremlin);
     return (Pipe) groovy.evaluate(sb.toString())

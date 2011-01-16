@@ -28,7 +28,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
     protected S processNextStart() {
         while (true) {
             final S s = this.toLoopPipe.next();
-            Bundle<S> bundle = new Bundle<S>(s, this.getPath(), this.getLoops());
+            final Bundle<S> bundle = new Bundle<S>(s, this.getPath(), this.getLoops());
             if ((Boolean) doLoopClosure.call(bundle)) {
                 this.expando.add(bundle);
             } else {
