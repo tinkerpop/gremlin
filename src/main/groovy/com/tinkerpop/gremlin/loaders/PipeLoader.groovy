@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.ClosurePipe
+import com.tinkerpop.gremlin.pipes.ForeachPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
@@ -136,6 +137,12 @@ class PipeLoader {
     ///////////////////////////
     ////////// PIPES //////////
     ///////////////////////////
+
+    [Iterator, Iterable].each {
+      it.metaClass.foreach = {final Closure closure ->
+        return Gremlin.compose(delegate, new ForeachPipe(closure));
+      }
+    }
 
     [Iterator, Iterable].each {
       it.metaClass.objectCount = {final Closure closure ->
