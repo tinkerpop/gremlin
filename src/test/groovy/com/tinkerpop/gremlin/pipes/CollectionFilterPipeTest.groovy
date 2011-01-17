@@ -22,6 +22,16 @@ class CollectionFilterPipeTest extends TestCase {
 
   }
 
+  public void testExceptWithClosureFilter() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    def x = []
+    def results = []
+    g.v(1).outE.inV.aggregate(x).outE.inV.except(x){it.id == 5} >> results
+    assertEquals(results.size(), 0)
+  }
+
   public void testRetainPattern() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -31,6 +41,16 @@ class CollectionFilterPipeTest extends TestCase {
     g.v(1).outE.inV.aggregate(x).outE.inV.retain(x) >> results
     assertEquals(results.size(), 1)
     assertTrue(results.contains(g.v(3)))
+  }
+
+    public void testRetainWithClosureFilter() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    def x = []
+    def results = []
+    g.v(1).outE.inV.aggregate(x).outE.inV.retain(x){it.id == 3} >> results
+    assertEquals(results.size(), 0)
   }
 
 }

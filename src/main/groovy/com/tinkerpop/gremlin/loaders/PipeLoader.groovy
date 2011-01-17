@@ -93,6 +93,18 @@ class PipeLoader {
     }
 
     [Iterator, Iterable].each {
+      it.metaClass.getAt = {final String name ->
+        if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+          return Gremlin.compose(delegate, new IdPipe());
+        } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+          return Gremlin.compose(delegate, new LabelPipe());
+        } else {
+          return Gremlin.compose(delegate, new PropertyPipe(name));
+        }
+      }
+    }
+
+    [Iterator, Iterable].each {
       it.metaClass.getAt = {final Map map ->
         GremlinPipeline pipeline = Gremlin.compose(delegate);
         map.each {key, value ->
@@ -121,25 +133,13 @@ class PipeLoader {
       }
     }
 
-    [Iterator, Iterable].each {
-      it.metaClass.getAt = {final String name ->
-        if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-          return Gremlin.compose(delegate, new IdPipe());
-        } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-          return Gremlin.compose(delegate, new LabelPipe());
-        } else {
-          return Gremlin.compose(delegate, new PropertyPipe(name));
-        }
-      }
-    }
-
     ///////////////////////////
     ////////// PIPES //////////
     ///////////////////////////
 
     [Iterator, Iterable].each {
-      it.metaClass.objectCount = {
-        return Gremlin.compose(delegate, new CountPipe());
+      it.metaClass.objectCount = {final Closure closure ->
+        return Gremlin.compose(delegate, new CountPipe(), closure);
       }
     }
 
@@ -167,7 +167,16 @@ class PipeLoader {
     [Iterator, Iterable].each {
       it.metaClass.aggregate = {final Object ... params ->
         if (params) {
-          return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]))
+          if (params.length == 2) {
+            return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]), (Closure) params[1])
+          } else {
+            if (params[0] instanceof Collection) {
+              return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]))
+            } else {
+              return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()), (Closure) params[0])
+
+            }
+          }
         } else {
           return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()));
         }
@@ -181,15 +190,37 @@ class PipeLoader {
     }
 
     [Iterator, Iterable].each {
+      it.metaClass.except = {final Collection collection, final Closure closure ->
+        return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL), closure);
+      }
+    }
+
+
+    [Iterator, Iterable].each {
       it.metaClass.retain = {final Collection collection ->
         return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL));
       }
     }
 
     [Iterator, Iterable].each {
+      it.metaClass.retain = {final Collection collection, final Closure closure ->
+        return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL), closure);
+      }
+    }
+
+    [Iterator, Iterable].each {
       it.metaClass.groupCount = {final Object ... params ->
         if (params) {
-          return Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]))
+          if (params.length == 2) {
+            Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]), (Closure) params[1])
+          } else {
+            if (params[0] instanceof Map) {
+              Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]));
+
+            } else {
+              Gremlin.compose(delegate, new GroupCountPipe(new HashMap()), (Closure) params[0]);
+            }
+          }
         } else {
           return Gremlin.compose(delegate, new GroupCountPipe(new HashMap()));
         }
@@ -198,7 +229,7 @@ class PipeLoader {
 
     [Iterator, Iterable].each {
       it.metaClass.unique = {final Closure closure ->
-        return Gremlin.compose(delegate, new DuplicateFilterPipe())
+        return Gremlin.compose(delegate, new DuplicateFilterPipe(), closure)
       }
     }
 
