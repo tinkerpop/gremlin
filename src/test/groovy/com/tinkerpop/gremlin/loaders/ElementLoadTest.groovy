@@ -10,6 +10,33 @@ import junit.framework.TestCase
  */
 class ElementLoadTest extends TestCase {
 
+  public void testGetAtWithKey() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    assertEquals(g.v(1)['name'], 'marko')
+    assertEquals(g.v(1)['id'], '1')
+    assertEquals(g.v(1)['age'], 29)
+
+    assertEquals(g.e(7)['label'], 'knows')
+    assertEquals(g.e(7)['weight'], 0.5f)
+    assertEquals(g.e(7)['id'], '7')
+  }
+
+  /*public void testSetAtWithKey() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    g.v(1)['name'] = 'marko2'
+    assertEquals(g.v(1)['name'], 'marko2')
+    g.v(1)['id'] = '11'
+    assertEquals(g.v(1)['id'], '1')
+    g.v(1)['age'] = 31
+    assertEquals(g.v(1)['age'], 31)
+
+    assertEquals(g.e(7)['label'], 'knows')
+    assertEquals(g.e(7)['weight'], 0.5f)
+    assertEquals(g.e(7)['id'], '7')
+  }*/
+
   public void testKeysValuesMapOnElement() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();

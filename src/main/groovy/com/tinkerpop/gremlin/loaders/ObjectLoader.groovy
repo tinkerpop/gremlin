@@ -18,8 +18,6 @@ class ObjectLoader {
       }
     }
 
-    // PIPES
-
     Object.metaClass._ = {final Closure closure ->
       return Gremlin.compose(delegate, new IdentityPipe(), closure)
     }

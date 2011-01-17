@@ -20,12 +20,11 @@ class IndexLoader {
       } else {
         name = idx.toString()
       }
-
       return ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
     }
 
     Index.metaClass.getAt = {final Map query ->
-      Map.Entry entry = (Map.Entry) query.iterator().next();
+      final Map.Entry entry = (Map.Entry) query.iterator().next();
       return ((Index) delegate).get((String) entry.getKey(), entry.getValue());
     }
 
