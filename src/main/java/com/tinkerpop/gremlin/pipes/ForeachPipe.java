@@ -12,6 +12,7 @@ public class ForeachPipe<S> extends AbstractPipe<S, S> {
 
     public ForeachPipe(final Closure closure) {
         this.closure = closure;
+        this.closure.setDelegate(this);
     }
 
     public S processNextStart() {

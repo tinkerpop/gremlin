@@ -15,21 +15,21 @@ import java.util.List;
  */
 public class LoopPipe<S> extends AbstractPipe<S, S> {
 
-    private final Closure doLoopClosure;
-    private final Pipe<S, S> toLoopPipe;
+    private final Closure closure;
+    private final Pipe<S, S> pipe;
     private ExpandableBundleIterator<S> expando;
 
-    public LoopPipe(final Pipe<S, S> toLoopPipe, final Closure doLoopClosure) {
-        this.toLoopPipe = toLoopPipe;
-        this.doLoopClosure = doLoopClosure;
-        this.doLoopClosure.setDelegate(this);
+    public LoopPipe(final Pipe<S, S> pipe, final Closure closure) {
+        this.pipe = pipe;
+        this.closure = closure;
+        this.closure.setDelegate(this);
     }
 
     protected S processNextStart() {
         while (true) {
-            final S s = this.toLoopPipe.next();
+            final S s = this.pipe.next();
             final Bundle<S> bundle = new Bundle<S>(s, this.getPath(), this.getLoops());
-            if ((Boolean) doLoopClosure.call(bundle)) {
+            if ((Boolean) closure.call(bundle)) {
                 this.expando.add(bundle);
             } else {
                 return s;
@@ -39,11 +39,11 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
 
     public void setStarts(final Iterator<S> iterator) {
         this.expando = new ExpandableBundleIterator<S>(iterator);
-        this.toLoopPipe.setStarts(this.expando);
+        this.pipe.setStarts(this.expando);
     }
 
     public String toString() {
-        return super.toString() + "<" + this.toLoopPipe + ">";
+        return super.toString() + "<" + this.pipe + ">";
     }
 
     public int getLoops() {
@@ -55,7 +55,7 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
         final List currentPath = this.expando.getCurrentPath();
         if (null != currentPath)
             path.addAll(currentPath);
-        path.addAll(this.toLoopPipe.getPath());
+        path.addAll(this.pipe.getPath());
         return path;
     }
 
