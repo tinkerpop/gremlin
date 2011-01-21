@@ -22,20 +22,38 @@ class ElementLoadTest extends TestCase {
     assertEquals(g.e(7)['id'], '7')
   }
 
-  /*public void testSetAtWithKey() {
+  public void testSetAtWithKey() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
     g.v(1)['name'] = 'marko2'
     assertEquals(g.v(1)['name'], 'marko2')
-    g.v(1)['id'] = '11'
-    assertEquals(g.v(1)['id'], '1')
     g.v(1)['age'] = 31
     assertEquals(g.v(1)['age'], 31)
 
-    assertEquals(g.e(7)['label'], 'knows')
-    assertEquals(g.e(7)['weight'], 0.5f)
-    assertEquals(g.e(7)['id'], '7')
-  }*/
+    g.e(7)['weight'] = 100f
+    assertEquals(g.e(7)['weight'], 100f)
+
+    try {
+      g.v(1)['id'] = 10
+      assertFalse(true)
+    } catch (Exception e) {
+      assertTrue(true)
+    }
+
+    try {
+      g.e(7)['id'] = 10
+      assertFalse(true)
+    } catch (Exception e) {
+      assertTrue(true)
+    }
+
+    try {
+      g.e(7)['label'] = 'new label'
+      assertFalse(true)
+    } catch (Exception e) {
+      assertTrue(true)
+    }
+  }
 
   public void testKeysValuesMapOnElement() {
     Gremlin.load();

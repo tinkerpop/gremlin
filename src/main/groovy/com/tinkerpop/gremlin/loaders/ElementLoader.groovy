@@ -13,6 +13,10 @@ class ElementLoader {
 
   public static void load() {
 
+    Element.metaClass.propertyMissing = {final String name, final def value ->
+      ((Element) delegate).setProperty(name, value)
+    }
+
     Vertex.metaClass.propertyMissing = {final String name ->
       if (Gremlin.getMissingMethods(delegate.getClass()).contains(name)) {
         return delegate."$name"()
@@ -59,20 +63,20 @@ class ElementLoader {
 
     Element.metaClass.map = {
       final Map<String, Object> map = new HashMap<String, Object>();
-      for (final String key: delegate.getPropertyKeys()) {
-        map.put(key, delegate.getProperty(key))
+      for (final String key: ((Element) delegate).getPropertyKeys()) {
+        map.put(key, ((Element) delegate).getProperty(key))
       }
       return map;
     }
 
     Element.metaClass.keys = {
-      return delegate.getPropertyKeys()
+      return ((Element) delegate).getPropertyKeys()
     }
 
     Element.metaClass.values = {
       final List values = new ArrayList();
-      for (final String key: delegate.getPropertyKeys()) {
-        values.add(delegate.getProperty(key))
+      for (final String key: ((Element) delegate).getPropertyKeys()) {
+        values.add(((Element) delegate).getProperty(key))
       }
       return values;
     }
