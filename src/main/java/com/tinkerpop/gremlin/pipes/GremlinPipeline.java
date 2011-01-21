@@ -94,16 +94,16 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
 
 
     public boolean hasNext() {
-        return endPipe.hasNext();
+        return this.endPipe.hasNext();
     }
 
 
     public E next() {
-        return endPipe.next();
+        return this.endPipe.next();
     }
 
     public List getPath() {
-        return endPipe.getPath();
+        return this.endPipe.getPath();
     }
 
     public Iterator<E> iterator() {

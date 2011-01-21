@@ -36,7 +36,7 @@ public class ExpandableBundleIterator<T> implements Iterator<T> {
         return !this.queue.isEmpty() || this.iterator.hasNext();
     }
 
-    public void add(Bundle<T> bundle) {
+    public void add(final Bundle<T> bundle) {
         this.queue.add(bundle);
     }
 

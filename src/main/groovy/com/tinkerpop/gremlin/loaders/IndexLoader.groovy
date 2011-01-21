@@ -20,7 +20,13 @@ class IndexLoader {
       } else {
         name = idx.toString()
       }
-      return ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
+      Index index = ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
+      if (index) {
+        return index;
+      } else {
+        throw new RuntimeException("No index found by the name '${name}'");
+      }
+
     }
 
     Index.metaClass.getAt = {final Map query ->

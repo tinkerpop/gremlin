@@ -17,4 +17,15 @@ class IndexLoaderTest extends TestCase {
     assertEquals((g.idx(T.v)[[name: 'marko']] as List)[0], g.v(1));
     assertEquals(g.idx(T.e)[[label: 'created']].size(), 4);
   }
+
+  public void testIndexLookupError() throws Exception {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    try {
+      g.idx('blah')
+      assertFalse(true)
+    } catch (RuntimeException e) {
+      assertTrue(true)
+    }
+  }
 }

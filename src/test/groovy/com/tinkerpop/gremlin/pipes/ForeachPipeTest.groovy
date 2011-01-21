@@ -26,4 +26,12 @@ class ForeachPipeTest extends TestCase {
     assertTrue(results2.contains('josh'))
     assertTrue(results2.contains('lop'))
   }
+
+  public void testCountObjects() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    def c = 0
+    g.v(1).outE.foreach {c++} >> -1
+    assertEquals(c, 3)
+  }
 }

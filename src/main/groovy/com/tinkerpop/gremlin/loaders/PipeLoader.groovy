@@ -12,7 +12,6 @@ import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
-import com.tinkerpop.pipes.sideeffect.CountPipe
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
@@ -141,12 +140,6 @@ class PipeLoader {
     [Iterator, Iterable].each {
       it.metaClass.foreach = {final Closure closure ->
         return Gremlin.compose(delegate, new ForeachPipe(closure));
-      }
-    }
-
-    [Iterator, Iterable].each {
-      it.metaClass.objectCount = {final Closure closure ->
-        return Gremlin.compose(delegate, new CountPipe(), closure);
       }
     }
 
