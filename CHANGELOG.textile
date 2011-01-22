@@ -11,16 +11,23 @@ bc. <repository>
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png!
 
-h3. Version 0.7 (Gremopoly -- NOT OFFICIALLY RELEASED)
+h3. Version 0.7 (Gremopoly -- January 22, 2011)
 
 bc. <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.7-SNAPSHOT</version>
+  <version>0.7</version>
 </dependency>
 
+* Added many new steps
+** @loop@ step for in-line looping
+** @foreach@ step for closure based operations on flowing objects
+** @back@ step for backtracking in pipeline (i.e. @../@)
+** @aggregate@, @except@, and @retain@ for except/retain pattern
+** @groupCount@ for map aggregations (i.e. @g:op-value()@)
+** @step@ for anonymous/lambda steps
+* Massive refactoring of documentation
 * Changed to "Groovy":http://groovy.codehaus.org/ as the host language
-* Changed documentation to reflect changes.
 
 ==<hr/>==
 
