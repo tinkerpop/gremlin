@@ -1,0 +1,31 @@
+!http://groovy.codehaus.org/download/attachments/1866/groovydukemed.jpg!
+
+Gremlin works by using the "metaprogramming":http://en.wikipedia.org/wiki/Metaprogramming facilities provided by "Groovy":http://groovy.codehaus.org/. There is single Groovy class called @Gremlin.groovy@. To use Gremlin while in Groovy, simply do @Gremlin.load()@ (be sure Gremlin is in the classpath).
+
+h2. Groovy Shell
+
+Gremlin shell (@gremlin.sh@) is basically the "Groovy shell|":http://groovy.codehaus.org/Groovy+Shell wrapped to have the Gremlin look and feel. For example, do @\h@ at the @gremlin>@ prompt.
+
+```text
+marko:~$ groovysh 
+Groovy Shell (1.7.2, JVM: 1.6.0_22)
+Type 'help' or '\h' for help.
+-------------------------------------------------------------------------------
+groovy:000> com.tinkerpop.gremlin.Gremlin.load()
+```
+
+h2. Groovy Classes
+
+If you are using Groovy classes, its trivial to access Gremlin. In this way, your Java code and your Gremlin/Groovy code seamless interact through standard class mechanisms.
+
+```java
+class SimpleExample {
+  public List exampleMethod() {
+    Gremlin.load()
+    Graph g = TinkerGraphFactory.createTinkerGraph()
+    def results = []
+    g.v(1).outE.inV >> results
+    return results;
+  }
+}
+```

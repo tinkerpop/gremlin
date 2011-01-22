@@ -10,6 +10,30 @@ All releases can be accessed through the TinkerPop Maven2 repository identified 
 
 ==<hr/>==
 
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png!
+
+h3. Version 0.7 (Gremopoly -- January 22, 2011)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.7</version>
+</dependency>
+```
+
+* Added many new steps
+** @loop@ step for in-line looping
+** @foreach@ step for closure based operations on flowing objects
+** @back@ step for backtracking in pipeline (i.e. @../@)
+** @aggregate@, @except@, and @retain@ for except/retain pattern
+** @groupCount@ for map aggregations (i.e. @g:op-value()@)
+** @step@ for anonymous/lambda steps
+* Massive refactoring of documentation
+* Changed to "Groovy":http://groovy.codehaus.org/ as the host language
+
+==<hr/>==
+
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremalicious.png!
 
 h3. Version 0.6 (Gremalicious -- December 14, 2010)
@@ -26,13 +50,13 @@ h3. Version 0.6 (Gremalicious -- December 14, 2010)
 * Fixed @if/else@ bug that occurred on function call
 * @null@ and empty iterator/iterable result now printed in console
 * Empty path expression returns an empty iterable, not @null@
-* Added @g:copy-e()@ function that conveniently copies an element from one graph into another
+* Added @g:copy-ve()@ function that conveniently copies an element from one graph into another
 * Fixed numerous bugs in how functions were computing atoms
 * GPath optimization through auto-reset of Gremlin-specific range-based pipes
 * Comparing numbers is now possible without casting
 * Fixed a major bug in error message handling (many exceptions w/o message being provided in console)
 * Improved Gremlin evaluator load time with static function and step loading
-* Added support for Blueprints 0.3 multi-indexes
+* Added support for "Blueprints":http://blueprints.tinkerpop.com 0.3 multi-indexes
 ** @g:add-aidx-key()@, @g:add-idx()@, @g:drop-idx()@, @g:show-aidx-keys()@, @g:show-idx()@, @g:remove-aidx-keys()@
 * Added @return ?object@ to return from a user defined function or step
 * Added support for path generation through @g:path()@ (main body of work in "Pipes":http://pipes.tinkerpop.com)
@@ -66,8 +90,6 @@ h3. Version 0.5 (Gremlivich -- September 22, 2010)
   <version>0.5</version>
 </dependency>
 ```
-
-Gremlin 0.5 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.5/api/
 
 * A complete redesign and implementation of the Gremlin compiler
 ** Compiler written using "ANTLR 3.2":http://www.antlr.org/
@@ -120,8 +142,6 @@ h3. Version 0.2.2 (Gremicide -- March 7, 2010)
 </dependency>
 ```
 
-Gremlin 0.2.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.2.2/api/
-
 * Fixed a bug introduced in 0.2.1 having to do with variables copied from a parent path context
 * Added dependency on Neo4j RDF and SAIL SNAPSHOTS
 * Added Neo4jSailGraph BETA to the core distribution
@@ -135,8 +155,6 @@ h3. Version 0.2.1 (Gremicide -- February 25, 2010)
   <version>0.2.1</version>
 </dependency>
 ```
-
-Gremlin 0.2.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.2.1/api/
 
 * Instance naming convention for @Functions@ changed to @FunctionLibrary@
 * @list g:list(object+)@ is now @list g:list(object*)@
@@ -153,8 +171,6 @@ h3. Version 0.2 (Gremicide -- February 14, 2010)
   <version>0.2</version>
 </dependency>
 ```
-
-Gremlin 0.2 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.2/api/
 
 * Added user defined functions
 ** Gremlin and Java defined functions supported
@@ -194,7 +210,5 @@ h3. Version 0.1 (XMas Alpha -- December 25, 2009)
   <version>0.1</version>
 </dependency>
 ```
-
-Gremlin 0.1 "JavaDocs":http://tinkerpop.com/maven2/com/tinkerpop/gremlin/0.1/api/
 
 * Initial release of the language and virtual machine

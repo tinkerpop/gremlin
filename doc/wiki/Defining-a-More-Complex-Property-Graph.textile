@@ -18,7 +18,7 @@ In the above Grateful Dead graph, there are vertices and there are edges. The ve
     **** type (string): always 'artist' for artist vertices.
     **** name (string): the name of the artist.
 # edges
-  ** followed_by (song x song): if the tail song was followed by the head song in concert.
+  ** followed_by (song -> song): if the tail song was followed by the head song in concert.
     **** weight (integer): the number of times these two songs were paired in concert.
-  ** sung_by (song x artist): if the tail song was primarily sung by the head artist.
-  ** written_by (song x artist): if the tail song was written by the head artist.
+  ** sung_by (song -> artist): if the tail song was primarily sung by the head artist.
+  ** written_by (song -> artist): if the tail song was written by the head artist.

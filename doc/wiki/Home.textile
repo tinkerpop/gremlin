@@ -1,63 +1,52 @@
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-logo.png!
 
-Gremlin is a graph-based programming language. The documentation herein will provide all the information necessary to understand how to use Gremlin for graph query, analysis, and manipulation. Gremlin works over those graph databases/frameworks that implement the "Blueprints":http://blueprints.tinkerpop.com property graph data model.[1]
+Gremlin is a graph traversal language. The documentation herein will provide all the information necessary to understand how to use Gremlin for graph query, analysis, and manipulation. Gremlin works over those graph databases/frameworks that implement the "Blueprints":http://blueprints.tinkerpop.com property graph data model.[1] 
 
 Please join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users. Finally, if you are a Gremlin user, please add to the [[Gremlin in the Wild]] wiki page with your specific Gremlin uses cases.
 
+```text
+// calculate the primary eigenvector (eigenvector centrality) of a graph:
+g = new Neo4jGraph('/tmp/neo4j')
+m = [:]; c = 0;
+g.V.outE.inV.groupCount(m).loop(3){c++ < 1000}
+m.sort{a,b -> a.value <=> b.value}
+```
+
+"Gremlin Tutorial 1":http://www.youtube.com/watch?v=5wpTtEBK4-E (*Screencast*)
+
 ==<hr/>==
 # [[The Benefits of Gremlin]]
-  ** [[Related Material]]
 # [[Getting Started]]
   ** [[Building Gremlin from Source]]
+  ** [[Using Gremlin through Groovy]]
   ** [[Using Gremlin through Java]]
   ** [[Using Gremlin from the Command Line]]
 # Basic Concepts
+  ** [[Learning Dependencies]]
   ** [[Defining a Property Graph]]
-  ** [[Gremlin Type System]]
-  ** [[Language Statements]]
-    **** [[Math Operations]]
   ** [[Basic Graph Traversals]]
+  ** Gremlin Library
+    **** [[Gremlin Steps]] (*Cheat Sheet*)
+    **** [[Gremlin Methods]] (*Cheat Sheet*)
 # Intermediate Concepts
   ** [[Defining a More Complex Property Graph]]
-  ** [[Gremlin Function Library]]
-    **** [[User Defined Functions]]
-  ** Gremlin Step Library
-    **** [[User Defined Steps]]
-  ** [[Path Object]]
-  ** [[Path Functions]]
-  ** [[Handling Lists, Sets, and Maps]]
-  ** [[Handling Graphs]]
-    **** [[Handling Vertices and Edges]]
-    **** [[Handling Graph Indices]]
-    **** [[Handling Path Elements]]
-  ** "GraphML Input and Output":http://wiki.github.com/tinkerpop/blueprints/graphml-reader-and-writer-library
-  ** JSON Input and Output
+  ** Traversal Patterns
+    **** [[Backtrack Pattern]]
+    **** [[Except/Retain Pattern]]
+    **** [[Flow Rank Pattern]]
+    **** [[Random Walk Pattern]]
+    **** [[Paths Pattern]]
+    **** [[Loop Pattern]]
+  ** [[User Defined Steps]]
 * Advanced Concepts
   ** [[Depth-First vs. Breadth-First]]
-  ** Modeling Other Graph Structures
-    **** [[Modeling Undirected and Unlabeled Graphs]]
-    **** [[Modeling HyperGraphs]]
-    **** Modeling Nested Graphs
-  ** [[Graph Grammars and Automata]]
-  **** [[Graph Rewriting]]
-  **** [[Grammar-Based Random Walkers]]
-      ****** [[Spreading Activation]]
-      ****** [[PageRank]]
-# Graph Framework Connectors
-  ** [[TinkerGraph]]
-  ** [[Neo4j Graph Database]]
-  ** [[OrientDB Graph Database]]
-  ** [[Sesame Sail Quad Store]]
-    **** [[Modeling RDF as a Property Graph]]
-    **** [[SPARQL vs. Gremlin]]
-    **** [[Specific Sail Connectors]]
-      ****** [[LinkedData Sail]]
-  ** [[Rexster RESTful Graph Shell]]
-  ** FileSystem Graph
-  ** [[Working with JUNG Algorithms]]
-  ** [[Adding a Graph Framework to Gremlin]]
+  ** [[Path Optimizations]]
+    **** Path Equivalencies
+# [[Graph Framework Connectors]]
+  ** [[SPARQL vs. Gremlin]]
+  ** [[LinkedData Sail]] (Traversing the Web of Data)
 # Conclusion
-  ** [[Cheat Sheet]]
+  ** [[Related Material]]
   ** [[Acknowledgments]]
   ** [[Release Notes]]
 

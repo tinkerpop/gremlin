@@ -1,94 +1,94 @@
-Gremlin provides the ability for a user to define their own step definitions natively in Gremlin or in Java. This is very useful when wishing to work with your low-level graph data at a higher level of abstraction.  This section will discuss how to write your own step definitions and demonstrate how they are useful for making your Gremlin code more concise and more self-explanatory.
+Gremlin provides the ability for a user to define their own step definitions natively in Groovy or in Java. This is very useful when wishing to work with your low-level graph data at a higher level of abstraction.  This section will discuss how to write your own step definitions and demonstrate how they are useful for making your Gremlin code more concise and more self-explanatory.
 
 # "Defining a Step in Gremlin":#definegremlin
+# "Defining an Anonymous Step in Gremlin":#defineanony
 # "Defining a Step in Java":#definejava
 
 h2(#definegremlin). Defining a Step in Gremlin
 
-Gremlin comes with a collection of built-in step definitions. A few of these are itemized below.
+Gremlin comes with a collection of built-in step definitions (see [[Gremlin Steps]]). It is possible for developers to create their own step definitions. Simply add a closure that represents the step to the respective classes. 
 
-* @V@: the vertices in a graph.
-* @E@: the edges in a graph.
-* @inE@: the incoming edges to a vertex.
-* @outE@: the outgoing edges from a vertex.
-* @inV@: the incoming/head vertex of an edge.
-* @outV@: the outgoing/tail vertex of an edge.
+```text
+c = {_{x = it}.outE[[label:'created']].inV.inE[[label:'created']].outV{x != it}}
+[Iterable,Iterator,Vertex].each{it.metaClass.codeveloper = { Gremlin.compose(delegate, c()) }} 
+```
 
-It is possible for developers to create their own step definitions. The grammar for defining a step is as follows.
+In the code above, @c@ is a closure to create the desired composite step and the second line is required to add @c@ as the @co_developer@ step. Given the graph diagrammed in [[Defining a Property Graph]], we can determine the co-developers of a particular vertex.
 
-bc. step string
-  statement*
-  end
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/grammar-example-1.jpg!
 
-The @string@ component is the name of the step and the @statement*@ body the algorithm to execute when this step is used in an expression. In many ways, a step definition looks like a function. However, unlike a function, it has no arguments. In fact, it only takes one argument and that argument is the current step object @.@. Below is an example @step@.
-
-bc. step co-developer
-  ./outE[@label='created']/inV/inE[@label='created']/outV[g:except($_)]
-  end
-
-Given the graph diagrammed in [[Defining a Property Graph]], we can determine the co-developers of a particular vertex.
-
-!http://github.com/tinkerpop/gremlin/raw/master/doc/images/grammar-example-1.jpg!
-
-bc. gremlin> $_g := tg:open()
-==>tinkergraph[vertices:0]
-gremlin> g:load('data/graph-example-1.xml')
-==>true
-gremlin> $_ := g:id-v(1)
-==>v[1]
-gremlin> .
-==>v[1]
-gremlin> ./co-developer
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).codeveloper
 ==>v[4]
 ==>v[6]
+```
 
 Realize that this step definition can be used like any other step definition.
 
-bc. gremlin> ./co-developer/@name
+```text
+gremlin> g.v(1).codeveloper.name
 ==>josh
 ==>peter
-
-From the above, we know that the co-developers of vertex @1@ (marko) are named josh and peter.
+```
 
 What step definitions allow you to do is to work with "higher order" relationships in your graph. Thus, instead of working at the level of 
 
-bc. ./outE[@label='created']/inV/inE[@label='created']/outV[g:except($_)]
+```text
+_{x = it}.outE[[label:'created']].inV.inE[[label:'created']].outV{x != it}
+```
 
 you can work at the more semantically natural level of
 
-bc. ./co-developer
+```text
+codeveloper
+```
+
+h2(#defineanony). Defining an Anonymous Step in Gremlin
+
+You can also create an anonymous step (or "lambda step") using the @step@ step. For example:
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()    
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).outE.inV.step{ s().map }
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+==>{name=josh, age=32}
+```
+
+The method @s()@ is equivalent to @starts.next()@ which is defined in "Pipes":http://pipes.tinkerpop.com and represents the next end of the previous pipe. For those familiar with Pipes, the provided @step@ closure becomes the method @AbstractPipe.processNextStart()@. 
 
 h2(#definejava). Defining a Step in Java
 
-It is also possible to define steps in Java and then load the paths into the Gremlin engine using the @include@ language statement (see [[Language Statements]]). Gremlin comes with two interfaces for creating steps libraries: @Pipe@, @Step@, @Steps@ (both are in the package @com.tinkerpop.gremlin.compiler.steps@). Here is the previous @co-developer@ path written in Java.
+To ensure speed, it is possible to define steps in Java and then load the paths using @import@. Here is the previous @co-developer@ path written in Java as a pipe (see "Pipes":http://pipes.tinkerpop.com).
 
 ```java
-public class CoDeveloperPipe extends AbstractPipe<Vertex,Vertex> {
-    public Vertex processNextStarts() {
-      Vertex vertex = this.starts.next();
-      ...
-    }
-}
-```
-
-If the @root@ parameter is not the type expected by the path definition, simply return @null@. Do not throw an exception like one would for a function definition (see [[User Defined Functions]]). If the path does not yield results, then @null@ is the result. Now create a path library for the previously defined path and for any other paths you wish to define.
-
-```java
-public class ExampleSteps extends AbstractStepLibrary {
-   public ExampleSteps() {
-      this.add(new Step("co-developer", CoDeveloperPath.class, null));
-      // add as many steps to this library as you want
+public class CoDeveloperPipe extends Pipeline<Vertex,Vertex> {
+  public CoDeveloperPipe() {
+     List singleObjectList = new ArrayList() {
+            public boolean add(Object object) {
+                this.clear();
+                super.add(object);
+                return true;
+            }
+        };
+     Pipe pipe0 = new AggregatorPipe(singleObjectList);
+     Pipe pipe1 = new VertexEdgePipe(Step.OUT_EDGES);
+     Pipe pipe2 = new LabelFilterPipe("created", Filter.NOT_EQUALS);
+     Pipe pipe3 = new EdgeVertexPipe(Step.IN_VERTEX);
+     Pipe pipe4 = new VertexEdgePipe(Step.IN_EDGES);
+     Pipe pipe5 = new LabelFilterPipe("created", Filter.NOT_EQUALS);
+     Pipe pipe6 = new EdgeVertexPipe(Step.OUT_VERTEX);
+     Pipe pipe7 = new ObjectFilterPipe(pipe0.getSideEffect(), Filter.EQUALS);
+     this.setPipes(pipe0, pipe1, pipe2, pipe3, pipe4, pipe5, pipe6, pipe7);
    }
 }
 ```
 
-Make sure that these classes are in your Java classpath. If so, you can now include this newly created library in Gremlin.
+Make sure that this class is in your Java classpath. If so, you can now include this newly created step/pipe in Gremlin.
 
-bc. gremlin> include 'com.example.ExampleSteps'
-gremlin> .
-==>v[1]
-gremlin> ./co-developer
-==>v[4]
-==>v[6]
-
-A useful file is @.gremlinrc@ (recommended by "Ian Holsman":http://twitter.com/IanHolsman). Feel free to add common @include@, function definitions, step definitions, and variable definitions to this file. It will allow you to bypass always executing these behaviors when the Gremlin evaluator loads -- an auto-import of sorts.
+```text
+[Iterable,Iterator,Vertex].each{ it.metaClass.codeveloper = {Gremlin.compose(delegate, new CoDeveloperPipe())}}
+```

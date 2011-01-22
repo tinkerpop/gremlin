@@ -1,4 +1,4 @@
-Welcome to Gremlin. Gremlin is a domain specific programming language for "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Graphs are data structures where there exists vertices (i.e. dots, nodes) and edges (i.e. lines, arcs). Gremlin was designed to work with a type of graph called a property graph. Property graphs are defined, in detail, in the [[Defining a Property Graph]] section of this documentation. Gremlin makes extensive use of "XPath-like":http://www.w3.org/TR/xpath syntax to define abstract path descriptions (path expressions) through a graph.
+Welcome to Gremlin. Gremlin is a domain specific programming language for "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Graphs are data structures where there exists vertices (i.e. dots, nodes) and edges (i.e. lines, arcs). Gremlin was designed to work with a type of graph called a property graph. Property graphs are defined, in detail, in the [[Defining a Property Graph]] section of this documentation. Gremlin's syntax allows for the representation of complex paths.
 
 This section will discuss the basic architecture of Gremlin, how to install Gremlin, and how to issue some simple statements into the Gremlin console.
 
@@ -8,7 +8,7 @@ This section will discuss the basic architecture of Gremlin, how to install Grem
 
 h2(#architecture). Basic Gremlin Architecture
 
-There are many graph databases, frameworks, and packages out there. To make it easy to connect these to Gremlin, Gremlin relies on "Blueprints":http://blueprints.tinkerpop.com and "Pipes":http://pipes.tinkerpop.com. Blueprints provides a set of interfaces for a fairly generic graph data model (see [[Defining a Property Graph]]) and has implementations of these interfaces for different graph management systems. With Blueprints, its possible to add new implementations and thus, use Gremlin over these new implementations. Pipes is a data flow framework that has support for graph processing. Finally, there are two ways for someone to use Gremlin -- through the Gremlin console or through its Java "JSR 223":http://jcp.org/en/jsr/detail?id=223 interface (see [[Using Gremlin through Java]]).
+There are many graph databases, frameworks, and packages out there. To make it easy to connect these to Gremlin, Gremlin relies on "Blueprints":http://blueprints.tinkerpop.com and "Pipes":http://pipes.tinkerpop.com. Blueprints provides a set of interfaces for a fairly generic graph data model (see [[Defining a Property Graph]]) and has implementations of these interfaces for different graph management systems. With Blueprints, its possible to add new implementations and thus, use Gremlin over these new implementations. Pipes is a data flow framework that has support for graph processing. Finally, there are three ways for someone to use Gremlin -- through the Gremlin console, through its Java "JSR 223":http://jcp.org/en/jsr/detail?id=223 interface (see [[Using Gremlin through Java]]), or through some other language that has bindings to the JVM.
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-system-arch.png!
 
@@ -22,97 +22,107 @@ Here are the steps to getting Gremlin running on your computer. You can either @
 
 h2(#console). Using the Gremlin Console
 
-bc. marko$ ./gremlin.sh 
+```text
+marko$ ./gremlin.sh 
          \,,,/
          (o o)
 -----oOOo-(_)-oOOo-----
-gremlin> 
+gremlin>
+```
 
-Thats it. The Gremlin interpreter is loaded and ready for commands.
+Thats it. The Gremlin interpreter is loaded and ready for commands. Gremlin uses "Groovy":http://groovy.codehaus.org/ as its host language. Please review Groovy for help on Groovy-related constructs. In short, Groovy is a superset of Java. What works in Java, works in Groovy. However,  Groovy provides many neat shorthands to make it easier to interact with the Java API. Finally, Gremlin provides many neat shorthands to make it easier to express paths through a property graph.
 
-bc. gremlin> $i := 'goodbye'
+```text
+gremlin> i = 'goodbye'
 ==>goodbye
-gremlin> $j := 'self'
+gremlin> j = 'self'
 ==>self
-gremlin> g:concat($i, ' ', $j)
+gremlin> i + " " + j
 ==>goodbye self
+gremlin> "${i} ${j}"
+==>goodbye self
+```
 
 We will use a simple, 6 vertex/6 edge, graph that is provided with Gremlin and is fully diagrammed in [[Defining a Property Graph]].
 
-bc. gremlin> # $_g is a reserved variable pointing to the current working graph
-gremlin> $_g := tg:open()     
-==>tinkergraph[vertices:0 edges:0]
-gremlin> g:load('data/graph-example-1.xml')
-==>true
-gremlin> $_g
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
 ==>tinkergraph[vertices:6 edges:6]
-gremlin> g:type($_g)
-==>graph
-gremlin> # lets look at all the vertices
-gremlin> $_g/V
+gremlin> g.class
+==>class com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
+gremlin> // lets look at all the vertices
+gremlin> g.V
 ==>v[3]
 ==>v[2]
 ==>v[1]
 ==>v[6]
 ==>v[5]
 ==>v[4]
-gremlin> # lets look at all the edges
-gremlin> $_g/E
+gremlin> // lets look at all the edges
+gremlin> g.E
 ==>e[10][4-created->5]
 ==>e[7][1-knows->2]
 ==>e[9][1-created->3]
 ==>e[8][1-knows->4]
 ==>e[11][4-created->3]
 ==>e[12][6-created->3]
-gremlin> # the reserved variable $_ is the root list
-gremlin> $_ := g:id-v(1)
+gremlin> v = g.v(1)
 ==>v[1]
-gremlin> .
-==>v[1]
-gremlin> g:keys(.[0])
+gremlin> v.keys()
 ==>age
 ==>name
-gremlin> # use the at symbol to refer to properties of a particular vertex or edge
-gremlin> ./@name
-==>marko
-gremlin> ./@age
+gremlin> v.values()
 ==>29
-gremlin> # lets do a walk from the '1' marko vertex to its outgoing edges.
-gremlin> ./outE
+==>marko
+gremlin> v.name + ' is ' + v.age + ' years old.'
+==>marko is 29 years old.
+gremlin> // lets do a traversal from the '1' marko vertex to its outgoing edges.
+gremlin> v.outE
 ==>e[7][1-knows->2]
 ==>e[9][1-created->3]
 ==>e[8][1-knows->4]
-gremlin> # what are the weight values on those edges
-gremlin> ./outE/@weight
+gremlin> // what are the weight values on those edges
+gremlin> v.outE.weight
 ==>0.5
 ==>0.4
 ==>1.0
-gremlin> # lets only traverse to the head vertices of those edges
-gremlin> # that have a weight that is less than 1.0
-gremlin> ./outE[@weight < 1.0]/inV
+gremlin> // lets only traverse to the head vertices of those edges
+gremlin> // that have a weight that is less than 1.0
+gremlin> v.outE{it.weight < 1.0}.inV
 ==>v[2]
 ==>v[3]
-gremlin> # lets make these vertices the new root set.
-gremlin> # $_last is a reserved variable that is the last result computed.
-gremlin> $_ := $_last
+gremlin> // lets make these vertices a list
+gremlin> list = []                             
+gremlin> v.outE{it.weight < 1.0}.inV >> list
 ==>v[2]
 ==>v[3]
-gremlin> # lets check the property values on these vertices.
-gremlin> g:values($_[0])
-==>27
-==>vadas
-gremlin> g:values($_[1])
-==>lop
-==>java
-gremlin> # lets get their incoming edge sets.
-gremlin> ./inE
+gremlin> list
+==>v[2]
+==>v[3]
+gremlin> // lets get the property maps of these vertices.
+gremlin> list.collect{ it.map() }
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+gremlin> // lets do it another way using spread notation
+gremlin> list*.map()
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+gremlin> // lets get their incoming edge sets
+gremlin> list.inE()       
 ==>e[7][1-knows->2]
 ==>e[9][1-created->3]
 ==>e[11][4-created->3]
 ==>e[12][6-created->3]
-gremlin> ./inE[@label='knows']
+gremlin> list.inE{it.label=='knows'}     
 ==>e[7][1-knows->2]
-gremlin> ./inE[@label='knows']/outV/@name
+gremlin> list.inE()[[label:'knows']]
+==>e[7][1-knows->2]
+gremlin> list.inE()[[label:'knows']].outV.name
 ==>marko
+gremlin> // toString() the pipeline to see what its composed of
+gremlin> println list.inE()[[label:'knows']].outV.name
+[VertexEdgePipe<IN_EDGES>, LabelFilterPipe<NOT_EQUAL,knows>, EdgeVertexPipe<OUT_VERTEX>, PropertyPipe<name>]
+==>null
+```
 
-What was presented is some of the basic functionality in Gremlin. The remainder of this documentation will discuss language statements, functions, and their use in performing graph algorithms on graph structures.
+What was presented is some of the basic functionality in Gremlin. The remainder of this documentation will discuss path construction and their use in performing graph algorithms on property graph structures.

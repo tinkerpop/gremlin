@@ -1,0 +1,77 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-pipe.png!
+
+Gremlin comes with a collection of predefined steps. Gremlin steps map to a particular @Pipe@ in "Pipes":http://pipes.tinkerpop.com. A @Pipe<S,E>@ extends @Iterator<E>@ and @Iterable<E>@. It takes an object of type @S@ and emits and object of type @E@. Chaining pipes together creates a @Pipeline@. In essence, Gremlin is a "DSL":http://en.wikipedia.org/wiki/Domain-specific_language for constructing @Pipeline@ objects.
+
+*Developer Note*: If you come up a with a generally useful step/pipe and would like to include it into the main Gremlin distribution, please make an "issue":https://github.com/tinkerpop/gremlin/issues or provide the appropriate pull request.
+
+h2(#defined). Predefined Steps
+
+|_. step |_. filter? |_. <S,E> |_. description |_. pipe |
+| @_@ | yes | @<Object,Object>@ | emit the incoming object unchanged | @IdentityPipe()@ |
+| @[i]@ | no |@<Object,Object>@ | emit the particular indexed object | @RangeFilterPipe(i,i+1)@ |
+| @[i..j]@ | no | @<Object,Object>@ | emit the objects indexed by the range | @RangeFilterPipe(i,j)@ |
+| @V@ | yes | @<Graph,Vertex>@| the vertex iterator of the graph | @GraphElementPipe(VERTEX)@ |
+| @E@ | yes | @<Graph,Edge>@| the edge iterator of the graph | @GraphElementPipe(EDGE)@ |
+| @id@ | yes |@<Element,Object>@ | the identifier of the element | @IdPipe()@ |
+| @label@ | yes | @<Edge,String>@| the label of the edge | @LabelPipe()@ |
+| @outE@ | yes | @<Vertex,Edge>@ | the outgoing edges of the vertex | @VertexEdgePipe(OUT_EDGES)@ |
+| @inE@ | yes | @<Vertex,Edge>@ | the incoming edges of the vertex | @VertexEdgePipe(IN_EDGES)@ |
+| @bothE@ | yes | @<Vertex,Edge>@ | both incoming and outgoing edges of the vertex | @VertexEdgePipe(BOTH_EDGES)@ |
+| @outV@ | yes | @<Edge,Vertex>@ | the outgoing tail vertex of the edge | @EdgeVertexPipe(OUT_VERTEX)@ |
+| @inV@ | yes | @<Edge,Vertex>@ | the incoming head vertex of the edge | @EdgeVertexPipe(IN_VERTEX)@ |
+| @bothV@ | yes | @<Edge,Vertex>@ | both incoming and outgoing vertices of the edge | @EdgeVertexPipe(BOTH_VERTICES)@ |
+| @[key:value]@ | no | @<Element,Element>@ | filter elements by their properties | @PropertyFilterPipe(key,value,EQUALS)@ |
+| @[key:[T,value]]@ | no | @<Element,Element>@ | filter elements by their properties | @PropertyFilterPipe(key,value,T)@ |
+| @propf(key,T,value)@ | yes | @<Element,Element>@ | filter elements by their properties | @PropertyFilterPipe(key,value,T)@ |
+| @['key']@ | yes | @<Element,Object>@ | get the property value of an element | @PropertyPipe(key)@ |
+| @key@ | yes | @<Element,Object>@ | get the property value of an element | @PropertyPipe(key)@ |
+| @gather{closure?}@ | no | @<Object,List>@ | collect all objects up to that step and process with provided closure | @GatherPipe()@ |
+| @scatter@ | yes | @<Object,Object>@ | unroll all objects in the iterable at that step | @ScatterPipe()@ |
+| @futuref@ | no | @<Object,Object>@ | filter an object based on if it has a future | @FutureFilterPipe(Pipe())@ |
+| @back(integer)@ | no | @<Object,Object>@ | go back to the results from n-steps ago | @FutureFilterPipe(Pipe())@ |
+| @loop(integer?){closure}@ | no | @<Object,Object>@ | if closure true for emitted object, put object back at start | @LoopPipe(Pipe(),closure)@ |
+| @andf(pipes...)@ | no | @<Object,Object>@ | emit the incoming object is all pipes emit results | @AndFilterPipe(pipes)@ |
+| @orf(pipes...)@ | no | @<Object,Object>@ | emit the incoming object is any pipe emit results | @OrFilterPipe(pipes)@ |
+| @paths@ | yes | @<Object,List>@  | the path through the pipeline up to this point | @PathPipe()@ |
+| @step{closure}@ | no | @<Object,Object>@ | an anonymous/lambda step defined by a closure | @ClosurePipe(closure)@ |
+| @unique@ | yes | @<Object,Object>@ | emit only incoming objects that have not been seen before | @DuplicateFilterPipe()@ |
+| @groupCount(map?)@ | yes |  @<Object,Map<Object,Long>>@ | emits input, but updates a map of counts for each object | @GroupCountPipe(map?)@ |
+| @aggregate(collection?)@ | yes | @<Object,Object>@ | emits input, but updates a collection of each object | @AggregatorPipe(collection?)@ |
+| @except(collection)@ | yes | @<Object,Object>@ | allow everything to pass except whats in @x@ | @CollectionFilterPipe(collection, EQUALS)@ |
+| @retain(collection)@ | yes | @<Object,Object>@ | allow everything to pass except what is not in @x@ | @CollectionFilterPipe(collection, NO_EQUAL@ |
+| @cap@ | yes | @<Object,Object>@ | emits the side effect of the pipe prior | @SideEffectCapPipe(pipe)@ |
+| @foreach{closure}@ | no | @<Object,Object>@ | emits the input, but calls a closure on each input first | @ForeachPipe(closure)@ |
+
+*Notes*
+  * If a pipe's argument is postfixed with a @?@, then the argument is optional. When no argument is provided, a reasonable default argument is created.
+  * The steps @[key:value]@, @[key:[T,value]]@, and @propf(key,T,value)@ map to @LabelFilterPipe(value, Filter)@ or @IdFilterPipe(value, Filter)@ when the @key@ equals "label" or "id", respectively.
+  * The @filter?@ column denotes whether a closure is allowed after the step name. If a closure is provided, the closure is passed to a @ClosureFilterPipe@. The closure must return "Groovy truth":http://docs.codehaus.org/display/GROOVY/Groovy+Truth which determines whether the @it@ element is filtered or not. E.g. @outE{ it.weight > 0.5 }@.
+
+h3. SailGraph Steps
+
+|_. step |_. <S,E> |_. description |_. pipe |
+| @lang@ | @<SailVertex,String>@| the language of the literal | @PropertyPipe("lang")@ |
+|  @type@ | @<SailVertex,String>@| the data type of the literal | @PropertyPipe("type")@ |
+| @value@ | @<SailVertex,String>@| the typecasted value of the literal | @PropertyPipe("value")@ |
+| @kind@ | @<SailVertex,String>@| whether the vertex is a uri, literal, or bnode | @PropertyPipe("kind")@ |
+| @ng@ | @<SailEdge,String>@| the named graph of the edge | @PropertyPipe("ng")@ |
+
+h2(#how). Groovy and Steps
+
+In many situations, a step looks like an object property from a Java/Groovy perspective. In fact, each step is a method. However, by using the "metaprogramming":http://en.wikipedia.org/wiki/Metaprogramming facilities offered by Groovy, its possible to "trick" Groovy into thinking that a property is a method. For example, assume the following pipeline:
+
+```java
+v.outE.inV.name
+```
+
+This can be re-written in more Java/Groovy friendly syntax as:
+
+```java
+v.outE().inV().name
+```
+
+In the first example, when Groovy realizes that @outE@ is not a property of @v@, it calls the @propertyMissing@ method of the @MetaClass@ of @Vertex@. Gremlin uses this method to say "oh, @outE@ is not a property, its a method. Let me resolve that method and return its value." At which point, Gremlin returns the running @Pipeline@ with the new @VertexEdgePipe(Step.OUT_EDGES)@ appended to it.
+
+There are many situations in which calling the method instead of the property representation of a @Pipe@ is necessary. 
+
+
