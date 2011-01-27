@@ -48,6 +48,13 @@
     <dependencies>
         <dependency>
             <groupId>com.tinkerpop</groupId>
+            <artifactId>graphdb-deps-all</artifactId>
+            <version>0.5-SNAPSHOT</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
             <version>0.5-SNAPSHOT</version>
         </dependency>
@@ -60,14 +67,6 @@
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>1.7.5</version>
-        </dependency>
-        <!-- GRAPHDB SUPPORT -->
-        <dependency>
-            <groupId>com.tinkerpop</groupId>
-            <artifactId>graphdb-deps-all</artifactId>
-            <version>0.5-SNAPSHOT</version>
-            <type>pom</type>
-            <scope>provided</scope>
         </dependency>
         <!-- CONSOLE -->
         <dependency>
@@ -87,6 +86,7 @@
             <groupId>org.codehaus.groovy.maven</groupId>
             <artifactId>gmaven-plugin</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <repositories>

@@ -18,15 +18,15 @@ fi
 # Launch the application
 if [ "$1" = "-e" ]; then
   k=$2
-  if [ $# > 2 ]; then
-    for (( i=3 ; i < $# + 1 ; i++ ))
+  if [ $# -gt 2 ]; then
+    for (( i=3 ; i -lt $# + 1 ; i++ ))
     do
       eval a=\$$i
       k="$k \"$a\""
     done
   fi
 
-  eval "$JAVA $JAVA_OPTIONS -cp $CP com.tinkerpop.gremlin.jsr223.ScriptExecutor $k"
+  eval $JAVA $JAVA_OPTIONS -cp $CP com.tinkerpop.gremlin.jsr223.ScriptExecutor $k
 else
   if [ "$1" = "-v" ]; then
     $JAVA $JAVA_OPTIONS -cp $CP com.tinkerpop.gremlin.Version
