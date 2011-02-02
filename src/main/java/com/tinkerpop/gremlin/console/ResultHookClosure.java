@@ -11,12 +11,13 @@ import java.util.Map;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class ResultHookClosure extends Closure {
-    private static final String RETURN = "==>";
+    private final String resultPrompt;
     private final IO io;
 
-    public ResultHookClosure(final Object owner, final IO io) {
+    public ResultHookClosure(final Object owner, final IO io, final String resultPrompt) {
         super(owner);
         this.io = io;
+        this.resultPrompt = resultPrompt;
     }
 
     public Object call(final Object[] args) {
@@ -35,7 +36,7 @@ public class ResultHookClosure extends Closure {
         }
 
         while (itty.hasNext()) {
-            this.io.out.println(RETURN + itty.next());
+            this.io.out.println(this.resultPrompt + itty.next());
         }
 
         return null;

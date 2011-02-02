@@ -7,13 +7,14 @@ import groovy.lang.Closure;
  */
 public class PromptClosure extends Closure {
 
-    private static final String PROMPT = "gremlin> ";
+    private final String inputPrompt;
 
-    public PromptClosure(final Object owner) {
+    public PromptClosure(final Object owner, final String inputPrompt) {
         super(owner);
+        this.inputPrompt = inputPrompt;
     }
 
     public Object call() {
-        return PROMPT;
+        return this.inputPrompt;
     }
 }

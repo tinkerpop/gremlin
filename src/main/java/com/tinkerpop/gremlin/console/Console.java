@@ -16,9 +16,11 @@ import java.io.IOException;
 public class Console {
 
     private static final String HISTORY_FILE = ".gremlin_history";
+    private static final String STANDARD_INPUT_PROMPT = "gremlin> ";
+    private static final String STANDARD_RESULT_PROMPT = "==>";
 
-    public static void main(final String[] args) {
-        IO io = new IO(System.in, System.out, System.err);
+
+    public Console(final IO io, final String inputPrompt, final String resultPrompt) {
         io.out.println();
         io.out.println("         \\,,,/");
         io.out.println("         (o o)");
@@ -29,10 +31,10 @@ public class Console {
         for (String imps : Imports.getImports()) {
             groovy.execute("import " + imps);
         }
-        groovy.setResultHook(new ResultHookClosure(groovy, io));
+        groovy.setResultHook(new ResultHookClosure(groovy, io, resultPrompt));
         groovy.setHistory(new History());
 
-        final InteractiveShellRunner runner = new InteractiveShellRunner(groovy, new PromptClosure(groovy));
+        final InteractiveShellRunner runner = new InteractiveShellRunner(groovy, new PromptClosure(groovy, inputPrompt));
         runner.setErrorHandler(new ErrorHookClosure(runner, io));
         try {
             runner.setHistory(new History(new File(HISTORY_FILE)));
@@ -46,5 +48,14 @@ public class Console {
         } catch (Error e) {
             //System.err.println(e.getMessage());
         }
+    }
+
+    public Console() {
+        this(new IO(System.in, System.out, System.err), STANDARD_INPUT_PROMPT, STANDARD_RESULT_PROMPT);
+    }
+
+
+    public static void main(final String[] args) {
+        new Console();
     }
 }
