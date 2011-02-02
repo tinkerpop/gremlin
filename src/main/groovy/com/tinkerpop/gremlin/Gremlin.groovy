@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import java.lang.reflect.Method
 import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.gremlin.loaders.*
 
@@ -70,13 +71,31 @@ class Gremlin {
     return (Pipe) groovy.evaluate(sb.toString())
   }
 
-  public static Set getMissingMethods(Class clazz) {
-    def tokens = [] as Set
+  public static Set getMissingMethods(final Class clazz) {
+    final Set tokens = new HashSet();
     while (clazz) {
       tokens.addAll(clazz.getMetaClass().getMethods().findAll {it instanceof ClosureMetaMethod}.collect {it.name})
       clazz.getInterfaces().each {tokens.addAll(getMissingMethods(it))}
       clazz = clazz.getSuperclass()
     }
     return tokens;
+  }
+
+  public static boolean isMissingMethod(final Class clazz, final String methodName) {
+    while (clazz) {
+      for (final Method method: clazz.getMetaClass().getMethods()) {
+        if (method.getName().equals(methodName)) {
+          return true;
+        }
+      }
+
+      for (final Class interfaze: clazz.getInterfaces()) {
+        if (isMissingMethod(interfaze, methodName))
+          return true;
+      }
+
+      clazz = clazz.getSuperclass()
+    }
+    return false;
   }
 }

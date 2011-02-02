@@ -18,7 +18,7 @@ class ElementLoader {
     }
 
     Vertex.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.getMissingMethods(delegate.getClass()).contains(name)) {
+      if (Gremlin.isMissingMethod(delegate.getClass(), name)) {
         return delegate."$name"()
       } else {
         if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {

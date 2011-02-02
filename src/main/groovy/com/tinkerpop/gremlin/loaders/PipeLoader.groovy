@@ -28,7 +28,7 @@ class PipeLoader {
   public static void load() {
 
     Pipe.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.getMissingMethods(delegate.getClass()).contains(name)) {
+      if (Gremlin.isMissingMethod(delegate.getClass(), name)) {
         return delegate."$name"();
       } else {
         if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
@@ -180,6 +180,12 @@ class PipeLoader {
         } else {
           return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()));
         }
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.filter = {final Closure closure ->
+        return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
       }
     }
 

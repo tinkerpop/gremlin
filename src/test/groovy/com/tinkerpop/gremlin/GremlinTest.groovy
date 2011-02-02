@@ -8,14 +8,6 @@ import junit.framework.TestCase
 
 class GremlinTest extends TestCase {
 
-  public void testGremlinGroovy() {
-    assertTrue(true);
-    /*Gremlin.load();
-    def g = new Neo4jGraph('/tmp/neo4jtest')
-    g.idx(T.v)[[name: 'DARK STAR']].outE.each{println it}
-    g.shutdown();*/
-  }
-
   public void testCompilation() throws Exception {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -41,7 +33,7 @@ class GremlinTest extends TestCase {
   }
 
 
-  public void testMissingMethods() {
+  public void testGetMissingMethods() {
     Gremlin.load();
     Set tokens = Gremlin.getMissingMethods(TinkerGraph.class);
     assertTrue(tokens.contains("V"))
@@ -49,5 +41,14 @@ class GremlinTest extends TestCase {
     assertTrue(tokens.contains("E"))
     assertTrue(tokens.contains("e"))
     assertTrue(tokens.contains("_"))
+  }
+
+  public void testIsMissingMethod() {
+    Gremlin.load();
+    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "V"))
+    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "v"))
+    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "E"))
+    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "e"))
+    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "_"))
   }
 }

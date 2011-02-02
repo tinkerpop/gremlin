@@ -2,15 +2,16 @@ package com.tinkerpop.gremlin.pipes
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
+import com.tinkerpop.gremlin.BaseTest
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
-import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class GremlinPipelineTest extends TestCase {
+class GremlinPipelineTest extends BaseTest {
 
   public void testPipelineEquality() throws Exception {
     Gremlin.load();
@@ -42,4 +43,48 @@ class GremlinPipelineTest extends TestCase {
     println g.v(1).outE.inV.outE.inV
     println g.V.outE[[label: 'knows']].inV
   }
+
+
+  public void testEmbeddedPipeTimings() throws Exception {
+    Gremlin.load();
+    Graph g = new TinkerGraph()
+    (1..1000).each {
+      def v = g.addVertex(null);
+      g.addEdge(null, v, g.v(0), "knows");
+    }
+    g.V >> -1
+    g.V >> -1
+
+    this.stopWatch();
+    g.V >> -1
+    printPerformance("Non-embedded pipeline evaulation", 0, "steps", this.stopWatch())
+    this.stopWatch();
+    g.V.step {s()} >> -1
+    printPerformance("Embedded pipeline evaulation", 0, "steps", this.stopWatch())
+    println()
+
+    this.stopWatch();
+    g.V._ >> -1
+    printPerformance("Non-embedded pipeline evaulation", 1, "steps", this.stopWatch())
+    this.stopWatch();
+    g.V.step {s()._ >> 1} >> -1
+    printPerformance("Embedded pipeline evaulation", 1, "steps", this.stopWatch())
+    println()
+
+    this.stopWatch();
+    g.V._._ >> -1
+    printPerformance("Non-embedded pipeline evaulation", 2, "steps", this.stopWatch())
+    this.stopWatch();
+    g.V.step {s()._._ >> 1} >> -1
+    printPerformance("Embedded pipeline evaulation", 2, "steps", this.stopWatch())
+    println()
+
+    this.stopWatch();
+    g.V._._._ >> -1
+    printPerformance("Non-embedded pipeline evaulation", 3, "steps", this.stopWatch())
+    this.stopWatch();
+    g.V.step {s()._._._ >> 1} >> -1
+    printPerformance("Embedded pipeline evaulation", 3, "steps", this.stopWatch())
+  }
+
 }

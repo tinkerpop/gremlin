@@ -37,10 +37,6 @@ public abstract class BaseTest extends TestCase {
         return counter;
     }
 
-    public static int count(final Iterable iterable) {
-        return count(iterable.iterator());
-    }
-
     public static List asList(final Iterable iterable) {
         return asList(iterable.iterator());
     }

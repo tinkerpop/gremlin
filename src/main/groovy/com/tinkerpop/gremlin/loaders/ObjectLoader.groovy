@@ -11,7 +11,7 @@ class ObjectLoader {
   public static void load() {
 
     Object.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.getMissingMethods(delegate.getClass()).contains(name)) {
+      if (Gremlin.isMissingMethod(delegate.getClass(), name)) {
         return delegate."$name"();
       } else {
         throw new MissingPropertyException(name, delegate.getClass());
