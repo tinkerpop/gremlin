@@ -4,10 +4,6 @@ import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
-import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
-import com.tinkerpop.gremlin.pipes.ClosurePipe
-import com.tinkerpop.gremlin.pipes.ForeachPipe
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
@@ -17,6 +13,7 @@ import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
+import com.tinkerpop.gremlin.pipes.*
 import com.tinkerpop.pipes.filter.*
 import com.tinkerpop.pipes.pgm.*
 
@@ -143,6 +140,30 @@ class PipeLoader {
       }
     }
 
+    [Iterator, Iterable].each {
+      it.metaClass.emit = {final Closure closure ->
+        return Gremlin.compose(delegate, new EmitPipe(closure));
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.filter = {final Closure closure ->
+        return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
+        return Gremlin.compose(delegate, new IfPipe(ifClosure, thenClosure, elseClosure));
+      }
+    }
+
+    [Iterator, Iterable].each {
+      it.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure ->
+        return Gremlin.compose(delegate, new IfPipe(ifClosure, thenClosure));
+      }
+    }
+
     GremlinPipeline.metaClass.cap = {final Closure closure ->
       final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
       pipeline.capPipe(pipeline.size() - 1);
@@ -180,12 +201,6 @@ class PipeLoader {
         } else {
           return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()));
         }
-      }
-    }
-
-    [Iterator, Iterable].each {
-      it.metaClass.filter = {final Closure closure ->
-        return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
       }
     }
 

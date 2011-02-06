@@ -21,5 +21,13 @@ class ObjectLoader {
     Object.metaClass._ = {final Closure closure ->
       return Gremlin.compose(delegate, new IdentityPipe(), closure)
     }
+
+    Object.metaClass.mean = {
+      double counter = 0;
+      double sum = 0;
+      delegate.each {counter++; sum += it}
+      return sum / counter;
+    }
+
   }
 }

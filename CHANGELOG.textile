@@ -11,6 +11,20 @@ bc. <repository>
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png!
 
+h3. Version 0.7.5 (Gremopoly -- NOT OFFICIALLY RELEASED YET)
+
+bc. <dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.7.5</version>
+</dependency>
+
+* Added new steps
+** @emit@ to emit results of provided closure
+** @ifelse@ to perform a if/then/else branch
+* Added new methods
+** @Object.mean()@ to calculate the average of delegate
+
 h3. Version 0.7 (Gremopoly -- January 22, 2011)
 
 bc. <dependency>
