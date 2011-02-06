@@ -12,7 +12,7 @@ class GraphLoader {
   public static void load() {
 
     Graph.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.isMissingMethod(delegate.getClass(), name)) {
+      if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
         return delegate."$name"();
       } else {
         throw new MissingPropertyException(name, delegate.getClass());

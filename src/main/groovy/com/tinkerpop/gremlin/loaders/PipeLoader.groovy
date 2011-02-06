@@ -25,7 +25,7 @@ class PipeLoader {
   public static void load() {
 
     Pipe.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.isMissingMethod(delegate.getClass(), name)) {
+      if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
         return delegate."$name"();
       } else {
         if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
@@ -347,7 +347,6 @@ class PipeLoader {
         return Gremlin.compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
       }
     }
-
 
     [Iterator, Iterable, Edge].each {
       it.metaClass.bothV = {final Closure closure ->

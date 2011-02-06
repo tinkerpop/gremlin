@@ -14,20 +14,6 @@ public abstract class BaseTest extends TestCase {
 
     double timer = -1.0d;
 
-    public List<String> generateUUIDs(int count) {
-        List<String> list = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            list.add(UUID.randomUUID().toString());
-        }
-        return list;
-    }
-
-    public static void printIterator(final Iterator itty) {
-        while (itty.hasNext()) {
-            System.out.println(itty.next());
-        }
-    }
-
     public static int count(final Iterator iterator) {
         int counter = 0;
         while (iterator.hasNext()) {

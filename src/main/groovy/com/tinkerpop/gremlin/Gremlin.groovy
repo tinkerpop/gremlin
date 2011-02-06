@@ -71,17 +71,17 @@ class Gremlin {
     return (Pipe) groovy.evaluate(sb.toString())
   }
 
-  public static Set getMissingMethods(final Class clazz) {
+  public static Set getExistingMethods(final Class clazz) {
     final Set tokens = new HashSet();
     while (clazz) {
       tokens.addAll(clazz.getMetaClass().getMethods().findAll {it instanceof ClosureMetaMethod}.collect {it.name})
-      clazz.getInterfaces().each {tokens.addAll(getMissingMethods(it))}
+      clazz.getInterfaces().each {tokens.addAll(getExistingMethods(it))}
       clazz = clazz.getSuperclass()
     }
     return tokens;
   }
 
-  public static boolean isMissingMethod(final Class clazz, final String methodName) {
+  public static boolean isExistingMethod(final Class clazz, final String methodName) {
     while (clazz) {
       for (final Method method: clazz.getMetaClass().getMethods()) {
         if (method.getName().equals(methodName)) {
@@ -90,7 +90,7 @@ class Gremlin {
       }
 
       for (final Class interfaze: clazz.getInterfaces()) {
-        if (isMissingMethod(interfaze, methodName))
+        if (isExistingMethod(interfaze, methodName))
           return true;
       }
 

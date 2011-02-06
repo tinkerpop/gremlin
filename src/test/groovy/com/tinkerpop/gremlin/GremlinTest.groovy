@@ -35,7 +35,7 @@ class GremlinTest extends TestCase {
 
   public void testGetMissingMethods() {
     Gremlin.load();
-    Set tokens = Gremlin.getMissingMethods(TinkerGraph.class);
+    Set tokens = Gremlin.getExistingMethods(TinkerGraph.class);
     assertTrue(tokens.contains("V"))
     assertTrue(tokens.contains("v"))
     assertTrue(tokens.contains("E"))
@@ -45,10 +45,10 @@ class GremlinTest extends TestCase {
 
   public void testIsMissingMethod() {
     Gremlin.load();
-    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "V"))
-    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "v"))
-    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "E"))
-    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "e"))
-    assertTrue(Gremlin.isMissingMethod(TinkerGraph.class, "_"))
+    assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "V"))
+    assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "v"))
+    assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "E"))
+    assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "e"))
+    assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "_"))
   }
 }

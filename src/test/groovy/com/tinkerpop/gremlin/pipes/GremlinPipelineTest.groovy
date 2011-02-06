@@ -87,4 +87,39 @@ class GremlinPipelineTest extends BaseTest {
     printPerformance("Embedded pipeline evaulation", 3, "steps", this.stopWatch())
   }
 
+  public void testPipelineConstructionWithFunctionNotation() {
+    Gremlin.load();
+    Graph g = new TinkerGraph()
+
+    g.V.outE
+    this.stopWatch();
+    g.V.outE
+    printPerformance("Property notation pipeline", null, "compiles", this.stopWatch())
+    g.V().outE()
+    this.stopWatch();
+    g.V().outE()
+    printPerformance("Method notation pipeline", null, "compiles", this.stopWatch())
+    println()
+
+    g.V.outE.inV
+    this.stopWatch();
+    g.V.outE.inV
+    printPerformance("Property notation pipeline", null, "compiles", this.stopWatch())
+    g.V().outE().inV()
+    this.stopWatch();
+    g.V().outE().inV()
+    printPerformance("Method notation pipeline", null, "compiles", this.stopWatch())
+    println()
+
+    g.V.outE[[label: 'knows']].inV.outE.inV
+    this.stopWatch();
+    g.V.outE[[label: 'knows']].inV.outE.inV
+    printPerformance("Property notation pipeline", null, "compiles", this.stopWatch())
+    g.V().outE()[[label: 'knows']].inV().outE().inV()
+    this.stopWatch();
+    g.V().outE()[[label: 'knows']].inV().outE().inV()
+    printPerformance("Method notation pipeline", null, "compiles", this.stopWatch())
+    println()
+  }
+
 }
