@@ -58,9 +58,9 @@ class ElementLoadTest extends TestCase {
   public void testKeysValuesMapOnElement() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
-    assertEquals(g.v(1).values.size(), 2);
-    assertEquals(g.v(1).keys.size(), 2);
-    assertEquals(g.v(1).map.keySet(), g.v(1).keys);
+    assertEquals(g.v(1).values().size(), 2);
+    assertEquals(g.v(1).keys().size(), 2);
+    assertEquals(g.v(1).map().keySet(), g.v(1).keys());
     assertTrue(g.v(1).values().contains("marko"));
     assertTrue(g.v(1).values().contains(29));
     assertTrue(g.v(1).keys().contains("name"));

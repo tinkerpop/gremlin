@@ -11,6 +11,8 @@ import com.tinkerpop.gremlin.loaders.*
 
 class Gremlin {
 
+  private static final Set<String> steps = new HashSet<String>();
+
   public static void load() {
     ObjectLoader.load()
     GraphLoader.load();
@@ -97,5 +99,19 @@ class Gremlin {
       clazz = clazz.getSuperclass()
     }
     return false;
+  }
+
+  public static void addStep(final String stepName) {
+    Gremlin.steps.add(stepName);
+  }
+
+  public static boolean isStep(final String stepName) {
+    return Gremlin.steps.contains(stepName);
+  }
+
+  public static Set<String> getSteps() {
+    final Set<String> temp = new HashSet<String>();
+    temp.addAll(Gremlin.steps);
+    return temp;
   }
 }

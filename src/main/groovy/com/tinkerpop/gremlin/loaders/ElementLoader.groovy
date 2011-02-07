@@ -18,7 +18,8 @@ class ElementLoader {
     }
 
     Vertex.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
+      //if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
+      if (Gremlin.isStep(name)) {
         return delegate."$name"()
       } else {
         if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
@@ -30,7 +31,8 @@ class ElementLoader {
     }
 
     Edge.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.getExistingMethods(delegate.getClass()).contains(name)) {
+      //if (Gremlin.getExistingMethods(delegate.getClass()).contains(name)) {
+      if (Gremlin.isStep(name)) {
         return delegate."$name"()
       } else {
         if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {

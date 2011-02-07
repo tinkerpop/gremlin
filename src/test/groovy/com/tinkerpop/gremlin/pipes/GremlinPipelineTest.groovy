@@ -44,82 +44,47 @@ class GremlinPipelineTest extends BaseTest {
     println g.V.outE[[label: 'knows']].inV
   }
 
-
-  public void testEmbeddedPipeTimings() throws Exception {
-    Gremlin.load();
-    Graph g = new TinkerGraph()
-    (1..1000).each {
-      def v = g.addVertex(null);
-      g.addEdge(null, v, g.v(0), "knows");
-    }
-    g.V >> -1
-    g.V >> -1
-
-    this.stopWatch();
-    g.V >> -1
-    printPerformance("Non-embedded pipeline evaulation", 0, "steps", this.stopWatch())
-    this.stopWatch();
-    g.V.step {s()} >> -1
-    printPerformance("Embedded pipeline evaulation", 0, "steps", this.stopWatch())
-    println()
-
-    this.stopWatch();
-    g.V._ >> -1
-    printPerformance("Non-embedded pipeline evaulation", 1, "steps", this.stopWatch())
-    this.stopWatch();
-    g.V.step {s()._ >> 1} >> -1
-    printPerformance("Embedded pipeline evaulation", 1, "steps", this.stopWatch())
-    println()
-
-    this.stopWatch();
-    g.V._._ >> -1
-    printPerformance("Non-embedded pipeline evaulation", 2, "steps", this.stopWatch())
-    this.stopWatch();
-    g.V.step {s()._._ >> 1} >> -1
-    printPerformance("Embedded pipeline evaulation", 2, "steps", this.stopWatch())
-    println()
-
-    this.stopWatch();
-    g.V._._._ >> -1
-    printPerformance("Non-embedded pipeline evaulation", 3, "steps", this.stopWatch())
-    this.stopWatch();
-    g.V.step {s()._._._ >> 1} >> -1
-    printPerformance("Embedded pipeline evaulation", 3, "steps", this.stopWatch())
-  }
-
   public void testPipelineConstructionWithFunctionNotation() {
     Gremlin.load();
     Graph g = new TinkerGraph()
+    def results1a = []
+    def results1b = []
+    def results2a = []
+    def results2b = []
+    def results3a = []
+    def results3b = []
 
-    g.V.outE
-    this.stopWatch();
-    g.V.outE
-    printPerformance("Property notation pipeline", null, "compiles", this.stopWatch())
-    g.V().outE()
-    this.stopWatch();
-    g.V().outE()
-    printPerformance("Method notation pipeline", null, "compiles", this.stopWatch())
-    println()
+    for (int i = 0; i < 500; i++) {
+      this.stopWatch();
+      g.V.outE.inV
+      results1a << this.stopWatch();
+      this.stopWatch();
+      g.V().outE().inV()
+      results1b << this.stopWatch();
 
-    g.V.outE.inV
-    this.stopWatch();
-    g.V.outE.inV
-    printPerformance("Property notation pipeline", null, "compiles", this.stopWatch())
-    g.V().outE().inV()
-    this.stopWatch();
-    g.V().outE().inV()
-    printPerformance("Method notation pipeline", null, "compiles", this.stopWatch())
-    println()
+      this.stopWatch();
+      g.V.outE.inV.outE.inV
+      results2a << this.stopWatch();
+      this.stopWatch()
+      g.V().outE().inV().outE().inV()
+      results2b << this.stopWatch();
 
-    g.V.outE[[label: 'knows']].inV.outE.inV
-    this.stopWatch();
-    g.V.outE[[label: 'knows']].inV.outE.inV
-    printPerformance("Property notation pipeline", null, "compiles", this.stopWatch())
-    g.V().outE()[[label: 'knows']].inV().outE().inV()
-    this.stopWatch();
-    g.V().outE()[[label: 'knows']].inV().outE().inV()
-    printPerformance("Method notation pipeline", null, "compiles", this.stopWatch())
-    println()
+      this.stopWatch();
+      g.V.outE[[label: 'knows']].inV.outE[[label: 'knows']].inV
+      results3a << this.stopWatch();
+      this.stopWatch();
+      g.V().outE()[[label: 'knows']].inV().outE()[[label: 'knows']].inV()
+      results3b << this.stopWatch();
+
+    }
+
+    println "\tProperty notation <g.V.outE.inV>: " + results1a.mean();
+    println "\tMethod notation <g.V().outE().inV()>: " + results1b.mean();
+    println "\tProperty notation <g.V.outE.inV.outE.inV>: " + results2a.mean();
+    println "\tMethod notation <g.V().outE().inV().outE().inV()>: " + results2b.mean();
+    println "\tProperty notation <g.V.outE[[label: 'knows']].inV.outE[[label:'knows']].inV>: " + results3a.mean();
+    println "\tMethod notation <g.V().outE()[[label: 'knows']].inV().outE()[[label:'knows']].inV()>: " + results3b.mean();
+
   }
 
 }

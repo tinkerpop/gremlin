@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
@@ -25,7 +26,8 @@ class PipeLoader {
   public static void load() {
 
     Pipe.metaClass.propertyMissing = {final String name ->
-      if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
+      //if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
+      if (Gremlin.isStep(name)) {
         return delegate."$name"();
       } else {
         if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
@@ -134,24 +136,28 @@ class PipeLoader {
     ////////// PIPES //////////
     ///////////////////////////
 
+    Gremlin.addStep(GremlinTokens.FOREACH);
     [Iterator, Iterable].each {
       it.metaClass.foreach = {final Closure closure ->
         return Gremlin.compose(delegate, new ForeachPipe(closure));
       }
     }
 
+    Gremlin.addStep(GremlinTokens.EMIT);
     [Iterator, Iterable].each {
       it.metaClass.emit = {final Closure closure ->
         return Gremlin.compose(delegate, new EmitPipe(closure));
       }
     }
 
+    Gremlin.addStep(GremlinTokens.FILTER);
     [Iterator, Iterable].each {
       it.metaClass.filter = {final Closure closure ->
         return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
       }
     }
 
+    Gremlin.addStep(GremlinTokens.IFELSE);
     [Iterator, Iterable].each {
       it.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
         return Gremlin.compose(delegate, new IfPipe(ifClosure, thenClosure, elseClosure));
@@ -164,6 +170,7 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.CAP);
     GremlinPipeline.metaClass.cap = {final Closure closure ->
       final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
       pipeline.capPipe(pipeline.size() - 1);
@@ -173,6 +180,7 @@ class PipeLoader {
       return pipeline;
     }
 
+    Gremlin.addStep(GremlinTokens.LOOP);
     GremlinPipeline.metaClass.loop = {final Closure closure ->
       final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
       pipeline.loopPipe(closure)
@@ -185,6 +193,7 @@ class PipeLoader {
       return pipeline;
     }
 
+    Gremlin.addStep(GremlinTokens.AGGREGATE);
     [Iterator, Iterable].each {
       it.metaClass.aggregate = {final Object ... params ->
         if (params) {
@@ -204,6 +213,7 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.EXCEPT);
     [Iterator, Iterable].each {
       it.metaClass.except = {final Collection collection ->
         return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL));
@@ -216,7 +226,7 @@ class PipeLoader {
       }
     }
 
-
+    Gremlin.addStep(GremlinTokens.RETAIN);
     [Iterator, Iterable].each {
       it.metaClass.retain = {final Collection collection ->
         return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL));
@@ -229,6 +239,7 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.GROUPCOUNT);
     [Iterator, Iterable].each {
       it.metaClass.groupCount = {final Object ... params ->
         if (params) {
@@ -248,35 +259,41 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.UNIQUE);
     [Iterator, Iterable].each {
       it.metaClass.unique = {final Closure closure ->
         return Gremlin.compose(delegate, new DuplicateFilterPipe(), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.ANDF);
     [Iterator, Iterable].each {
       it.metaClass.andf = {final Pipe ... pipes ->
         return Gremlin.compose(delegate, new AndFilterPipe(pipes.collect {new HasNextPipe((Pipe) it)} as List))
       }
     }
 
+    Gremlin.addStep(GremlinTokens.ORF);
     [Iterator, Iterable].each {
       it.metaClass.orf = {final Pipe ... pipes ->
         return Gremlin.compose(delegate, new OrFilterPipe(pipes.collect {new HasNextPipe((Pipe) it)} as List))
       }
     }
 
+    Gremlin.addStep(GremlinTokens.FUTUREF);
     [Iterator, Iterable].each {
       it.metaClass.futuref = {final Pipe pipe ->
         return Gremlin.compose(delegate, new FutureFilterPipe(pipe))
       }
     }
 
+    Gremlin.addStep(GremlinTokens.BACK);
     GremlinPipeline.metaClass.back = {final Integer steps ->
       ((GremlinPipeline) delegate).backPipe(steps);
       return delegate;
     }
 
+    Gremlin.addStep(GremlinTokens.GATHER);
     [Iterator, Iterable].each {
       it.metaClass.gather = {final Closure closure ->
         GremlinPipeline pipeline;
@@ -288,24 +305,28 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.SCATTER);
     [Iterator, Iterable].each {
       it.metaClass.scatter = {final Closure closure ->
         return Gremlin.compose(delegate, new ScatterPipe(), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.PATHS);
     [Iterator, Iterable].each {
       it.metaClass.paths = {final Closure closure ->
         return Gremlin.compose(delegate, new PathPipe(), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.STEP);
     [Iterator, Iterable].each {
       it.metaClass.step = {final Closure closure ->
         return Gremlin.compose(delegate, new ClosurePipe(closure))
       }
     }
 
+    Gremlin.addStep(GremlinTokens.PROPF);
     [Iterator, Iterable, Vertex, Edge].each {
       it.metaClass.propf = {final String key, final T t, final Object value ->
         if (key.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
@@ -318,36 +339,42 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.OUTE);
     [Iterator, Iterable, Vertex].each {
       it.metaClass.outE = {final Closure closure ->
         return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.INE);
     [Iterator, Iterable, Vertex].each {
       it.metaClass.inE = {final Closure closure ->
         return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.BOTHE);
     [Iterator, Iterable, Vertex].each {
       it.metaClass.bothE = {final Closure closure ->
         return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.INV);
     [Iterator, Iterable, Edge].each {
       it.metaClass.inV = {final Closure closure ->
         return Gremlin.compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.IN_VERTEX), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.OUTV);
     [Iterator, Iterable, Edge].each {
       it.metaClass.outV = {final Closure closure ->
         return Gremlin.compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.OUT_VERTEX), closure)
       }
     }
 
+    Gremlin.addStep(GremlinTokens.BOTHV);
     [Iterator, Iterable, Edge].each {
       it.metaClass.bothV = {final Closure closure ->
         return Gremlin.compose(delegate, new EdgeVertexPipe(EdgeVertexPipe.Step.BOTH_VERTICES), closure)

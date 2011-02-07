@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin
 
 import com.tinkerpop.blueprints.pgm.Graph
+import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.pipes.Pipe
@@ -50,5 +51,26 @@ class GremlinTest extends TestCase {
     assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "E"))
     assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "e"))
     assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "_"))
+  }
+
+  public void testUserDefinedSteps() {
+    Gremlin.load();
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    Gremlin.addStep("co_developer")
+    [Iterable, Iterator, Vertex].each {
+      def c = { def x; _ {x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV {it != x} }
+      it.metaClass.co_developer = { Gremlin.compose(delegate, c())}
+    }
+    def results = []
+    g.v(1).co_developer >> results
+    assertEquals(results.size(), 2);
+    assertTrue(results.contains(g.v(4)));
+    assertTrue(results.contains(g.v(6)));
+  }
+
+  public void testNothing() {
+    Gremlin.load()
+    Graph g = TinkerGraphFactory.createTinkerGraph()
+    g.v(1)._.outE.each {println it}
   }
 }
