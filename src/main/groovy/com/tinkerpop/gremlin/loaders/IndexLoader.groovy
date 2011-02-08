@@ -11,14 +11,14 @@ class IndexLoader {
 
   public static void load() {
 
-    IndexableGraph.metaClass.idx = {final Object idx ->
+    IndexableGraph.metaClass.idx = {final Object indexName ->
       final String name;
-      if (idx.equals(T.v)) {
+      if (indexName.equals(T.v)) {
         name = Index.VERTICES
-      } else if (idx.equals(T.e)) {
+      } else if (indexName.equals(T.e)) {
         name = Index.EDGES
       } else {
-        name = idx.toString()
+        name = indexName.toString()
       }
       Index index = ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
       if (index) {

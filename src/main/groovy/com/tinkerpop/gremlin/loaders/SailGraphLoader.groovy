@@ -9,12 +9,12 @@ class SailGraphLoader {
 
   public static void load() {
 
-    SailGraph.metaClass.uri {String prefix ->
-      return delegate.expandPrefix(prefix)
+    SailGraph.metaClass.uri {final String prefix ->
+      return ((SailGraph) delegate).expandPrefix(prefix)
     }
 
-    SailGraph.metaClass.qn {String uri ->
-      return delegate.prefixNamespace(uri)
+    SailGraph.metaClass.qn {final String uri ->
+      return ((SailGraph) delegate).prefixNamespace(uri)
     }
   }
 }

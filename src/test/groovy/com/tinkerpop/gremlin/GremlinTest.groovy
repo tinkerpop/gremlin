@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
@@ -33,8 +32,7 @@ class GremlinTest extends TestCase {
     assertEquals(x, 1);
   }
 
-
-  public void testGetMissingMethods() {
+  /*public void testGetMissingMethods() {
     Gremlin.load();
     Set tokens = Gremlin.getExistingMethods(TinkerGraph.class);
     assertTrue(tokens.contains("V"))
@@ -51,7 +49,7 @@ class GremlinTest extends TestCase {
     assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "E"))
     assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "e"))
     assertTrue(Gremlin.isExistingMethod(TinkerGraph.class, "_"))
-  }
+  }*/
 
   public void testUserDefinedSteps() {
     Gremlin.load();

@@ -26,7 +26,6 @@ class PipeLoader {
   public static void load() {
 
     Pipe.metaClass.propertyMissing = {final String name ->
-      //if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
       if (Gremlin.isStep(name)) {
         return delegate."$name"();
       } else {
@@ -181,12 +180,6 @@ class PipeLoader {
     }
 
     Gremlin.addStep(GremlinTokens.LOOP);
-    GremlinPipeline.metaClass.loop = {final Closure closure ->
-      final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
-      pipeline.loopPipe(closure)
-      return pipeline;
-    }
-
     GremlinPipeline.metaClass.loop = {final Integer stepsAgo, final Closure closure ->
       final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
       pipeline.loopPipe(stepsAgo, closure)

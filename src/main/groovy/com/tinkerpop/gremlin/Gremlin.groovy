@@ -5,8 +5,6 @@ import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
-import java.lang.reflect.Method
-import org.codehaus.groovy.runtime.metaclass.ClosureMetaMethod
 import com.tinkerpop.gremlin.loaders.*
 
 class Gremlin {
@@ -22,13 +20,19 @@ class Gremlin {
   }
 
   public static Filter mapFilter(final t) {
-    if (t == t.eq)
-      return Filter.NOT_EQUAL else if (t == t.neq)
-      return Filter.EQUAL else if (t == t.lt)
-        return Filter.GREATER_THAN_EQUAL else if (t == t.lte)
-          return Filter.GREATER_THAN else if (t == t.gt)
-            return Filter.LESS_THAN_EQUAL else
-            return Filter.LESS_THAN
+    if (t == t.eq) {
+      return Filter.NOT_EQUAL
+    } else if (t == t.neq) {
+      return Filter.EQUAL
+    } else if (t == t.lt) {
+      return Filter.GREATER_THAN_EQUAL
+    } else if (t == t.lte) {
+      return Filter.GREATER_THAN
+    } else if (t == t.gt) {
+      return Filter.LESS_THAN_EQUAL
+    } else {
+      return Filter.LESS_THAN
+    }
   }
 
   public static GremlinPipeline compose(final Object start) {
@@ -73,34 +77,6 @@ class Gremlin {
     return (Pipe) groovy.evaluate(sb.toString())
   }
 
-  public static Set getExistingMethods(final Class clazz) {
-    final Set tokens = new HashSet();
-    while (clazz) {
-      tokens.addAll(clazz.getMetaClass().getMethods().findAll {it instanceof ClosureMetaMethod}.collect {it.name})
-      clazz.getInterfaces().each {tokens.addAll(getExistingMethods(it))}
-      clazz = clazz.getSuperclass()
-    }
-    return tokens;
-  }
-
-  public static boolean isExistingMethod(final Class clazz, final String methodName) {
-    while (clazz) {
-      for (final Method method: clazz.getMetaClass().getMethods()) {
-        if (method.getName().equals(methodName)) {
-          return true;
-        }
-      }
-
-      for (final Class interfaze: clazz.getInterfaces()) {
-        if (isExistingMethod(interfaze, methodName))
-          return true;
-      }
-
-      clazz = clazz.getSuperclass()
-    }
-    return false;
-  }
-
   public static void addStep(final String stepName) {
     Gremlin.steps.add(stepName);
   }
@@ -114,4 +90,32 @@ class Gremlin {
     temp.addAll(Gremlin.steps);
     return temp;
   }
+
+/*public static Set getExistingMethods(final Class clazz) {
+  final Set tokens = new HashSet();
+  while (clazz) {
+    tokens.addAll(clazz.getMetaClass().getMethods().findAll {it instanceof ClosureMetaMethod}.collect {it.name})
+    clazz.getInterfaces().each {tokens.addAll(getExistingMethods(it))}
+    clazz = clazz.getSuperclass()
+  }
+  return tokens;
+}
+
+public static boolean isExistingMethod(final Class clazz, final String methodName) {
+  while (clazz) {
+    for (final Method method: clazz.getMetaClass().getMethods()) {
+      if (method.getName().equals(methodName)) {
+        return true;
+      }
+    }
+
+    for (final Class interfaze: clazz.getInterfaces()) {
+      if (isExistingMethod(interfaze, methodName))
+        return true;
+    }
+
+    clazz = clazz.getSuperclass()
+  }
+  return false;
+}*/
 }

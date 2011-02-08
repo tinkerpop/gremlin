@@ -34,10 +34,6 @@ public class GremlinPipeline<S, E> implements Pipe<S, E> {
         this.setPipes(this.pipes);
     }
 
-    public void loopPipe(final Closure closure) {
-        this.loopPipe(this.pipes.size(), closure);
-    }
-
     public void loopPipe(final int stepsAgo, final Closure closure) {
         this.addPipe(new LoopPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo)), closure));
         if (this.pipes.size() == 1)

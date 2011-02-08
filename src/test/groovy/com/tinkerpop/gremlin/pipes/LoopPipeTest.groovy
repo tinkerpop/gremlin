@@ -11,14 +11,6 @@ import junit.framework.TestCase
  */
 class LoopPipeTest extends TestCase {
 
-  public void testFullLoop() {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    int counter = 0;
-    g.v(1).outE.inV.loop {it.object.name != 'ripple'}.each {counter++; assertEquals(it, g.v(5))}
-    assertEquals(counter, 1);
-  }
-
   public void testSubPathLoop() {
     Gremlin.load();
     Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -46,7 +38,7 @@ class LoopPipeTest extends TestCase {
     //println results;
   }
 
-  public void testLoopAndUnrolledEquiality() {
+  public void testLoopAndUnrolledEquality() {
     Gremlin.load();
     Graph g = new TinkerGraph();
     def a = g.addVertex(1)

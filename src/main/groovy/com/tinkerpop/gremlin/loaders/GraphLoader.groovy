@@ -13,7 +13,6 @@ class GraphLoader {
   public static void load() {
 
     Graph.metaClass.propertyMissing = {final String name ->
-      //if (Gremlin.isExistingMethod(delegate.getClass(), name)) {
       if (Gremlin.isStep(name)) {
         return delegate."$name"();
       } else {
