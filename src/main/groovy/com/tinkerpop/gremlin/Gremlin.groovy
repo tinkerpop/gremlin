@@ -85,11 +85,11 @@ class Gremlin {
     return Gremlin.steps.contains(stepName);
   }
 
-  public static Set<String> getSteps() {
+  /*public static Set<String> getSteps() {
     final Set<String> temp = new HashSet<String>();
     temp.addAll(Gremlin.steps);
     return temp;
-  }
+  }*/
 
 /*public static Set getExistingMethods(final Class clazz) {
   final Set tokens = new HashSet();

@@ -40,6 +40,12 @@ class PipeLoader {
     }
 
     [Iterator, Iterable].each {
+      it.metaClass.count = {
+        return PipeHelper.counter(delegate);
+      }
+    }
+
+    [Iterator, Iterable].each {
       it.metaClass.rightShift = {final Collection collection ->
         final Iterator itty;
         if (delegate instanceof Iterable) {
