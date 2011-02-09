@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.console;
 import groovy.lang.Closure;
 import org.codehaus.groovy.tools.shell.IO;
 
+import java.io.BufferedReader;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -26,6 +28,18 @@ public class ErrorHookClosure extends Closure {
                 } else {
                     io.err.println(e);
                 }
+
+                io.err.print("Display stack trace? [yN] ");
+                io.err.flush();
+                String line = new BufferedReader(io.in).readLine();
+                if (null == line)
+                    line = "";
+                io.err.print(line.trim());
+                io.err.println();
+                if (line.trim().equals("y") || line.trim().equals("Y")) {
+                    e.printStackTrace(io.err);
+                }
+
                 return null;
             } catch (Exception e) {
                 io.err.println("An undefined error has occurred: " + args[0]);
