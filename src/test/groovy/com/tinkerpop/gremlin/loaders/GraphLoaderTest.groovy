@@ -82,6 +82,20 @@ class GraphLoaderTest extends TestCase {
     assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: [T.neq, null]]]), 0)
     assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: null]]), 3)
 
-  }
+    def results = [];
+    g.v(1).outE('knows').inV.name >> results;
+    assertEquals(results.size(), 2)
+    assertTrue(results.contains('josh'))
+    assertTrue(results.contains('vadas'))
+    results = [];
+    g.v(1).outE('created').inV.name >> results;
+    assertEquals(results.size(), 1)
+    assertTrue(results.contains('lop'))
 
+    results = [];
+    g.v(3).inE('created'){it.weight > 0.3}.outV.name >> results;
+    assertEquals(results.size(), 2)
+    assertTrue(results.contains('marko'))
+    assertTrue(results.contains('josh'))
+  }
 }

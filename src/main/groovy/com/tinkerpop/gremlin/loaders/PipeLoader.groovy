@@ -343,6 +343,19 @@ class PipeLoader {
       it.metaClass.outE = {final Closure closure ->
         return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES), closure)
       }
+      it.metaClass.outE = {
+        return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.OUT_EDGES))
+      }
+    }
+
+    [Iterator, Iterable, Vertex].each {
+      it.metaClass.outE = {final String label, final Closure closure ->
+        return Gremlin.compose(delegate, new VertexEdgeLabelFilterPipe(VertexEdgePipe.Step.OUT_EDGES, label), closure)
+      }
+
+      it.metaClass.outE = {final String label ->
+        return Gremlin.compose(delegate, new VertexEdgeLabelFilterPipe(VertexEdgePipe.Step.OUT_EDGES, label))
+      }
     }
 
     Gremlin.addStep(GremlinTokens.INE);
@@ -350,12 +363,40 @@ class PipeLoader {
       it.metaClass.inE = {final Closure closure ->
         return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES), closure)
       }
+
+      it.metaClass.inE = {
+        return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.IN_EDGES))
+      }
+    }
+
+    [Iterator, Iterable, Vertex].each {
+      it.metaClass.inE = {final String label, final Closure closure ->
+        return Gremlin.compose(delegate, new VertexEdgeLabelFilterPipe(VertexEdgePipe.Step.IN_EDGES, label), closure)
+      }
+
+      it.metaClass.inE = {final String label ->
+        return Gremlin.compose(delegate, new VertexEdgeLabelFilterPipe(VertexEdgePipe.Step.IN_EDGES, label))
+      }
     }
 
     Gremlin.addStep(GremlinTokens.BOTHE);
     [Iterator, Iterable, Vertex].each {
       it.metaClass.bothE = {final Closure closure ->
         return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES), closure)
+      }
+
+      it.metaClass.bothE = {
+        return Gremlin.compose(delegate, new VertexEdgePipe(VertexEdgePipe.Step.BOTH_EDGES))
+      }
+    }
+
+    [Iterator, Iterable, Vertex].each {
+      it.metaClass.bothE = {final String label, final Closure closure ->
+        return Gremlin.compose(delegate, new VertexEdgeLabelFilterPipe(VertexEdgePipe.Step.BOTH_EDGES, label), closure)
+      }
+
+      it.metaClass.bothE = {final String label ->
+        return Gremlin.compose(delegate, new VertexEdgeLabelFilterPipe(VertexEdgePipe.Step.BOTH_EDGES, label))
       }
     }
 
