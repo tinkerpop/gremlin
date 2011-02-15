@@ -243,13 +243,13 @@ class PipeLoader {
       it.metaClass.groupCount = {final Object ... params ->
         if (params) {
           if (params.length == 2) {
-            Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]), (Closure) params[1])
+            Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], (Closure) params[1]));
           } else {
             if (params[0] instanceof Map) {
               Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]));
 
             } else {
-              Gremlin.compose(delegate, new GroupCountPipe(new HashMap()), (Closure) params[0]);
+              Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), (Closure) params[0]));
             }
           }
         } else {

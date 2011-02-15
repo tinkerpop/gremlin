@@ -93,7 +93,7 @@ class GraphLoaderTest extends TestCase {
     assertTrue(results.contains('lop'))
 
     results = [];
-    g.v(3).inE('created'){it.weight > 0.3}.outV.name >> results;
+    g.v(3).inE('created') {it.weight > 0.3}.outV.name >> results;
     assertEquals(results.size(), 2)
     assertTrue(results.contains('marko'))
     assertTrue(results.contains('josh'))
