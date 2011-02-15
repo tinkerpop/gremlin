@@ -9,15 +9,17 @@ bc. <repository>
 
 ==<hr/>==
 
-!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png!
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremstefani.png!
 
-h3. Version 0.7.5 (Gremopoly -- NOT OFFICIALLY RELEASED YET)
+h3. Version 0.8 (Grem Stefani -- NOT OFFICIALLY RELEASED YET)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.7.5</version>
+  <version>0.8-SNAPSHOT</version>
 </dependency>
+```
 
 * Added new steps
 ** @emit@ to emit results of provided closure
@@ -26,17 +28,24 @@ bc. <dependency>
 ** @Object.mean()@ to calculate the average of delegate
 ** @Pipe.count()@ to calculate the number of objects in pipe
 * Added support for stack trace printing during an error in the console
-* @loop@ step now requires require "back integer"
+* @loop@ step now requires "back integer"
 * Added step caching model to increase speed of property notation
 * Added @outE(label)@, @inE(label)@ and @bothE(label)@ support
+* Added support for dynamic counter adjustment in @groupCount@
+
+==<hr/>==
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png!
 
 h3. Version 0.7 (Gremopoly -- January 22, 2011)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.7</version>
 </dependency>
+```
 
 * Added many new steps
 ** @loop@ step for in-line looping
@@ -54,11 +63,13 @@ bc. <dependency>
 
 h3. Version 0.6 (Gremalicious -- December 14, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.6</version>
 </dependency>
+```
 
 * Fixed @foreach@ bug that occurred on single object looping
 * Fixed @if/else@ bug that occurred on function call
@@ -81,11 +92,13 @@ bc. <dependency>
 
 h3. Version 0.5.5 (Gremlivich -- October 28, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.5.5</version>
 </dependency>
+```
 
 * A rework of the user-defined step model
 ** Renamed the concept of "path" to "step"
@@ -95,11 +108,13 @@ bc. <dependency>
 
 h3. Version 0.5 (Gremlivich -- September 22, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.5</version>
 </dependency>
+```
 
 * A complete redesign and implementation of the Gremlin compiler
 ** Compiler written using "ANTLR 3.2":http://www.antlr.org/
@@ -144,11 +159,13 @@ bc. <dependency>
 
 h3. Version 0.2.2 (Gremicide -- March 7, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.2.2</version>
 </dependency>
+```
 
 * Fixed a bug introduced in 0.2.1 having to do with variables copied from a parent path context
 * Added dependency on Neo4j RDF and SAIL SNAPSHOTS
@@ -156,11 +173,13 @@ bc. <dependency>
 
 h3. Version 0.2.1 (Gremicide -- February 25, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.2.1</version>
 </dependency>
+```
 
 * Instance naming convention for @Functions@ changed to @FunctionLibrary@
 * @list g:list(object+)@ is now @list g:list(object*)@
@@ -170,12 +189,13 @@ bc. <dependency>
 
 h3. Version 0.2 (Gremicide -- February 14, 2010)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.2</version>
 </dependency>
-
+```
 
 * Added user defined functions
 ** Gremlin and Java defined functions supported
@@ -210,11 +230,12 @@ bc. <dependency>
 
 h3. Version 0.1 (XMas Alpha -- December 25, 2009)
 
-bc. <dependency>
+```xml
+<dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
   <version>0.1</version>
 </dependency>
-
+```
 
 * Initial release of the language and virtual machine
