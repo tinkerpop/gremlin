@@ -6,6 +6,7 @@ import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.PipeHelper
 import junit.framework.TestCase
+import com.tinkerpop.blueprints.pgm.IndexableGraph
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
