@@ -44,6 +44,7 @@ public class GremlinTokens {
     public static final String SCATTER = "scatter";
     public static final String STEP = "step";
     public static final String UNIQUE = "unique";
+    public static final String UNIQUEPATH = "uniquePath";
 
 
 }

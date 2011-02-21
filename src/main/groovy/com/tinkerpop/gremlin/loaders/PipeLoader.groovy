@@ -162,6 +162,13 @@ class PipeLoader {
       }
     }
 
+    Gremlin.addStep(GremlinTokens.UNIQUEPATH);
+    [Iterator, Iterable].each {
+      it.metaClass.uniquePath = {final Closure closure ->
+        return Gremlin.compose(delegate, new UniquePathFilterPipe(), closure);
+      }
+    }
+
     Gremlin.addStep(GremlinTokens.IFELSE);
     [Iterator, Iterable].each {
       it.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
