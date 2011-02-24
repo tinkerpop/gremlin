@@ -24,6 +24,7 @@ h3. Version 0.8 (Grem Stefani -- NOT OFFICIALLY RELEASED YET)
 * Added new steps
 ** @emit@ to emit results of provided closure
 ** @ifelse@ to perform a if/then/else branch
+** @uniquePath@ to filter looping paths
 * Added new methods
 ** @Object.mean()@ to calculate the average of delegate
 ** @Pipe.count()@ to calculate the number of objects in pipe
