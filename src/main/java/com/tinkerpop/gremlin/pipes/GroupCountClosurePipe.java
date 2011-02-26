@@ -21,13 +21,16 @@ public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements Side
     }
 
     public GroupCountClosurePipe(final Closure closure) {
-        this.countMap = new HashMap<S, Number>();
-        this.closure = closure;
+        this(new HashMap<S, Number>(), closure);
     }
 
     protected S processNextStart() {
         final S s = this.starts.next();
-        this.countMap.put(s, (Number) this.closure.call(this.countMap.get(s)));
+        final Number number = this.countMap.get(s);
+        if (null == number)
+            this.countMap.put(s, (Number) this.closure.call(0));
+        else
+            this.countMap.put(s, (Number) this.closure.call(number));
         return s;
     }
 

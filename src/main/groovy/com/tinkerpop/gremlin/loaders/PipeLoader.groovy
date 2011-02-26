@@ -9,7 +9,6 @@ import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
-import com.tinkerpop.pipes.sideeffect.GroupCountPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
@@ -253,14 +252,14 @@ class PipeLoader {
             Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], (Closure) params[1]));
           } else {
             if (params[0] instanceof Map) {
-              Gremlin.compose(delegate, new GroupCountPipe((Map) params[0]));
+              Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], {it + 1l}));
 
             } else {
               Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), (Closure) params[0]));
             }
           }
         } else {
-          return Gremlin.compose(delegate, new GroupCountPipe(new HashMap()));
+          return Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), {it + 1l}));
         }
       }
     }
