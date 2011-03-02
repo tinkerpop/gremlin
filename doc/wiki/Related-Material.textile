@@ -1,0 +1,37 @@
+Gremlin was created after many years of research into analyzing multi-relational graphs (e.g. property graphs). The following is a itemization of related articles and presentations that help provide more information about the theory and applications of Gremlin.
+
+h2. Articles
+
+Rodriguez, M.A., Neubauer, P., "A Path Algebra for Multi-Relational Graphs":http://arxiv.org/abs/1011.0390, 2nd International Workshop on Graph Data Management (GDM’11), ICDE Proceedings, IEEE, in press, December 2010.
+
+Rodriguez M.A., Shinavier, J., "Exposing Multi-Relational Networks to Single-Relational Network Analysis Algorithms":http://arxiv.org/abs/0806.2274, Journal of Informetrics, volume 4, number 1, pages 29-41, ISSN:1751-1577, Elsevier, doi:10.1016/j.joi.2009.06.004, LA-UR-08-03931, December 2009.
+
+Rodriguez, M.A., Neubauer, P., "The Graph Traversal Pattern":http://arxiv.org/abs/1004.1001, Graph Data Management: Techniques and Applications, eds. S. Sakr, E. Pardede, IGI Global, in press, December 2010.
+
+Rodriguez, M.A., Neubauer, P., "Constructions from Dots and Lines":http://arxiv.org/abs/1006.2361, Bulletin of the American Society for Information Science and Technology, American Society for Information Science and Technology, volume 36, number 6, pages 35-41, ISSN:1550-8366, August 2010.
+
+Rodriguez, M.A., "Grammar-Based Random Walkers in Semantic Networks":http://arxiv.org/abs/0803.4355, Knowledge-Based Systems, volume 21, issue 7, pages 727-739, ISSN:0950-7051, Elsevier, doi:10.1016/j.knosys.2008.03.030, LA-UR-06-7791, October 2008. 
+
+Rodriguez, M.A., Watkins, J.H., "Grammar-Based Geodesics in Semantic Networks":http://arxiv.org/abs/1009.0670, Knowledge-Based Systems, volume 23, number 8, pages 844-855, doi:10.1016/j.knosys.2010.05.009, ISSN:0950-7051, LA-UR-07-4042, December 2010.
+
+Rodriguez, M.A., Geldart, J., "An Evidential Path Logic for Multi-Relational Networks":http://arxiv.org/abs/0810.1481, Proceedings of the Association for the Advancement of Artificial Intelligence Spring Symposium: Technosocial Predictive Analytics Symposium, volume SS-09-09, pages 114-119, ISBN:978-1-57735-416-1, AAAI Press, LA-UR-08-06397, Stanford University, March 2009. 
+
+Rodriguez, M.A., "Social Decision Making with Multi-Relational Networks and Grammar-Based Particle Swarms":http://arxiv.org/abs/cs/0609034, Hawaii International Conference on Systems Science (HICSS), Track: Collaboration Technology - Social Cognition and Knowledge Creation Using Collaborative Technology, pages 39-49, Waikoloa, Hawaii, IEEE Computer Society, ISSN: 1530-1605, doi:10.1109/HICSS.2007.487, LA-UR-06-2139, January 2007.
+
+h2. Presentations
+
+Rodriguez, M.A., "The Gremlin in the Graph":http://www.slideshare.net/slidarko/the-gremlin-in-the-graph, Invited Lecture, "First University-Industry Meeting on Graph Databases":http://www.dama.upc.edu/research-2/UIM-GDB (UIM-GDB), Universitat Politècnica de Catalunya, February 2011.
+
+Rodriguez, M.A., "Memoirs of a Graph Addict: Despair to Redemption":http://www.slideshare.net/slidarko/memoirs-of-a-graph-addict-despair-to-redemption, Invited Speaker, Winterland Wirldwind Tour, Chicago-to-Malmo, January, 2011.
+
+Rodriguez, M.A., "Problem-Solving using Graph Traversals: Searching, Scoring, Ranking, and Recommendation":http://www.slideshare.net/slidarko/problemsolving-using-graph-traversals-searching-scoring-ranking-and-recommendation, Technical Talk Seminar, AT&T Interactive, Glendale, California, July 2010.
+
+Rodriguez, M.A., "The Graph Traversal Programming Pattern":http://www.slideshare.net/slidarko/graph-windycitydb2010, Invited Speaker, WindyCity DB, Chicago, Illinois, June 2010.
+
+Rodriguez, M.A., "Gremlin: A Graph-Based Programming Language":http://www.slideshare.net/slidarko/gremlin-a-graphbased-programming-language-3876581, Center for Nonlinear Studies Post Doctorate Seminar, Los Alamos National Laboratory, Los Alamos, New Mexico, February 2010.
+
+Rodriguez, M.A., "Multi-Relational Graph Structures: From Algebra to Application":http://www.slideshare.net/slidarko/multirelational-graph-structures-from-algebra-to-application-3879972, Invited Speaker, MIT Lincoln Laboratory, Lexington, Massachusetts, October 2009.
+
+Rodriguez, M.A., "Graph Databases and the Future of Large-Scale Knowledge Management":http://www.slideshare.net/slidarko/graph-databases-and-the-future-of-largescale-knowledge-management, Invited Lecture for Risk Analysis Symposium, Risk Analysis of Complex Systems for National Security Applications, Decision Applications Division and the Center for Nonlinear Studies, Santa Fe, New Mexico, April 2009.
+
+Rodriguez, M.A., "A Path Algebra for Mapping Multi-Relational Networks to Single-Relational Networks":http://www.slideshare.net/slidarko/a-path-algebra-for-mapping-multirelational-networks-to-singlerelational-networks-3876646, Center for Nonlinear Studies Post Doctorate Seminar, Los Alamos National Laboratory, Los Alamos, New Mexico, June 2008.

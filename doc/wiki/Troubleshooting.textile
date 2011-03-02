@@ -1,0 +1,48 @@
+When working with Gremlin, there may be issues that arise. This section hopes to articulate common problems users have an how to resolve them.
+
+==<hr/>==
+
+h2. Nearly everything is an iterator
+
+The expression @g.V[0]@ seems like it is returning the first vertex in the graph. However, this statement is in fact creating an iterator/iterable (i.e. a "Pipe":http://pipes.tinkerpop.com) that will return the first vertex in the graph when @next()@ is called on it. Thus, use @g.V[0]>>1@ to return the first vertex in the graph. Better yes, just use @g.V>>1@. The notation @>>1@ means "pop off the first object in the iterator and return it."
+
+==<hr/>==
+
+h2. When the terminal is stuck, use clear
+
+Many times you will misplace a @(@ or a @{@ and your Gremlin terminal will be "stuck." To get out of this situation, just type @clear@ to reset the parser.
+
+```text
+gremlin> if(true) {
+gremlin> 1+2
+gremlin> {
+gremlin> }
+gremlin> 1
+groovysh_parse: 24: Ambiguous expression could be a parameterless ...
+1 error
+gremlin> 1
+groovysh_parse: 24: Ambiguous expression could be a parameterless ...
+1 error
+gremlin> clear
+gremlin> 1
+==>1
+```
+
+==<hr/>==
+
+h2. Sometimes function notation is required
+
+There is a single meta method added to @Object@. This method is @_@. The @_@ method denotes the @IdentityPipe@. If all else fails in terms of trying to get an object to go through a pipe, use @_@ or @_()@.
+
+==<hr/>==
+
+h2. Use the string representation to help with looping and backtracking
+
+Looping (@loop@) and backtracking (@back@) require the specification of how many steps to jump/backup to. For those not familiar with Gremlin's mapping to "Pipes":http://pipes.tinkerpop.com, you can use the string presentation of the Gremlin expression to see how many steps back are required.
+
+```text
+gremlin> g.v(1).outE[[label:'knows']].inV.toString()
+==>[VertexEdgePipe<OUT_EDGES>, LabelFilterPipe<NOT_EQUAL,knows>, EdgeVertexPipe<IN_VERTEX>]
+gremlin> g.v(1).outE[[label:'knows']].inV.back(2).toString()
+==>[VertexEdgePipe<OUT_EDGES>, FutureFilterPipe<[LabelFilterPipe<NOT_EQUAL,knows>, EdgeVertexPipe<IN_VERTEX>]>]
+```
