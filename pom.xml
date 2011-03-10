@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
-    <version>0.8</version>
+    <version>0.9-SNAPSHOT</version>
     <!-- DON'T FORGET TO UPDATE GremlinTokens.VERSION AT RELEASE -->
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
@@ -58,6 +58,13 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.tinkerpop</groupId>
+            <artifactId>goo</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>blueprints</artifactId>
