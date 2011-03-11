@@ -84,38 +84,4 @@ class Gremlin {
   public static boolean isStep(final String stepName) {
     return Gremlin.steps.contains(stepName);
   }
-
-  /*public static Set<String> getSteps() {
-    final Set<String> temp = new HashSet<String>();
-    temp.addAll(Gremlin.steps);
-    return temp;
-  }*/
-
-/*public static Set getExistingMethods(final Class clazz) {
-  final Set tokens = new HashSet();
-  while (clazz) {
-    tokens.addAll(clazz.getMetaClass().getMethods().findAll {it instanceof ClosureMetaMethod}.collect {it.name})
-    clazz.getInterfaces().each {tokens.addAll(getExistingMethods(it))}
-    clazz = clazz.getSuperclass()
-  }
-  return tokens;
-}
-
-public static boolean isExistingMethod(final Class clazz, final String methodName) {
-  while (clazz) {
-    for (final Method method: clazz.getMetaClass().getMethods()) {
-      if (method.getName().equals(methodName)) {
-        return true;
-      }
-    }
-
-    for (final Class interfaze: clazz.getInterfaces()) {
-      if (isExistingMethod(interfaze, methodName))
-        return true;
-    }
-
-    clazz = clazz.getSuperclass()
-  }
-  return false;
-}*/
 }
