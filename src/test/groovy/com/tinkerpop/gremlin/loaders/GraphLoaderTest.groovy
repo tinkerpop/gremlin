@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.loaders
 
+import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
@@ -101,18 +102,44 @@ class GraphLoaderTest extends TestCase {
         assertTrue(results.contains('josh'))
     }
 
-    public void testAddVertexOverloading() throws Exception {
+    public void testAddVertexAndEdgeOverloading() throws Exception {
         Gremlin.load();
         Graph g = new TinkerGraph();
-        Vertex v = g.addVertex(null, [name: 'marko', age: 31]);
-        assertEquals(v.getProperty('name'), 'marko');
-        assertEquals(v.getProperty('age'), 31);
+        Vertex v0 = g.addVertex(null, [name: 'marko', age: 31]);
+        assertEquals(v0.getProperty('name'), 'marko');
+        assertEquals(v0.getProperty('age'), 31);
 
-        v = g.addVertex([name: 'pavel', location: 'belarus']);
-        assertEquals(v.getProperty('name'), 'pavel');
-        assertEquals(v.getProperty('location'), 'belarus');
+        Vertex v1 = g.addVertex([name: 'pavel', location: 'belarus']);
+        assertEquals(v1.getProperty('name'), 'pavel');
+        assertEquals(v1.getProperty('location'), 'belarus');
 
-        v = g.addVertex(null);
-        assertNull(v.getProperty('name'));
+        Vertex v2 = g.addVertex(null);
+        assertEquals(v2.getPropertyKeys().size(), 0);
+
+        Edge e0 = g.addEdge(null, v0, v1, 'knows', [weight: 0.5f]);
+        assertEquals(e0.getOutVertex(), v0);
+        assertEquals(e0.getInVertex(), v1);
+        assertEquals(e0.getLabel(), 'knows');
+        assertEquals(e0.getProperty('weight'), 0.5f);
+
+        Edge e1 = g.addEdge(v0, v2, 'hates', [degree: 'alot']);
+        assertEquals(e1.getOutVertex(), v0);
+        assertEquals(e1.getInVertex(), v2);
+        assertEquals(e1.getLabel(), 'hates');
+        assertNull(e1.getProperty('weight'));
+        assertEquals(e1.getProperty('degree'), 'alot');
+
+        Edge e2 = g.addEdge(v1, v2, 'feels_nothing');
+        assertEquals(e2.getOutVertex(), v1);
+        assertEquals(e2.getInVertex(), v2);
+        assertEquals(e2.getLabel(), 'feels_nothing');
+        assertEquals(e2.getPropertyKeys().size(), 0);
+
+        Edge e3 = g.addEdge(null, v2, v0, 'blah');
+        assertEquals(e3.getOutVertex(), v2);
+        assertEquals(e3.getInVertex(), v0);
+        assertEquals(e3.getLabel(), 'blah');
+        assertEquals(e3.getPropertyKeys().size(), 0);
+
     }
 }
