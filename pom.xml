@@ -120,10 +120,6 @@
     <build>
         <directory>${basedir}/target</directory>
         <finalName>${artifactId}-${version}</finalName>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
-        <outputDirectory>${basedir}/target/classes</outputDirectory>
-        <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources
