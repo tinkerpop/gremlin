@@ -10,16 +10,16 @@ import junit.framework.TestCase
  */
 class GatherPipeTest extends TestCase {
 
-  public void testGatherNoClosure() throws Exception {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    def results = [];
-    assertEquals(g.v(1).outE.gather >> 1, g.v(1).outE >> results);
-  }
+    public void testGatherNoClosure() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def results = [];
+        assertEquals(g.v(1).outE.gather >> 1, g.v(1).outE >> results);
+    }
 
-  public void testGatherClosure() throws Exception {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    assertEquals(g.v(1).outE.gather { starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
-  }
+    public void testGatherClosure() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertEquals(g.v(1).outE.gather { starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
+    }
 }

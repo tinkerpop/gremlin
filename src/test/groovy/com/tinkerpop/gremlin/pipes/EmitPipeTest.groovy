@@ -9,22 +9,22 @@ import junit.framework.TestCase
  */
 class EmitPipeTest extends TestCase {
 
-  public void testEmitPipe() {
-    Gremlin.load()
-    def g = TinkerGraphFactory.createTinkerGraph()
-    def results = []
-    g.v(1).outE.inV.emit {it.name} >> results
-    assertEquals(results.size(), 3)
-    assertTrue(results.contains("josh"))
-    assertTrue(results.contains("lop"))
-    assertTrue(results.contains("vadas"))
+    public void testEmitPipe() {
+        Gremlin.load()
+        def g = TinkerGraphFactory.createTinkerGraph()
+        def results = []
+        g.v(1).outE.inV.emit {it.name} >> results
+        assertEquals(results.size(), 3)
+        assertTrue(results.contains("josh"))
+        assertTrue(results.contains("lop"))
+        assertTrue(results.contains("vadas"))
 
-    results = []
-    g.v(1)._.emit {it.outE}.scatter.emit {it.inV}.scatter.emit {it.name} >> results
-    assertEquals(results.size(), 3)
-    assertTrue(results.contains("josh"))
-    assertTrue(results.contains("lop"))
-    assertTrue(results.contains("vadas"))
-  }
+        results = []
+        g.v(1)._.emit {it.outE}.scatter.emit {it.inV}.scatter.emit {it.name} >> results
+        assertEquals(results.size(), 3)
+        assertTrue(results.contains("josh"))
+        assertTrue(results.contains("lop"))
+        assertTrue(results.contains("vadas"))
+    }
 
 }

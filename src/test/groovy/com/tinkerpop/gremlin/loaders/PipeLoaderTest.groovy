@@ -10,13 +10,13 @@ import junit.framework.TestCase
  */
 class PipeLoaderTest extends TestCase {
 
-  public void testCount() {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    assertEquals(g.V.count(), 6l);
-    assertEquals(g.E.count(), 6l);
-    assertEquals(g.v(1).outE().count(), 3l);
-    assertEquals(g.v(1).outE[[label: 'blah']].count(), 0l);
-  }
+    public void testCount() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertEquals(g.V.count(), 6l);
+        assertEquals(g.E.count(), 6l);
+        assertEquals(g.v(1).outE().count(), 3l);
+        assertEquals(g.v(1).outE[[label: 'blah']].count(), 0l);
+    }
 
 }

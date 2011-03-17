@@ -7,14 +7,14 @@ import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph
  */
 class SailGraphLoader {
 
-  public static void load() {
+    public static void load() {
 
-    SailGraph.metaClass.uri {final String prefix ->
-      return ((SailGraph) delegate).expandPrefix(prefix)
-    }
+        SailGraph.metaClass.uri {final String prefix ->
+            return ((SailGraph) delegate).expandPrefix(prefix)
+        }
 
-    SailGraph.metaClass.qn {final String uri ->
-      return ((SailGraph) delegate).prefixNamespace(uri)
+        SailGraph.metaClass.qn {final String uri ->
+            return ((SailGraph) delegate).prefixNamespace(uri)
+        }
     }
-  }
 }

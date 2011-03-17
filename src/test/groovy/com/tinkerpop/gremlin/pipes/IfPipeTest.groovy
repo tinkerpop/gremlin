@@ -10,12 +10,12 @@ import junit.framework.TestCase
  */
 class IfPipeTest extends TestCase {
 
-  public void testIfPipe() {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    assertEquals(29, g.v(1)._.ifelse {it.name == 'marko'} {it.age} {it.name} >> 1)
-    assertEquals("marko", g.v(1)._.ifelse {it.name == 'josh'} {it.age} {it.name} >> 1)
+    public void testIfPipe() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertEquals(29, g.v(1)._.ifelse {it.name == 'marko'} {it.age} {it.name} >> 1)
+        assertEquals("marko", g.v(1)._.ifelse {it.name == 'josh'} {it.age} {it.name} >> 1)
 
-    assertEquals("josh", g.v(1).outE[[label: 'knows']].ifelse {it.weight > 0.5} {it.inV.name >> 1} >> 1)
-  }
+        assertEquals("josh", g.v(1).outE[[label: 'knows']].ifelse {it.weight > 0.5} {it.inV.name >> 1} >> 1)
+    }
 }

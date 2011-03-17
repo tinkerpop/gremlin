@@ -11,7 +11,8 @@ public class GremlinTokens {
 
     public enum T {
         eq, neq, lt, lte, gt, gte,
-        v, e, }
+        v, e,
+    }
 
     public static final String OUTV = "outV";
     public static final String INV = "inV";

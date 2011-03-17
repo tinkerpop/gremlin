@@ -11,28 +11,28 @@ import junit.framework.TestCase
  */
 class ClosurePipeTest extends TestCase {
 
-  public void testStepCreation() throws Exception {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
+    public void testStepCreation() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
 
-    def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
-    [Iterable, Iterator, Vertex].each {it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }}
+        def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
+        [Iterable, Iterator, Vertex].each {it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }}
 
-    def list = []
-    g.v(1).co_developer >> list
-    assertTrue(list.contains(g.v(4)));
-    assertTrue(list.contains(g.v(6)));
-  }
+        def list = []
+        g.v(1).co_developer >> list
+        assertTrue(list.contains(g.v(4)));
+        assertTrue(list.contains(g.v(6)));
+    }
 
-  public void testSMethod() throws Exception {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
+    public void testSMethod() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
 
-    def results = [];
-    g.v(1).outE.inV.step {s().name} >> results
-    assertTrue(results.contains("josh"))
-    assertTrue(results.contains("lop"))
-    assertTrue(results.contains("vadas"))
-    assertEquals(results.size(), 3)
-  }
+        def results = [];
+        g.v(1).outE.inV.step {s().name} >> results
+        assertTrue(results.contains("josh"))
+        assertTrue(results.contains("lop"))
+        assertTrue(results.contains("vadas"))
+        assertEquals(results.size(), 3)
+    }
 }

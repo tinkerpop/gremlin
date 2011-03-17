@@ -10,12 +10,12 @@ import junit.framework.TestCase
  */
 class DuplicateFilterPipeTest extends TestCase {
 
-  public void testUnique() {
-    Gremlin.load();
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-    def results = []
-    g.V.outE.bothV.unique >> results
-    assertEquals(results.size(), 6);
+    public void testUnique() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def results = []
+        g.V.outE.bothV.unique >> results
+        assertEquals(results.size(), 6);
 
-  }
+    }
 }

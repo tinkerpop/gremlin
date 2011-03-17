@@ -285,13 +285,6 @@ class PipeLoader {
             }
         }
 
-        Gremlin.addStep(GremlinTokens.FUTUREF);
-        [Iterator, Iterable].each {
-            it.metaClass.futuref = {final Pipe pipe ->
-                return Gremlin.compose(delegate, new FutureFilterPipe(pipe))
-            }
-        }
-
         Gremlin.addStep(GremlinTokens.BACK);
         GremlinPipeline.metaClass.back = {final Integer steps ->
             ((GremlinPipeline) delegate).backPipe(steps);
