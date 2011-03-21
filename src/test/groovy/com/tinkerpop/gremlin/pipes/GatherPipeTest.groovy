@@ -20,6 +20,6 @@ class GatherPipeTest extends TestCase {
     public void testGatherClosure() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        assertEquals(g.v(1).outE.gather { starts.next().get(0) } >> 1, g.v(1).outE[0] >> 1);
+        assertEquals(g.v(1).outE.gather { it.get(0) } >> 1, g.v(1).outE[0] >> 1);
     }
 }

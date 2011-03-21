@@ -297,7 +297,7 @@ class PipeLoader {
                 GremlinPipeline pipeline;
                 pipeline = Gremlin.compose(delegate, new GatherPipe())
                 if (closure)
-                    pipeline = Gremlin.compose(pipeline, new ClosurePipe(closure))
+                    pipeline = Gremlin.compose(pipeline, new ClosureTransformPipe(closure))
                 return pipeline;
 
             }
