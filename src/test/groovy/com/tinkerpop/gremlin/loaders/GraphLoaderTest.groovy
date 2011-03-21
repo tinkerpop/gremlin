@@ -141,5 +141,8 @@ class GraphLoaderTest extends TestCase {
         assertEquals(e3.getLabel(), 'blah');
         assertEquals(e3.getPropertyKeys().size(), 0);
 
+        Vertex v3 = g.addVertex();
+
+
     }
 }

@@ -41,6 +41,10 @@ class GraphLoader {
             return ((Graph) delegate).getEdge(id);
         }
 
+        Graph.metaClass.addVertex = { ->
+            return ((Graph) delegate).addVertex(null);
+        }
+
         Graph.metaClass.addVertex = {final Object id, final Map<String, Object> properties ->
             final Vertex vertex = ((Graph) delegate).addVertex(id);
             for (final Entry<String, Object> entry: properties.entrySet()) {
