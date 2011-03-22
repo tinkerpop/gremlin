@@ -8,7 +8,7 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class ElementLoadTest extends TestCase {
+class ElementLoaderTest extends TestCase {
 
     public void testGetAtWithKey() {
         Gremlin.load();

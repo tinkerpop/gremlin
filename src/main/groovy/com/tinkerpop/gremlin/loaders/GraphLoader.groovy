@@ -41,7 +41,7 @@ class GraphLoader {
             return ((Graph) delegate).getEdge(id);
         }
 
-        Graph.metaClass.addVertex = { ->
+        Graph.metaClass.addVertex = {->
             return ((Graph) delegate).addVertex(null);
         }
 

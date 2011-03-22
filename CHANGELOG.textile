@@ -11,6 +11,21 @@ Gremlin: A Graph Traversal Language
 
 ==<hr/>==
 
+h3. Version 0.9 (NO OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>0.9-SNAPSHOT</version>
+</dependency>
+```
+
+* @Iterable@ and @Iterator@ meta methods are now @Pipe@ exclusive
+* @Index@ results are auto-wrapped in an @IdentityPipe@ to ensure consistent behavior across graphs
+
+==<hr/>==
+
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremstefani.png!
 
 h3. Version 0.8 (Grem Stefani -- March 2, 2011)

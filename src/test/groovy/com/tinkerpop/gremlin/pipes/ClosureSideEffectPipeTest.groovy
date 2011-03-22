@@ -8,7 +8,7 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class ForeachPipeTest extends TestCase {
+class ClosureSideEffectPipeTest extends TestCase {
 
     public void testForeachPipe() {
 

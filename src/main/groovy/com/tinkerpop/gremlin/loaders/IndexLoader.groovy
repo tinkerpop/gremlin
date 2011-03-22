@@ -2,7 +2,9 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.blueprints.pgm.Index
 import com.tinkerpop.blueprints.pgm.IndexableGraph
+import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.pipes.IdentityPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -31,7 +33,7 @@ class IndexLoader {
 
         Index.metaClass.getAt = {final Map query ->
             final Map.Entry entry = (Map.Entry) query.iterator().next();
-            return ((Index) delegate).get((String) entry.getKey(), entry.getValue());
+            return Gremlin.compose(((Index) delegate).get((String) entry.getKey(), entry.getValue()), new IdentityPipe());
         }
 
     }

@@ -10,7 +10,6 @@ import com.tinkerpop.pipes.IdentityPipe
 class ObjectLoader {
 
     public static void load() {
-
         Object.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
                 return delegate."$name"();
@@ -22,13 +21,6 @@ class ObjectLoader {
         Gremlin.addStep(GremlinTokens._);
         Object.metaClass._ = {final Closure closure ->
             return Gremlin.compose(delegate, new IdentityPipe(), closure)
-        }
-
-        Object.metaClass.mean = {
-            double counter = 0;
-            double sum = 0;
-            delegate.each {counter++; sum += it}
-            return sum / counter;
         }
 
     }

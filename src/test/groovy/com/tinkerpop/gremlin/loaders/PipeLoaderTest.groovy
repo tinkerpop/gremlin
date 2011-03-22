@@ -19,4 +19,10 @@ class PipeLoaderTest extends TestCase {
         assertEquals(g.v(1).outE[[label: 'blah']].count(), 0l);
     }
 
+    public void testMean() {
+        Gremlin.load()
+        def numbers = [1, 2, 3, 4, 5];
+        assertEquals(numbers.mean(), 3.0d)
+    }
+
 }

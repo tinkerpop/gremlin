@@ -6,11 +6,11 @@ import groovy.lang.Closure;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class ForeachPipe<S> extends AbstractPipe<S, S> {
+public class ClosureSideEffectPipe<S> extends AbstractPipe<S, S> {
 
     private final Closure closure;
 
-    public ForeachPipe(final Closure closure) {
+    public ClosureSideEffectPipe(final Closure closure) {
         this.closure = closure;
         this.closure.setDelegate(this);
     }

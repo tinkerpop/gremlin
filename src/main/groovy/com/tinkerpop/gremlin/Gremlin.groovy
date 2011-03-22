@@ -12,7 +12,7 @@ class Gremlin {
     private static final Set<String> steps = new HashSet<String>();
 
     public static void load() {
-        ObjectLoader.load()
+        ObjectLoader.load();
         GraphLoader.load();
         IndexLoader.load();
         ElementLoader.load();
@@ -73,6 +73,7 @@ class Gremlin {
         final StringBuilder sb = new StringBuilder()
         for (final String importItem: Imports.getImports())
             sb.append(IMPORT).append(importItem).append(NEWLINE);
+        sb.append("Gremlin.load();");
         sb.append(gremlin);
         return (Pipe) groovy.evaluate(sb.toString())
     }

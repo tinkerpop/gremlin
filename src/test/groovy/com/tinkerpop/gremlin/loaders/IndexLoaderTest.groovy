@@ -14,8 +14,20 @@ class IndexLoaderTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        assertEquals((g.idx(T.v)[[name: 'marko']] as List)[0], g.v(1));
-        assertEquals(g.idx(T.e)[[label: 'created']].size(), 4);
+        assertEquals(g.idx(T.v)[[name: 'marko']] >> 1, g.v(1));
+        assertEquals(g.idx(T.e)[[label: 'created']].count(), 4);
+    }
+
+    public void testIndexBasedTraversal() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        def results = [];
+        g.idx(T.v)[[lang: 'java']].inE.outV >> results;
+        assertEquals(results.size(), 4);
+        assertTrue(results.contains(g.v(1)));
+        assertTrue(results.contains(g.v(6)));
+        assertTrue(results.contains(g.v(4)));
     }
 
     public void testIndexLookupError() throws Exception {
