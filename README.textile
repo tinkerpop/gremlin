@@ -7,6 +7,7 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 ** "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
 ** "Neo4j":http://neo4j.org/ graph database
 ** "OrientDB":http://www.orientechnologies.com/ graph database
+** "Dex":http://www.sparsity-technologies.com/dex graph database
 ** "Rexster":http://rexster.tinkerpop.com RESTful graph shell
 ** "Sesame 2.0":http://www.openrdf.org compliant RDF stores
 **** "MemoryStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e705, "NativeStore":http://www.openrdf.org/doc/sesame2/users/ch08.html#d0e746, "LinkedDataSail":http://code.google.com/p/ripple/wiki/LinkedDataSail

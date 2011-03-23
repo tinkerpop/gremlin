@@ -23,6 +23,7 @@ h3. Version 0.9 (NO OFFICIALLY RELEASED YET)
 
 * @Iterable@ and @Iterator@ meta methods are now @Pipe@ exclusive
 * @Index@ results are auto-wrapped in an @IdentityPipe@ to ensure consistent behavior across graphs
+* Added @DexGraph@ as imported graph database
 
 ==<hr/>==
 
