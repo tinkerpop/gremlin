@@ -16,7 +16,7 @@ class GremlinTest extends TestCase {
         Gremlin.compile("new IdentityPipe()");
 
         // test compilation
-        Pipe pipe = Gremlin.compile("_.outE.inV.name");
+        Pipe pipe = Gremlin.compile("_().outE.inV.name");
         pipe.setStarts(g.v(1).iterator());
         (pipe >> 3).each {assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))}
         assertFalse(pipe.hasNext());
