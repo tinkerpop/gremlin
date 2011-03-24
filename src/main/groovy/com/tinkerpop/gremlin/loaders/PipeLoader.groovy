@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.blueprints.pgm.Edge
+import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
@@ -146,27 +147,34 @@ class PipeLoader {
         ///////////////////////////
 
         Gremlin.addStep(GremlinTokens.STEP);
-        Pipe.metaClass.step = {final Closure closure ->
-            return Gremlin.compose(delegate, new ClosurePipe(closure))
+        [Pipe, Vertex, Edge, Graph].each {
+            it.metaClass.step = {final Closure closure ->
+                return Gremlin.compose(delegate, new ClosurePipe(closure))
+            }
         }
 
         // TODO: rename to sideeffect
         Gremlin.addStep(GremlinTokens.FOREACH);
-        Pipe.metaClass.foreach = {final Closure closure ->
-            return Gremlin.compose(delegate, new ClosureSideEffectPipe(closure));
+        [Pipe, Vertex, Edge, Graph].each {
+            it.metaClass.foreach = {final Closure closure ->
+                return Gremlin.compose(delegate, new ClosureSideEffectPipe(closure));
+            }
         }
 
         // TODO: rename to transform
         Gremlin.addStep(GremlinTokens.EMIT);
-        Pipe.metaClass.emit = {final Closure closure ->
-            return Gremlin.compose(delegate, new ClosureTransformPipe(closure));
+        [Pipe, Vertex, Edge, Graph].each {
+            it.metaClass.emit = {final Closure closure ->
+                return Gremlin.compose(delegate, new ClosureTransformPipe(closure));
+            }
         }
 
         Gremlin.addStep(GremlinTokens.FILTER);
-        Pipe.metaClass.filter = {final Closure closure ->
-            return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
+        [Pipe, Vertex, Edge, Graph].each {
+            it.metaClass.filter = {final Closure closure ->
+                return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
+            }
         }
-
 
         Gremlin.addStep(GremlinTokens.UNIQUEPATH);
         Pipe.metaClass.uniquePath = {final Closure closure ->
