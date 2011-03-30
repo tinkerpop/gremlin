@@ -52,22 +52,13 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.tinkerpop</groupId>
-            <artifactId>graphdb-deps-all</artifactId>
+            <groupId>com.tinkerpop.blueprints</groupId>
+            <artifactId>blueprints-core</artifactId>
             <version>0.6-SNAPSHOT</version>
-            <type>pom</type>
-            <scope>provided</scope>
         </dependency>
-        <!-- REMOVE WHEN NOT NEEDED
         <dependency>
-            <groupId>com.tinkerpop</groupId>
-            <artifactId>goo</artifactId>
-            <version>0.1-SNAPSHOT</version>
-        </dependency>
-        REMOVE WHEN NOT NEEDED -->
-        <dependency>
-            <groupId>com.tinkerpop</groupId>
-            <artifactId>blueprints</artifactId>
+            <groupId>com.tinkerpop.blueprints</groupId>
+            <artifactId>blueprints-sail-graph</artifactId>
             <version>0.6-SNAPSHOT</version>
         </dependency>
         <dependency>
