@@ -30,6 +30,7 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.util.graphml.*");
         imports.add("com.tinkerpop.blueprints.pgm.oupls.sail.*");
         imports.add("com.tinkerpop.blueprints.pgm.oupls.jung.*");
+        imports.add("com.tinkerpop.blueprints.pgm.oupls.jung.util.*");
 
         //imports.add("com.tinkerpop.goo.*");
 
