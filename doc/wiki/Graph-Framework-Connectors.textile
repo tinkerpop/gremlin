@@ -1,0 +1,32 @@
+!https://github.com/tinkerpop/blueprints/raw/master/doc/images/blueprints-logo.png!
+
+Gremlin connects to "Blueprints":http://blueprints.tinkerpop.com enabled graph databases. Below is a short summary for ease of reference. Note that many graph databases have more than one constructor. Please review the Blueprints JavaDoc for a more complete description. Finally, it is through Blueprints that the graph is manipulated (e.g. adding/removing vertices/edges/properties, etc.).
+
+```java
+g = new TinkerGraph();
+g = new Neo4jGraph("/tmp/neo4j")
+g = new OrientGraph("/tmp/orient")
+g = new MemoryStoreSailGraph() // review Blueprints JavaDoc for different Sails
+g = new RexsterGraph("http://localhost:8182/graph")
+
+// do your Gremlin code here and then shutdown the graph
+g.shutdown()
+```
+
+h2. GraphML Reader/Writer Library
+
+To conclude, the GraphML reader/writer provided by Blueprints can be used to load and save graph data.
+
+```java
+GraphMLReader.inputGraph(g, new FileInputStream("data/graph-example-2.xml");
+// manipulate the graph
+GraphMLWriter.outputGraph(g, new FileOutputStream("data/graph-example-2.xml");
+```
+
+h2. Sail Support
+
+A @SailGraph@ comes with extra methods to handle RDF graphs that are not available to @Graph@. Gremlin comes with a @SailSupport@ Groovy utility class that makes it easier to work with Sail in Gremlin. To use these utilities, load it.
+
+```java
+com.tinkerpop.gremlin.util.SailSupport.load()
+```
