@@ -11,6 +11,18 @@ Gremlin: A Graph Traversal Language
 
 ==<hr/>==
 
+h3. Version 1.0 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</dependency>
+```
+
+==<hr/>==
+
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlin-the-grouch.png!
 
 h3. Version 0.9 (Gremlin the Grouch - April 4, 2011)
