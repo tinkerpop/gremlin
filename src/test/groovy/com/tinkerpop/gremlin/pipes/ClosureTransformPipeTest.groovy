@@ -7,20 +7,20 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class EmitPipeTest extends TestCase {
+class ClosureTransformPipeTest extends TestCase {
 
-    public void testEmitPipe() {
+    public void testTransformPipe() {
         Gremlin.load()
         def g = TinkerGraphFactory.createTinkerGraph()
         def results = []
-        g.v(1).outE.inV.emit {it.name} >> results
+        g.v(1).outE.inV.transform {it.name} >> results
         assertEquals(results.size(), 3)
         assertTrue(results.contains("josh"))
         assertTrue(results.contains("lop"))
         assertTrue(results.contains("vadas"))
 
         results = []
-        g.v(1)._.emit {it.outE}.scatter.emit {it.inV}.scatter.emit {it.name} >> results
+        g.v(1)._.transform {it.outE}.scatter.transform {it.inV}.scatter.transform {it.name} >> results
         assertEquals(results.size(), 3)
         assertTrue(results.contains("josh"))
         assertTrue(results.contains("lop"))

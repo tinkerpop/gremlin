@@ -10,13 +10,13 @@ import junit.framework.TestCase
  */
 class ClosureSideEffectPipeTest extends TestCase {
 
-    public void testForeachPipe() {
+    public void testSideEffectPipe() {
 
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def results = []
         def results2 = []
-        g.v(1).outE.inV.foreach {results.add(it)}.name >> results2
+        g.v(1).outE.inV.sideEffect {results.add(it)}.name >> results2
         assertEquals(results.size(), 3)
         assertTrue(results.contains(g.v(2)))
         assertTrue(results.contains(g.v(4)))
@@ -31,7 +31,7 @@ class ClosureSideEffectPipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def c = 0
-        g.v(1).outE.foreach {c++} >> -1
+        g.v(1).outE.sideEffect {c++} >> -1
         assertEquals(c, 3)
     }
 }

@@ -5,7 +5,7 @@ package com.tinkerpop.gremlin;
  */
 public class GremlinTokens {
 
-    public static final String VERSION = "0.9-SNAPSHOT";
+    public static final String VERSION = "0.9";
     public static final String LABEL = "label";
     public static final String ID = "id";
 
@@ -30,10 +30,9 @@ public class GremlinTokens {
     public static final String BACK = "back";
     public static final String CAP = "cap";
     public static final String EXCEPT = "except";
-    public static final String FOREACH = "foreach";
-    public static final String EMIT = "emit";
+    public static final String SIDEEFFECT = "sideEffect";
+    public static final String TRANSFORM = "transform";
     public static final String FILTER = "filter";
-    public static final String FUTUREF = "futuref";
     public static final String GATHER = "gather";
     public static final String GROUPCOUNT = "groupCount";
     public static final String IFELSE = "ifelse";

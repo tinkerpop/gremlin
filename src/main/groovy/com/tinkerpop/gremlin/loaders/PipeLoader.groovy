@@ -153,18 +153,16 @@ class PipeLoader {
             }
         }
 
-        // TODO: rename to sideeffect
-        Gremlin.addStep(GremlinTokens.FOREACH);
+        Gremlin.addStep(GremlinTokens.SIDEEFFECT);
         [Pipe, Vertex, Edge, Graph].each {
-            it.metaClass.foreach = {final Closure closure ->
+            it.metaClass.sideEffect = {final Closure closure ->
                 return Gremlin.compose(delegate, new ClosureSideEffectPipe(closure));
             }
         }
 
-        // TODO: rename to transform
-        Gremlin.addStep(GremlinTokens.EMIT);
+        Gremlin.addStep(GremlinTokens.TRANSFORM);
         [Pipe, Vertex, Edge, Graph].each {
-            it.metaClass.emit = {final Closure closure ->
+            it.metaClass.transform = {final Closure closure ->
                 return Gremlin.compose(delegate, new ClosureTransformPipe(closure));
             }
         }

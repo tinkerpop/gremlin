@@ -11,13 +11,15 @@ Gremlin: A Graph Traversal Language
 
 ==<hr/>==
 
-h3. Version 0.9 (NO OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlin-the-grouch.png!
+
+h3. Version 0.9 (Gremlin the Grouch - April 4, 2011)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>0.9-SNAPSHOT</version>
+  <version>0.9</version>
 </dependency>
 ```
 
@@ -25,8 +27,11 @@ h3. Version 0.9 (NO OFFICIALLY RELEASED YET)
 * @Index@ results are auto-wrapped in an @IdentityPipe@ to ensure consistent behavior across graphs
 * Added @DexGraph@ as imported graph database
 * @Object.propertyMissing@ is no longer defined to ensure Gremlin safety
+* @emit@ step renamed to @transform@
+* @foreach@ step renamed to @sideeffect@
+* Removed @futuref@ step as @back@ supplies necessary computation
 
-==<hr/>==
+ ==<hr/>==
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremstefani.png!
 
