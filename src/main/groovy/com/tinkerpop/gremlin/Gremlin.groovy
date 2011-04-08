@@ -1,11 +1,15 @@
 package com.tinkerpop.gremlin;
 
 
+import com.tinkerpop.gremlin.loaders.ElementLoader
+import com.tinkerpop.gremlin.loaders.GraphLoader
+import com.tinkerpop.gremlin.loaders.IndexLoader
+import com.tinkerpop.gremlin.loaders.ObjectLoader
+import com.tinkerpop.gremlin.loaders.PipeLoader
 import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
-import com.tinkerpop.gremlin.loaders.*
 
 class Gremlin {
 

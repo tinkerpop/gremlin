@@ -6,17 +6,43 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
+import com.tinkerpop.gremlin.pipes.ClosurePipe
+import com.tinkerpop.gremlin.pipes.ClosureSideEffectPipe
+import com.tinkerpop.gremlin.pipes.ClosureTransformPipe
+import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.pipes.GroupCountClosurePipe
+import com.tinkerpop.gremlin.pipes.IfPipe
+import com.tinkerpop.pipes.MetaPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
+import com.tinkerpop.pipes.branch.CopySplitPipe
+import com.tinkerpop.pipes.branch.ExhaustiveMergePipe
+import com.tinkerpop.pipes.branch.FairMergePipe
+import com.tinkerpop.pipes.filter.AndFilterPipe
+import com.tinkerpop.pipes.filter.CollectionFilterPipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.filter.DuplicateFilterPipe
+import com.tinkerpop.pipes.filter.OrFilterPipe
+import com.tinkerpop.pipes.filter.RangeFilterPipe
+import com.tinkerpop.pipes.filter.UniquePathFilterPipe
+import com.tinkerpop.pipes.pgm.BothEdgesPipe
+import com.tinkerpop.pipes.pgm.BothVerticesPipe
+import com.tinkerpop.pipes.pgm.IdFilterPipe
+import com.tinkerpop.pipes.pgm.IdPipe
+import com.tinkerpop.pipes.pgm.InEdgesPipe
+import com.tinkerpop.pipes.pgm.InVertexPipe
+import com.tinkerpop.pipes.pgm.LabelFilterPipe
+import com.tinkerpop.pipes.pgm.LabelPipe
+import com.tinkerpop.pipes.pgm.OutEdgesPipe
+import com.tinkerpop.pipes.pgm.OutVertexPipe
+import com.tinkerpop.pipes.pgm.PropertyFilterPipe
+import com.tinkerpop.pipes.pgm.PropertyPipe
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.HasNextPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
-import com.tinkerpop.gremlin.pipes.*
-import com.tinkerpop.pipes.filter.*
-import com.tinkerpop.pipes.pgm.*
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -171,6 +197,31 @@ class PipeLoader {
         [Pipe, Vertex, Edge, Graph].each {
             it.metaClass.filter = {final Closure closure ->
                 return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
+            }
+        }
+
+        Gremlin.addStep(GremlinTokens.COPYSPLIT);
+        Pipe.metaClass.copySplit = {final Pipe... pipes ->
+            return Gremlin.compose(delegate, new CopySplitPipe(Arrays.asList(pipes)));
+        }
+
+        Gremlin.addStep(GremlinTokens.FAIRMERGE);
+        Pipe.metaClass.fairMerge = { final Closure closure ->
+            if (delegate instanceof GremlinPipeline) {
+                List<Pipe> pipes = ((GremlinPipeline) delegate).getPipes();
+                return Gremlin.compose(delegate, new FairMergePipe(((MetaPipe) pipes.get(pipes.size() - 1)).getPipes()), closure);
+            } else {
+                return Gremlin.compose(delegate, new FairMergePipe(((MetaPipe) delegate).getPipes()), closure);
+            }
+        }
+
+        Gremlin.addStep(GremlinTokens.EXHAUSTMERGE);
+        Pipe.metaClass.exhaustMerge = { final Closure closure ->
+            if (delegate instanceof GremlinPipeline) {
+                List<Pipe> pipes = ((GremlinPipeline) delegate).getPipes();
+                return Gremlin.compose(delegate, new ExhaustiveMergePipe(((MetaPipe) pipes.get(pipes.size() - 1)).getPipes()), closure);
+            } else {
+                return Gremlin.compose(delegate, new ExhaustiveMergePipe(((MetaPipe) delegate).getPipes()), closure);
             }
         }
 

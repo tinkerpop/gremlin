@@ -10,8 +10,7 @@ public class GremlinTokens {
     public static final String ID = "id";
 
     public enum T {
-        eq, neq, lt, lte, gt, gte,
-        v, e,
+        eq, neq, lt, lte, gt, gte, v, e
     }
 
     public static final String OUTV = "outV";
@@ -29,7 +28,10 @@ public class GremlinTokens {
     public static final String ANDF = "andf";
     public static final String BACK = "back";
     public static final String CAP = "cap";
+    public static final String COPYSPLIT = "copySplit";
     public static final String EXCEPT = "except";
+    public static final String EXHAUSTMERGE = "exhaustMerge";
+    public static final String FAIRMERGE = "fairMerge";
     public static final String SIDEEFFECT = "sideEffect";
     public static final String TRANSFORM = "transform";
     public static final String FILTER = "filter";

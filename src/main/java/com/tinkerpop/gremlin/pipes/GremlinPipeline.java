@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes;
 
+import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.filter.FutureFilterPipe;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinPipeline<S, E> implements Pipe<S, E> {
+public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
     private Pipe<S, ?> startPipe;
     private Pipe<?, E> endPipe;
