@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Map<S, Number>> {
 
-    private final Map<S, Number> countMap;
+    private Map<S, Number> countMap;
     private final Closure closure;
 
     public GroupCountClosurePipe(final Map<S, Number> countMap, final Closure closure) {
@@ -39,7 +39,11 @@ public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements Side
     }
 
     public void reset() {
-        this.countMap.clear();
+        try {
+            this.countMap = this.countMap.getClass().getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
         super.reset();
     }
 }

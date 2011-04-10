@@ -4,12 +4,31 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 class GroupCountClosurePipeTest extends TestCase {
+
+    public void testReset() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def m = [:];
+        Pipe pipe = g.v(1).outE.inV.groupCount(m);
+        pipe >> -1;
+        assertEquals(m.size(), 3);
+        pipe.reset();
+        assertEquals(m.size(), 3);
+        pipe >> -1;
+        assertEquals(m.size(), 3);
+        assertEquals(pipe.getPipes()[2].getSideEffect().size(), 0);
+        pipe.setStarts(g.v(1).iterator());
+        pipe >> -1;
+        assertEquals(m.size(), 3);
+        assertEquals(pipe.getPipes()[2].getSideEffect().size(), 3);
+    }
 
     public void testGroupCountClosure() {
         Gremlin.load();
