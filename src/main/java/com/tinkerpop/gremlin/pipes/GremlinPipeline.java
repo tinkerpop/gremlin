@@ -68,6 +68,10 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
     }
 
+    public void reset() {
+        this.endPipe.reset();
+    }
+
     private void setPipes(final List<Pipe> pipes) {
         this.startPipe = (Pipe<S, ?>) pipes.get(0);
         this.endPipe = (Pipe<?, E>) pipes.get(pipes.size() - 1);

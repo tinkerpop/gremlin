@@ -37,4 +37,9 @@ public class GroupCountClosurePipe<S> extends AbstractPipe<S, S> implements Side
     public Map<S, Number> getSideEffect() {
         return this.countMap;
     }
+
+    public void reset() {
+        this.countMap.clear();
+        super.reset();
+    }
 }

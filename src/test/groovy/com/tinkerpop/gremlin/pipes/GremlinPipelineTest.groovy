@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.BaseTest
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.pipes.Pipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -20,6 +21,23 @@ class GremlinPipelineTest extends BaseTest {
         assertEquals(g.v(1).outE.inV, g.v(1).outE.inV);
         assertEquals(g.v(1)._.outE._._.inV[0..100], g.v(1)._.outE.inV._._);
         assertEquals(g.v(1).inE, g.v(1).inE);
+    }
+
+    public void testPipelineReset() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        def results = [];
+        Pipe pipe = g.v(1).outE.inV
+        pipe.next();
+        assertTrue(pipe.hasNext());
+        pipe.reset();
+        assertFalse(pipe.hasNext());
+        pipe.setStarts(g.v(1).iterator());
+        assertTrue(pipe.hasNext());
+        pipe >> results;
+        assertEquals(results.size(), 3);
+
     }
 
     public void testPipelineVariations() throws Exception {

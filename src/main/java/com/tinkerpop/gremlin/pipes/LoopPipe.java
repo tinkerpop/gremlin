@@ -59,5 +59,4 @@ public class LoopPipe<S> extends AbstractPipe<S, S> {
         return path;
     }
 
-
 }
