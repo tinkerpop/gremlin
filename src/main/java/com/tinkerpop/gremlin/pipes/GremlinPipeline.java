@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.pipes;
 import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
-import com.tinkerpop.pipes.filter.FutureFilterPipe;
+import com.tinkerpop.pipes.filter.BackFilterPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import groovy.lang.Closure;
@@ -42,7 +42,7 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     public void backPipe(final int stepsAgo) {
-        this.addPipe(new FutureFilterPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo))));
+        this.addPipe(new BackFilterPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
     }

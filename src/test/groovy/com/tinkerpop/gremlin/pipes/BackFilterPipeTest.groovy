@@ -9,9 +9,9 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class FutureFilterPipeTest extends TestCase {
+class BackFilterPipeTest extends TestCase {
 
-    public void testFutureFilterOnGraphUsingBack() throws Exception {
+    public void testBackFilterOnGraph() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
