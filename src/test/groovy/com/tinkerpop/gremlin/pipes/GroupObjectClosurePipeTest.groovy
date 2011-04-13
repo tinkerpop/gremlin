@@ -9,23 +9,19 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class RangeFilterPipeTest extends TestCase {
+class GroupObjectClosurePipeTest extends TestCase {
 
     public void testIsPipe() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        assertTrue(g.V[0..10] instanceof Pipe)
-        assertTrue(g.V.outE[0..<10] instanceof Pipe)
-        assertTrue(g.V.outE.inV[1] instanceof Pipe)
+        assertTrue(g.V.groupObject([:]) {true} instanceof Pipe)
     }
 
-    public void testBasicRange() {
+    public void testSaveResults() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        def results = []
-        g.v(1).outE[0..2] >> results
-        assertEquals(results.size(), 2)
-        assertEquals(results[0], g.v(1).outE[0] >> 1)
-        assertEquals(results[1], g.v(1).outE[1] >> 1)
+        def m = [:].withDefault {[]};
+        //g.v(1).outE.label.groupObject(m){} >> -1
+        //println m
     }
 }

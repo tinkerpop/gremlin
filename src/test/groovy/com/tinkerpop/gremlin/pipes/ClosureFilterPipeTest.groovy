@@ -3,12 +3,19 @@ package com.tinkerpop.gremlin.pipes
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 class ClosureFilterPipeTest extends TestCase {
+
+    public void testIsPipe() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertTrue(g.V {true} instanceof Pipe)
+    }
 
     public void testClosureFilter() {
         Gremlin.load();

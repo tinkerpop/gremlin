@@ -12,6 +12,7 @@ import com.tinkerpop.gremlin.pipes.ClosureSideEffectPipe
 import com.tinkerpop.gremlin.pipes.ClosureTransformPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.GroupCountClosurePipe
+import com.tinkerpop.gremlin.pipes.GroupObjectClosurePipe
 import com.tinkerpop.gremlin.pipes.IfPipe
 import com.tinkerpop.pipes.MetaPipe
 import com.tinkerpop.pipes.Pipe
@@ -308,6 +309,11 @@ class PipeLoader {
             } else {
                 return Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), {it + 1l}));
             }
+        }
+
+        Gremlin.addStep(GremlinTokens.GROUPOBJECT);
+        Pipe.metaClass.groupObject = {final Map map, final Closure closure ->
+            return Gremlin.compose(delegate, new GroupObjectClosurePipe(map, closure));
         }
 
 

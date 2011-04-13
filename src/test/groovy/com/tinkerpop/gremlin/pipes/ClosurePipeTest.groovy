@@ -4,12 +4,19 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 class ClosurePipeTest extends TestCase {
+
+    public void testIsPipe() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertTrue(g.V.step {true} instanceof Pipe)
+    }
 
     public void testStepCreation() throws Exception {
         Gremlin.load();

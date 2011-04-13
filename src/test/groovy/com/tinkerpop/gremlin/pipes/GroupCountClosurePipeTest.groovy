@@ -12,6 +12,13 @@ import junit.framework.TestCase
  */
 class GroupCountClosurePipeTest extends TestCase {
 
+    public void testIsPipe() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertTrue(g.V.groupCount() instanceof Pipe)
+        assertTrue(g.V.groupCount([:]) instanceof Pipe)
+    }
+
     public void testReset() {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
