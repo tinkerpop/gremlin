@@ -311,8 +311,8 @@ class PipeLoader {
         }
 
 
-        Gremlin.addStep(GremlinTokens.UNIQUE);
-        Pipe.metaClass.unique = {final Closure closure ->
+        Gremlin.addStep(GremlinTokens.UNIQUEOBJECT);
+        Pipe.metaClass.uniqueObject = {final Closure closure ->
             return Gremlin.compose(delegate, new DuplicateFilterPipe(), closure)
         }
 
