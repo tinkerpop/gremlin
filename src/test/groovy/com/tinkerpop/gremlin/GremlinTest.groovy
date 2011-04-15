@@ -45,4 +45,22 @@ class GremlinTest extends TestCase {
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
     }
+
+    public void testBasicTraversalPipes() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        // todo: outE, inE, bothE, outV, inV, bothV, both
+
+        def results = [];
+        g.v(1).out.name >> results;
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains("josh") || results.contains("vadas") || results.contains("lop"));
+
+        results = [];
+        g.v(1).out('knows').name >> results;
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains("josh") || results.contains("vadas"));
+
+    }
 }

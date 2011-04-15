@@ -32,10 +32,12 @@ import com.tinkerpop.pipes.pgm.BothVerticesPipe
 import com.tinkerpop.pipes.pgm.IdFilterPipe
 import com.tinkerpop.pipes.pgm.IdPipe
 import com.tinkerpop.pipes.pgm.InEdgesPipe
+import com.tinkerpop.pipes.pgm.InPipe
 import com.tinkerpop.pipes.pgm.InVertexPipe
 import com.tinkerpop.pipes.pgm.LabelFilterPipe
 import com.tinkerpop.pipes.pgm.LabelPipe
 import com.tinkerpop.pipes.pgm.OutEdgesPipe
+import com.tinkerpop.pipes.pgm.OutPipe
 import com.tinkerpop.pipes.pgm.OutVertexPipe
 import com.tinkerpop.pipes.pgm.PropertyFilterPipe
 import com.tinkerpop.pipes.pgm.PropertyPipe
@@ -370,6 +372,26 @@ class PipeLoader {
             }
         }
 
+        Gremlin.addStep(GremlinTokens.OUT);
+        [Pipe, Vertex].each {
+            it.metaClass.out = {final Closure closure ->
+                return Gremlin.compose(delegate, new OutPipe(), closure)
+            }
+            it.metaClass.out = {
+                return Gremlin.compose(delegate, new OutPipe())
+            }
+        }
+
+        [Pipe, Vertex].each {
+            it.metaClass.out = {final String label, final Closure closure ->
+                return Gremlin.compose(delegate, new OutPipe(label), closure)
+            }
+
+            it.metaClass.out = {final String label ->
+                return Gremlin.compose(delegate, new OutPipe(label))
+            }
+        }
+
         Gremlin.addStep(GremlinTokens.OUTE);
         [Pipe, Vertex].each {
             it.metaClass.outE = {final Closure closure ->
@@ -387,6 +409,26 @@ class PipeLoader {
 
             it.metaClass.outE = {final String label ->
                 return Gremlin.compose(delegate, new OutEdgesPipe(label))
+            }
+        }
+
+        Gremlin.addStep(GremlinTokens.IN);
+        [Pipe, Vertex].each {
+            it.metaClass.in = {final Closure closure ->
+                return Gremlin.compose(delegate, new InPipe(), closure)
+            }
+            it.metaClass.in = {
+                return Gremlin.compose(delegate, new InPipe())
+            }
+        }
+
+        [Pipe, Vertex].each {
+            it.metaClass.in = {final String label, final Closure closure ->
+                return Gremlin.compose(delegate, new InPipe(label), closure)
+            }
+
+            it.metaClass.in = {final String label ->
+                return Gremlin.compose(delegate, new InPipe(label))
             }
         }
 
