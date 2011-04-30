@@ -28,7 +28,7 @@ public class GremlinTokens {
 
     public static final String _ = "_";
     public static final String AGGREGATE = "aggregate";
-    public static final String ANDF = "andf";
+    public static final String ANDFILTER = "andFilter";
     public static final String BACK = "back";
     public static final String CAP = "cap";
     public static final String COPYSPLIT = "copySplit";
@@ -43,9 +43,9 @@ public class GremlinTokens {
     public static final String GROUPOBJECT = "groupObject";
     public static final String IFELSE = "ifelse";
     public static final String LOOP = "loop";
-    public static final String ORF = "orf";
+    public static final String ORFILTER = "orFilter";
     public static final String PATHS = "paths";
-    public static final String PROPF = "propf";
+    public static final String PROPFILTER = "propFilter";
     public static final String RETAIN = "retain";
     public static final String SCATTER = "scatter";
     public static final String STEP = "step";

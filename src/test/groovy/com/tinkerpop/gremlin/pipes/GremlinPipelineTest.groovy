@@ -50,8 +50,8 @@ class GremlinPipelineTest extends BaseTest {
         assertEquals(g.v(1).outE.inV[[id: '4']].next(), josh);
 
         assertEquals(g.v(1).outE {it.label == 'knows' | it.label == 'created'}.inV {it.id == '4' & it.name == name}.next(), josh);
-        assertEquals(g.v(1).outE.orf(_()[[label: 'knows']], _()[[label: 'created']]).inV.andf(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
-        assertEquals(g.v(1).outE.orf(_().propf('label', T.eq, 'knows'), _().propf('label', T.eq, 'created')).inV.andf(_().propf('id', T.eq, '4'), _().propf('name', T.eq, name)).next(), josh);
+        assertEquals(g.v(1).outE.orFilter(_()[[label: 'knows']], _()[[label: 'created']]).inV.andFilter(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
+        assertEquals(g.v(1).outE.orFilter(_().propFilter('label', T.eq, 'knows'), _().propFilter('label', T.eq, 'created')).inV.andFilter(_().propFilter('id', T.eq, '4'), _().propFilter('name', T.eq, name)).next(), josh);
     }
 
     public void testPipelineToString() throws Exception {

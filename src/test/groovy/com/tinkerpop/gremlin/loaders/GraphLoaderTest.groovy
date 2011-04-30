@@ -63,7 +63,7 @@ class GraphLoaderTest extends TestCase {
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[2].name >> 1));
 
         assertEquals(PipeHelper.counter(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV), 3);
-        assertEquals(PipeHelper.counter(g.v(1).outE.orf(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
+        assertEquals(PipeHelper.counter(g.v(1).outE.orFilter(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[0].name >> 1));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[1].name >> 1));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV[2].name >> 1));
