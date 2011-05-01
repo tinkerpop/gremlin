@@ -17,6 +17,7 @@ import com.tinkerpop.pipes.branch.FairMergePipe
 import com.tinkerpop.pipes.filter.CollectionFilterPipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.pgm.BothEdgesPipe
+import com.tinkerpop.pipes.pgm.BothPipe
 import com.tinkerpop.pipes.pgm.BothVerticesPipe
 import com.tinkerpop.pipes.pgm.InEdgesPipe
 import com.tinkerpop.pipes.pgm.InPipe
@@ -209,6 +210,26 @@ class TransformPipeLoader {
 
             it.metaClass.inE = {final String label ->
                 return Gremlin.compose(delegate, new InEdgesPipe(label))
+            }
+        }
+
+        Gremlin.addStep(GremlinTokens.BOTH);
+        [Pipe, Vertex].each {
+            it.metaClass.both = {final Closure closure ->
+                return Gremlin.compose(delegate, new BothPipe(), closure)
+            }
+            it.metaClass.both = {
+                return Gremlin.compose(delegate, new BothPipe())
+            }
+        }
+
+        [Pipe, Vertex].each {
+            it.metaClass.both = {final String label, final Closure closure ->
+                return Gremlin.compose(delegate, new BothPipe(label), closure)
+            }
+
+            it.metaClass.both = {final String label ->
+                return Gremlin.compose(delegate, new BothPipe(label))
             }
         }
 

@@ -50,8 +50,6 @@ class GremlinTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        // todo: outE, inE, bothE, outV, inV, bothV, both
-
         def results = [];
         g.v(1).out.name >> results;
         assertEquals(results.size(), 3);
@@ -61,6 +59,79 @@ class GremlinTest extends TestCase {
         g.v(1).out('knows').name >> results;
         assertEquals(results.size(), 2);
         assertTrue(results.contains("josh") || results.contains("vadas"));
+
+        ////////
+
+        results = [];
+        g.v(1).outE('knows') >> results;
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(g.e(7)) || g.e(8));
+
+        results = [];
+        g.v(1).outE >> results;
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains(g.e(7)) || g.e(8) || g.e(9));
+
+        ////////
+
+        results = [];
+        g.v(4).in >> results;
+        assertTrue(results.contains(g.v(1)));
+        assertEquals(results.size(), 1);
+
+        results = [];
+        g.v(4).in('knows') >> results;
+        assertTrue(results.contains(g.v(1)));
+        assertEquals(results.size(), 1);
+
+        ////////
+
+        results = [];
+        g.v(4).inE >> results;
+        assertTrue(results.contains(g.e(8)));
+        assertEquals(results.size(), 1);
+
+        results = [];
+        g.v(4).inE('knows') >> results;
+        assertTrue(results.contains(g.e(8)));
+        assertEquals(results.size(), 1);
+
+        ////////
+
+        results = [];
+        g.v(4).both >> results;
+        assertTrue(results.contains(g.v(1)));
+        assertTrue(results.contains(g.v(3)));
+        assertTrue(results.contains(g.v(5)));
+        assertTrue(results.contains(g.v(4)));
+        assertEquals(results.size(), 6);
+
+        results = [];
+        g.v(4).both('created') >> results;
+        assertTrue(results.contains(g.v(3)));
+        assertTrue(results.contains(g.v(5)));
+        assertTrue(results.contains(g.v(4)));
+        assertEquals(results.size(), 4);
+
+        ////////
+
+        results = [];
+        g.v(4).bothE >> results;
+        assertEquals(results.size(), 3);
+        assertTrue(results.contains(g.e(10)) || g.e(11) || g.e(8));
+
+        results = [];
+        g.v(4).bothE('created') >> results;
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(g.e(10)) || g.e(11));
+
+        ////////
+
+        assertEquals(g.e(10).outV >> 1, g.v(4));
+        assertEquals(g.e(10).inV >> 1, g.v(5));
+        assertTrue((g.e(10).bothV >> 2).contains(g.v(4)));
+        assertTrue((g.e(10).bothV >> 2).contains(g.v(5)));
+
 
     }
 }
