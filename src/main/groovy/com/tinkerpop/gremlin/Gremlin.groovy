@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin;
 
 
+import com.tinkerpop.gremlin.jsr223.GremlinScriptEngine
 import com.tinkerpop.gremlin.loaders.ElementLoader
 import com.tinkerpop.gremlin.loaders.GraphLoader
 import com.tinkerpop.gremlin.loaders.IndexLoader
@@ -10,10 +11,12 @@ import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import javax.script.SimpleBindings
 
 class Gremlin {
 
     private static final Set<String> steps = new HashSet<String>();
+    private static final GremlinScriptEngine engine = new GremlinScriptEngine();
 
     public static void load() {
         ObjectLoader.load();
@@ -24,19 +27,27 @@ class Gremlin {
     }
 
     public static Filter mapFilter(final t) {
-        if (t == t.eq) {
-            return Filter.NOT_EQUAL
-        } else if (t == t.neq) {
-            return Filter.EQUAL
-        } else if (t == t.lt) {
-            return Filter.GREATER_THAN_EQUAL
-        } else if (t == t.lte) {
-            return Filter.GREATER_THAN
-        } else if (t == t.gt) {
-            return Filter.LESS_THAN_EQUAL
-        } else {
-            return Filter.LESS_THAN
+        switch (t) {
+            case t.eq:
+                return Filter.NOT_EQUAL;
+                break;
+            case t.neq:
+                return Filter.EQUAL;
+                break;
+            case t.lt:
+                return Filter.GREATER_THAN_EQUAL;
+                break;
+            case t.lte:
+                return Filter.GREATER_THAN;
+                break;
+            case t.gt:
+                return Filter.LESS_THAN_EQUAL;
+                break;
+            case t.gte:
+                return Filter.LESS_THAN;
+                break;
         }
+        throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
     }
 
     public static GremlinPipeline compose(final Object start) {
@@ -70,16 +81,8 @@ class Gremlin {
         return pipeline;
     }
 
-    public static Pipe compile(final String gremlin) {
-        final String IMPORT = "import "
-        final String NEWLINE = "\n"
-        final GroovyShell groovy = GroovyShell.newInstance()
-        final StringBuilder sb = new StringBuilder()
-        for (final String importItem: Imports.getImports())
-            sb.append(IMPORT).append(importItem).append(NEWLINE);
-        sb.append("Gremlin.load();");
-        sb.append(gremlin);
-        return (Pipe) groovy.evaluate(sb.toString())
+    public static Pipe compile(final String script) {
+        return (Pipe) engine.eval(script, new SimpleBindings());
     }
 
     public static void addStep(final String stepName) {
