@@ -103,15 +103,13 @@ class GremlinTest extends TestCase {
         assertTrue(results.contains(g.v(1)));
         assertTrue(results.contains(g.v(3)));
         assertTrue(results.contains(g.v(5)));
-        assertTrue(results.contains(g.v(4)));
-        assertEquals(results.size(), 6);
+        assertEquals(results.size(), 3);
 
         results = [];
         g.v(4).both('created') >> results;
         assertTrue(results.contains(g.v(3)));
         assertTrue(results.contains(g.v(5)));
-        assertTrue(results.contains(g.v(4)));
-        assertEquals(results.size(), 4);
+        assertEquals(results.size(), 2);
 
         ////////
 
