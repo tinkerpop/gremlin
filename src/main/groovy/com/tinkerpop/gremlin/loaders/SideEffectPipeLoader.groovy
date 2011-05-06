@@ -7,7 +7,6 @@ import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.pipes.ClosureSideEffectPipe
 import com.tinkerpop.gremlin.pipes.GroupCountClosurePipe
-import com.tinkerpop.gremlin.pipes.GroupObjectClosurePipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 
@@ -62,12 +61,5 @@ class SideEffectPipeLoader {
                 return Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), {it + 1l}));
             }
         }
-
-        Gremlin.addStep(GremlinTokens.GROUPOBJECT);
-        Pipe.metaClass.groupObject = {final Map map, final Closure closure ->
-            return Gremlin.compose(delegate, new GroupObjectClosurePipe(map, closure));
-        }
-
-
     }
 }
