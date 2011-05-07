@@ -31,16 +31,14 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.oupls.sail.*");
         imports.add("com.tinkerpop.blueprints.pgm.oupls.jung.*");
         imports.add("com.tinkerpop.blueprints.pgm.oupls.jung.util.*");
-
         //imports.add("com.tinkerpop.goo.*");
 
         // pipes
         imports.add("com.tinkerpop.pipes.*");
+        imports.add("com.tinkerpop.pipes.branch.*");
         imports.add("com.tinkerpop.pipes.filter.*");
-        imports.add("com.tinkerpop.pipes.merge.*");
         imports.add("com.tinkerpop.pipes.pgm.*");
         imports.add("com.tinkerpop.pipes.sideeffect.*");
-        imports.add("com.tinkerpop.pipes.split.*");
         imports.add("com.tinkerpop.pipes.util.*");
     }
 

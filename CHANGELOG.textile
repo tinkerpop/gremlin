@@ -11,7 +11,7 @@ Gremlin: A Graph Traversal Language
 
 ==<hr/>==
 
-h3. Version 1.0 (NOT OFFICIALLY RELEASED YET)
+h3. Version 1.0 (Gremitron - NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
@@ -20,6 +20,16 @@ h3. Version 1.0 (NOT OFFICIALLY RELEASED YET)
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
+
+* Added @out(label?)@, @in(label?)@, and @both(label?)@
+* Added @copySplit@, @fairMerge@, @exhaustMerge@
+* @SailLoader@ is loaded on startup (no longer required by developer)
+* Faster @Gremlin.compile()@ using @GremlinScriptEngine@
+* Renamed @andf@, @off@, and @propf@ to @andFilter@, @orFilter@, and @propFilter@
+* Moved to the more optimal vertex/edge adjacency Pipes
+* Renamed @unique@ to @uniqueObject@
+* Updated Gremlin-specific pipes to support @reset()@ API
+
 
 ==<hr/>==
 
