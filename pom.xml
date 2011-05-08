@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.tinkerpop</groupId>
     <artifactId>gremlin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <!-- DON'T FORGET TO UPDATE GremlinTokens.VERSION AT RELEASE -->
     <packaging>jar</packaging>
     <url>http://gremlin.tinkerpop.com</url>
@@ -54,55 +54,55 @@
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-core</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-sail-graph</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
         </dependency>
         <!-- PROVIDED DEPENDENCIES -->
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-dex-graph</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-graph-jung</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-graph-sail</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-neo4j-graph</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-orient-graph</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-rexster-graph</artifactId>
-            <version>0.7-SNAPSHOT</version>
+            <version>0.7</version>
             <scope>provided</scope>
         </dependency>
         <!-- PROVIDED DEPENDENCIES -->
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>pipes</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -148,7 +148,7 @@
     </repositories>
     <build>
         <directory>${basedir}/target</directory>
-        <finalName>${artifactId}-${version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources
@@ -158,6 +158,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
@@ -208,14 +209,18 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.wagon</groupId>
+                        <artifactId>wagon-ftp</artifactId>
+                        <version>1.0-alpha-6</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-alpha-6</version>
-            </extension>
-        </extensions>
     </build>
     <distributionManagement>
         <repository>

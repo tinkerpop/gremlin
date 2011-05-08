@@ -1,0 +1,65 @@
+The examples below use the toy graph diagrammed in [[Defining a Property Graph]] and is loaded as follows:
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+```
+
+h2. Basic Object Counting
+
+Given a path expression, how many objects are touched at the end of that expression? This problem is easily solved using @Pipe.count()@.
+
+```text
+gremlin> g.V.count()
+==>6
+gremlin> g.v(1).outE.count()
+==>3
+```
+
+Here is another problem: How many objects are touched midway through an expression? This problem is solved using @foreach{}@. The example below increments the counter @c@ for all objects that pass through the first @outE@ step. Thus, while the end of this expression yields only 2 objects, in the middle of the expression (after @outE@), there are 3.
+
+```text
+gremlin> c = 0  
+==>0
+gremlin> g.v(1).outE.sideEffect{c++}.inV.outE.inV
+==>v[5]
+==>v[3]
+gremlin> c
+==>3
+```
+
+h2. Using @groupCount@ Effectively
+
+In many situations, it is desirable to know how many times a particular object has been traversed over. This calculation is made easy with @groupCount@. The generic use of @groupCount@ will maintain a @Map<Object,Long>@ that keeps track of how many times an element has been traversed over. 
+
+The first example demonstrates the use of basic counter updating. Every time an object goes through @groupCount@ its @Map@ counter is updated by @1@.
+
+```text
+gremlin> m = [:]
+gremlin> g.V.outE.inV.groupCount(m)
+==>v[2]
+==>v[3]
+==>v[4]
+==>v[3]
+==>v[5]
+==>v[3]
+gremlin> m
+==>v[2]=1
+==>v[3]=3
+==>v[4]=1
+==>v[5]=1
+```
+
+Next, it is possible to dynamically alter the counting method by providing a closure to @groupCount@. This is useful for simulating an energy diffusion over the graph. That is, where as more steps progress, the energy decays. Every time an object passes through @groupCount@, the provided closure is called with @it@ set to the current value of the object in the @Map@ and with the return of the closure being the new value for the @Map@. Note that @m@ is defined as @[:].withDefaultValue{0}@ so that a @null@ check is not required (a handy trick).
+
+```text
+gremlin> m = [:].withDefault{0}
+gremlin> g.v(1).outE.inV.groupCount(m){it+1.0}.outE.inV.groupCount(m){it+0.5}
+==>v[5]
+==>v[3]
+gremlin> m
+==>v[2]=1.0
+==>v[3]=1.5
+==>v[4]=1.0
+==>v[5]=0.5
+```

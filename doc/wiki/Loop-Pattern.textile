@@ -1,0 +1,65 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png]]
+
+Looping is essential for traversing to an arbitrary depth. The @loop@ step allows you to loop over a particular set of steps in the pipeline. For the examples to follow, the Grateful Dead graph discussed in [[Defining a More Complex Property Graph]] is used.
+
+```text
+g = new TinkerGraph()
+GraphMLReader.inputGraph(g, new FileInputStream('data/graph-example-2.xml'))
+```
+
+You can create an explicit pipeline to walk a particular path through the graph (@outE.inV@).
+
+```text
+gremlin> g.v(89).outE.inV.paths
+==>[v[89], e[7021][89-followed_by->83], v[83]]
+==>[v[89], e[7022][89-followed_by->21], v[21]]
+==>[v[89], e[7023][89-followed_by->206], v[206]]
+==>[v[89], e[7006][89-followed_by->127], v[127]]
+...
+```
+
+You can also loop for an arbitrary depth (i.e. any arbitrary number of loops through the looped section of the pipeline). In the example below, the @loop@ step is used. The single integer argument to @loop@ states how many steps back to loop over (i.e. @outE.inV@). The provided closure says to continue to loop *while* the number of loops that have occurred is less than 3. Thus, what is emitted from @loop@ is the vertices 2 steps away from vertex 89 (Dark Star). Finally, the @paths@ step is used to emit the paths of length 2 emanating from vertex 89.
+
+```text
+gremlin> g.v(89).outE.inV.loop(2){it.loops < 3}.paths
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1411][83-followed_by->13], v[13]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1410][83-followed_by->12], v[12]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1415][83-followed_by->114], v[114]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1414][83-followed_by->15], v[15]]
+...
+```
+
+Note the the expression above is equivalent to the "unrolled" version below.
+
+```text
+gremlin> g.v(89).outE.inV.outE.inV.paths        
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1411][83-followed_by->13], v[13]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1410][83-followed_by->12], v[12]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1415][83-followed_by->114], v[114]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1414][83-followed_by->15], v[15]]
+...
+```
+
+In fact:
+
+```text
+gremlin> g.v(89).outE.inV.loop(2){it.loops < 3} == g.v(89).outE.inV.outE.inV            
+==>true
+```
+
+The @it@ component of the @loop@ step closure has three properties that are accessible. These properties can be used to reason about when to break out of the loop.
+
+# @it.object@: the current object of the traverser.
+# @it.path@: the current path of the traverser.
+# @it.loops@: the number of times the traverser has looped through the loop section.
+
+Finally, use @GremlinPipeline.toString()@ to see how @loop@ wraps a section of the pipeline.
+
+```text
+gremlin> println g.v(89).outE.inV.paths  
+[OutEdgesPipe, InVertexPipe, PathPipe]
+==>null
+gremlin> println g.v(89).outE.inV.loop(2){it.loops < 3}.paths
+[LoopPipe<[OutEdgesPipe, InVertexPipe]>, PathPipe]
+==>null
+```

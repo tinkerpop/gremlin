@@ -1,0 +1,22 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png]]
+
+A random walk is useful for approximating eigenvector-based metrics or to do a traversal without having to explore every path.
+
+```text
+gremlin> rand = new Random()
+==>java.util.Random@5c76458f
+gremlin> randOutE = { list = []; starts.next().outE >> list; list[rand.nextInt(list.size)]}
+==>groovysh_evaluate$_run_closure1@63b5a40a
+gremlin> g.v(1).step(randOutE).inV
+==>v[4]
+gremlin> g.v(1).step(randOutE).inV
+==>v[2]
+gremlin> g.v(1).step(randOutE).inV
+==>v[2]
+gremlin> g.v(1).step(randOutE).inV
+==>v[3]
+```
+
+For more information on random walkers in property graphs, see:
+
+Rodriguez, M.A., "Grammar-Based Random Walkers in Semantic Networks":http://arxiv.org/abs/0803.4355, Knowledge-Based Systems, 21(7), pp. 727-739, 2008.
