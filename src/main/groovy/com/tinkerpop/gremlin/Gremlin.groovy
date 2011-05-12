@@ -2,17 +2,16 @@ package com.tinkerpop.gremlin;
 
 
 import com.tinkerpop.gremlin.jsr223.GremlinScriptEngine
-import com.tinkerpop.gremlin.loaders.ElementLoader
-import com.tinkerpop.gremlin.loaders.GraphLoader
-import com.tinkerpop.gremlin.loaders.IndexLoader
-import com.tinkerpop.gremlin.loaders.ObjectLoader
-import com.tinkerpop.gremlin.loaders.PipeLoader
 import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import javax.script.SimpleBindings
+import com.tinkerpop.gremlin.loaders.*
 
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
 class Gremlin {
 
     private static final Set<String> steps = new HashSet<String>();
