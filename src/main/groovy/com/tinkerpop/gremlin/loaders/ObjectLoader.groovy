@@ -16,7 +16,7 @@ class ObjectLoader {
             return Gremlin.compose(delegate, new IdentityPipe(), closure)
         }
 
-        LinkedHashMap.metaClass.getAt = {final Range range ->
+        Map.metaClass.getAt = {final Range range ->
             final int size = delegate.size();
             int high = Math.min(size - 1, range.max());
             int low = Math.max(0, range.min());
