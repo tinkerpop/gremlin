@@ -75,12 +75,12 @@ class GraphLoader {
             return ((Graph) delegate).addEdge(null, outVertex, inVertex, label);
         }
 
-        Graph.metaClass.loadGraphML = {final def fileName ->
-            GraphMLReader.inputGraph((Graph) delegate, new FileInputStream(fileName))
+        Graph.metaClass.loadGraphML = {final def fileObject ->
+            GraphMLReader.inputGraph((Graph) delegate, new FileInputStream(fileObject))
         }
 
-        Graph.metaClass.saveGraphML = {final def fileName ->
-            GraphMLWriter.outputGraph((Graph) delegate, new FileOutputStream(fileName))
+        Graph.metaClass.saveGraphML = {final def fileObject ->
+            GraphMLWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject))
         }
 
     }
