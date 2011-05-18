@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
+import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLReader
+import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.pipes.pgm.GraphElementPipe
@@ -72,5 +74,14 @@ class GraphLoader {
         Graph.metaClass.addEdge = {final Vertex outVertex, final Vertex inVertex, final String label ->
             return ((Graph) delegate).addEdge(null, outVertex, inVertex, label);
         }
+
+        Graph.metaClass.loadGraphML = {final def fileName ->
+            GraphMLReader.inputGraph((Graph) delegate, new FileInputStream(fileName))
+        }
+
+        Graph.metaClass.saveGraphML = {final def fileName ->
+            GraphMLWriter.outputGraph((Graph) delegate, new FileOutputStream(fileName))
+        }
+
     }
 }
