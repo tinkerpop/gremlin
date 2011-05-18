@@ -27,7 +27,11 @@ class ObjectLoader {
                 if (c >= low && c <= high) {
                     tempMap.put(entry.getKey(), entry.getValue());
                 }
+                if (c > high) {
+                    break;
+                }
                 c++;
+
             }
             return tempMap;
 
