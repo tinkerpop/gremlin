@@ -24,8 +24,9 @@ class RangeFilterPipeTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def results = []
         g.v(1).outE[0..2] >> results
-        assertEquals(results.size(), 2)
+        assertEquals(results.size(), 3)
         assertEquals(results[0], g.v(1).outE[0] >> 1)
         assertEquals(results[1], g.v(1).outE[1] >> 1)
+        assertEquals(results[2], g.v(1).outE[2] >> 1)
     }
 }
