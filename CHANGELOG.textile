@@ -21,6 +21,12 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* The @.gremlin_history@ file is always saved to the users home directory
+* Supports an inclusive max on @RangeFilterPipe@
+* Supports range filtering for @Map@ -- e.g. @m[0..10]@
+* Added meta methods @loadGraphML@ and @saveGraphML@ to @Graph@
+
+
 h2. Gremlin 0.0
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlin.png!
