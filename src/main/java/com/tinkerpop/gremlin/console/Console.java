@@ -37,7 +37,7 @@ public class Console {
         final InteractiveShellRunner runner = new InteractiveShellRunner(groovy, new PromptClosure(groovy, inputPrompt));
         runner.setErrorHandler(new ErrorHookClosure(runner, io));
         try {
-            runner.setHistory(new History(new File(HISTORY_FILE)));
+            runner.setHistory(new History(new File(System.getProperty("user.home") + "/" + HISTORY_FILE)));
         } catch (IOException e) {
             io.err.println("Unable to create history file: " + HISTORY_FILE);
         }
