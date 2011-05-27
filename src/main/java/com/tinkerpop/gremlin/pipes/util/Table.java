@@ -23,6 +23,13 @@ public class Table implements Iterable<List> {
         this.table.add(row);
     }
 
+    public int getRowCount() {
+        return this.table.size();
+    }
+
+    public int getColumnCount() {
+        return tableWidth;
+    }
 
     public Object get(final int row, final int column) {
         return this.table.get(row).get(column);
@@ -49,6 +56,7 @@ public class Table implements Iterable<List> {
     }
 
     public void clear() {
+        this.tableWidth = -1;
         this.table.clear();
     }
 }

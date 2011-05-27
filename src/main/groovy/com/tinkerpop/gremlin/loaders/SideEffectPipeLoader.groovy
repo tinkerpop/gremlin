@@ -65,6 +65,9 @@ class SideEffectPipeLoader {
         }
 
         Gremlin.addStep(GremlinTokens.TABLE);
+        Pipe.metaClass.table = {final Table table, Closure... closures ->
+            Gremlin.compose(delegate, new TablePipe(table, null, closures));
+        }
         Pipe.metaClass.table = {final Table table, final List<Integer> indices ->
             Gremlin.compose(delegate, new TablePipe(table, indices));
         }

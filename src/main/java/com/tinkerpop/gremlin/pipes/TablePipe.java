@@ -36,7 +36,7 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
             int counter = 0;
             int i = 0;
             for (final Object object : path) {
-                if (this.indices.contains(counter)) {
+                if (null == indices || this.indices.contains(counter)) {
                     if (this.closures.length > 0) {
                         row.add(this.closures[i].call(object));
                         i++;
