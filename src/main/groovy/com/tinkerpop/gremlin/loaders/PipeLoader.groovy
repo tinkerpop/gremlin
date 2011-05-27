@@ -147,7 +147,5 @@ class PipeLoader {
         TransformPipeLoader.load();
         FilterPipeLoader.load();
         SideEffectPipeLoader.load();
-        //
-        SailGraphLoader.load();
     }
 }

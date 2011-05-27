@@ -23,6 +23,12 @@ class Gremlin {
         IndexLoader.load();
         ElementLoader.load();
         PipeLoader.load();
+
+        try {
+            SailGraphLoader.load();
+        } catch (Throwable e) {
+            // this means that SailGraph was not in the dependency
+        }
     }
 
     public static Filter mapFilter(final t) {
