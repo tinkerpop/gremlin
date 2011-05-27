@@ -20,7 +20,7 @@ public class ScriptExecutor {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
 
         if (argumentsCount == 0) {
-            output.println("Usage: <path_to_grm_script> <argument $1> <argument $2> ...");
+            output.println("Usage: <path_to_gremlin_script> <argument a1> <argument a2> ...");
         } else {
             if (argumentsCount > 1) {
                 final Bindings bindings = engine.getContext().getBindings(ScriptContext.ENGINE_SCOPE);

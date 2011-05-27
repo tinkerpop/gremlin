@@ -7,6 +7,8 @@ import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.pipes.ClosureSideEffectPipe
 import com.tinkerpop.gremlin.pipes.GroupCountClosurePipe
+import com.tinkerpop.gremlin.pipes.TablePipe
+import com.tinkerpop.gremlin.pipes.util.Table
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 
@@ -60,6 +62,17 @@ class SideEffectPipeLoader {
             } else {
                 return Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), {it + 1l}));
             }
+        }
+
+        Gremlin.addStep(GremlinTokens.TABLE);
+        Pipe.metaClass.table = {final Table table, final List<Integer> indices ->
+            Gremlin.compose(delegate, new TablePipe(table, indices));
+        }
+        Pipe.metaClass.table = {final Table table, final List<Integer> indices, Closure... closures ->
+            if (closures.length != indices.size()) {
+                throw new RuntimeException("The number of closures must equal the table width");
+            }
+            Gremlin.compose(delegate, new TablePipe(table, indices, closures));
         }
     }
 }

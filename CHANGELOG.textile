@@ -9,7 +9,7 @@ Gremlin: A Graph Traversal Language
 </repository>
 ```
 
-Gremlin 1.0
+h2. Gremlin 1.0
 
 h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 
@@ -25,7 +25,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Supports an inclusive max on @RangeFilterPipe@
 * Supports range filtering for @Map@ -- e.g. @m[0..10]@
 * Added meta methods @loadGraphML@ and @saveGraphML@ to @Graph@
-
+* @SailGraph@ is no longer a strict dependency (however, loads meta methods if in classpath).
 
 h2. Gremlin 0.0
 
