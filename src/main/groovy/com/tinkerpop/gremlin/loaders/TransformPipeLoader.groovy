@@ -86,6 +86,11 @@ class TransformPipeLoader {
             pipeline.loopPipe(stepsAgo, closure)
             return pipeline;
         }
+        GremlinPipeline.metaClass.loop = {final String stepName, final Closure closure ->
+            final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
+            pipeline.loopPipe(stepName, closure)
+            return pipeline;
+        }
 
         Gremlin.addStep(GremlinTokens.EXCEPT);
         Pipe.metaClass.except = {final Collection collection ->

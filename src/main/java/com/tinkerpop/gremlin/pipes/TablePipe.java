@@ -18,11 +18,21 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
     private final List<Integer> indices;
     private final Closure[] closures;
 
-    public TablePipe(final Table table, final List<Integer> indices, final Closure[] closures) {
+    public TablePipe(final Table table, final List<Integer> indices, final Closure... closures) {
         this.table = table;
         this.indices = indices;
         this.closures = closures;
     }
+
+    /*public TablePipe(final Table table, final GremlinPipeline pipeline, final List<String> names, final Closure... closures) {
+        indices = new ArrayList<Integer>();
+        for (String name : names) {
+            this.indices.add(pipeline.getPathIndexForName(name));
+        }
+        this.table = table;
+        this.closures = closures;
+
+    }*/
 
     public Table getSideEffect() {
         return this.table;

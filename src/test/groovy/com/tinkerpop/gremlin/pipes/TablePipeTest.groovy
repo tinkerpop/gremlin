@@ -20,7 +20,7 @@ class TablePipeTest extends TestCase {
         assertTrue((g.V.table(t, [1, 2, 3])) instanceof Pipe)
     }
 
-    public void testBehavior() throws Exception {
+    public void testTablePipe() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         Table t = new Table();

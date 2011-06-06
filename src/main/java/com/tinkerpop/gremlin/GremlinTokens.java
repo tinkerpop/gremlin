@@ -29,6 +29,7 @@ public class GremlinTokens {
     public static final String _ = "_";
     public static final String AGGREGATE = "aggregate";
     public static final String ANDFILTER = "andFilter";
+    public static final String AS = "as";
     public static final String BACK = "back";
     public static final String CAP = "cap";
     public static final String COPYSPLIT = "copySplit";
@@ -40,7 +41,6 @@ public class GremlinTokens {
     public static final String FILTER = "filter";
     public static final String GATHER = "gather";
     public static final String GROUPCOUNT = "groupCount";
-    public static final String GROUPOBJECT = "groupObject";
     public static final String IFELSE = "ifelse";
     public static final String LOOP = "loop";
     public static final String ORFILTER = "orFilter";

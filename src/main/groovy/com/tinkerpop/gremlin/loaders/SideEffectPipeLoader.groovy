@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.pipes.ClosureSideEffectPipe
+import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.GroupCountClosurePipe
 import com.tinkerpop.gremlin.pipes.TablePipe
 import com.tinkerpop.gremlin.pipes.util.Table
@@ -76,6 +77,12 @@ class SideEffectPipeLoader {
                 throw new RuntimeException("The number of closures must equal the table width");
             }
             Gremlin.compose(delegate, new TablePipe(table, indices, closures));
+        }
+
+        Gremlin.addStep(GremlinTokens.AS)
+        GremlinPipeline.metaClass.as = {final String name ->
+            ((GremlinPipeline) delegate).namePipe(name);
+            return delegate;
         }
     }
 }

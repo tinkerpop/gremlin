@@ -30,6 +30,18 @@ class LoopPipeTest extends TestCase {
         assertEquals(counter, 1);
     }
 
+    public void testSubPathLoopWithNamedSteps() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def counter = 0;
+        g.v(1).outE.as('loop').inV.loop('loop', {it.object.name != 'ripple'}).each {counter++; assertEquals(it, g.v(5))}
+        assertEquals(counter, 1);
+
+        counter = 0;
+        g.V[['name': 'marko']].as('back').back('back').outE.as('loop').inV.loop('loop') {it.object.name != 'ripple'}.each {counter++; assertEquals(it, g.v(5))}
+        assertEquals(counter, 1);
+    }
+
     public void testPathsInLoop() {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
