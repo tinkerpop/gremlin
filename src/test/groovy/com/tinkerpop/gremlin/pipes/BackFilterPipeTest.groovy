@@ -22,6 +22,8 @@ class BackFilterPipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
+        assertEquals(g.v(1).out('knows').name.back(1).next(), g.v(2));
+
         assertEquals(g.v(1).outE.inV.back(2).name.next(), "marko");
         assertEquals(g.v(1).outE.inV.outE.inV[[name: 'lop']].back(3).name.next(), "josh");
         assertEquals(g.v(1).outE.inV.outE.inV[[name: 'ripple']].back(3).name.next(), "josh");
@@ -36,6 +38,8 @@ class BackFilterPipeTest extends TestCase {
     public void testBackFilterOnGraphUsingNamedSteps() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        //assertEquals(g.v(1).out('knows').as('here').name.back('here').next(), g.v(2));
 
         assertEquals(g.v(1).outE.inV.outE.as('step').inV[[name: 'lop']].back('step').name.next(), "josh");
         assertEquals(g.v(1).outE.inV.outE.as('step').inV[[name: 'ripple']].back('step').name.next(), "josh");
