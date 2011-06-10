@@ -52,12 +52,12 @@ public class TableTest extends TestCase {
         assertEquals(table.getRow(2).get(0), "puppy");
         assertEquals(table.getRow(2).get(1), 6);
 
-        assertEquals(table.getRow(0).get("name"), "marko");
-        assertEquals(table.getRow(0).get("age"), 31);
-        assertEquals(table.getRow(1).get("name"), "jen");
-        assertEquals(table.getRow(1).get("age"), 28);
-        assertEquals(table.getRow(2).get("name"), "puppy");
-        assertEquals(table.getRow(2).get("age"), 6);
+        assertEquals(table.getRow(0).getColumn("name"), "marko");
+        assertEquals(table.getRow(0).getColumn("age"), 31);
+        assertEquals(table.getRow(1).getColumn("name"), "jen");
+        assertEquals(table.getRow(1).getColumn("age"), 28);
+        assertEquals(table.getRow(2).getColumn("name"), "puppy");
+        assertEquals(table.getRow(2).getColumn("age"), 6);
 
         assertEquals(table.getColumnCount(), 2);
         assertEquals(table.getRowCount(), 3);
@@ -72,12 +72,12 @@ public class TableTest extends TestCase {
         assertEquals(table.getRow(1).toString(), "[a-name:jen, an-age:28]");
         assertEquals(table.getRow(2).toString(), "[a-name:puppy, an-age:6]");
 
-        assertEquals(table.getRow(0).get("a-name"), "marko");
-        assertEquals(table.getRow(0).get("an-age"), 31);
-        assertEquals(table.getRow(1).get("a-name"), "jen");
-        assertEquals(table.getRow(1).get("an-age"), 28);
-        assertEquals(table.getRow(2).get("a-name"), "puppy");
-        assertEquals(table.getRow(2).get("an-age"), 6);
+        assertEquals(table.getRow(0).getColumn("a-name"), "marko");
+        assertEquals(table.getRow(0).getColumn("an-age"), 31);
+        assertEquals(table.getRow(1).getColumn("a-name"), "jen");
+        assertEquals(table.getRow(1).getColumn("an-age"), 28);
+        assertEquals(table.getRow(2).getColumn("a-name"), "puppy");
+        assertEquals(table.getRow(2).getColumn("an-age"), 6);
 
 
     }
