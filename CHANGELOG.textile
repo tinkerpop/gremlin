@@ -27,6 +27,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Added meta methods @loadGraphML@ and @saveGraphML@ to @Graph@
 * @SailGraph@ is no longer a strict dependency (however, loads meta methods if in classpath)
 * Added @table@ step with respective @TablePipe@ and @Table@ data structure
+** Added @AsPipe@ for naming steps. Currently only for use with @table@.
 
 h2. Gremlin 0.0
 

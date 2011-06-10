@@ -15,49 +15,43 @@ import java.util.List;
 public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Table> {
 
     private final Table table;
-    private final List<Integer> indices;
     private final Closure[] closures;
+    private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
 
-    public TablePipe(final Table table, final List<Integer> indices, final Closure... closures) {
+    public TablePipe(final Table table, GremlinPipeline pipeline, final Closure... closures) {
         this.table = table;
-        this.indices = indices;
         this.closures = closures;
-    }
-
-    /*public TablePipe(final Table table, final GremlinPipeline pipeline, final List<String> names, final Closure... closures) {
-        indices = new ArrayList<Integer>();
-        for (String name : names) {
-            this.indices.add(pipeline.getPathIndexForName(name));
+        final List<String> columnNames = new ArrayList<String>();
+        for (Pipe pipe : (List<Pipe>) pipeline.getPipes()) {
+            if (pipe instanceof AsPipe) {
+                AsPipe asPipe = (AsPipe) pipe;
+                this.asPipes.add(asPipe);
+                columnNames.add(asPipe.getName());
+            }
         }
-        this.table = table;
-        this.closures = closures;
+        if (columnNames.size() > 0)
+            table.setColumnNames(columnNames.toArray(new String[columnNames.size()]));
 
-    }*/
+    }
 
     public Table getSideEffect() {
         return this.table;
     }
 
     public S processNextStart() {
-        final S start = this.starts.next();
-        if (this.starts instanceof Pipe) {
-            final List path = ((Pipe) this.starts).getPath();
-            final List row = new ArrayList();
-            int counter = 0;
-            int i = 0;
-            for (final Object object : path) {
-                if (null == indices || this.indices.contains(counter)) {
-                    if (this.closures.length > 0) {
-                        row.add(this.closures[i].call(object));
-                        i++;
-                    } else {
-                        row.add(object);
-                    }
-                }
-                counter++;
+        final S s = this.starts.next();
+        final List row = new ArrayList();
+        int i = 0;
+        for (AsPipe asPipe : this.asPipes) {
+            if (this.closures.length > 0) {
+                row.add(this.closures[i].call(asPipe.getCurrentEnd()));
+                i++;
+            } else {
+                row.add(asPipe.getCurrentEnd());
             }
-            this.table.addRow(row);
+
         }
-        return start;
+        this.table.addRow(row);
+        return s;
     }
 }

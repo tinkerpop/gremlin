@@ -10,6 +10,7 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.GroupCountClosurePipe
 import com.tinkerpop.gremlin.pipes.TablePipe
 import com.tinkerpop.gremlin.pipes.util.Table
+import com.tinkerpop.pipes.IdentityPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.sideeffect.AggregatorPipe
 
@@ -67,22 +68,20 @@ class SideEffectPipeLoader {
 
         Gremlin.addStep(GremlinTokens.TABLE);
         Pipe.metaClass.table = {final Table table, Closure... closures ->
-            Gremlin.compose(delegate, new TablePipe(table, null, closures));
-        }
-        Pipe.metaClass.table = {final Table table, final List<Integer> indices ->
-            Gremlin.compose(delegate, new TablePipe(table, indices));
-        }
-        Pipe.metaClass.table = {final Table table, final List<Integer> indices, Closure... closures ->
-            if (closures.length != indices.size()) {
-                throw new RuntimeException("The number of closures must equal the table width");
-            }
-            Gremlin.compose(delegate, new TablePipe(table, indices, closures));
+            Gremlin.compose(delegate, new TablePipe(table, (GremlinPipeline) delegate, closures));
         }
 
         Gremlin.addStep(GremlinTokens.AS)
         GremlinPipeline.metaClass.as = {final String name ->
-            ((GremlinPipeline) delegate).namePipe(name);
+            ((GremlinPipeline) delegate).asPipe(name);
             return delegate;
+        }
+        [Graph, Vertex, Edge].each {
+            it.metaClass.as = {final String name ->
+                final GremlinPipeline pipeline = Gremlin.compose(delegate, new IdentityPipe());
+                pipeline.asPipe(name);
+                return pipeline;
+            }
         }
     }
 }

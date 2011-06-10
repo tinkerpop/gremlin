@@ -8,7 +8,9 @@ import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import groovy.lang.Closure;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -19,8 +21,6 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
     private Pipe<?, E> endPipe;
     private final List<Pipe> pipes = new ArrayList<Pipe>();
     private Iterator<S> starts;
-    private Map<String, Pipe> namedPipes = new HashMap<String, Pipe>();
-
 
     public List<Pipe> getPipes() {
         return this.pipes;
@@ -40,11 +40,6 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
             this.setStarts(this.starts);
     }
 
-    public void loopPipe(final String stepName, final Closure closure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.getPipesNameAgo(stepName)), closure));
-        if (this.pipes.size() == 1)
-            this.setStarts(this.starts);
-    }
 
     public void backPipe(final int stepsAgo) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo))));
@@ -52,42 +47,11 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
             this.setStarts(this.starts);
     }
 
-    public void backPipe(final String stepName) {
-        this.addPipe(new BackFilterPipe(new Pipeline(this.getPipesNameAgo(stepName))));
+    public void asPipe(final String name) {
+        this.addPipe(new AsPipe(name, this.getPipesStepsAgo(1).get(0)));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
     }
-
-    public void namePipe(final String name) {
-        this.namedPipes.put(name, this.pipes.get(this.pipes.size() - 1));
-    }
-
-    private List<Pipe> getPipesNameAgo(final String stepName) {
-        final List<Pipe> backPipes = new ArrayList<Pipe>();
-        int stepsAgo = 0;
-        final Pipe namedPipe = this.namedPipes.get(stepName);
-        for (int i = this.pipes.size() - 1; i >= 0; i--) {
-            Pipe pipe = this.pipes.get(i);
-            backPipes.add(0, pipe);
-            if (pipe == namedPipe) {
-                stepsAgo = this.pipes.size() - i;
-                break;
-            }
-        }
-        for (int i = 0; i < stepsAgo; i++) {
-            this.pipes.remove(this.pipes.size() - 1);
-        }
-        return backPipes;
-    }
-
-    /*public int getPathIndexForName(final String stepName) {
-        Pipe toPipe = this.namedPipes.get(stepName);
-        for (int i = 0; i < this.pipes.size(); i++) {
-            if (toPipe == this.pipes.get(i))
-                return i;
-        }
-        return -1;
-    }*/
 
     private List<Pipe> getPipesStepsAgo(final int stepsAgo) {
         final List<Pipe> backPipes = new ArrayList<Pipe>();

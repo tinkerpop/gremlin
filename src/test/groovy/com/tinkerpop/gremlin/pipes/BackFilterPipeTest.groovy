@@ -35,7 +35,7 @@ class BackFilterPipeTest extends TestCase {
         assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.inV {list.contains(it.name)}.back(3).outE.inV[1].name >> 1));
     }
 
-    public void testBackFilterOnGraphUsingNamedSteps() throws Exception {
+    /*public void testBackFilterOnGraphUsingNamedSteps() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
@@ -49,5 +49,5 @@ class BackFilterPipeTest extends TestCase {
         assertEquals(PipeHelper.counter(g.v(1).outE.inV.outE.as('step').inV {list.contains(it.name)}.back('step').outE.inV), 2);
         assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.as('step').inV {list.contains(it.name)}.back('step').outE.inV[0].name >> 1));
         assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.as('step').inV {list.contains(it.name)}.back('step').outE.inV[1].name >> 1));
-    }
+    }*/
 }
