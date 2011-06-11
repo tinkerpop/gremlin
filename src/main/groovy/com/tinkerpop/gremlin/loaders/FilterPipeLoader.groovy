@@ -57,6 +57,10 @@ class FilterPipeLoader {
             ((GremlinPipeline) delegate).backPipe(steps);
             return delegate;
         }
+        GremlinPipeline.metaClass.back = {final String name ->
+            ((GremlinPipeline) delegate).backPipe(name);
+            return delegate;
+        }
 
         Gremlin.addStep(GremlinTokens.PROPFILTER);
         [Pipe, Vertex, Edge].each {

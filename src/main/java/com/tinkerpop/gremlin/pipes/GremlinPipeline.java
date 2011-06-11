@@ -40,9 +40,21 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
             this.setStarts(this.starts);
     }
 
+    public void loopPipe(final String name, final Closure closure) {
+        this.addPipe(new LoopPipe(new Pipeline(this.getPipesAsAgo(name)), closure));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+    }
+
 
     public void backPipe(final int stepsAgo) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo))));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+    }
+
+    public void backPipe(final String name) {
+        this.addPipe(new BackFilterPipe(new Pipeline(this.getPipesAsAgo(name))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
     }
@@ -75,6 +87,22 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
             backPipes.add(0, this.pipes.get(i));
         }
         for (int i = 0; i < stepsAgo; i++) {
+            this.pipes.remove(this.pipes.size() - 1);
+        }
+        return backPipes;
+    }
+
+    private List<Pipe> getPipesAsAgo(final String name) {
+        final List<Pipe> backPipes = new ArrayList<Pipe>();
+        for (int i = this.pipes.size() - 1; i >= 0; i--) {
+            Pipe pipe = this.pipes.get(i);
+            if (pipe instanceof AsPipe && ((AsPipe) pipe).getName().equals(name)) {
+                break;
+            } else {
+                backPipes.add(0, pipe);
+            }
+        }
+        for (int i = 0; i < backPipes.size(); i++) {
             this.pipes.remove(this.pipes.size() - 1);
         }
         return backPipes;

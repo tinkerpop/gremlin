@@ -35,19 +35,21 @@ class BackFilterPipeTest extends TestCase {
         assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.inV {list.contains(it.name)}.back(3).outE.inV[1].name >> 1));
     }
 
-    /*public void testBackFilterOnGraphUsingNamedSteps() throws Exception {
+    public void testBackFilterOnGraphUsingNamedSteps() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        //assertEquals(g.v(1).out('knows').as('here').name.back('here').next(), g.v(2));
+        assertEquals(g.v(1).as('here').out.back('here').next(), g.v(1));
+        assertEquals(g.v(1).out.as('here').name.filter{it.startsWith('j')}.back('here').next(), g.v(4));
+        assertEquals(g.v(1).out('knows').as('here').name.back('here').next(), g.v(2));
 
-        assertEquals(g.v(1).outE.inV.outE.as('step').inV[[name: 'lop']].back('step').name.next(), "josh");
-        assertEquals(g.v(1).outE.inV.outE.as('step').inV[[name: 'ripple']].back('step').name.next(), "josh");
-        assertEquals(g.v(1).outE.inV.as('step')[[name: 'lop']].back('step').id.next(), "9");
+        assertEquals(g.v(1).outE.inV.as('step').outE.inV[[name: 'lop']].back('step').name.next(), "josh");
+        assertEquals(g.v(1).outE.inV.as('step').outE.inV[[name: 'ripple']].back('step').name.next(), "josh");
+        assertEquals(g.v(1).outE.as('step').inV[[name: 'lop']].back('step').id.next(), "9");
 
         def list = ["ripple", "lop", "blah"]
-        assertEquals(PipeHelper.counter(g.v(1).outE.inV.outE.as('step').inV {list.contains(it.name)}.back('step').outE.inV), 2);
-        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.as('step').inV {list.contains(it.name)}.back('step').outE.inV[0].name >> 1));
-        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.as('step').inV {list.contains(it.name)}.back('step').outE.inV[1].name >> 1));
-    }*/
+        assertEquals(PipeHelper.counter(g.v(1).outE.inV.as('step').outE.inV {list.contains(it.name)}.back('step').outE.inV), 2);
+        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.as('step').outE.inV {list.contains(it.name)}.back('step').outE.inV[0].name >> 1));
+        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.as('step').outE.inV {list.contains(it.name)}.back('step').outE.inV[1].name >> 1));
+    }
 }
