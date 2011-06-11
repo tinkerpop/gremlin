@@ -9,14 +9,16 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * An AsPipe wraps a Pipe and provides it a name and 'peak back' access to the last emitted end.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class AsPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
+public class AsPipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
 
     private final String name;
-    private final Pipe<?, S> pipe;
+    private final Pipe<S, E> pipe;
 
-    public AsPipe(String name, Pipe<?, S> pipe) {
+    public AsPipe(final String name, final Pipe<S, E> pipe) {
         this.pipe = pipe;
         this.name = name;
     }
@@ -26,15 +28,11 @@ public class AsPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         this.starts = starts;
     }
 
-    public void setStarts(final Iterable<S> starts) {
-        this.setStarts(starts.iterator());
-    }
-
     protected List getPathToHere() {
         return this.pipe.getPath();
     }
 
-    public S getCurrentEnd() {
+    public E getCurrentEnd() {
         return this.currentEnd;
     }
 
@@ -42,7 +40,7 @@ public class AsPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         return this.name;
     }
 
-    public S processNextStart() {
+    public E processNextStart() {
         return this.pipe.next();
     }
 
