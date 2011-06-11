@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin.pipes.util;
 
+import groovy.lang.Closure;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -21,6 +23,22 @@ public class Table implements Iterable<Table.Row> {
     public Table(String... columnNames) {
         this.columnNames = Arrays.asList(columnNames);
         this.tableWidth = columnNames.length;
+    }
+
+    public Table apply(Closure... closures) {
+        if (tableWidth != -1 && closures.length == tableWidth) {
+            Table table = new Table();
+            for (Row row : this) {
+                List temp = new ArrayList();
+                for (int i = 0; i < row.size(); i++) {
+                    temp.add(closures[i].call(row.get(i)));
+                }
+                table.addRow(temp);
+            }
+            return table;
+        } else {
+            throw new RuntimeException("Table width is " + this.tableWidth + " and closures length is " + closures.length);
+        }
     }
 
     public void addRow(List row) {

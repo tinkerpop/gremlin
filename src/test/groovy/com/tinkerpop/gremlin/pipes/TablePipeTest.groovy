@@ -102,4 +102,31 @@ class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 2);
 
     }
+
+    public void testTableClosures() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        Table t = new Table();
+        g.v(1).as('1').out.as('2').table(t) >> -1;
+        assertEquals(t.get(0, 0), g.v(1));
+        assertEquals(t.get(0, 1), g.v(2));
+        assertEquals(t.get(1, 0), g.v(1));
+        assertEquals(t.get(1, 1), g.v(3));
+        assertEquals(t.get(2, 0), g.v(1));
+        assertEquals(t.get(2, 1), g.v(4));
+        assertEquals(t.getColumnCount(), 2);
+        assertEquals(t.getRowCount(), 3);
+
+        t = t.apply{it.name}{it.name};
+        assertEquals(t.get(0, 0), 'marko');
+        assertEquals(t.get(0, 1), 'vadas');
+        assertEquals(t.get(1, 0), 'marko');
+        assertEquals(t.get(1, 1), 'lop');
+        assertEquals(t.get(2, 0), 'marko');
+        assertEquals(t.get(2, 1), 'josh');
+        assertEquals(t.getColumnCount(), 2);
+        assertEquals(t.getRowCount(), 3);
+
+
+    }
 }
