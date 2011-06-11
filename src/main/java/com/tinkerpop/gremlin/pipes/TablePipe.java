@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.pipes;
 
 import com.tinkerpop.gremlin.pipes.util.Table;
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import groovy.lang.Closure;
 
@@ -16,18 +15,15 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
 
     private final Table table;
     private final Closure[] closures;
-    private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
+    private final List<AsPipe> asPipes;
 
     public TablePipe(final Table table, GremlinPipeline pipeline, final Closure... closures) {
         this.table = table;
         this.closures = closures;
         final List<String> columnNames = new ArrayList<String>();
-        for (Pipe pipe : (List<Pipe>) pipeline.getPipes()) {
-            if (pipe instanceof AsPipe) {
-                AsPipe asPipe = (AsPipe) pipe;
-                this.asPipes.add(asPipe);
-                columnNames.add(asPipe.getName());
-            }
+        this.asPipes = pipeline.getAsPipes();
+        for (AsPipe asPipe : this.asPipes) {
+            columnNames.add(asPipe.getName());
         }
         if (columnNames.size() > 0)
             table.setColumnNames(columnNames.toArray(new String[columnNames.size()]));

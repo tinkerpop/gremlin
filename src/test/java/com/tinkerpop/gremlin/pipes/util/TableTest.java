@@ -79,6 +79,13 @@ public class TableTest extends TestCase {
         assertEquals(table.getRow(2).getColumn("a-name"), "puppy");
         assertEquals(table.getRow(2).getColumn("an-age"), 6);
 
+        assertEquals(table.getRow(0).getColumn(0), "marko");
+        assertEquals(table.getRow(0).getColumn(1), 31);
+        assertEquals(table.getRow(1).getColumn(0), "jen");
+        assertEquals(table.getRow(1).getColumn(1), 28);
+        assertEquals(table.getRow(2).getColumn(0), "puppy");
+        assertEquals(table.getRow(2).getColumn(1), 6);
+
 
     }
 

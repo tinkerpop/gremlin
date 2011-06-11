@@ -53,6 +53,22 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
             this.setStarts(this.starts);
     }
 
+    public List<AsPipe> getAsPipes() {
+        return this.getAsPipes(this);
+    }
+
+    private List<AsPipe> getAsPipes(MetaPipe metaPipe) {
+        List<AsPipe> asPipes = new ArrayList<AsPipe>();
+        for (Pipe subPipe : metaPipe.getPipes()) {
+            if (subPipe instanceof AsPipe) {
+                asPipes.add((AsPipe) subPipe);
+            } else if (subPipe instanceof MetaPipe) {
+                asPipes.addAll(this.getAsPipes((MetaPipe) subPipe));
+            }
+        }
+        return asPipes;
+    }
+
     private List<Pipe> getPipesStepsAgo(final int stepsAgo) {
         final List<Pipe> backPipes = new ArrayList<Pipe>();
         for (int i = this.pipes.size() - 1; i > ((this.pipes.size() - 1) - stepsAgo); i--) {

@@ -116,5 +116,9 @@ public class Table implements Iterable<Table.Row> {
         public Object getColumn(String columnName) {
             return this.get(columnNames.indexOf(columnName));
         }
+
+        public Object getColumn(int column) {
+            return this.get(column);
+        }
     }
 }
