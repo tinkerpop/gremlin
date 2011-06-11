@@ -74,7 +74,8 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
         for (final Pipe subPipe : metaPipe.getPipes()) {
             if (subPipe instanceof AsPipe) {
                 asPipes.add((AsPipe) subPipe);
-            } else if (subPipe instanceof MetaPipe) {
+            }
+            if (subPipe instanceof MetaPipe) {
                 asPipes.addAll(this.getAsPipes((MetaPipe) subPipe));
             }
         }
