@@ -40,7 +40,7 @@ class BackFilterPipeTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         assertEquals(g.v(1).as('here').out.back('here').next(), g.v(1));
-        assertEquals(g.v(1).out.as('here').name.filter{it.startsWith('j')}.back('here').next(), g.v(4));
+        assertEquals(g.v(1).out.as('here').name.filter {it.startsWith('j')}.back('here').next(), g.v(4));
         assertEquals(g.v(1).out('knows').as('here').name.back('here').next(), g.v(2));
 
         assertEquals(g.v(1).outE.inV.as('step').outE.inV[[name: 'lop']].back('step').name.next(), "josh");
