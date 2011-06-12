@@ -28,6 +28,7 @@ class Gremlin {
             SailGraphLoader.load();
         } catch (Throwable e) {
             // this means that SailGraph was not in the dependency
+            // that is ok
         }
     }
 

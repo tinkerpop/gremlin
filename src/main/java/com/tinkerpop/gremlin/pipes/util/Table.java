@@ -20,12 +20,12 @@ public class Table implements Iterable<Table.Row> {
         this.columnNames = new ArrayList<String>();
     }
 
-    public Table(String... columnNames) {
+    public Table(final String... columnNames) {
         this.columnNames = Arrays.asList(columnNames);
         this.tableWidth = columnNames.length;
     }
 
-    public Table apply(Closure... closures) {
+    public Table apply(final Closure... closures) {
         if (tableWidth != -1 && closures.length == tableWidth) {
             Table table = new Table();
             for (Row row : this) {
@@ -41,7 +41,7 @@ public class Table implements Iterable<Table.Row> {
         }
     }
 
-    public void addRow(List row) {
+    public void addRow(final List row) {
         if (this.tableWidth == -1) {
             this.tableWidth = row.size();
         } else {
@@ -52,15 +52,19 @@ public class Table implements Iterable<Table.Row> {
         this.table.add(new Row(row));
     }
 
-    public void addRow(Object... row) {
+    public void addRow(final Object... row) {
         this.addRow(Arrays.asList(row));
     }
 
-    public void setColumnNames(String... columnNames) {
+    public void setColumnNames(final String... columnNames) {
         if (tableWidth != -1 && columnNames.length != tableWidth) {
             throw new RuntimeException("Table width is " + this.tableWidth + " and there are " + columnNames.length + " column names");
         }
         this.columnNames = Arrays.asList(columnNames);
+    }
+
+    public List<String> getColumnNames() {
+        return this.columnNames;
     }
 
     public int getRowCount() {
@@ -105,10 +109,11 @@ public class Table implements Iterable<Table.Row> {
 
     public void clear() {
         this.tableWidth = -1;
+        this.columnNames = new ArrayList<String>();
         this.table.clear();
     }
 
-    protected class Row extends ArrayList {
+    public class Row extends ArrayList {
 
         public Row(final List row) {
             super(row);
@@ -131,11 +136,11 @@ public class Table implements Iterable<Table.Row> {
 
         }
 
-        public Object getColumn(String columnName) {
+        public Object getColumn(final String columnName) {
             return this.get(columnNames.indexOf(columnName));
         }
 
-        public Object getColumn(int column) {
+        public Object getColumn(final int column) {
             return this.get(column);
         }
     }
