@@ -29,4 +29,17 @@ class RangeFilterPipeTest extends TestCase {
         assertEquals(results[1], g.v(1).outE[1] >> 1)
         assertEquals(results[2], g.v(1).outE[2] >> 1)
     }
+
+    public void testGetAt() {
+        Gremlin.load()
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertEquals(g.V[0].count(), 1);
+        assertEquals(g.V.next(), (g.V[0] >> []).get(0));
+
+        assertEquals(g.V[0..1].count(), 2);
+        def itty = g.V;
+        assertEquals([itty.next(), itty.next()], g.V[0..1].toList());
+
+    }
+
 }

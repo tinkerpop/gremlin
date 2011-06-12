@@ -66,7 +66,12 @@ public class TableTest extends TestCase {
         assertEquals(table.getRow(1).toString(), "[name:jen, age:28]");
         assertEquals(table.getRow(2).toString(), "[name:puppy, age:6]");
 
+
+        assertEquals(table.getColumnNames().get(0), "name");
+        assertEquals(table.getColumnNames().get(1), "age");
         table.setColumnNames("a-name", "an-age");
+        assertEquals(table.getColumnNames().get(0), "a-name");
+        assertEquals(table.getColumnNames().get(1), "an-age");
 
         assertEquals(table.getRow(0).toString(), "[a-name:marko, an-age:31]");
         assertEquals(table.getRow(1).toString(), "[a-name:jen, an-age:28]");

@@ -24,5 +24,4 @@ class PipeLoaderTest extends TestCase {
         def numbers = [1, 2, 3, 4, 5];
         assertEquals(numbers.mean(), 3.0d)
     }
-
 }

@@ -34,7 +34,7 @@ class PipeLoader {
             }
         }
 
-        [Iterator, Iterator].each {
+        [Iterable, Iterator].each {
             it.metaClass.count = {
                 return PipeHelper.counter(delegate.iterator());
             }
@@ -90,7 +90,7 @@ class PipeLoader {
 
 
         Pipe.metaClass.getAt = {final Integer index ->
-            return Gremlin.compose(delegate, new RangeFilterPipe(index as Integer, index + 1 as Integer));
+            return Gremlin.compose(delegate, new RangeFilterPipe(index, index));
         }
 
 
@@ -107,8 +107,6 @@ class PipeLoader {
                 return Gremlin.compose(delegate, new PropertyPipe(name));
             }
         }
-
-
 
         Pipe.metaClass.getAt = {final Map map ->
             GremlinPipeline pipeline = Gremlin.compose(delegate);
