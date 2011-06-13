@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import groovy.lang.Closure;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,20 +16,28 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
 
     private final Table table;
     private final Closure[] closures;
-    private final List<AsPipe> asPipes;
+    private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
     private final boolean doClosures;
 
-    public TablePipe(final Table table, final GremlinPipeline pipeline, final Closure... closures) {
+    public TablePipe(final Table table, final Collection<String> columnNames, final GremlinPipeline pipeline, final Closure... closures) {
         this.table = table;
         this.closures = closures;
         this.doClosures = this.closures.length > 0;
-        final List<String> columnNames = new ArrayList<String>();
-        this.asPipes = pipeline.getAsPipes();
-        for (final AsPipe asPipe : this.asPipes) {
-            columnNames.add(asPipe.getName());
+        final List<String> tempNames = new ArrayList<String>();
+        for (final AsPipe asPipe : (List<AsPipe>) pipeline.getAsPipes()) {
+            final String columnName = asPipe.getName();
+            if (null == columnNames || columnNames.contains(columnName)) {
+                tempNames.add(columnName);
+                this.asPipes.add(asPipe);
+            }
         }
-        if (columnNames.size() > 0)
-            table.setColumnNames(columnNames.toArray(new String[columnNames.size()]));
+
+        if (this.closures.length > 0 && this.asPipes.size() != this.closures.length) {
+            throw new RuntimeException("The number of columns is " + this.asPipes.size() + " and the number of closures is " + this.closures.length);
+        }
+
+        if (tempNames.size() > 0)
+            table.setColumnNames(tempNames.toArray(new String[tempNames.size()]));
 
     }
 

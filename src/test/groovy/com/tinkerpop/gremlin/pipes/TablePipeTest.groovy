@@ -117,7 +117,7 @@ class TablePipeTest extends TestCase {
         assertEquals(t.getColumnCount(), 2);
         assertEquals(t.getRowCount(), 3);
 
-        t = t.apply{it.name}{it.name};
+        t = t.apply {it.name} {it.name};
         assertEquals(t.get(0, 0), 'marko');
         assertEquals(t.get(0, 1), 'vadas');
         assertEquals(t.get(1, 0), 'marko');
@@ -128,5 +128,26 @@ class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 3);
 
 
+    }
+
+    public void testTablePipeWithSubColumns() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        Table t = new Table();
+        g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.name} {it.name} >> -1
+        assertEquals(t.get(0, '1'), "marko");
+        assertEquals(t.get(0, '2'), "ripple");
+        assertEquals(t.get(1, '1'), "marko");
+        assertEquals(t.get(1, '2'), "lop");
+        assertEquals(t.getColumnCount(), 2);
+        assertEquals(t.getRowCount(), 2);
+
+        t.clear();
+        try {
+            g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.name} >> -1
+            assertTrue(false);
+        } catch (RuntimeException e) {
+            assertTrue(true);
+        }
     }
 }
