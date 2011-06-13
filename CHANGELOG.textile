@@ -26,10 +26,12 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Supports integer range filtering for @Map@ -- e.g. @m[0..10]@
 * Added meta methods @loadGraphML@ and @saveGraphML@ to @Graph@
 * @SailGraph@ is no longer a strict dependency (however, loads meta methods if in classpath)
+* Added @optional@ step for doing @back@, but without filtering
 * Added @AsPipe@ for naming steps.
 ** Added @table@ step with respective @TablePipe@ and @Table@ data structure
 ** Added support for named steps in @loop@
 ** Added support for named steps in @back@
+** Added support for named steps in @optional@
 
 h2. Gremlin 0.0
 

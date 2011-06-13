@@ -4,6 +4,7 @@ import com.tinkerpop.pipes.MetaPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.Pipeline;
 import com.tinkerpop.pipes.filter.BackFilterPipe;
+import com.tinkerpop.pipes.sideeffect.OptionalPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import groovy.lang.Closure;
@@ -55,6 +56,18 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
 
     public void backPipe(final String name) {
         this.addPipe(new BackFilterPipe(new Pipeline(this.getPipesAsAgo(name))));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+    }
+
+    public void optionalPipe(final int stepsAgo) {
+        this.addPipe(new OptionalPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo))));
+        if (this.pipes.size() == 1)
+            this.setStarts(this.starts);
+    }
+
+    public void optionalPipe(final String name) {
+        this.addPipe(new OptionalPipe(new Pipeline(this.getPipesAsAgo(name))));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
     }

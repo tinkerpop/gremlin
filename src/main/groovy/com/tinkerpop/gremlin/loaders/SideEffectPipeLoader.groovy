@@ -66,6 +66,16 @@ class SideEffectPipeLoader {
             }
         }
 
+        Gremlin.addStep(GremlinTokens.OPTIONAL)
+        GremlinPipeline.metaClass.optional = {final Integer steps ->
+            ((GremlinPipeline) delegate).optionalPipe(steps);
+            return delegate;
+        }
+        GremlinPipeline.metaClass.optional = {final String name ->
+            ((GremlinPipeline) delegate).optionalPipe(name);
+            return delegate;
+        }
+
         Gremlin.addStep(GremlinTokens.TABLE);
         Pipe.metaClass.table = {final Table table, final Closure... closures ->
             Gremlin.compose(delegate, new TablePipe(table, null, (GremlinPipeline) delegate, closures));
