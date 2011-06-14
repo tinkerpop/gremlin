@@ -150,4 +150,24 @@ class TablePipeTest extends TestCase {
             assertTrue(true);
         }
     }
+
+    public void testGroovyUnique() {
+        Gremlin.load();
+        Table table = new Table("name", "age");
+        table.addRow("marko", 31);
+        table.addRow("jen", 28);
+        table.addRow("marko", 31);
+        assertEquals(table.size(), 3);
+        assertEquals(table.unique().size(), 2);
+        assertEquals(table.sort().get(0), table.sort().get(1));
+
+        table = new Table();
+        table.addRow("marko", 31);
+        table.addRow("jen", 28);
+        table.addRow("marko", 31);
+        assertEquals(table.size(), 3);
+        assertEquals(table.unique().size(), 2);
+        assertEquals(table.sort().get(0), table.sort().get(1));
+
+    }
 }

@@ -4,15 +4,13 @@ import groovy.lang.Closure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class Table implements Iterable<Table.Row> {
+public class Table extends ArrayList<Table.Row> {
 
-    private final List<Row> table = new ArrayList<Row>();
     private List<String> columnNames;
     private int tableWidth = -1;
 
@@ -28,7 +26,7 @@ public class Table implements Iterable<Table.Row> {
     public Table apply(final Closure... closures) {
         if (tableWidth != -1 && closures.length == tableWidth) {
             Table table = new Table();
-            for (Row row : this) {
+            for (Row row: this) {
                 List temp = new ArrayList();
                 for (int i = 0; i < row.size(); i++) {
                     temp.add(closures[i].call(row.get(i)));
@@ -49,7 +47,7 @@ public class Table implements Iterable<Table.Row> {
                 throw new RuntimeException("Table width is " + this.tableWidth + " and row width is " + row.size());
             }
         }
-        this.table.add(new Row(row));
+        this.add(new Row(row));
     }
 
     public void addRow(final Object... row) {
@@ -68,7 +66,7 @@ public class Table implements Iterable<Table.Row> {
     }
 
     public int getRowCount() {
-        return this.table.size();
+        return this.size();
     }
 
     public int getColumnCount() {
@@ -76,20 +74,20 @@ public class Table implements Iterable<Table.Row> {
     }
 
     public Object get(final int row, final int column) {
-        return this.table.get(row).get(column);
+        return this.get(row).get(column);
     }
 
     public Object get(final int row, final String columnName) {
-        return this.table.get(row).get(this.columnNames.indexOf(columnName));
+        return this.get(row).get(this.columnNames.indexOf(columnName));
     }
 
     public Row getRow(final int row) {
-        return this.table.get(row);
+        return this.get(row);
     }
 
     public List getColumn(final int column) {
         final List temp = new ArrayList();
-        for (final Row row : this.table) {
+        for (final Row row: this) {
             temp.add(row.get(column));
         }
         return temp;
@@ -99,18 +97,10 @@ public class Table implements Iterable<Table.Row> {
         return this.getColumn(this.columnNames.indexOf(columnName));
     }
 
-    public Iterator<Row> iterator() {
-        return this.table.iterator();
-    }
-
-    public String toString() {
-        return this.table.toString();
-    }
-
     public void clear() {
+        super.clear();
         this.tableWidth = -1;
         this.columnNames = new ArrayList<String>();
-        this.table.clear();
     }
 
     public class Row extends ArrayList {
