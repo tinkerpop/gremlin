@@ -11,7 +11,9 @@ Gremlin: A Graph Traversal Language
 
 h2. Gremlin 1.0
 
-h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-clownin-around.png!
+
+h3. Version 1.1 (Clownin' Around -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
@@ -27,6 +29,7 @@ h3. Version 1.1 (NOT OFFICIALLY RELEASED YET)
 * Added meta methods @loadGraphML@ and @saveGraphML@ to @Graph@
 * @SailGraph@ is no longer a strict dependency (however, loads meta methods if in classpath)
 * Added @optional@ step for doing @back@, but without filtering
+* Extended support for graph pattern matching
 * Added @AsPipe@ for naming steps.
 ** Added @table@ step with respective @TablePipe@ and @Table@ data structure
 ** Added support for named steps in @loop@
