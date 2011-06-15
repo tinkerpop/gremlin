@@ -26,7 +26,7 @@ public class Table extends ArrayList<Table.Row> {
     public Table apply(final Closure... closures) {
         if (tableWidth != -1 && closures.length == tableWidth) {
             Table table = new Table();
-            for (Row row: this) {
+            for (Row row : this) {
                 List temp = new ArrayList();
                 for (int i = 0; i < row.size(); i++) {
                     temp.add(closures[i].call(row.get(i)));
@@ -87,7 +87,7 @@ public class Table extends ArrayList<Table.Row> {
 
     public List getColumn(final int column) {
         final List temp = new ArrayList();
-        for (final Row row: this) {
+        for (final Row row : this) {
             temp.add(row.get(column));
         }
         return temp;

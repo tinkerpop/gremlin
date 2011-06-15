@@ -9,17 +9,17 @@ Gremlin: A Graph Traversal Language
 </repository>
 ```
 
-h2. Gremlin 1.0
+h2. Gremlin 1.X
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-clownin-around.png!
 
-h3. Version 1.1 (Clownin' Around -- NOT OFFICIALLY RELEASED YET)
+h3. Version 1.1 (Clownin' Around -- June 15, 2011)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
 </dependency>
 ```
 
@@ -36,7 +36,7 @@ h3. Version 1.1 (Clownin' Around -- NOT OFFICIALLY RELEASED YET)
 ** Added support for named steps in @back@
 ** Added support for named steps in @optional@
 
-h2. Gremlin 0.0
+==<hr/>==
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlin.png!
 
@@ -61,6 +61,8 @@ h3. Version 1.0 (Gremlin -- May 8, 2011)
 
 
 ==<hr/>==
+
+h2. Gremlin 0.X
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremlin-the-grouch.png!
 

@@ -19,7 +19,15 @@ import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
-import com.tinkerpop.pipes.pgm.*
+import com.tinkerpop.pipes.pgm.OutPipe
+import com.tinkerpop.pipes.pgm.OutEdgesPipe
+import com.tinkerpop.pipes.pgm.InEdgesPipe
+import com.tinkerpop.pipes.pgm.InPipe
+import com.tinkerpop.pipes.pgm.BothPipe
+import com.tinkerpop.pipes.pgm.BothEdgesPipe
+import com.tinkerpop.pipes.pgm.InVertexPipe
+import com.tinkerpop.pipes.pgm.BothVerticesPipe
+import com.tinkerpop.pipes.pgm.OutVertexPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

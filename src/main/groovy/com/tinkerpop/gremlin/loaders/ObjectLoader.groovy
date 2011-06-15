@@ -91,7 +91,7 @@ class ObjectLoader {
     }
 
     private static Table createTable(final Table table) {
-        if(table.getColumnNames().size() > 0)
+        if (table.getColumnNames().size() > 0)
             return new Table(table.columnNames.toArray(new String[table.columnNames.size()]));
         else
             return new Table();
