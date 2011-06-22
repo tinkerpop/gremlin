@@ -130,6 +130,19 @@ class GremlinTest extends TestCase {
         assertTrue((g.e(10).bothV >> 2).contains(g.v(4)));
         assertTrue((g.e(10).bothV >> 2).contains(g.v(5)));
 
+        ////////
+
+        assertEquals(g.v(1).outE('knows', 'created').toList().size(), 3);
+        assertEquals(g.v(2).inE('knows', 'created').toList().size(), 1);
+        assertEquals(g.v(2).inE('knows', 'created').toList().get(0), g.v(1).outE('knows') >> 1);
+        assertEquals(g.v(4).bothE('knows', 'created').toList().size(), 3);
+
+        ////////
+
+        assertEquals(g.v(1).out('knows', 'created').toList().size(), 3);
+        assertEquals(g.v(2).in('knows', 'created').toList().size(), 1);
+        assertEquals(g.v(2).in('knows', 'created').toList().get(0), g.v(1));
+        assertEquals(g.v(4).both('knows', 'created').toList().size(), 3);
 
     }
 }

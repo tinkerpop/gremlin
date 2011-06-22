@@ -11,12 +11,7 @@ import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.filter.RangeFilterPipe
-import com.tinkerpop.pipes.pgm.PropertyPipe
-import com.tinkerpop.pipes.pgm.LabelPipe
-import com.tinkerpop.pipes.pgm.IdPipe
-import com.tinkerpop.pipes.pgm.IdFilterPipe
-import com.tinkerpop.pipes.pgm.LabelFilterPipe
-import com.tinkerpop.pipes.pgm.PropertyFilterPipe
+import com.tinkerpop.pipes.pgm.*
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
