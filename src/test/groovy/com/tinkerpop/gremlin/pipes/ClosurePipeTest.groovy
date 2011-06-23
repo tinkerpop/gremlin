@@ -22,8 +22,11 @@ class ClosurePipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
-        [Iterable, Iterator, Vertex].each {it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }}
+        Gremlin.addStep('co_developer')
+        [Pipe, Vertex].each {
+            def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
+            it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }
+        }
 
         def list = []
         g.v(1).co_developer >> list

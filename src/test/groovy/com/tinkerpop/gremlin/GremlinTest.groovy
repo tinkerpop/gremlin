@@ -34,17 +34,30 @@ class GremlinTest extends TestCase {
     public void testUserDefinedSteps() {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        Gremlin.addStep("co_developer")
-        [Iterable, Iterator, Vertex].each {
+        Gremlin.addStep("coDeveloper")
+        [Pipe, Vertex].each {
             def c = { def x; _ {x = it}.outE('created').inV.inE('created').outV {it != x} }
-            it.metaClass.co_developer = { Gremlin.compose(delegate, c())}
+            it.metaClass.coDeveloper = { Gremlin.compose(delegate, c())}
         }
         def results = []
-        g.v(1).co_developer >> results
+        g.v(1).coDeveloper >> results
         assertEquals(results.size(), 2);
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
+
+        Gremlin.defineStep("coCreator", [Pipe, Vertex], {
+            def x; _ {x = it}.out('created').in('created') {it != x}
+        });
+        results = []
+        g.v(1).coCreator >> results
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(g.v(4)));
+        assertTrue(results.contains(g.v(6)));
+
+        assertEquals(g.v(1).coCreator, g.v(1).coDeveloper);
     }
+
+
 
     public void testBasicTraversalPipes() {
         Gremlin.load();

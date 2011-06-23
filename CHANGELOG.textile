@@ -11,6 +11,21 @@ Gremlin: A Graph Traversal Language
 
 h2. Gremlin 1.X
 
+h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>1.2-SNAPSHOT</version>
+</dependency>
+```
+
+* Added respective pipe support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
+* Added support for simple step creation through @Gremlin.defineStep()@
+
+==<hr/>==
+
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-clownin-around.png!
 
 h3. Version 1.1 (Clownin' Around -- June 15, 2011)

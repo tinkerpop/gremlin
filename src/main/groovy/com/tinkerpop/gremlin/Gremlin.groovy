@@ -98,4 +98,11 @@ class Gremlin {
     public static boolean isStep(final String stepName) {
         return Gremlin.steps.contains(stepName);
     }
+
+    public static void defineStep(final String stepName, final List<Class> classes, final Closure stepClosure) {
+        Gremlin.addStep(stepName);
+        classes.each {
+            it.metaClass."$stepName" = { Gremlin.compose(delegate, stepClosure()) };
+        }
+    }
 }
