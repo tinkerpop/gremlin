@@ -5,10 +5,6 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
-import com.tinkerpop.gremlin.pipes.ClosureTransformPipe
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
-import com.tinkerpop.gremlin.pipes.IfPipe
 import com.tinkerpop.pipes.MetaPipe
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.branch.CopySplitPipe
@@ -19,6 +15,7 @@ import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.util.GatherPipe
 import com.tinkerpop.pipes.util.PathPipe
 import com.tinkerpop.pipes.util.ScatterPipe
+import com.tinkerpop.gremlin.pipes.*
 import com.tinkerpop.pipes.pgm.*
 
 /**
@@ -125,8 +122,11 @@ class TransformPipeLoader {
         }
 
         Gremlin.addStep(GremlinTokens.PATHS);
-        Pipe.metaClass.paths = {final Closure closure ->
-            return Gremlin.compose(delegate, new PathPipe(), closure)
+        Pipe.metaClass.paths = { ->
+            return Gremlin.compose(delegate, new PathPipe())
+        }
+        Pipe.metaClass.paths = { final Closure... closures ->
+            return Gremlin.compose(delegate, new PathClosurePipe(closures));
         }
 
         Gremlin.addStep(GremlinTokens.OUT);
@@ -134,9 +134,6 @@ class TransformPipeLoader {
             it.metaClass.out = {final Closure closure ->
                 return Gremlin.compose(delegate, new OutPipe(), closure)
             }
-            /*it.metaClass.out = {
-                return Gremlin.compose(delegate, new OutPipe())
-            }*/
             it.metaClass.out = {final String label, final Closure closure ->
                 return Gremlin.compose(delegate, new OutPipe(label), closure)
             }
@@ -150,9 +147,6 @@ class TransformPipeLoader {
             it.metaClass.outE = {final Closure closure ->
                 return Gremlin.compose(delegate, new OutEdgesPipe(), closure)
             }
-            /*it.metaClass.outE = {
-                return Gremlin.compose(delegate, new OutEdgesPipe())
-            }*/
             it.metaClass.outE = {final String label, final Closure closure ->
                 return Gremlin.compose(delegate, new OutEdgesPipe(label), closure)
             }
@@ -168,9 +162,6 @@ class TransformPipeLoader {
             it.metaClass.in = {final Closure closure ->
                 return Gremlin.compose(delegate, new InPipe(), closure)
             }
-            /* it.metaClass.in = {
-                return Gremlin.compose(delegate, new InPipe())
-            }*/
             it.metaClass.in = {final String label, final Closure closure ->
                 return Gremlin.compose(delegate, new InPipe(label), closure)
             }
@@ -186,9 +177,6 @@ class TransformPipeLoader {
             it.metaClass.inE = {final Closure closure ->
                 return Gremlin.compose(delegate, new InEdgesPipe(), closure)
             }
-            /*it.metaClass.inE = {
-                return Gremlin.compose(delegate, new InEdgesPipe())
-            }*/
             it.metaClass.inE = {final String label, final Closure closure ->
                 return Gremlin.compose(delegate, new InEdgesPipe(label), closure)
             }
@@ -202,9 +190,6 @@ class TransformPipeLoader {
             it.metaClass.both = {final Closure closure ->
                 return Gremlin.compose(delegate, new BothPipe(), closure)
             }
-            /*it.metaClass.both = {
-                return Gremlin.compose(delegate, new BothPipe())
-            }*/
             it.metaClass.both = {final String label, final Closure closure ->
                 return Gremlin.compose(delegate, new BothPipe(label), closure)
             }
@@ -219,9 +204,6 @@ class TransformPipeLoader {
             it.metaClass.bothE = {final Closure closure ->
                 return Gremlin.compose(delegate, new BothEdgesPipe(), closure)
             }
-            /*it.metaClass.bothE = {
-                return Gremlin.compose(delegate, new BothEdgesPipe())
-            }*/
             it.metaClass.bothE = {final String label, final Closure closure ->
                 return Gremlin.compose(delegate, new BothEdgesPipe(label), closure)
             }
