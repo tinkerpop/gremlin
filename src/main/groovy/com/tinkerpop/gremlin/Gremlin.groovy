@@ -107,4 +107,8 @@ class Gremlin {
             it.metaClass."$stepName" = { Gremlin.compose(delegate, stepClosure()) };
         }
     }
+
+    public static String version() {
+        return GremlinTokens.VERSION;
+    }
 }

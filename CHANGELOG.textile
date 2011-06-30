@@ -23,6 +23,8 @@ h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
 
 * Added respective pipe support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
 * Added support for simple step creation through @Gremlin.defineStep()@
+* Added path closures to @paths@ to allow for post-processing a returned path
+* Added @Gremlin.version()@ to get version information
 
 ==<hr/>==
 

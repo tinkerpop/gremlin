@@ -9,6 +9,11 @@ import junit.framework.TestCase
 
 class GremlinTest extends TestCase {
 
+    public void testVersion() throws Exception {
+        Gremlin.load();
+        assertEquals(Gremlin.version(), GremlinTokens.VERSION);
+    }
+
     public void testCompilation() throws Exception {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
