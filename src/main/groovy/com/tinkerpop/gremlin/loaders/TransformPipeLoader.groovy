@@ -122,7 +122,7 @@ class TransformPipeLoader {
         }
 
         Gremlin.addStep(GremlinTokens.PATHS);
-        Pipe.metaClass.paths = { ->
+        Pipe.metaClass.paths = {->
             return Gremlin.compose(delegate, new PathPipe())
         }
         Pipe.metaClass.paths = { final Closure... closures ->

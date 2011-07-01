@@ -41,7 +41,7 @@ class GroupCountClosurePipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def m = [:].withDefault {0};
-        g.v(1).outE.inV.groupCount(m) {it + 1}.outE.inV.groupCount(m) {it + 3} >> -1
+        g.v(1).outE.inV.groupCount(m) {it} {it + 1}.outE.inV.groupCount(m) {it} {it + 3} >> -1
         assertEquals(m.size(), 4)
         assertEquals(m.get(g.v(2)), 1);
         assertEquals(m.get(g.v(4)), 1);
@@ -49,7 +49,7 @@ class GroupCountClosurePipeTest extends TestCase {
         assertEquals(m.get(g.v(5)), 3);
 
         m = [:].withDefault {0};
-        g.v(1).outE.inV.groupCount(m) {it + 1}.outE.inV.groupCount(m) {3.0d} >> -1
+        g.v(1).outE.inV.groupCount(m) {it} {it + 1}.outE.inV.groupCount(m) {it} {3.0d} >> -1
         assertEquals(m.size(), 4)
         assertEquals(m.get(g.v(2)), 1);
         assertEquals(m.get(g.v(4)), 1);
@@ -61,12 +61,30 @@ class GroupCountClosurePipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def m = [:].withDefault {0};
-        g.v(1).outE.inV.groupCount(m).outE.inV.groupCount(m) {it + 3.0d} >> -1
+        g.v(1).outE.inV.groupCount(m).outE.inV.groupCount(m) {it} {it + 3.0d} >> -1
         assertEquals(m.size(), 4)
         assertEquals(m.get(g.v(2)), 1);
         assertEquals(m.get(g.v(4)), 1);
         assertEquals(m.get(g.v(3)), 4.0d);
         assertEquals(m.get(g.v(5)), 3.0d);
+    }
+
+    public void testGroupCountKeyClosure() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def m = [:];
+        g.v(1)._().groupCount(m) {it.age} {3.0f}.as('x').out.groupCount(m) {it.name}.loop('x') {it.loops < 3} >> -1
+        assertEquals(m.size(), 5);
+        assertTrue(m.keySet().contains("vadas"));
+        assertTrue(m.keySet().contains("josh"));
+        assertTrue(m.keySet().contains("lop"));
+        assertTrue(m.keySet().contains("ripple"));
+        assertTrue(m.keySet().contains(29));
+        assertEquals(m["vadas"], 1);
+        assertEquals(m["josh"], 1);
+        assertEquals(m["lop"], 2);
+        assertEquals(m["ripple"], 1);
+        assertEquals(m[29], 3.0f);
     }
 
     public void testGroupCountNoCap() throws Exception {

@@ -43,7 +43,7 @@ class PathClosurePipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def results = [];
-        g.v(1).as('x').outE.inV.loop('x'){it.loops < 3}.paths{it.name}{it.weight} >> results;
+        g.v(1).as('x').outE.inV.loop('x') {it.loops < 3}.paths {it.name} {it.weight} >> results;
         assertEquals(results.size(), 2);
 
         assertEquals(results.get(0).size(), 5);

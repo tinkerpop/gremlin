@@ -50,19 +50,24 @@ class SideEffectPipeLoader {
 
         Gremlin.addStep(GremlinTokens.GROUPCOUNT);
         Pipe.metaClass.groupCount = {final Object... params ->
-            if (params) {
-                if (params.length == 2) {
-                    Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], (Closure) params[1]));
-                } else {
-                    if (params[0] instanceof Map) {
-                        Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], {it + 1l}));
 
-                    } else {
-                        Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), (Closure) params[0]));
-                    }
+            if (params.length == 3) {
+                Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], (Closure) params[1], (Closure) params[2]));
+            } else if (params.length == 2) {
+                if (params[0] instanceof Map) {
+                    Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], (Closure) params[1], null));
+
+                } else {
+                    Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), (Closure) params[0], (Closure) params[1]));
+                }
+            } else if (params.length == 1) {
+                if (params[0] instanceof Map) {
+                    Gremlin.compose(delegate, new GroupCountClosurePipe((Map) params[0], null, null));
+                } else {
+                    Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), (Closure) params[0], null));
                 }
             } else {
-                return Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), {it + 1l}));
+                return Gremlin.compose(delegate, new GroupCountClosurePipe(new HashMap(), null, null));
             }
         }
 
