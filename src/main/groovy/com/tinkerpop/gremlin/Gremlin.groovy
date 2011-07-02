@@ -104,7 +104,10 @@ class Gremlin {
     public static void defineStep(final String stepName, final List<Class> classes, final Closure stepClosure) {
         Gremlin.addStep(stepName);
         classes.each {
-            it.metaClass."$stepName" = { Gremlin.compose(delegate, stepClosure()) };
+            stepClosure.setDelegate(delegate);
+            it.metaClass."$stepName" = { final Object parameter -> Gremlin.compose(delegate, stepClosure(parameter))};
+            it.metaClass."$stepName" = { final Object... parameters -> Gremlin.compose(delegate, stepClosure(parameters))};
+
         }
     }
 

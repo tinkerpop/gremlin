@@ -50,6 +50,8 @@ class GremlinTest extends TestCase {
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
 
+        ///////////////////////
+
         Gremlin.defineStep("coCreator", [Pipe, Vertex], {
             def x; _ {x = it}.out('created').in('created') {it != x}
         });
@@ -60,6 +62,38 @@ class GremlinTest extends TestCase {
         assertTrue(results.contains(g.v(6)));
 
         assertEquals(g.v(1).coCreator, g.v(1).coDeveloper);
+
+        ///////////////////////
+
+        Gremlin.defineStep("co", [Pipe, Vertex], { final String label ->
+            def x; _ {x = it}.out(label).in(label) {it != x}
+        });
+        results = []
+        g.v(1).co('created') >> results
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(g.v(4)));
+        assertTrue(results.contains(g.v(6)));
+
+        assertEquals(g.v(1).co('created'), g.v(1).coCreator);
+
+        ///////////////////////
+        def x;
+        Gremlin.defineStep("twoStep", [Pipe, Vertex], { final Object... params ->
+            _ {x = it}.out(params[0]).in(params[0]).filter(params[1])
+        });
+        results = []
+        g.v(1).twoStep('created') {it != x} >> results
+        assertEquals(results.size(), 2);
+        assertTrue(results.contains(g.v(4)));
+        assertTrue(results.contains(g.v(6)));
+        assertEquals(g.v(1).co('created'), g.v(1).twoStep('created') {it != x});
+
+        results = []
+        g.v(1).twoStep('created') {it == x} >> results
+        assertEquals(results.size(), 1);
+        assertTrue(results.contains(g.v(1)));
+
+
     }
 
 
