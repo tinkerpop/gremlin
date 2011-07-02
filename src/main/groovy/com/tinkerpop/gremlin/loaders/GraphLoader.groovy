@@ -76,7 +76,11 @@ class GraphLoader {
         }
 
         Graph.metaClass.loadGraphML = {final def fileObject ->
-            GraphMLReader.inputGraph((Graph) delegate, new FileInputStream(fileObject))
+            try {
+                GraphMLReader.inputGraph((Graph) delegate, new URL(fileObject).openStream());
+            } catch (MalformedURLException e) {
+                GraphMLReader.inputGraph((Graph) delegate, new FileInputStream(fileObject))
+            }
         }
 
         Graph.metaClass.saveGraphML = {final def fileObject ->

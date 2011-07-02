@@ -26,6 +26,7 @@ h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
 * Added map entry closures to @groupCount@ to allow for pre-processing an entry's key/value pairs
 * Added @Gremlin.version()@ to get version information
 * Added @Gremlin.defineStep()@ to make it simple for developers to add new steps
+* Added support for @Graph.loadGraphML(URL)@
 
 ==<hr/>==
 

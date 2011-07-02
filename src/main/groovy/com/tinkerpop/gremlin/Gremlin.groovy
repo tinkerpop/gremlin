@@ -101,17 +101,21 @@ class Gremlin {
         return Gremlin.steps.contains(stepName);
     }
 
-    public static void defineStep(final String stepName, final List<Class> classes, final Closure stepClosure) {
+    public static void defineStep(final String stepName, final List<Class> classes, Closure stepClosure) {
         Gremlin.addStep(stepName);
         classes.each {
             stepClosure.setDelegate(delegate);
-            it.metaClass."$stepName" = { final Object parameter -> Gremlin.compose(delegate, stepClosure(parameter))};
-            it.metaClass."$stepName" = { final Object... parameters -> Gremlin.compose(delegate, stepClosure(parameters))};
-
+            it.metaClass."$stepName" = { final Object... parameters ->
+                if (parameters.length == 1)
+                    Gremlin.compose(delegate, stepClosure(parameters[0]))
+                else
+                    Gremlin.compose(delegate, stepClosure(parameters));
+            };
         }
     }
 
     public static String version() {
         return GremlinTokens.VERSION;
     }
+
 }

@@ -81,6 +81,11 @@ class GremlinTest extends TestCase {
         Gremlin.defineStep("twoStep", [Pipe, Vertex], { final Object... params ->
             _ {x = it}.out(params[0]).in(params[0]).filter(params[1])
         });
+        //TODO: can this be possible?
+        /*Gremlin.defineStep("twoStep", [Pipe, Vertex], { final String label, Closure closure ->
+            _ {x = it}.out(label).in(label).filter(closure)
+        });*/
+
         results = []
         g.v(1).twoStep('created') {it != x} >> results
         assertEquals(results.size(), 2);
