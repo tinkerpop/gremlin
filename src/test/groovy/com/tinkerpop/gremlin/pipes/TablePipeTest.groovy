@@ -134,7 +134,16 @@ class TablePipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         Table t = new Table();
-        g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.name} {it.name} >> -1
+        g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.age} {it.name} >> -1
+        assertEquals(t.get(0, '1'), 29);
+        assertEquals(t.get(0, '2'), "ripple");
+        assertEquals(t.get(1, '1'), 29);
+        assertEquals(t.get(1, '2'), "lop");
+        assertEquals(t.getColumnCount(), 2);
+        assertEquals(t.getRowCount(), 2);
+
+        t.clear();
+        g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.name} >> -1
         assertEquals(t.get(0, '1'), "marko");
         assertEquals(t.get(0, '2'), "ripple");
         assertEquals(t.get(1, '1'), "marko");
@@ -143,12 +152,13 @@ class TablePipeTest extends TestCase {
         assertEquals(t.getRowCount(), 2);
 
         t.clear();
-        try {
-            g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.name} >> -1
-            assertTrue(false);
-        } catch (RuntimeException e) {
-            assertTrue(true);
-        }
+        g.v(1).as('1').out.as('NO').out.as('2').table(t, ['1', '2']) {it.age} >> -1
+        assertEquals(t.get(0, '1'), 29);
+        assertNull(t.get(0, '2'));
+        assertEquals(t.get(1, '1'), 29);
+        assertNull(t.get(1, '2'));
+        assertEquals(t.getColumnCount(), 2);
+        assertEquals(t.getRowCount(), 2);
     }
 
     public void testGroovyUnique() {
