@@ -59,4 +59,27 @@ class AggregatorPipeTest extends TestCase {
 
         assertEquals(g.E.bothV.aggregate.cap >> 1, g.E.bothV.gather >> 1)
     }
+
+    public void testEqualityToNonAggregation() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def x = [] as Set;
+
+        assertEquals(g.V.out.in, g.V.out.aggregate(x).in);
+    }
+
+    /*public void testBreadthFirstAggregate() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        def x = [];
+        def results = [];
+        def c = 0;
+
+        g.v(1).as('x').out.aggregate(x).loop('x'){println(it.object.toString() + " " + it.loops); it.loops < 3} >> results;
+        println results;
+        println x;
+
+        g.v(1).out.aggregate(x).paths.each{println it};
+    }*/
 }
