@@ -64,8 +64,11 @@ class AggregatorPipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def x = [] as Set;
-
         assertEquals(g.V.out.in, g.V.out.aggregate(x).in);
+        x.clear();
+        assertEquals(g.v(1).out.aggregate(x).paths >> [], g.v(1).out.paths >> []);
+        x.clear();
+        assertEquals(g.v(1).out.aggregate(x).in.paths >> [], g.v(1).out.in.paths >> []);
     }
 
     /*public void testBreadthFirstAggregate() {
