@@ -57,8 +57,6 @@ class TransformPipeLoader {
             }
         }
 
-
-
         Gremlin.addStep(GremlinTokens.IFELSE);
         Pipe.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
             return Gremlin.compose(delegate, new IfPipe(ifClosure, thenClosure, elseClosure));

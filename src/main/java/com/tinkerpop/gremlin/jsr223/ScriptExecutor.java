@@ -1,10 +1,11 @@
 package com.tinkerpop.gremlin.jsr223;
 
 import javax.script.Bindings;
-import javax.script.ScriptContext;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.Reader;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Pavel A. Yaskevich
@@ -13,28 +14,28 @@ import java.io.PrintStream;
 public class ScriptExecutor {
 
     public static void main(final String[] arguments) throws IOException {
-        final PrintStream output = System.out;
-        final int argumentsCount = arguments.length;
+        if (arguments.length == 0) {
+            System.out.println("Usage: <path_to_gremlin_script> <argument a1> <argument a2> ...");
+        } else {
+            evaluate(new FileReader(arguments[0]), Arrays.asList(arguments).subList(1, arguments.length));
+        }
+    }
 
-
+    protected static void evaluate(final Reader reader, final List<String> arguments) {
         final GremlinScriptEngine engine = new GremlinScriptEngine();
 
-        if (argumentsCount == 0) {
-            output.println("Usage: <path_to_gremlin_script> <argument a1> <argument a2> ...");
-        } else {
-            if (argumentsCount > 1) {
-                final Bindings bindings = engine.getContext().getBindings(ScriptContext.ENGINE_SCOPE);
-
-                for (int i = 1; i < argumentsCount; i++) {
-                    bindings.put("a" + i, arguments[i]);
-                }
-            }
-            try {
-                engine.eval(new FileReader(arguments[0]));
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
+        final Bindings bindings = engine.createBindings();
+        if (arguments.size() > 0) {
+            for (int i = 0; i < arguments.size(); i++) {
+                bindings.put("a" + (i+1), arguments.get(i));
             }
         }
+        try {
+            engine.eval(reader, bindings);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
     }
 
 }
