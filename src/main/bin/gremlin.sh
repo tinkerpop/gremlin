@@ -19,7 +19,7 @@ fi
 if [ "$1" = "-e" ]; then
   k=$2
   if [ $# -gt 2 ]; then
-    for (( i=3 ; i -lt $# + 1 ; i++ ))
+    for (( i=3 ; i < $# + 1 ; i++ ))
     do
       eval a=\$$i
       k="$k \"$a\""
