@@ -27,7 +27,7 @@ public class ScriptExecutor {
         final Bindings bindings = engine.createBindings();
         if (arguments.size() > 0) {
             for (int i = 0; i < arguments.size(); i++) {
-                bindings.put("a" + (i+1), arguments.get(i));
+                bindings.put("a" + (i + 1), arguments.get(i));
             }
         }
         try {

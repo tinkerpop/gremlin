@@ -41,7 +41,7 @@ public class GremlinTokens {
     public static final String FILTER = "filter";
     public static final String GATHER = "gather";
     public static final String GROUPCOUNT = "groupCount";
-    public static final String IFELSE = "ifelse";
+    public static final String IFTHENELSE = "ifThenElse";
     public static final String LOOP = "loop";
     public static final String OPTIONAL = "optional";
     public static final String ORFILTER = "orFilter";

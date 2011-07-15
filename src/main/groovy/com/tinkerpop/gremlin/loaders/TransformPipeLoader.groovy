@@ -57,12 +57,12 @@ class TransformPipeLoader {
             }
         }
 
-        Gremlin.addStep(GremlinTokens.IFELSE);
-        Pipe.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
-            return Gremlin.compose(delegate, new IfPipe(ifClosure, thenClosure, elseClosure));
+        Gremlin.addStep(GremlinTokens.IFTHENELSE);
+        Pipe.metaClass.ifThenElse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
+            return Gremlin.compose(delegate, new IfThenElsePipe(ifClosure, thenClosure, elseClosure));
         }
-        Pipe.metaClass.ifelse = {final Closure ifClosure, final Closure thenClosure ->
-            return Gremlin.compose(delegate, new IfPipe(ifClosure, thenClosure));
+        Pipe.metaClass.ifThenElse = {final Closure ifClosure, final Closure thenClosure ->
+            return Gremlin.compose(delegate, new IfThenElsePipe(ifClosure, thenClosure));
         }
 
         Gremlin.addStep(GremlinTokens.CAP);
