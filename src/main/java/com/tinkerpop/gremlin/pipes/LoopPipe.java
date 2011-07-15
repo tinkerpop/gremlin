@@ -65,4 +65,10 @@ public class LoopPipe<S> extends AbstractPipe<S, S> implements MetaPipe {
         return path;
     }
 
+    public void reset() {
+        this.expando.clear();
+        this.pipe.reset();
+        super.reset();
+    }
+
 }

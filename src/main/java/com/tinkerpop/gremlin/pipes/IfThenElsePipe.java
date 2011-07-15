@@ -58,4 +58,9 @@ public class IfThenElsePipe<S, E> extends AbstractPipe<S, E> {
             }
         }
     }
+
+    public void reset() {
+        this.itty = null;
+        super.reset();
+    }
 }

@@ -53,4 +53,9 @@ public class AsPipe<S, E> extends AbstractPipe<S, E> implements MetaPipe {
         return super.toString() + "(" + this.name + ")[" + this.pipe + "]";
     }
 
+    public void reset() {
+        this.pipe.reset();
+        super.reset();
+    }
+
 }

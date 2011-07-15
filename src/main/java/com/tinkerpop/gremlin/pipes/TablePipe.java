@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S, S, Table> {
 
-    private final Table table;
+    private Table table;
     private final Closure[] closures;
     private int currentClosure;
     private final List<AsPipe> asPipes = new ArrayList<AsPipe>();
@@ -56,5 +56,11 @@ public class TablePipe<S> extends AbstractPipe<S, S> implements SideEffectPipe<S
         }
         this.table.addRow(row);
         return s;
+    }
+
+    public void reset() {
+        this.table = new Table();
+        this.currentClosure = 0;
+        super.reset();
     }
 }

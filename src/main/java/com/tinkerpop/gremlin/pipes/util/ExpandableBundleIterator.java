@@ -54,4 +54,8 @@ public class ExpandableBundleIterator<T> implements Iterator<T> {
         else
             return this.current.getLoops();
     }
+
+    public void clear() {
+        this.queue.clear();
+    }
 }
