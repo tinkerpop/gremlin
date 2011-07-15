@@ -27,6 +27,7 @@ h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
 * Added @Gremlin.version()@ to get version information
 * Added @Gremlin.defineStep()@ to make it simple for developers to add new steps
 * Added support for @Graph.loadGraphML(URL)@
+* Renamed @ifelse@ to @ifThenElse@ and provided 'scatter' functionality if branch yields an iterator/iterable
 
 ==<hr/>==
 
@@ -73,7 +74,7 @@ h3. Version 1.0 (Gremlin -- May 8, 2011)
 * Added @copySplit@, @fairMerge@, @exhaustMerge@
 * @SailLoader@ is loaded on startup (no longer required by developer)
 * Faster @Gremlin.compile()@ using @GremlinScriptEngine@
-* Renamed @andf@, @off@, and @propf@ to @andFilter@, @orFilter@, and @propFilter@
+* Renamed @andf@, @orf@, and @propf@ to @andFilter@, @orFilter@, and @propFilter@
 * Moved to the more optimal vertex/edge adjacency Pipes
 * Renamed @unique@ to @uniqueObject@
 * Updated Gremlin-specific pipes to support @reset()@ API
