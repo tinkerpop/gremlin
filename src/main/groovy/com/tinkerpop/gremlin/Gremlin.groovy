@@ -31,7 +31,8 @@ class Gremlin {
             // that is ok
         }
 
-        GraphJungLoader.load();
+        //TODO: Do no make available until fully developed
+        // GraphJungLoader.load();
     }
 
     public static Filter mapFilter(final t) {

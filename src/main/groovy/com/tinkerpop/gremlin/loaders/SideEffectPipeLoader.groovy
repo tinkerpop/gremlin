@@ -47,7 +47,6 @@ class SideEffectPipeLoader {
 
         }
 
-
         Gremlin.addStep(GremlinTokens.GROUPCOUNT);
         Pipe.metaClass.groupCount = {final Object... params ->
 
