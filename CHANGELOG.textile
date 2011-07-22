@@ -29,6 +29,7 @@ h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
 * Added support for @Graph.loadGraphML(URL)@
 * Renamed @ifelse@ to @ifThenElse@ and provided 'scatter' functionality if branch yields an iterator/iterable
 * Implemented @Pipe.reset()@ method for all Gremlin-specific pipes
+* Fixed the aggregate/loop problem
 
 ==<hr/>==
 
