@@ -24,7 +24,6 @@ public class ExpandableBundleIterator<T> implements Iterator<T> {
 
     public T next() {
         if (this.queue.isEmpty()) {
-            this.current = null;
             return iterator.next();
         } else {
             this.current = this.queue.remove();
@@ -56,6 +55,7 @@ public class ExpandableBundleIterator<T> implements Iterator<T> {
     }
 
     public void clear() {
+        this.current = null;
         this.queue.clear();
     }
 }
