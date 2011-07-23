@@ -11,7 +11,9 @@ Gremlin: A Graph Traversal Language
 
 h2. Gremlin 1.X
 
-h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-new-sheriff-in-town.png!
+
+h3. Version 1.2 (New Sheriff in Town -- NOT OFFICIALLY YET RELEASED)
 
 ```xml
 <dependency>
@@ -29,7 +31,7 @@ h3. Version 1.2 (NOT OFFICIALLY YET RELEASED)
 * Added support for @Graph.loadGraphML(URL)@
 * Renamed @ifelse@ to @ifThenElse@ and provided 'scatter' functionality if branch yields an iterator/iterable
 * Implemented @Pipe.reset()@ method for all Gremlin-specific pipes
-* Fixed the aggregate/loop problem
+* Fixed the @aggregate@/@loop@ problem
 
 ==<hr/>==
 
