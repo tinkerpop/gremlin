@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.pipes
+package com.tinkerpop.gremlin.steps
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
@@ -9,7 +9,7 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class CopySplitPipeTest extends TestCase {
+class CopySplitStepTest extends TestCase {
 
     public void testIsPipe() throws Exception {
         Gremlin.load();

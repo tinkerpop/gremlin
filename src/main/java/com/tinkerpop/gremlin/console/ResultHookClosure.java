@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.console;
 
-import com.tinkerpop.pipes.SingleIterator;
+import com.tinkerpop.pipes.util.SingleIterator;
 import groovy.lang.Closure;
 import org.codehaus.groovy.tools.shell.IO;
 

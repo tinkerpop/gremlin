@@ -1,16 +1,16 @@
-package com.tinkerpop.gremlin.pipes
+package com.tinkerpop.gremlin.steps
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.PipeHelper
+import com.tinkerpop.pipes.util.PipeHelper
 import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class BackFilterPipeTest extends TestCase {
+class BackFilterStepTest extends TestCase {
 
     public void testIsPipe() throws Exception {
         Gremlin.load();

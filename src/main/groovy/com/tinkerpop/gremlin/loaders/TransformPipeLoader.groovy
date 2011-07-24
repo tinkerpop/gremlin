@@ -5,18 +5,18 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.pipes.MetaPipe
+import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.branch.CopySplitPipe
 import com.tinkerpop.pipes.branch.ExhaustiveMergePipe
 import com.tinkerpop.pipes.branch.FairMergePipe
+import com.tinkerpop.pipes.branch.IfThenElsePipe
 import com.tinkerpop.pipes.filter.CollectionFilterPipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
-import com.tinkerpop.pipes.util.GatherPipe
-import com.tinkerpop.pipes.util.PathPipe
-import com.tinkerpop.pipes.util.ScatterPipe
-import com.tinkerpop.gremlin.pipes.*
-import com.tinkerpop.pipes.pgm.*
+import com.tinkerpop.pipes.filter.FilterClosurePipe
+import com.tinkerpop.pipes.util.MetaPipe
+import com.tinkerpop.pipes.transform.*
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -28,7 +28,7 @@ class TransformPipeLoader {
         Gremlin.addStep(GremlinTokens.TRANSFORM);
         [Pipe, Vertex, Edge, Graph].each {
             it.metaClass.transform = {final Closure closure ->
-                return Gremlin.compose(delegate, new ClosureTransformPipe(closure));
+                return Gremlin.compose(delegate, new TransformClosurePipe(new GroovyPipeClosure(closure)));
             }
         }
 
@@ -59,10 +59,10 @@ class TransformPipeLoader {
 
         Gremlin.addStep(GremlinTokens.IFTHENELSE);
         Pipe.metaClass.ifThenElse = {final Closure ifClosure, final Closure thenClosure, final Closure elseClosure ->
-            return Gremlin.compose(delegate, new IfThenElsePipe(ifClosure, thenClosure, elseClosure));
+            return Gremlin.compose(delegate, new IfThenElsePipe(new GroovyPipeClosure(ifClosure), new GroovyPipeClosure(thenClosure), new GroovyPipeClosure(elseClosure)));
         }
         Pipe.metaClass.ifThenElse = {final Closure ifClosure, final Closure thenClosure ->
-            return Gremlin.compose(delegate, new IfThenElsePipe(ifClosure, thenClosure));
+            return Gremlin.compose(delegate, new IfThenElsePipe(new GroovyPipeClosure(ifClosure), new GroovyPipeClosure(thenClosure)));
         }
 
         Gremlin.addStep(GremlinTokens.CAP);
@@ -70,7 +70,7 @@ class TransformPipeLoader {
             final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
             pipeline.capPipe(pipeline.size() - 1);
             if (closure) {
-                pipeline.addPipe(new ClosureFilterPipe(closure));
+                pipeline.addPipe(new FilterClosurePipe(new GroovyPipeClosure(closure)));
             }
             return pipeline;
         }
@@ -110,7 +110,7 @@ class TransformPipeLoader {
             GremlinPipeline pipeline;
             pipeline = Gremlin.compose(delegate, new GatherPipe())
             if (closure)
-                pipeline = Gremlin.compose(pipeline, new ClosureTransformPipe(closure))
+                pipeline = Gremlin.compose(pipeline, new TransformClosurePipe(new GroovyPipeClosure(closure)))
             return pipeline;
         }
 
@@ -124,7 +124,7 @@ class TransformPipeLoader {
             return Gremlin.compose(delegate, new PathPipe())
         }
         Pipe.metaClass.paths = { final Closure... closures ->
-            return Gremlin.compose(delegate, new PathClosurePipe(closures));
+            return Gremlin.compose(delegate, new PathClosurePipe(GroovyPipeClosure.generate(closures)));
         }
 
         Gremlin.addStep(GremlinTokens.OUT);

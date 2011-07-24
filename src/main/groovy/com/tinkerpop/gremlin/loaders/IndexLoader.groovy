@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Index
 import com.tinkerpop.blueprints.pgm.IndexableGraph
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
-import com.tinkerpop.pipes.IdentityPipe
+import com.tinkerpop.pipes.transform.IdentityPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -22,13 +22,7 @@ class IndexLoader {
             } else {
                 name = indexName.toString()
             }
-            Index index = ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
-            if (index) {
-                return index;
-            } else {
-                throw new RuntimeException("No index found by the name '${name}'");
-            }
-
+            return ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
         }
 
         Index.metaClass.getAt = {final Map query ->

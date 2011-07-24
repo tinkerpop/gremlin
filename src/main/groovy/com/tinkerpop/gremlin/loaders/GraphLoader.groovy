@@ -7,7 +7,7 @@ import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLReader
 import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.pipes.pgm.GraphElementPipe
+import com.tinkerpop.pipes.transform.GraphElementPipe
 import java.util.Map.Entry
 
 /**

@@ -1,12 +1,15 @@
 package com.tinkerpop.gremlin.pipes;
 
-import com.tinkerpop.pipes.MetaPipe;
+import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.Pipeline;
+import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.filter.BackFilterPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectCapPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
+import com.tinkerpop.pipes.transform.SideEffectCapPipe;
+import com.tinkerpop.pipes.util.AsPipe;
+import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.Pipeline;
 import groovy.lang.Closure;
 
 import java.util.ArrayList;
@@ -36,13 +39,13 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     public void loopPipe(final int stepsAgo, final Closure closure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo)), closure));
+        this.addPipe(new LoopPipe(new Pipeline(this.getPipesStepsAgo(stepsAgo)), new GroovyPipeClosure(closure)));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
     }
 
     public void loopPipe(final String name, final Closure closure) {
-        this.addPipe(new LoopPipe(new Pipeline(this.getPipesAsAgo(name)), closure));
+        this.addPipe(new LoopPipe(new Pipeline(this.getPipesAsAgo(name)), new GroovyPipeClosure(closure)));
         if (this.pipes.size() == 1)
             this.setStarts(this.starts);
     }

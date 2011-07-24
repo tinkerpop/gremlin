@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.pipes
+package com.tinkerpop.gremlin.steps
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
@@ -10,7 +10,7 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class ClosurePipeTest extends TestCase {
+class ClosureStepTest extends TestCase {
 
     public void testIsPipe() throws Exception {
         Gremlin.load();
@@ -22,11 +22,12 @@ class ClosurePipeTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        Gremlin.addStep('co_developer')
+        /*Gremlin.addStep('co_developer')
         [Pipe, Vertex].each {
             def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
             it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }
-        }
+        }*/
+        Gremlin.defineStep('co_developer', [Pipe, Vertex], { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} });
 
         def list = []
         g.v(1).co_developer >> list

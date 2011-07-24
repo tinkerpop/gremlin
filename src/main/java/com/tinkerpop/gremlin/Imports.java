@@ -37,9 +37,10 @@ public class Imports {
         // pipes
         imports.add("com.tinkerpop.pipes.*");
         imports.add("com.tinkerpop.pipes.branch.*");
+        imports.add("com.tinkerpop.pipes.branch.util.*");
         imports.add("com.tinkerpop.pipes.filter.*");
-        imports.add("com.tinkerpop.pipes.pgm.*");
         imports.add("com.tinkerpop.pipes.sideeffect.*");
+        imports.add("com.tinkerpop.pipes.transform.*");
         imports.add("com.tinkerpop.pipes.util.*");
     }
 

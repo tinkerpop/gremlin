@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.pipes;
 import com.tinkerpop.gremlin.pipes.util.Table;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
+import com.tinkerpop.pipes.util.AsPipe;
 import groovy.lang.Closure;
 
 import java.util.ArrayList;

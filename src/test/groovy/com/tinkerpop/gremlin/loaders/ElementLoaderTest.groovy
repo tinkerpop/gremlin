@@ -67,7 +67,7 @@ class ElementLoaderTest extends TestCase {
         assertTrue(g.v(1).keys().contains("age"));
     }
 
-    public void testPropertiesOnElement() {
+    public void testGetPropertiesOnElement() {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph()
         assertEquals(g.v(1).name, "marko")
@@ -76,6 +76,18 @@ class ElementLoaderTest extends TestCase {
         [g.v(1), g.v(2)].name >> results
         assertEquals(results.size(), 2)
         assertEquals(results.get(0), "marko")
+        assertEquals(results.get(1), "vadas")
+    }
+
+    public void testSetPropertiesOnElement() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph()
+        assertEquals(g.v(1).name = 'marko rodriguez', "marko rodriguez")
+        assertEquals(g.v(1).age = 32, 32)
+        def results = []
+        [g.v(1), g.v(2)].name >> results
+        assertEquals(results.size(), 2)
+        assertEquals(results.get(0), "marko rodriguez")
         assertEquals(results.get(1), "vadas")
     }
 }

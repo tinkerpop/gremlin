@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.pipes
+package com.tinkerpop.gremlin.steps
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
@@ -10,7 +10,7 @@ import junit.framework.TestCase
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class GroupCountClosurePipeTest extends TestCase {
+class GroupCountClosureStepTest extends TestCase {
 
     public void testIsPipe() throws Exception {
         Gremlin.load();

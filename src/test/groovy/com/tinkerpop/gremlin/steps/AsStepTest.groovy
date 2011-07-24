@@ -1,14 +1,21 @@
-package com.tinkerpop.gremlin.pipes
+package com.tinkerpop.gremlin.steps
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class AsPipeTest extends TestCase {
+class AsStepTest extends TestCase {
+
+    public void testIsPipe() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertTrue(g.V.as('x') instanceof Pipe)
+    }
 
     public void testAsPipeWithPaths() {
         Gremlin.load();

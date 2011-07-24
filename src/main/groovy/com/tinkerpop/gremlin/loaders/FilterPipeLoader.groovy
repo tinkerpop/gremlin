@@ -6,17 +6,11 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GremlinTokens.T
-import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.filter.AndFilterPipe
-import com.tinkerpop.pipes.filter.DuplicateFilterPipe
-import com.tinkerpop.pipes.filter.OrFilterPipe
-import com.tinkerpop.pipes.filter.UniquePathFilterPipe
-import com.tinkerpop.pipes.pgm.IdFilterPipe
-import com.tinkerpop.pipes.pgm.LabelFilterPipe
-import com.tinkerpop.pipes.pgm.PropertyFilterPipe
-import com.tinkerpop.pipes.util.HasNextPipe
+import com.tinkerpop.pipes.transform.HasNextPipe
+import com.tinkerpop.pipes.filter.*
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -28,7 +22,7 @@ class FilterPipeLoader {
         Gremlin.addStep(GremlinTokens.FILTER);
         [Pipe, Vertex, Edge, Graph].each {
             it.metaClass.filter = {final Closure closure ->
-                return Gremlin.compose(delegate, new ClosureFilterPipe(closure));
+                return Gremlin.compose(delegate, new FilterClosurePipe(new GroovyPipeClosure(closure)));
             }
         }
 

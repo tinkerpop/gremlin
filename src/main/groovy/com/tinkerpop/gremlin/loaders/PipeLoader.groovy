@@ -5,13 +5,19 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.pipes.ClosurePipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
+import com.tinkerpop.pipes.ClosurePipe
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.PipeHelper
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.filter.IdFilterPipe
+import com.tinkerpop.pipes.filter.LabelFilterPipe
+import com.tinkerpop.pipes.filter.PropertyFilterPipe
 import com.tinkerpop.pipes.filter.RangeFilterPipe
-import com.tinkerpop.pipes.pgm.*
+import com.tinkerpop.pipes.transform.IdPipe
+import com.tinkerpop.pipes.transform.LabelPipe
+import com.tinkerpop.pipes.transform.PropertyPipe
+import com.tinkerpop.pipes.util.PipeHelper
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -138,7 +144,7 @@ class PipeLoader {
         Gremlin.addStep(GremlinTokens.STEP);
         [Pipe, Vertex, Edge, Graph].each {
             it.metaClass.step = {final Closure closure ->
-                return Gremlin.compose(delegate, new ClosurePipe(closure))
+                return Gremlin.compose(delegate, new ClosurePipe(new GroovyPipeClosure(closure)));
             }
         }
 

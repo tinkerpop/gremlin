@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.pipes.util.Table
-import com.tinkerpop.pipes.IdentityPipe
+import com.tinkerpop.pipes.transform.IdentityPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

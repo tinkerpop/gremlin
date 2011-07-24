@@ -7,13 +7,14 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens.T
-import com.tinkerpop.pipes.PipeHelper
+import com.tinkerpop.pipes.util.PipeHelper
 import junit.framework.TestCase
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 class GraphLoaderTest extends TestCase {
+
     public void testVertexEdgeShortcuts() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -58,9 +59,9 @@ class GraphLoaderTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         assertEquals(PipeHelper.counter(g.v(1).outE.inV), 3);
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[0].name >> 1));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[1].name >> 1));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.inV[2].name >> 1));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[0].name >> 1));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[1].name >> 1));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[2].name >> 1));
 
         assertEquals(PipeHelper.counter(g.v(1).outE {it.label == 'created' | it.label == 'knows'}.inV), 3);
         assertEquals(PipeHelper.counter(g.v(1).outE.orFilter(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
@@ -142,7 +143,5 @@ class GraphLoaderTest extends TestCase {
         assertEquals(e3.getPropertyKeys().size(), 0);
 
         Vertex v3 = g.addVertex();
-
-
     }
 }

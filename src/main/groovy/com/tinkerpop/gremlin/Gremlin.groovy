@@ -2,10 +2,11 @@ package com.tinkerpop.gremlin;
 
 
 import com.tinkerpop.gremlin.jsr223.GremlinScriptEngine
-import com.tinkerpop.gremlin.pipes.ClosureFilterPipe
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.filter.FilterClosurePipe
 import javax.script.SimpleBindings
 import com.tinkerpop.gremlin.loaders.*
 
@@ -85,7 +86,7 @@ class Gremlin {
             pipeline.setStarts((Iterator) start.iterator());
         }
         if (closure) {
-            pipeline.addPipe(new ClosureFilterPipe(closure));
+            pipeline.addPipe(new FilterClosurePipe(new GroovyPipeClosure(closure)));
         }
         return pipeline;
     }
@@ -103,7 +104,7 @@ class Gremlin {
     }
 
     public static void defineStep(final String stepName, final List<Class> classes, Closure stepClosure) {
-        Gremlin.addStep(stepName);
+        Gremlin.steps.add(stepName);
         classes.each {
             stepClosure.setDelegate(delegate);
             it.metaClass."$stepName" = { final Object... parameters ->
