@@ -19,8 +19,8 @@ public class GroovyPipeClosure implements PipeClosure {
         return this.closure.call(parameters);
     }
 
-    public void setPipe(final Pipe pipe) {
-        this.closure.setDelegate(pipe);
+    public void setPipe(final Pipe hostPipe) {
+        this.closure.setDelegate(hostPipe);
     }
 
     public static PipeClosure[] generate(final Closure... closures) {

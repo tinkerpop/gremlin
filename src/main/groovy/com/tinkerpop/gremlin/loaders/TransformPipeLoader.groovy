@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.blueprints.pgm.Edge
+import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
@@ -85,6 +86,13 @@ class TransformPipeLoader {
             final GremlinPipeline pipeline = ((GremlinPipeline) delegate);
             pipeline.loopPipe(name, closure)
             return pipeline;
+        }
+
+        Gremlin.addStep(GremlinTokens.MAP);
+        [Pipe, Element].each {
+            it.metaClass.map = {final Closure closure ->
+                return Gremlin.compose(delegate, new PropertyMapPipe(), closure)
+            }
         }
 
         Gremlin.addStep(GremlinTokens.EXCEPT);

@@ -9,6 +9,7 @@ import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.util.AsPipe;
 import com.tinkerpop.pipes.util.MetaPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 import groovy.lang.Closure;
 
@@ -110,19 +111,19 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     private List<Pipe> getPipesAsAgo(final String name) {
-        final List<Pipe> backPipes = new ArrayList<Pipe>();
+        final List<Pipe> asPipes = new ArrayList<Pipe>();
         for (int i = this.pipes.size() - 1; i >= 0; i--) {
             Pipe pipe = this.pipes.get(i);
             if (pipe instanceof AsPipe && ((AsPipe) pipe).getName().equals(name)) {
                 break;
             } else {
-                backPipes.add(0, pipe);
+                asPipes.add(0, pipe);
             }
         }
-        for (int i = 0; i < backPipes.size(); i++) {
+        for (int i = 0; i < asPipes.size(); i++) {
             this.pipes.remove(this.pipes.size() - 1);
         }
-        return backPipes;
+        return asPipes;
     }
 
     public int size() {
@@ -183,21 +184,6 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     public boolean equals(final Object object) {
-        if (!(object instanceof GremlinPipeline))
-            return false;
-        else {
-            final GremlinPipeline pipe = (GremlinPipeline) object;
-            if (pipe.hasNext() != this.hasNext())
-                return false;
-
-            while (this.hasNext()) {
-                if (!pipe.hasNext())
-                    return false;
-
-                if (pipe.next() != this.next())
-                    return false;
-            }
-            return true;
-        }
+        return (object instanceof GremlinPipeline) && PipeHelper.areEqual(this, (GremlinPipeline) object);
     }
 }
