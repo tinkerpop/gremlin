@@ -33,8 +33,9 @@ h3. Version 1.2 (New Sheriff in Town -- NOT OFFICIALLY YET RELEASED)
 * Implemented @Pipe.reset()@ method for all Gremlin-specific pipes
 * Fixed the @aggregate@/@loop@ problem
 * Migrated all pipes to "Pipes":http://pipes.tinkerpop.com
-** Added @GroovyPipeClosure@ to map to @PipeClosure@
+** Added @GroovyPipeClosure@ to map a "Groovy":http://groovy.codehaus.org @Closure@ to a @PipeClosure@
 * Update @g.idx()@ to reflect @null@ behavior of Blueprints index API update
+* Added @map@ step to emit an element's property map
 
 ==<hr/>==
 

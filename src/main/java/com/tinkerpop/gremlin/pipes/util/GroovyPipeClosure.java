@@ -1,13 +1,16 @@
 package com.tinkerpop.gremlin.pipes.util;
 
+import com.tinkerpop.pipes.AbstractPipeClosure;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeClosure;
 import groovy.lang.Closure;
 
 /**
+ * GroovyPipeClosure wraps a Groovy Closure in a PipeClosure.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroovyPipeClosure implements PipeClosure {
+public class GroovyPipeClosure extends AbstractPipeClosure {
 
     private final Closure closure;
 
@@ -20,6 +23,7 @@ public class GroovyPipeClosure implements PipeClosure {
     }
 
     public void setPipe(final Pipe hostPipe) {
+        super.setPipe(hostPipe);
         this.closure.setDelegate(hostPipe);
     }
 
