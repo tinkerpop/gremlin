@@ -13,8 +13,6 @@ import com.tinkerpop.pipes.branch.CopySplitPipe
 import com.tinkerpop.pipes.branch.ExhaustiveMergePipe
 import com.tinkerpop.pipes.branch.FairMergePipe
 import com.tinkerpop.pipes.branch.IfThenElsePipe
-import com.tinkerpop.pipes.filter.CollectionFilterPipe
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.filter.FilterClosurePipe
 import com.tinkerpop.pipes.util.MetaPipe
 import com.tinkerpop.pipes.transform.*
@@ -93,24 +91,6 @@ class TransformPipeLoader {
             it.metaClass.map = {final Closure closure ->
                 return Gremlin.compose(delegate, new PropertyMapPipe(), closure)
             }
-        }
-
-        Gremlin.addStep(GremlinTokens.EXCEPT);
-        Pipe.metaClass.except = {final Collection collection ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL));
-        }
-        Pipe.metaClass.except = {final Collection collection, final Closure closure ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL), closure);
-        }
-
-        Gremlin.addStep(GremlinTokens.RETAIN);
-        Pipe.metaClass.retain = {final Collection collection ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL));
-        }
-
-
-        Pipe.metaClass.retain = {final Collection collection, final Closure closure ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL), closure);
         }
 
         Gremlin.addStep(GremlinTokens.GATHER);

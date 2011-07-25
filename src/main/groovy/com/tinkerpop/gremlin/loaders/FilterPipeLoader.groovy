@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
+import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
 import com.tinkerpop.pipes.transform.HasNextPipe
 import com.tinkerpop.pipes.filter.*
 
@@ -67,6 +68,24 @@ class FilterPipeLoader {
                     return Gremlin.compose(delegate, new PropertyFilterPipe(key, value, Gremlin.mapFilter(t)));
                 }
             }
+        }
+
+        Gremlin.addStep(GremlinTokens.EXCEPT);
+        Pipe.metaClass.except = {final Collection collection ->
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL));
+        }
+        Pipe.metaClass.except = {final Collection collection, final Closure closure ->
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL), closure);
+        }
+
+        Gremlin.addStep(GremlinTokens.RETAIN);
+        Pipe.metaClass.retain = {final Collection collection ->
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL));
+        }
+
+
+        Pipe.metaClass.retain = {final Collection collection, final Closure closure ->
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL), closure);
         }
     }
 }

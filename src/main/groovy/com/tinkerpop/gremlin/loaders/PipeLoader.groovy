@@ -121,19 +121,19 @@ class PipeLoader {
                     if (value instanceof List) {
                         pipeline.addPipe(new LabelFilterPipe((String) value[1], Gremlin.mapFilter(value[0])))
                     } else {
-                        pipeline.addPipe(new LabelFilterPipe((String) value, Filter.NOT_EQUAL));
+                        pipeline.addPipe(new LabelFilterPipe((String) value, Filter.EQUAL));
                     }
                 } else if (key.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
                     if (value instanceof List) {
                         pipeline.addPipe(new IdFilterPipe(value[1], Gremlin.mapFilter(value[0])))
                     } else {
-                        pipeline.addPipe(new IdFilterPipe(value, Filter.NOT_EQUAL));
+                        pipeline.addPipe(new IdFilterPipe(value, Filter.EQUAL));
                     }
                 } else {
                     if (value instanceof List) {
                         pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], Gremlin.mapFilter(value[0])))
                     } else {
-                        pipeline.addPipe(new PropertyFilterPipe((String) key, value, Filter.NOT_EQUAL))
+                        pipeline.addPipe(new PropertyFilterPipe((String) key, value, Filter.EQUAL))
                     }
                 }
 

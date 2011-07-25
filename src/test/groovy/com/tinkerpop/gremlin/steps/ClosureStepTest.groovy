@@ -27,7 +27,7 @@ class ClosureStepTest extends TestCase {
             def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
             it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }
         }*/
-        Gremlin.defineStep('co_developer', [Pipe, Vertex], { _().sideEffect{def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV{ x != it} });
+        Gremlin.defineStep('co_developer', [Pipe, Vertex], { _().sideEffect {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} });
 
         def list = []
         g.v(1).co_developer >> list

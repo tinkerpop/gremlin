@@ -39,22 +39,22 @@ class Gremlin {
     public static Filter mapFilter(final t) {
         switch (t) {
             case t.eq:
-                return Filter.NOT_EQUAL;
-                break;
-            case t.neq:
                 return Filter.EQUAL;
                 break;
+            case t.neq:
+                return Filter.NOT_EQUAL;
+                break;
             case t.lt:
-                return Filter.GREATER_THAN_EQUAL;
+                return Filter.LESS_THAN;
                 break;
             case t.lte:
-                return Filter.GREATER_THAN;
-                break;
-            case t.gt:
                 return Filter.LESS_THAN_EQUAL;
                 break;
+            case t.gt:
+                return Filter.GREATER_THAN;
+                break;
             case t.gte:
-                return Filter.LESS_THAN;
+                return Filter.GREATER_THAN_EQUAL;
                 break;
         }
         throw new IllegalArgumentException(t.toString() + " is an uknown filter type");

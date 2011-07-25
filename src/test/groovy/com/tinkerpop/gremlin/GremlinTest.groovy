@@ -41,7 +41,7 @@ class GremlinTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         Gremlin.addStep("coDeveloper")
         [Pipe, Vertex].each {
-            def c = { def x; _().sideEffect{x = it}.outE('created').inV.inE('created').outV {it != x} }
+            def c = { def x; _().sideEffect {x = it}.outE('created').inV.inE('created').outV {it != x} }
             it.metaClass.coDeveloper = { Gremlin.compose(delegate, c())}
         }
         def results = []
@@ -53,7 +53,7 @@ class GremlinTest extends TestCase {
         ///////////////////////
 
         Gremlin.defineStep("coCreator", [Pipe, Vertex], {
-            def x; _().sideEffect{x = it}.out('created').in('created') {it != x}
+            def x; _().sideEffect {x = it}.out('created').in('created') {it != x}
         });
         results = []
         g.v(1).coCreator >> results
@@ -66,7 +66,7 @@ class GremlinTest extends TestCase {
         ///////////////////////
 
         Gremlin.defineStep("co", [Pipe, Vertex], { final String label ->
-            def x; _().sideEffect{x = it}.out(label).in(label) {it != x}
+            def x; _().sideEffect {x = it}.out(label).in(label) {it != x}
         });
         results = []
         g.v(1).co('created') >> results
@@ -79,7 +79,7 @@ class GremlinTest extends TestCase {
         ///////////////////////
         def x;
         Gremlin.defineStep("twoStep", [Pipe, Vertex], { final Object... params ->
-            _().sideEffect{x = it}.out(params[0]).in(params[0]).filter(params[1])
+            _().sideEffect {x = it}.out(params[0]).in(params[0]).filter(params[1])
         });
         //TODO: can this be possible?
         /*Gremlin.defineStep("twoStep", [Pipe, Vertex], { final String label, Closure closure ->
