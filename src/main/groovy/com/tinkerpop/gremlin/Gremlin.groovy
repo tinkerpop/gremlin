@@ -103,6 +103,10 @@ class Gremlin {
         return Gremlin.steps.contains(stepName);
     }
 
+    public static Set<String> getStepNames() {
+        return new HashSet(Gremlin.steps);
+    }
+
     public static void defineStep(final String stepName, final List<Class> classes, Closure stepClosure) {
         Gremlin.steps.add(stepName);
         classes.each {
