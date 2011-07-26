@@ -46,11 +46,26 @@ class AggregateStepTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         def x = []
         def results = []
-        g.v(1).outE.inV.aggregate(x) {it.name != 'lop'} >> results
+        g.v(1).outE.inV.aggregate(x).filter{it.name != 'lop'} >> results
         assertEquals(results.size(), 2)
         assertEquals(results.get(0).name, "vadas")
         assertEquals(results.get(1).name, "josh")
         assertEquals(x.size(), 3)
+
+    }
+
+    public void testAggregateWithProcessClosure() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def x = []
+        def results = []
+        g.v(1).outE.inV.aggregate(x){it.name} >> results
+        assertEquals(results.size(), 3)
+        assertEquals(results.get(0).name, "vadas")
+        assertEquals(results.get(1).name, "lop")
+        assertEquals(results.get(2).name, "josh")
+        assertEquals(x.size(), 3);
+        assertEquals(x, ["vadas","lop","josh"]);
 
     }
 

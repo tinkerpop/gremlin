@@ -33,12 +33,12 @@ class SideEffectPipeLoader {
         Pipe.metaClass.aggregate = {final Object... params ->
             if (params) {
                 if (params.length == 2) {
-                    return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]), (Closure) params[1])
+                    return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0], new GroovyPipeClosure((Closure) params[1])));
                 } else {
                     if (params[0] instanceof Collection) {
                         return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]))
                     } else {
-                        return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()), (Closure) params[0])
+                        return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList(), new GroovyPipeClosure((Closure) params[0])));
 
                     }
                 }
