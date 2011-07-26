@@ -70,8 +70,8 @@ class LoopStepTest extends TestCase {
         g.addEdge(null, a, c, 'knows2');
         g.addEdge(null, c, a, 'knows3');
         g.addEdge(null, b, c, 'knows4');
-        assertEquals(g.v(1).outE.inV.loop(2) {it.loops < 5}, g.v(1).outE.inV.outE.inV.outE.inV.outE.inV)
-
+        assertTrue(g.v(1).outE.inV.loop(2) {it.loops < 5} == g.v(1).outE.inV.outE.inV.outE.inV.outE.inV)
+        assertTrue(g.V.outE.inV.loop(2) {it.loops < 5} == g.V.outE.inV.outE.inV.outE.inV.outE.inV)
 
     }
 
