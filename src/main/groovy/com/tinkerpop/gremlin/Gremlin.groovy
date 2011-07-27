@@ -31,9 +31,6 @@ class Gremlin {
             // this means that SailGraph was not in the dependency
             // that is ok
         }
-
-        //TODO: Do no make available until fully developed
-        // GraphJungLoader.load();
     }
 
     public static Filter mapFilter(final t) {
