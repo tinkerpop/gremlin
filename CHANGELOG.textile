@@ -36,6 +36,7 @@ h3. Version 1.2 (New Sheriff in Town -- NOT OFFICIALLY YET RELEASED)
 * Update @g.idx()@ to reflect @null@ behavior of Blueprints index API update
 * Added @map@ step to emit an element's property map
 * Added support for @aggregate@ step closure to process object prior to insertion into the aggregate collection
+* Bumped to Groovy 1.8.1
 
 ==<hr/>==
 
