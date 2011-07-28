@@ -87,7 +87,7 @@ class AggregateStepTest extends TestCase {
         assertEquals(g.v(1).out.aggregate(x).in.paths >> [], g.v(1).out.in.paths >> []);
     }
 
-    /*public void testBreadthFirstAggregate() {
+    public void testBreadthFirstAggregate() {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
@@ -101,10 +101,10 @@ class AggregateStepTest extends TestCase {
         x = [];
         assertTrue(g.v(1).as('x').out.aggregate(x).loop('x') {it.loops < 3} == g.v(1).as('x').out.loop('x') {it.loops < 3});
 
-        x = [];
+        /*x = [];
         def resultsA = g.v(1).as('x').out.aggregate(x).loop('x') {it.loops < 3}.paths >> [];
         def resultsB = g.v(1).as('x').out.loop('x') {it.loops < 3}.paths >> [];
-        assertEquals(resultsA, resultsB)
+        assertEquals(resultsA, resultsB)*/
 
-    }*/
+    }
 }
