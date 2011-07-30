@@ -15,7 +15,6 @@ class IfThenElseStepTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         assertTrue(g.V.ifThenElse {} {} {} instanceof Pipe)
-        assertTrue(g.V.ifThenElse {} {} instanceof Pipe)
     }
 
     public void testIfThenElsePipe() {
@@ -24,7 +23,7 @@ class IfThenElseStepTest extends TestCase {
 
         assertEquals(29, g.v(1)._.ifThenElse {it.name == 'marko'} {it.age} {it.name} >> 1)
         assertEquals("marko", g.v(1)._.ifThenElse {it.name == 'josh'} {it.age} {it.name} >> 1)
-        assertEquals("josh", g.v(1).outE[[label: 'knows']].ifThenElse {it.weight > 0.5} {it.inV.name >> 1} >> 1)
+        assertEquals("josh", g.v(1).outE[[label: 'knows']].ifThenElse {it.weight > 0.5} {it.inV.name >> 1} {_ {false}} >> 1)
 
         assertEquals(['vadas', 'josh'], g.v(1)._.ifThenElse {it.name == 'marko'} {it.out('knows')} {it.out('created')}.name >> [])
         assertEquals(['vadas', 'josh', 'lop', 'ripple', 'lop'], g.V._.ifThenElse {it.name == 'marko'} {it.out('knows')} {it.out('created')}.name >> [])

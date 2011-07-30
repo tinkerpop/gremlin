@@ -14,8 +14,22 @@ import com.tinkerpop.pipes.branch.ExhaustiveMergePipe
 import com.tinkerpop.pipes.branch.FairMergePipe
 import com.tinkerpop.pipes.branch.IfThenElsePipe
 import com.tinkerpop.pipes.filter.FilterClosurePipe
+import com.tinkerpop.pipes.transform.BothEdgesPipe
+import com.tinkerpop.pipes.transform.BothPipe
+import com.tinkerpop.pipes.transform.BothVerticesPipe
+import com.tinkerpop.pipes.transform.GatherPipe
+import com.tinkerpop.pipes.transform.InEdgesPipe
+import com.tinkerpop.pipes.transform.InPipe
+import com.tinkerpop.pipes.transform.InVertexPipe
+import com.tinkerpop.pipes.transform.OutEdgesPipe
+import com.tinkerpop.pipes.transform.OutPipe
+import com.tinkerpop.pipes.transform.OutVertexPipe
+import com.tinkerpop.pipes.transform.PathClosurePipe
+import com.tinkerpop.pipes.transform.PathPipe
+import com.tinkerpop.pipes.transform.PropertyMapPipe
+import com.tinkerpop.pipes.transform.ScatterPipe
+import com.tinkerpop.pipes.transform.TransformClosurePipe
 import com.tinkerpop.pipes.util.MetaPipe
-import com.tinkerpop.pipes.transform.*
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

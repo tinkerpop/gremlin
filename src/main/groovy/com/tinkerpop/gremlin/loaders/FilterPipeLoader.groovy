@@ -9,9 +9,17 @@ import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
+import com.tinkerpop.pipes.filter.AndFilterPipe
+import com.tinkerpop.pipes.filter.CollectionFilterPipe
 import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.filter.DuplicateFilterPipe
+import com.tinkerpop.pipes.filter.FilterClosurePipe
+import com.tinkerpop.pipes.filter.IdFilterPipe
+import com.tinkerpop.pipes.filter.LabelFilterPipe
+import com.tinkerpop.pipes.filter.OrFilterPipe
+import com.tinkerpop.pipes.filter.PropertyFilterPipe
+import com.tinkerpop.pipes.filter.UniquePathFilterPipe
 import com.tinkerpop.pipes.transform.HasNextPipe
-import com.tinkerpop.pipes.filter.*
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -82,8 +90,6 @@ class FilterPipeLoader {
         Pipe.metaClass.retain = {final Collection collection ->
             return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL));
         }
-
-
         Pipe.metaClass.retain = {final Collection collection, final Closure closure ->
             return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL), closure);
         }
