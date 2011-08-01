@@ -1,0 +1,120 @@
+Welcome to Gremlin. Gremlin is a domain specific programming language for "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Graphs are data structures where there exists vertices (i.e. dots, nodes) and edges (i.e. lines, arcs). Gremlin was designed to work with a type of graph called a property graph. Property graphs are defined, in detail, in the [[Defining a Property Graph]] section of this documentation. Gremlin's syntax allows for the representation of complex paths.
+
+This section will discuss the basic architecture of Gremlin, how to install Gremlin, and how to issue some simple statements into the Gremlin console.
+
+# "Basic Gremlin Architecture":#architecture
+# "Installing Gremlin":#install
+# "Using the Gremlin Console":#console
+
+h2(#architecture). Basic Gremlin Architecture
+
+There are many graph databases, frameworks, and packages out there. To make it easy to connect these to Gremlin, Gremlin relies on "Blueprints":http://blueprints.tinkerpop.com and "Pipes":http://pipes.tinkerpop.com. Blueprints provides a set of interfaces for a fairly generic graph data model (see [[Defining a Property Graph]]) and has implementations of these interfaces for different graph management systems. With Blueprints, its possible to add new implementations and thus, use Gremlin over these new implementations. Pipes is a data flow framework that has support for graph processing. Finally, there are three ways for someone to use Gremlin -- through the Gremlin console, through its Java "JSR 223":http://jcp.org/en/jsr/detail?id=223 interface (see [[Using Gremlin through Java]]), or through some other language that has bindings to the JVM.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-system-arch.png!
+
+h2(#install). Installing Gremlin
+
+Here are the steps to getting Gremlin running on your computer. You can either @git clone@ from @http://github.com/tinkerpop/gremlin.git@ and build the latest version of Gremlin (see [[Building Gremlin from Source]]) or you can download a pre-built version. For the latter, follow the steps below.
+
+# Download the latest distribution of Gremlin from "downloads":http://github.com/tinkerpop/gremlin/downloads.
+# Unzip the downloaded @gremlin-xx.zip@ and @cd@ to the @gremlin-xx/@ directory it creates.
+# Run @gremlin.sh@ (unix) or @gremin.bat@ (windows) to start the Gremlin console.
+
+h2(#console). Using the Gremlin Console
+
+```text
+marko$ ./gremlin.sh 
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin>
+```
+
+Thats it. The Gremlin interpreter is loaded and ready for commands. Gremlin uses "Groovy":http://groovy.codehaus.org/ as its host language. Please review Groovy for help on Groovy-related constructs. In short, Groovy is a superset of Java. What works in Java, works in Groovy. However,  Groovy provides many neat shorthands to make it easier to interact with the Java API. Finally, Gremlin provides many neat shorthands to make it easier to express paths through a property graph.
+
+```text
+gremlin> i = 'goodbye'
+==>goodbye
+gremlin> j = 'self'
+==>self
+gremlin> i + " " + j
+==>goodbye self
+gremlin> "${i} ${j}"
+==>goodbye self
+```
+
+We will use a simple, 6 vertex/6 edge, graph that is provided with Gremlin and is fully diagrammed in [[Defining a Property Graph]].
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.class
+==>class com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
+gremlin> // lets look at all the vertices
+gremlin> g.V
+==>v[3]
+==>v[2]
+==>v[1]
+==>v[6]
+==>v[5]
+==>v[4]
+gremlin> // lets look at all the edges
+gremlin> g.E
+==>e[10][4-created->5]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+==>e[11][4-created->3]
+==>e[12][6-created->3]
+gremlin> v = g.v(1)
+==>v[1]
+gremlin> v.keys()
+==>age
+==>name
+gremlin> v.values()
+==>29
+==>marko
+gremlin> v.name + ' is ' + v.age + ' years old.'
+==>marko is 29 years old.
+gremlin> // lets do a traversal from the '1' marko vertex to its outgoing edges.
+gremlin> v.outE
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> // what are the weight values on those edges
+gremlin> v.outE.weight
+==>0.5
+==>0.4
+==>1.0
+gremlin> // lets only traverse to the head vertices of those edges
+gremlin> // that have a weight that is less than 1.0
+gremlin> v.outE{it.weight < 1.0}.inV
+==>v[2]
+==>v[3]                           
+gremlin> // lets get the property maps of these vertices.
+gremlin> v.outE{it.weight < 1.0}.inV.collect{it.map()}
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+gremlin> // lets do it another way using spread notation
+gremlin> v.outE{it.weight < 1.0}.inV*.map()
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+gremlin> // lets get their incoming edge sets
+gremlin> v.outE{it.weight < 1.0}.inV.inE       
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[11][4-created->3]
+==>e[12][6-created->3]
+gremlin> v.outE{it.weight < 1.0}.inV.inE{it.label=='knows'}     
+==>e[7][1-knows->2]
+gremlin> v.outE{it.weight < 1.0}.inV.inE[[label:'knows']]
+==>e[7][1-knows->2]
+gremlin> v.outE{it.weight < 1.0}.inV.in('knows').name
+==>marko
+gremlin> // toString() the pipeline to see what its composed of
+gremlin> println v.outE{it.weight < 1.0}.inV.in('knows').name
+[OutEdgesPipe, ClosureFilterPipe, InVertexPipe, InPipe(knows), PropertyPipe(name)]
+==>null
+```
+
+What was presented is some of the basic functionality in Gremlin. The remainder of this documentation will discuss path construction and their use in performing graph algorithms on property graph structures.

@@ -1,0 +1,47 @@
+h2. Using the Gremlin REPL
+
+The Gremlin "REPL":http://en.wikipedia.org/wiki/Read-eval-print_loop (i.e. terminal) is handy for browsing a graph and scripting. To load the REPL, simply do:
+
+```text
+marko$ ./gremlin.sh 
+
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin> 
+```
+
+Its always handy to add the following to the @.bash_profile@.
+
+```java
+export PATH="/Users/marko/software/gremlin/target/gremlin-1.0-standalone/bin":$PATH
+alias gremlin="gremlin.sh"
+```
+
+```text
+~$ gremlin
+
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin>
+```
+
+h2. Evaluating Gremlin Scripts
+
+Gremlin scripts can be executed from the command line. To do so, simply create a Gremlin script file. The current convention is that Gremlin script files have an extension @grm@. Below is an example script called @example.grm@.
+
+```text
+for(i in 1..3)
+  println i
+```
+
+Now you can evaluate the script using @gremlin.sh@ with the parameter for @-e@ being set to the script to execute.
+
+```text
+marko$ ./gremlin.sh -e example.grm 
+1
+2
+3
+marko$
+```
