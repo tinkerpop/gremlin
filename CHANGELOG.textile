@@ -11,6 +11,18 @@ Gremlin: A Graph Traversal Language
 
 h2. Gremlin 1.X
 
+h3. Version 1.3 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin</artifactId>
+  <version>1.3-SNAPSHOT</version>
+</dependency>
+```
+
+==<hr/>==
+
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-new-sheriff-in-town.png!
 
 h3. Version 1.2 (New Sheriff in Town -- August 1, 2011)
