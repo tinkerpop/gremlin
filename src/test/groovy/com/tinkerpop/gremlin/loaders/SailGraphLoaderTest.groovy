@@ -16,5 +16,4 @@ class SailGraphLoaderTest extends TestCase {
         assertEquals(g.uri('tg:1'), 'http://tinkerpop.com#1');
         assertEquals(g.qn('http://tinkerpop.com#1'), 'tg:1');
     }
-
 }
