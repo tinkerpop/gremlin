@@ -11,9 +11,10 @@ import com.tinkerpop.gremlin.loaders.SailGraphLoader
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+import com.tinkerpop.pipes.filter.FilterPipe.Filter
 import com.tinkerpop.pipes.filter.FilterClosurePipe
 import javax.script.SimpleBindings
+import com.tinkerpop.pipes.filter.FilterPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -41,22 +42,22 @@ class Gremlin {
     public static Filter mapFilter(final t) {
         switch (t) {
             case t.eq:
-                return Filter.EQUAL;
+                return FilterPipe.Filter.EQUAL;
                 break;
             case t.neq:
-                return Filter.NOT_EQUAL;
+                return FilterPipe.Filter.NOT_EQUAL;
                 break;
             case t.lt:
-                return Filter.LESS_THAN;
+                return FilterPipe.Filter.LESS_THAN;
                 break;
             case t.lte:
-                return Filter.LESS_THAN_EQUAL;
+                return FilterPipe.Filter.LESS_THAN_EQUAL;
                 break;
             case t.gt:
-                return Filter.GREATER_THAN;
+                return FilterPipe.Filter.GREATER_THAN;
                 break;
             case t.gte:
-                return Filter.GREATER_THAN_EQUAL;
+                return FilterPipe.Filter.GREATER_THAN_EQUAL;
                 break;
         }
         throw new IllegalArgumentException(t.toString() + " is an uknown filter type");

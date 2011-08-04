@@ -11,7 +11,7 @@ import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.AndFilterPipe
 import com.tinkerpop.pipes.filter.CollectionFilterPipe
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+
 import com.tinkerpop.pipes.filter.DuplicateFilterPipe
 import com.tinkerpop.pipes.filter.FilterClosurePipe
 import com.tinkerpop.pipes.filter.IdFilterPipe
@@ -20,6 +20,7 @@ import com.tinkerpop.pipes.filter.OrFilterPipe
 import com.tinkerpop.pipes.filter.PropertyFilterPipe
 import com.tinkerpop.pipes.filter.UniquePathFilterPipe
 import com.tinkerpop.pipes.transform.HasNextPipe
+import com.tinkerpop.pipes.filter.FilterPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -80,18 +81,18 @@ class FilterPipeLoader {
 
         Gremlin.addStep(GremlinTokens.EXCEPT);
         Pipe.metaClass.except = {final Collection collection ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL));
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, FilterPipe.Filter.NOT_EQUAL));
         }
         Pipe.metaClass.except = {final Collection collection, final Closure closure ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.NOT_EQUAL), closure);
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, FilterPipe.Filter.NOT_EQUAL), closure);
         }
 
         Gremlin.addStep(GremlinTokens.RETAIN);
         Pipe.metaClass.retain = {final Collection collection ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL));
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, FilterPipe.Filter.EQUAL));
         }
         Pipe.metaClass.retain = {final Collection collection, final Closure closure ->
-            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, Filter.EQUAL), closure);
+            return Gremlin.compose(delegate, new CollectionFilterPipe(collection, FilterPipe.Filter.EQUAL), closure);
         }
     }
 }

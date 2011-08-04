@@ -9,7 +9,7 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.ClosurePipe
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.filter.ComparisonFilterPipe.Filter
+
 import com.tinkerpop.pipes.filter.IdFilterPipe
 import com.tinkerpop.pipes.filter.LabelFilterPipe
 import com.tinkerpop.pipes.filter.PropertyFilterPipe
@@ -18,6 +18,7 @@ import com.tinkerpop.pipes.transform.IdPipe
 import com.tinkerpop.pipes.transform.LabelPipe
 import com.tinkerpop.pipes.transform.PropertyPipe
 import com.tinkerpop.pipes.util.PipeHelper
+import com.tinkerpop.pipes.filter.FilterPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -121,19 +122,19 @@ class PipeLoader {
                     if (value instanceof List) {
                         pipeline.addPipe(new LabelFilterPipe((String) value[1], Gremlin.mapFilter(value[0])))
                     } else {
-                        pipeline.addPipe(new LabelFilterPipe((String) value, Filter.EQUAL));
+                        pipeline.addPipe(new LabelFilterPipe((String) value, FilterPipe.Filter.EQUAL));
                     }
                 } else if (key.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
                     if (value instanceof List) {
                         pipeline.addPipe(new IdFilterPipe(value[1], Gremlin.mapFilter(value[0])))
                     } else {
-                        pipeline.addPipe(new IdFilterPipe(value, Filter.EQUAL));
+                        pipeline.addPipe(new IdFilterPipe(value, FilterPipe.Filter.EQUAL));
                     }
                 } else {
                     if (value instanceof List) {
                         pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], Gremlin.mapFilter(value[0])))
                     } else {
-                        pipeline.addPipe(new PropertyFilterPipe((String) key, value, Filter.EQUAL))
+                        pipeline.addPipe(new PropertyFilterPipe((String) key, value, FilterPipe.Filter.EQUAL))
                     }
                 }
 
