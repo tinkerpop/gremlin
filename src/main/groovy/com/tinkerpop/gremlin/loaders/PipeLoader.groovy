@@ -78,11 +78,7 @@ class PipeLoader {
                 }
 
                 if (count == -1) {
-                    try {
-                        while (true) {
-                            itty.next();
-                        }
-                    } catch (NoSuchElementException e) {}
+                    PipeHelper.iterate(itty);
                     return delegate;
                 } else if (count == 1) {
                     return itty.next();
