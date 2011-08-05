@@ -9,7 +9,7 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.ClosurePipe
 import com.tinkerpop.pipes.Pipe
-
+import com.tinkerpop.pipes.filter.FilterPipe
 import com.tinkerpop.pipes.filter.IdFilterPipe
 import com.tinkerpop.pipes.filter.LabelFilterPipe
 import com.tinkerpop.pipes.filter.PropertyFilterPipe
@@ -18,7 +18,6 @@ import com.tinkerpop.pipes.transform.IdPipe
 import com.tinkerpop.pipes.transform.LabelPipe
 import com.tinkerpop.pipes.transform.PropertyPipe
 import com.tinkerpop.pipes.util.PipeHelper
-import com.tinkerpop.pipes.filter.FilterPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -79,9 +78,11 @@ class PipeLoader {
                 }
 
                 if (count == -1) {
-                    while (itty.hasNext()) {
-                        itty.next();
-                    }
+                    try {
+                        while (true) {
+                            itty.next();
+                        }
+                    } catch (NoSuchElementException e) {}
                     return delegate;
                 } else if (count == 1) {
                     return itty.next();
