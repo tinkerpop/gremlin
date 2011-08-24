@@ -59,6 +59,7 @@ public class Table extends ArrayList<Table.Row> {
             throw new RuntimeException("Table width is " + this.tableWidth + " and there are " + columnNames.length + " column names");
         }
         this.columnNames = Arrays.asList(columnNames);
+        this.tableWidth = this.columnNames.size();
     }
 
     public List<String> getColumnNames() {

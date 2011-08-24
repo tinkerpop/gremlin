@@ -180,4 +180,16 @@ class TablePipeTest extends TestCase {
         assertEquals(table.sort().get(0), table.sort().get(1));
 
     }
+
+    public void testTableColumnWidthOnFailedTraversal() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        Table t = new Table();
+        assertEquals(t.getColumnCount(), -1);
+        assertEquals(t.getColumnNames().size(), 0);
+        g.v(1).as('a').out('not-created').as('b').table(t) >> -1;
+        assertEquals(t.getColumnCount(), 2);
+        assertEquals(t.getColumnNames().size(), 2);
+        assertEquals(t.getColumnNames(), ['a','b']);
+    }
 }
