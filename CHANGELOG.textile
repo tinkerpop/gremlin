@@ -25,6 +25,7 @@ h3. Version 1.3 (NOT OFFICIALLY RELEASED YET)
 * Optimized @>>-1@ to use a try/catch model which is more efficient given the architecture of @AbstractPipe@
 * Updated @gremlin.sh@ to respect previous classpaths and to make sym-linking easier
 * Fixed table width bug in @Table@
+* Added @Graph.loadGraphJSON()@ and @Graph.saveGraphJSON()@ with respective @data/graph-example-1.json@
 
 ==<hr/>==
 
