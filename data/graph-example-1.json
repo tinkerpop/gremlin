@@ -8,11 +8,11 @@
     {"name":"peter","age":35,"_id":6,"_type":"vertex"}
   ],
   "edges":[
-    {"weight":0.5,"_id":"7","_type":"edge","_outV":1,"_inV":2,"_label":"knows"},
-    {"weight":1.0,"_id":"8","_type":"edge","_outV":1,"_inV":4,"_label":"knows"},
-    {"weight":0.4,"_id":"9","_type":"edge","_outV":1,"_inV":3,"_label":"created"},
-    {"weight":1.0,"_id":"10","_type":"edge","_outV":4,"_inV":5,"_label":"created"},
-    {"weight":0.4,"_id":"11","_type":"edge","_outV":4,"_inV":3,"_label":"created"},
-    {"weight":0.2,"_id":"12","_type":"edge","_outV":6,"_inV":3,"_label":"created"}
+    {"weight":0.5,"_id":7,"_type":"edge","_outV":1,"_inV":2,"_label":"knows"},
+    {"weight":1.0,"_id":8,"_type":"edge","_outV":1,"_inV":4,"_label":"knows"},
+    {"weight":0.4,"_id":9,"_type":"edge","_outV":1,"_inV":3,"_label":"created"},
+    {"weight":1.0,"_id":10,"_type":"edge","_outV":4,"_inV":5,"_label":"created"},
+    {"weight":0.4,"_id":11,"_type":"edge","_outV":4,"_inV":3,"_label":"created"},
+    {"weight":0.2,"_id":12,"_type":"edge","_outV":6,"_inV":3,"_label":"created"}
   ]
 }
