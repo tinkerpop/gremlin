@@ -100,14 +100,14 @@ public class GremlinPipeline<S, E> implements Pipe<S, E>, MetaPipe {
     }
 
     private List<Pipe> getPipesStepsAgo(final int stepsAgo) {
-        final List<Pipe> backPipes = new ArrayList<Pipe>();
+        final List<Pipe> previousPipes = new ArrayList<Pipe>();
         for (int i = this.pipes.size() - 1; i > ((this.pipes.size() - 1) - stepsAgo); i--) {
-            backPipes.add(0, this.pipes.get(i));
+            previousPipes.add(0, this.pipes.get(i));
         }
         for (int i = 0; i < stepsAgo; i++) {
             this.pipes.remove(this.pipes.size() - 1);
         }
-        return backPipes;
+        return previousPipes;
     }
 
     private List<Pipe> getPipesAsAgo(final String name) {

@@ -10,7 +10,7 @@ import com.tinkerpop.gremlin.pipes.TablePipe
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.gremlin.pipes.util.Table
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.sideeffect.AggregatorPipe
+import com.tinkerpop.pipes.sideeffect.AggregatePipe
 import com.tinkerpop.pipes.sideeffect.GroupCountClosurePipe
 import com.tinkerpop.pipes.sideeffect.SideEffectClosurePipe
 import com.tinkerpop.pipes.transform.IdentityPipe
@@ -33,17 +33,17 @@ class SideEffectPipeLoader {
         Pipe.metaClass.aggregate = {final Object... params ->
             if (params) {
                 if (params.length == 2) {
-                    return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0], new GroovyPipeClosure((Closure) params[1])));
+                    return Gremlin.compose(delegate, new AggregatePipe((Collection) params[0], new GroovyPipeClosure((Closure) params[1])));
                 } else {
                     if (params[0] instanceof Collection) {
-                        return Gremlin.compose(delegate, new AggregatorPipe((Collection) params[0]))
+                        return Gremlin.compose(delegate, new AggregatePipe((Collection) params[0]))
                     } else {
-                        return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList(), new GroovyPipeClosure((Closure) params[0])));
+                        return Gremlin.compose(delegate, new AggregatePipe(new LinkedList(), new GroovyPipeClosure((Closure) params[0])));
 
                     }
                 }
             } else {
-                return Gremlin.compose(delegate, new AggregatorPipe(new LinkedList()));
+                return Gremlin.compose(delegate, new AggregatePipe(new LinkedList()));
             }
 
         }
