@@ -14,7 +14,7 @@ public class Imports {
         // gremlin
         imports.add("com.tinkerpop.gremlin.*");
         imports.add("com.tinkerpop.gremlin.GremlinTokens.T");
-        imports.add("com.tinkerpop.gremlin.pipes.util.Table");
+        imports.add("com.tinkerpop.pipes.util.Table");
 
         // blueprints
         imports.add("com.tinkerpop.blueprints.pgm.*");

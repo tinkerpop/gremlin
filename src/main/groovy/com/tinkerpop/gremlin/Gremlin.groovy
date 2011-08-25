@@ -8,13 +8,13 @@ import com.tinkerpop.gremlin.loaders.IndexLoader
 import com.tinkerpop.gremlin.loaders.ObjectLoader
 import com.tinkerpop.gremlin.loaders.PipeLoader
 import com.tinkerpop.gremlin.loaders.SailGraphLoader
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.filter.FilterPipe.Filter
-import com.tinkerpop.pipes.filter.FilterClosurePipe
-import javax.script.SimpleBindings
+import com.tinkerpop.pipes.PipeClosure
 import com.tinkerpop.pipes.filter.FilterPipe
+import com.tinkerpop.pipes.filter.FilterPipe.Filter
+import com.tinkerpop.pipes.util.FluentPipeline
+import javax.script.SimpleBindings
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -63,34 +63,24 @@ class Gremlin {
         throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
     }
 
-    public static GremlinPipeline compose(final Object start) {
-        return compose(start, null, null);
-    }
-
-    public static GremlinPipeline compose(final Object start, final Pipe pipe) {
-        return compose(start, pipe, null);
-    }
-
-    public static GremlinPipeline compose(final Object start, final Pipe pipe, final Closure closure) {
-        GremlinPipeline pipeline;
-        if (start instanceof GremlinPipeline) {
+    public static FluentPipeline compose(final Object start, final Pipe pipe) {
+        FluentPipeline pipeline;
+        if (start instanceof FluentPipeline) {
             pipeline = start;
             if (null != pipe)
                 pipeline.addPipe(pipe);
         } else if (start instanceof Pipe) {
-            pipeline = new GremlinPipeline();
+            pipeline = new FluentPipeline();
             pipeline.addPipe(start);
             if (null != pipe)
                 pipeline.addPipe(pipe);
         } else {
-            pipeline = new GremlinPipeline();
+            pipeline = new FluentPipeline();
+            pipeline.start(start);
             if (null != pipe)
                 pipeline.addPipe(pipe);
-            pipeline.setStarts((Iterator) start.iterator());
         }
-        if (closure) {
-            pipeline.addPipe(new FilterClosurePipe(new GroovyPipeClosure(closure)));
-        }
+
         return pipeline;
     }
 
@@ -116,11 +106,19 @@ class Gremlin {
             stepClosure.setDelegate(delegate);
             it.metaClass."$stepName" = { final Object... parameters ->
                 if (parameters.length == 1)
-                    Gremlin.compose(delegate, stepClosure(parameters[0]))
+                    Gremlin.compose(delegate, stepClosure(parameters[0]));
                 else
                     Gremlin.compose(delegate, stepClosure(parameters));
             };
         }
+    }
+
+    public static PipeClosure[] createPipeClosures(final Closure... closures) {
+        final PipeClosure[] pipeClosures = new PipeClosure[closures.length];
+        for (int i = 0; i < closures.length; i++) {
+            pipeClosures[i] = new GroovyPipeClosure(closures[i]);
+        }
+        return pipeClosures;
     }
 
     public static String version() {

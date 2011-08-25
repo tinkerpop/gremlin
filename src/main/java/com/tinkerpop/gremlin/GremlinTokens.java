@@ -47,7 +47,7 @@ public class GremlinTokens {
     public static final String OPTIONAL = "optional";
     public static final String ORFILTER = "orFilter";
     public static final String PATHS = "paths";
-    public static final String PROPFILTER = "propFilter";
+    public static final String PROPERTYFILTER = "propertyFilter";
     public static final String RETAIN = "retain";
     public static final String SCATTER = "scatter";
     public static final String STEP = "step";

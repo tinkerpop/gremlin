@@ -22,15 +22,14 @@ class ClosureStepTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        /*Gremlin.addStep('co_developer')
-        [Pipe, Vertex].each {
-            def c = { _ {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} }
-            it.metaClass.co_developer = { Gremlin.compose(delegate, c()) }
-        }*/
-        Gremlin.defineStep('co_developer', [Pipe, Vertex], { _().sideEffect {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV { x != it} });
+        //todo: make this work
+        //Gremlin.defineStep('coDeveloper', [Pipe, Vertex], { _().sideEffect {def x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV.filter{ x != it} });
+        Gremlin.defineStep('coDeveloper', [Pipe, Vertex], {def x; _().sideEffect {x = it}.outE[[label: 'created']].inV.inE[[label: 'created']].outV.filter { x != it} });
+
 
         def list = []
-        g.v(1).co_developer >> list
+        System.out.println(g.v(1).coDeveloper.toString());
+        g.v(1).coDeveloper >> list
         assertTrue(list.contains(g.v(4)));
         assertTrue(list.contains(g.v(6)));
     }

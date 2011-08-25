@@ -14,6 +14,7 @@ class AggregateStepTest extends TestCase {
     public void testIsPipe() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertTrue(g.V.aggregate([]) instanceof Pipe)
         assertTrue(g.V.aggregate() instanceof Pipe)
         assertTrue(g.V.aggregate instanceof Pipe)
     }
@@ -24,7 +25,7 @@ class AggregateStepTest extends TestCase {
 
         def x = [] as Set
         def results = []
-        g.v(1).outE.inV.aggregate(x).outE.inV {!x.contains(it)} >> results
+        g.v(1).outE.inV.aggregate(x).outE.inV.filter{!x.contains(it)} >> results
         assertEquals(results.size(), 1);
         assertEquals(results.get(0), g.v(5));
 

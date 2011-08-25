@@ -2,12 +2,13 @@ package com.tinkerpop.gremlin
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
+import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.util.StartPipe
-import junit.framework.TestCase
+import com.tinkerpop.pipes.util.FluentPipeline
 
-class GremlinTest extends TestCase {
+class GremlinTest extends BaseTest {
 
     public void testVersion() throws Exception {
         Gremlin.load();
@@ -30,9 +31,9 @@ class GremlinTest extends TestCase {
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
-        new StartPipe([1, 2, 3]).step {x = starts.next()} >> -1
+        new FluentPipeline().start([1, 2, 3]).step {x = starts.next()} >> -1
         assertEquals(x, 3);
-        new StartPipe([3, 2, 1]).step {x = starts.next()} >> -1
+        new FluentPipeline().start([3, 2, 1]).step {x = starts.next()} >> -1
         assertEquals(x, 1);
     }
 
@@ -41,7 +42,7 @@ class GremlinTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         Gremlin.addStep("coDeveloper")
         [Pipe, Vertex].each {
-            def c = { def x; _().sideEffect {x = it}.outE('created').inV.inE('created').outV {it != x} }
+            def c = { def x; _().sideEffect {x = it}.outE('created').inV.inE('created').outV.filter {it != x} }
             it.metaClass.coDeveloper = { Gremlin.compose(delegate, c())}
         }
         def results = []
@@ -53,7 +54,7 @@ class GremlinTest extends TestCase {
         ///////////////////////
 
         Gremlin.defineStep("coCreator", [Pipe, Vertex], {
-            def x; _().sideEffect {x = it}.out('created').in('created') {it != x}
+            def x; _().sideEffect {x = it}.out('created').in('created').filter {it != x}
         });
         results = []
         g.v(1).coCreator >> results
@@ -66,7 +67,7 @@ class GremlinTest extends TestCase {
         ///////////////////////
 
         Gremlin.defineStep("co", [Pipe, Vertex], { final String label ->
-            def x; _().sideEffect {x = it}.out(label).in(label) {it != x}
+            def x; _().sideEffect {x = it}.out(label).in(label).filter {it != x}
         });
         results = []
         g.v(1).co('created') >> results
@@ -202,4 +203,96 @@ class GremlinTest extends TestCase {
         assertEquals(g.v(4).both('knows', 'created').toList().size(), 3);
 
     }
+
+    public void testPipelineEquality() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        assertEquals(g.v(1).outE.inV, g.v(1).outE.inV);
+        assertEquals(g.v(1)._.outE._._.inV[0..100], g.v(1)._.outE.inV._._);
+        assertEquals(g.v(1).inE, g.v(1).inE);
+    }
+
+    public void testPipelineReset() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        def results = [];
+        Pipe pipe = g.v(1).outE.inV
+        pipe.next();
+        assertTrue(pipe.hasNext());
+        pipe.reset();
+        assertFalse(pipe.hasNext());
+        pipe.setStarts(g.v(1).iterator());
+        assertTrue(pipe.hasNext());
+        pipe >> results;
+        assertEquals(results.size(), 3);
+
+    }
+
+    public void testPipelineVariations() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        String name = "josh";
+        Vertex josh = g.v(4);
+        assertEquals(g.v(1).outE.inV[[name: name]].next(), josh);
+        assertEquals(g.v(1).outE.inV[[id: '4']].next(), josh);
+
+        assertEquals(g.v(1).outE.filter {it.label == 'knows' | it.label == 'created'}.inV.filter {it.id == '4' & it.name == name}.next(), josh);
+        assertEquals(g.v(1).outE.orFilter(_()[[label: 'knows']], _()[[label: 'created']]).inV.andFilter(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
+        assertEquals(g.v(1).outE.orFilter(_().propertyFilter('label', T.eq, 'knows'), _().propertyFilter('label', T.eq, 'created')).inV.andFilter(_().propertyFilter('id', T.eq, '4'), _().propertyFilter('name', T.eq, name)).next(), josh);
+    }
+
+    public void testPipelineToString() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        println g.v(1).outE.inV.outE.inV
+        println g.V.outE[[label: 'knows']].inV
+    }
+
+    public void testPipelineConstructionWithFunctionNotation() {
+        Gremlin.load();
+        Graph g = new TinkerGraph()
+        def results1a = []
+        def results1b = []
+        def results2a = []
+        def results2b = []
+        def results3a = []
+        def results3b = []
+
+        for (int i = 0; i < 500; i++) {
+            this.stopWatch();
+            g.V.outE.inV
+            results1a << this.stopWatch();
+            this.stopWatch();
+            g.V().outE().inV()
+            results1b << this.stopWatch();
+
+            this.stopWatch();
+            g.V.outE.inV.outE.inV
+            results2a << this.stopWatch();
+            this.stopWatch()
+            g.V().outE().inV().outE().inV()
+            results2b << this.stopWatch();
+
+            this.stopWatch();
+            g.V.outE[[label: 'knows']].inV.outE[[label: 'knows']].inV
+            results3a << this.stopWatch();
+            this.stopWatch();
+            g.V().outE()[[label: 'knows']].inV().outE()[[label: 'knows']].inV()
+            results3b << this.stopWatch();
+
+        }
+
+        println "\tProperty notation <g.V.outE.inV>: " + results1a.mean();
+        println "\tMethod notation <g.V().outE().inV()>: " + results1b.mean();
+        println "\tProperty notation <g.V.outE.inV.outE.inV>: " + results2a.mean();
+        println "\tMethod notation <g.V().outE().inV().outE().inV()>: " + results2b.mean();
+        println "\tProperty notation <g.V.outE[[label: 'knows']].inV.outE[[label:'knows']].inV>: " + results3a.mean();
+        println "\tMethod notation <g.V().outE()[[label: 'knows']].inV().outE()[[label:'knows']].inV()>: " + results3b.mean();
+
+    }
+
 }

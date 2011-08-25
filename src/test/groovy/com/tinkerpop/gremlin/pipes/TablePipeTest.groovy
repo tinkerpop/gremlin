@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.pipes
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.pipes.util.Table
+import com.tinkerpop.pipes.util.Table
 import com.tinkerpop.pipes.Pipe
 import junit.framework.TestCase
 

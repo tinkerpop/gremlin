@@ -14,8 +14,8 @@ class FilterClosureStepTest extends TestCase {
     public void testIsPipe() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        assertTrue(g.V {true} instanceof Pipe)
-        assertTrue(g.V.out.in {1 > 2} instanceof Pipe)
+        assertTrue(g.V.filter{true} instanceof Pipe)
+        assertTrue(g.V.out.in.filter{1 > 2} instanceof Pipe)
     }
 
     public void testClosureFilter() {

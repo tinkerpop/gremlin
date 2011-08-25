@@ -1,22 +1,14 @@
 package com.tinkerpop.gremlin.loaders
 
-import com.tinkerpop.blueprints.pgm.Edge
-import com.tinkerpop.blueprints.pgm.Graph
-import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
-import com.tinkerpop.pipes.ClosurePipe
-import com.tinkerpop.pipes.Pipe
+import com.tinkerpop.pipes.PipeClosure
 import com.tinkerpop.pipes.filter.FilterPipe
 import com.tinkerpop.pipes.filter.IdFilterPipe
 import com.tinkerpop.pipes.filter.LabelFilterPipe
 import com.tinkerpop.pipes.filter.PropertyFilterPipe
-import com.tinkerpop.pipes.filter.RangeFilterPipe
-import com.tinkerpop.pipes.transform.IdPipe
-import com.tinkerpop.pipes.transform.LabelPipe
-import com.tinkerpop.pipes.transform.PropertyPipe
+import com.tinkerpop.pipes.util.FluentPipeline
 import com.tinkerpop.pipes.util.PipeHelper
 
 /**
@@ -26,16 +18,16 @@ class PipeLoader {
 
     public static void load() {
 
-        Pipe.metaClass.propertyMissing = {final String name ->
+        FluentPipeline.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
                 return delegate."$name"();
             } else {
                 if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-                    return Gremlin.compose(delegate, new IdPipe());
+                    return ((FluentPipeline) delegate).id();
                 } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-                    return Gremlin.compose(delegate, new LabelPipe());
+                    return ((FluentPipeline) delegate).label();
                 } else {
-                    return Gremlin.compose(delegate, new PropertyPipe(name));
+                    return ((FluentPipeline) delegate).property(name);
                 }
             }
         }
@@ -93,27 +85,27 @@ class PipeLoader {
         }
 
 
-        Pipe.metaClass.getAt = {final Integer index ->
-            return Gremlin.compose(delegate, new RangeFilterPipe(index, index));
+        FluentPipeline.metaClass.getAt = {final Integer index ->
+            return ((FluentPipeline) delegate).rangeFilter(index, index);
         }
 
 
-        Pipe.metaClass.getAt = {final Range range ->
-            return Gremlin.compose(delegate, new RangeFilterPipe(range.getFrom() as Integer, range.getTo() as Integer));
+        FluentPipeline.metaClass.getAt = {final Range range ->
+            return ((FluentPipeline) delegate).rangeFilter(range.getFrom() as Integer, range.getTo() as Integer);
         }
 
-        Pipe.metaClass.getAt = {final String name ->
+        FluentPipeline.metaClass.getAt = {final String name ->
             if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-                return Gremlin.compose(delegate, new IdPipe());
+                return ((FluentPipeline) delegate).id();
             } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-                return Gremlin.compose(delegate, new LabelPipe());
+                return ((FluentPipeline) delegate).label();
             } else {
-                return Gremlin.compose(delegate, new PropertyPipe(name));
+                return ((FluentPipeline) delegate).property(name);
             }
         }
 
-        Pipe.metaClass.getAt = {final Map map ->
-            GremlinPipeline pipeline = Gremlin.compose(delegate);
+        FluentPipeline.metaClass.getAt = {final Map map ->
+            FluentPipeline pipeline = (FluentPipeline) delegate;
             map.each {key, value ->
                 if (key.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
                     if (value instanceof List) {
@@ -140,10 +132,11 @@ class PipeLoader {
         }
 
         Gremlin.addStep(GremlinTokens.STEP);
-        [Pipe, Vertex, Edge, Graph].each {
-            it.metaClass.step = {final Closure closure ->
-                return Gremlin.compose(delegate, new ClosurePipe(new GroovyPipeClosure(closure)));
-            }
+        FluentPipeline.metaClass.step = {final Closure closure ->
+            PipeClosure pc = new GroovyPipeClosure(closure);
+            ((FluentPipeline) delegate).step(pc);
+            //pc.setPipe((FluentPipeline) delegate);
+            return delegate;
         }
 
         TransformPipeLoader.load();

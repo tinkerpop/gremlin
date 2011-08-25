@@ -30,11 +30,11 @@ class GroupCountClosureStepTest extends TestCase {
         assertEquals(m.size(), 3);
         pipe >> -1;
         assertEquals(m.size(), 3);
-        assertEquals(pipe.getPipes()[2].getSideEffect().size(), 0);
+        assertEquals(pipe.getPipes()[3].getSideEffect().size(), 0);
         pipe.setStarts(g.v(1).iterator());
         pipe >> -1;
         assertEquals(m.size(), 3);
-        assertEquals(pipe.getPipes()[2].getSideEffect().size(), 3);
+        assertEquals(pipe.getPipes()[3].getSideEffect().size(), 3);
     }
 
     public void testGroupCountClosure() {

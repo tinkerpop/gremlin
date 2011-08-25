@@ -9,8 +9,7 @@ import com.tinkerpop.blueprints.pgm.util.json.GraphJSONReader
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONWriter
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.pipes.transform.EdgesPipe
-import com.tinkerpop.pipes.transform.VerticesPipe
+import com.tinkerpop.pipes.util.FluentPipeline
 import java.util.Map.Entry
 
 /**
@@ -29,13 +28,13 @@ class GraphLoader {
         }
 
         Gremlin.addStep(GremlinTokens.V);
-        Graph.metaClass.V = {final Closure closure ->
-            return Gremlin.compose(delegate, new VerticesPipe(), closure)
+        Graph.metaClass.V = {->
+            return new FluentPipeline().start(delegate).vertices();
         }
 
         Gremlin.addStep(GremlinTokens.E);
-        Graph.metaClass.E = {final Closure closure ->
-            return Gremlin.compose(delegate, new EdgesPipe(), closure)
+        Graph.metaClass.E = {->
+            return new FluentPipeline().start(delegate).edges();
         }
 
         Graph.metaClass.v = {final Object id ->
@@ -99,7 +98,11 @@ class GraphLoader {
         }
 
         Graph.metaClass.saveGraphJSON = {final def fileObject ->
-            GraphJSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject))
+            GraphJSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), true)
+        }
+
+        Graph.metaClass.saveGraphJSON = {final def fileObject, final boolean showTypes ->
+            GraphJSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), showTypes)
         }
 
     }
