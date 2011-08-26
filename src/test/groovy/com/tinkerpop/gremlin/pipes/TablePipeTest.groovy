@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin.pipes
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.pipes.util.Table
 import com.tinkerpop.pipes.Pipe
+import com.tinkerpop.pipes.util.Table
 import junit.framework.TestCase
 
 /**
@@ -190,6 +190,6 @@ class TablePipeTest extends TestCase {
         g.v(1).as('a').out('not-created').as('b').table(t) >> -1;
         assertEquals(t.getColumnCount(), 2);
         assertEquals(t.getColumnNames().size(), 2);
-        assertEquals(t.getColumnNames(), ['a','b']);
+        assertEquals(t.getColumnNames(), ['a', 'b']);
     }
 }

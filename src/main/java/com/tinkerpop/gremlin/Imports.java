@@ -14,7 +14,6 @@ public class Imports {
         // gremlin
         imports.add("com.tinkerpop.gremlin.*");
         imports.add("com.tinkerpop.gremlin.GremlinTokens.T");
-        imports.add("com.tinkerpop.pipes.util.Table");
 
         // blueprints
         imports.add("com.tinkerpop.blueprints.pgm.*");
@@ -36,7 +35,6 @@ public class Imports {
         // pipes
         imports.add("com.tinkerpop.pipes.*");
         imports.add("com.tinkerpop.pipes.branch.*");
-        imports.add("com.tinkerpop.pipes.branch.util.*");
         imports.add("com.tinkerpop.pipes.filter.*");
         imports.add("com.tinkerpop.pipes.sideeffect.*");
         imports.add("com.tinkerpop.pipes.transform.*");

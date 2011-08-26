@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
+import com.tinkerpop.gremlin.GroovyPipeClosure
 import com.tinkerpop.pipes.PipeClosure
 import com.tinkerpop.pipes.filter.FilterPipe
 import com.tinkerpop.pipes.filter.IdFilterPipe
@@ -71,15 +71,13 @@ class PipeLoader {
 
                 if (count == -1) {
                     PipeHelper.iterate(itty);
-                    return delegate;
+                    return null;
                 } else if (count == 1) {
                     return itty.next();
                 } else {
-                    List objects = new LinkedList();
-                    for (int i = 0; i < count; i++) {
-                        objects.add(itty.next());
-                    }
-                    return objects;
+                    final List list = new LinkedList();
+                    PipeHelper.fillCollection(itty, list, count);
+                    return list;
                 }
             }
         }

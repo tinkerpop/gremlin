@@ -30,9 +30,9 @@ class BackFilterStepTest extends TestCase {
         assertEquals(g.v(1).outE.inV[[name: 'lop']].back(2).id.next(), "9");
 
         def list = ["ripple", "lop", "blah"]
-        assertEquals(PipeHelper.counter(g.v(1).outE.inV.outE.inV.filter{list.contains(it.name)}.back(3).outE.inV), 2);
-        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.inV.filter{list.contains(it.name)}.back(3).outE.inV[0].name >> 1));
-        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.inV.filter{list.contains(it.name)}.back(3).outE.inV[1].name >> 1));
+        assertEquals(PipeHelper.counter(g.v(1).outE.inV.outE.inV.filter {list.contains(it.name)}.back(3).outE.inV), 2);
+        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.inV.filter {list.contains(it.name)}.back(3).outE.inV[0].name >> 1));
+        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.outE.inV.filter {list.contains(it.name)}.back(3).outE.inV[1].name >> 1));
     }
 
     public void testBackFilterOnGraphUsingNamedSteps() throws Exception {
@@ -48,8 +48,8 @@ class BackFilterStepTest extends TestCase {
         assertEquals(g.v(1).outE.as('step').inV[[name: 'lop']].back('step').id.next(), "9");
 
         def list = ["ripple", "lop", "blah"]
-        assertEquals(PipeHelper.counter(g.v(1).outE.inV.as('step').outE.inV.filter{list.contains(it.name)}.back('step').outE.inV), 2);
-        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.as('step').outE.inV.filter{list.contains(it.name)}.back('step').outE.inV[0].name >> 1));
-        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.as('step').outE.inV.filter{list.contains(it.name)}.back('step').outE.inV[1].name >> 1));
+        assertEquals(PipeHelper.counter(g.v(1).outE.inV.as('step').outE.inV.filter {list.contains(it.name)}.back('step').outE.inV), 2);
+        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.as('step').outE.inV.filter {list.contains(it.name)}.back('step').outE.inV[0].name >> 1));
+        assertTrue(["ripple", "lop"].contains(g.v(1).outE.inV.as('step').outE.inV.filter {list.contains(it.name)}.back('step').outE.inV[1].name >> 1));
     }
 }

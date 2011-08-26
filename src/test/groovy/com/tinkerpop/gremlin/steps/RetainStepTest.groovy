@@ -35,7 +35,7 @@ class RetainStepTest extends TestCase {
 
         def x = []
         def results = []
-        g.v(1).outE.inV.aggregate(x).outE.inV.retain(x).filter{it.id == 3} >> results
+        g.v(1).outE.inV.aggregate(x).outE.inV.retain(x).filter {it.id == 3} >> results
         assertEquals(results.size(), 0)
     }
 

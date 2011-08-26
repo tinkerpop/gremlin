@@ -36,7 +36,7 @@ class ExceptStepTest extends TestCase {
 
         def x = []
         def results = []
-        g.v(1).outE.inV.aggregate(x).outE.inV.except(x).filter{it.id == 5} >> results
+        g.v(1).outE.inV.aggregate(x).outE.inV.except(x).filter {it.id == 5} >> results
         assertEquals(results.size(), 0)
     }
 }

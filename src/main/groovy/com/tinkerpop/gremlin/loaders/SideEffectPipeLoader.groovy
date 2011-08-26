@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
+import com.tinkerpop.gremlin.GroovyPipeClosure
 import com.tinkerpop.pipes.PipeClosure
 import com.tinkerpop.pipes.util.FluentPipeline
 import com.tinkerpop.pipes.util.Table
@@ -19,7 +19,7 @@ class SideEffectPipeLoader {
 
         Gremlin.addStep(GremlinTokens.SIDEEFFECT);
         FluentPipeline.metaClass.sideEffect = {final Closure closure ->
-            PipeClosure pc = new GroovyPipeClosure(closure);
+            final PipeClosure pc = new GroovyPipeClosure(closure);
             ((FluentPipeline) delegate).sideEffect(pc);
             pc.setPipe((FluentPipeline) delegate);
             return delegate;
@@ -68,10 +68,10 @@ class SideEffectPipeLoader {
 
         Gremlin.addStep(GremlinTokens.TABLE);
         FluentPipeline.metaClass.table = {final Table table, final Closure... closures ->
-            return ((FluentPipeline) delegate).table(table, null, Gremlin.createPipeClosures(closures));
+            return ((FluentPipeline) delegate).table(table, null, GroovyPipeClosure.generate(closures));
         }
         FluentPipeline.metaClass.table = {final Table table, final List<String> columnNames, final Closure... closures ->
-            return ((FluentPipeline) delegate).table(table, columnNames, Gremlin.createPipeClosures(closures));
+            return ((FluentPipeline) delegate).table(table, columnNames, GroovyPipeClosure.generate(closures));
         }
 
         Gremlin.addStep(GremlinTokens.AS)

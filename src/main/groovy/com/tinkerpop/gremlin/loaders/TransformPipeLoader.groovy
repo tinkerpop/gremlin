@@ -4,7 +4,8 @@ import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
+import com.tinkerpop.gremlin.GroovyPipeClosure
+import com.tinkerpop.pipes.PipeClosure
 import com.tinkerpop.pipes.util.FluentPipeline
 
 /**
@@ -16,7 +17,10 @@ class TransformPipeLoader {
 
         Gremlin.addStep(GremlinTokens.TRANSFORM);
         FluentPipeline.metaClass.transform = {final Closure closure ->
-            return ((FluentPipeline) delegate).transform(new GroovyPipeClosure(closure));
+            final PipeClosure pc = new GroovyPipeClosure(closure);
+            ((FluentPipeline) delegate).transform(pc);
+            pc.setPipe((FluentPipeline) delegate);
+            return delegate;
         }
 
         Gremlin.addStep(GremlinTokens.COPYSPLIT);
@@ -55,7 +59,7 @@ class TransformPipeLoader {
 
         Gremlin.addStep(GremlinTokens.PATHS);
         FluentPipeline.metaClass.paths = { final Closure... closures ->
-            return ((FluentPipeline) delegate).path(Gremlin.createPipeClosures(closures));
+            return ((FluentPipeline) delegate).path(GroovyPipeClosure.generate(closures));
         }
 
         Gremlin.addStep(GremlinTokens.OUT);

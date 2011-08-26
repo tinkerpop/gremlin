@@ -8,9 +8,7 @@ import com.tinkerpop.gremlin.loaders.IndexLoader
 import com.tinkerpop.gremlin.loaders.ObjectLoader
 import com.tinkerpop.gremlin.loaders.PipeLoader
 import com.tinkerpop.gremlin.loaders.SailGraphLoader
-import com.tinkerpop.gremlin.pipes.util.GroovyPipeClosure
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.PipeClosure
 import com.tinkerpop.pipes.filter.FilterPipe
 import com.tinkerpop.pipes.filter.FilterPipe.Filter
 import com.tinkerpop.pipes.util.FluentPipeline
@@ -63,7 +61,7 @@ class Gremlin {
         throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
     }
 
-    public static FluentPipeline compose(final Object start, final Pipe pipe) {
+    private static FluentPipeline compose(final Object start, final Pipe pipe) {
         FluentPipeline pipeline;
         if (start instanceof FluentPipeline) {
             pipeline = start;
@@ -111,14 +109,6 @@ class Gremlin {
                     Gremlin.compose(delegate, stepClosure(parameters));
             };
         }
-    }
-
-    public static PipeClosure[] createPipeClosures(final Closure... closures) {
-        final PipeClosure[] pipeClosures = new PipeClosure[closures.length];
-        for (int i = 0; i < closures.length; i++) {
-            pipeClosures[i] = new GroovyPipeClosure(closures[i]);
-        }
-        return pipeClosures;
     }
 
     public static String version() {
