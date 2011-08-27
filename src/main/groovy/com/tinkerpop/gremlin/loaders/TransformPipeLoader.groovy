@@ -46,6 +46,7 @@ class TransformPipeLoader {
         }
 
         Gremlin.addStep(GremlinTokens.MAP);
+        Gremlin.addStep(GremlinTokens.MEMOIZE);
 
         Gremlin.addStep(GremlinTokens.GATHER);
         FluentPipeline.metaClass.gather = {final Closure closure ->
