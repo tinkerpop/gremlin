@@ -30,6 +30,7 @@ h3. Version 1.3 (NOT OFFICIALLY RELEASED YET)
 * Filter closures must be made explicit now (e.g. @out{it.id > 2}@ must now be @out.filter{it.id > 2}@)
 * Migrated @TablePipe@ and @Table@ to "Pipes":http://pipes.tinkerpop.com
 * Renamed @propFilter@ step to @propertyFilter@
+* Added multi-vertex/edge lookup support via @g.v(1,2,3) -> [v[1],v[2],v[3]]@ (and @g.e()@ as well)
 
 ==<hr/>==
 
