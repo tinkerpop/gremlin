@@ -36,6 +36,16 @@ class GraphLoaderTest extends TestCase {
         assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[5] >> 1));
     }
 
+    public void testBulkLoadById() throws Exception {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        assertEquals(g.v(1, 2, 3), [g.v(1), g.v(2), g.v(3)]);
+        assertEquals(g.e(7, 8, 9), [g.e(7), g.e(8), g.e(9)]);
+
+        assertEquals(g.v(1, 2, 10), [g.v(1), g.v(2), null]);
+    }
+
     public void testIdAndLabelProperties() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();

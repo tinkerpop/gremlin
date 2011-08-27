@@ -37,12 +37,26 @@ class GraphLoader {
             return new FluentPipeline().start(delegate).E();
         }
 
-        Graph.metaClass.v = {final Object id ->
-            return ((Graph) delegate).getVertex(id);
+        Graph.metaClass.v = {final Object... ids ->
+            if (ids.length == 1)
+                return ((Graph) delegate).getVertex(ids[0]);
+            else {
+                final Graph g = (Graph) delegate;
+                final List vertices = new LinkedList();
+                ids.each {vertices.add(g.getVertex(it))};
+                return vertices;
+            }
         }
 
-        Graph.metaClass.e = {final Object id ->
-            return ((Graph) delegate).getEdge(id);
+        Graph.metaClass.e = {final Object... ids ->
+            if (ids.length == 1)
+                return ((Graph) delegate).getEdge(ids[0]);
+            else {
+                final Graph g = (Graph) delegate;
+                final List edges = new LinkedList();
+                ids.each {edges.add(g.getEdge(it))};
+                return edges;
+            }
         }
 
         Graph.metaClass.addVertex = {->
