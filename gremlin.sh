@@ -1,4 +1,3 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
-$DIR/target/gremlin-*-standalone/bin/gremlin.sh $@
+`dirname $0`/target/gremlin-*-standalone/bin/gremlin.sh $@
