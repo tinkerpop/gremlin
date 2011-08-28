@@ -15,7 +15,9 @@ class ObjectLoader {
 
         Gremlin.addStep(GremlinTokens._);
         Object.metaClass._ = {final Closure closure ->
-            return new FluentPipeline().start(delegate)._();
+            final FluentPipeline pipeline = new FluentPipeline()._();
+            pipeline.setStarts(delegate.iterator());
+            return pipeline;
         }
 
         Map.metaClass.getAt = {final IntRange range ->

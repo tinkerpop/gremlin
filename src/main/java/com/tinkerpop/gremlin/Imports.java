@@ -22,8 +22,9 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.impls.neo4j.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.orientdb.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.dex.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.readonly.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.rexster.*");
+        imports.add("com.tinkerpop.blueprints.pgm.impls.event.*");
+        imports.add("com.tinkerpop.blueprints.pgm.impls.readonly.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
         imports.add("com.tinkerpop.blueprints.pgm.util.*");

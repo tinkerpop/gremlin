@@ -29,6 +29,7 @@ class FilterPipeLoader {
         Gremlin.addStep(GremlinTokens.BACK);
         Gremlin.addStep(GremlinTokens.EXCEPT);
         Gremlin.addStep(GremlinTokens.RETAIN);
+        Gremlin.addStep(GremlinTokens.RANDOM);
 
         Gremlin.addStep(GremlinTokens.PROPERTYFILTER);
         FluentPipeline.metaClass.propertyFilter = {final String key, final T t, final Object value ->
