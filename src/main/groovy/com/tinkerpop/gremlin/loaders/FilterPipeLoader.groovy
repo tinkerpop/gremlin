@@ -3,8 +3,7 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GremlinTokens.T
-import com.tinkerpop.gremlin.GroovyPipeClosure
-import com.tinkerpop.pipes.PipeClosure
+import com.tinkerpop.gremlin.GroovyPipeFunction
 import com.tinkerpop.pipes.util.FluentPipeline
 
 /**
@@ -16,10 +15,7 @@ class FilterPipeLoader {
 
         Gremlin.addStep(GremlinTokens.FILTER);
         FluentPipeline.metaClass.filter = {final Closure closure ->
-            final PipeClosure pc = new GroovyPipeClosure(closure);
-            ((FluentPipeline) delegate).filter(pc);
-            pc.setPipe((FluentPipeline) delegate);
-            return delegate;
+            return ((FluentPipeline) delegate).filter(new GroovyPipeFunction(closure));;
         }
 
         Gremlin.addStep(GremlinTokens.UNIQUEPATH);

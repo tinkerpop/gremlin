@@ -31,9 +31,9 @@ class GremlinTest extends BaseTest {
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
-        new FluentPipeline().start([1, 2, 3]).step {x = starts.next()} >> -1
+        new FluentPipeline().start([1, 2, 3]).step {x = it.next()} >> -1
         assertEquals(x, 3);
-        new FluentPipeline().start([3, 2, 1]).step {x = starts.next()} >> -1
+        new FluentPipeline().start([3, 2, 1]).step {x = it.next()} >> -1
         assertEquals(x, 1);
     }
 
@@ -69,8 +69,8 @@ class GremlinTest extends BaseTest {
             _().sideEffect {x = it}.out(params[0]).in(params[0]).filter(params[1])
         });
         //TODO: can this be possible?
-        /*Gremlin.defineStep("twoStep", [Pipe, Vertex], { final String label, Closure closure ->
-            _ {x = it}.out(label).in(label).filter(closure)
+        /*Gremlin.defineStep("twoStep", [Pipe, Vertex], { final String label, Closure function ->
+            _ {x = it}.out(label).in(label).filter(function)
         });*/
 
         results = []

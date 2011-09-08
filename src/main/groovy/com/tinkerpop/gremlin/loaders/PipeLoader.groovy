@@ -2,8 +2,7 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.GroovyPipeClosure
-import com.tinkerpop.pipes.PipeClosure
+import com.tinkerpop.gremlin.GroovyPipeFunction
 import com.tinkerpop.pipes.filter.FilterPipe
 import com.tinkerpop.pipes.filter.IdFilterPipe
 import com.tinkerpop.pipes.filter.LabelFilterPipe
@@ -131,10 +130,7 @@ class PipeLoader {
 
         Gremlin.addStep(GremlinTokens.STEP);
         FluentPipeline.metaClass.step = {final Closure closure ->
-            PipeClosure pc = new GroovyPipeClosure(closure);
-            ((FluentPipeline) delegate).step(pc);
-            //pc.setPipe((FluentPipeline) delegate);
-            return delegate;
+            return ((FluentPipeline) delegate).step(new GroovyPipeFunction(closure));
         }
 
         TransformPipeLoader.load();

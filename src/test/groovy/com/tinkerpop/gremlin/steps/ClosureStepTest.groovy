@@ -39,7 +39,7 @@ class ClosureStepTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         def results = [];
-        g.v(1).outE.inV.step {s().name} >> results
+        g.v(1).outE.inV.step {it.next().name} >> results
         assertTrue(results.contains("josh"))
         assertTrue(results.contains("lop"))
         assertTrue(results.contains("vadas"))

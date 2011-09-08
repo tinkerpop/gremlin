@@ -2,9 +2,10 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.GroovyPipeClosure
+
 import com.tinkerpop.pipes.util.FluentPipeline
 import com.tinkerpop.pipes.util.Table
+import com.tinkerpop.gremlin.GroovyPipeFunction
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -43,7 +44,7 @@ class ObjectLoader {
         }
 
         Table.metaClass.apply = {final Closure... closures ->
-            return ((Table) delegate).apply(GroovyPipeClosure.generate(closures));
+            return ((Table) delegate).apply(GroovyPipeFunction.generate(closures));
 
         }
 

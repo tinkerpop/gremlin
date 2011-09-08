@@ -29,7 +29,7 @@ h3. Version 1.3 (On the Case -- NOT OFFICIALLY RELEASED YET)
 * Fixed table width bug in @Table@
 * Added @Graph.loadGraphJSON()@ and @Graph.saveGraphJSON()@ with respective @data/graph-example-1.json@
 * Moved to @FluentPipeline@ model provided by Pipes
-* Filter closures must be made explicit now (e.g. @out{it.id > 2}@ must now be @out.filter{it.id > 2}@)
+* Filter functions must be made explicit now (e.g. @out{it.id > 2}@ must now be @out.filter{it.id > 2}@)
 * Migrated @TablePipe@ and @Table@ to "Pipes":http://pipes.tinkerpop.com
 * Renamed @propFilter@ step to @propertyFilter@
 * Added multi-vertex/edge lookup support via @g.v(1,2,3) -> [v[1],v[2],v[3]]@ (and @g.e()@ as well)
@@ -50,8 +50,8 @@ h3. Version 1.2 (New Sheriff in Town -- August 1, 2011)
 ```
 
 * Added respective pipe support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
-* Added path closures to @paths@ to allow for post-processing a returned path
-* Added map entry closures to @groupCount@ to allow for pre-processing an entry's key/value pairs
+* Added path functions to @paths@ to allow for post-processing a returned path
+* Added map entry functions to @groupCount@ to allow for pre-processing an entry's key/value pairs
 * Added @Gremlin.version()@ to get version information (returns @GremlinTokens.VERSION@)
 * Added @Gremlin.defineStep()@ to make it simple for developers to add new steps
 * Added support for @Graph.loadGraphML(URL)@
@@ -61,7 +61,7 @@ h3. Version 1.2 (New Sheriff in Town -- August 1, 2011)
 ** Added @GroovyPipeClosure@ to map a "Groovy":http://groovy.codehaus.org @Closure@ to a @PipeClosure@
 * Update @g.idx()@ to reflect @null@ behavior of Blueprints index API update
 * Added @map@ step to emit an element's property map
-* Added support for @aggregate@ step closure to process object prior to insertion into the aggregate collection
+* Added support for @aggregate@ step function to process object prior to insertion into the aggregate collection
 * Bumped to Groovy 1.8.1
 
 ==<hr/>==
@@ -155,7 +155,7 @@ h3. Version 0.8 (Grem Stefani -- March 2, 2011)
 ```
 
 * Added new steps
-** @emit@ to emit results of provided closure
+** @emit@ to emit results of provided function
 ** @ifelse@ to perform a if/then/else branch
 ** @uniquePath@ to filter looping paths
 * Added new methods
@@ -185,7 +185,7 @@ h3. Version 0.7 (Gremopoly -- January 22, 2011)
 
 * Added many new steps
 ** @loop@ step for in-line looping
-** @foreach@ step for closure based operations on flowing objects
+** @foreach@ step for function based operations on flowing objects
 ** @back@ step for backtracking in pipeline (i.e. @../@)
 ** @aggregate@, @except@, and @retain@ for except/retain pattern
 ** @groupCount@ for map aggregations (i.e. @g:op-value()@)
