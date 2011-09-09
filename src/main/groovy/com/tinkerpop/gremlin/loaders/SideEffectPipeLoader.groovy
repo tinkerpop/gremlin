@@ -60,7 +60,10 @@ class SideEffectPipeLoader {
             }
         }
 
-        Gremlin.addStep(GremlinTokens.OPTIONAL)
+        Gremlin.addStep(GremlinTokens.REDUCE)
+        FluentPipeline.metaClass.reduce = {final def first, final Closure reduceClosure ->
+            return ((FluentPipeline) delegate).reduce(first, new GroovyPipeFunction(reduceClosure));
+        }
 
         Gremlin.addStep(GremlinTokens.TABLE);
         FluentPipeline.metaClass.table = {final Table table, final Closure... closures ->

@@ -35,6 +35,7 @@ h3. Version 1.3 (On the Case -- NOT OFFICIALLY RELEASED YET)
 * Added multi-vertex/edge lookup support via @g.v(1,2,3) -> [v[1],v[2],v[3]]@ (and @g.e()@ as well)
 * Added @memoize()@ step to provide the @MemoizePipe@ functionality to Gremlin
 * Added support for simpler @PipeFunction@ model introduced by Pipes
+* Added @reduce()@ step for @ReducePipe@
 
 ==<hr/>==
 
