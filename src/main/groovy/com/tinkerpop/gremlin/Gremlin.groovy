@@ -73,8 +73,7 @@ class Gremlin {
             if (null != pipe)
                 pipeline.addPipe(pipe);
         } else {
-            pipeline = new FluentPipeline();
-            pipeline.start(start);
+            pipeline = new FluentPipeline(start);
             if (null != pipe)
                 pipeline.addPipe(pipe);
         }

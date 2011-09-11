@@ -77,7 +77,7 @@ class SideEffectPipeLoader {
         // todo: why is identity needed?
         [Graph, Vertex, Edge].each {
             it.metaClass.as = {final String name ->
-                return new FluentPipeline().start(delegate).identity().as(name);
+                return new FluentPipeline(delegate).identity().as(name);
             }
         }
     }

@@ -29,12 +29,12 @@ class GraphLoader {
 
         Gremlin.addStep(GremlinTokens.V);
         Graph.metaClass.V = {->
-            return new FluentPipeline().start(delegate).V();
+            return new FluentPipeline(delegate).V();
         }
 
         Gremlin.addStep(GremlinTokens.E);
         Graph.metaClass.E = {->
-            return new FluentPipeline().start(delegate).E();
+            return new FluentPipeline(delegate).E();
         }
 
         Graph.metaClass.v = {final Object... ids ->

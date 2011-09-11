@@ -63,47 +63,47 @@ class TransformPipeLoader {
 
         Gremlin.addStep(GremlinTokens.OUT);
         Vertex.metaClass.out = {final String... labels ->
-            return new FluentPipeline().start(delegate).out(labels);
+            return new FluentPipeline(delegate).out(labels);
         }
 
         Gremlin.addStep(GremlinTokens.OUTE);
         Vertex.metaClass.outE = {final String... labels ->
-            return new FluentPipeline().start(delegate).outE(labels);
+            return new FluentPipeline(delegate).outE(labels);
         }
 
         Gremlin.addStep(GremlinTokens.IN);
         Vertex.metaClass.in = {final String... labels ->
-            return new FluentPipeline().start(delegate).in(labels);
+            return new FluentPipeline(delegate).in(labels);
         }
 
         Gremlin.addStep(GremlinTokens.INE);
         Vertex.metaClass.inE = {final String... labels ->
-            return new FluentPipeline().start(delegate).inE(labels);
+            return new FluentPipeline(delegate).inE(labels);
         }
 
         Gremlin.addStep(GremlinTokens.BOTH);
         Vertex.metaClass.both = {final String... labels ->
-            return new FluentPipeline().start(delegate).both(labels);
+            return new FluentPipeline(delegate).both(labels);
         }
 
         Gremlin.addStep(GremlinTokens.BOTHE);
         Vertex.metaClass.bothE = {final String... labels ->
-            return new FluentPipeline().start(delegate).bothE(labels);
+            return new FluentPipeline(delegate).bothE(labels);
         }
 
         Gremlin.addStep(GremlinTokens.INV);
         Edge.metaClass.inV = {->
-            return new FluentPipeline().start(delegate).inV();
+            return new FluentPipeline(delegate).inV();
         }
 
         Gremlin.addStep(GremlinTokens.OUTV);
         Edge.metaClass.outV = {->
-            return new FluentPipeline().start(delegate).outV();
+            return new FluentPipeline(delegate).outV();
         }
 
         Gremlin.addStep(GremlinTokens.BOTHV);
         Edge.metaClass.bothV = {->
-            return new FluentPipeline().start(delegate).bothV();
+            return new FluentPipeline(delegate).bothV();
         }
     }
 }
