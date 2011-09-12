@@ -59,8 +59,6 @@ class TransformPipeLoader {
             return ((FluentPipeline) delegate).path(GroovyPipeFunction.generate(closures));
         }
 
-        Gremlin.addStep(GremlinTokens.OPTIONAL)
-
         Gremlin.addStep(GremlinTokens.OUT);
         Vertex.metaClass.out = {final String... labels ->
             return new FluentPipeline(delegate).out(labels);
