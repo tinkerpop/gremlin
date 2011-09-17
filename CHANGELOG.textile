@@ -13,13 +13,13 @@ h2. Gremlin 1.X
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-on-the-case.png!
 
-h3. Version 1.3 (On the Case -- NOT OFFICIALLY RELEASED YET)
+h3. Version 1.3 (On the Case -- September 18, 2011)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin</artifactId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.3</version>
 </dependency>
 ```
 
