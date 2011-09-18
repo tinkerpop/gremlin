@@ -1,0 +1,86 @@
+The method @g.idx(string)@ is a shortcut of @g.getIndex(string, class)@ method, where @string@ is the name of index:
+* 'vertices' or @T.v@ for automatic vertices index
+* 'edges' or @T.e@ for automatic edges index
+* any other name for user defined (non-default) indices.
+
+and @class@ is either:
+* @Vertex.class@
+* @Edge.class@
+
+
+```
+gremlin> g.idx(T.v) == g.getIndex('vertices', Vertex.class)
+==>true
+gremlin> g.idx(T.e) == g.getIndex('edges', Edge.class)
+==>true
+```
+
+@T@ is a shortcut to @GremlinTokens.T@:
+
+```
+gremlin> T == GremlinTokens.T
+==>true
+gremlin> T.iterator()
+==>eq
+==>neq
+==>lt
+==>lte
+==>gt
+==>gte
+==>v
+==>e
+```
+
+
+@T.v@ is a shortcut to 'vertices' and is used in the context of @g.idx()@:
+
+```
+gremlin> g.idx(T.v) == g.idx('vertices')
+==>true
+gremlin> T.v == 'vertices'
+==>false
+```
+
+
+@T.e@ is a shortcut to 'edges' and is used in the context of @g.idx()@:
+
+```
+gremlin> g.idx(T.e) == g.idx('edges')
+==>true
+gremlin> T.e == 'edges'
+==>false
+```
+
+
+@index[ [key:value] ]@ is nearly equivalent to @index.get( key, value )@:
+
+```
+gremlin> g.idx(T.v)[[name:'marko']]     
+==>v[1]
+gremlin> g.idx(T.v).get('name', 'marko')
+==>v[1]
+```
+
+Nearly?
+
+```
+gremlin> g.idx(T.v)[[name:'marko']].class     
+==>class com.tinkerpop.pipes.util.FluentPipeline
+gremlin> g.idx(T.v).get('name', 'marko').class
+==>class com.tinkerpop.blueprints.pgm.impls.WrappingCloseableSequence
+```
+
+Therefore, you need to convert @index.get(key,value)@ sequence into pipe using @_()@:
+
+```
+gremlin> g.idx(T.v).get('name', 'marko').out
+No such property: out for class: com.tinkerpop.blueprints.pgm.impls.WrappingCloseableSequence
+gremlin> g.idx(T.v).get('name', 'marko')._().out
+==>v[2]
+==>v[3]
+==>v[4]
+gremlin> g.idx(T.v)[[name:'marko']].out         
+==>v[2]
+==>v[3]
+==>v[4]
+```

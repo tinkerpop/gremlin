@@ -1,0 +1,5 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png!
+
+Most Gremlin pipelines are serial in that one step feeds to the next, so on and so forth. There are situations where it is desirable to split a pipeline and thus, have two parallel steps that are later merged back into a serial flow.
+
+The steps @copySplit@, @fairMerge@ and @exhaustMerge@ make this possible.

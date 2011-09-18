@@ -1,0 +1,71 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-logo.png]] <a href="https://github.com/tinkerpop/gremlin/downloads">[[https://github.com/tinkerpop/blueprints/raw/master/doc/images/tinkerpop-download.png|align=right|float]]</a>
+
+Gremlin is a graph traversal language. The documentation herein will provide all the information necessary to understand how to use Gremlin for graph query, analysis, and manipulation. Gremlin works over those graph databases/frameworks that implement the "Blueprints":http://blueprints.tinkerpop.com property graph data model. For example: "TinkerGraph":https://github.com/tinkerpop/blueprints/wiki/TinkerGraph, "Neo4j":http://neo4j.org, "OrientDB":http://www.orientechnologies.com/orient-db.htm, "DEX":http://www.sparsity-technologies.com/dex, "Rexster":http://rexster.tinkerpop.com, and "Sail RDF Stores":http://www.openrdf.org. [1] 
+
+Please join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users for all "TinkerPop":http://tinkerpop.com related discussions. Finally, if you are a Gremlin user, please add to the [[Gremlin in the Wild]] wiki page with your specific Gremlin uses cases.
+
+```text
+g = new Neo4jGraph('/tmp/neo4j')
+
+// calculate basic collaborative filtering for vertex 1
+m = [:]
+g.v(1).out('likes').in('likes').out('likes').groupCount(m)
+m.sort{a,b -> a.value <=> b.value}
+
+// calculate the primary eigenvector (eigenvector centrality) of a graph
+m = [:]; c = 0;
+g.V.out.groupCount(m).loop(2){c++ < 1000}
+m.sort{a,b -> a.value <=> b.value}
+```
+"The Graph Traversal Programming Pattern":http://windycitydb.org/videos2010/#5 (*Presentation of Basic Graph Traversal Concepts*)
+"Gremlin Tutorial 1":http://www.youtube.com/watch?v=5wpTtEBK4-E (*Screencast of Gremlin 0.7*)
+"Gremlin Tutorial 2":http://windycitydb.org/videos2011/#1 (*Presentation of Gremlin 1.1*)
+
+==<hr/>==
+* [[The Benefits of Gremlin]]
+* [[Getting Started]]
+  ** [[Building Gremlin from Source]]
+  ** [[Using Gremlin through Groovy]]
+  ** [[Using Gremlin through Java]]
+  ** [[Using Gremlin from the Command Line]]
+* Basic Concepts
+  ** [[Learning Dependencies]]
+  ** [[Defining a Property Graph]]
+  ** [[Basic Graph Traversals]]
+  ** [[Gremlin Syntax]]
+  ** Gremlin Library
+    **** [[Gremlin Steps]] (*Cheat Sheet*)
+    **** [[Gremlin Methods]] (*Cheat Sheet*)
+  ** [[Updating a Graph]]
+* Intermediate Concepts
+  ** [[Defining a More Complex Property Graph]]
+  ** Traversal Patterns
+    **** [[Backtrack Pattern]]
+    **** [[Except/Retain Pattern]]
+    **** [[Flow Rank Pattern]]
+    **** [[Paths Pattern]]
+    **** [[Loop Pattern]]
+    **** [[Split/Merge Pattern]]
+    **** [[Pattern Match Pattern]]
+  ** [[User Defined Steps]]
+* Advanced Concepts
+  ** [[Depth-First vs. Breadth-First]]
+  ** [[Path Optimizations]]
+* Graph Framework Connectors
+  ** [[Using JUNG]]
+  ** [[SPARQL vs. Gremlin]]
+  ** [[LinkedData Sail]] (Traversing the Web of Data)
+* Conclusion
+  ** [[Troubleshooting]]
+  ** [[Acknowledgments]]
+  ** [[Release Notes]]
+
+==<hr/>==
+
+[[Gremlin Cookbook]] (User Contributed Recipes)
+
+==<hr/>==
+
+fn1. Gremlin documentation is up to date with the current Gremlin "codebase":http://github.com/tinkerpop/gremlin/tree/master, not with the latest Gremlin "release":http://github.com/tinkerpop/gremlin/downloads.
+
+*Note*: to get a local copy of this Gremlin wiki, instructions are "available":http://groups.google.com/group/gremlin-users/msg/3299451a85e61126.
