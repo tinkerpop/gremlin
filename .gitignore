@@ -2,4 +2,4 @@
 .gremlin_history
 target/
 .idea/
-gremlin.iml
+*.iml

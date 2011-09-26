@@ -1,3 +1,3 @@
 #!/bin/bash
 
-`dirname $0`/target/gremlin-*-standalone/bin/gremlin.sh $@
+`dirname $0`/gremlin-groovy/target/gremlin-*-standalone/bin/gremlin.sh $@
