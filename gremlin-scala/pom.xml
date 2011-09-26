@@ -13,9 +13,11 @@
     <packaging>jar</packaging>
     <name>Gremlin-Scala: Gremlin for the Scala Language</name>
     <developers>
-        <developer>
-            <name>Zach Cox</name>
-        </developer>
+      <developer>
+          <name>Zach Cox</name>
+          <email>zcox522@gmail.com</email>
+          <url>http://theza.ch</url>
+      </developer>
     </developers>
     <mailingLists>
         <mailingList>
