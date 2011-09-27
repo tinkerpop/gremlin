@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GroovyPipeFunction
-import com.tinkerpop.pipes.util.FluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.pipes.util.Table
 
 /**
@@ -15,7 +15,7 @@ class ObjectLoader {
 
         Gremlin.addStep(GremlinTokens._);
         Object.metaClass._ = {final Closure closure ->
-            final FluentPipeline pipeline = new FluentPipeline()._();
+            final GremlinFluentPipeline pipeline = new GremlinFluentPipeline()._();
             pipeline.setStarts(delegate.iterator());
             return pipeline;
         }

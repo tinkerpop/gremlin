@@ -5,8 +5,8 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.util.FluentPipeline
 
 class GremlinTest extends BaseTest {
 
@@ -31,9 +31,9 @@ class GremlinTest extends BaseTest {
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
-        new FluentPipeline().start([1, 2, 3]).step {x = it.next()} >> -1
+        new GremlinFluentPipeline().start([1, 2, 3]).step {x = it.next()} >> -1
         assertEquals(x, 3);
-        new FluentPipeline().start([3, 2, 1]).step {x = it.next()} >> -1
+        new GremlinFluentPipeline().start([3, 2, 1]).step {x = it.next()} >> -1
         assertEquals(x, 1);
     }
 

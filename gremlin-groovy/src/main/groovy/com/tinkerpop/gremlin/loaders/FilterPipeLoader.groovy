@@ -4,7 +4,7 @@ import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GremlinTokens.T
 import com.tinkerpop.gremlin.GroovyPipeFunction
-import com.tinkerpop.pipes.util.FluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -14,8 +14,8 @@ class FilterPipeLoader {
     public static void load() {
 
         Gremlin.addStep(GremlinTokens.FILTER);
-        FluentPipeline.metaClass.filter = {final Closure closure ->
-            return ((FluentPipeline) delegate).filter(new GroovyPipeFunction(closure));;
+        GremlinFluentPipeline.metaClass.filter = {final Closure closure ->
+            return ((GremlinFluentPipeline) delegate).filter(new GroovyPipeFunction(closure));;
         }
 
         Gremlin.addStep(GremlinTokens.UNIQUEPATH);
@@ -28,13 +28,13 @@ class FilterPipeLoader {
         Gremlin.addStep(GremlinTokens.RANDOM);
 
         Gremlin.addStep(GremlinTokens.PROPERTYFILTER);
-        FluentPipeline.metaClass.propertyFilter = {final String key, final T t, final Object value ->
+        GremlinFluentPipeline.metaClass.propertyFilter = {final String key, final T t, final Object value ->
             if (key.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-                return ((FluentPipeline) delegate).idFilter(value, Gremlin.mapFilter(t));
+                return ((GremlinFluentPipeline) delegate).idFilter(value, Gremlin.mapFilter(t));
             } else if (key.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-                return ((FluentPipeline) delegate).labelFilter((String) value, Gremlin.mapFilter(t));
+                return ((GremlinFluentPipeline) delegate).labelFilter((String) value, Gremlin.mapFilter(t));
             } else {
-                return ((FluentPipeline) delegate).propertyFilter(key, Gremlin.mapFilter(t), value);
+                return ((GremlinFluentPipeline) delegate).propertyFilter(key, Gremlin.mapFilter(t), value);
             }
         }
 

@@ -3,11 +3,11 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GroovyPipeFunction
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe
+import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe
+import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe
 import com.tinkerpop.pipes.filter.FilterPipe
-import com.tinkerpop.pipes.filter.IdFilterPipe
-import com.tinkerpop.pipes.filter.LabelFilterPipe
-import com.tinkerpop.pipes.filter.PropertyFilterPipe
-import com.tinkerpop.pipes.util.FluentPipeline
 import com.tinkerpop.pipes.util.PipeHelper
 
 /**
@@ -17,16 +17,16 @@ class PipeLoader {
 
     public static void load() {
 
-        FluentPipeline.metaClass.propertyMissing = {final String name ->
+        GremlinFluentPipeline.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
                 return delegate."$name"();
             } else {
                 if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-                    return ((FluentPipeline) delegate).id();
+                    return ((GremlinFluentPipeline) delegate).id();
                 } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-                    return ((FluentPipeline) delegate).label();
+                    return ((GremlinFluentPipeline) delegate).label();
                 } else {
-                    return ((FluentPipeline) delegate).property(name);
+                    return ((GremlinFluentPipeline) delegate).property(name);
                 }
             }
         }
@@ -82,27 +82,27 @@ class PipeLoader {
         }
 
 
-        FluentPipeline.metaClass.getAt = {final Integer index ->
-            return ((FluentPipeline) delegate).rangeFilter(index, index);
+        GremlinFluentPipeline.metaClass.getAt = {final Integer index ->
+            return ((GremlinFluentPipeline) delegate).rangeFilter(index, index);
         }
 
 
-        FluentPipeline.metaClass.getAt = {final Range range ->
-            return ((FluentPipeline) delegate).rangeFilter(range.getFrom() as Integer, range.getTo() as Integer);
+        GremlinFluentPipeline.metaClass.getAt = {final Range range ->
+            return ((GremlinFluentPipeline) delegate).rangeFilter(range.getFrom() as Integer, range.getTo() as Integer);
         }
 
-        FluentPipeline.metaClass.getAt = {final String name ->
+        GremlinFluentPipeline.metaClass.getAt = {final String name ->
             if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
-                return ((FluentPipeline) delegate).id();
+                return ((GremlinFluentPipeline) delegate).id();
             } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
-                return ((FluentPipeline) delegate).label();
+                return ((GremlinFluentPipeline) delegate).label();
             } else {
-                return ((FluentPipeline) delegate).property(name);
+                return ((GremlinFluentPipeline) delegate).property(name);
             }
         }
 
-        FluentPipeline.metaClass.getAt = {final Map map ->
-            FluentPipeline pipeline = (FluentPipeline) delegate;
+        GremlinFluentPipeline.metaClass.getAt = {final Map map ->
+            GremlinFluentPipeline pipeline = (GremlinFluentPipeline) delegate;
             map.each {key, value ->
                 if (key.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
                     if (value instanceof List) {
@@ -129,8 +129,8 @@ class PipeLoader {
         }
 
         Gremlin.addStep(GremlinTokens.STEP);
-        FluentPipeline.metaClass.step = {final Closure closure ->
-            return ((FluentPipeline) delegate).step(new GroovyPipeFunction(closure));
+        GremlinFluentPipeline.metaClass.step = {final Closure closure ->
+            return ((GremlinFluentPipeline) delegate).step(new GroovyPipeFunction(closure));
         }
 
         TransformPipeLoader.load();
