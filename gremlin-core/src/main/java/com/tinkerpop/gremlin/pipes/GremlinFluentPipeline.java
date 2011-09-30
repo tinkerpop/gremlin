@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.pipes;
 
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
@@ -14,6 +16,7 @@ import com.tinkerpop.gremlin.pipes.transform.IdVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.InEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.InPipe;
 import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
+import com.tinkerpop.gremlin.pipes.transform.IndexElementsPipe;
 import com.tinkerpop.gremlin.pipes.transform.LabelPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutPipe;
@@ -42,6 +45,10 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      */
     public GremlinFluentPipeline(final Object starts) {
         super(new StartPipe(starts));
+    }
+
+    public <T extends Element> GremlinFluentPipeline(final Index<T> index, final String key, final Object value) {
+        super(new IndexElementsPipe<T>(index, key, value));
     }
 
     /**
@@ -336,5 +343,11 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      */
     public GremlinFluentPipeline V() {
         return this.vertices();
+    }
+
+    // utility
+
+    public <T extends Element> GremlinFluentPipeline index(final Index<T> index, final String key, final Object value) {
+        return this.add(new IndexElementsPipe<T>(index, key, value));
     }
 }
