@@ -129,10 +129,102 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       vs must contain(g getVertex 4)
     }
 
-    //TODO vertex.outE and vertex.outE()
-    //TODO vertex.in and vertex.in(label)
-    //TODO vertex.inE and vertex.inE(label)
-    //TODO vertex.both and vertex.bothE(label)
+    "return all out edges using outE" in {
+      val g = createTinkerGraph()
+      val es = g.getVertex(1).outE.toIterable
+      
+      es must have size(3)
+      es must contain(g getEdge 7)
+      es must contain(g getEdge 8)
+      es must contain(g getEdge 9)
+    }
+    
+    "return all out edges using outE with label" in {
+      val g = createTinkerGraph()
+      val es = g.getVertex(1).outE("knows").toIterable
+      
+      es must have size(2)
+      es must contain(g getEdge 7)
+      es must contain(g getEdge 8)
+    }
+    
+    "return all in vertices using in" in {
+      val g = createTinkerGraph()
+      val vs = g.getVertex(3).in.toIterable
+      
+      vs must have size(3)
+      vs must contain(g getVertex 1)
+      vs must contain(g getVertex 4)
+      vs must contain(g getVertex 6)
+    }
+    
+    "return all in vertices using in with label" in {
+      val g = createTinkerGraph()
+      val vs = g.getVertex(3).in("created").toIterable
+      
+      vs must have size(3)
+      vs must contain(g getVertex 1)
+      vs must contain(g getVertex 4)
+      vs must contain(g getVertex 6)
+    }
+    
+    "return all in edges using inE" in {
+      val g = createTinkerGraph()
+      val es = g.getVertex(3).inE.toIterable
+      
+      es must have size(3)
+      es must contain(g getEdge 9)
+      es must contain(g getEdge 11)
+      es must contain(g getEdge 12)
+    }
+    
+    "return all in edges using inE with label" in {
+      val g = createTinkerGraph()
+      val es = g.getVertex(3).inE("created").toIterable
+      
+      es must have size(3)
+      es must contain(g getEdge 9)
+      es must contain(g getEdge 11)
+      es must contain(g getEdge 12)
+    }
+    
+    "return all out and in vertices using both" in {
+      val g = createTinkerGraph()
+      val vs = g.getVertex(4).both.toIterable
+      
+      vs must have size(3)
+      vs must contain(g getVertex 1)
+      vs must contain(g getVertex 3)
+      vs must contain(g getVertex 5)
+    }
+    
+    "return all out and in vertices using both with label" in {
+      val g = createTinkerGraph()
+      val vs = g.getVertex(4).both("created").toIterable
+      
+      vs must have size(2)
+      vs must contain(g getVertex 3)
+      vs must contain(g getVertex 5)
+    }
+    
+    "return all out and in edges using bothE" in {
+      val g = createTinkerGraph()
+      val es = g.getVertex(4).bothE.toIterable
+      
+      es must have size(3)
+      es must contain(g getEdge 8)
+      es must contain(g getEdge 11)
+      es must contain(g getEdge 10)
+    }
+    
+    "return all out and in edges using bothE with label" in {
+      val g = createTinkerGraph()
+      val es = g.getVertex(4).bothE("created").toIterable
+      
+      es must have size(2)
+      es must contain(g getEdge 11)
+      es must contain(g getEdge 10)
+    }
 
     "get unwrapped by the implicit" in {
       val g = createTinkerGraph()
