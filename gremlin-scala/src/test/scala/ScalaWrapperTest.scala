@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin
 
 import org.specs2.mutable._
-import com.tinkerpop.blueprints.pgm.{Vertex, Graph}
+import com.tinkerpop.blueprints.pgm.{Vertex, Graph, Edge}
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory.createTinkerGraph
 import com.tinkerpop.gremlin.scala._
 import pipes.GremlinFluentPipeline
@@ -226,7 +226,7 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       es must contain(g getEdge 10)
     }
 
-    "get unwrapped by the implicit" in {
+    "unwrap ScalaVertex => Vertex" in {
       val g = createTinkerGraph()
       val v1: Vertex = g getVertex 1
       val v2: ScalaVertex = v1
@@ -236,10 +236,39 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
     }
   }
 
-  /*"The ScalaEdge wrapper" should {
-    //TODO edge.inV
-    //TODO edge.outV
-    //TODO edge.bothV
-    //TODO unwrap ScalaEdge => Edge
-  }*/
+  "The ScalaEdge wrapper" should {
+    "return the in vertex using inV" in {
+      val g = createTinkerGraph()
+      val v = g.getEdge(7).inV.toIterable
+      
+      v must have size(1)
+      v must contain(g getVertex 2)
+    }
+    
+    "return the out vertex using outV" in {
+      val g = createTinkerGraph()
+      val v = g.getEdge(7).outV.toIterable
+      
+      v must have size(1)
+      v must contain(g getVertex 1)
+    }
+    
+    "return the out and in vertices using bothV" in {
+      val g = createTinkerGraph()
+      val v = g.getEdge(7).bothV.toIterable
+      
+      v must have size(2)
+      v must contain(g getVertex 1)
+      v must contain(g getVertex 2)
+    }
+    
+    "unwrap ScalaEdge => Edge" in {
+      val g = createTinkerGraph()
+      val e = g getEdge 7
+      val se: ScalaEdge = e
+      def toString(edge: Edge) = edge.toString
+      
+      toString(e) must_== toString(se) //se must be unwrapped when passed to toString
+    }
+  }
 }
