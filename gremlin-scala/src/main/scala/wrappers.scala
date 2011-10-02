@@ -66,9 +66,9 @@ class ScalaGraph(val graph: Graph) {
     val vs = ids.map(graph.getVertex(_))
     Iterable(v1, vs: _*)
   }*/
-  def v(ids: Object*): Iterable[Vertex] = ids.map(graph.getVertex(_))
+  def v(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_))
 
-  //def += for addVertex and addEdge?
+  //TODO def += for addVertex and addEdge?
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Graph]] and [[com.tinkerpop.gremlin.scala.ScalaGraph]]. */
