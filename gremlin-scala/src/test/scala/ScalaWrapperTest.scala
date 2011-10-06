@@ -70,7 +70,7 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
     "return all edges using E" in {
       val g = createTinkerGraph()
       val es = g.E.toIterable
-      
+
       es must have size (6)
       es must contain(g getEdge 7)
       es must contain(g getEdge 8)
@@ -79,16 +79,16 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       es must contain(g getEdge 11)
       es must contain(g getEdge 12)
     }
-    
+
     "return vertices with specified IDs using v" in {
       val g = createTinkerGraph()
       val vs = g.v(1, 2, 3)
-      
+
       vs must have size (3)
       vs must contain(g getVertex 1)
       vs must contain(g getVertex 2)
       vs must contain(g getVertex 3)
-      
+
       //ensures that v(ids: Any*) works with Java types
       val j1: java.lang.Integer = 1
       val j2: java.lang.Integer = 2
@@ -108,7 +108,7 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       val g = createTinkerGraph()
       val sg: ScalaGraph = g
       def toString(graph: Graph) = graph.toString
-      
+
       toString(g) must_== toString(sg) //sg must be unwrapped when passed to toString
     }
   }
@@ -136,96 +136,96 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
     "return all out edges using outE" in {
       val g = createTinkerGraph()
       val es = g.getVertex(1).outE.toIterable
-      
-      es must have size(3)
+
+      es must have size (3)
       es must contain(g getEdge 7)
       es must contain(g getEdge 8)
       es must contain(g getEdge 9)
     }
-    
+
     "return all out edges using outE with label" in {
       val g = createTinkerGraph()
       val es = g.getVertex(1).outE("knows").toIterable
-      
-      es must have size(2)
+
+      es must have size (2)
       es must contain(g getEdge 7)
       es must contain(g getEdge 8)
     }
-    
+
     "return all in vertices using in" in {
       val g = createTinkerGraph()
       val vs = g.getVertex(3).in.toIterable
-      
-      vs must have size(3)
+
+      vs must have size (3)
       vs must contain(g getVertex 1)
       vs must contain(g getVertex 4)
       vs must contain(g getVertex 6)
     }
-    
+
     "return all in vertices using in with label" in {
       val g = createTinkerGraph()
       val vs = g.getVertex(3).in("created").toIterable
-      
-      vs must have size(3)
+
+      vs must have size (3)
       vs must contain(g getVertex 1)
       vs must contain(g getVertex 4)
       vs must contain(g getVertex 6)
     }
-    
+
     "return all in edges using inE" in {
       val g = createTinkerGraph()
       val es = g.getVertex(3).inE.toIterable
-      
-      es must have size(3)
+
+      es must have size (3)
       es must contain(g getEdge 9)
       es must contain(g getEdge 11)
       es must contain(g getEdge 12)
     }
-    
+
     "return all in edges using inE with label" in {
       val g = createTinkerGraph()
       val es = g.getVertex(3).inE("created").toIterable
-      
-      es must have size(3)
+
+      es must have size (3)
       es must contain(g getEdge 9)
       es must contain(g getEdge 11)
       es must contain(g getEdge 12)
     }
-    
+
     "return all out and in vertices using both" in {
       val g = createTinkerGraph()
       val vs = g.getVertex(4).both.toIterable
-      
-      vs must have size(3)
+
+      vs must have size (3)
       vs must contain(g getVertex 1)
       vs must contain(g getVertex 3)
       vs must contain(g getVertex 5)
     }
-    
+
     "return all out and in vertices using both with label" in {
       val g = createTinkerGraph()
       val vs = g.getVertex(4).both("created").toIterable
-      
-      vs must have size(2)
+
+      vs must have size (2)
       vs must contain(g getVertex 3)
       vs must contain(g getVertex 5)
     }
-    
+
     "return all out and in edges using bothE" in {
       val g = createTinkerGraph()
       val es = g.getVertex(4).bothE.toIterable
-      
-      es must have size(3)
+
+      es must have size (3)
       es must contain(g getEdge 8)
       es must contain(g getEdge 11)
       es must contain(g getEdge 10)
     }
-    
+
     "return all out and in edges using bothE with label" in {
       val g = createTinkerGraph()
       val es = g.getVertex(4).bothE("created").toIterable
-      
-      es must have size(2)
+
+      es must have size (2)
       es must contain(g getEdge 11)
       es must contain(g getEdge 10)
     }
@@ -244,34 +244,34 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
     "return the in vertex using inV" in {
       val g = createTinkerGraph()
       val v = g.getEdge(7).inV.toIterable
-      
-      v must have size(1)
+
+      v must have size (1)
       v must contain(g getVertex 2)
     }
-    
+
     "return the out vertex using outV" in {
       val g = createTinkerGraph()
       val v = g.getEdge(7).outV.toIterable
-      
-      v must have size(1)
+
+      v must have size (1)
       v must contain(g getVertex 1)
     }
-    
+
     "return the out and in vertices using bothV" in {
       val g = createTinkerGraph()
       val v = g.getEdge(7).bothV.toIterable
-      
-      v must have size(2)
+
+      v must have size (2)
       v must contain(g getVertex 1)
       v must contain(g getVertex 2)
     }
-    
+
     "unwrap ScalaEdge => Edge" in {
       val g = createTinkerGraph()
       val e = g getEdge 7
       val se: ScalaEdge = e
       def toString(edge: Edge) = edge.toString
-      
+
       toString(e) must_== toString(se) //se must be unwrapped when passed to toString
     }
   }

@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.jsr223;
 
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.BaseTest;
+import junit.framework.TestCase;
 
 import javax.script.ScriptEngine;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinScriptEngineTest extends BaseTest {
+public class GremlinScriptEngineTest extends TestCase {
 
     public void testGremlinLoading() throws Exception {
         ScriptEngine engine = new GremlinScriptEngine();

@@ -6,8 +6,8 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.GremlinTokens
 import com.tinkerpop.gremlin.GroovyPipeFunction
-import com.tinkerpop.pipes.util.Table
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+import com.tinkerpop.pipes.util.Table
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

@@ -8,15 +8,15 @@
         <version>1.4-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>gremlin-scala</artifactId>
+    <artifactId>gremlin-test</artifactId>
     <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Gremlin-Scala: Gremlin for the Scala Language</name>
+    <name>Gremlin-Test: The Test Suite of the Gremlin Language</name>
     <developers>
         <developer>
-            <name>Zach Cox</name>
-            <email>zcox522@gmail.com</email>
-            <url>http://theza.ch</url>
+            <name>Marko A. Rodriguez</name>
+            <email>marko@markorodriguez.com</email>
+            <url>http://markorodriguez.com</url>
         </developer>
     </developers>
     <mailingLists>
@@ -27,15 +27,15 @@
             <archive>http://groups.google.com/group/gremlin-users/topics</archive>
         </mailingList>
     </mailingLists>
-    <inceptionYear>2011</inceptionYear>
+    <inceptionYear>2009</inceptionYear>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.tinkerpop.gremlin</groupId>
-            <artifactId>gremlin-core</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <groupId>com.tinkerpop.blueprints</groupId>
+            <artifactId>blueprints-core</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
@@ -43,39 +43,14 @@
             <version>0.9-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.9.1</version>
+            <groupId>com.tinkerpop.gremlin</groupId>
+            <artifactId>gremlin-core</artifactId>
+            <version>1.4-SNAPSHOT</version>
         </dependency>
-        <!-- CONSOLE -->
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-compiler</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>jline</artifactId>
-            <version>2.9.1</version>
-        </dependency>
-        <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.5</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2_2.9.1</artifactId>
-            <version>1.6.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2-scalaz-core_2.9.1</artifactId>
-            <version>6.0.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <repositories>
@@ -88,25 +63,7 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
     </repositories>
-    <!-- Needed for maven-scala-plugin 2.15.3-SNAPSHOT
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org snapshots</id> 
-            <name>Scala-tools Maven2 Snapshot Repository</name> 
-            <url>http://scala-tools.org/repo-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    -->
     <build>
         <directory>${basedir}/target</directory>
         <finalName>${project.artifactId}-${project.version}</finalName>
@@ -138,33 +95,13 @@
                 </executions>
                 <configuration>
                     <descriptors>
-                        <descriptor>src/assembly/standalone.xml</descriptor>
                         <descriptor>src/assembly/distribution.xml</descriptor>
                     </descriptors>
                     <finalName>${project.artifactId}-${project.version}</finalName>
                     <outputDirectory>target</outputDirectory>
                     <workDirectory>target/assembly/work</workDirectory>
                     <tarLongFileMode>warn</tarLongFileMode>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.tinkerpop.gremlin.scala.console.Console</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <!-- <version>2.15.3-SNAPSHOT</version> --> <!-- 2.15.3 includes JLine in scala:console, but has issues after exit -->
-                <version>2.15.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
