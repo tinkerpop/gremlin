@@ -13,11 +13,11 @@
     <packaging>jar</packaging>
     <name>Gremlin-Scala: Gremlin for the Scala Language</name>
     <developers>
-      <developer>
-          <name>Zach Cox</name>
-          <email>zcox522@gmail.com</email>
-          <url>http://theza.ch</url>
-      </developer>
+        <developer>
+            <name>Zach Cox</name>
+            <email>zcox522@gmail.com</email>
+            <url>http://theza.ch</url>
+        </developer>
     </developers>
     <mailingLists>
         <mailingList>
@@ -46,17 +46,6 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>2.9.1</version>
-        </dependency>
-        <!-- CONSOLE -->
-        <dependency>
-            <groupId>org.fusesource.jansi</groupId>
-            <artifactId>jansi</artifactId>
-            <version>1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>jline</groupId>
-            <artifactId>jline</artifactId>
-            <version>0.9.94</version>
         </dependency>
         <!-- TESTING -->
         <dependency>
@@ -89,9 +78,9 @@
             </snapshots>
         </repository>
         <repository>
-            <id>scala-tools.org</id> 
-            <name>Scala-tools Maven2 Repository</name> 
-            <url>http://scala-tools.org/repo-releases</url> 
+            <id>scala-tools.org</id>
+            <name>Scala-tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
         </repository>
     </repositories>
     <!-- Needed for maven-scala-plugin 2.15.3-SNAPSHOT

@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.jsr223;
 
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.BaseTest;
 import junit.framework.TestCase;
 
 import javax.script.ScriptEngine;

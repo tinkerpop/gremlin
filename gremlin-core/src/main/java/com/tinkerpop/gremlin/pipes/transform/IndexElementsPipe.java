@@ -4,8 +4,6 @@ import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 
-import java.util.Iterator;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */

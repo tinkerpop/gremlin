@@ -7,9 +7,6 @@ import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.util.PipeHelper;
 import junit.framework.TestCase;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
