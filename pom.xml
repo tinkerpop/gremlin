@@ -26,6 +26,7 @@
         <module>gremlin-core</module>
         <module>gremlin-groovy</module>
         <module>gremlin-scala</module>
+        <module>gremlin-test</module>
     </modules>
 
     <repositories>
