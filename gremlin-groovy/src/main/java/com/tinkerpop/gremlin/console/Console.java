@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class Console {
 
-    private static final String HISTORY_FILE = ".gremlin_history";
+    private static final String HISTORY_FILE = ".gremlin_groovy_history";
     private static final String STANDARD_INPUT_PROMPT = "gremlin> ";
     private static final String STANDARD_RESULT_PROMPT = "==>";
 
@@ -31,6 +31,7 @@ public class Console {
         for (String imps : Imports.getImports()) {
             groovy.execute("import " + imps);
         }
+        groovy.execute("import com.tinkerpop.gremlin.GremlinTokens.T");
         groovy.setResultHook(new ResultHookClosure(groovy, io, resultPrompt));
         groovy.setHistory(new History());
 

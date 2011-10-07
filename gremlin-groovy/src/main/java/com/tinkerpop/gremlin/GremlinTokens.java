@@ -53,7 +53,6 @@ public class GremlinTokens {
     public static final String RETAIN = "retain";
     public static final String SCATTER = "scatter";
     public static final String STEP = "step";
-    public static final String REDUCE = "reduce";
     public static final String TABLE = "table";
     public static final String UNIQUEOBJECT = "uniqueObject";
     public static final String UNIQUEPATH = "uniquePath";

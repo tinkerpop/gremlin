@@ -25,6 +25,7 @@ public class GremlinScriptEngine extends GroovyScriptEngineImpl {
         for (String imp : Imports.getImports()) {
             sb.append("import ").append(imp).append("\n");
         }
+        sb.append("import ").append("com.tinkerpop.gremlin.GremlinTokens.T").append("\n");
         this.imports = sb.toString();
     }
 

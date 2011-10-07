@@ -13,7 +13,9 @@ public class Imports {
     static {
         // gremlin
         imports.add("com.tinkerpop.gremlin.*");
-        imports.add("com.tinkerpop.gremlin.GremlinTokens.T");
+        imports.add("com.tinkerpop.gremlin.pipes.*");
+        imports.add("com.tinkerpop.gremlin.pipes.filter.*");
+        imports.add("com.tinkerpop.gremlin.pipes.transform.*");
 
         // blueprints
         imports.add("com.tinkerpop.blueprints.pgm.*");
@@ -45,5 +47,13 @@ public class Imports {
 
     public static List<String> getImports() {
         return Imports.imports;
+    }
+
+    public static List<String> getImports(final String a, final String b) {
+        List<String> imports2 = new ArrayList<String>();
+        for (String i : Imports.getImports()) {
+            imports2.add(i.replace(a, b));
+        }
+        return imports2;
     }
 }
