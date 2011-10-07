@@ -25,7 +25,7 @@ object Console {
 
         //printWelcome() is the only decent place to init the intp while process() below is setting things up...
         intp beQuietDuring {
-          intp.addImports(Imports.getImports("*", "_"): _*)
+          Imports.getImports("*", "_").foreach{intp.addImports(_)};
           intp.addImports("com.tinkerpop.gremlin.scala._");
         }
       }
