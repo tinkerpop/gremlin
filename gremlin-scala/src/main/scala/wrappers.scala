@@ -28,7 +28,7 @@ class ScalaVertex(val vertex: Vertex) {
   def bothE = new GremlinFluentPipeline(vertex).bothE()
 
   def bothE(labels: String*) = new GremlinFluentPipeline(vertex).bothE(labels: _*)
-  
+
   //TODO map
   //TODO property
   //TODO apply to access a property?

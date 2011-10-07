@@ -99,11 +99,11 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       vs2 must contain(g getVertex 2)
       vs2 must contain(g getVertex 3)
     }
-    
+
     //TODO return edges with specified IDs using e
     //TODO addVertex
     //TODO addEdge
-    
+
     "unwrap ScalaGraph => Graph" in {
       val g = createTinkerGraph()
       val sg: ScalaGraph = g
