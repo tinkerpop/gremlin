@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.GroovyPipeFunction
+import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.pipes.util.Table
 

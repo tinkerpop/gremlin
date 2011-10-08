@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.GremlinTokens
+import com.tinkerpop.gremlin.groovy.GremlinTokens
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -21,7 +21,7 @@ class ElementLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"()
             } else {
-                if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+                if (name.equals(GremlinTokens.ID)) {
                     return ((Vertex) delegate).getId()
                 } else {
                     return ((Vertex) delegate).getProperty(name)
@@ -33,9 +33,9 @@ class ElementLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"()
             } else {
-                if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+                if (name.equals(GremlinTokens.ID)) {
                     return ((Edge) delegate).getId()
-                } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+                } else if (name.equals(GremlinTokens.LABEL)) {
                     return ((Edge) delegate).getLabel()
                 } else {
                     return ((Edge) delegate).getProperty(name)

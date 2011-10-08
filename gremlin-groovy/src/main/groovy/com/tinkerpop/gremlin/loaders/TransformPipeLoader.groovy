@@ -3,8 +3,8 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.GroovyPipeFunction
+import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 
 /**

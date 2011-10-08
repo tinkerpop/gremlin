@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.blueprints.pgm.Index
 import com.tinkerpop.blueprints.pgm.IndexableGraph
-import com.tinkerpop.gremlin.GremlinTokens.T
+import com.tinkerpop.gremlin.groovy.GremlinTokens.T
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 
 /**

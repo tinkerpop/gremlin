@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin;
 
 
-import com.tinkerpop.gremlin.jsr223.GremlinScriptEngine
+import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.groovy.jsr223.GremlinScriptEngine
 import com.tinkerpop.gremlin.loaders.ElementLoader
 import com.tinkerpop.gremlin.loaders.GraphLoader
 import com.tinkerpop.gremlin.loaders.IndexLoader

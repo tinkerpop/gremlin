@@ -8,7 +8,7 @@ import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONReader
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONWriter
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.GremlinTokens
+import com.tinkerpop.gremlin.groovy.GremlinTokens
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import java.util.Map.Entry
 

@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.GremlinTokens.T
-import com.tinkerpop.gremlin.GroovyPipeFunction
+import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.groovy.GremlinTokens.T
+import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 
 /**
@@ -29,9 +29,9 @@ class FilterPipeLoader {
 
         Gremlin.addStep(GremlinTokens.PROPERTYFILTER);
         GremlinFluentPipeline.metaClass.propertyFilter = {final String key, final T t, final Object value ->
-            if (key.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+            if (key.equals(GremlinTokens.ID)) {
                 return ((GremlinFluentPipeline) delegate).idFilter(value, Gremlin.mapFilter(t));
-            } else if (key.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+            } else if (key.equals(GremlinTokens.LABEL)) {
                 return ((GremlinFluentPipeline) delegate).labelFilter((String) value, Gremlin.mapFilter(t));
             } else {
                 return ((GremlinFluentPipeline) delegate).propertyFilter(key, Gremlin.mapFilter(t), value);

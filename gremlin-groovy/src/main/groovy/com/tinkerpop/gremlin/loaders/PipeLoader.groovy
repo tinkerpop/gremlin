@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.GremlinTokens
-import com.tinkerpop.gremlin.GroovyPipeFunction
+import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe
@@ -21,9 +21,9 @@ class PipeLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"();
             } else {
-                if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+                if (name.equals(GremlinTokens.ID)) {
                     return ((GremlinFluentPipeline) delegate).id();
-                } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+                } else if (name.equals(GremlinTokens.LABEL)) {
                     return ((GremlinFluentPipeline) delegate).label();
                 } else {
                     return ((GremlinFluentPipeline) delegate).property(name);
@@ -92,9 +92,9 @@ class PipeLoader {
         }
 
         GremlinFluentPipeline.metaClass.getAt = {final String name ->
-            if (name.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+            if (name.equals(GremlinTokens.ID)) {
                 return ((GremlinFluentPipeline) delegate).id();
-            } else if (name.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+            } else if (name.equals(GremlinTokens.LABEL)) {
                 return ((GremlinFluentPipeline) delegate).label();
             } else {
                 return ((GremlinFluentPipeline) delegate).property(name);
@@ -104,13 +104,13 @@ class PipeLoader {
         GremlinFluentPipeline.metaClass.getAt = {final Map map ->
             GremlinFluentPipeline pipeline = (GremlinFluentPipeline) delegate;
             map.each {key, value ->
-                if (key.equals(com.tinkerpop.gremlin.GremlinTokens.LABEL)) {
+                if (key.equals(GremlinTokens.LABEL)) {
                     if (value instanceof List) {
                         pipeline.addPipe(new LabelFilterPipe((String) value[1], Gremlin.mapFilter(value[0])))
                     } else {
                         pipeline.addPipe(new LabelFilterPipe((String) value, FilterPipe.Filter.EQUAL));
                     }
-                } else if (key.equals(com.tinkerpop.gremlin.GremlinTokens.ID)) {
+                } else if (key.equals(GremlinTokens.ID)) {
                     if (value instanceof List) {
                         pipeline.addPipe(new IdFilterPipe(value[1], Gremlin.mapFilter(value[0])))
                     } else {
