@@ -1,10 +1,10 @@
-package com.tinkerpop.gremlin
+package com.tinkerpop.gremlin.scala
 
 import org.specs2.mutable._
 import com.tinkerpop.blueprints.pgm.{Vertex, Graph, Edge}
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory.createTinkerGraph
-import com.tinkerpop.gremlin.scala._
-import pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.scala.{ScalaGraph, ScalaFluentPipeline}
 
 class ScalaWrapperTest extends SpecificationWithJUnit {
   "The ScalaFluentPipeline wrapper" should {

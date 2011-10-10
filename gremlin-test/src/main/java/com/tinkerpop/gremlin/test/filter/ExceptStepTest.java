@@ -1,0 +1,36 @@
+package com.tinkerpop.gremlin.test.filter;
+
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.pipes.Pipe;
+import junit.framework.TestCase;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
+public class ExceptStepTest extends TestCase {
+
+    public void testCompliance() {
+        assertTrue(true);
+    }
+
+    public void test_g_v1_out_exceptXg_v2X(Pipe<Vertex, Vertex> pipe) {
+        int counter = 0;
+        Set<Vertex> vertices = new HashSet<Vertex>();
+        while (pipe.hasNext()) {
+            counter++;
+            Vertex vertex = pipe.next();
+            vertices.add(vertex);
+            assertTrue(vertex.getProperty("name").equals("josh") || vertex.getProperty("name").equals("lop"));
+        }
+        assertEquals(counter, 2);
+        assertEquals(vertices.size(), 2);
+    }
+
+    public void test_g_v1_out_aggregateXxX_out_exceptXxX(Pipe<Vertex, Vertex> pipe) {
+        assertEquals(pipe.next().getProperty("name"), "ripple");
+        assertFalse(pipe.hasNext());
+    }
+}

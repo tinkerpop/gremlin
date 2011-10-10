@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.test.filter;
 
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
