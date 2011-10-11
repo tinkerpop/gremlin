@@ -9,17 +9,7 @@
             </includes>
         </fileSet>
         <fileSet>
-            <fileMode>0775</fileMode>
-            <includes>
-                <include>gremlin.sh</include>
-                <include>gremlin.bat</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>src</directory>
-        </fileSet>
-        <fileSet>
-            <directory>data</directory>
         </fileSet>
         <fileSet>
             <directory>target/apidocs</directory>
@@ -28,7 +18,10 @@
             <directory>target/site</directory>
         </fileSet>
         <fileSet>
-            <directory>target/gremlin-core-${project.version}-standalone</directory>
+            <directory>target</directory>
+            <includes>
+                <include>gremlin-core-*.jar</include>
+            </includes>
         </fileSet>
     </fileSets>
 </assembly>
