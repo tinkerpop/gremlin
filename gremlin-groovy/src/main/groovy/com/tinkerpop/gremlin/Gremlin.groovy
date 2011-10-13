@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin;
 
 
-import com.tinkerpop.gremlin.groovy.GremlinTokens
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinScriptEngine
 import com.tinkerpop.gremlin.loaders.ElementLoader
 import com.tinkerpop.gremlin.loaders.GraphLoader
@@ -112,7 +111,7 @@ class Gremlin {
     }
 
     public static String version() {
-        return GremlinTokens.VERSION;
+        return Tokens.VERSION;
     }
 
 }

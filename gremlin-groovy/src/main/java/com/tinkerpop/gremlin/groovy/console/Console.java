@@ -31,7 +31,7 @@ public class Console {
         for (String imps : Imports.getImports()) {
             groovy.execute("import " + imps);
         }
-        groovy.execute("import com.tinkerpop.gremlin.groovy.GremlinTokens.T");
+        groovy.execute("import com.tinkerpop.gremlin.Tokens.T");
         groovy.setResultHook(new ResultHookClosure(groovy, io, resultPrompt));
         groovy.setHistory(new History());
 

@@ -21,8 +21,8 @@ public class ResultHookClosure extends Closure {
     }
 
     public Object call(final Object[] args) {
-        Object result = args[0];
-        Iterator itty;
+        final Object result = args[0];
+        final Iterator itty;
         if (result instanceof Iterator) {
             itty = (Iterator) result;
         } else if (result instanceof Iterable) {

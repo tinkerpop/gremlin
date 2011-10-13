@@ -6,7 +6,8 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.BaseTest
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.groovy.GremlinTokens.T
+import com.tinkerpop.gremlin.Tokens
+import com.tinkerpop.gremlin.Tokens.T
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.pipes.Pipe
 
@@ -14,7 +15,7 @@ class GremlinTest extends BaseTest {
 
     public void testVersion() throws Exception {
         Gremlin.load();
-        assertEquals(Gremlin.version(), GremlinTokens.VERSION);
+        assertEquals(Gremlin.version(), Tokens.VERSION);
     }
 
     public void testCompilation() throws Exception {
@@ -228,8 +229,8 @@ class GremlinTest extends BaseTest {
         assertEquals(g.v(1).outE.inV[[id: '4']].next(), josh);
 
         assertEquals(g.v(1).outE.filter {it.label == 'knows' | it.label == 'created'}.inV.filter {it.id == '4' & it.name == name}.next(), josh);
-        assertEquals(g.v(1).outE.orFilter(_()[[label: 'knows']], _()[[label: 'created']]).inV.andFilter(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
-        assertEquals(g.v(1).outE.orFilter(_().propertyFilter('label', T.eq, 'knows'), _().propertyFilter('label', T.eq, 'created')).inV.andFilter(_().propertyFilter('id', T.eq, '4'), _().propertyFilter('name', T.eq, name)).next(), josh);
+        assertEquals(g.v(1).outE.or(_()[[label: 'knows']], _()[[label: 'created']]).inV.and(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
+        assertEquals(g.v(1).outE.or(_().propertyFilter('label', T.eq, 'knows'), _().propertyFilter('label', T.eq, 'created')).inV.and(_().propertyFilter('id', T.eq, '4'), _().propertyFilter('name', T.eq, name)).next(), josh);
     }
 
     public void testPipelineToString() throws Exception {

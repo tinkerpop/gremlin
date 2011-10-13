@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.groovy.GremlinTokens.T
+import com.tinkerpop.gremlin.Tokens.T
 import com.tinkerpop.pipes.util.PipeHelper
 import junit.framework.TestCase
 
@@ -74,7 +74,7 @@ class GraphLoaderTest extends TestCase {
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[2].name >> 1));
 
         assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV), 3);
-        assertEquals(PipeHelper.counter(g.v(1).outE.orFilter(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
+        assertEquals(PipeHelper.counter(g.v(1).outE.or(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[0].name >> 1));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[1].name >> 1));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[2].name >> 1));
