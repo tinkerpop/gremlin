@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin;
 
 
+import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinScriptEngine
 import com.tinkerpop.gremlin.loaders.ElementLoader
 import com.tinkerpop.gremlin.loaders.GraphLoader
@@ -9,10 +10,7 @@ import com.tinkerpop.gremlin.loaders.ObjectLoader
 import com.tinkerpop.gremlin.loaders.PipeLoader
 import com.tinkerpop.gremlin.loaders.SailGraphLoader
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.pipes.filter.FilterPipe
-import com.tinkerpop.pipes.filter.FilterPipe.Filter
 import javax.script.SimpleBindings
-import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

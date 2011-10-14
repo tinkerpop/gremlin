@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
-import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe

@@ -2,10 +2,9 @@ package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.Tokens
+import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.pipes.util.Table
-
-import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

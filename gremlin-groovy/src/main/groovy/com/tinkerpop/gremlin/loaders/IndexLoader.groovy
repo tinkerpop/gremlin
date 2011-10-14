@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.loaders
 import com.tinkerpop.blueprints.pgm.Index
 import com.tinkerpop.blueprints.pgm.IndexableGraph
 import com.tinkerpop.gremlin.Tokens.T
-
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
 /**

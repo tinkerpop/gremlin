@@ -9,9 +9,8 @@ import com.tinkerpop.blueprints.pgm.util.json.GraphJSONReader
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONWriter
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.Tokens
-import java.util.Map.Entry
-
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
+import java.util.Map.Entry
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
