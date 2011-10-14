@@ -4,10 +4,10 @@ import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.pipes.util.Table
-import com.tinkerpop.gremlin.Tokens
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

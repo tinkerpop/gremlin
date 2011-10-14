@@ -11,8 +11,8 @@
         <fileSet>
             <fileMode>0775</fileMode>
             <includes>
-                <include>../gremlin.sh</include>
-                <include>../gremlin.bat</include>
+                <include>gremlin-groovy.sh</include>
+                <include>gremlin-groovy.bat</include>
             </includes>
         </fileSet>
         <fileSet>
