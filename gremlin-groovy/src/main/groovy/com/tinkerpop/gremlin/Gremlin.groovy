@@ -11,8 +11,8 @@ import com.tinkerpop.gremlin.loaders.SailGraphLoader
 import com.tinkerpop.pipes.Pipe
 import com.tinkerpop.pipes.filter.FilterPipe
 import com.tinkerpop.pipes.filter.FilterPipe.Filter
-import com.tinkerpop.pipes.util.FluentPipeline
 import javax.script.SimpleBindings
+import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -61,19 +61,19 @@ class Gremlin {
         throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
     }
 
-    private static FluentPipeline compose(final Object start, final Pipe pipe) {
-        FluentPipeline pipeline;
-        if (start instanceof FluentPipeline) {
+    private static GremlinGroovyPipeline compose(final Object start, final Pipe pipe) {
+        GremlinGroovyPipeline pipeline;
+        if (start instanceof GremlinGroovyPipeline) {
             pipeline = start;
             if (null != pipe)
                 pipeline.addPipe(pipe);
         } else if (start instanceof Pipe) {
-            pipeline = new FluentPipeline();
+            pipeline = new GremlinGroovyPipeline();
             pipeline.addPipe(start);
             if (null != pipe)
                 pipeline.addPipe(pipe);
         } else {
-            pipeline = new FluentPipeline(start);
+            pipeline = new GremlinGroovyPipeline(start);
             if (null != pipe)
                 pipeline.addPipe(pipe);
         }

@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.scala
 import org.specs2.mutable._
 import com.tinkerpop.blueprints.pgm.{Vertex, Graph, Edge}
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory.createTinkerGraph
-import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinPipeline
 import com.tinkerpop.gremlin.scala.{ScalaGraph, ScalaFluentPipeline}
 
 class ScalaWrapperTest extends SpecificationWithJUnit {
@@ -11,7 +11,7 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
     "be a Scala Iterator" in {
       val g = createTinkerGraph()
       val vs = g.getVertices.iterator
-      val i: Iterator[Any] = new ScalaFluentPipeline(new GremlinFluentPipeline(g).V())
+      val i: Iterator[Any] = new ScalaFluentPipeline(new GremlinPipeline(g).V())
 
       i.hasNext must beTrue
       i.next() must_== vs.next
@@ -30,7 +30,7 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
 
     "implicitly wrap a FluentPipeline" in {
       val g = createTinkerGraph()
-      val sfp: ScalaFluentPipeline[_, _] = new GremlinFluentPipeline(g).V()
+      val sfp: ScalaFluentPipeline[_, _] = new GremlinPipeline(g).V()
 
       //sfp must_!= null // <===== weird compiler errors on this line...
       sfp.isInstanceOf[ScalaFluentPipeline[_, _]] must beTrue
@@ -38,16 +38,16 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
 
     "implicitly wrap a FluentPipeline when calling an Iterable method" in {
       val g = createTinkerGraph()
-      val i: Iterable[Any] = new GremlinFluentPipeline(g).V().toIterable
+      val i: Iterable[Any] = new GremlinPipeline(g).V().toIterable
 
       i must_!= null
     }
 
     "unwrap ScalaFluentPipeline => FluentPipeline" in {
       val g = createTinkerGraph()
-      val fp: GremlinFluentPipeline[_, _] = new GremlinFluentPipeline(g)
+      val fp: GremlinPipeline[_, _] = new GremlinPipeline(g)
       val sfp: ScalaFluentPipeline[_, _] = fp
-      def toString(p: GremlinFluentPipeline[_, _]) = p.toString
+      def toString(p: GremlinPipeline[_, _]) = p.toString
 
       toString(fp) must_== toString(sfp) //sfp must be unwrapped when passed to toString
     }

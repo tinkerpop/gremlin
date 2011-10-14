@@ -8,7 +8,7 @@ import com.tinkerpop.gremlin.BaseTest
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.Tokens.T
-import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+
 import com.tinkerpop.pipes.Pipe
 
 class GremlinTest extends BaseTest {
@@ -34,9 +34,9 @@ class GremlinTest extends BaseTest {
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
-        new GremlinFluentPipeline().start([1, 2, 3]).step {x = it.next()} >> -1
+        new GremlinGroovyPipeline().start([1, 2, 3]).step {x = it.next()} >> -1
         assertEquals(x, 3);
-        new GremlinFluentPipeline().start([3, 2, 1]).step {x = it.next()} >> -1
+        new GremlinGroovyPipeline().start([3, 2, 1]).step {x = it.next()} >> -1
         assertEquals(x, 1);
     }
 
