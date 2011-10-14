@@ -1,33 +1,33 @@
 package com.tinkerpop.gremlin.scala
 
 import com.tinkerpop.blueprints.pgm.{Vertex, Edge, Graph}
-import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinPipeline
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
 class ScalaVertex(val vertex: Vertex) {
-  def out = new GremlinFluentPipeline(vertex).out()
+  def out = new GremlinPipeline(vertex).out()
 
-  def out(labels: String*) = new GremlinFluentPipeline(vertex).out(labels: _*)
+  def out(labels: String*) = new GremlinPipeline(vertex).out(labels: _*)
 
-  def outE = new GremlinFluentPipeline(vertex).outE()
+  def outE = new GremlinPipeline(vertex).outE()
 
-  def outE(labels: String*) = new GremlinFluentPipeline(vertex).outE(labels: _*)
+  def outE(labels: String*) = new GremlinPipeline(vertex).outE(labels: _*)
 
-  def in = new GremlinFluentPipeline(vertex).in()
+  def in = new GremlinPipeline(vertex).in()
 
-  def in(labels: String*) = new GremlinFluentPipeline(vertex).in(labels: _*)
+  def in(labels: String*) = new GremlinPipeline(vertex).in(labels: _*)
 
-  def inE = new GremlinFluentPipeline(vertex).inE()
+  def inE = new GremlinPipeline(vertex).inE()
 
-  def inE(labels: String*) = new GremlinFluentPipeline(vertex).inE(labels: _*)
+  def inE(labels: String*) = new GremlinPipeline(vertex).inE(labels: _*)
 
-  def both = new GremlinFluentPipeline(vertex).both()
+  def both = new GremlinPipeline(vertex).both()
 
-  def both(labels: String*) = new GremlinFluentPipeline(vertex).both(labels: _*)
+  def both(labels: String*) = new GremlinPipeline(vertex).both(labels: _*)
 
-  def bothE = new GremlinFluentPipeline(vertex).bothE()
+  def bothE = new GremlinPipeline(vertex).bothE()
 
-  def bothE(labels: String*) = new GremlinFluentPipeline(vertex).bothE(labels: _*)
+  def bothE(labels: String*) = new GremlinPipeline(vertex).bothE(labels: _*)
 
   //TODO map
   //TODO property
@@ -43,11 +43,11 @@ object ScalaVertex {
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Edge]]. */
 class ScalaEdge(val edge: Edge) {
-  def inV = new GremlinFluentPipeline(edge).inV()
+  def inV = new GremlinPipeline(edge).inV()
 
-  def outV = new GremlinFluentPipeline(edge).outV()
+  def outV = new GremlinPipeline(edge).outV()
 
-  def bothV = new GremlinFluentPipeline(edge).bothV()
+  def bothV = new GremlinPipeline(edge).bothV()
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Edge]] and [[com.tinkerpop.gremlin.scala.ScalaEdge]]. */
@@ -59,9 +59,9 @@ object ScalaEdge {
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Graph]]. */
 class ScalaGraph(val graph: Graph) {
-  def V = new GremlinFluentPipeline(graph).V()
+  def V = new GremlinPipeline(graph).V()
 
-  def E = new GremlinFluentPipeline(graph).E()
+  def E = new GremlinPipeline(graph).E()
 
   //in Groovy, Graph.v appears to return a vertex if called with one ID, or a list of vertices if called with multiple IDs...
   /*def v(id: Object): Vertex = graph getVertex id
@@ -83,7 +83,7 @@ object ScalaGraph {
 }
 
 /**Adds convenience methods to [[com.tinkerpop.pipes.util.FluentPipeline]]. */
-class ScalaFluentPipeline[A, B](val pipeline: GremlinFluentPipeline[A, B]) extends Iterator[B] {
+class ScalaFluentPipeline[A, B](val pipeline: GremlinPipeline[A, B]) extends Iterator[B] {
   //Pipe<S,E> is both:
   // - Iterator<E> = iterate over elements in collection, defines hasNext(), next() and remove() methods
   // - Iterable<E> = can be target of foreach statement, defines iterator() method
@@ -108,7 +108,7 @@ class ScalaFluentPipeline[A, B](val pipeline: GremlinFluentPipeline[A, B]) exten
 
 /**Implicit conversions between [[com.tinkerpop.pipes.util.FluentPipeline]] and [[com.tinkerpop.gremlin.scala.ScalaFluentPipeline]]. */
 object ScalaFluentPipeline {
-  implicit def wrap[A, B](fp: GremlinFluentPipeline[A, B]) = new ScalaFluentPipeline(fp)
+  implicit def wrap[A, B](fp: GremlinPipeline[A, B]) = new ScalaFluentPipeline(fp)
 
   implicit def unwrap[A, B](wrapper: ScalaFluentPipeline[A, B]) = wrapper.pipeline
 }

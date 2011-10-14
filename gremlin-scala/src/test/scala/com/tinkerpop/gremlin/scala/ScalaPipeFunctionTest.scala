@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.scala
 import org.specs2.mutable._
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.pipes.PipeFunction
-import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinPipeline
 
 class ScalaPipeFunctionTest extends SpecificationWithJUnit {
   "The scala PipeFunction implicits" should {
@@ -16,7 +16,7 @@ class ScalaPipeFunctionTest extends SpecificationWithJUnit {
 
     "properly wrap a String => Boolean function literal" in {
       val graph = TinkerGraphFactory.createTinkerGraph()
-      val fp = new GremlinFluentPipeline(graph getVertex 1) out "knows" property "name" filter {
+      val fp = new GremlinPipeline(graph getVertex 1) out "knows" property "name" filter {
         s: String => s startsWith "j"
       }
 

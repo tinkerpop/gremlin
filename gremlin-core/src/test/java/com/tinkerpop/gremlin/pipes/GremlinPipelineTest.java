@@ -10,11 +10,11 @@ import junit.framework.TestCase;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinFluentPipelineTest extends TestCase {
+public class GremlinPipelineTest extends TestCase {
 
     public void testBasic() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        GremlinFluentPipeline<Vertex, String> pipeline = new GremlinFluentPipeline<Vertex, String>();
+        GremlinPipeline<Vertex, String, GremlinPipeline> pipeline = new GremlinPipeline<Vertex, String, GremlinPipeline>();
         pipeline.start(g.getVertex(1)).out("knows").property("name");
         int counter = 0;
         while (pipeline.hasNext()) {
@@ -27,7 +27,7 @@ public class GremlinFluentPipelineTest extends TestCase {
 
     public void testFilterFunctionUsingInnerClass() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        GremlinFluentPipeline<Vertex, String> pipeline = new GremlinFluentPipeline<Vertex, String>();
+        GremlinPipeline<Vertex, String, GremlinPipeline> pipeline = new GremlinPipeline<Vertex, String, GremlinPipeline>();
         pipeline.start(g.getVertex(1)).out("knows").property("name").filter(new PipeFunction<String, Boolean>() {
             public Boolean compute(String argument) {
                 return argument.startsWith("j");
@@ -44,8 +44,8 @@ public class GremlinFluentPipelineTest extends TestCase {
 
     /*public void testFilterFunctionUsingPipeHelper() throws Exception {
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        GremlinFluentPipeline<Vertex, String> pipeline =
-                new GremlinFluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(GremlinFluentPipelineTest.class.getMethod("startsWithJ", String.class)));
+        GremlinPipeline<Vertex, String> pipeline =
+                new GremlinPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(GremlinPipelineTest.class.getMethod("startsWithJ", String.class)));
         int counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -54,7 +54,7 @@ public class GremlinFluentPipelineTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipeline = new GremlinFluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(GremlinFluentPipelineTest.class, "startsWithJ", String.class));
+        pipeline = new GremlinPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(PipeHelper.createPipeFunction(GremlinPipelineTest.class, "startsWithJ", String.class));
         counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -63,7 +63,7 @@ public class GremlinFluentPipelineTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipeline = new GremlinFluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(startsWithJ);
+        pipeline = new GremlinPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(startsWithJ);
         counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -72,7 +72,7 @@ public class GremlinFluentPipelineTest extends TestCase {
         }
         assertEquals(counter, 1);
 
-        pipeline = new GremlinFluentPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(startsWithJ2);
+        pipeline = new GremlinPipeline<Vertex, String>(g.getVertex(1)).out("knows").property("name").filter(startsWithJ2);
         counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -86,7 +86,7 @@ public class GremlinFluentPipelineTest extends TestCase {
         return string.startsWith("j");
     }
 
-    private PipeFunction startsWithJ = PipeHelper.createPipeFunction(GremlinFluentPipelineTest.class, "startsWithJ", String.class);
+    private PipeFunction startsWithJ = PipeHelper.createPipeFunction(GremlinPipelineTest.class, "startsWithJ", String.class);
 
     private PipeFunction startsWithJ2 = new PipeFunction<String, Boolean>() {
         public Boolean compute(String argument) {
@@ -97,7 +97,7 @@ public class GremlinFluentPipelineTest extends TestCase {
     /*public void testCoDevelopers() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
         List<String> coDevelopers =
-                new GremlinFluentPipeline<Vertex, String>().start(g.getVertex(1)).out("created").in("created").except(Arrays.asList(g.getVertex(1))).property("name").toList();
+                new GremlinPipeline<Vertex, String>().start(g.getVertex(1)).out("created").in("created").except(Arrays.asList(g.getVertex(1))).property("name").toList();
 
         assertEquals(coDevelopers.size(), 2);
         assertTrue(coDevelopers.contains("josh"));

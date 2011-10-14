@@ -32,22 +32,22 @@ import com.tinkerpop.pipes.util.StartPipe;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFluentPipeline> {
+public class GremlinPipeline<S, E, T extends GremlinPipeline> extends FluentPipeline<S, E, GremlinPipeline> {
 
-    public GremlinFluentPipeline() {
+    public GremlinPipeline() {
         super();
     }
 
     /**
-     * Construct a new GremlinFluentPipeline with a StartPipe as the first pipe given provide start object.
+     * Construct a new GremlinPipeline with a StartPipe as the first pipe given provide start object.
      *
      * @param starts start object (if iterable/iterator, it is unfolded)
      */
-    public GremlinFluentPipeline(final Object starts) {
+    public GremlinPipeline(final Object starts) {
         super(new StartPipe(starts));
     }
 
-    public <T extends Element> GremlinFluentPipeline(final Index<T> index, final String key, final Object value) {
+    public <T extends Element> GremlinPipeline(final Index<T> index, final String key, final Object value) {
         super(new IndexElementsPipe<T>(index, key, value));
     }
 
@@ -57,9 +57,9 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param pipe the pipe to concatenate to the end of the pipeline
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline add(final Pipe pipe) {
+    public T add(final Pipe pipe) {
         this.addPipe(pipe);
-        return this;
+        return (T) this;
     }
 
     /**
@@ -69,7 +69,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param filter the filter of the pipe
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline idFilter(final Object id, final FilterPipe.Filter filter) {
+    public T idFilter(final Object id, final FilterPipe.Filter filter) {
         return this.add(new IdFilterPipe(id, filter));
     }
 
@@ -80,7 +80,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param filter the filter of the pipe
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline labelFilter(final String label, final FilterPipe.Filter filter) {
+    public T labelFilter(final String label, final FilterPipe.Filter filter) {
         return this.add(new LabelFilterPipe(label, filter));
     }
 
@@ -92,7 +92,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param value  the object to filter on
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline propertyFilter(final String key, final FilterPipe.Filter filter, final Object value) {
+    public T propertyFilter(final String key, final FilterPipe.Filter filter, final Object value) {
         return this.add(new PropertyFilterPipe(key, value, filter));
     }
 
@@ -102,18 +102,8 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param labels the edge labels to traverse
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline bothEdges(final String... labels) {
+    public T bothE(final String... labels) {
         return this.add(new BothEdgesPipe(labels));
-    }
-
-    /**
-     * Add a BothEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edges labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline bothE(final String... labels) {
-        return this.bothEdges(labels);
     }
 
     /**
@@ -122,7 +112,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param labels the edge labels to traverse
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline both(final String... labels) {
+    public T both(final String... labels) {
         return this.add(new BothPipe(labels));
     }
 
@@ -131,35 +121,17 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline bothVertices() {
+    public T bothV() {
         return this.add(new BothVerticesPipe());
     }
 
     /**
-     * Add a BothVerticesPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline bothV() {
-        return this.bothVertices();
-    }
-
-    /**
      * Add an EdgesPipe to the end of the Pipeline.
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline edges() {
+    public T E() {
         return this.add(new EdgesPipe());
-    }
-
-    /**
-     * Add an EdgesPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline E() {
-        return this.edges();
     }
 
     /**
@@ -168,7 +140,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param graph the graph of the pipe
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline idEdge(final Graph graph) {
+    public T idEdge(final Graph graph) {
         return this.add(new IdEdgePipe(graph));
     }
 
@@ -177,7 +149,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline id() {
+    public T id() {
         return this.add(new IdPipe());
     }
 
@@ -187,7 +159,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param graph the graph of the pipe
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline idVertex(final Graph graph) {
+    public T idVertex(final Graph graph) {
         return this.add(new IdVertexPipe(graph));
     }
 
@@ -197,18 +169,8 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param labels the edge labels to traverse
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline inEdges(final String... labels) {
+    public T inE(final String... labels) {
         return this.add(new InEdgesPipe(labels));
-    }
-
-    /**
-     * Add an InEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline inE(final String... labels) {
-        return this.inEdges(labels);
     }
 
     /**
@@ -217,7 +179,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param labels the edge labels to traverse
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline in(final String... labels) {
+    public T in(final String... labels) {
         return this.add(new InPipe(labels));
     }
 
@@ -226,17 +188,8 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline inVertex() {
+    public T inV() {
         return this.add(new InVertexPipe());
-    }
-
-    /**
-     * Add an InVertexPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline inV() {
-        return this.inVertex();
     }
 
     /**
@@ -244,7 +197,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline label() {
+    public T label() {
         return this.add(new LabelPipe());
     }
 
@@ -254,19 +207,8 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param labels the edge labels to traverse
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline outEdges(final String... labels) {
-        this.addPipe(new OutEdgesPipe(labels));
-        return this;
-    }
-
-    /**
-     * Add an OutEdgesPipe to the end of the Pipeline.
-     *
-     * @param labels the edge labels to traverse
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline outE(final String... labels) {
-        return this.outEdges(labels);
+    public T outE(final String... labels) {
+        return this.add(new OutEdgesPipe(labels));
     }
 
     /**
@@ -275,7 +217,7 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param labels the edge labels to traverse
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline out(final String... labels) {
+    public T out(final String... labels) {
         return this.add(new OutPipe(labels));
     }
 
@@ -284,36 +226,17 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline outVertex() {
+    public T outV() {
         return this.add(new OutVertexPipe());
     }
 
     /**
-     * Add an OutVertexPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline outV() {
-        return this.outVertex();
-    }
-
-    /**
      * Add a PropertyMapPipe to the end of the Pipeline.
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline propertyMap() {
-        this.addPipe(new PropertyMapPipe());
-        return this;
-    }
-
-    /**
-     * Add a PropertyMapPipe to the end of the Pipeline.
-     *
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline map() {
-        return this.propertyMap();
+    public T map() {
+        return this.add(new PropertyMapPipe());
     }
 
     /**
@@ -322,9 +245,8 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      * @param key the property key
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline property(final String key) {
-        this.addPipe(new PropertyPipe(key));
-        return this;
+    public T property(final String key) {
+        return this.add(new PropertyPipe(key));
     }
 
     /**
@@ -332,22 +254,13 @@ public class GremlinFluentPipeline<S, E> extends FluentPipeline<S, E, GremlinFlu
      *
      * @return the extended FluentPipeline
      */
-    public GremlinFluentPipeline vertices() {
+    public T V() {
         return this.add(new VerticesPipe());
-    }
-
-    /**
-     * Add a VerticesPipe to the end of the Pipeline
-     *
-     * @return the extended FluentPipeline
-     */
-    public GremlinFluentPipeline V() {
-        return this.vertices();
     }
 
     // utility
 
-    public <T extends Element> GremlinFluentPipeline index(final Index<T> index, final String key, final Object value) {
-        return this.add(new IndexElementsPipe<T>(index, key, value));
+    public <Q extends Element> T index(final Index<Q> index, final String key, final Object value) {
+        return this.add(new IndexElementsPipe<Q>(index, key, value));
     }
 }
