@@ -15,10 +15,6 @@ class FilterPipeLoader {
     public static void load() {
 
         Gremlin.addStep(Tokens.FILTER);
-        GremlinGroovyPipeline.metaClass.filter = {final Closure closure ->
-            return ((GremlinPipeline) delegate).filter(new GroovyPipeFunction(closure));;
-        }
-
         Gremlin.addStep(Tokens.SIMPLEPATH);
         Gremlin.addStep(Tokens.DEDUP);
         Gremlin.addStep(Tokens.AND);
@@ -29,7 +25,7 @@ class FilterPipeLoader {
         Gremlin.addStep(Tokens.RANDOM);
 
         Gremlin.addStep(Tokens.PROPERTYFILTER);
-        GremlinGroovyPipeline.metaClass.propertyFilter = {final String key, final T t, final Object value ->
+        /*GremlinGroovyPipeline.metaClass.propertyFilter = {final String key, final T t, final Object value ->
             if (key.equals(Tokens.ID)) {
                 return ((GremlinPipeline) delegate).idFilter(value, Gremlin.mapFilter(t));
             } else if (key.equals(Tokens.LABEL)) {
@@ -37,7 +33,7 @@ class FilterPipeLoader {
             } else {
                 return ((GremlinPipeline) delegate).propertyFilter(key, Gremlin.mapFilter(t), value);
             }
-        }
+        }*/
 
 
     }

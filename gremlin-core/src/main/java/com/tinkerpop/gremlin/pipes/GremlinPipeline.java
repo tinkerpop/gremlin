@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.pipes;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Index;
+import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
@@ -94,6 +95,10 @@ public class GremlinPipeline<S, E, T extends GremlinPipeline> extends FluentPipe
      */
     public T propertyFilter(final String key, final FilterPipe.Filter filter, final Object value) {
         return this.add(new PropertyFilterPipe(key, value, filter));
+    }
+
+    public T propertyFilter(final String key, final Tokens.T t, final Object value) {
+        return this.add(new PropertyFilterPipe(key, value, Tokens.mapFilter(t)));
     }
 
     /**

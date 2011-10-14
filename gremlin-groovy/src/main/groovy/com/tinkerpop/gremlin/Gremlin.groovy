@@ -37,29 +37,6 @@ class Gremlin {
         }
     }
 
-    public static Filter mapFilter(final t) {
-        switch (t) {
-            case t.eq:
-                return FilterPipe.Filter.EQUAL;
-                break;
-            case t.neq:
-                return FilterPipe.Filter.NOT_EQUAL;
-                break;
-            case t.lt:
-                return FilterPipe.Filter.LESS_THAN;
-                break;
-            case t.lte:
-                return FilterPipe.Filter.LESS_THAN_EQUAL;
-                break;
-            case t.gt:
-                return FilterPipe.Filter.GREATER_THAN;
-                break;
-            case t.gte:
-                return FilterPipe.Filter.GREATER_THAN_EQUAL;
-                break;
-        }
-        throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
-    }
 
     private static GremlinGroovyPipeline compose(final Object start, final Pipe pipe) {
         GremlinGroovyPipeline pipeline;

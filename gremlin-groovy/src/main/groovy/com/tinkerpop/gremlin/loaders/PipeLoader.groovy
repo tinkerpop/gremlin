@@ -106,19 +106,19 @@ class PipeLoader {
             map.each {key, value ->
                 if (key.equals(Tokens.LABEL)) {
                     if (value instanceof List) {
-                        pipeline.addPipe(new LabelFilterPipe((String) value[1], Gremlin.mapFilter(value[0])))
+                        pipeline.addPipe(new LabelFilterPipe((String) value[1], Tokens.mapFilter(value[0])))
                     } else {
                         pipeline.addPipe(new LabelFilterPipe((String) value, FilterPipe.Filter.EQUAL));
                     }
                 } else if (key.equals(Tokens.ID)) {
                     if (value instanceof List) {
-                        pipeline.addPipe(new IdFilterPipe(value[1], Gremlin.mapFilter(value[0])))
+                        pipeline.addPipe(new IdFilterPipe(value[1], Tokens.mapFilter(value[0])))
                     } else {
                         pipeline.addPipe(new IdFilterPipe(value, FilterPipe.Filter.EQUAL));
                     }
                 } else {
                     if (value instanceof List) {
-                        pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], Gremlin.mapFilter(value[0])))
+                        pipeline.addPipe(new PropertyFilterPipe((String) key, value[1], Tokens.mapFilter(value[0])))
                     } else {
                         pipeline.addPipe(new PropertyFilterPipe((String) key, value, FilterPipe.Filter.EQUAL))
                     }
@@ -129,9 +129,9 @@ class PipeLoader {
         }
 
         Gremlin.addStep(Tokens.STEP);
-        GremlinGroovyPipeline.metaClass.step = {final Closure closure ->
+        /*GremlinGroovyPipeline.metaClass.step = {final Closure closure ->
             return ((GremlinGroovyPipeline) delegate).step(new GroovyPipeFunction(closure));
-        }
+        }*/
 
         TransformPipeLoader.load();
         FilterPipeLoader.load();

@@ -8,7 +8,7 @@ import groovy.lang.Closure;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GroovyPipeFunction implements PipeFunction {
+public class GroovyPipeFunction<A, B> implements PipeFunction<A, B> {
 
     private final Closure closure;
 
@@ -16,8 +16,8 @@ public class GroovyPipeFunction implements PipeFunction {
         this.closure = closure;
     }
 
-    public Object compute(final Object argument) {
-        return this.closure.call(argument);
+    public B compute(final A argument) {
+        return (B) this.closure.call(argument);
     }
 
     public static PipeFunction[] generate(final Closure... closures) {

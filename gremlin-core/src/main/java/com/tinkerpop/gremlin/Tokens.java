@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.pipes.filter.FilterPipe;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -9,7 +11,7 @@ public class Tokens {
     public static final String LABEL = "label";
     public static final String ID = "id";
 
-    public enum T {
+    public static enum T {
         eq, neq, lt, lte, gt, gte, v, e
     }
 
@@ -48,6 +50,7 @@ public class Tokens {
     public static final String OPTIONAL = "optional";
     public static final String OR = "or";
     public static final String PATHS = "paths";
+    public static final String PATH = "path";
     public static final String PROPERTYFILTER = "propertyFilter";
     public static final String RANDOM = "random";
     public static final String RETAIN = "retain";
@@ -56,6 +59,25 @@ public class Tokens {
     public static final String TABLE = "table";
     public static final String DEDUP = "dedup";
     public static final String SIMPLEPATH = "simplePath";
+
+    public static FilterPipe.Filter mapFilter(final Tokens.T t) {
+        if (t == T.eq) {
+            return FilterPipe.Filter.EQUAL;
+        } else if (t == T.neq) {
+            return FilterPipe.Filter.NOT_EQUAL;
+        } else if (t == T.lt) {
+            return FilterPipe.Filter.LESS_THAN;
+        } else if (t == T.lte) {
+            return FilterPipe.Filter.LESS_THAN_EQUAL;
+        } else if (t == T.gt) {
+            return FilterPipe.Filter.GREATER_THAN;
+        } else if (t == T.gte) {
+            return FilterPipe.Filter.GREATER_THAN_EQUAL;
+
+        } else {
+            throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
+        }
+    }
 
 
 }

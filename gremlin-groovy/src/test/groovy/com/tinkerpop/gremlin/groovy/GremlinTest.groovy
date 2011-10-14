@@ -230,7 +230,7 @@ class GremlinTest extends BaseTest {
 
         assertEquals(g.v(1).outE.filter {it.label == 'knows' | it.label == 'created'}.inV.filter {it.id == '4' & it.name == name}.next(), josh);
         assertEquals(g.v(1).outE.or(_()[[label: 'knows']], _()[[label: 'created']]).inV.and(_()[[id: '4']], _()[[name: name]]) >> 1, josh);
-        assertEquals(g.v(1).outE.or(_().propertyFilter('label', T.eq, 'knows'), _().propertyFilter('label', T.eq, 'created')).inV.and(_().propertyFilter('id', T.eq, '4'), _().propertyFilter('name', T.eq, name)).next(), josh);
+//        assertEquals(g.v(1).outE.or(_().propertyFilter('label', T.eq, 'knows'), _().propertyFilter('label', T.eq, 'created')).inV.and(_().propertyFilter('id', T.eq, '4'), _().propertyFilter('name', T.eq, name)).next(), josh);
     }
 
     public void testPipelineToString() throws Exception {
