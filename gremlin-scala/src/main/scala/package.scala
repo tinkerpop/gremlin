@@ -16,6 +16,8 @@ package object scala {
     new PipeFunction[A, JBoolean] {
       def compute(a: A): JBoolean = Boolean box f(a)
     }
+  
+  //TODO implicit Iterable[Vertex] => GremlinFluentPipeline? so g.v(1,2).out works
 
   /**Bring the wrap implicits into scope. The compiler will check the unwrap implicits on its own. */
   implicit val wrapScalaVertex = ScalaVertex.wrap _
