@@ -1,15 +1,15 @@
-package com.tinkerpop.gremlin.groovy;
+package com.tinkerpop.gremlin.groovy.transform;
 
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.UtilitiesTest
+import com.tinkerpop.gremlin.test.UtilitiesTest
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-class TraversalStepsTest extends com.tinkerpop.gremlin.TraversalStepsTest {
+class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalStepsTest {
 
     Graph g = TinkerGraphFactory.createTinkerGraph();
     static {
@@ -82,6 +82,10 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.TraversalStepsTest {
 
     public void test_g_v1_out_out_out() {
         super.test_g_v1_out_out_out(g.v(1).out.out.out);
+    }
+
+    public void test_g_v1_out_propertyXnameX() {
+        super.test_g_v1_out_propertyXnameX(g.v(1).out.name);
     }
 
 

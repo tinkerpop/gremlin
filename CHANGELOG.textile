@@ -26,6 +26,9 @@ h3. Version 1.4 (NOT OFFICIALLY RELEASED YET)
 ** Added @gremlin-groovy@ for Groovy representation of language
 ** Added @gremlin-scala@ for Scala representation of language
 ** Added @IndexElementsPipe@ which is a start pipe that pull elements from an index
+** Renamed @uniqueObject@ step to @dedup@
+** Renamed @orFilter@ and @andFilter@ to @or@ and @and@, respectively
+** Renamed @uniquePath@ to @simplePath@
 
 ==<hr/>==
 

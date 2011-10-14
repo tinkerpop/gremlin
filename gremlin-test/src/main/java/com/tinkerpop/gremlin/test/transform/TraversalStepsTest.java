@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.test.transform;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
@@ -171,6 +171,23 @@ public class TraversalStepsTest extends TestCase {
 
     public void test_g_v1_out_out_out(final Pipe<Vertex, Vertex> pipe) {
         assertFalse(pipe.hasNext());
+    }
+
+    // PROPERTY TESTING
+
+    public void test_g_v1_out_propertyXnameX(final Pipe<Vertex, String> pipe) {
+        int counter = 0;
+        Set<String> names = new HashSet<String>();
+        while (pipe.hasNext()) {
+            counter++;
+            String name = pipe.next();
+            names.add(name);
+            assertTrue(name.equals("vadas") ||
+                    name.equals("josh") ||
+                    name.equals("lop"));
+        }
+        assertEquals(counter, 3);
+        assertEquals(names.size(), 3);
     }
 
 

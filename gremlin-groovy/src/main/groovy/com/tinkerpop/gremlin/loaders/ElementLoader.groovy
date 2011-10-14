@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.Tokens
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -21,7 +21,7 @@ class ElementLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"()
             } else {
-                if (name.equals(GremlinTokens.ID)) {
+                if (name.equals(Tokens.ID)) {
                     return ((Vertex) delegate).getId()
                 } else {
                     return ((Vertex) delegate).getProperty(name)
@@ -33,9 +33,9 @@ class ElementLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"()
             } else {
-                if (name.equals(GremlinTokens.ID)) {
+                if (name.equals(Tokens.ID)) {
                     return ((Edge) delegate).getId()
-                } else if (name.equals(GremlinTokens.LABEL)) {
+                } else if (name.equals(Tokens.LABEL)) {
                     return ((Edge) delegate).getLabel()
                 } else {
                     return ((Edge) delegate).getProperty(name)
@@ -44,7 +44,7 @@ class ElementLoader {
         }
 
         Vertex.metaClass.getAt = {final String key ->
-            if (key.equals(GremlinTokens.ID)) {
+            if (key.equals(Tokens.ID)) {
                 return ((Vertex) delegate).getId()
             } else {
                 return ((Vertex) delegate).getProperty(key)
@@ -52,9 +52,9 @@ class ElementLoader {
         }
 
         Edge.metaClass.getAt = {final String key ->
-            if (key.equals(GremlinTokens.ID)) {
+            if (key.equals(Tokens.ID)) {
                 return ((Edge) delegate).getId()
-            } else if (key.equals(GremlinTokens.LABEL)) {
+            } else if (key.equals(Tokens.LABEL)) {
                 return ((Edge) delegate).getLabel();
             } else {
                 return ((Edge) delegate).getProperty(key)

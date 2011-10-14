@@ -1,10 +1,9 @@
-package com.tinkerpop.gremlin
+package com.tinkerpop.gremlin.scala
 
 import org.specs2.mutable._
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.pipes.PipeFunction
-import com.tinkerpop.gremlin.scala._
-import pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 
 class ScalaPipeFunctionTest extends SpecificationWithJUnit {
   "The scala PipeFunction implicits" should {

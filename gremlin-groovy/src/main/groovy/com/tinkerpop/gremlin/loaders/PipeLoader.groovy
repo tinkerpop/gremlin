@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.loaders
 
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe
@@ -21,9 +21,9 @@ class PipeLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"();
             } else {
-                if (name.equals(GremlinTokens.ID)) {
+                if (name.equals(Tokens.ID)) {
                     return ((GremlinFluentPipeline) delegate).id();
-                } else if (name.equals(GremlinTokens.LABEL)) {
+                } else if (name.equals(Tokens.LABEL)) {
                     return ((GremlinFluentPipeline) delegate).label();
                 } else {
                     return ((GremlinFluentPipeline) delegate).property(name);
@@ -83,18 +83,18 @@ class PipeLoader {
 
 
         GremlinFluentPipeline.metaClass.getAt = {final Integer index ->
-            return ((GremlinFluentPipeline) delegate).rangeFilter(index, index);
+            return ((GremlinFluentPipeline) delegate).range(index, index);
         }
 
 
         GremlinFluentPipeline.metaClass.getAt = {final Range range ->
-            return ((GremlinFluentPipeline) delegate).rangeFilter(range.getFrom() as Integer, range.getTo() as Integer);
+            return ((GremlinFluentPipeline) delegate).range(range.getFrom() as Integer, range.getTo() as Integer);
         }
 
         GremlinFluentPipeline.metaClass.getAt = {final String name ->
-            if (name.equals(GremlinTokens.ID)) {
+            if (name.equals(Tokens.ID)) {
                 return ((GremlinFluentPipeline) delegate).id();
-            } else if (name.equals(GremlinTokens.LABEL)) {
+            } else if (name.equals(Tokens.LABEL)) {
                 return ((GremlinFluentPipeline) delegate).label();
             } else {
                 return ((GremlinFluentPipeline) delegate).property(name);
@@ -104,13 +104,13 @@ class PipeLoader {
         GremlinFluentPipeline.metaClass.getAt = {final Map map ->
             GremlinFluentPipeline pipeline = (GremlinFluentPipeline) delegate;
             map.each {key, value ->
-                if (key.equals(GremlinTokens.LABEL)) {
+                if (key.equals(Tokens.LABEL)) {
                     if (value instanceof List) {
                         pipeline.addPipe(new LabelFilterPipe((String) value[1], Gremlin.mapFilter(value[0])))
                     } else {
                         pipeline.addPipe(new LabelFilterPipe((String) value, FilterPipe.Filter.EQUAL));
                     }
-                } else if (key.equals(GremlinTokens.ID)) {
+                } else if (key.equals(Tokens.ID)) {
                     if (value instanceof List) {
                         pipeline.addPipe(new IdFilterPipe(value[1], Gremlin.mapFilter(value[0])))
                     } else {
@@ -128,7 +128,7 @@ class PipeLoader {
             return pipeline;
         }
 
-        Gremlin.addStep(GremlinTokens.STEP);
+        Gremlin.addStep(Tokens.STEP);
         GremlinFluentPipeline.metaClass.step = {final Closure closure ->
             return ((GremlinFluentPipeline) delegate).step(new GroovyPipeFunction(closure));
         }

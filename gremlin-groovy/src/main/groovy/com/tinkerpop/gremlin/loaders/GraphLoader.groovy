@@ -8,7 +8,7 @@ import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONReader
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONWriter
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.groovy.GremlinTokens
+import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 import java.util.Map.Entry
 
@@ -27,12 +27,12 @@ class GraphLoader {
             }
         }
 
-        Gremlin.addStep(GremlinTokens.V);
+        Gremlin.addStep(Tokens.V);
         Graph.metaClass.V = {->
             return new GremlinFluentPipeline(delegate).V();
         }
 
-        Gremlin.addStep(GremlinTokens.E);
+        Gremlin.addStep(Tokens.E);
         Graph.metaClass.E = {->
             return new GremlinFluentPipeline(delegate).E();
         }

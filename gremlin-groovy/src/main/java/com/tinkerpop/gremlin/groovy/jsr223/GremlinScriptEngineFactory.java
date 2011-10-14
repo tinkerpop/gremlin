@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
-import com.tinkerpop.gremlin.groovy.GremlinTokens;
+import com.tinkerpop.gremlin.Tokens;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -14,7 +14,7 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
 
     private static final String ENGINE_NAME = "gremlin";
     private static final String LANGUAGE_NAME = "gremlin";
-    private static final String VERSION_NUMBER = GremlinTokens.VERSION;
+    private static final String VERSION_NUMBER = Tokens.VERSION;
     private static final String PLAIN = "plain";
     private static final List<String> EXTENSIONS = Arrays.asList("grm");
 

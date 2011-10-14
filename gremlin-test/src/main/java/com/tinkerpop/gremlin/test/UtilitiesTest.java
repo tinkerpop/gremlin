@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.test;
 
 import junit.framework.TestCase;
 
@@ -15,7 +15,7 @@ public class UtilitiesTest extends TestCase {
         assertTrue(true);
     }
 
-    public static void testCompliance(Class testClass) {
+    public static void testCompliance(final Class testClass) {
         Set<String> methodNames = new HashSet<String>();
         for (Method method : testClass.getMethods()) {
             if (method.getDeclaringClass().equals(testClass) && method.getName().startsWith("test")) {

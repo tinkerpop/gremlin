@@ -1,9 +1,9 @@
-package com.tinkerpop.gremlin.groovy;
+package com.tinkerpop.gremlin;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinTokens {
+public class Tokens {
 
     public static final String VERSION = "1.4-SNAPSHOT";
     public static final String LABEL = "label";
@@ -28,7 +28,7 @@ public class GremlinTokens {
 
     public static final String _ = "_";
     public static final String AGGREGATE = "aggregate";
-    public static final String ANDFILTER = "andFilter";
+    public static final String AND = "and";
     public static final String AS = "as";
     public static final String BACK = "back";
     public static final String CAP = "cap";
@@ -46,7 +46,7 @@ public class GremlinTokens {
     public static final String MAP = "map";
     public static final String MEMOIZE = "memoize";
     public static final String OPTIONAL = "optional";
-    public static final String ORFILTER = "orFilter";
+    public static final String OR = "or";
     public static final String PATHS = "paths";
     public static final String PROPERTYFILTER = "propertyFilter";
     public static final String RANDOM = "random";
@@ -54,8 +54,8 @@ public class GremlinTokens {
     public static final String SCATTER = "scatter";
     public static final String STEP = "step";
     public static final String TABLE = "table";
-    public static final String UNIQUEOBJECT = "uniqueObject";
-    public static final String UNIQUEPATH = "uniquePath";
+    public static final String DEDUP = "dedup";
+    public static final String SIMPLEPATH = "simplePath";
 
 
 }

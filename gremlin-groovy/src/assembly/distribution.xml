@@ -11,8 +11,8 @@
         <fileSet>
             <fileMode>0775</fileMode>
             <includes>
-                <include>gremlin.sh</include>
-                <include>gremlin.bat</include>
+                <include>gremlin-groovy.sh</include>
+                <include>gremlin-groovy.bat</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -28,7 +28,7 @@
             <directory>target/site</directory>
         </fileSet>
         <fileSet>
-            <directory>target/gremlin-groovy-${project.version}-standalone</directory>
+            <directory>target/${project.artifactId}-${project.version}-standalone</directory>
         </fileSet>
     </fileSets>
 </assembly>

@@ -1,10 +1,10 @@
-package com.tinkerpop.gremlin
+package com.tinkerpop.gremlin.scala
 
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import _root_.scala.collection.JavaConversions
 import junit.framework.TestCase
-import pipes.GremlinFluentPipeline
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline
 
 class GremlinScalaTest extends TestCase {
   def testGremlin() {
