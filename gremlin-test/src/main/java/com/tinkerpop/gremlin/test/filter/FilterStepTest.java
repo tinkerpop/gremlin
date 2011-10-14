@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.test.filter;
 
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
@@ -16,11 +17,11 @@ public class FilterStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_filterXfalseX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXfalseX(Pipe<Graph, Vertex> pipe) {
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_filterXtrueX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXtrueX(Pipe<Graph, Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -31,7 +32,7 @@ public class FilterStepTest extends TestCase {
         assertEquals(vertices.size(), 6);
     }
 
-    public void test_g_V_filterXlang_eq_javaX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXlang_eq_javaX(Pipe<Graph, Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {

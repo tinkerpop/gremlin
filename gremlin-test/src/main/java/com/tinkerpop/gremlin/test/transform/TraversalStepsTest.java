@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.test.transform;
 
 import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
@@ -19,7 +20,7 @@ public class TraversalStepsTest extends TestCase {
 
     // VERTEX ADJACENCY
 
-    public void test_g_V(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V(final Pipe<Graph, Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
