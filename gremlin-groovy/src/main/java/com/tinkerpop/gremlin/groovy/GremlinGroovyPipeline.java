@@ -66,11 +66,6 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E, GremlinGr
         return this;
     }
 
-    public GremlinGroovyPipeline ifThenElse(final Closure ifClosure, final Closure thenClosure) {
-        super.ifThenElse(new GroovyPipeFunction<Object, Boolean>(ifClosure), new GroovyPipeFunction(thenClosure), null);
-        return this;
-    }
-
     public GremlinGroovyPipeline loop(final Integer numberedStep, final Closure closure) {
         super.loop(numberedStep, new GroovyPipeFunction<Object, Boolean>(closure));
         return this;
