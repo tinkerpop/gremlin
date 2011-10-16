@@ -24,6 +24,6 @@ package object scala {
   implicit val wrapScalaEdge = ScalaEdge.wrap _
   implicit val wrapScalaGraph = ScalaGraph.wrap _
 
-  implicit def wrapScalaFluentPipeline[A, B] = ScalaFluentPipeline.wrap[A, B] _ //this implicit has type parameters so it must be a def instead of a val
+  //implicit def wrapScalaFluentPipeline[A, B] = ScalaFluentPipeline.wrap[A, B] _ //this implicit has type parameters so it must be a def instead of a val
 }
 

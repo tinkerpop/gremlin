@@ -5,29 +5,29 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
 class ScalaVertex(val vertex: Vertex) {
-  def out = new GremlinPipeline(vertex).out()
+  def out = new ScalaFluentPipeline[Vertex, Vertex](vertex).out()
 
-  def out(labels: String*) = new GremlinPipeline(vertex).out(labels: _*)
+  def out(labels: String*) = new ScalaFluentPipeline(vertex).out(labels: _*)
 
-  def outE = new GremlinPipeline(vertex).outE()
+  def outE = new ScalaFluentPipeline(vertex).outE()
 
-  def outE(labels: String*) = new GremlinPipeline(vertex).outE(labels: _*)
+  def outE(labels: String*) = new ScalaFluentPipeline(vertex).outE(labels: _*)
 
-  def in = new GremlinPipeline(vertex).in()
+  def in = new ScalaFluentPipeline(vertex).in()
 
-  def in(labels: String*) = new GremlinPipeline(vertex).in(labels: _*)
+  def in(labels: String*) = new ScalaFluentPipeline(vertex).in(labels: _*)
 
-  def inE = new GremlinPipeline(vertex).inE()
+  def inE = new ScalaFluentPipeline(vertex).inE()
 
-  def inE(labels: String*) = new GremlinPipeline(vertex).inE(labels: _*)
+  def inE(labels: String*) = new ScalaFluentPipeline(vertex).inE(labels: _*)
 
-  def both = new GremlinPipeline(vertex).both()
+  def both = new ScalaFluentPipeline(vertex).both()
 
-  def both(labels: String*) = new GremlinPipeline(vertex).both(labels: _*)
+  def both(labels: String*) = new ScalaFluentPipeline(vertex).both(labels: _*)
 
-  def bothE = new GremlinPipeline(vertex).bothE()
+  def bothE = new ScalaFluentPipeline(vertex).bothE()
 
-  def bothE(labels: String*) = new GremlinPipeline(vertex).bothE(labels: _*)
+  def bothE(labels: String*) = new ScalaFluentPipeline(vertex).bothE(labels: _*)
 
   //TODO map
   //TODO property
@@ -43,11 +43,11 @@ object ScalaVertex {
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Edge]]. */
 class ScalaEdge(val edge: Edge) {
-  def inV = new GremlinPipeline(edge).inV()
+  def inV = new ScalaFluentPipeline(edge).inV()
 
-  def outV = new GremlinPipeline(edge).outV()
+  def outV = new ScalaFluentPipeline(edge).outV()
 
-  def bothV = new GremlinPipeline(edge).bothV()
+  def bothV = new ScalaFluentPipeline(edge).bothV()
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Edge]] and [[com.tinkerpop.gremlin.scala.ScalaEdge]]. */
@@ -59,9 +59,9 @@ object ScalaEdge {
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Graph]]. */
 class ScalaGraph(val graph: Graph) {
-  def V = new GremlinPipeline(graph).V()
+  def V = new ScalaFluentPipeline(graph).V()
 
-  def E = new GremlinPipeline(graph).E()
+  def E = new ScalaFluentPipeline(graph).E()
 
   //in Groovy, Graph.v appears to return a vertex if called with one ID, or a list of vertices if called with multiple IDs...
   /*def v(id: Object): Vertex = graph getVertex id
@@ -83,7 +83,8 @@ object ScalaGraph {
 }
 
 /**Adds convenience methods to [[com.tinkerpop.pipes.util.FluentPipeline]]. */
-class ScalaFluentPipeline[A, B](val pipeline: GremlinPipeline[A, B]) extends Iterator[B] {
+class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B, ScalaFluentPipeline[A, B]](a) /*with Iterator[B]*/ {
+  
   //Pipe<S,E> is both:
   // - Iterator<E> = iterate over elements in collection, defines hasNext(), next() and remove() methods
   // - Iterable<E> = can be target of foreach statement, defines iterator() method
@@ -99,17 +100,18 @@ class ScalaFluentPipeline[A, B](val pipeline: GremlinPipeline[A, B]) extends Ite
   // => If ScalaFluentPipeline[S,E] extends Iterator[E], then it should act like Pipe in all the right Scala ways,
   //    and the hasNext & next methods can delegate to hasNext() & next() in FluentPipeline
 
-  def hasNext: Boolean = pipeline.hasNext
+  /*def hasNext: Boolean = pipeline.hasNext
 
-  def next(): B = pipeline.next()
+  def next(): B = pipeline.next()*/
 
-  def loop[T](numberedStep: Int)(whileFunction: Function1[T, Boolean]) = pipeline.loop(numberedStep, whileFunction)
+  def loop[T](numberedStep: Int)(whileFunction: Function1[T, Boolean]): ScalaFluentPipeline[A, B] = 
+    loop(numberedStep, whileFunction).asInstanceOf[ScalaFluentPipeline[A, B]]
 }
 
 /**Implicit conversions between [[com.tinkerpop.pipes.util.FluentPipeline]] and [[com.tinkerpop.gremlin.scala.ScalaFluentPipeline]]. */
-object ScalaFluentPipeline {
+/*object ScalaFluentPipeline {
   implicit def wrap[A, B](fp: GremlinPipeline[A, B]) = new ScalaFluentPipeline(fp)
 
   implicit def unwrap[A, B](wrapper: ScalaFluentPipeline[A, B]) = wrapper.pipeline
-}
+}*/
 

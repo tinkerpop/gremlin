@@ -1,5 +1,5 @@
 package com.tinkerpop.gremlin.scala
-
+/*
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import _root_.scala.collection.JavaConversions
@@ -13,3 +13,4 @@ class GremlinScalaTest extends TestCase {
     JavaConversions.asScalaIterator[Vertex](pipe.start(g.getVertex(1)).out("knows").asInstanceOf[java.util.Iterator[Vertex]]);
   }
 }
+*/

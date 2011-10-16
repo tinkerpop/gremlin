@@ -115,6 +115,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.tinkerpop.gremlin</groupId>
+            <artifactId>gremlin-test</artifactId>
+            <version>1.4-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Not using these at the moment due to gremlin-test; but may need in future...
+        <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.9.1</artifactId>
             <version>1.6.1</version>
@@ -126,6 +133,7 @@
             <version>6.0.1</version>
             <scope>test</scope>
         </dependency>
+        -->
     </dependencies>
     <repositories>
         <repository>
