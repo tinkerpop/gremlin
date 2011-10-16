@@ -42,7 +42,7 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
   def test_g_v4_bothE() {
     super.test_g_v4_bothE(g.v(4).bothE)
   }
-
+/*
   def test_g_v1_outE_inV() {
     super.test_g_v1_outE_inV(g.v(1).outE.inV)
   }
@@ -78,4 +78,5 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
   def test_g_v1_out_propertyXnameX() {
     super.test_g_v1_out_propertyXnameX(g.v(1).out.name)
   }
+*/
 }
