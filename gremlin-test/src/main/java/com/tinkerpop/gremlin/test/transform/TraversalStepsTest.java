@@ -72,7 +72,7 @@ public class TraversalStepsTest extends TestCase {
 
     // EDGE ADJACENCY
 
-    public void test_g_E(final Pipe<Vertex, Edge> pipe) {
+    public void test_g_E(final Pipe<Graph, Edge> pipe) {
         int counter = 0;
         Set<Edge> edges = new HashSet<Edge>();
         while (pipe.hasNext()) {

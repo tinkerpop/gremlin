@@ -7,27 +7,27 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 class ScalaVertex(val vertex: Vertex) {
   def out = new ScalaFluentPipeline[Vertex, Vertex](vertex).out()
 
-  def out(labels: String*) = new ScalaFluentPipeline(vertex).out(labels: _*)
+  def out(labels: String*) = new ScalaFluentPipeline[Vertex, Vertex](vertex).out(labels: _*)
 
-  def outE = new ScalaFluentPipeline(vertex).outE()
+  def outE = new ScalaFluentPipeline[Vertex, Edge](vertex).outE()
 
-  def outE(labels: String*) = new ScalaFluentPipeline(vertex).outE(labels: _*)
+  def outE(labels: String*) = new ScalaFluentPipeline[Vertex, Edge](vertex).outE(labels: _*)
 
-  def in = new ScalaFluentPipeline(vertex).in()
+  def in = new ScalaFluentPipeline[Vertex, Vertex](vertex).in()
 
-  def in(labels: String*) = new ScalaFluentPipeline(vertex).in(labels: _*)
+  def in(labels: String*) = new ScalaFluentPipeline[Vertex, Vertex](vertex).in(labels: _*)
 
-  def inE = new ScalaFluentPipeline(vertex).inE()
+  def inE = new ScalaFluentPipeline[Vertex, Edge](vertex).inE()
 
-  def inE(labels: String*) = new ScalaFluentPipeline(vertex).inE(labels: _*)
+  def inE(labels: String*) = new ScalaFluentPipeline[Vertex, Edge](vertex).inE(labels: _*)
 
-  def both = new ScalaFluentPipeline(vertex).both()
+  def both = new ScalaFluentPipeline[Vertex, Vertex](vertex).both()
 
-  def both(labels: String*) = new ScalaFluentPipeline(vertex).both(labels: _*)
+  def both(labels: String*) = new ScalaFluentPipeline[Vertex, Vertex](vertex).both(labels: _*)
 
-  def bothE = new ScalaFluentPipeline(vertex).bothE()
+  def bothE = new ScalaFluentPipeline[Vertex, Edge](vertex).bothE()
 
-  def bothE(labels: String*) = new ScalaFluentPipeline(vertex).bothE(labels: _*)
+  def bothE(labels: String*) = new ScalaFluentPipeline[Vertex, Edge](vertex).bothE(labels: _*)
 
   //TODO map
   //TODO property
@@ -43,11 +43,11 @@ object ScalaVertex {
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Edge]]. */
 class ScalaEdge(val edge: Edge) {
-  def inV = new ScalaFluentPipeline(edge).inV()
+  def inV = new ScalaFluentPipeline[Edge, Vertex](edge).inV()
 
-  def outV = new ScalaFluentPipeline(edge).outV()
+  def outV = new ScalaFluentPipeline[Edge, Vertex](edge).outV()
 
-  def bothV = new ScalaFluentPipeline(edge).bothV()
+  def bothV = new ScalaFluentPipeline[Edge, Vertex](edge).bothV()
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Edge]] and [[com.tinkerpop.gremlin.scala.ScalaEdge]]. */
@@ -59,18 +59,23 @@ object ScalaEdge {
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Graph]]. */
 class ScalaGraph(val graph: Graph) {
-  def V = new ScalaFluentPipeline(graph).V()
+  /** Returns all vertices. */
+  def V = new ScalaFluentPipeline[Graph, Vertex](graph).V()
+  
+  /** Returns the vertices with the specified IDs. */
+  def V(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_))
+  
+  /** Returns the vertex with the specified ID. */
+  def v(id: Any): Vertex = graph getVertex id
 
-  def E = new ScalaFluentPipeline(graph).E()
+  /** Returns all edges. */
+  def E = new ScalaFluentPipeline[Graph, Edge](graph).E()
 
-  //in Groovy, Graph.v appears to return a vertex if called with one ID, or a list of vertices if called with multiple IDs...
-  /*def v(id: Object): Vertex = graph getVertex id
-  def v(id: Object, ids: Object*): Iterable[Vertex] = {
-    val v1 = graph getVertex id
-    val vs = ids.map(graph.getVertex(_))
-    Iterable(v1, vs: _*)
-  }*/
-  def v(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_))
+  /** Returns the edges with the specified IDs. */
+  def E(ids: Any*): Iterable[Edge] = ids map { graph getEdge _ }
+  
+  /** Returns the edge with the specified ID. */
+  def e(id: Any): Edge = graph getEdge id
 
   //TODO def += for addVertex and addEdge?
 }
