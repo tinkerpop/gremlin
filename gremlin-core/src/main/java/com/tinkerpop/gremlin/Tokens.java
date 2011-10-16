@@ -73,7 +73,6 @@ public class Tokens {
             return FilterPipe.Filter.GREATER_THAN;
         } else if (t == T.gte) {
             return FilterPipe.Filter.GREATER_THAN_EQUAL;
-
         } else {
             throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
         }

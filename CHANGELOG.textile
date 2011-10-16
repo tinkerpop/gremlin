@@ -16,16 +16,23 @@ h3. Version 1.4 (NOT OFFICIALLY RELEASED YET)
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
-  <artifactId>gremlin-core</artifactId>
+  <artifactId>gremlin-groovy</artifactId>
+  <version>1.4-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+  <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin-scala</artifactId>
   <version>1.4-SNAPSHOT</version>
 </dependency>
 ```
 
 * Generalized Gremlin to be a meta-language
-** Added @gremlin-core@ for core functionality (traversal pipes)
-** Added @gremlin-groovy@ for Groovy representation of language
-** Added @gremlin-scala@ for Scala representation of language
-** Added @IndexElementsPipe@ which is a start pipe that pull elements from an index
+** Added @gremlin-core@ for core functionality used by all Gremlin implementations
+** Added @gremlin-test@ as a universal test suite for all Gremlin implementations
+** Added @gremlin-groovy@ as the Groovy representation of the Gremlin language
+** Added @gremlin-scala@ as the Scala representation of the Gremlin language
+** Added @IndexElementsPipe@ as a start pipe that pulls elements from an index
 ** Renamed @uniqueObject@ step to @dedup@
 ** Renamed @orFilter@ and @andFilter@ to @or@ and @and@, respectively
 ** Renamed @uniquePath@ to @simplePath@
