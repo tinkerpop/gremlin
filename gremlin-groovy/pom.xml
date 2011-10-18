@@ -50,9 +50,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.tinkerpop.gremlin</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>gremlin-core</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <!-- PROVIDED DEPENDENCIES -->
         <dependency>
@@ -140,9 +140,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.tinkerpop.gremlin</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>gremlin-test</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
