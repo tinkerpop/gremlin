@@ -6,7 +6,7 @@ import com.tinkerpop.gremlin.scala._
 
 class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalStepsTest {
   val g = TinkerGraphFactory.createTinkerGraph()
-  
+
   /*override def testCompliance() {
     UtilitiesTest.testCompliance(this.getClass())
   }*/
@@ -14,11 +14,11 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
   def test_g_V() {
     super.test_g_V(g.V)
   }
-  
+
   def test_g_v1_out() {
     super.test_g_v1_out(g.v(1).out)
   }
-  
+
   def test_g_v2_in() {
     super.test_g_v2_in(g.v(2).in)
   }

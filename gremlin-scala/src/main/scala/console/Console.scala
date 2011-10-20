@@ -23,7 +23,7 @@ class GremlinILoop extends ILoop {
   val inputPrompt = "gremlin> "
   val resultPrompt = "==>"
   override def prompt = inputPrompt
-  
+
   val welcome = "\n" +
     "         \\,,,/\n" +
     "         (o o)\n" +
@@ -46,27 +46,27 @@ class GremlinILoop extends ILoop {
     gremlinIntp = new GremlinInterpreter
     intp = gremlinIntp
   }
-  
+
   /** Overriden to print out the value evaluated from the specified line. */
   override def command(line: String): Result = {
     val r = super.command(line)
-    
+
     //TODO handle compiler error
     //TODO handle exception
     //TODO handle something like class on multilines
     if (r.keepRunning && r.lineToRecord.isDefined) {
       printLastValue()
     }
-    
+
     r
   }
-  
+
   /** Prints the last value by expanding its elements if it's iterator-like or collection-like. */
   def printLastValue() = gremlinIntp.lastValue match {
     case Right(value) => for (v <- toIterator(value)) out.println(resultPrompt + v)
     case Left(throwable) => throwable.printStackTrace(out)
   }
-  
+
   /** Coerces the specified value into an iterator. */
   def toIterator(value: Any): Iterator[Any] = {
     import scala.collection.JavaConverters._
@@ -85,7 +85,7 @@ class GremlinILoop extends ILoop {
 
     /** Returns the last request executed by this interpreter. */
     def lastRequest: Option[Request] = prevRequestList.lastOption
-    
+
     /** Returns the last value evaluated by this interpreter. See https://issues.scala-lang.org/browse/SI-4899 for details. */
     def lastValue: Either[Throwable, AnyRef] = lastRequest.getOrElse(throw new NullPointerException()).lineRep.callEither("$result")
   }

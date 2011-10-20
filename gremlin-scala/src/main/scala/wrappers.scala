@@ -61,10 +61,10 @@ object ScalaEdge {
 class ScalaGraph(val graph: Graph) {
   /** Returns all vertices. */
   def V = new ScalaFluentPipeline[Graph, Vertex](graph).V()
-  
+
   /** Returns the vertices with the specified IDs. */
   def V(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_))
-  
+
   /** Returns the vertex with the specified ID. */
   def v(id: Any): Vertex = graph getVertex id
 
@@ -73,7 +73,7 @@ class ScalaGraph(val graph: Graph) {
 
   /** Returns the edges with the specified IDs. */
   def E(ids: Any*): Iterable[Edge] = ids map { graph getEdge _ }
-  
+
   /** Returns the edge with the specified ID. */
   def e(id: Any): Edge = graph getEdge id
 
@@ -89,7 +89,7 @@ object ScalaGraph {
 
 /**Adds convenience methods to [[com.tinkerpop.pipes.util.FluentPipeline]]. */
 class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B, ScalaFluentPipeline[A, B]](a) /*with Iterator[B]*/ {
-  
+
   //Pipe<S,E> is both:
   // - Iterator<E> = iterate over elements in collection, defines hasNext(), next() and remove() methods
   // - Iterable<E> = can be target of foreach statement, defines iterator() method
@@ -109,7 +109,7 @@ class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B, ScalaFluentP
 
   def next(): B = pipeline.next()*/
 
-  def loop[T](numberedStep: Int)(whileFunction: Function1[T, Boolean]): ScalaFluentPipeline[A, B] = 
+  def loop[T](numberedStep: Int)(whileFunction: Function1[T, Boolean]): ScalaFluentPipeline[A, B] =
     loop(numberedStep, whileFunction).asInstanceOf[ScalaFluentPipeline[A, B]]
 }
 

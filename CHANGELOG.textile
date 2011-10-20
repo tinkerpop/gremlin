@@ -16,6 +16,12 @@ h3. Version 1.4 (NOT OFFICIALLY RELEASED YET)
 ```xml
 <dependency>
   <groupId>com.tinkerpop</groupId>
+  <artifactId>gremlin-core</artifactId>
+  <version>1.4-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+  <groupId>com.tinkerpop</groupId>
   <artifactId>gremlin-groovy</artifactId>
   <version>1.4-SNAPSHOT</version>
 </dependency>
