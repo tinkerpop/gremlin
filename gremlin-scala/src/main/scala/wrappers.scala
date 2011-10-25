@@ -5,7 +5,7 @@ import com.tinkerpop.gremlin.pipes.GremlinPipeline
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
 class ScalaVertex(val vertex: Vertex) {
-  def out = new ScalaFluentPipeline[Vertex, Vertex](vertex).out()
+  def out = new ScalaFluentPipeline[Vertex, Vertex](vertex).out().asInstanceOf[ScalaFluentPipeline[Vertex, Vertex]]
 
   def out(labels: String*) = new ScalaFluentPipeline[Vertex, Vertex](vertex).out(labels: _*)
 
@@ -60,7 +60,8 @@ object ScalaEdge {
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Graph]]. */
 class ScalaGraph(val graph: Graph) {
   /** Returns all vertices. */
-  def V = new ScalaFluentPipeline[Graph, Vertex](graph).V()
+  def V: ScalaFluentPipeline[Graph, Vertex] = 
+    new ScalaFluentPipeline[Graph, Vertex](graph).V().asInstanceOf[ScalaFluentPipeline[Graph, Vertex]]
 
   /** Returns the vertices with the specified IDs. */
   def V(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_))
@@ -111,6 +112,8 @@ class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B](a) /*with It
 
   def loop[T](numberedStep: Int)(whileFunction: Function1[T, Boolean]): ScalaFluentPipeline[A, B] =
     loop(numberedStep, whileFunction).asInstanceOf[ScalaFluentPipeline[A, B]]
+  
+  def out: ScalaFluentPipeline[A, Vertex] = super.out().asInstanceOf[ScalaFluentPipeline[A, Vertex]]
 }
 
 /**Implicit conversions between [[com.tinkerpop.pipes.util.PipesPipeline]] and [[com.tinkerpop.gremlin.scala.ScalaFluentPipeline]]. */

@@ -156,7 +156,7 @@ public class TraversalStepsTest extends TestCase {
         this.test_g_v1_outE_inV(pipe);
     }
 
-    public void test_g_V_out_out(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_out_out(final Pipe<Graph, Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -176,12 +176,13 @@ public class TraversalStepsTest extends TestCase {
 
     // PROPERTY TESTING
 
-    public void test_g_v1_out_propertyXnameX(final Pipe<Vertex, String> pipe) {
+    //public void test_g_v1_out_propertyXnameX(final Pipe<Vertex, String> pipe) {
+    public void test_g_v1_out_propertyXnameX(final Pipe pipe) {
         int counter = 0;
         Set<String> names = new HashSet<String>();
         while (pipe.hasNext()) {
             counter++;
-            String name = pipe.next();
+            String name = (String) pipe.next();
             names.add(name);
             assertTrue(name.equals("vadas") ||
                     name.equals("josh") ||
