@@ -1,8 +1,10 @@
-package com.tinkerpop.gremlin;
+package com.tinkerpop.gremlin.pipes;
 
 import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.FluentPipeline;
 
@@ -20,7 +22,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param filter the filter of the pipe
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline idFilter(final Object id, final FilterPipe.Filter filter);
+    public GremlinFluentPipeline<S, ? extends Element> idFilter(final Object id, final FilterPipe.Filter filter);
 
     /**
      * Add a LabelFilterPipe to the end of the Pipeline.
@@ -29,7 +31,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param filter the filter of the pipe
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline labelFilter(final String label, final FilterPipe.Filter filter);
+    public GremlinFluentPipeline<S, Edge> labelFilter(final String label, final FilterPipe.Filter filter);
 
     /**
      * Add a PropertyFilterPipe to the end of the Pipeline.
@@ -39,9 +41,9 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param value  the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline propertyFilter(final String key, final FilterPipe.Filter filter, final Object value);
+    public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final FilterPipe.Filter filter, final Object value);
 
-    public GremlinFluentPipeline propertyFilter(final String key, final Tokens.T t, final Object value);
+    public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final Tokens.T t, final Object value);
 
     /**
      * Add a BothEdgesPipe to the end of the Pipeline.
@@ -86,7 +88,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline id();
+    public GremlinFluentPipeline<S, Object> id();
 
     /**
      * Add an IdVertexPipe to the end of the Pipeline.
@@ -162,7 +164,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param key the property key
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline property(final String key);
+    public GremlinFluentPipeline<S, Object> property(final String key);
 
     /**
      * Add a VerticesPipe to the end of the Pipeline

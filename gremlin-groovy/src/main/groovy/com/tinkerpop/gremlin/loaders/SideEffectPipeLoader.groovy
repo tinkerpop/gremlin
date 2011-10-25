@@ -23,7 +23,7 @@ class SideEffectPipeLoader {
         // todo: why is identity needed?
         [Graph, Vertex, Edge].each {
             it.metaClass.as = {final String name ->
-                return new GremlinGroovyPipeline(delegate).identity().as(name);
+                return new GremlinGroovyPipeline(delegate)._().as(name);
             }
         }
     }

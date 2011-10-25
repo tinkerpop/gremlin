@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.groovy;
 
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Index;
-import com.tinkerpop.gremlin.GremlinFluentPipeline;
+import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline;
 import com.tinkerpop.gremlin.pipes.GremlinPipeline;
 import com.tinkerpop.gremlin.pipes.transform.IndexElementsPipe;
 import com.tinkerpop.pipes.util.Table;
@@ -93,7 +93,6 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     public GremlinGroovyPipeline table(final Closure... closures) {
         return (GremlinGroovyPipeline) this.table(new Table(), GroovyPipeFunction.generate(closures));
     }
-
 
     public GremlinGroovyPipeline table(final Table table, final Closure... closures) {
         return (GremlinGroovyPipeline) this.table(table, GroovyPipeFunction.generate(closures));
