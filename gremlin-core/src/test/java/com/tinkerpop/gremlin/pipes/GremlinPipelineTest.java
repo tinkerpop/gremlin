@@ -14,7 +14,7 @@ public class GremlinPipelineTest extends TestCase {
 
     public void testBasic() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        GremlinPipeline<Vertex, String, GremlinPipeline> pipeline = new GremlinPipeline<Vertex, String, GremlinPipeline>();
+        GremlinPipeline<Vertex, String> pipeline = new GremlinPipeline<Vertex, String>();
         pipeline.start(g.getVertex(1)).out("knows").property("name");
         int counter = 0;
         while (pipeline.hasNext()) {
@@ -27,12 +27,12 @@ public class GremlinPipelineTest extends TestCase {
 
     public void testFilterFunctionUsingInnerClass() {
         Graph g = TinkerGraphFactory.createTinkerGraph();
-        GremlinPipeline<Vertex, String, GremlinPipeline> pipeline = new GremlinPipeline<Vertex, String, GremlinPipeline>();
+        GremlinPipeline<Vertex, String> pipeline = new GremlinPipeline<Vertex, String>();
         pipeline.start(g.getVertex(1)).out("knows").property("name").filter(new PipeFunction<String, Boolean>() {
             public Boolean compute(String argument) {
                 return argument.startsWith("j");
             }
-        });
+        })._();
         int counter = 0;
         while (pipeline.hasNext()) {
             counter++;
@@ -40,6 +40,15 @@ public class GremlinPipelineTest extends TestCase {
             assertTrue(name.equals("josh"));
         }
         assertEquals(counter, 1);
+    }
+
+    public void testBasic2() {
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        GremlinPipeline<Vertex, Vertex> pipeline = new GremlinPipeline<Vertex, Vertex>();
+        pipeline.start(g.getVertex(1)).out().back(1);
+        while (pipeline.hasNext()) {
+            System.out.println(pipeline.next());
+        }
     }
 
     /*public void testFilterFunctionUsingPipeHelper() throws Exception {

@@ -11,7 +11,7 @@ package object scala {
       def compute(a: A): B = f(a)
     }
 
-  /**Mainly for FluentPipeline.filter, to convert A => scala.Boolean to PipeFunction[A, java.lang.Boolean]. */
+  /**Mainly for PipesPipeline.filter, to convert A => scala.Boolean to PipeFunction[A, java.lang.Boolean]. */
   implicit def booleanFunctionToPipeFunction[A](f: Function1[A, Boolean]) =
     new PipeFunction[A, JBoolean] {
       def compute(a: A): JBoolean = Boolean box f(a)

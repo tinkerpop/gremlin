@@ -28,7 +28,7 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       i.hasNext must beFalse
     }
 
-    "implicitly wrap a FluentPipeline" in {
+    "implicitly wrap a PipesPipeline" in {
       val g = createTinkerGraph()
       val sfp: ScalaFluentPipeline[_, _] = new GremlinPipeline(g).V()
 
@@ -36,14 +36,14 @@ class ScalaWrapperTest extends SpecificationWithJUnit {
       sfp.isInstanceOf[ScalaFluentPipeline[_, _]] must beTrue
     }
 
-    "implicitly wrap a FluentPipeline when calling an Iterable method" in {
+    "implicitly wrap a PipesPipeline when calling an Iterable method" in {
       val g = createTinkerGraph()
       val i: Iterable[Any] = new GremlinPipeline(g).V().toIterable
 
       i must_!= null
     }
 
-    "unwrap ScalaFluentPipeline => FluentPipeline" in {
+    "unwrap ScalaFluentPipeline => PipesPipeline" in {
       val g = createTinkerGraph()
       val fp: GremlinPipeline[_, _] = new GremlinPipeline(g)
       val sfp: ScalaFluentPipeline[_, _] = fp

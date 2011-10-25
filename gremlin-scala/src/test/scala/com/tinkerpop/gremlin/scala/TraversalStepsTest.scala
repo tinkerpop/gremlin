@@ -47,7 +47,7 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
   import com.tinkerpop.pipes.Pipe
 
   def test_g_v1_outE_inV() {
-    super.test_g_v1_outE_inV(g.v(1).outE.inV.asInstanceOf[Pipe[Vertex, Vertex]])
+    super.test_g_v1_outE_inV(g.v(1).outE.inV)
   }
 /*
   def test_g_v2_inE_outV() {

@@ -87,8 +87,8 @@ object ScalaGraph {
   implicit def unwrap(wrapper: ScalaGraph) = wrapper.graph
 }
 
-/**Adds convenience methods to [[com.tinkerpop.pipes.util.FluentPipeline]]. */
-class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B, ScalaFluentPipeline[A, B]](a) /*with Iterator[B]*/ {
+/**Adds convenience methods to [[com.tinkerpop.pipes.util.PipesPipeline]]. */
+class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B](a) /*with Iterator[B]*/ {
 
   //Pipe<S,E> is both:
   // - Iterator<E> = iterate over elements in collection, defines hasNext(), next() and remove() methods
@@ -103,7 +103,7 @@ class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B, ScalaFluentP
   // - Iterable is really meant to be implemented by actual collection data structures
   // - Iterator is probably better for things that just provide a way to iterate over some contained elements
   // => If ScalaFluentPipeline[S,E] extends Iterator[E], then it should act like Pipe in all the right Scala ways,
-  //    and the hasNext & next methods can delegate to hasNext() & next() in FluentPipeline
+  //    and the hasNext & next methods can delegate to hasNext() & next() in PipesPipeline
 
   /*def hasNext: Boolean = pipeline.hasNext
 
@@ -113,7 +113,7 @@ class ScalaFluentPipeline[A, B](a: A) extends GremlinPipeline[A, B, ScalaFluentP
     loop(numberedStep, whileFunction).asInstanceOf[ScalaFluentPipeline[A, B]]
 }
 
-/**Implicit conversions between [[com.tinkerpop.pipes.util.FluentPipeline]] and [[com.tinkerpop.gremlin.scala.ScalaFluentPipeline]]. */
+/**Implicit conversions between [[com.tinkerpop.pipes.util.PipesPipeline]] and [[com.tinkerpop.gremlin.scala.ScalaFluentPipeline]]. */
 /*object ScalaFluentPipeline {
   implicit def wrap[A, B](fp: GremlinPipeline[A, B]) = new ScalaFluentPipeline(fp)
 
