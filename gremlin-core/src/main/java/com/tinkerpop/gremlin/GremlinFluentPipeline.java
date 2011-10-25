@@ -1,9 +1,12 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.gremlin.pipes.GremlinPipeline;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.FluentPipeline;
+
+import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -46,7 +49,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline bothE(final String... labels);
+    public GremlinFluentPipeline<S, Edge> bothE(final String... labels);
 
     /**
      * Add a BothPipe to the end of the Pipeline.
@@ -54,21 +57,21 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline both(final String... labels);
+    public GremlinFluentPipeline<S, Vertex> both(final String... labels);
 
     /**
      * Add a BothVerticesPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline bothV();
+    public GremlinFluentPipeline<S, Vertex> bothV();
 
     /**
      * Add an EdgesPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline E();
+    public GremlinFluentPipeline<S, Edge> E();
 
     /**
      * Add an IdEdgePipe to the end of the Pipeline.
@@ -76,7 +79,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param graph the graph of the pipe
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline idEdge(final Graph graph);
+    public GremlinFluentPipeline<S, Edge> idEdge(final Graph graph);
 
     /**
      * Add an IdPipe to the end of the Pipeline.
@@ -91,7 +94,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param graph the graph of the pipe
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline idVertex(final Graph graph);
+    public GremlinFluentPipeline<S, Vertex> idVertex(final Graph graph);
 
     /**
      * Add an InEdgesPipe to the end of the Pipeline.
@@ -99,7 +102,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline inE(final String... labels);
+    public GremlinFluentPipeline<S, Edge> inE(final String... labels);
 
     /**
      * Add a InPipe to the end of the Pipeline.
@@ -107,21 +110,21 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline in(final String... labels);
+    public GremlinFluentPipeline<S, Vertex> in(final String... labels);
 
     /**
      * Add an InVertexPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline inV();
+    public GremlinFluentPipeline<S, Vertex> inV();
 
     /**
      * Add an LabelPipe to the end of the Pipeline
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline label();
+    public GremlinFluentPipeline<S, String> label();
 
     /**
      * Add an OutEdgesPipe to the end of the Pipeline.
@@ -129,7 +132,7 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline outE(final String... labels);
+    public GremlinFluentPipeline<S, Edge> outE(final String... labels);
 
     /**
      * Add an OutPipe to the end of the Pipeline.
@@ -137,21 +140,21 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline out(final String... labels);
+    public GremlinFluentPipeline<S, Vertex> out(final String... labels);
 
     /**
      * Add an OutVertexPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline outV();
+    public GremlinFluentPipeline<S, Vertex> outV();
 
     /**
      * Add a PropertyMapPipe to the end of the Pipeline.
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline map();
+    public GremlinFluentPipeline<S, Map<String, Object>> map();
 
     /**
      * Add a PropertyPipe to the end of the Pipeline.
@@ -166,5 +169,5 @@ public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
      *
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline V();
+    public GremlinFluentPipeline<S, Vertex> V();
 }
