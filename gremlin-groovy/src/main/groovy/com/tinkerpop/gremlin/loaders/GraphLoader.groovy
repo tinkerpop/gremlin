@@ -8,7 +8,6 @@ import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONReader
 import com.tinkerpop.blueprints.pgm.util.json.GraphJSONWriter
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import java.util.Map.Entry
 
@@ -21,7 +20,7 @@ class GraphLoader {
 
         Graph.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
-                return delegate._()."$name"();
+                return new GremlinGroovyPipeline(delegate)."$name"();
             } else {
                 throw new MissingPropertyException(name, delegate.getClass());
             }
@@ -29,20 +28,10 @@ class GraphLoader {
 
         Graph.metaClass.methodMissing = {final String name, final def args ->
             if (Gremlin.isStep(name)) {
-                return delegate._()."$name"(* args);
+                return new GremlinGroovyPipeline(delegate)."$name"(* args);
             } else {
                 throw new MissingMethodException(name, delegate.getClass());
             }
-        }
-
-        Gremlin.addStep(Tokens.V);
-        Graph.metaClass.V = {->
-            return new GremlinGroovyPipeline(delegate).V();
-        }
-
-        Gremlin.addStep(Tokens.E);
-        Graph.metaClass.E = {->
-            return new GremlinGroovyPipeline(delegate).E();
         }
 
         Graph.metaClass.v = {final Object... ids ->

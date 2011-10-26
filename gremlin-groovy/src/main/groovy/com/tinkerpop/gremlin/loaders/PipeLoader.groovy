@@ -36,34 +36,21 @@ class PipeLoader {
 
         [Iterable, Iterator].each {
             it.metaClass.rightShift = {final Collection collection ->
-                final Iterator itty;
-                if (delegate instanceof Iterable) {
-                    itty = delegate.iterator();
-                } else {
-                    itty = (Iterator) delegate;
-                }
-                PipeHelper.fillCollection(itty, collection);
+                PipeHelper.fillCollection(delegate.iterator(), collection);
                 return collection;
             }
         }
 
         [Iterable, Iterator].each {
             it.metaClass.rightShift = {final Integer count ->
-                final Iterator itty;
-                if (delegate instanceof Iterable) {
-                    itty = delegate.iterator();
-                } else {
-                    itty = (Iterator) delegate;
-                }
-
                 if (count == -1) {
-                    PipeHelper.iterate(itty);
+                    PipeHelper.iterate(delegate.iterator());
                     return null;
                 } else if (count == 1) {
-                    return itty.next();
+                    return delegate.iterator().next();
                 } else {
                     final List list = new LinkedList();
-                    PipeHelper.fillCollection(itty, list, count);
+                    PipeHelper.fillCollection(delegate.iterator(), list, count);
                     return list;
                 }
             }

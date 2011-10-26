@@ -43,11 +43,13 @@ class Gremlin {
         Gremlin.addStep(Tokens.AS)
         // transform steps
         Gremlin.addStep(Tokens.TRANSFORM);
+        Gremlin.addStep(Tokens._);
         Gremlin.addStep(Tokens.BOTH);
         Gremlin.addStep(Tokens.BOTHE);
         Gremlin.addStep(Tokens.BOTHV);
         Gremlin.addStep(Tokens.COPYSPLIT);
         Gremlin.addStep(Tokens.FAIRMERGE);
+        Gremlin.addStep(Tokens.E);
         Gremlin.addStep(Tokens.EXHAUSTMERGE);
         Gremlin.addStep(Tokens.ID);
         Gremlin.addStep(Tokens.IN);
@@ -65,11 +67,12 @@ class Gremlin {
         Gremlin.addStep(Tokens.OUT);
         Gremlin.addStep(Tokens.OUTE);
         Gremlin.addStep(Tokens.OUTV);
+        Gremlin.addStep(Tokens.V);
 
-        ObjectLoader.load();
+        ElementLoader.load();
         GraphLoader.load();
         IndexLoader.load();
-        ElementLoader.load();
+        ObjectLoader.load();
         PipeLoader.load();
 
         try {
@@ -122,10 +125,7 @@ class Gremlin {
         classes.each {
             stepClosure.setDelegate(delegate);
             it.metaClass."$stepName" = { final Object... parameters ->
-                if (parameters.length == 1)
-                    Gremlin.compose(delegate, stepClosure(parameters[0]));
-                else
-                    Gremlin.compose(delegate, stepClosure(parameters));
+                Gremlin.compose(delegate, stepClosure(* parameters));
             };
         }
     }

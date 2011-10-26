@@ -1,7 +1,5 @@
 package com.tinkerpop.gremlin.loaders
 
-import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.pipes.util.Table
@@ -13,11 +11,8 @@ class ObjectLoader {
 
     public static void load() {
 
-        Gremlin.addStep(Tokens._);
         Object.metaClass._ = {final Closure closure ->
-            final GremlinGroovyPipeline pipeline = new GremlinGroovyPipeline()._();
-            pipeline.setStarts(delegate.iterator());
-            return pipeline;
+            return new GremlinGroovyPipeline(delegate.iterator());
         }
 
         Map.metaClass.getAt = {final IntRange range ->

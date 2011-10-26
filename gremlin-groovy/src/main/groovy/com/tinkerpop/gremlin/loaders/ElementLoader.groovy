@@ -1,8 +1,6 @@
 package com.tinkerpop.gremlin.loaders
 
-import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
-import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
@@ -19,7 +17,7 @@ class ElementLoader {
 
         Element.metaClass.methodMissing = {final String name, final def args ->
             if (Gremlin.isStep(name)) {
-                return delegate._()."$name"(* args)
+                return new GremlinGroovyPipeline(delegate)."$name"(* args)
             } else {
                 throw new MissingMethodException(name, delegate.getClass());
             }
@@ -27,7 +25,7 @@ class ElementLoader {
 
         Element.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
-                return delegate._()."$name"()
+                return new GremlinGroovyPipeline(delegate)."$name"()
             } else {
                 return ((Element) delegate).getProperty(name)
             }
@@ -51,42 +49,6 @@ class ElementLoader {
                 values.add(((Element) delegate).getProperty(key))
             }
             return values;
-        }
-
-        Vertex.metaClass.out = {final String... labels ->
-            return new GremlinGroovyPipeline(delegate).out(labels);
-        }
-
-        Vertex.metaClass.outE = {final String... labels ->
-            return new GremlinGroovyPipeline(delegate).outE(labels);
-        }
-
-        Vertex.metaClass.in = {final String... labels ->
-            return new GremlinGroovyPipeline(delegate).in(labels);
-        }
-
-        Vertex.metaClass.inE = {final String... labels ->
-            return new GremlinGroovyPipeline(delegate).inE(labels);
-        }
-
-        Vertex.metaClass.both = {final String... labels ->
-            return new GremlinGroovyPipeline(delegate).both(labels);
-        }
-
-        Vertex.metaClass.bothE = {final String... labels ->
-            return new GremlinGroovyPipeline(delegate).bothE(labels);
-        }
-
-        Edge.metaClass.inV = {->
-            return new GremlinGroovyPipeline(delegate).inV();
-        }
-
-        Edge.metaClass.outV = {->
-            return new GremlinGroovyPipeline(delegate).outV();
-        }
-
-        Edge.metaClass.bothV = {->
-            return new GremlinGroovyPipeline(delegate).bothV();
         }
     }
 }
