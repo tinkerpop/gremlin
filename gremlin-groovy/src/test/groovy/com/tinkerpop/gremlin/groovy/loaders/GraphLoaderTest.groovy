@@ -6,7 +6,6 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.Tokens.T
 import com.tinkerpop.pipes.util.PipeHelper
 import junit.framework.TestCase
 
@@ -74,27 +73,13 @@ class GraphLoaderTest extends TestCase {
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[2].name >> 1));
 
         assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV), 3);
-        assertEquals(PipeHelper.counter(g.v(1).outE.or(_()[[label: 'created']], _()[[label: 'knows']]).inV), 3);
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[0].name >> 1));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[1].name >> 1));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[2].name >> 1));
 
-        assertEquals(g.v(1).outE[[label: 'created']].inV['name'][0].next(), "lop");
-        assertEquals(PipeHelper.counter(g.v(1).outE[[label: 'knows']].inV), 2);
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE[[label: 'knows']].inV[0].name >> 1));
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE[[label: 'knows']].inV[1].name >> 1));
-
-        assertEquals(PipeHelper.counter(g.v(1).outE[[weight: [T.gte, 0.5f]]].inV), 2);
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [T.gte, 0.5f]]].inV[0].name >> 1));
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [T.gte, 0.5f]]].inV[1].name >> 1));
-
         assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0] >> 1}.inV), 2);
         assertTrue(["vadas", "josh"].contains(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0] >> 1}.inV[0].name >> 1));
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE[[weight: [T.gte, g.v(1).outE['weight'][0] >> 1]]].inV[1].name >> 1));
-
         assertEquals(PipeHelper.counter(g.v(1).inE), 0);
-        assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: [T.neq, null]]]), 0)
-        assertEquals(PipeHelper.counter(g.v(1).outE.inV[[blah: null]]), 3)
 
         def results = [];
         g.v(1).outE('knows').inV.name >> results;

@@ -21,7 +21,7 @@ class GraphLoader {
 
         Graph.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
-                return delegate."$name"();
+                return delegate._()."$name"();
             } else {
                 throw new MissingPropertyException(name, delegate.getClass());
             }

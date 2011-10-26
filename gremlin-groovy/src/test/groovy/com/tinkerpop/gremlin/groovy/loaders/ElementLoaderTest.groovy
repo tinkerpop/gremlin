@@ -31,7 +31,7 @@ class ElementLoaderTest extends TestCase {
         assertEquals(g.v(1)['age'], 31)
 
         g.e(7)['weight'] = 100f
-        assertEquals(g.e(7)['weight'], 100f)
+        assertEquals(g.e(7).weight, 100f)
 
         try {
             g.v(1)['id'] = 10

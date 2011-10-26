@@ -21,7 +21,7 @@ class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.AggregateS
 
     public void test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX() {
         def x = [];
-        super.test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(g.v(1)._.aggregate(x).out('created').in('created').except(x))
+        super.test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(g.v(1).aggregate(x).out('created').in('created').except(x))
     }
 
     public void test_g_V_propertyXnameX_aggregate_cap() {

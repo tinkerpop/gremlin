@@ -1,10 +1,7 @@
 package com.tinkerpop.gremlin.loaders
 
-import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Element
-import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.Gremlin
-import com.tinkerpop.gremlin.Tokens
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -17,47 +14,19 @@ class ElementLoader {
             ((Element) delegate).setProperty(name, value)
         }
 
-        Vertex.metaClass.propertyMissing = {final String name ->
+        Element.metaClass.methodMissing = {final String name, final def args ->
             if (Gremlin.isStep(name)) {
-                return delegate."$name"()
+                return delegate._()."$name"(* args)
             } else {
-                if (name.equals(Tokens.ID)) {
-                    return ((Vertex) delegate).getId()
-                } else {
-                    return ((Vertex) delegate).getProperty(name)
-                }
+                throw new MissingMethodException(name, delegate.getClass());
             }
         }
 
-        Edge.metaClass.propertyMissing = {final String name ->
+        Element.metaClass.propertyMissing = {final String name ->
             if (Gremlin.isStep(name)) {
-                return delegate."$name"()
+                return delegate._()."$name"()
             } else {
-                if (name.equals(Tokens.ID)) {
-                    return ((Edge) delegate).getId()
-                } else if (name.equals(Tokens.LABEL)) {
-                    return ((Edge) delegate).getLabel()
-                } else {
-                    return ((Edge) delegate).getProperty(name)
-                }
-            }
-        }
-
-        Vertex.metaClass.getAt = {final String key ->
-            if (key.equals(Tokens.ID)) {
-                return ((Vertex) delegate).getId()
-            } else {
-                return ((Vertex) delegate).getProperty(key)
-            }
-        }
-
-        Edge.metaClass.getAt = {final String key ->
-            if (key.equals(Tokens.ID)) {
-                return ((Edge) delegate).getId()
-            } else if (key.equals(Tokens.LABEL)) {
-                return ((Edge) delegate).getLabel();
-            } else {
-                return ((Edge) delegate).getProperty(key)
+                return ((Element) delegate).getProperty(name)
             }
         }
 

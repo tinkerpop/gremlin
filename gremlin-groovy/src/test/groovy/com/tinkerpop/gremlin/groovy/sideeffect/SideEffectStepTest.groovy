@@ -21,7 +21,7 @@ class SideEffectStepTest extends com.tinkerpop.gremlin.test.sideeffect.SideEffec
 
     public void test_g_v1_sideEffectXstore_aX_propertyXnameX() {
         def a;
-        super.test_g_v1_sideEffectXstore_aX_propertyXnameX(g.v(1)._.sideEffect {a = it}.name);
+        super.test_g_v1_sideEffectXstore_aX_propertyXnameX(g.v(1).sideEffect {a = it}.name);
         assertEquals(a, g.v(1))
     }
 
