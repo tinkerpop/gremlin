@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.scala
 
 import com.tinkerpop.blueprints.pgm.{Vertex, Edge}
+import java.util.{Map => JMap}
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
 class ScalaVertex(val vertex: Vertex) {
@@ -40,7 +41,9 @@ class ScalaVertex(val vertex: Vertex) {
   def bothE(labels: String*): GremlinScalaPipeline[Vertex, Edge] = 
     new GremlinScalaPipeline[Vertex, Edge](vertex).bothE(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  //TODO map
+  def map: GremlinScalaPipeline[Vertex, JMap[String, Object]] = 
+    new GremlinScalaPipeline[Vertex, JMap[String, Object]](vertex).map().asInstanceOf[GremlinScalaPipeline[Vertex, JMap[String, Object]]]
+    
   //TODO property
   //TODO apply to access a property?
 }

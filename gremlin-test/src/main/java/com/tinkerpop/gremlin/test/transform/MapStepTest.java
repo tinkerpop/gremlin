@@ -15,7 +15,7 @@ public class MapStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_map(final Pipe<Vertex, Map> pipe) {
+    public void test_g_v1_map(final Pipe<Vertex, Map<String, Object>> pipe) {
         Map map = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(map.get("name"), "marko");
@@ -23,7 +23,7 @@ public class MapStepTest extends TestCase {
         assertEquals(map.size(), 2);
     }
 
-    public void test_g_v1_outXknowsX_map(final Pipe<Vertex, Map> pipe) {
+    public void test_g_v1_outXknowsX_map(final Pipe<Vertex, Map<String, Object>> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             Map map = pipe.next();
