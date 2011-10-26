@@ -10,4 +10,4 @@ if exist "%%a\bin\gremlin-scala.bat" set TARGET=%%a
 )
 
 cd %TARGET%\bin\
-call gremlin-groovy.bat %*
+call gremlin-scala.bat %*

@@ -33,9 +33,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>com.tinkerpop.gremlin</groupId>
             <artifactId>gremlin-core</artifactId>
-            <version>${project.version}</version>
+            <version>1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
