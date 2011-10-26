@@ -22,12 +22,14 @@ object Console {
 class GremlinILoop extends ILoop {
   val inputPrompt = "gremlin> "
   val resultPrompt = "==>"
+
   override def prompt = inputPrompt
 
   val welcome = "\n" +
     "         \\,,,/\n" +
     "         (o o)\n" +
     "-----oOOo-(_)-oOOo-----"
+
   override def printWelcome() {
     echo(welcome)
 
@@ -40,6 +42,7 @@ class GremlinILoop extends ILoop {
   }
 
   var gremlinIntp: GremlinInterpreter = _
+
   override def createInterpreter() {
     if (addedClasspath != "")
       settings.classpath append addedClasspath
@@ -47,7 +50,7 @@ class GremlinILoop extends ILoop {
     intp = gremlinIntp
   }
 
-  /** Overriden to print out the value evaluated from the specified line. */
+  /**Overriden to print out the value evaluated from the specified line. */
   override def command(line: String): Result = {
     val r = super.command(line)
 
@@ -61,13 +64,13 @@ class GremlinILoop extends ILoop {
     r
   }
 
-  /** Prints the last value by expanding its elements if it's iterator-like or collection-like. */
+  /**Prints the last value by expanding its elements if it's iterator-like or collection-like. */
   def printLastValue() = gremlinIntp.lastValue match {
     case Right(value) => for (v <- toIterator(value)) out.println(resultPrompt + v)
     case Left(throwable) => throwable.printStackTrace(out)
   }
 
-  /** Coerces the specified value into an iterator. */
+  /**Coerces the specified value into an iterator. */
   def toIterator(value: Any): Iterator[Any] = {
     import scala.collection.JavaConverters._
     value match {
@@ -80,19 +83,21 @@ class GremlinILoop extends ILoop {
     }
   }
 
-  class GremlinInterpreter extends this.ILoopInterpreter { //also descends from IMain, the core interpreter class
+  class GremlinInterpreter extends this.ILoopInterpreter {
+    //also descends from IMain, the core interpreter class
     override lazy val reporter: ConsoleReporter = new GremlinReporter(this)
 
-    /** Returns the last request executed by this interpreter. */
+    /**Returns the last request executed by this interpreter. */
     def lastRequest: Option[Request] = prevRequestList.lastOption
 
-    /** Returns the last value evaluated by this interpreter. See https://issues.scala-lang.org/browse/SI-4899 for details. */
+    /**Returns the last value evaluated by this interpreter. See https://issues.scala-lang.org/browse/SI-4899 for details. */
     def lastValue: Either[Throwable, AnyRef] = lastRequest.getOrElse(throw new NullPointerException()).lineRep.callEither("$result")
   }
 
-  /** Stop ReplReporter from printing to console. Instead we print in GremlinILoop.command. */
+  /**Stop ReplReporter from printing to console. Instead we print in GremlinILoop.command. */
   class GremlinReporter(intp: GremlinInterpreter) extends ReplReporter(intp) {
     override def printMessage(msg: String) {}
   }
+
 }
 

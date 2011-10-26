@@ -1,4 +1,5 @@
 package com.tinkerpop.gremlin.scala
+
 /*
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory

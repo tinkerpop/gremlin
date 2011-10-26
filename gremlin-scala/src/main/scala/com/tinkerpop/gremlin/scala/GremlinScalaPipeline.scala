@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.scala
 
-import com.tinkerpop.blueprints.pgm.{Vertex, Edge, Graph}
+import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
 
 /**Adds convenience methods to [[com.tinkerpop.pipes.util.PipesPipeline]]. */
@@ -11,7 +11,7 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
 
   def loop[T](numberedStep: Int)(whileFunction: Function1[T, Boolean]): GremlinScalaPipeline[S, E] =
     loop(numberedStep, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
-  
+
   def out: GremlinScalaPipeline[S, Vertex] = super.out().asInstanceOf[GremlinScalaPipeline[S, Vertex]]
 }
 
