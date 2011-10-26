@@ -21,6 +21,51 @@ class Gremlin {
     private static final GremlinScriptEngine engine = new GremlinScriptEngine();
 
     public static void load() {
+
+        Gremlin.addStep(Tokens.STEP);
+        // filter steps
+        Gremlin.addStep(Tokens.FILTER);
+        Gremlin.addStep(Tokens.SIMPLEPATH);
+        Gremlin.addStep(Tokens.DEDUP);
+        Gremlin.addStep(Tokens.AND);
+        Gremlin.addStep(Tokens.OR);
+        Gremlin.addStep(Tokens.BACK);
+        Gremlin.addStep(Tokens.EXCEPT);
+        Gremlin.addStep(Tokens.RETAIN);
+        Gremlin.addStep(Tokens.RANDOM);
+        Gremlin.addStep(Tokens.PROPERTYFILTER);
+        // sideeffect steps
+        Gremlin.addStep(Tokens.SIDEEFFECT);
+        Gremlin.addStep(Tokens.AGGREGATE);
+        Gremlin.addStep(Tokens.GROUPCOUNT);
+        Gremlin.addStep(Tokens.OPTIONAL)
+        Gremlin.addStep(Tokens.TABLE);
+        Gremlin.addStep(Tokens.AS)
+        // transform steps
+        Gremlin.addStep(Tokens.TRANSFORM);
+        Gremlin.addStep(Tokens.BOTH);
+        Gremlin.addStep(Tokens.BOTHE);
+        Gremlin.addStep(Tokens.BOTHV);
+        Gremlin.addStep(Tokens.COPYSPLIT);
+        Gremlin.addStep(Tokens.FAIRMERGE);
+        Gremlin.addStep(Tokens.EXHAUSTMERGE);
+        Gremlin.addStep(Tokens.ID);
+        Gremlin.addStep(Tokens.IN);
+        Gremlin.addStep(Tokens.INE);
+        Gremlin.addStep(Tokens.INV);
+        Gremlin.addStep(Tokens.IFTHENELSE);
+        Gremlin.addStep(Tokens.CAP);
+        Gremlin.addStep(Tokens.LABEL);
+        Gremlin.addStep(Tokens.LOOP);
+        Gremlin.addStep(Tokens.MAP);
+        Gremlin.addStep(Tokens.MEMOIZE);
+        Gremlin.addStep(Tokens.GATHER);
+        Gremlin.addStep(Tokens.SCATTER);
+        Gremlin.addStep(Tokens.PATHS);
+        Gremlin.addStep(Tokens.OUT);
+        Gremlin.addStep(Tokens.OUTE);
+        Gremlin.addStep(Tokens.OUTV);
+
         ObjectLoader.load();
         GraphLoader.load();
         IndexLoader.load();
@@ -72,7 +117,7 @@ class Gremlin {
         return new HashSet(Gremlin.steps);
     }
 
-    public static void defineStep(final String stepName, final List<Class> classes, Closure stepClosure) {
+    public static void defineStep(final String stepName, final List<Class> classes, final Closure stepClosure) {
         Gremlin.steps.add(stepName);
         classes.each {
             stepClosure.setDelegate(delegate);

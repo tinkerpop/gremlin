@@ -27,6 +27,14 @@ class GraphLoader {
             }
         }
 
+        Graph.metaClass.methodMissing = {final String name, final def args ->
+            if (Gremlin.isStep(name)) {
+                return delegate._()."$name"(* args);
+            } else {
+                throw new MissingMethodException(name, delegate.getClass());
+            }
+        }
+
         Gremlin.addStep(Tokens.V);
         Graph.metaClass.V = {->
             return new GremlinGroovyPipeline(delegate).V();
