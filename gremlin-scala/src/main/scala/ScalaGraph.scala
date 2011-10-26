@@ -15,7 +15,8 @@ class ScalaGraph(val graph: Graph) {
   def v(id: Any): Vertex = graph getVertex id
 
   /** Returns all edges. */
-  def E = new GremlinScalaPipeline[Graph, Edge](graph).E()
+  def E: GremlinScalaPipeline[Graph, Edge] = 
+    new GremlinScalaPipeline[Graph, Edge](graph).E().asInstanceOf[GremlinScalaPipeline[Graph, Edge]]
 
   /** Returns the edges with the specified IDs. */
   def E(ids: Any*): Iterable[Edge] = ids map { graph getEdge _ }

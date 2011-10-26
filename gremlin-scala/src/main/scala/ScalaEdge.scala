@@ -4,11 +4,14 @@ import com.tinkerpop.blueprints.pgm.{Vertex, Edge}
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Edge]]. */
 class ScalaEdge(val edge: Edge) {
-  def inV = new GremlinScalaPipeline[Edge, Vertex](edge).inV()
+  def inV: GremlinScalaPipeline[Edge, Vertex] = 
+    new GremlinScalaPipeline[Edge, Vertex](edge).inV().asInstanceOf[GremlinScalaPipeline[Edge, Vertex]]
 
-  def outV = new GremlinScalaPipeline[Edge, Vertex](edge).outV()
+  def outV: GremlinScalaPipeline[Edge, Vertex] = 
+    new GremlinScalaPipeline[Edge, Vertex](edge).outV().asInstanceOf[GremlinScalaPipeline[Edge, Vertex]]
 
-  def bothV = new GremlinScalaPipeline[Edge, Vertex](edge).bothV()
+  def bothV: GremlinScalaPipeline[Edge, Vertex] = 
+    new GremlinScalaPipeline[Edge, Vertex](edge).bothV().asInstanceOf[GremlinScalaPipeline[Edge, Vertex]]
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Edge]] and [[com.tinkerpop.gremlin.scala.ScalaEdge]]. */

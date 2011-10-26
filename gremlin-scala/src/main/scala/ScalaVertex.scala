@@ -4,29 +4,41 @@ import com.tinkerpop.blueprints.pgm.{Vertex, Edge}
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
 class ScalaVertex(val vertex: Vertex) {
-  def out = new GremlinScalaPipeline[Vertex, Vertex](vertex).out().asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
+  def out: GremlinScalaPipeline[Vertex, Vertex] = 
+    new GremlinScalaPipeline[Vertex, Vertex](vertex).out().asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
-  def out(labels: String*) = new GremlinScalaPipeline[Vertex, Vertex](vertex).out(labels: _*)
+  def out(labels: String*): GremlinScalaPipeline[Vertex, Vertex] = 
+    new GremlinScalaPipeline[Vertex, Vertex](vertex).out(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
-  def outE = new GremlinScalaPipeline[Vertex, Edge](vertex).outE()
+  def outE: GremlinScalaPipeline[Vertex, Edge] = 
+    new GremlinScalaPipeline[Vertex, Edge](vertex).outE().asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def outE(labels: String*) = new GremlinScalaPipeline[Vertex, Edge](vertex).outE(labels: _*)
+  def outE(labels: String*): GremlinScalaPipeline[Vertex, Edge] = 
+    new GremlinScalaPipeline[Vertex, Edge](vertex).outE(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def in = new GremlinScalaPipeline[Vertex, Vertex](vertex).in()
+  def in: GremlinScalaPipeline[Vertex, Vertex] = 
+    new GremlinScalaPipeline[Vertex, Vertex](vertex).in().asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
-  def in(labels: String*) = new GremlinScalaPipeline[Vertex, Vertex](vertex).in(labels: _*)
+  def in(labels: String*): GremlinScalaPipeline[Vertex, Vertex] = 
+    new GremlinScalaPipeline[Vertex, Vertex](vertex).in(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
-  def inE = new GremlinScalaPipeline[Vertex, Edge](vertex).inE()
+  def inE: GremlinScalaPipeline[Vertex, Edge] = 
+    new GremlinScalaPipeline[Vertex, Edge](vertex).inE().asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def inE(labels: String*) = new GremlinScalaPipeline[Vertex, Edge](vertex).inE(labels: _*)
+  def inE(labels: String*): GremlinScalaPipeline[Vertex, Edge] = 
+    new GremlinScalaPipeline[Vertex, Edge](vertex).inE(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def both = new GremlinScalaPipeline[Vertex, Vertex](vertex).both()
+  def both: GremlinScalaPipeline[Vertex, Vertex] = 
+    new GremlinScalaPipeline[Vertex, Vertex](vertex).both().asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
-  def both(labels: String*) = new GremlinScalaPipeline[Vertex, Vertex](vertex).both(labels: _*)
+  def both(labels: String*): GremlinScalaPipeline[Vertex, Vertex] = 
+    new GremlinScalaPipeline[Vertex, Vertex](vertex).both(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
-  def bothE = new GremlinScalaPipeline[Vertex, Edge](vertex).bothE()
+  def bothE: GremlinScalaPipeline[Vertex, Edge] = 
+    new GremlinScalaPipeline[Vertex, Edge](vertex).bothE().asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def bothE(labels: String*) = new GremlinScalaPipeline[Vertex, Edge](vertex).bothE(labels: _*)
+  def bothE(labels: String*): GremlinScalaPipeline[Vertex, Edge] = 
+    new GremlinScalaPipeline[Vertex, Edge](vertex).bothE(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
   //TODO map
   //TODO property
