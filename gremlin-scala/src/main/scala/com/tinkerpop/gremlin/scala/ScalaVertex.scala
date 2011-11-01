@@ -46,8 +46,11 @@ class ScalaVertex(val vertex: Vertex) {
     
   def property(key: String): GremlinScalaPipeline[Vertex, Object] = 
     new GremlinScalaPipeline[Vertex, Object](vertex).property(key).asInstanceOf[GremlinScalaPipeline[Vertex, Object]]
+
+  def transform[E](f: Vertex => E): GremlinScalaPipeline[Vertex, E] =
+    new GremlinScalaPipeline[Vertex, E](vertex).transform(f).asInstanceOf[GremlinScalaPipeline[Vertex, E]]
   
-  def apply(key: String): Any = vertex getProperty key
+  def apply(key: String): Object = vertex getProperty key
   
   def id: Any = vertex.getId
 }

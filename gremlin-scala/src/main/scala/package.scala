@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin
 
 import com.tinkerpop.pipes.PipeFunction
 import java.lang.{Boolean => JBoolean}
+import com.tinkerpop.blueprints.pgm.Vertex
 
 /**Implicit conversions that make PipeFunction easier to use in Scala. Users can just `import com.tinkerpop.gremlin.scala._` */
 package object scala {
@@ -31,5 +32,7 @@ package object scala {
   implicit val wrapScalaGraph = ScalaGraph.wrap _
 
   //implicit def wrapScalaFluentPipeline[A, B] = ScalaFluentPipeline.wrap[A, B] _ //this implicit has type parameters so it must be a def instead of a val
+
+  //implicit def vertexToPipeline[E](v: Vertex): GremlinScalaPipeline[Vertex, E] = new GremlinScalaPipeline[Vertex, E](v)
 }
 
