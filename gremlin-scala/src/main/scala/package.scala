@@ -10,14 +10,20 @@ package object scala {
     new PipeFunction[A, B] {
       def compute(a: A): B = f(a)
     }
+  
+  /** Converts a bunch of A => B functions into their corresponding PipeFunction[A, B]. */
+  /*implicit def functionsToPipeFunctions[A, B](fs: Function1[A, B]*): Array[PipeFunction[A, B]] =
+    fs.map { f => 
+      val pf: PipeFunction[A, B] = f
+      pf
+      //f : PipeFunction[A, B]
+    }.toArray*/
 
   /**Mainly for PipesPipeline.filter, to convert A => scala.Boolean to PipeFunction[A, java.lang.Boolean]. */
   implicit def booleanFunctionToPipeFunction[A](f: Function1[A, Boolean]) =
     new PipeFunction[A, JBoolean] {
       def compute(a: A): JBoolean = Boolean box f(a)
     }
-
-  //TODO implicit Iterable[Vertex] => GremlinFluentPipeline? so g.v(1,2).out works
 
   /**Bring the wrap implicits into scope. The compiler will check the unwrap implicits on its own. */
   implicit val wrapScalaVertex = ScalaVertex.wrap _

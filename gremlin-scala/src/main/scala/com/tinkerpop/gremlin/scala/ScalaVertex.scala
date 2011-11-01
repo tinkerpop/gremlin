@@ -43,9 +43,13 @@ class ScalaVertex(val vertex: Vertex) {
 
   def map: GremlinScalaPipeline[Vertex, JMap[String, Object]] =
     new GremlinScalaPipeline[Vertex, JMap[String, Object]](vertex).map().asInstanceOf[GremlinScalaPipeline[Vertex, JMap[String, Object]]]
-
-  //TODO property
-  //TODO apply to access a property?
+    
+  def property(key: String): GremlinScalaPipeline[Vertex, Object] = 
+    new GremlinScalaPipeline[Vertex, Object](vertex).property(key).asInstanceOf[GremlinScalaPipeline[Vertex, Object]]
+  
+  def apply(key: String): Any = vertex getProperty key
+  
+  def id: Any = vertex.getId
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Vertex]] and [[com.tinkerpop.gremlin.scala.ScalaVertex]]. */

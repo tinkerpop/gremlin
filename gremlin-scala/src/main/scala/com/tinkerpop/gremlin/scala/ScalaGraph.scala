@@ -9,7 +9,7 @@ class ScalaGraph(val graph: Graph) {
     new GremlinScalaPipeline[Graph, Vertex](graph).V().asInstanceOf[GremlinScalaPipeline[Graph, Vertex]]
 
   /**Returns the vertices with the specified IDs. */
-  def V(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_))
+  def V(ids: Any*): Iterable[Vertex] = ids.map(graph.getVertex(_)) //TODO should'nt V and V(1,2) return the same type???
 
   /**Returns the vertex with the specified ID. */
   def v(id: Any): Vertex = graph getVertex id
