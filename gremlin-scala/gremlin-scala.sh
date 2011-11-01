@@ -1,3 +1,3 @@
 #!/bin/bash
 
-`dirname $0`/target/gremlin-*-standalone/bin/gremlin-scala.sh $@
+`dirname $0`/target/gremlin-scala-*-standalone/bin/gremlin-scala.sh $@
