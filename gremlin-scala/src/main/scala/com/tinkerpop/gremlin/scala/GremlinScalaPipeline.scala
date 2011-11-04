@@ -13,6 +13,7 @@ import com.tinkerpop.pipes.util._
 import java.util.{Map => JMap, List => JList}
 import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe, FunctionPipe}
+import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 
 /**Adds convenience methods to [[com.tinkerpop.gremline.pipes.GremlinPipeline]]. */
 class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with Iterator[E]*/ {
@@ -130,13 +131,13 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
   def ifThenElse(ifFunction: S => Boolean, thenFunction: S => _, elseFunction: S => _): GremlinScalaPipeline[S, E] =
     super.ifThenElse(ifFunction, thenFunction, elseFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
-  def loop(numberedStep: Int, whileFunction: _ => Boolean): GremlinScalaPipeline[S, E] =
+  def loop(numberedStep: Int, whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
     super.loop(numberedStep, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
-  def loop(namedStep: String, whileFunction: _ => Boolean): GremlinScalaPipeline[S, E] =
+  def loop(namedStep: String, whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
     super.loop(namedStep, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
-  def loop(pipe: Pipe[E, E], whileFunction: _ => Boolean): GremlinScalaPipeline[S, E] =
+  def loop(pipe: Pipe[E, E], whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
     super.loop(pipe, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
   ////////////////////

@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.test.transform;
 
+import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
@@ -39,7 +40,7 @@ public class PathStepTest extends TestCase {
         assertEquals(names.size(), 3);
     }
 
-    public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(final Pipe<Vertex, List> pipe) {
+    public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(final Pipe<Graph, List> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
