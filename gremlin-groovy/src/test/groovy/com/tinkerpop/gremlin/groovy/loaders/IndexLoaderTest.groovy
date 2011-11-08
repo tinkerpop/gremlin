@@ -14,9 +14,9 @@ class IndexLoaderTest extends TestCase {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        assertEquals(g.idx(T.v)[[name: 'marko']] >> 1, g.v(1));
+        assertEquals(g.idx(T.v)[[name: 'marko']].next(), g.v(1));
         assertEquals(g.idx(T.e)[[label: 'created']].count(), 4);
-        assertEquals(g.idx(T.v).get('name', 'marko') >> 1, g.v(1));
+        assertEquals(g.idx(T.v).get('name', 'marko').next(), g.v(1));
         assertEquals(g.idx(T.e).get('label', 'created').count(), 4);
     }
 
@@ -25,7 +25,7 @@ class IndexLoaderTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         def results = [];
-        g.idx(T.v)[[lang: 'java']].inE.outV >> results;
+        g.idx(T.v)[[lang: 'java']].inE.outV.fill(results);
         assertEquals(results.size(), 4);
         assertTrue(results.contains(g.v(1)));
         assertTrue(results.contains(g.v(6)));

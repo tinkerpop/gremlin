@@ -19,20 +19,20 @@ class GraphLoaderTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         assertEquals(PipeHelper.counter(g.V), 6);
-        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][0] >> 1));
-        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[1] >> 1));
-        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][2] >> 1));
-        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[3] >> 1));
-        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][4] >> 1));
-        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[5] >> 1));
+        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][0].next()));
+        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[1].next()));
+        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'][2].next()));
+        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[3].next()));
+        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V['id'].next()));
+        assertTrue(["1", "2", "3", "4", "5", "6"].contains(g.V.id[5].next()));
 
         assertEquals(PipeHelper.counter(g.E), 6);
-        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][0] >> 1));
-        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[1] >> 1));
-        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][2] >> 1));
-        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[3] >> 1));
-        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][4] >> 1));
-        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[5] >> 1));
+        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][0].next()));
+        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[1].next()));
+        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][2].next()));
+        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[3].next()));
+        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E['id'][4].next()));
+        assertTrue(["7", "8", "9", "10", "11", "12"].contains(g.E.id[5].next()));
     }
 
     public void testBulkLoadById() throws Exception {
@@ -53,14 +53,14 @@ class GraphLoaderTest extends TestCase {
         assertEquals(g.v(1)['id'], "1");
 
         assertEquals(PipeHelper.counter(g.v(1).outE.inV.id), 3);
-        assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[0] >> 1));
-        assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[1] >> 1));
-        assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[2] >> 1));
+        assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[0].next()));
+        assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[1].next()));
+        assertTrue(["2", "3", "4"].contains(g.v(1).outE.inV.id[2].next()));
 
         assertEquals(PipeHelper.counter(g.v(1).outE.label), 3);
-        assertTrue(["created", "knows"].contains(g.v(1).outE.label[0] >> 1));
-        assertTrue(["created", "knows"].contains(g.v(1).outE.label[1] >> 1));
-        assertTrue(["created", "knows"].contains(g.v(1).outE.label[2] >> 1));
+        assertTrue(["created", "knows"].contains(g.v(1).outE.label[0].next()));
+        assertTrue(["created", "knows"].contains(g.v(1).outE.label[1].next()));
+        assertTrue(["created", "knows"].contains(g.v(1).outE.label[2].next()));
     }
 
     public void testBasicGraphStatements() throws Exception {
@@ -68,31 +68,31 @@ class GraphLoaderTest extends TestCase {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         assertEquals(PipeHelper.counter(g.v(1).outE.inV), 3);
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[0].name >> 1));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[1].name >> 1));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[2].name >> 1));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[0].name.next()));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[1].name.next()));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[2].name.next()));
 
         assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV), 3);
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[0].name >> 1));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[1].name >> 1));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[2].name >> 1));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[0].name.next()));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[1].name.next()));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[2].name.next()));
 
-        assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0] >> 1}.inV), 2);
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0] >> 1}.inV[0].name >> 1));
+        assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0].next()}.inV), 2);
+        assertTrue(["vadas", "josh"].contains(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0].next()}.inV[0].name.next()));
         assertEquals(PipeHelper.counter(g.v(1).inE), 0);
 
         def results = [];
-        g.v(1).outE('knows').inV.name >> results;
+        g.v(1).outE('knows').inV.name.fill(results)
         assertEquals(results.size(), 2)
         assertTrue(results.contains('josh'))
         assertTrue(results.contains('vadas'))
         results = [];
-        g.v(1).outE('created').inV.name >> results;
+        g.v(1).outE('created').inV.name.fill(results)
         assertEquals(results.size(), 1)
         assertTrue(results.contains('lop'))
 
         results = [];
-        g.v(3).inE('created').filter {it.weight > 0.3}.outV.name >> results;
+        g.v(3).inE('created').filter {it.weight > 0.3}.outV.name.fill(results)
         assertEquals(results.size(), 2)
         assertTrue(results.contains('marko'))
         assertTrue(results.contains('josh'))

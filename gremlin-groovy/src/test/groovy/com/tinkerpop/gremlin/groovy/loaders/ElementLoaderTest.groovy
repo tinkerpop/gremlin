@@ -73,7 +73,7 @@ class ElementLoaderTest extends TestCase {
         assertEquals(g.v(1).name, "marko")
         assertEquals(g.v(1).age, 29)
         def results = []
-        [g.v(1), g.v(2)].name >> results
+        [g.v(1), g.v(2)].name._().fill(results)
         assertEquals(results.size(), 2)
         assertEquals(results.get(0), "marko")
         assertEquals(results.get(1), "vadas")
@@ -85,7 +85,7 @@ class ElementLoaderTest extends TestCase {
         assertEquals(g.v(1).name = 'marko rodriguez', "marko rodriguez")
         assertEquals(g.v(1).age = 32, 32)
         def results = []
-        [g.v(1), g.v(2)].name >> results
+        [g.v(1), g.v(2)]._().name.fill(results)
         assertEquals(results.size(), 2)
         assertEquals(results.get(0), "marko rodriguez")
         assertEquals(results.get(1), "vadas")

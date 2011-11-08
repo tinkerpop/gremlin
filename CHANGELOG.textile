@@ -42,6 +42,15 @@ h3. Version 1.4 (NOT OFFICIALLY RELEASED YET)
 ** Renamed @uniqueObject@ step to @dedup@
 ** Renamed @orFilter@ and @andFilter@ to @or@ and @and@, respectively
 ** Renamed @uniquePath@ to @simplePath@
+* @gremlin-groovy@ updates
+** No more @_()@ required off of graph-based objects
+** No more @[[ ]]@ filtering supported
+** No more support for @>>@ syntax
+*** @>>1@ is @next()@
+*** @>>2@ is @next(2)@
+*** @>>-1@ is @iterate()@
+*** @>>[]@ is @toList()@
+*** @>>collection@ is @fill(collection)@
 
 ==<hr/>==
 

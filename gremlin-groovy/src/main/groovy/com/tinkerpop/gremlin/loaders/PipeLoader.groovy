@@ -34,29 +34,6 @@ class PipeLoader {
             }
         }
 
-        [Iterable, Iterator].each {
-            it.metaClass.rightShift = {final Collection collection ->
-                PipeHelper.fillCollection(delegate.iterator(), collection);
-                return collection;
-            }
-        }
-
-        [Iterable, Iterator].each {
-            it.metaClass.rightShift = {final Integer count ->
-                if (count == -1) {
-                    PipeHelper.iterate(delegate.iterator());
-                    return null;
-                } else if (count == 1) {
-                    return delegate.iterator().next();
-                } else {
-                    final List list = new LinkedList();
-                    PipeHelper.fillCollection(delegate.iterator(), list, count);
-                    return list;
-                }
-            }
-        }
-
-
         GremlinGroovyPipeline.metaClass.getAt = {final Integer index ->
             return ((GremlinGroovyPipeline) delegate).range(index, index);
         }

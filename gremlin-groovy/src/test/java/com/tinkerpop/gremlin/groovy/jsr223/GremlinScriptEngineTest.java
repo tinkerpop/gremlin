@@ -19,7 +19,7 @@ public class GremlinScriptEngineTest extends TestCase {
         engine.put("g", TinkerGraphFactory.createTinkerGraph());
         engine.put("list", list);
         assertEquals(list.size(), 0);
-        engine.eval("g.v(1).outE.inV >> list");
+        engine.eval("g.v(1).outE.inV.fill(list)");
         assertEquals(list.size(), 3);
     }
 

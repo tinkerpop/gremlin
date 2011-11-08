@@ -549,4 +549,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         PipeHelper.fillCollection(this, list);
         return list;
     }
+
+    public Collection<E> fill(final Collection<E> collection) {
+        PipeHelper.fillCollection(this, collection);
+        return collection;
+    }
 }

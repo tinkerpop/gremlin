@@ -25,16 +25,16 @@ class GremlinTest extends BaseTest {
         // test compilation
         Pipe pipe = Gremlin.compile("_().outE.inV.name");
         pipe.setStarts(g.v(1).iterator());
-        (pipe >> 3).each {assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))}
+        (pipe.next(3)).each {assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))}
         assertFalse(pipe.hasNext());
     }
 
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
-        new GremlinGroovyPipeline().start([1, 2, 3]).step {x = it.next()} >> -1
+        new GremlinGroovyPipeline().start([1, 2, 3]).step {x = it.next()}.iterate()
         assertEquals(x, 3);
-        new GremlinGroovyPipeline().start([3, 2, 1]).step {x = it.next()} >> -1
+        new GremlinGroovyPipeline().start([3, 2, 1]).step {x = it.next()}.iterate()
         assertEquals(x, 1);
     }
 
@@ -46,7 +46,7 @@ class GremlinTest extends BaseTest {
             def x; _().sideEffect {x = it}.out('created').in('created').filter {it != x}
         });
         def results = []
-        g.v(1).coCreator >> results
+        g.v(1).coCreator.fill(results)
         assertEquals(results.size(), 2);
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
@@ -57,7 +57,7 @@ class GremlinTest extends BaseTest {
             def x; _().sideEffect {x = it}.out(label).in(label).filter {it != x}
         });
         results = []
-        g.v(1).co('created') >> results
+        g.v(1).co('created').fill(results)
         assertEquals(results.size(), 2);
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
@@ -75,14 +75,14 @@ class GremlinTest extends BaseTest {
         });*/
 
         results = []
-        g.v(1).twoStep('created') {it != x} >> results
+        g.v(1).twoStep('created') {it != x}.fill(results)
         assertEquals(results.size(), 2);
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
         assertEquals(g.v(1).co('created'), g.v(1).twoStep('created') {it != x});
 
         results = []
-        g.v(1).twoStep('created') {it == x} >> results
+        g.v(1).twoStep('created') {it == x}.fill(results)
         assertEquals(results.size(), 1);
         assertTrue(results.contains(g.v(1)));
 
@@ -96,62 +96,62 @@ class GremlinTest extends BaseTest {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         def results = [];
-        g.v(1).out.name >> results;
+        g.v(1).out.name.fill(results)
         assertEquals(results.size(), 3);
-        assertTrue(results.contains("josh") || results.contains("vadas") || results.contains("lop"));
+        assertTrue(results.contains("josh") && results.contains("vadas") && results.contains("lop"));
 
         results = [];
-        g.v(1).out('knows').name >> results;
+        g.v(1).out('knows').name.fill(results)
         assertEquals(results.size(), 2);
-        assertTrue(results.contains("josh") || results.contains("vadas"));
+        assertTrue(results.contains("josh") && results.contains("vadas"));
 
         ////////
 
         results = [];
-        g.v(1).outE('knows') >> results;
+        g.v(1).outE('knows').fill(results)
         assertEquals(results.size(), 2);
-        assertTrue(results.contains(g.e(7)) || g.e(8));
+        assertTrue(results.contains(g.e(7)) && g.e(8));
 
         results = [];
-        g.v(1).outE >> results;
+        g.v(1).outE.fill(results)
         assertEquals(results.size(), 3);
-        assertTrue(results.contains(g.e(7)) || g.e(8) || g.e(9));
+        assertTrue(results.contains(g.e(7)) && g.e(8) && g.e(9));
 
         ////////
 
         results = [];
-        g.v(4).in >> results;
+        g.v(4).in.fill(results)
         assertTrue(results.contains(g.v(1)));
         assertEquals(results.size(), 1);
 
         results = [];
-        g.v(4).in('knows') >> results;
+        g.v(4).in('knows').fill(results)
         assertTrue(results.contains(g.v(1)));
         assertEquals(results.size(), 1);
 
         ////////
 
         results = [];
-        g.v(4).inE >> results;
+        g.v(4).inE.fill(results)
         assertTrue(results.contains(g.e(8)));
         assertEquals(results.size(), 1);
 
         results = [];
-        g.v(4).inE('knows') >> results;
+        g.v(4).inE('knows').fill(results)
         assertTrue(results.contains(g.e(8)));
         assertEquals(results.size(), 1);
 
         ////////
 
         results = [];
-        g.v(4).both >> results;
+        g.v(4).both.fill(results)
         assertTrue(results.contains(g.v(1)));
         assertTrue(results.contains(g.v(3)));
         assertTrue(results.contains(g.v(5)));
         assertEquals(results.size(), 3);
 
         results = [];
-        g.v(4).both('created') >> results;
+        g.v(4).both('created').fill(results)
         assertTrue(results.contains(g.v(3)));
         assertTrue(results.contains(g.v(5)));
         assertEquals(results.size(), 2);
@@ -159,27 +159,27 @@ class GremlinTest extends BaseTest {
         ////////
 
         results = [];
-        g.v(4).bothE >> results;
+        g.v(4).bothE.fill(results)
         assertEquals(results.size(), 3);
-        assertTrue(results.contains(g.e(10)) || g.e(11) || g.e(8));
+        assertTrue(results.contains(g.e(10)) && g.e(11) && g.e(8));
 
         results = [];
-        g.v(4).bothE('created') >> results;
+        g.v(4).bothE('created').fill(results)
         assertEquals(results.size(), 2);
-        assertTrue(results.contains(g.e(10)) || g.e(11));
+        assertTrue(results.contains(g.e(10)) && g.e(11));
 
         ////////
 
-        assertEquals(g.e(10).outV >> 1, g.v(4));
-        assertEquals(g.e(10).inV >> 1, g.v(5));
-        assertTrue((g.e(10).bothV >> 2).contains(g.v(4)));
-        assertTrue((g.e(10).bothV >> 2).contains(g.v(5)));
+        assertEquals(g.e(10).outV.next(), g.v(4));
+        assertEquals(g.e(10).inV.next(), g.v(5));
+        assertTrue((g.e(10).bothV.next(2)).contains(g.v(4)));
+        assertTrue((g.e(10).bothV.next(2)).contains(g.v(5)));
 
         ////////
 
         assertEquals(g.v(1).outE('knows', 'created').toList().size(), 3);
         assertEquals(g.v(2).inE('knows', 'created').toList().size(), 1);
-        assertEquals(g.v(2).inE('knows', 'created').toList().get(0), g.v(1).outE('knows') >> 1);
+        assertEquals(g.v(2).inE('knows', 'created').toList().get(0), g.v(1).outE('knows').next());
         assertEquals(g.v(4).bothE('knows', 'created').toList().size(), 3);
 
         ////////
@@ -212,7 +212,7 @@ class GremlinTest extends BaseTest {
         assertFalse(pipe.hasNext());
         pipe.setStarts(g.v(1).iterator());
         assertTrue(pipe.hasNext());
-        pipe >> results;
+        pipe.fill(results)
         assertEquals(results.size(), 3);
 
     }
