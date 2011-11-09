@@ -68,6 +68,7 @@ class Gremlin {
         Gremlin.addStep(Tokens.OUTE);
         Gremlin.addStep(Tokens.OUTV);
         Gremlin.addStep(Tokens.V);
+        Gremlin.addStep(Tokens.WHILELOOP);
 
         ElementLoader.load();
         GraphLoader.load();

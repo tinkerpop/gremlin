@@ -40,7 +40,7 @@ public class PathStepTest extends TestCase {
         assertEquals(names.size(), 3);
     }
 
-    public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(final Pipe<Graph, List> pipe) {
+    /*public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(final Pipe<Graph, List> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -51,5 +51,5 @@ public class PathStepTest extends TestCase {
             assertEquals(list.get(2), "java");
         }
         assertEquals(counter, 2);
-    }
+    }*/
 }

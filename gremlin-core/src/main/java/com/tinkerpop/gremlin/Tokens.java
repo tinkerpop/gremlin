@@ -59,6 +59,7 @@ public class Tokens {
     public static final String TABLE = "table";
     public static final String DEDUP = "dedup";
     public static final String SIMPLEPATH = "simplePath";
+    public static final String WHILELOOP = "whileLoop";
 
     public static FilterPipe.Filter mapFilter(final Tokens.T t) {
         if (t == T.eq) {

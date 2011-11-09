@@ -1,33 +1,27 @@
 package com.tinkerpop.gremlin.scala
 
 import com.tinkerpop.gremlin.pipes.GremlinPipeline
-import com.tinkerpop.gremlin.pipes.filter.{PropertyFilterPipe, LabelFilterPipe, IdFilterPipe}
 import com.tinkerpop.gremlin.Tokens
-import com.tinkerpop.gremlin.pipes.transform._
-import com.tinkerpop.pipes.branch._
 import com.tinkerpop.pipes.filter._
-import java.util.{ArrayList, List => JList}
-import com.tinkerpop.pipes.transform._
-import com.tinkerpop.pipes.sideeffect._
-import com.tinkerpop.pipes.util._
+import java.util.{List => JList}
 import java.util.{Map => JMap, List => JList}
 import com.tinkerpop.blueprints.pgm._
-import com.tinkerpop.pipes.{PipeFunction, Pipe, FunctionPipe}
-import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
+import com.tinkerpop.pipes.{PipeFunction, Pipe}
+import com.tinkerpop.pipes.branch.util.LoopBundle
 
 /**Adds convenience methods to [[com.tinkerpop.gremline.pipes.GremlinPipeline]]. */
 class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with Iterator[E]*/ {
   /*def hasNext: Boolean = pipeline.hasNext
 
   def next(): E = pipeline.next()*/
-  
-  def out: GremlinScalaPipeline[S, Vertex] = 
+
+  def out: GremlinScalaPipeline[S, Vertex] =
     super.out().asInstanceOf[GremlinScalaPipeline[S, Vertex]]
 
   def in: GremlinScalaPipeline[S, Vertex] =
     super.in().asInstanceOf[GremlinScalaPipeline[S, Vertex]]
-  
-  def paths: GremlinScalaPipeline[S, JList[_]] = 
+
+  def paths: GremlinScalaPipeline[S, JList[_]] =
     super.path().asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,19 +125,17 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
   def ifThenElse(ifFunction: S => Boolean, thenFunction: S => _, elseFunction: S => _): GremlinScalaPipeline[S, E] =
     super.ifThenElse(ifFunction, thenFunction, elseFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
-  def loop(numberedStep: Int, whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
-    super.loop(numberedStep, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
+  def loop(whileFunction: LoopBundle[S] => Boolean, pipeFunction: Object => Pipe[S, S]): GremlinScalaPipeline[S, S] =
+    super.loop(whileFunction, pipeFunction).asInstanceOf[GremlinScalaPipeline[S, S]]
 
-  def loop(namedStep: String, whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
-    super.loop(namedStep, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
+  def loop(whileFunction: LoopBundle[S] => Boolean, pipeFunction: Object => Pipe[S, S], emitFunction: LoopBundle[S] => Boolean): GremlinScalaPipeline[S, S] =
+    super.loop(whileFunction, pipeFunction, emitFunction).asInstanceOf[GremlinScalaPipeline[S, S]]
 
-  def loop(pipe: Pipe[E, E], whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
-    super.loop(pipe, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
   ////////////////////
   /// FILTER PIPES ///
   ////////////////////
-/*  def and(pipes: Pipe[_, Boolean]*): GremlinPipeline[S, E] = {
+  /*  def and(pipes: Pipe[_, Boolean]*): GremlinPipeline[S, E] = {
     return this.add(new AndFilterPipe[_](pipes))
   }
 
