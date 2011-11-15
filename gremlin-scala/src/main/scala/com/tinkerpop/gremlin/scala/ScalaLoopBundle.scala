@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.scala
 
-import com.tinkerpop.pipes.branch.util.LoopBundle
+import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 
 /**Provides convenience methods for LoopBundle[T]. */
 class ScalaLoopBundle[T](val bundle: LoopBundle[T]) {
-  def step = bundle.getStep
+  def loops = bundle.getLoops
 
   def obj = bundle.getObject
 }

@@ -15,19 +15,23 @@ class LoopStepTest extends com.tinkerpop.gremlin.test.branch.LoopStepTest {
         Gremlin.load();
     }
 
-    public void testTrue() {
-        assertTrue(true);
-    }
-
     public void testCompliance() {
         UtilitiesTest.testCompliance(this.getClass());
     }
 
-    public void test_g_v1_loopXstep_lt_3__outX_propertyXnameX() {
-        super.test_g_v1_loopXstep_lt_3__outX_propertyXnameX(g.v(1).loop{it.step < 3}{_().out}.property('name'));
+    public void test_g_v1_out_loopX1_loops_lt_3X_propertyXnameX() {
+        super.test_g_v1_out_loopX1_loops_lt_3X_propertyXnameX(g.v(1).out.loop(1) {it.loops < 3}.name);
     }
 
-    public void test_g_V_loopXstep_lt_3__outX_propertyXnameX() {
-        super.test_g_V_loopXstep_lt_3__outX_propertyXnameX(g.V.loop{it.step < 3}{_().out}.name);
+    public void test_g_v1_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX() {
+        super.test_g_v1_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(g.v(1).as('here').out.loop('here') {it.loops < 3}.property('name'));
+    }
+
+    public void test_g_V_out_loopX1_loops_lt_3X_propertyXnameX() {
+        super.test_g_V_out_loopX1_loops_lt_3X_propertyXnameX(g.V.out.loop(1) {it.loops < 3}.property('name'));
+    }
+
+    public void test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX() {
+        super.test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(g.V.as('here').out.loop('here') {it.loops < 3}.name);
     }
 }

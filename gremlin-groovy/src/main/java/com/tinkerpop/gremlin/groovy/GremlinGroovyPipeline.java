@@ -5,8 +5,7 @@ import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline;
 import com.tinkerpop.gremlin.pipes.GremlinPipeline;
 import com.tinkerpop.gremlin.pipes.transform.IndexElementsPipe;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.branch.util.LoopBundle;
+import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.Table;
 import groovy.lang.Closure;
 
@@ -67,14 +66,21 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, ?>) this.ifThenElse(new GroovyPipeFunction<Object, Boolean>(ifClosure), new GroovyPipeFunction(thenClosure), new GroovyPipeFunction(elseClosure));
     }
 
-    public GremlinGroovyPipeline<S, S> loop(final Closure whileClosure, final Closure pipeClosure) {
-        return (GremlinGroovyPipeline<S, S>) this.loop(new GroovyPipeFunction<LoopBundle<S>, Boolean>(whileClosure), new GroovyPipeFunction<Object, Pipe<S, S>>(pipeClosure));
+    public GremlinGroovyPipeline<S, S> loop(final Integer numberedStep, final Closure whileClosure) {
+        return (GremlinGroovyPipeline<S, S>) this.loop(numberedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<S>, Boolean>(whileClosure));
     }
 
-    public GremlinGroovyPipeline<S, S> loop(final Closure whileClosure, final Closure pipeClosure, final Closure emitClosure) {
-        return (GremlinGroovyPipeline<S, S>) this.loop(new GroovyPipeFunction<LoopBundle<S>, Boolean>(whileClosure), new GroovyPipeFunction<Object, Pipe<S, S>>(pipeClosure), new GroovyPipeFunction<LoopBundle<S>, Boolean>(emitClosure));
+    public GremlinGroovyPipeline<S, S> loop(final String namedStep, final Closure whileClosure) {
+        return (GremlinGroovyPipeline<S, S>) this.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<S>, Boolean>(whileClosure));
     }
 
+    public GremlinGroovyPipeline<S, S> loop(final Integer numberedStep, final Closure whileClosure, final Closure emitClosure) {
+        return (GremlinGroovyPipeline<S, S>) this.loop(numberedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<S>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<S>, Boolean>(emitClosure));
+    }
+
+    public GremlinGroovyPipeline<S, S> loop(final String namedStep, final Closure whileClosure, final Closure emitClosure) {
+        return (GremlinGroovyPipeline<S, S>) this.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<S>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<S>, Boolean>(emitClosure));
+    }
 
     public GremlinGroovyPipeline<S, E> paths(final Closure... closures) {
         return (GremlinGroovyPipeline<S, E>) this.path(GroovyPipeFunction.generate(closures));

@@ -27,7 +27,7 @@ class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepTest {
         super.test_g_v1_out_pathsXage__nameX(g.v(1).out.paths {it.age} {it.name});
     }
 
-    /*public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX() {
-        super.test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(g.V.loop{it.step < 3}{_().out}.paths {it} {it.name} {it.lang});
-    }*/
+    public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX() {
+        super.test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(g.V.out.loop(1){it.loops < 3}.paths {it} {it.name} {it.lang});
+    }
 }
