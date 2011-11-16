@@ -1,7 +1,7 @@
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-logo.png!
 
 
-Gremlin is a domain specific language for traversing property "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Gremlin makes use of "Groovy":http://groovy.codehaus.org and "Pipes":http://pipes.tinkerpop.com to perform complex graph traversals. This language has application in the areas of graph query, analysis, and manipulation. Connectors, provided by "Blueprints":http://blueprints.tinkerpop.com, exist for the following graph management systems:
+Gremlin is a domain specific language for traversing property "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Gremlin makes use of "Pipes":http://pipes.tinkerpop.com to perform complex graph traversals. This language has application in the areas of graph query, analysis, and manipulation. Connectors, provided by "Blueprints":http://blueprints.tinkerpop.com, exist for the following graph management systems:
 
 * Graph database connectivity:
 ** "TinkerGraph":http://wiki.github.com/tinkerpop/gremlin/tinkergraph in-memory graph
@@ -14,5 +14,10 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 * Supporting extensions:
 ** "GraphML Reader/Writer":http://graphml.graphdrawing.org/ library
 ** "Java Universal/Graph":http://jung.sourceforge.net/ framework
+
+* JVM language connectivity:
+** "Groovy":http://groovy.codehaus.org/: The reference language implementation
+** "Scala":http://www.scala-lang.org/: An experimental implementation
+** More "JVM languages":http://en.wikipedia.org/wiki/List_of_JVM_languages to come.
 
 The documentation for Gremlin can be found at this "location":http://gremlin.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.
