@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.scala
 
-import com.tinkerpop.blueprints.pgm.{Vertex, Edge}
 import java.util.{Map => JMap}
+import com.tinkerpop.blueprints.pgm.{Element, Vertex, Edge}
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
-class ScalaVertex(val vertex: Vertex) {
+class ScalaVertex(val vertex: Vertex) extends ScalaElement(vertex) {
   def out: GremlinScalaPipeline[Vertex, Vertex] =
     new GremlinScalaPipeline[Vertex, Vertex](vertex).out().asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]]
 
@@ -41,20 +41,7 @@ class ScalaVertex(val vertex: Vertex) {
   def bothE(labels: String*): GremlinScalaPipeline[Vertex, Edge] =
     new GremlinScalaPipeline[Vertex, Edge](vertex).bothE(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def map: GremlinScalaPipeline[Vertex, JMap[String, Object]] =
-    new GremlinScalaPipeline[Vertex, JMap[String, Object]](vertex).map().asInstanceOf[GremlinScalaPipeline[Vertex, JMap[String, Object]]]
-    
-  def property(key: String): GremlinScalaPipeline[Vertex, Object] = 
-    new GremlinScalaPipeline[Vertex, Object](vertex).property(key).asInstanceOf[GremlinScalaPipeline[Vertex, Object]]
-
-  def transform[E](f: Vertex => E): GremlinScalaPipeline[Vertex, E] =
-    new GremlinScalaPipeline[Vertex, E](vertex).transform(f).asInstanceOf[GremlinScalaPipeline[Vertex, E]]
-  
-  def apply(key: String): Object = vertex getProperty key
-  
-  def id: Any = vertex.getId
-
-  def as[T](key: String): Option[T] = Option(vertex.getProperty(key)).map(_.asInstanceOf[T])
+  def start: GremlinScalaPipeline[Vertex,Vertex] = new GremlinScalaPipeline[Vertex,Vertex](vertex);
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Vertex]] and [[com.tinkerpop.gremlin.scala.ScalaVertex]]. */
@@ -62,4 +49,6 @@ object ScalaVertex {
   implicit def wrap(vertex: Vertex) = new ScalaVertex(vertex)
 
   implicit def unwrap(wrapper: ScalaVertex) = wrapper.vertex
+
+  //implicit def vertex2Gsp(v: Vertex) = new GremlinScalaPipeline[Vertex, Vertex](v)
 }

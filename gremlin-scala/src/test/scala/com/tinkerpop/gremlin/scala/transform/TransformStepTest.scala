@@ -4,7 +4,6 @@ import com.tinkerpop.gremlin.test.UtilitiesTest
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.scala._
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.pipes.Pipe
 
 class TransformStepTest extends com.tinkerpop.gremlin.test.transform.TransformStepTest {
   val g = TinkerGraphFactory.createTinkerGraph()
@@ -14,7 +13,7 @@ class TransformStepTest extends com.tinkerpop.gremlin.test.transform.TransformSt
   }
 
   def test_g_v1_transformXnameX() {
-    super.test_g_v1_transformXnameX(g.v(1).transform({v: Vertex => v.getProperty("name").toString}))
+    super.test_g_v1_transformXnameX(g.v(1).start.transform({v: Vertex => v.getProperty("name").toString}))
   }
 
   def test_g_v1_outE_label_transformXlengthX() {

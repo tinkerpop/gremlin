@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.scala
 
-import com.tinkerpop.blueprints.pgm.{Vertex, Edge}
+import com.tinkerpop.blueprints.pgm.{Element, Vertex, Edge}
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Edge]]. */
-class ScalaEdge(val edge: Edge) {
+class ScalaEdge(val edge: Edge) extends ScalaElement(edge) {
   def inV: GremlinScalaPipeline[Edge, Vertex] =
     new GremlinScalaPipeline[Edge, Vertex](edge).inV().asInstanceOf[GremlinScalaPipeline[Edge, Vertex]]
 
@@ -13,7 +13,7 @@ class ScalaEdge(val edge: Edge) {
   def bothV: GremlinScalaPipeline[Edge, Vertex] =
     new GremlinScalaPipeline[Edge, Vertex](edge).bothV().asInstanceOf[GremlinScalaPipeline[Edge, Vertex]]
 
-  def as[T](key: String): Option[T] = Option(edge.getProperty(key)).map(_.asInstanceOf[T])
+  def start: GremlinScalaPipeline[Edge,Edge] = new GremlinScalaPipeline[Edge,Edge](edge);
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Edge]] and [[com.tinkerpop.gremlin.scala.ScalaEdge]]. */
