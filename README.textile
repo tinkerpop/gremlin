@@ -16,8 +16,9 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 ** "Java Universal/Graph":http://jung.sourceforge.net/ framework
 
 * JVM language connectivity:
-** "Groovy":http://groovy.codehaus.org/: The reference language implementation
-** "Scala":http://www.scala-lang.org/: An experimental implementation
+** "Java":http://java.com/: Gremlin in the Java Language
+** "Groovy":http://groovy.codehaus.org/: Gremlin in the Groovy Language
+** "Scala":http://www.scala-lang.org/: Gremlin in the Scala Language
 ** More "JVM languages":http://en.wikipedia.org/wiki/List_of_JVM_languages to come.
 
 The documentation for Gremlin can be found at this "location":http://gremlin.tinkerpop.com. Finally, please visit "TinkerPop":http://tinkerpop.com for other software products.
