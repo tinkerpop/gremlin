@@ -12,6 +12,8 @@ class ScalaEdge(val edge: Edge) {
 
   def bothV: GremlinScalaPipeline[Edge, Vertex] =
     new GremlinScalaPipeline[Edge, Vertex](edge).bothV().asInstanceOf[GremlinScalaPipeline[Edge, Vertex]]
+
+  def as[T](key: String): Option[T] = Option(edge.getProperty(key)).map(_.asInstanceOf[T])
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Edge]] and [[com.tinkerpop.gremlin.scala.ScalaEdge]]. */

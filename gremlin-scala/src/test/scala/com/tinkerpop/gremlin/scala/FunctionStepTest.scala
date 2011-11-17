@@ -9,7 +9,7 @@ class FunctionStepTest extends com.tinkerpop.gremlin.test.FunctionStepTest {
   val g = TinkerGraphFactory.createTinkerGraph()
 
   override def testCompliance() {
-    UtilitiesTest.testCompliance(this.getClass())
+    UtilitiesTest.testCompliance(this.getClass)
   }
 
   def test_g_v1_out_stepXnext_nameX() {

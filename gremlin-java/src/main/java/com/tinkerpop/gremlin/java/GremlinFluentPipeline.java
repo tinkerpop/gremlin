@@ -6,14 +6,14 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.util.FluentPipeline;
+import com.tinkerpop.pipes.util.PipesFluentPipeline;
 
 import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public interface GremlinFluentPipeline<S, E> extends FluentPipeline<S, E> {
+public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdFilterPipe to the end of the Pipeline.

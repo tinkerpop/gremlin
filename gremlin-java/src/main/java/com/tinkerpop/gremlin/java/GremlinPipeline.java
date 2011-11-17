@@ -89,10 +89,6 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         FluentUtility.setStarts(this, starts);
     }
 
-    /*public <T extends Element> GremlinPipeline(final Index<T> index, final String key, final Object value) {
-        super(new IndexElementsPipe<T>(index, key, value));
-    }*/
-
     public <T> GremlinPipeline<S, T> add(final Pipe<?, T> pipe) {
         this.addPipe(pipe);
         return (GremlinPipeline<S, T>) this;
@@ -196,7 +192,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new FunctionPipe(function));
     }
 
-    public <T> GremlinPipeline<S, T> step(final Pipe<?, T> pipe) {
+    public <T> GremlinPipeline<S, T> step(final Pipe<E, T> pipe) {
         return this.add(pipe);
     }
 
@@ -204,11 +200,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     /// BRANCH PIPES ///
     ////////////////////
 
-    public GremlinPipeline<S, ?> copySplit(final Pipe... pipes) {
+    public GremlinPipeline<S, ?> copySplit(final Pipe<E,?>... pipes) {
         return this.add(new CopySplitPipe(pipes));
     }
 
-    public GremlinPipeline<S, ?> exhaustMerge(final Pipe... pipes) {
+    public GremlinPipeline<S, ?> exhaustMerge(final Pipe<E,?>... pipes) {
         return this.add(new ExhaustMergePipe(pipes));
     }
 
@@ -216,7 +212,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
-    public GremlinPipeline<S, ?> fairMerge(final Pipe... pipes) {
+    public GremlinPipeline<S, ?> fairMerge(final Pipe<E,?>... pipes) {
         return this.add(new FairMergePipe(pipes));
     }
 
@@ -224,31 +220,31 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
-    public GremlinPipeline<S, ?> ifThenElse(final PipeFunction<?, Boolean> ifFunction, final PipeFunction thenFunction, final PipeFunction elseFunction) {
+    public GremlinPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E,?> thenFunction, final PipeFunction<E,?> elseFunction) {
         return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
     }
 
-    public GremlinPipeline<S, S> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction) {
+    public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
     }
 
-    public GremlinPipeline<S, S> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction) {
+    public GremlinPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
     }
 
-    public GremlinPipeline<S, S> loop(final Pipe pipe, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction) {
+    public GremlinPipeline<S, E> loop(final Pipe<E,E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(pipe, whileFunction));
     }
 
-    public GremlinPipeline<S, S> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction) {
+    public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction, emitFunction));
     }
 
-    public GremlinPipeline<S, S> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction) {
+    public GremlinPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
     }
 
-    public GremlinPipeline<S, S> loop(final Pipe pipe, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<S>, Boolean> emitFunction) {
+    public GremlinPipeline<S, E> loop(final Pipe<E,E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(pipe, whileFunction, emitFunction));
     }
 
@@ -256,7 +252,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     /// FILTER PIPES ///
     ////////////////////
 
-    public GremlinPipeline<S, E> and(final Pipe<?, Boolean>... pipes) {
+    public GremlinPipeline<S, E> and(final Pipe<E, ?>... pipes) {
         return this.add(new AndFilterPipe(pipes));
     }
 
@@ -268,7 +264,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public GremlinPipeline<S, ?> back(final Pipe pipe) {
+    public GremlinPipeline<S, E> back(final Pipe<E,?> pipe) {
         return this.add(new BackFilterPipe(pipe));
     }
 
@@ -280,7 +276,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new ExceptFilterPipe(collection));
     }
 
-    public GremlinPipeline<S, E> filter(final PipeFunction<?, Boolean> filterFunction) {
+    public GremlinPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
         return this.add(new FilterFunctionPipe(filterFunction));
     }
 
@@ -288,7 +284,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new ObjectFilterPipe(object, filter));
     }
 
-    public GremlinPipeline<S, E> or(final Pipe<S, Boolean>... pipes) {
+    public GremlinPipeline<S, E> or(final Pipe<E, ?>... pipes) {
         return this.add(new OrFilterPipe(pipes));
     }
 
@@ -336,7 +332,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public GremlinPipeline<S, ?> optional(final Pipe pipe) {
+    public GremlinPipeline<S, E> optional(final Pipe<E,?> pipe) {
         return this.add(new OptionalPipe(pipe));
     }
 

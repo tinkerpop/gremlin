@@ -8,7 +8,7 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
   val g = TinkerGraphFactory.createTinkerGraph()
 
   override def testCompliance() {
-    UtilitiesTest.testCompliance(this.getClass())
+    UtilitiesTest.testCompliance(this.getClass)
   }
 
   def test_g_V() {

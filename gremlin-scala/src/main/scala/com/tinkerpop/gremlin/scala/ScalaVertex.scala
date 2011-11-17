@@ -53,6 +53,8 @@ class ScalaVertex(val vertex: Vertex) {
   def apply(key: String): Object = vertex getProperty key
   
   def id: Any = vertex.getId
+
+  def as[T](key: String): Option[T] = Option(vertex.getProperty(key)).map(_.asInstanceOf[T])
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Vertex]] and [[com.tinkerpop.gremlin.scala.ScalaVertex]]. */

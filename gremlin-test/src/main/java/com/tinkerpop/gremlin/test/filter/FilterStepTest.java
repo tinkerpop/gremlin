@@ -51,7 +51,7 @@ public class FilterStepTest extends TestCase {
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX(Pipe<Graph, Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
