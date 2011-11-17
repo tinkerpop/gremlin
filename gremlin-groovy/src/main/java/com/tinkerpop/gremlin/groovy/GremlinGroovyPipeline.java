@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.groovy;
 
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Index;
-import com.tinkerpop.gremlin.pipes.GremlinFluentPipeline;
-import com.tinkerpop.gremlin.pipes.GremlinPipeline;
+import com.tinkerpop.gremlin.java.GremlinFluentPipeline;
+import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.pipes.transform.IndexElementsPipe;
 import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.Table;

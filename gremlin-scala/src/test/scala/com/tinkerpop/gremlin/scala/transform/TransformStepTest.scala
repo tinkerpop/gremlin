@@ -14,7 +14,7 @@ class TransformStepTest extends com.tinkerpop.gremlin.test.transform.TransformSt
   }
 
   def test_g_v1_transformXnameX() {
-    super.test_g_v1_transformXnameX(g.v(1).transform({v: Vertex => v("name").toString}))
+    super.test_g_v1_transformXnameX(g.v(1).transform({v: Vertex => v.getProperty("name").toString}))
   }
 
   def test_g_v1_outE_label_transformXlengthX() {
@@ -22,6 +22,6 @@ class TransformStepTest extends com.tinkerpop.gremlin.test.transform.TransformSt
   }
 
   def test_g_v1_out_transformXnameX_transformXlengthX() {
-    super.test_g_v1_out_transformXnameX_transformXlengthX(g.v(1).out.transform({v: Vertex => v("name").toString}).transform({s: String => s.length(): java.lang.Integer})) //TODO eliminate the :java.lang.Integer
+    super.test_g_v1_out_transformXnameX_transformXlengthX(g.v(1).out.transform({v: Vertex => v.getProperty("name").toString}).transform({s: String => s.length(): java.lang.Integer})) //TODO eliminate the :java.lang.Integer
   }
 }

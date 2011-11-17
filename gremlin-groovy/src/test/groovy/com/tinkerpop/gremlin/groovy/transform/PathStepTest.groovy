@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.groovy.transform
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.test.UtilitiesTest
 
 /**

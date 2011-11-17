@@ -5,7 +5,7 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.pipes.util.PipeHelper
 import junit.framework.TestCase
 

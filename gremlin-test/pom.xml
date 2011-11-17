@@ -11,7 +11,7 @@
     <artifactId>gremlin-test</artifactId>
     <version>1.4-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Gremlin-Test: The Test Suite of the Gremlin Language</name>
+    <name>Gremlin-Test: Gremlin Language Test Suite</name>
     <developers>
         <developer>
             <name>Marko A. Rodriguez</name>

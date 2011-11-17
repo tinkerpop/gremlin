@@ -16,23 +16,10 @@ if [ "$JAVA_OPTIONS" = "" ] ; then
 fi
 
 # Launch the application
-if [ "$1" = "-e" ]; then
-  k=$2
-  if [ $# -gt 2 ]; then
-    for (( i=3 ; i < $# + 1 ; i++ ))
-    do
-      eval a=\$$i
-      k="$k \"$a\""
-    done
-  fi
-
-  eval $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.groovy.jsr223.ScriptExecutor $k
+if [ "$1" = "-v" ]; then
+  $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.Version
 else
-  if [ "$1" = "-v" ]; then
-    $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.groovy.Version
-  else
-    $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.scala.console.Console
-  fi
+  $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.scala.console.Console
 fi
 
 #Something in JLine 2.9.1 is leaving stty in "no echo" (-echo) mode; try to repair that on exit...

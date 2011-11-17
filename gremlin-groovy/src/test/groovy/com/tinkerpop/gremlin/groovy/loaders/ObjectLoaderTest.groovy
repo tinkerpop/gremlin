@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.gremlin.Gremlin
+import com.tinkerpop.gremlin.groovy.Gremlin
 import junit.framework.TestCase
 
 /**

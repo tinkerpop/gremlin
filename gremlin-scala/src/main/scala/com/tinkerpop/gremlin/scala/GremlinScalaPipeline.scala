@@ -1,9 +1,8 @@
 package com.tinkerpop.gremlin.scala
 
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.pipes.filter._
-import java.util.{List => JList}
 import java.util.{Map => JMap, List => JList, Iterator => JIterator}
 import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe}

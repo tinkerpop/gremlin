@@ -23,8 +23,8 @@
     </contributors>
 
     <modules>
-        <module>gremlin-core</module>
         <module>gremlin-test</module>
+        <module>gremlin-java</module>
         <module>gremlin-groovy</module>
         <module>gremlin-scala</module>
     </modules>
@@ -33,7 +33,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.tinkerpop.gremlin</groupId>
-                <artifactId>gremlin-core</artifactId>
+                <artifactId>gremlin-java</artifactId>
                 <version>1.4-SNAPSHOT</version>
             </dependency>
             <dependency>

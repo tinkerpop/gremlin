@@ -4,7 +4,7 @@ package com.tinkerpop.gremlin.scala
 import org.specs2.mutable._
 import com.tinkerpop.blueprints.pgm.{Vertex, Graph, Edge}
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory.createTinkerGraph
-import com.tinkerpop.gremlin.pipes.GremlinPipeline
+import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.gremlin.scala.{ScalaGraph, ScalaFluentPipeline}
 
 class ScalaWrapperTest extends SpecificationWithJUnit {

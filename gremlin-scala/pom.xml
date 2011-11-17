@@ -34,7 +34,7 @@
     <dependencies>
         <dependency>
             <groupId>com.tinkerpop.gremlin</groupId>
-            <artifactId>gremlin-core</artifactId>
+            <artifactId>gremlin-java</artifactId>
             <version>1.4-SNAPSHOT</version>
         </dependency>
         <dependency>

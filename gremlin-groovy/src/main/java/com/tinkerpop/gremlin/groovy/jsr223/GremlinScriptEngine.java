@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
-import com.tinkerpop.gremlin.Gremlin;
 import com.tinkerpop.gremlin.Imports;
+import com.tinkerpop.gremlin.groovy.Gremlin;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 
 import javax.script.Bindings;

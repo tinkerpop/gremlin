@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.groovy.console;
 
-import com.tinkerpop.gremlin.Gremlin;
 import com.tinkerpop.gremlin.Imports;
+import com.tinkerpop.gremlin.groovy.Gremlin;
 import jline.History;
 import org.codehaus.groovy.tools.shell.Groovysh;
 import org.codehaus.groovy.tools.shell.IO;

@@ -1,4 +1,4 @@
-:: Windows launcher script for Gremlin
+:: Windows launcher script for Gremlin Groovy
 
 @echo off
 
@@ -63,7 +63,7 @@ goto :eof
 
 :version
 
-java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.groovy.Version
+java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.Version
 
 goto :eof
 
