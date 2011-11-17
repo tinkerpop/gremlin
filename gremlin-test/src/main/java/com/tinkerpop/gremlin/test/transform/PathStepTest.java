@@ -18,7 +18,7 @@ public class PathStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_propertyXnameX_paths(final Pipe<Vertex, List> pipe) {
+    public void test_g_v1_propertyXnameX_path(final Pipe<Vertex, List> pipe) {
         List list = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(list.size(), 2);
@@ -26,7 +26,7 @@ public class PathStepTest extends TestCase {
         assertEquals(list.get(1), "marko");
     }
 
-    public void test_g_v1_out_pathsXage__nameX(final Pipe<Vertex, List> pipe) {
+    public void test_g_v1_out_pathXage__nameX(final Pipe<Vertex, List> pipe) {
         int counter = 0;
         Set<String> names = new HashSet<String>();
         while (pipe.hasNext()) {
@@ -40,7 +40,7 @@ public class PathStepTest extends TestCase {
         assertEquals(names.size(), 3);
     }
 
-    public void test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(final Pipe<Graph, List> pipe) {
+    public void test_g_V_out_loopX1__loops_lt_3X_pathXit__name__langX(final Pipe<Graph, List> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;

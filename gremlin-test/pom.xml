@@ -42,7 +42,6 @@
             <artifactId>pipes</artifactId>
             <version>0.9-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

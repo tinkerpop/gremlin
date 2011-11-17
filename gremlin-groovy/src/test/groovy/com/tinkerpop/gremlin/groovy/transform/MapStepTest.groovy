@@ -20,7 +20,7 @@ class MapStepTest extends com.tinkerpop.gremlin.test.transform.MapStepTest {
     }
 
     public void test_g_v1_map() {
-        super.test_g_v1_map(g.v(1)._.map)
+        super.test_g_v1_map(g.v(1).map)
     }
 
     public void test_g_v1_outXknowsX_map() {

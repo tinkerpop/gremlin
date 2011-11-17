@@ -13,16 +13,16 @@ class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepTest {
     UtilitiesTest.testCompliance(this.getClass())
   }*/
 
-  def test_g_v1_propertyXnameX_paths() {
-    super.test_g_v1_propertyXnameX_paths(g.v(1).property("name").paths)
+  def test_g_v1_propertyXnameX_path() {
+    super.test_g_v1_propertyXnameX_path(g.v(1).property("name").paths)
   }
 
-  def test_g_v1_out_pathsXage__nameX() {
-    super.test_g_v1_out_pathsXage__nameX(g.v(1).out.path({v: Vertex => v("age")}, {v: Vertex => v("name")}))
+  def test_g_v1_out_pathXage__nameX() {
+    super.test_g_v1_out_pathXage__nameX(g.v(1).out.path({v: Vertex => v("age")}, {v: Vertex => v("name")}))
   }
 
-  /*def test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX() {
+  /*def test_g_V_out_loopX1__loops_lt_3X_pathXit__name__langX() {
     val p = g.V.out.loop(1, {lb: LoopBundle[Vertex] => lb.loops < 3}).path({v: Vertex => v}, {v: Vertex => v("name")}, {v: Vertex => v("lang")})
-    super.test_g_V_out_loopX1__loops_lt_3X_pathsXit__name__langX(p)
+    super.test_g_V_out_loopX1__loops_lt_3X_pathXit__name__langX(p)
   }*/
 }
