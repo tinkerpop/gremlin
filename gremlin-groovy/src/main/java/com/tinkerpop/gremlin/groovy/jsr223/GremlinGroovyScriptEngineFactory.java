@@ -13,7 +13,7 @@ import java.util.List;
 public class GremlinGroovyScriptEngineFactory implements ScriptEngineFactory {
 
     private static final String ENGINE_NAME = "gremlin-groovy";
-    private static final String LANGUAGE_NAME = "gremlin";
+    private static final String LANGUAGE_NAME = "gremlin-groovy";
     private static final String VERSION_NUMBER = Tokens.VERSION;
     private static final String PLAIN = "plain";
     private static final List<String> EXTENSIONS = Arrays.asList("groovy");
