@@ -256,7 +256,7 @@ def next(): E = pipeline.next()*/
   }
 
   override def sideEffect(sideEffectFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
-    super.sideEffect(sideEffectFunction).asInstanceOf[GremlinScalaPipeline[S,E]]
+    super.sideEffect(sideEffectFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   /*def table(table: Table, stepNames: Collection[String], columnFunctions: PipeFunction[_, _]*): GremlinPipeline[S, E] = {
@@ -273,21 +273,20 @@ def next(): E = pipeline.next()*/
 
   def table: GremlinPipeline[S, E] = {
     return this.add(new TablePipe[_](new Table, null, FluentUtility.getAsPipes(this)))
-  }
+  }*/
 
   ///////////////////////
   /// TRANSFORM PIPES ///
   ///////////////////////
-  def gather: GremlinPipeline[S, List[_]] = {
-    return this.add(new GatherPipe[_])
+  override def gather: GremlinScalaPipeline[S, JList[_]] = {
+    super.gather().asInstanceOf[GremlinScalaPipeline[S, JList[_]]];
   }
 
-  def gather(function: PipeFunction[List[_], _]): GremlinPipeline[S, _] = {
-    this.addPipe(new GatherPipe[_])
-    return this.add(new TransformFunctionPipe[_, _](function))
+  override def gather(function: PipeFunction[JList[_], _]): GremlinScalaPipeline[S, _] = {
+    super.gather(function).asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
-  def _: GremlinPipeline[S, E] =
+  /*def _: GremlinPipeline[S, E] =
   {
     return this.add(new IdentityPipe[_])
   }
