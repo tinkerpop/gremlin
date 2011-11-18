@@ -231,29 +231,29 @@ def next(): E = pipeline.next()*/
     super.optional(pipe).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  /*def groupCount(map: Map[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinPipeline[S, E] = {
-    return this.add(new GroupCountFunctionPipe[_, _](map, keyFunction, valueFunction))
+  override def groupCount(map: JMap[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinScalaPipeline[S, E] = {
+    super.groupCount(map, keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def groupCount(keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinPipeline[S, E] = {
-    return this.add(new GroupCountFunctionPipe[_, _](keyFunction, valueFunction))
+  override def groupCount(keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinScalaPipeline[S, E] = {
+    super.groupCount(keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def groupCount(map: Map[_, Number], keyFunction: PipeFunction[_, _]): GremlinPipeline[S, E] = {
-    return this.add(new GroupCountFunctionPipe[_, _](map, keyFunction, null))
+  override def groupCount(map: JMap[_, Number], keyFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+    super.groupCount(map, keyFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def groupCount(keyFunction: PipeFunction[_, _]): GremlinPipeline[S, E] = {
-    return this.add(new GroupCountFunctionPipe[_, _](keyFunction, null))
+  override def groupCount(keyFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+    super.groupCount(keyFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def groupCount(map: Map[_, Number]): GremlinPipeline[S, E] = {
-    return this.add(new GroupCountPipe[_](map))
+  override def groupCount(map: JMap[_, Number]): GremlinScalaPipeline[S, E] = {
+    super.groupCount(map).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def groupCount: GremlinPipeline[S, E] = {
-    return this.add(new GroupCountPipe[_])
-  }*/
+  override def groupCount: GremlinScalaPipeline[S, E] = {
+    super.groupCount().asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
 
   override def sideEffect(sideEffectFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
     super.sideEffect(sideEffectFunction).asInstanceOf[GremlinScalaPipeline[S,E]]

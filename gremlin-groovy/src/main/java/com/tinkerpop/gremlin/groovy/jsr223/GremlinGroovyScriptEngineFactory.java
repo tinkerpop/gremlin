@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinScriptEngineFactory implements ScriptEngineFactory {
+public class GremlinGroovyScriptEngineFactory implements ScriptEngineFactory {
 
     private static final String ENGINE_NAME = "gremlin";
     private static final String LANGUAGE_NAME = "gremlin";
@@ -80,6 +80,6 @@ public class GremlinScriptEngineFactory implements ScriptEngineFactory {
     }
 
     public ScriptEngine getScriptEngine() {
-        return new GremlinScriptEngine();
+        return new GremlinGroovyScriptEngine();
     }
 }

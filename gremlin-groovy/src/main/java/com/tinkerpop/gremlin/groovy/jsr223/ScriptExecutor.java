@@ -22,7 +22,7 @@ public class ScriptExecutor {
     }
 
     protected static void evaluate(final Reader reader, final List<String> arguments) {
-        final GremlinScriptEngine engine = new GremlinScriptEngine();
+        final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
 
         final Bindings bindings = engine.createBindings();
         if (arguments.size() > 0) {

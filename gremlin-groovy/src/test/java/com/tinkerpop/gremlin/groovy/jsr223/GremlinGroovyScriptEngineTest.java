@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinScriptEngineTest extends TestCase {
+public class GremlinGroovyScriptEngineTest extends TestCase {
 
     public void testGremlinLoading() throws Exception {
-        ScriptEngine engine = new GremlinScriptEngine();
+        ScriptEngine engine = new GremlinGroovyScriptEngine();
         List list = new ArrayList();
         engine.put("g", TinkerGraphFactory.createTinkerGraph());
         engine.put("list", list);
@@ -24,12 +24,12 @@ public class GremlinScriptEngineTest extends TestCase {
     }
 
     public void testImports() throws Exception {
-        ScriptEngine engine = new GremlinScriptEngine();
+        ScriptEngine engine = new GremlinGroovyScriptEngine();
         engine.eval("new TinkerGraph()");
     }
 
     public void testBindings() throws Exception {
-        ScriptEngine engine = new GremlinScriptEngine();
+        ScriptEngine engine = new GremlinGroovyScriptEngine();
         assertTrue(engine.eval("g = TinkerGraphFactory.createTinkerGraph()") instanceof TinkerGraph);
         assertTrue(engine.get("g") instanceof TinkerGraph);
         assertEquals(engine.eval("g.v(1)"), TinkerGraphFactory.createTinkerGraph().getVertex(1));

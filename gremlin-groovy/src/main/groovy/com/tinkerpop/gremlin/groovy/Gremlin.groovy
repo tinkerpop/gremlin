@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.groovy;
 
 
 import com.tinkerpop.gremlin.Tokens
-import com.tinkerpop.gremlin.groovy.jsr223.GremlinScriptEngine
+import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine
 import com.tinkerpop.gremlin.groovy.loaders.ElementLoader
 import com.tinkerpop.gremlin.groovy.loaders.GraphLoader
 import com.tinkerpop.gremlin.groovy.loaders.IndexLoader
@@ -18,7 +18,7 @@ import javax.script.SimpleBindings
 class Gremlin {
 
     private static final Set<String> steps = new HashSet<String>();
-    private static final GremlinScriptEngine engine = new GremlinScriptEngine();
+    private static final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
 
     public static void load() {
 

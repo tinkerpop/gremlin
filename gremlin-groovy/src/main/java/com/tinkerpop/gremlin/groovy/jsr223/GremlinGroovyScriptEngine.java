@@ -14,11 +14,11 @@ import java.io.StringReader;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinScriptEngine extends GroovyScriptEngineImpl {
+public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
 
     private String imports;
 
-    public GremlinScriptEngine() {
+    public GremlinGroovyScriptEngine() {
         super();
         Gremlin.load();
         StringBuilder sb = new StringBuilder();
