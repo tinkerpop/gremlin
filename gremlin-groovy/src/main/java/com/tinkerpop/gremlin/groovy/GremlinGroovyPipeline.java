@@ -83,7 +83,7 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> sideEffect(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.sideEffect(new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, E>) this.sideEffect(new GroovyPipeFunction<E,Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, ?> step(final Closure closure) {

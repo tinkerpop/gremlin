@@ -3,10 +3,10 @@ package com.tinkerpop.gremlin.scala
 import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.pipes.filter._
-import java.util.{Map => JMap, List => JList, Iterator => JIterator}
 import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe}
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
+import java.util.{Map => JMap, List => JList, Iterator => JIterator}
 
 /**Adds convenience methods to [[com.tinkerpop.gremline.pipes.GremlinPipeline]]. */
 class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with Iterator[E]*/ {
@@ -14,6 +14,8 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
   /*def hasNext: Boolean = pipeline.hasNext
 
 def next(): E = pipeline.next()*/
+
+  //def apply(key:String) = super.property(key);
 
   def out: GremlinScalaPipeline[S, Vertex] =
     super.out().asInstanceOf[GremlinScalaPipeline[S, Vertex]]
@@ -198,39 +200,38 @@ def next(): E = pipeline.next()*/
     super.simplePath().asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  /*
   /////////////////////////
   /// SIDE-EFFECT PIPES ///
   /////////////////////////
-  def aggregate(aggregate: Collection[_]): GremlinPipeline[S, E] = {
-    return this.add(new AggregatePipe[_](aggregate))
+  override def aggregate(aggregate: java.util.Collection[_]): GremlinScalaPipeline[S, E] = {
+    super.aggregate(aggregate).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def aggregate(aggregate: Collection[_], aggregateFunction: PipeFunction[_, _]): GremlinPipeline[S, E] = {
-    return this.add(new AggregatePipe[_](aggregate, aggregateFunction))
+  override def aggregate(aggregate: java.util.Collection[_], aggregateFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+    super.aggregate(aggregate, aggregateFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def aggregate: GremlinPipeline[S, E] = {
-    return this.aggregate(new ArrayList[_])
+  override def aggregate(): GremlinScalaPipeline[S, E] = {
+    super.aggregate(new java.util.ArrayList[Object]()).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def aggregate(aggregateFunction: PipeFunction[_, _]): GremlinPipeline[S, E] = {
-    return this.aggregate(new ArrayList[_], aggregateFunction)
+  override def aggregate(aggregateFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+    super.aggregate(new java.util.ArrayList[Object](), aggregateFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def optional(numberedStep: Int): GremlinPipeline[S, _] = {
-    return this.add(new OptionalPipe[_](new Pipeline[_, _](FluentUtility.removePreviousPipes(this, numberedStep))))
+  override def optional(numberedStep: Int): GremlinScalaPipeline[S, _] = {
+    super.optional(numberedStep).asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
-  def optional(namedStep: String): GremlinPipeline[S, _] = {
-    return this.add(new OptionalPipe[_](new Pipeline[_, _](FluentUtility.removePreviousPipes(this, namedStep))))
+  override def optional(namedStep: String): GremlinScalaPipeline[S, _] = {
+    super.optional(namedStep).asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
-  def optional(pipe: Pipe[_, _]): GremlinPipeline[S, _] = {
-    return this.add(new OptionalPipe[_](pipe))
+  override def optional(pipe: Pipe[E, _]): GremlinScalaPipeline[S, E] = {
+    super.optional(pipe).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  def groupCount(map: Map[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinPipeline[S, E] = {
+  /*def groupCount(map: Map[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinPipeline[S, E] = {
     return this.add(new GroupCountFunctionPipe[_, _](map, keyFunction, valueFunction))
   }
 
@@ -252,13 +253,13 @@ def next(): E = pipeline.next()*/
 
   def groupCount: GremlinPipeline[S, E] = {
     return this.add(new GroupCountPipe[_])
+  }*/
+
+  override def sideEffect(sideEffectFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+    super.sideEffect(sideEffectFunction).asInstanceOf[GremlinScalaPipeline[S,E]]
   }
 
-  def sideEffect(sideEffectFunction: PipeFunction[_, _]): GremlinPipeline[S, E] = {
-    return this.add(new SideEffectFunctionPipe[_](sideEffectFunction))
-  }
-
-  def table(table: Table, stepNames: Collection[String], columnFunctions: PipeFunction[_, _]*): GremlinPipeline[S, E] = {
+  /*def table(table: Table, stepNames: Collection[String], columnFunctions: PipeFunction[_, _]*): GremlinPipeline[S, E] = {
     return this.add(new TablePipe[_](table, stepNames, FluentUtility.getAsPipes(this), columnFunctions))
   }
 
@@ -312,11 +313,11 @@ def next(): E = pipeline.next()*/
 
   /*def scatter: GremlinPipeline[S, _] = {
     return this.add(new ScatterPipe[_, _])
-  }
-
-  def cap: GremlinPipeline[S, _] = {
-    return this.add(new SideEffectCapPipe[_, _](FluentUtility.removePreviousPipes(this, 1).get(0).asInstanceOf[SideEffectPipe[_, _]]))
   }*/
+
+  override def cap: GremlinScalaPipeline[S, _] = {
+    super.cap().asInstanceOf[GremlinScalaPipeline[S, _]];
+  }
 
   def transform[F](function: PipeFunction[E, F]): GremlinScalaPipeline[S, F] =
     super.transform(function).asInstanceOf[GremlinScalaPipeline[S, F]]

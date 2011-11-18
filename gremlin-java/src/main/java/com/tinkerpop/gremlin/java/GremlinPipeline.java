@@ -393,7 +393,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param sideEffectFunction the function of the pipe
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, E> sideEffect(final PipeFunction sideEffectFunction) {
+    public GremlinPipeline<S, E> sideEffect(final PipeFunction<E,?> sideEffectFunction) {
         return this.add(new SideEffectFunctionPipe(sideEffectFunction));
     }
 
