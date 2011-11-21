@@ -6,7 +6,7 @@ cd %CD%\gremlin-groovy\target\
 set TARGET=
 
 for /f "tokens=*" %%a in ('dir /b /ad') do (
-if exist "%%a\bin\gremlin.bat" set TARGET=%%a
+if exist "%%a\bin\gremlin-groovy.bat" set TARGET=%%a
 )
 
 cd %TARGET%\bin\
