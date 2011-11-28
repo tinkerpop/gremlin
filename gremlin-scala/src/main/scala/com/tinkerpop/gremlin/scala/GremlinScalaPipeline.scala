@@ -203,19 +203,19 @@ def next(): E = pipeline.next()*/
   /////////////////////////
   /// SIDE-EFFECT PIPES ///
   /////////////////////////
-  override def aggregate(aggregate: java.util.Collection[_]): GremlinScalaPipeline[S, E] = {
+  override def aggregate(aggregate: java.util.Collection[E]): GremlinScalaPipeline[S, E] = {
     super.aggregate(aggregate).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def aggregate(aggregate: java.util.Collection[_], aggregateFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+  override def aggregate(aggregate: java.util.Collection[_], aggregateFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
     super.aggregate(aggregate, aggregateFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def aggregate(): GremlinScalaPipeline[S, E] = {
-    super.aggregate(new java.util.ArrayList[Object]()).asInstanceOf[GremlinScalaPipeline[S, E]];
+    super.aggregate(new java.util.ArrayList[E]()).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def aggregate(aggregateFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+  override def aggregate(aggregateFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
     super.aggregate(new java.util.ArrayList[Object](), aggregateFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -257,6 +257,22 @@ def next(): E = pipeline.next()*/
 
   override def sideEffect(sideEffectFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
     super.sideEffect(sideEffectFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
+  }
+
+  override def store(storage: java.util.Collection[E]): GremlinScalaPipeline[S, E] = {
+    super.store(storage).asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
+
+  override def store(storage: java.util.Collection[_], storageFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+    super.aggregate(storage, storageFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
+
+  override def store(): GremlinScalaPipeline[S, E] = {
+    super.store(new java.util.ArrayList[E]()).asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
+
+  override def store(storageFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+    super.store(new java.util.ArrayList[Object](), storageFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   /*def table(table: Table, stepNames: Collection[String], columnFunctions: PipeFunction[_, _]*): GremlinPipeline[S, E] = {

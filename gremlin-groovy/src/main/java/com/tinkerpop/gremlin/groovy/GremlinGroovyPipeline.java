@@ -1,10 +1,7 @@
 package com.tinkerpop.gremlin.groovy;
 
-import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Index;
 import com.tinkerpop.gremlin.java.GremlinFluentPipeline;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
-import com.tinkerpop.gremlin.pipes.transform.IndexElementsPipe;
 import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.Table;
 import groovy.lang.Closure;
@@ -83,11 +80,19 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> sideEffect(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.sideEffect(new GroovyPipeFunction<E,Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) this.sideEffect(new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, ?> step(final Closure closure) {
         return (GremlinGroovyPipeline<S, ?>) this.step(new GroovyPipeFunction(closure));
+    }
+
+    public GremlinGroovyPipeline<S, E> store(final Closure closure) {
+        return (GremlinGroovyPipeline<S, E>) this.store(new GroovyPipeFunction(closure));
+    }
+
+    public GremlinGroovyPipeline<S, E> store(final Collection storage, final Closure closure) {
+        return (GremlinGroovyPipeline<S, E>) this.aggregate(storage, new GroovyPipeFunction(closure));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Closure... closures) {

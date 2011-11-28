@@ -1,0 +1,32 @@
+package com.tinkerpop.gremlin.java.sideeffect;
+
+import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.gremlin.java.GremlinPipeline;
+import com.tinkerpop.gremlin.test.UtilitiesTest;
+import com.tinkerpop.pipes.PipeFunction;
+
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
+public class StoreStepTest extends com.tinkerpop.gremlin.test.sideeffect.StoreStepTest {
+
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+
+    public void testCompliance() {
+        UtilitiesTest.testCompliance(this.getClass());
+    }
+
+    public void test_g_V_propertyXnameX_store_cap() {
+        super.test_g_V_propertyXnameX_store_cap(new GremlinPipeline(g).V().property("name").store().cap());
+    }
+
+    public void test_g_V_storeXnameX_cap() {
+        super.test_g_V_storeXnameX_cap(new GremlinPipeline(g).V().store(new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }).cap());
+    }
+}

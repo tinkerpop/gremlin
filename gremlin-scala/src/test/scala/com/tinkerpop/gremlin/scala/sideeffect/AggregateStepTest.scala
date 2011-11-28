@@ -21,7 +21,7 @@ class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.AggregateS
   }
 
   def test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX() {
-    val x = new ArrayList();
+    val x = new ArrayList[Vertex]();
     super.test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(g.v(1).start.aggregate(x).out("created").in("created").except(x))
   }
 

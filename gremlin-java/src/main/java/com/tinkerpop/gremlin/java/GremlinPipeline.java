@@ -53,6 +53,7 @@ import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
+import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
@@ -200,11 +201,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     /// BRANCH PIPES ///
     ////////////////////
 
-    public GremlinPipeline<S, ?> copySplit(final Pipe<E,?>... pipes) {
+    public GremlinPipeline<S, ?> copySplit(final Pipe<E, ?>... pipes) {
         return this.add(new CopySplitPipe(pipes));
     }
 
-    public GremlinPipeline<S, ?> exhaustMerge(final Pipe<E,?>... pipes) {
+    public GremlinPipeline<S, ?> exhaustMerge(final Pipe<E, ?>... pipes) {
         return this.add(new ExhaustMergePipe(pipes));
     }
 
@@ -212,7 +213,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
-    public GremlinPipeline<S, ?> fairMerge(final Pipe<E,?>... pipes) {
+    public GremlinPipeline<S, ?> fairMerge(final Pipe<E, ?>... pipes) {
         return this.add(new FairMergePipe(pipes));
     }
 
@@ -220,7 +221,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
     }
 
-    public GremlinPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E,?> thenFunction, final PipeFunction<E,?> elseFunction) {
+    public GremlinPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction) {
         return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
     }
 
@@ -232,7 +233,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
     }
 
-    public GremlinPipeline<S, E> loop(final Pipe<E,E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
+    public GremlinPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(pipe, whileFunction));
     }
 
@@ -244,7 +245,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
     }
 
-    public GremlinPipeline<S, E> loop(final Pipe<E,E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
+    public GremlinPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(pipe, whileFunction, emitFunction));
     }
 
@@ -264,7 +265,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public GremlinPipeline<S, E> back(final Pipe<E,?> pipe) {
+    public GremlinPipeline<S, E> back(final Pipe<E, ?> pipe) {
         return this.add(new BackFilterPipe(pipe));
     }
 
@@ -308,19 +309,19 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     /// SIDE-EFFECT PIPES ///
     /////////////////////////
 
-    public GremlinPipeline<S, E> aggregate(final Collection aggregate) {
-        return this.add(new AggregatePipe(aggregate));
+    public GremlinPipeline<S, E> aggregate(final Collection<E> aggregate) {
+        return this.add(new AggregatePipe<E>(aggregate));
     }
 
-    public GremlinPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction aggregateFunction) {
-        return this.add(new AggregatePipe(aggregate, aggregateFunction));
+    public GremlinPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E,?> aggregateFunction) {
+        return this.add(new AggregatePipe<E>(aggregate, aggregateFunction));
     }
 
     public GremlinPipeline<S, E> aggregate() {
-        return this.aggregate(new ArrayList());
+        return this.aggregate(new ArrayList<E>());
     }
 
-    public GremlinPipeline<S, E> aggregate(final PipeFunction aggregateFunction) {
+    public GremlinPipeline<S, E> aggregate(final PipeFunction<E,?> aggregateFunction) {
         return this.aggregate(new ArrayList(), aggregateFunction);
     }
 
@@ -332,7 +333,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public GremlinPipeline<S, E> optional(final Pipe<E,?> pipe) {
+    public GremlinPipeline<S, E> optional(final Pipe<E, ?> pipe) {
         return this.add(new OptionalPipe(pipe));
     }
 
@@ -344,97 +345,54 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
     }
 
-
-    /**
-     * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
-     *
-     * @param map         a provided count map
-     * @param keyFunction the key function to determine map key
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction) {
         return this.add(new GroupCountFunctionPipe(map, keyFunction, null));
     }
 
-    /**
-     * Add a GroupCountPipe or GroupCountFunctionPipe to the end of the Pipeline.
-     *
-     * @param keyFunction the key function to determine map key
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> groupCount(final PipeFunction keyFunction) {
         return this.add(new GroupCountFunctionPipe(keyFunction, null));
     }
 
-
-    /**
-     * Add a GroupCountPipe to the end of the Pipeline.
-     *
-     * @param map a provided count map
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> groupCount(final Map<?, Number> map) {
         return this.add(new GroupCountPipe(map));
     }
 
-    /**
-     * Add a GroupCountPipe to the end of the Pipeline.
-     *
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> groupCount() {
         return this.add(new GroupCountPipe());
     }
 
-
-    /**
-     * Add a SideEffectFunctionPipe to the end of the Pipeline.
-     *
-     * @param sideEffectFunction the function of the pipe
-     * @return the extended Pipeline
-     */
-    public GremlinPipeline<S, E> sideEffect(final PipeFunction<E,?> sideEffectFunction) {
+    public GremlinPipeline<S, E> sideEffect(final PipeFunction<E, ?> sideEffectFunction) {
         return this.add(new SideEffectFunctionPipe(sideEffectFunction));
     }
 
-    /**
-     * Add a TablePipe to the end of the Pipeline.
-     *
-     * @param table           the table to fill
-     * @param stepNames       the named steps to include in the filling
-     * @param columnFunctions the post-processing function for each column
-     * @return the extended Pipeline
-     */
+    public GremlinPipeline<S, E> store(final Collection<E> storage) {
+        return this.add(new StorePipe<E>(storage));
+    }
+
+    public GremlinPipeline<S, E> store(final Collection storage, final PipeFunction<E,?> storageFunction) {
+        return this.add(new StorePipe<E>(storage, storageFunction));
+    }
+
+    public GremlinPipeline<S, E> store() {
+        return this.store(new ArrayList<E>());
+    }
+
+    public GremlinPipeline<S, E> store(final PipeFunction<E,?> storageFunction) {
+        return this.store(new ArrayList(), storageFunction);
+    }
+
     public GremlinPipeline<S, E> table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
         return this.add(new TablePipe(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
-    /**
-     * Add a TablePipe to the end of the Pipeline.
-     *
-     * @param table           the table to fill
-     * @param columnFunctions the post-processing function for each column
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions) {
         return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
-    /**
-     * Add a TablePipe to the end of the Pipeline.
-     *
-     * @param table the table to fill
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> table(final Table table) {
         return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this)));
     }
 
-    /**
-     * Add a TablePipe to the end of the Pipeline.
-     *
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> table() {
         return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this)));
     }
@@ -456,44 +414,18 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new IdentityPipe());
     }
 
-    /**
-     * Add a MemoizePipe to the end of the Pipeline.
-     *
-     * @param namedStep the name of the step previous to memoize to
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> memoize(final String namedStep) {
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    /**
-     * Add a MemoizePipe to the end of the Pipeline.
-     *
-     * @param numberedStep the number of the step previous to memoize to
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> memoize(final int numberedStep) {
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
 
-    /**
-     * Add a MemoizePipe to the end of the Pipeline.
-     *
-     * @param namedStep the name of the step previous to memoize to
-     * @param map       the memoization map
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> memoize(final String namedStep, final Map map) {
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), map));
     }
 
-    /**
-     * Add a MemoizePipe to the end of the Pipeline.
-     *
-     * @param numberedStep the number of the step previous to memoize to
-     * @param map          the memoization map
-     * @return the extended Pipeline
-     */
     public GremlinPipeline<S, E> memoize(final int numberedStep, final Map map) {
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
     }

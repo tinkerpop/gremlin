@@ -42,6 +42,7 @@ h3. Version 1.4 (NOT OFFICIALLY RELEASED YET)
 ** Renamed @uniqueObject@ step to @dedup@
 ** Renamed @orFilter@ and @andFilter@ to @or@ and @and@, respectively
 ** Renamed @uniquePath@ to @simplePath@
+* Added @store@ step to support lazily loading of objects into collection
 * @gremlin-groovy@ updates
 ** No more @_()@ required off of graph-based objects
 ** No more @[[ ]]@ filtering supported

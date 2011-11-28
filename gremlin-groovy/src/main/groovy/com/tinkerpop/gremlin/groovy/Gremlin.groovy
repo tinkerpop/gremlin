@@ -40,7 +40,8 @@ class Gremlin {
         Gremlin.addStep(Tokens.GROUPCOUNT);
         Gremlin.addStep(Tokens.OPTIONAL)
         Gremlin.addStep(Tokens.TABLE);
-        Gremlin.addStep(Tokens.AS)
+        Gremlin.addStep(Tokens.STORE);
+        Gremlin.addStep(Tokens.AS);
         // transform steps
         Gremlin.addStep(Tokens.TRANSFORM);
         Gremlin.addStep(Tokens._);
