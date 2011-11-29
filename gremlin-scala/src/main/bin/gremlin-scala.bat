@@ -11,7 +11,7 @@
 set LIBDIR=..\lib
 
 
-set CP=%CP%;
+set CP=%CLASSPATH%
 
 
 for %%i in (%LIBDIR%\*.jar) do call :concatsep %%i

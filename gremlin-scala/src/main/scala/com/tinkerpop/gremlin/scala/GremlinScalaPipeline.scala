@@ -305,30 +305,30 @@ def next(): E = pipeline.next()*/
   /*def _: GremlinPipeline[S, E] =
   {
     return this.add(new IdentityPipe[_])
-  }
-
-  def memoize(namedStep: String): GremlinPipeline[S, E] = {
-    return this.add(new MemoizePipe[_, _](new Pipeline[_, _](FluentUtility.removePreviousPipes(this, namedStep))))
-  }
-
-  def memoize(numberedStep: Int): GremlinPipeline[S, E] = {
-    return this.add(new MemoizePipe[_, _](new Pipeline[_, _](FluentUtility.removePreviousPipes(this, numberedStep))))
-  }
-
-  def memoize(namedStep: String, map: Map[_, _]): GremlinPipeline[S, E] = {
-    return this.add(new MemoizePipe[_, _](new Pipeline[_, _](FluentUtility.removePreviousPipes(this, namedStep)), map))
-  }
-
-  def memoize(numberedStep: Int, map: Map[_, _]): GremlinPipeline[S, E] = {
-    return this.add(new MemoizePipe[_, _](new Pipeline[_, _](FluentUtility.removePreviousPipes(this, numberedStep)), map))
   }*/
+
+  override def memoize(namedStep: String): GremlinScalaPipeline[S, E] = {
+    super.memoize(namedStep).asInstanceOf[GremlinScalaPipeline[S,E]];
+  }
+
+  override def memoize(numberedStep: Int): GremlinScalaPipeline[S, E] = {
+    super.memoize(numberedStep).asInstanceOf[GremlinScalaPipeline[S,E]];
+  }
+
+  override def memoize(namedStep: String, map: JMap[_, _]): GremlinScalaPipeline[S, E] = {
+    super.memoize(namedStep, map).asInstanceOf[GremlinScalaPipeline[S,E]];
+  }
+
+  override def memoize(numberedStep: Int, map: JMap[_, _]): GremlinScalaPipeline[S, E] = {
+    super.memoize(numberedStep, map).asInstanceOf[GremlinScalaPipeline[S,E]];
+  }
 
   override def path(pathFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, JList[_]] =
     super.path(pathFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
 
-  /*def scatter: GremlinPipeline[S, _] = {
-    return this.add(new ScatterPipe[_, _])
-  }*/
+  override def scatter: GremlinScalaPipeline[S, _] = {
+    super.scatter().asInstanceOf[GremlinScalaPipeline[S,_]]
+  }
 
   override def cap: GremlinScalaPipeline[S, _] = {
     super.cap().asInstanceOf[GremlinScalaPipeline[S, _]];
@@ -340,11 +340,12 @@ def next(): E = pipeline.next()*/
   //////////////////////
   /// UTILITY PIPES ///
   //////////////////////
-  /*def as(name: String): GremlinPipeline[S, E] = {
-    return this.add(new AsPipe[_, _](name, FluentUtility.removePreviousPipes(this, 1).get(0)))
+
+  override def as(name: String): GremlinScalaPipeline[S, E] = {
+    super.as(name).asInstanceOf[GremlinScalaPipeline[S,E]]
   }
 
-  def start(starts: AnyRef): GremlinPipeline[S, E] = {
+  /*def start(starts: AnyRef): GremlinPipeline[S, E] = {
     this.add(new StartPipe[_](starts))
     FluentUtility.setStarts(this, starts)
     return this
