@@ -313,7 +313,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new AggregatePipe<E>(aggregate));
     }
 
-    public GremlinPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E,?> aggregateFunction) {
+    public GremlinPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction) {
         return this.add(new AggregatePipe<E>(aggregate, aggregateFunction));
     }
 
@@ -321,7 +321,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.aggregate(new ArrayList<E>());
     }
 
-    public GremlinPipeline<S, E> aggregate(final PipeFunction<E,?> aggregateFunction) {
+    public GremlinPipeline<S, E> aggregate(final PipeFunction<E, ?> aggregateFunction) {
         return this.aggregate(new ArrayList(), aggregateFunction);
     }
 
@@ -369,7 +369,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new StorePipe<E>(storage));
     }
 
-    public GremlinPipeline<S, E> store(final Collection storage, final PipeFunction<E,?> storageFunction) {
+    public GremlinPipeline<S, E> store(final Collection storage, final PipeFunction<E, ?> storageFunction) {
         return this.add(new StorePipe<E>(storage, storageFunction));
     }
 
@@ -377,7 +377,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.store(new ArrayList<E>());
     }
 
-    public GremlinPipeline<S, E> store(final PipeFunction<E,?> storageFunction) {
+    public GremlinPipeline<S, E> store(final PipeFunction<E, ?> storageFunction) {
         return this.store(new ArrayList(), storageFunction);
     }
 
@@ -387,6 +387,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions) {
         return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
+    }
+
+    public GremlinPipeline<S, E> table(final PipeFunction... columnFunctions) {
+        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
     public GremlinPipeline<S, E> table(final Table table) {
@@ -447,7 +451,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     }
 
-    public <T> GremlinPipeline<S, T> transform(final PipeFunction<E,T> function) {
+    public <T> GremlinPipeline<S, T> transform(final PipeFunction<E, T> function) {
         return this.add(new TransformFunctionPipe(function));
     }
 

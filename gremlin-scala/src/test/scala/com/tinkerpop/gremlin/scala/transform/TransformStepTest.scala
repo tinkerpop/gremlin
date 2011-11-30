@@ -13,7 +13,7 @@ class TransformStepTest extends com.tinkerpop.gremlin.test.transform.TransformSt
   }
 
   def test_g_v1_transformXnameX() {
-    super.test_g_v1_transformXnameX(g.v(1).start.transform({v: Vertex => v.getProperty("name").toString}))
+    super.test_g_v1_transformXnameX(g.v(1).->.transform({v: Vertex => v.getProperty("name").toString}))
   }
 
   def test_g_v1_outE_label_transformXlengthX() {

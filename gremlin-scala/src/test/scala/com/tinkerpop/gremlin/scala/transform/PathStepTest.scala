@@ -14,7 +14,7 @@ class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepTest {
   }
 
   def test_g_v1_propertyXnameX_path() {
-    super.test_g_v1_propertyXnameX_path(g.v(1).start.property("name").path())
+    super.test_g_v1_propertyXnameX_path(g.v(1).->.property("name").path())
   }
 
   def test_g_v1_out_pathXage__nameX() {

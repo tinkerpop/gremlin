@@ -12,8 +12,7 @@ import com.tinkerpop.blueprints.pgm.{Graph, Vertex}
 
 class StoreStepTest extends com.tinkerpop.gremlin.test.sideeffect.StoreStepTest {
 
-   val g = TinkerGraphFactory.createTinkerGraph();
-
+  val g = TinkerGraphFactory.createTinkerGraph();
 
   override def testCompliance() {
     ComplianceTest.testCompliance(this.getClass);

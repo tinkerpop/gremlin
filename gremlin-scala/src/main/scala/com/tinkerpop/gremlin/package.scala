@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin
 
 import com.tinkerpop.pipes.PipeFunction
 import _root_.java.lang.{Boolean => JBoolean}
+import com.tinkerpop.pipes.util.EmptyIterator
 
 /**Implicit conversions that make Gremlin easier to use in Scala. Users can just `import com.tinkerpop.gremlin.scala._` */
 package object scala {
@@ -23,5 +24,8 @@ package object scala {
   implicit val wrapScalaGraph = ScalaGraph.wrap _
 
   implicit def wrapScalaLoopBundle[T] = ScalaLoopBundle.wrap[T] _ //must be a def because of the type parameter
+
+  def ->[S] :GremlinScalaPipeline[S,S] = new GremlinScalaPipeline[S,S]()
+
 }
 

@@ -112,15 +112,15 @@ class GraphLoaderTest extends TestCase {
         Vertex v2 = g.addVertex(null);
         assertEquals(v2.getPropertyKeys().size(), 0);
 
-	// JSON tests
+        // JSON tests
         Vertex v4 = g.addVertex(null, '{"name": "marko", "age": 31}');
         assertEquals(v4.getProperty('name'), 'marko');
         assertEquals(v4.getProperty('age'), 31);
 
-	Vertex v5 = g.addVertex('{"name": "pavel", "location": "belarus"}');
+        Vertex v5 = g.addVertex('{"name": "pavel", "location": "belarus"}');
         assertEquals(v5.getProperty('name'), 'pavel');
         assertEquals(v5.getProperty('location'), 'belarus');
-	
+
         Edge e0 = g.addEdge(null, v0, v1, 'knows', [weight: 0.5f]);
         assertEquals(e0.getOutVertex(), v0);
         assertEquals(e0.getInVertex(), v1);
@@ -146,7 +146,7 @@ class GraphLoaderTest extends TestCase {
         assertEquals(e3.getLabel(), 'blah');
         assertEquals(e3.getPropertyKeys().size(), 0);
 
-	// JSON tests
+        // JSON tests
         Edge e4 = g.addEdge(null, v0, v1, 'knows', '{"weight": 0.5}');
         assertEquals(e4.getOutVertex(), v0);
         assertEquals(e4.getInVertex(), v1);

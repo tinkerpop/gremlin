@@ -10,7 +10,8 @@ import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 import java.util.{Map => JMap, List => JList, Iterator => JIterator, Collection => JCollection, ArrayList => JArrayList}
 
 /**Adds convenience methods to [[com.tinkerpop.gremline.pipes.GremlinPipeline]]. */
-class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with Iterator[E]*/ {
+//class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) {
+class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   //def apply(key:String) = super.property(key);
 
@@ -273,19 +274,23 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
   }
 
   override def table(table: Table, stepNames: JCollection[String], columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
-    super.table(table, stepNames, columnFunctions).asInstanceOf[GremlinScalaPipeline[S,E]]
+    super.table(table, stepNames, columnFunctions).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   override def table(table: Table, columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
-    super.table(table, columnFunctions).asInstanceOf[GremlinScalaPipeline[S,E]]
+    super.table(table, columnFunctions).asInstanceOf[GremlinScalaPipeline[S, E]]
+  }
+
+  override def table(columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
+    super.table(columnFunctions).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   override def table(table: Table): GremlinScalaPipeline[S, E] = {
-    super.table(table).asInstanceOf[GremlinScalaPipeline[S,E]]
+    super.table(table).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   override def table: GremlinScalaPipeline[S, E] = {
-    super.table().asInstanceOf[GremlinScalaPipeline[S,E]]
+    super.table().asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   ///////////////////////

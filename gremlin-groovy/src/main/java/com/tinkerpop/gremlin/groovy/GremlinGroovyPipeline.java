@@ -96,7 +96,7 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> table(final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.table(new Table(), GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) this.table(GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Table table, final Closure... closures) {
