@@ -14,7 +14,6 @@ public class Imports {
         // gremlin
         imports.add("com.tinkerpop.gremlin.*");
         imports.add("com.tinkerpop.gremlin.java.*");
-        imports.add("com.tinkerpop.gremlin.groovy.*");
         imports.add("com.tinkerpop.gremlin.pipes.*");
         imports.add("com.tinkerpop.gremlin.pipes.filter.*");
         imports.add("com.tinkerpop.gremlin.pipes.transform.*");
