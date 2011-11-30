@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.pipes.filter._
 import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe}
+import com.tinkerpop.pipes.util.Table
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 import java.util.{Map => JMap, List => JList, Iterator => JIterator, Collection => JCollection, ArrayList => JArrayList}
 
@@ -271,7 +272,7 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
     super.store(new JArrayList[Object](), storageFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  /*override def table(table: Table, stepNames: JCollection[String], columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
+  override def table(table: Table, stepNames: JCollection[String], columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
     super.table(table, stepNames, columnFunctions).asInstanceOf[GremlinScalaPipeline[S,E]]
   }
 
@@ -285,7 +286,7 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
 
   override def table: GremlinScalaPipeline[S, E] = {
     super.table().asInstanceOf[GremlinScalaPipeline[S,E]]
-  }*/
+  }
 
   ///////////////////////
   /// TRANSFORM PIPES ///
