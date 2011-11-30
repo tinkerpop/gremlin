@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.groovy.sideeffect
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.groovy.Gremlin
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,7 +16,7 @@ class SideEffectStepTest extends com.tinkerpop.gremlin.test.sideeffect.SideEffec
     }
 
     public void testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass());
+        ComplianceTest.testCompliance(this.getClass());
     }
 
     public void test_g_v1_sideEffectXstore_aX_propertyXnameX() {

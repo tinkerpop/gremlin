@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.groovy.branch
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.groovy.Gremlin
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,7 +16,7 @@ class IfThenElseStepTest extends com.tinkerpop.gremlin.test.branch.IfThenElseSte
     }
 
     public void testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass());
+        ComplianceTest.testCompliance(this.getClass());
     }
 
     public void test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name() {

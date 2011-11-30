@@ -2,14 +2,14 @@ package com.tinkerpop.gremlin.scala
 
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 import java.util.{Iterator => JIterator}
 
 class FunctionStepTest extends com.tinkerpop.gremlin.test.FunctionStepTest {
   val g = TinkerGraphFactory.createTinkerGraph()
 
   override def testCompliance() {
-    UtilitiesTest.testCompliance(this.getClass)
+    ComplianceTest.testCompliance(this.getClass)
   }
 
   def test_g_v1_out_stepXnext_nameX() {

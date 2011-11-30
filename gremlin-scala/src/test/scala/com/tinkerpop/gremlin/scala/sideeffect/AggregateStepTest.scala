@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.scala.sideeffect
 
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 import com.tinkerpop.gremlin.scala._
 import java.util.ArrayList
 import com.tinkerpop.pipes.Pipe
@@ -17,7 +17,7 @@ class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.AggregateS
 
 
   override def testCompliance() {
-    UtilitiesTest.testCompliance(this.getClass);
+    ComplianceTest.testCompliance(this.getClass);
   }
 
   def test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX() {

@@ -447,7 +447,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     }
 
-    public GremlinPipeline<S, ?> transform(final PipeFunction function) {
+    public <T> GremlinPipeline<S, T> transform(final PipeFunction<E,T> function) {
         return this.add(new TransformFunctionPipe(function));
     }
 

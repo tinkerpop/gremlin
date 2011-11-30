@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.scala.filter
 
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 import com.tinkerpop.blueprints.pgm.{Vertex, Graph}
 import java.lang.{Integer => JInteger}
 import com.tinkerpop.gremlin.scala._
@@ -15,7 +15,7 @@ class FilterStepTest extends com.tinkerpop.gremlin.test.filter.FilterStepTest {
     val g = TinkerGraphFactory.createTinkerGraph();
 
     override def testCompliance() {
-      UtilitiesTest.testCompliance(this.getClass)
+      ComplianceTest.testCompliance(this.getClass)
     }
 
     def test_g_V_filterXfalseX() {

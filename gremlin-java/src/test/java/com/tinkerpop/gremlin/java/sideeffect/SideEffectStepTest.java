@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
-import com.tinkerpop.gremlin.test.UtilitiesTest;
+import com.tinkerpop.gremlin.test.ComplianceTest;
 import com.tinkerpop.pipes.PipeFunction;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class SideEffectStepTest extends com.tinkerpop.gremlin.test.sideeffect.Si
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
     public void testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass());
+        ComplianceTest.testCompliance(this.getClass());
     }
 
     public void test_g_v1_sideEffectXstore_aX_propertyXnameX() {

@@ -304,41 +304,42 @@ class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) /*with I
   }*/
 
   override def memoize(namedStep: String): GremlinScalaPipeline[S, E] = {
-    super.memoize(namedStep).asInstanceOf[GremlinScalaPipeline[S,E]];
+    super.memoize(namedStep).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def memoize(numberedStep: Int): GremlinScalaPipeline[S, E] = {
-    super.memoize(numberedStep).asInstanceOf[GremlinScalaPipeline[S,E]];
+    super.memoize(numberedStep).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def memoize(namedStep: String, map: JMap[_, _]): GremlinScalaPipeline[S, E] = {
-    super.memoize(namedStep, map).asInstanceOf[GremlinScalaPipeline[S,E]];
+    super.memoize(namedStep, map).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def memoize(numberedStep: Int, map: JMap[_, _]): GremlinScalaPipeline[S, E] = {
-    super.memoize(numberedStep, map).asInstanceOf[GremlinScalaPipeline[S,E]];
+    super.memoize(numberedStep, map).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def path(pathFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, JList[_]] =
     super.path(pathFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
 
   override def scatter: GremlinScalaPipeline[S, _] = {
-    super.scatter().asInstanceOf[GremlinScalaPipeline[S,_]]
+    super.scatter().asInstanceOf[GremlinScalaPipeline[S, _]]
   }
 
   override def cap: GremlinScalaPipeline[S, _] = {
     super.cap().asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
-  def transform[F](function: PipeFunction[E, F]): GremlinScalaPipeline[S, F] =
-    super.transform(function).asInstanceOf[GremlinScalaPipeline[S, F]]
+  override def transform[T](function: PipeFunction[E, T]): GremlinScalaPipeline[S, T] = {
+    super.transform(function).asInstanceOf[GremlinScalaPipeline[S, T]]
+  }
 
   //////////////////////
   /// UTILITY PIPES ///
   //////////////////////
 
   override def as(name: String): GremlinScalaPipeline[S, E] = {
-    super.as(name).asInstanceOf[GremlinScalaPipeline[S,E]]
+    super.as(name).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   /*def start(starts: AnyRef): GremlinPipeline[S, E] = {

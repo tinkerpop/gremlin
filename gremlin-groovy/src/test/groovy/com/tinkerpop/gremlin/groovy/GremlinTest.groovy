@@ -88,108 +88,6 @@ class GremlinTest extends BaseTest {
 
     }
 
-
-
-    public void testBasicTraversalPipes() {
-        Gremlin.load();
-        Graph g = TinkerGraphFactory.createTinkerGraph();
-
-        def results = [];
-        g.v(1).out.name.fill(results)
-        assertEquals(results.size(), 3);
-        assertTrue(results.contains("josh") && results.contains("vadas") && results.contains("lop"));
-
-        results = [];
-        g.v(1).out('knows').name.fill(results)
-        assertEquals(results.size(), 2);
-        assertTrue(results.contains("josh") && results.contains("vadas"));
-
-        ////////
-
-        results = [];
-        g.v(1).outE('knows').fill(results)
-        assertEquals(results.size(), 2);
-        assertTrue(results.contains(g.e(7)) && g.e(8));
-
-        results = [];
-        g.v(1).outE.fill(results)
-        assertEquals(results.size(), 3);
-        assertTrue(results.contains(g.e(7)) && g.e(8) && g.e(9));
-
-        ////////
-
-        results = [];
-        g.v(4).in.fill(results)
-        assertTrue(results.contains(g.v(1)));
-        assertEquals(results.size(), 1);
-
-        results = [];
-        g.v(4).in('knows').fill(results)
-        assertTrue(results.contains(g.v(1)));
-        assertEquals(results.size(), 1);
-
-        ////////
-
-        results = [];
-        g.v(4).inE.fill(results)
-        assertTrue(results.contains(g.e(8)));
-        assertEquals(results.size(), 1);
-
-        results = [];
-        g.v(4).inE('knows').fill(results)
-        assertTrue(results.contains(g.e(8)));
-        assertEquals(results.size(), 1);
-
-        ////////
-
-        results = [];
-        g.v(4).both.fill(results)
-        assertTrue(results.contains(g.v(1)));
-        assertTrue(results.contains(g.v(3)));
-        assertTrue(results.contains(g.v(5)));
-        assertEquals(results.size(), 3);
-
-        results = [];
-        g.v(4).both('created').fill(results)
-        assertTrue(results.contains(g.v(3)));
-        assertTrue(results.contains(g.v(5)));
-        assertEquals(results.size(), 2);
-
-        ////////
-
-        results = [];
-        g.v(4).bothE.fill(results)
-        assertEquals(results.size(), 3);
-        assertTrue(results.contains(g.e(10)) && g.e(11) && g.e(8));
-
-        results = [];
-        g.v(4).bothE('created').fill(results)
-        assertEquals(results.size(), 2);
-        assertTrue(results.contains(g.e(10)) && g.e(11));
-
-        ////////
-
-        assertEquals(g.e(10).outV.next(), g.v(4));
-        assertEquals(g.e(10).inV.next(), g.v(5));
-        assertTrue((g.e(10).bothV.next(2)).contains(g.v(4)));
-        assertTrue((g.e(10).bothV.next(2)).contains(g.v(5)));
-
-        ////////
-
-        assertEquals(g.v(1).outE('knows', 'created').toList().size(), 3);
-        assertEquals(g.v(2).inE('knows', 'created').toList().size(), 1);
-        assertEquals(g.v(2).inE('knows', 'created').toList().get(0), g.v(1).outE('knows').next());
-        assertEquals(g.v(4).bothE('knows', 'created').toList().size(), 3);
-
-        ////////
-
-        assertEquals(g.v(1).out('knows', 'created').toList().size(), 3);
-        assertEquals(g.v(2).in('knows', 'created').toList().size(), 1);
-        assertEquals(g.v(2).in('knows', 'created').toList().get(0), g.v(1));
-        assertEquals(g.v(4).both('knows', 'created').toList().size(), 3);
-
-    }
-
     public void testPipelineEquality() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
@@ -224,7 +122,6 @@ class GremlinTest extends BaseTest {
         def results2a = []
         def results2b = []
         def results3a = []
-        def results3b = []
 
         for (int i = 0; i < 500; i++) {
             this.stopWatch();

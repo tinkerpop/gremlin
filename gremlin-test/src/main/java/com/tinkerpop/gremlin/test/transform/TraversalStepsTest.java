@@ -176,8 +176,7 @@ public class TraversalStepsTest extends TestCase {
 
     // PROPERTY TESTING
 
-    //public void test_g_v1_out_propertyXnameX(final Pipe<Vertex, String> pipe) {
-    public void test_g_v1_out_propertyXnameX(final Pipe pipe) {
+    public void test_g_v1_out_propertyXnameX(final Pipe<Vertex,Object> pipe) {
         int counter = 0;
         Set<String> names = new HashSet<String>();
         while (pipe.hasNext()) {

@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.java.branch;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
-import com.tinkerpop.gremlin.test.UtilitiesTest;
+import com.tinkerpop.gremlin.test.ComplianceTest;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe;
 
@@ -15,7 +15,7 @@ public class LoopStepTest extends com.tinkerpop.gremlin.test.branch.LoopStepTest
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
     public void testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass());
+        ComplianceTest.testCompliance(this.getClass());
     }
 
     public void test_g_v1_out_loopX1_loops_lt_3X_propertyXnameX() {

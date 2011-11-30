@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.groovy.sideeffect
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.groovy.Gremlin
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -16,7 +16,7 @@ class StoreStepTest extends com.tinkerpop.gremlin.test.sideeffect.StoreStepTest 
     }
 
     public void testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass());
+        ComplianceTest.testCompliance(this.getClass());
     }
 
     public void test_g_V_propertyXnameX_store_cap() {

@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
-import com.tinkerpop.gremlin.test.UtilitiesTest;
+import com.tinkerpop.gremlin.test.ComplianceTest;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.LoopPipe;
 
@@ -16,7 +16,7 @@ public class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepT
     Graph g = TinkerGraphFactory.createTinkerGraph();
 
     public void testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass());
+        ComplianceTest.testCompliance(this.getClass());
     }
 
     public void test_g_v1_propertyXnameX_path() {

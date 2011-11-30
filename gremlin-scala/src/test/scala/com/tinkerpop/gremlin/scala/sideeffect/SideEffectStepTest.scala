@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.scala.sideeffect
 
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.test.UtilitiesTest
+import com.tinkerpop.gremlin.test.ComplianceTest
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.gremlin.scala._
 import com.tinkerpop.pipes.Pipe
@@ -15,7 +15,7 @@ class SideEffectStepTest extends com.tinkerpop.gremlin.test.sideeffect.SideEffec
     val g = TinkerGraphFactory.createTinkerGraph();
 
     override def testCompliance() {
-        UtilitiesTest.testCompliance(this.getClass);
+        ComplianceTest.testCompliance(this.getClass);
     }
 
     def test_g_v1_sideEffectXstore_aX_propertyXnameX() {

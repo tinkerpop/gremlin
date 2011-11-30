@@ -1,10 +1,12 @@
 package com.tinkerpop.gremlin.test;
 
+import com.tinkerpop.blueprints.pgm.Vertex;
 import junit.framework.TestCase;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -15,17 +17,28 @@ public class UtilitiesTest extends TestCase {
         assertTrue(true);
     }
 
-    public static void testCompliance(final Class testClass) {
-        Set<String> methodNames = new HashSet<String>();
-        for (Method method : testClass.getMethods()) {
-            if (method.getDeclaringClass().equals(testClass) && method.getName().startsWith("test")) {
-                methodNames.add(method.getName());
-            }
+    public void test_g_v1_out_toList(List<Vertex> vertices) {
+        assertEquals(vertices.size(), 3);
+        List<String> names = new ArrayList<String>();
+        for (Vertex vertex : vertices) {
+            names.add((String) vertex.getProperty("name"));
         }
-        for (Method method : testClass.getMethods()) {
-            if (method.getName().startsWith("test")) {
-                assertTrue(methodNames.contains(method.getName()));
-            }
-        }
+        assertEquals(names.size(), 3);
+        assertTrue(names.contains("josh"));
+        assertTrue(names.contains("lop"));
+        assertTrue(names.contains("vadas"));
     }
+
+    public void test_g_v1_out_nextX1X(List<Vertex> vertices) {
+        assertEquals(vertices.size(), 1);
+        Vertex vertex = vertices.get(0);
+        List<String> names = Arrays.asList("josh", "vadas", "lop");
+        assertTrue(names.contains((String) vertex.getProperty("name")));
+    }
+
+    public void test_g_v1_out_fillXlistX(Collection<Vertex> list) {
+        this.test_g_v1_out_toList(new ArrayList<Vertex>(list));
+    }
+
+    // test pipeline equality
 }
