@@ -39,7 +39,7 @@ goto :eof
 
 :language
 
-if %2 == "groovy" (
+if "%2" == "groovy" (
 
 goto groovy
 
