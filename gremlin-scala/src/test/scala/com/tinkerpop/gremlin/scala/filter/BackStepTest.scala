@@ -26,9 +26,9 @@ class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest {
       super.test_g_v1_asXhereX_out_backXhereX(g.v(1).->.as("here").out.back("here").asInstanceOf[Pipe[Vertex, Vertex]]);
   }
 
-  /*def test_g_v4_out_filterXlang_eq_javaX_backX1X() {
-      super.test_g_v4_out_filterXlang_eq_javaX_backX1X(g.v(4).out.filter {v:Vertex => v.as[String]("lang").exists(_.equals("java"))}.back(1).asInstanceOf[Pipe[Vertex, Vertex]]);
-  }*/
+  def test_g_v4_out_filterXlang_eq_javaX_backX1X() {
+      super.test_g_v4_out_filterXlang_eq_javaX_backX1X(g.v(4).out.filter{v: Vertex => v.as[String]("lang").exists(_ == "java")}.back(1))
+  }
 
   def test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX() {
       super.test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX(g.v(4).out.as("here").filter {v:Vertex => v.as[String]("lang").exists(_.equals("java"))}.back("here").asInstanceOf[Pipe[Vertex, Vertex]]);

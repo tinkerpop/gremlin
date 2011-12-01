@@ -29,11 +29,11 @@ public class BackStepTest extends TestCase {
         this.test_g_v1_out_backX1X(pipe);
     }
 
-    public void test_g_v4_out_filterXlang_eq_javaX_backX1X(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v4_out_filterXlang_eq_javaX_backX1X(Pipe<Vertex, ?> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
-            Vertex vertex = pipe.next();
+            Vertex vertex = (Vertex) pipe.next();
             assertEquals(vertex.getProperty("lang"), "java");
             assertTrue(vertex.getProperty("name").equals("ripple") || vertex.getProperty("name").equals("lop"));
         }
