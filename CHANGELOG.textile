@@ -11,7 +11,9 @@ Gremlin: A Graph Traversal Language
 
 h2. Gremlin 1.X
 
-h3. Version 1.4 (NOT OFFICIALLY RELEASED YET)
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-chickenwing.png!
+
+h3. Version 1.4 (Ain't No Thang But a Chicken Wang -- NOT OFFICIALLY RELEASED YET)
 
 ```xml
 <dependency>
