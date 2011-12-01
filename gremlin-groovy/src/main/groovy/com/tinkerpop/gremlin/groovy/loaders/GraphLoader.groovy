@@ -5,12 +5,13 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLReader
 import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
-import com.tinkerpop.blueprints.pgm.util.json.GraphJSONReader
-import com.tinkerpop.blueprints.pgm.util.json.GraphJSONWriter
+import com.tinkerpop.blueprints.pgm.util.json.GraphSONReader
+
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import groovy.json.JsonSlurper
 import java.util.Map.Entry
+import com.tinkerpop.blueprints.pgm.util.json.GraphSONWriter
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -133,18 +134,18 @@ class GraphLoader {
 
         Graph.metaClass.loadGraphJSON = {final def fileObject ->
             try {
-                GraphJSONReader.inputGraph((Graph) delegate, new URL(fileObject).openStream());
+                GraphSONReader.inputGraph((Graph) delegate, new URL(fileObject).openStream());
             } catch (MalformedURLException e) {
-                GraphJSONReader.inputGraph((Graph) delegate, new FileInputStream(fileObject))
+                GraphSONReader.inputGraph((Graph) delegate, new FileInputStream(fileObject))
             }
         }
 
         Graph.metaClass.saveGraphJSON = {final def fileObject ->
-            GraphJSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), true)
+            GraphSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), true)
         }
 
         Graph.metaClass.saveGraphJSON = {final def fileObject, final boolean showTypes ->
-            GraphJSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), showTypes)
+            GraphSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), showTypes)
         }
 
     }
