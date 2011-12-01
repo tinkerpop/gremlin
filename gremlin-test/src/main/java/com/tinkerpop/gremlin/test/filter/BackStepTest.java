@@ -16,11 +16,11 @@ public class BackStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_backX1X(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out_backX1X(Pipe<Vertex, ?> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
-            assertEquals(pipe.next().getProperty("name"), "marko");
+            assertEquals(((Vertex) pipe.next()).getProperty("name"), "marko");
         }
         assertEquals(counter, 1);
     }

@@ -18,9 +18,9 @@ class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest {
     ComplianceTest.testCompliance(this.getClass)
   }*/
 
-  /*def test_g_v1_out_backX1X() {
+  def test_g_v1_out_backX1X() {
       super.test_g_v1_out_backX1X(g.v(1).out.back(1));
-  }*/
+  }
 
   def test_g_v1_asXhereX_out_backXhereX() {
       super.test_g_v1_asXhereX_out_backXhereX(g.v(1).->.as("here").out.back("here").asInstanceOf[Pipe[Vertex, Vertex]]);
