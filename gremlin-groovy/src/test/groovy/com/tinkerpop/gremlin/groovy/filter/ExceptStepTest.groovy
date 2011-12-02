@@ -27,4 +27,8 @@ class ExceptStepTest extends com.tinkerpop.gremlin.test.filter.ExceptStepTest {
         def x = [] as Set;
         super.test_g_v1_out_aggregateXxX_out_exceptXxX(g.v(1).out.aggregate(x).out.except(x));
     }
+
+    public void test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX() {
+        super.test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(g.v(1).out("created").in("created").except([g.v(1)]).property("name"));
+    }
 }

@@ -4,7 +4,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,5 +34,13 @@ public class ExceptStepTest extends TestCase {
     public void test_g_v1_out_aggregateXxX_out_exceptXxX(Pipe<Vertex, Vertex> pipe) {
         assertEquals(pipe.next().getProperty("name"), "ripple");
         assertFalse(pipe.hasNext());
+    }
+
+    public void test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(Pipe<Vertex, String> pipe) {
+        List<String> names = Arrays.asList(pipe.next(), pipe.next());
+        assertFalse(pipe.hasNext());
+        assertEquals(names.size(), 2);
+        assertTrue(names.contains("peter"));
+        assertTrue(names.contains("josh"));
     }
 }
