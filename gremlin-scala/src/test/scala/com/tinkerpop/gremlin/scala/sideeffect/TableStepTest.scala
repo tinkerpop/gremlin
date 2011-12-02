@@ -15,9 +15,9 @@ class TableStepTest extends com.tinkerpop.gremlin.test.sideeffect.TableStepTest 
 
   val g = TinkerGraphFactory.createTinkerGraph();
 
-  /*override def testCompliance() {
+  override def testCompliance() {
     ComplianceTest.testCompliance(this.getClass);
-  }*/
+  }
 
   def test_g_v1_asXaX_out_properyXnameX_asXbX_table_cap() {
     super.test_g_v1_asXaX_out_properyXnameX_asXbX_table_cap(g.v(1).->.as("a").out.property("name").as("b").table.cap.asInstanceOf[Pipe[Vertex, Table]]);
