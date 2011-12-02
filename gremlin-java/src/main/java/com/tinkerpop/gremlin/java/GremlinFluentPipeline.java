@@ -43,6 +43,14 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
      */
     public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final FilterPipe.Filter filter, final Object value);
 
+    /**
+     * Add a PropertyFilterPipe to the end of the Pipeline.
+     *
+     * @param key   the property key to check
+     * @param t     the filter of the pipe
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final Tokens.T t, final Object value);
 
     /**

@@ -44,6 +44,7 @@ public class Tokens {
     public static final String GATHER = "gather";
     public static final String GROUPCOUNT = "groupCount";
     public static final String IFTHENELSE = "ifThenElse";
+    public static final String INDEX = "index";
     public static final String LOOP = "loop";
     public static final String MAP = "map";
     public static final String MEMOIZE = "memoize";

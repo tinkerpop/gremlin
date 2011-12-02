@@ -9,8 +9,6 @@ import com.tinkerpop.pipes.util.Table
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 import java.util.{Map => JMap, List => JList, Iterator => JIterator, Collection => JCollection, ArrayList => JArrayList}
 
-/**Adds convenience methods to [[com.tinkerpop.gremline.pipes.GremlinPipeline]]. */
-//class GremlinScalaPipeline[S, E](s: S) extends GremlinPipeline[S, E](s) {
 class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   //def apply(key:String) = super.property(key);
@@ -24,8 +22,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   def paths: GremlinScalaPipeline[S, JList[_]] =
     super.path().asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // Copied from GremlinPipeline
+  ////
 
   def idFilter[F <: Element](id: Any, filter: FilterPipe.Filter): GremlinScalaPipeline[S, F] =
     super.idFilter(id, filter).asInstanceOf[GremlinScalaPipeline[S, F]]
@@ -93,11 +90,6 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   override def index[F <: Element](index: Index[F], key: String, value: Object): GremlinScalaPipeline[S, F] =
     super.index(index, key, value).asInstanceOf[GremlinScalaPipeline[S, F]]
 
-  /********************************************/
-  /********************************************/
-  /**
-   * ****************************************
-   */
   def step[F](f: JIterator[E] => F): GremlinScalaPipeline[S, F] =
     super.step(f).asInstanceOf[GremlinScalaPipeline[S, F]]
 
@@ -131,17 +123,11 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   def loop(namedStep: String, whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
     super.loop(namedStep, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
-  def loop(pipe: Pipe[E, E], whileFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
-    super.loop(pipe, whileFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
-
   def loop(numberedStep: Int, whileFunction: LoopBundle[E] => Boolean, emitFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
     super.loop(numberedStep, whileFunction, emitFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
   def loop(namedStep: String, whileFunction: LoopBundle[E] => Boolean, emitFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
     super.loop(namedStep, whileFunction, emitFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
-
-  def loop(pipe: Pipe[E, E], whileFunction: LoopBundle[E] => Boolean, emitFunction: LoopBundle[E] => Boolean): GremlinScalaPipeline[S, E] =
-    super.loop(pipe, whileFunction, emitFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
 
   ////////////////////
   /// FILTER PIPES ///
@@ -156,10 +142,6 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   override def back(namedStep: String): GremlinScalaPipeline[S, _] = {
     super.back(namedStep).asInstanceOf[GremlinScalaPipeline[S, _]];
-  }
-
-  override def back(pipe: Pipe[E, _]): GremlinScalaPipeline[S, E] = {
-    super.back(pipe).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def dedup: GremlinScalaPipeline[S, E] = {
@@ -223,10 +205,6 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   override def optional(namedStep: String): GremlinScalaPipeline[S, _] = {
     super.optional(namedStep).asInstanceOf[GremlinScalaPipeline[S, _]];
-  }
-
-  override def optional(pipe: Pipe[E, _]): GremlinScalaPipeline[S, E] = {
-    super.optional(pipe).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def groupCount(map: JMap[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinScalaPipeline[S, E] = {
@@ -348,10 +326,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.as(name).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
-  /*def start(starts: AnyRef): GremlinPipeline[S, E] = {
-    this.add(new StartPipe[_](starts))
-    FluentUtility.setStarts(this, starts)
-    return this
+  override def start(starts: S): GremlinScalaPipeline[S, S] = {
+    super.start(starts).asInstanceOf[GremlinScalaPipeline[S, S]]
   }
-  */
 }

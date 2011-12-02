@@ -26,8 +26,8 @@ class ScalaGraph(val graph: Graph) {
   /**Returns the edge with the specified ID. */
   def e(id: Any): Edge = graph getEdge id
 
-  def -> : GremlinScalaPipeline[Graph,Graph] =
-    new GremlinScalaPipeline[Graph,Graph].start(graph).asInstanceOf[GremlinScalaPipeline[Graph, Graph]];
+  def -> : GremlinScalaPipeline[Graph, Graph] =
+    new GremlinScalaPipeline[Graph, Graph].start(graph).asInstanceOf[GremlinScalaPipeline[Graph, Graph]];
 
   //TODO def += for addVertex and addEdge?
 }

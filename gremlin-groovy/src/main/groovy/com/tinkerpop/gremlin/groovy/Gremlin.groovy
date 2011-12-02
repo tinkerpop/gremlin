@@ -56,6 +56,7 @@ class Gremlin {
         Gremlin.addStep(Tokens.IN);
         Gremlin.addStep(Tokens.INE);
         Gremlin.addStep(Tokens.INV);
+        Gremlin.addStep(Tokens.INDEX);
         Gremlin.addStep(Tokens.IFTHENELSE);
         Gremlin.addStep(Tokens.CAP);
         Gremlin.addStep(Tokens.LABEL);

@@ -6,12 +6,11 @@ import com.tinkerpop.blueprints.pgm.Vertex
 import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLReader
 import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
 import com.tinkerpop.blueprints.pgm.util.json.GraphSONReader
-
+import com.tinkerpop.blueprints.pgm.util.json.GraphSONWriter
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import groovy.json.JsonSlurper
 import java.util.Map.Entry
-import com.tinkerpop.blueprints.pgm.util.json.GraphSONWriter
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

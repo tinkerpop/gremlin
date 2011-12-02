@@ -233,20 +233,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
     }
 
-    public GremlinPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
-        return this.add(new LoopPipe(pipe, whileFunction));
-    }
-
     public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction, emitFunction));
     }
 
     public GremlinPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
-    }
-
-    public GremlinPipeline<S, E> loop(final Pipe<E, E> pipe, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
-        return this.add(new LoopPipe(pipe, whileFunction, emitFunction));
     }
 
     ////////////////////
@@ -331,10 +323,6 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, ?> optional(final String namedStep) {
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
-    }
-
-    public GremlinPipeline<S, E> optional(final Pipe<E, ?> pipe) {
-        return this.add(new OptionalPipe(pipe));
     }
 
     public GremlinPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
@@ -464,10 +452,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
     }
 
-    public GremlinPipeline<S, E> start(final Object starts) {
-        this.add(new StartPipe(starts));
+    public GremlinPipeline<S, S> start(final S starts) {
+        this.add(new StartPipe<S>(starts));
         FluentUtility.setStarts(this, starts);
-        return this;
+        return (GremlinPipeline<S, S>) this;
     }
 
     ///////////////////////

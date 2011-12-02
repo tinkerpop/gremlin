@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.scala
 
 import java.util.{Map => JMap}
-import com.tinkerpop.blueprints.pgm.{Element, Vertex, Edge}
+import com.tinkerpop.blueprints.pgm.{Vertex, Edge}
 
 /**Adds convenience methods to [[com.tinkerpop.blueprints.pgm.Vertex]]. */
 class ScalaVertex(val vertex: Vertex) extends ScalaElement(vertex) {
@@ -41,8 +41,8 @@ class ScalaVertex(val vertex: Vertex) extends ScalaElement(vertex) {
   def bothE(labels: String*): GremlinScalaPipeline[Vertex, Edge] =
     new GremlinScalaPipeline[Vertex, Edge].start(vertex).bothE(labels: _*).asInstanceOf[GremlinScalaPipeline[Vertex, Edge]]
 
-  def -> : GremlinScalaPipeline[Vertex,Vertex] =
-    new GremlinScalaPipeline[Vertex,Vertex].start(vertex).asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]];
+  def -> : GremlinScalaPipeline[Vertex, Vertex] =
+    new GremlinScalaPipeline[Vertex, Vertex].start(vertex).asInstanceOf[GremlinScalaPipeline[Vertex, Vertex]];
 }
 
 /**Implicit conversions between [[com.tinkerpop.blueprints.pgm.Vertex]] and [[com.tinkerpop.gremlin.scala.ScalaVertex]]. */
@@ -50,6 +50,4 @@ object ScalaVertex {
   implicit def wrap(vertex: Vertex) = new ScalaVertex(vertex)
 
   implicit def unwrap(wrapper: ScalaVertex) = wrapper.vertex
-
-  //implicit def vertex2Gsp(v: Vertex) = new GremlinScalaPipeline[Vertex, Vertex](v)
 }
