@@ -32,7 +32,7 @@ class ExceptStepTest extends com.tinkerpop.gremlin.test.filter.ExceptStepTest {
 
   def test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX() {
     import scala.collection.JavaConversions._
-    super.test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(g.v(1).out("created").in("created").except(List[Vertex](g.v(1))).property("name").asInstanceOf[Pipe[Vertex, String]])
+    super.test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(g.v(1).out("created").in("created").except(List(g.v(1))).property("name").asInstanceOf[Pipe[Vertex, String]])
   }
 
 }
