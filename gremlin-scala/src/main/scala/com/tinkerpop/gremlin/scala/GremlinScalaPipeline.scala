@@ -252,15 +252,15 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   }
 
   override def table(table: Table, stepNames: JCollection[String], columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
-    super.table(table, stepNames, columnFunctions).asInstanceOf[GremlinScalaPipeline[S, E]]
+    super.table(table, stepNames, columnFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   override def table(table: Table, columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
-    super.table(table, columnFunctions).asInstanceOf[GremlinScalaPipeline[S, E]]
+    super.table(table, columnFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   override def table(columnFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
-    super.table(columnFunctions).asInstanceOf[GremlinScalaPipeline[S, E]]
+    super.table(columnFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
   override def table(table: Table): GremlinScalaPipeline[S, E] = {

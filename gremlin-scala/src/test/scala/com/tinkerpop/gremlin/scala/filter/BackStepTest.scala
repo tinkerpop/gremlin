@@ -14,9 +14,9 @@ class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest {
 
   val g = TinkerGraphFactory.createTinkerGraph();
 
-  /*override def testCompliance() {
+  override def testCompliance() {
     ComplianceTest.testCompliance(this.getClass)
-  }*/
+  }
 
   def test_g_v1_out_backX1X() {
       super.test_g_v1_out_backX1X(g.v(1).out.back(1));
