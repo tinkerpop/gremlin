@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.scala
 
 import junit.framework.TestCase
 import com.tinkerpop.gremlin.Tokens
+import junit.framework.Assert._
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -10,7 +11,7 @@ import com.tinkerpop.gremlin.Tokens
 class GremlinTest extends TestCase {
 
   def testVersion() {
-    //assertEquals(Gremlin.version(), Tokens.VERSION);
+    assertEquals(Gremlin.version(), Tokens.VERSION);
   }
 
 }

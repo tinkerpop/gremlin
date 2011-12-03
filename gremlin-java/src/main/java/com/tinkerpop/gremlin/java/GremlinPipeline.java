@@ -179,6 +179,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new VerticesPipe());
     }
 
+    // TODO: Decide the long term use of this
     public <Q extends Element> GremlinPipeline index(final Index<Q> index, final String key, final Object value) {
         return this.add(new IndexElementsPipe<Q>(index, key, value));
     }
