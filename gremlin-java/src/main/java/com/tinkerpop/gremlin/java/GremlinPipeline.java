@@ -247,7 +247,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     ////////////////////
 
     public GremlinPipeline<S, E> and(final Pipe<E, ?>... pipes) {
-        return this.add(new AndFilterPipe(pipes));
+        return this.add(new AndFilterPipe<E>(pipes));
     }
 
     public GremlinPipeline<S, ?> back(final int numberedStep) {
@@ -263,39 +263,43 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, E> dedup() {
-        return this.add(new DuplicateFilterPipe());
+        return this.add(new DuplicateFilterPipe<E>());
     }
 
-    public GremlinPipeline<S, E> except(final Collection collection) {
-        return this.add(new ExceptFilterPipe(collection));
+    public GremlinPipeline<S, E> dedup(final PipeFunction<E, ?> dedupFunction) {
+        return this.add(new DuplicateFilterPipe<E>(dedupFunction));
+    }
+
+    public GremlinPipeline<S, E> except(final Collection<E> collection) {
+        return this.add(new ExceptFilterPipe<E>(collection));
     }
 
     public GremlinPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
-        return this.add(new FilterFunctionPipe(filterFunction));
+        return this.add(new FilterFunctionPipe<E>(filterFunction));
     }
 
-    public GremlinPipeline<S, E> objectFilter(final Object object, final FilterPipe.Filter filter) {
-        return this.add(new ObjectFilterPipe(object, filter));
+    public GremlinPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter) {
+        return this.add(new ObjectFilterPipe<E>(object, filter));
     }
 
     public GremlinPipeline<S, E> or(final Pipe<E, ?>... pipes) {
-        return this.add(new OrFilterPipe(pipes));
+        return this.add(new OrFilterPipe<E>(pipes));
     }
 
     public GremlinPipeline<S, E> random(final Double bias) {
-        return this.add(new RandomFilterPipe(bias));
+        return this.add(new RandomFilterPipe<E>(bias));
     }
 
     public GremlinPipeline<S, E> range(final int low, final int high) {
-        return this.add(new RangeFilterPipe(low, high));
+        return this.add(new RangeFilterPipe<E>(low, high));
     }
 
-    public GremlinPipeline<S, E> retain(final Collection collection) {
-        return this.add(new RetainFilterPipe(collection));
+    public GremlinPipeline<S, E> retain(final Collection<E> collection) {
+        return this.add(new RetainFilterPipe<E>(collection));
     }
 
     public GremlinPipeline<S, E> simplePath() {
-        return this.add(new CyclicPathFilterPipe());
+        return this.add(new CyclicPathFilterPipe<E>());
     }
 
     /////////////////////////

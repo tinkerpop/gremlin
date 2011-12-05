@@ -148,7 +148,11 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.dedup().asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def except(collection: JCollection[_]): GremlinScalaPipeline[S, E] = {
+  def dedup(dedupFunction: E => _): GremlinScalaPipeline[S, E] = {
+    super.dedup(dedupFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
+
+  override def except(collection: JCollection[E]): GremlinScalaPipeline[S, E] = {
     super.except(collection).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -156,7 +160,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.filter(filterFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def objectFilter(`object` : AnyRef, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
+  override def objectFilter(`object` : E, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
     super.objectFilter(`object`, filter).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -172,7 +176,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.range(low, high).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def retain(collection: JCollection[_]): GremlinScalaPipeline[S, E] = {
+  override def retain(collection: JCollection[E]): GremlinScalaPipeline[S, E] = {
     super.retain(collection).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -187,7 +191,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.aggregate(aggregate).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def aggregate(aggregate: JCollection[_], aggregateFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+  def aggregate(aggregate: JCollection[_], aggregateFunction: E => _): GremlinScalaPipeline[S, E] = {
     super.aggregate(aggregate, aggregateFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -195,7 +199,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.aggregate(new JArrayList[E]()).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def aggregate(aggregateFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+  def aggregate(aggregateFunction: E => _): GremlinScalaPipeline[S, E] = {
     super.aggregate(new JArrayList[Object](), aggregateFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -231,7 +235,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.groupCount().asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def sideEffect(sideEffectFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+  def sideEffect(sideEffectFunction: E => _): GremlinScalaPipeline[S, E] = {
     super.sideEffect(sideEffectFunction).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
@@ -239,7 +243,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.store(storage).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def store(storage: JCollection[_], storageFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+  def store(storage: JCollection[_], storageFunction: E => _): GremlinScalaPipeline[S, E] = {
     super.aggregate(storage, storageFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -247,7 +251,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.store(new JArrayList[E]()).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def store(storageFunction: PipeFunction[E, _]): GremlinScalaPipeline[S, E] = {
+  def store(storageFunction: E => _): GremlinScalaPipeline[S, E] = {
     super.store(new JArrayList[Object](), storageFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
@@ -278,7 +282,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.gather().asInstanceOf[GremlinScalaPipeline[S, JList[_]]];
   }
 
-  override def gather(function: PipeFunction[JList[_], _]): GremlinScalaPipeline[S, _] = {
+  def gather(function: JList[_] => _): GremlinScalaPipeline[S, _] = {
     super.gather(function).asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
@@ -314,7 +318,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.cap().asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
-  override def transform[T](function: PipeFunction[E, T]): GremlinScalaPipeline[S, T] = {
+  def transform[T](function: E => T): GremlinScalaPipeline[S, T] = {
     super.transform(function).asInstanceOf[GremlinScalaPipeline[S, T]]
   }
 

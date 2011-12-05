@@ -31,6 +31,10 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.aggregate(aggregate, new GroovyPipeFunction(closure));
     }
 
+    public GremlinGroovyPipeline<S, E> dedup(final Closure closure) {
+        return (GremlinGroovyPipeline<S, E>) this.dedup(new GroovyPipeFunction<E, Object>(closure));
+    }
+
     public GremlinGroovyPipeline<S, E> filter(final Closure closure) {
         return (GremlinGroovyPipeline<S, E>) this.filter(new GroovyPipeFunction<E, Boolean>(closure));
     }
@@ -88,11 +92,11 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> store(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.store(new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, E>) this.store(new GroovyPipeFunction<E,Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> store(final Collection storage, final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.aggregate(storage, new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, E>) this.store(storage, new GroovyPipeFunction<E,Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Closure... closures) {
