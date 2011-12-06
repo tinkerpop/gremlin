@@ -11,7 +11,8 @@
 set LIBDIR=..\lib
 
 
-set CP=%CLASSPATH%
+set OLD_CLASSPATH=%CLASSPATH%
+set CP=
 
 
 for %%i in (%LIBDIR%\*.jar) do call :concatsep %%i
@@ -34,8 +35,10 @@ if "%1" == "-v" goto version
 
 :console
 
+set CLASSPATH=%CP%;%OLD_CLASSPATH%
 java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.groovy.console.Console
 
+set CLASSPATH=%OLD_CLASSPATH%
 goto :eof
 
 
@@ -54,17 +57,20 @@ CALL :concat %%X %1 %2
 
 
 
-
+set CLASSPATH=%CP%;%OLD_CLASSPATH%
 java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.groovy.jsr223.ScriptExecutor %strg%
 
+set CLASSPATH=%OLD_CLASSPATH%
 goto :eof
 
 
 
 :version
 
+set CLASSPATH=%OLD_CLASSPATH%;%CP%
 java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.Version
 
+set CLASSPATH=%OLD_CLASSPATH%
 goto :eof
 
 
