@@ -1,0 +1,29 @@
+The documentation up to this point has been using examples from a simple toy graph of 6 vertices and 6 edges. For this section, a more complicated graph structure is used in the examples. A clipped representation (i.e. low weighted edges removed) of this graph is diagrammed below. This graph is a representation of the American band, the "Grateful Dead":http://en.wikipedia.org/wiki/Grateful_Dead.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/graph-example-2.jpg!
+
+More information about this data set can be found in the following article.
+
+Rodriguez, M.A., Gintautas, V., Pepe, A., "A Grateful Dead Analysis: The Relationship Between Concert and Listening Behavior":http://arxiv.org/abs/0807.2466, First Monday, volume 14, number 1, University of Illinois at Chicago Library, January 2009.
+
+```text
+g = new TinkerGraph()
+g.loadGraphML('data/graph-example-2.xml')
+```
+
+In the above Grateful Dead graph, there are vertices and there are edges. The vertices are broken into two sets: songs (e.g. "Dark Star":http://en.wikipedia.org/wiki/Dark_Star_%28song%29, "China Cat Sunflower":http://en.wikipedia.org/wiki/China_Cat_Sunflower) and artists (e.g. "Jerry Garcia":http://en.wikipedia.org/wiki/Jerry_Garcia, "Robert Hunter":http://en.wikipedia.org/wiki/Robert_Hunter_%28lyricist%29). The following itemization describes the properties associated with vertices and edges. 
+
+# vertices
+  ** song vertices
+    **** type (string): always 'song' for song vertices.
+    **** name (string): the name of the song.
+    **** performances (integer): the number of times the song was played in concert.
+    **** song_type (string): whether the song is a 'cover' song or an 'original'. 
+  ** artist vertices
+    **** type (string): always 'artist' for artist vertices.
+    **** name (string): the name of the artist.
+# edges
+  ** followed_by (song -> song): if the tail song was followed by the head song in concert.
+    **** weight (integer): the number of times these two songs were paired in concert.
+  ** sung_by (song -> artist): if the tail song was primarily sung by the head artist.
+  ** written_by (song -> artist): if the tail song was written by the head artist.

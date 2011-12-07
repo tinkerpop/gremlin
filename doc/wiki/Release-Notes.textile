@@ -1,5 +1,4 @@
-Gremlin: A Graph Traversal Language
-"http://gremlin.tinkerpop.com":http://gremlin.tinkerpop.com
+All releases can be accessed through the "TinkerPop":http://tinkerpop.com Maven2 repository identified below.
 
 ```xml
 <repository>
@@ -100,8 +99,8 @@ h3. Version 1.2 (New Sheriff in Town -- August 1, 2011)
 ```
 
 * Added respective pipe support for @Vertex.getOutEdges(String...)@ and @Vertex.getInEdges(String...)@
-* Added path functions to @paths@ to allow for post-processing a returned path
-* Added map entry functions to @groupCount@ to allow for pre-processing an entry's key/value pairs
+* Added path closures to @paths@ to allow for post-processing a returned path
+* Added map entry closures to @groupCount@ to allow for pre-processing an entry's key/value pairs
 * Added @Gremlin.version()@ to get version information (returns @GremlinTokens.VERSION@)
 * Added @Gremlin.defineStep()@ to make it simple for developers to add new steps
 * Added support for @Graph.loadGraphML(URL)@
@@ -111,7 +110,7 @@ h3. Version 1.2 (New Sheriff in Town -- August 1, 2011)
 ** Added @GroovyPipeClosure@ to map a "Groovy":http://groovy.codehaus.org @Closure@ to a @PipeClosure@
 * Update @g.idx()@ to reflect @null@ behavior of Blueprints index API update
 * Added @map@ step to emit an element's property map
-* Added support for @aggregate@ step function to process object prior to insertion into the aggregate collection
+* Added support for @aggregate@ step closure to process object prior to insertion into the aggregate collection
 * Bumped to Groovy 1.8.1
 
 ==<hr/>==
@@ -159,13 +158,10 @@ h3. Version 1.0 (Gremlin -- May 8, 2011)
 * Added @copySplit@, @fairMerge@, @exhaustMerge@
 * @SailLoader@ is loaded on startup (no longer required by developer)
 * Faster @Gremlin.compile()@ using @GremlinScriptEngine@
-* Renamed @andf@, @orf@, and @propf@ to @andFilter@, @orFilter@, and @propFilter@
+* Renamed @andf@, @off@, and @propf@ to @andFilter@, @orFilter@, and @propFilter@
 * Moved to the more optimal vertex/edge adjacency Pipes
 * Renamed @unique@ to @uniqueObject@
 * Updated Gremlin-specific pipes to support @reset()@ API
-
-
-==<hr/>==
 
 h2. Gremlin 0.X
 
@@ -190,7 +186,7 @@ h3. Version 0.9 (Gremlin the Grouch -- April 4, 2011)
 * Removed @futuref@ step as @back@ supplies necessary computation
 * The @it@ of the @gather@ step is now the gathered @List@
 
- ==<hr/>==
+==<hr/>==
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremstefani.png!
 
@@ -205,7 +201,7 @@ h3. Version 0.8 (Grem Stefani -- March 2, 2011)
 ```
 
 * Added new steps
-** @emit@ to emit results of provided function
+** @emit@ to emit results of provided closure
 ** @ifelse@ to perform a if/then/else branch
 ** @uniquePath@ to filter looping paths
 * Added new methods
@@ -217,7 +213,7 @@ h3. Version 0.8 (Grem Stefani -- March 2, 2011)
 * Added @outE(label)@, @inE(label)@ and @bothE(label)@ support
 * Added support for dynamic counter adjustment in @groupCount@
 * Bumped to using Groovy 1.7.8
-* Created a type-cast friendly @groupCount@ step 
+* Created a type-cast friendly @groupCount@ step
 
 ==<hr/>==
 
@@ -235,7 +231,7 @@ h3. Version 0.7 (Gremopoly -- January 22, 2011)
 
 * Added many new steps
 ** @loop@ step for in-line looping
-** @foreach@ step for function based operations on flowing objects
+** @foreach@ step for closure based operations on flowing objects
 ** @back@ step for backtracking in pipeline (i.e. @../@)
 ** @aggregate@, @except@, and @retain@ for except/retain pattern
 ** @groupCount@ for map aggregations (i.e. @g:op-value()@)
@@ -261,13 +257,13 @@ h3. Version 0.6 (Gremalicious -- December 14, 2010)
 * Fixed @if/else@ bug that occurred on function call
 * @null@ and empty iterator/iterable result now printed in console
 * Empty path expression returns an empty iterable, not @null@
-* Added @g:copy-e()@ function that conveniently copies an element from one graph into another
+* Added @g:copy-ve()@ function that conveniently copies an element from one graph into another
 * Fixed numerous bugs in how functions were computing atoms
 * GPath optimization through auto-reset of Gremlin-specific range-based pipes
 * Comparing numbers is now possible without casting
 * Fixed a major bug in error message handling (many exceptions w/o message being provided in console)
 * Improved Gremlin evaluator load time with static function and step loading
-* Added support for Blueprints 0.3 multi-indexes
+* Added support for "Blueprints":http://blueprints.tinkerpop.com 0.3 multi-indexes
 ** @g:add-aidx-key()@, @g:add-idx()@, @g:drop-idx()@, @g:show-aidx-keys()@, @g:show-idx()@, @g:remove-aidx-keys()@
 * Added @return ?object@ to return from a user defined function or step
 * Added support for path generation through @g:path()@ (main body of work in "Pipes":http://pipes.tinkerpop.com)
@@ -397,17 +393,15 @@ h3. Version 0.2 (Gremicide -- February 14, 2010)
 * Added better support for vertex and edge property indexing
 * Added working graph @$_g@ variable and updated graph functions to support it
 * Added support for "SPARQL":http://www.w3.org/TR/rdf-sparql-query/ queries for SAIL-based graphs
-** @list sail:sparql(graph?, string)@ was added
+** @list sail:sparql(string)@ was added
 * Added support for Linked Data SAIL for real-time analysis of the Web of Data
 * Added support for script loading
 ** @script gremlin-script.grm@
 * Added support for JUNG algorithms over Gremlin graphs
-** @map jung:pagerank(graph?, map?)@
-** @list jung:dijkstra(graph?, vertex, vertex, map?)@
 * Renamed @g:append(object, object+)@ to @g:list(object+)@
 * Renamed the general graph model to property graph model
 ** Moved the model and its implementations to "Blueprints":http://blueprints.tinkerpop.com
-** Dependency is on Blueprints 0.1
+** Uses Blueprints 0.1
 * Various bug fixes and optimizations
 
 ==<hr/>==

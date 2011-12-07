@@ -1,0 +1,15 @@
+A common use case is to explore and emit two paths at the same time. Using the simple toy graph diagrammed in [[Defining a Property Graph]], an example is provided below.
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.V.transform{[it.name, it.out.name.toList()]}
+==>[lop, []]
+==>[vadas, []]
+==>[marko, [vadas, lop, josh]]
+==>[peter, [lop]]
+==>[ripple, []]
+==>[josh, [ripple, lop]]
+```
+
+This @transform@ above creates an array that contains the vertex name and the name of the vertices connected to that vertex.

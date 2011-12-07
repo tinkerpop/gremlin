@@ -131,7 +131,7 @@ class GraphLoader {
             GraphMLWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject))
         }
 
-        Graph.metaClass.loadGraphJSON = {final def fileObject ->
+        Graph.metaClass.loadGraphSON = {final def fileObject ->
             try {
                 GraphSONReader.inputGraph((Graph) delegate, new URL(fileObject).openStream());
             } catch (MalformedURLException e) {
@@ -139,11 +139,11 @@ class GraphLoader {
             }
         }
 
-        Graph.metaClass.saveGraphJSON = {final def fileObject ->
+        Graph.metaClass.saveGraphSON = {final def fileObject ->
             GraphSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), true)
         }
 
-        Graph.metaClass.saveGraphJSON = {final def fileObject, final boolean showTypes ->
+        Graph.metaClass.saveGraphSON = {final def fileObject, final boolean showTypes ->
             GraphSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), showTypes)
         }
 

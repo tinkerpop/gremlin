@@ -1,0 +1,70 @@
+Gremlin is a style of graph traversing that can be hosted in any number of languages. The benefit of this is that users can make use of the programming language they are most comfortable with and still be able to evaluate Gremlin-style traversals. This model is different than, lets say, using "SQL":http://en.wikipedia.org/wiki/SQL in Java where the query is evaluated by passing a string representation of the query to the SQL engine. On the contrary, with native Gremlin support for other JVM languages, there is no string passing. Instead, simple method chaining in Gremlin's fluent style. However, the drawback of this model is that for each JVM language, there are syntactic variations that must be accounted for.
+
+The examples below demonstrate the same traversal in "Groovy":http://groovy.codehaus.org/, "Scala":http://www.scala-lang.org/, and "Java":http://java.com/, respectively.
+
+<img width="175" src="http://groovy.codehaus.org/images/groovy-logo-medium.png" />  <img width="175" src="http://genevajug.ch/images/events/scala-logo.png" />  <img width="175" src="http://cdn3.digitaltrends.com/wp-content/uploads/2010/11/java-logo.jpg" />
+
+*How to read the examples to follow*
+```text
+Groovy version
+Scala version
+Java version
+```
+
+<hr/>
+
+*Iterate through all the vertices in the graph*
+```text
+g.V
+g.V
+new GremlinPipeline(g).V()
+```
+
+*Iterate through all the vertices that vertex 1 knows*
+```text
+g.v(1).out('knows')
+g.v(1).out("knows")
+new GremlinPipeline(g.getVertex(1)).out("knows")
+```
+
+*Iterate through the names of all the vertices that vertex 1 knows*
+```text
+g.v(1).out('knows').name
+g.v(1).out("knows").property("name")
+new GremlinPipeline(g.getVertex(1)).out("knows").property("name")
+```
+
+*Iterate though all vertices that vertex 1 knows named josh*
+```text
+g.v(1).out.filter{it.name=='josh'}
+g.v(1).out.filter{v:Vertex => v("name").equals("josh")}
+
+new GremlinPipeline(g.getVertex(1)).out().filter(new PipeFunction<Vertex,Boolean>() { 
+  public Boolean compute(Vertex v) {
+    return v.getProperty("name").equals("josh");
+  }
+}
+```
+
+*Determine the co-developers of vertex 1*
+
+```text
+g.v(1).out('created').in('created').except([g.v(1)])
+g.v(1).out("created").in("created").except(List[Vertex](g.v(1)))
+new GremlinPipeline(g.getVertex(1)).out("created").in("created").except(Arrays.asList(g.getVertex(1)))
+```
+
+* NOTE: For Gremlin Scala, be sure to have @scala.collection.JavaConversions._@ imported in the scope.
+
+*Store the weight value of the outgoing edges of vertex 1 into list x*
+```text
+x = []; g.v(1).outE.store(x){it.weight}
+val x = List; g.v(1).outE.store(x){Edge e => e("weight")}
+
+List<Double> x = new ArrayList<Double>();
+new GremlinPipeline(g.getVertex(1)).outE().store(x, new PipeFunction<Edge,Double>() {
+  public Double compute(Edge e) {
+    return (Double) e.getProperty("weight");
+  }
+}
+```
