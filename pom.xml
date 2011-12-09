@@ -19,6 +19,12 @@
         This language has application in the areas of graph query, analysis, and manipulation.
     </description>
     <inceptionYear>2011</inceptionYear>
+    <licenses>
+        <license>
+            <name>BSD 3-Clause</name>
+            <url>http://www.opensource.org/licenses/BSD-3-Clause</url>
+        </license>
+    </licenses>
     <scm>
         <connection>scm:git:git@github.com:tinkerpop/gremlin.git</connection>
         <developerConnection>scm:git:git@github.com:tinkerpop/gremlin.git</developerConnection>
