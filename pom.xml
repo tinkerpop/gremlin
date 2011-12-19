@@ -37,14 +37,12 @@
             <url>http://markorodriguez.com</url>
         </contributor>
     </contributors>
-
     <modules>
         <module>gremlin-test</module>
         <module>gremlin-java</module>
         <module>gremlin-groovy</module>
         <module>gremlin-scala</module>
     </modules>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -59,19 +57,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <repositories>
-        <repository>
-            <id>tinkerpop-repository</id>
-            <name>TinkerPop Maven2 Repository</name>
-            <url>http://tinkerpop.com/maven2</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <build>
         <directory>${basedir}/target</directory>
         <plugins>
@@ -88,7 +73,6 @@
             </plugin>
         </plugins>
     </build>
-
     <reporting>
         <plugins>
             <plugin>
