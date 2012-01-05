@@ -31,6 +31,7 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.pgm.impls.readonly.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.*");
         imports.add("com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
+        imports.add("com.tinkerpop.blueprints.pgm.impls.ig.*");
         imports.add("com.tinkerpop.blueprints.pgm.util.*");
         imports.add("com.tinkerpop.blueprints.pgm.util.graphml.*");
         imports.add("com.tinkerpop.blueprints.pgm.oupls.sail.*");
