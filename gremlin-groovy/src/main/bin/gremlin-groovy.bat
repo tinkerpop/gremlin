@@ -58,8 +58,7 @@ CALL :concat %%X %1 %2
 
 
 set CLASSPATH=%CP%;%OLD_CLASSPATH%
-java %JAVA_OPTIONS% %JAVA_ARGS% -cp %CP% com.tinkerpop.gremlin.groovy.jsr223.ScriptExecutor %strg%
-
+java %JAVA_OPTIONS% %JAVA_ARGS% com.tinkerpop.gremlin.groovy.console.Console
 set CLASSPATH=%OLD_CLASSPATH%
 goto :eof
 
