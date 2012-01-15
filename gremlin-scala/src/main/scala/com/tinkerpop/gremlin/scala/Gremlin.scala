@@ -10,5 +10,9 @@ object Gremlin {
   def version(): String = {
     Tokens.VERSION;
   }
+  
+  def language(): String = {
+    "gremlin-scala";
+  }
 
 }

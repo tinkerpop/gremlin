@@ -17,6 +17,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdFilterPipe to the end of the Pipeline.
+     * If the incoming element's id matches the filter criteria over the provided id, then let the element pass.
      *
      * @param id     the id to filter on
      * @param filter the filter of the pipe
@@ -26,6 +27,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a LabelFilterPipe to the end of the Pipeline.
+     * If the incoming edge label matches the filter criteria over the provided label, then let the edge pass.
      *
      * @param label  the label to filter on
      * @param filter the filter of the pipe
@@ -35,6 +37,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element's property matches the filter criteria over the provided value, then let the element pass.
      *
      * @param key    the property key to check
      * @param filter the filter of the pipe
@@ -45,6 +48,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element's property matches the filter criteria over the provided value, then let the element pass.
      *
      * @param key   the property key to check
      * @param t     the filter of the pipe
@@ -55,6 +59,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a BothEdgesPipe to the end of the Pipeline.
+     * Emit both incoming and outgoing edges for the incoming vertex.
      *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
@@ -63,6 +68,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a BothPipe to the end of the Pipeline.
+     * Emit both the incoming and outgoing adjacent vertices for the incoming vertex.
      *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
@@ -71,6 +77,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a BothVerticesPipe to the end of the Pipeline.
+     * Emit both the tail and head vertices of the incoming edge.
      *
      * @return the extended Pipeline
      */
@@ -78,6 +85,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an EdgesPipe to the end of the Pipeline.
+     * Emit all the edges of the incoming graph.
      *
      * @return the extended Pipeline
      */
@@ -85,6 +93,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdEdgePipe to the end of the Pipeline.
+     * Emit the edges of the graph whose ids are those of the incoming id objects.
      *
      * @param graph the graph of the pipe
      * @return the extended Pipeline
@@ -93,6 +102,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdPipe to the end of the Pipeline.
+     * Emit the id of the incoming element.
      *
      * @return the extended Pipeline
      */
@@ -100,6 +110,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdVertexPipe to the end of the Pipeline.
+     * Emit the vertices of the graph whose ids are those of the incoming id objects.
      *
      * @param graph the graph of the pipe
      * @return the extended Pipeline
@@ -108,6 +119,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an InEdgesPipe to the end of the Pipeline.
+     * Emit the incoming edges for the incoming vertex.
      *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
@@ -116,6 +128,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a InPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
      *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
@@ -124,13 +137,15 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an InVertexPipe to the end of the Pipeline.
+     * Emit the tail vertex of the incoming edge.
      *
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, Vertex> inV();
 
     /**
-     * Add an LabelPipe to the end of the Pipeline
+     * Add an LabelPipe to the end of the Pipeline.
+     * Emit the label of the incoming edge.
      *
      * @return the extended Pipeline
      */
@@ -138,6 +153,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an OutEdgesPipe to the end of the Pipeline.
+     * Emit the outgoing edges for the incoming vertex.
      *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
@@ -146,6 +162,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an OutPipe to the end of the Pipeline.
+     * Emit the adjacent outgoing vertices of the incoming vertex.
      *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
@@ -154,6 +171,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an OutVertexPipe to the end of the Pipeline.
+     * Emit the tail vertex of the incoming edge.
      *
      * @return the extended Pipeline
      */
@@ -161,6 +179,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a PropertyMapPipe to the end of the Pipeline.
+     * Emit the properties of the incoming element as a java.util.Map.
      *
      * @return the extended Pipeline
      */
@@ -168,6 +187,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add a PropertyPipe to the end of the Pipeline.
+     * Emit the respective property of the incoming element.
      *
      * @param key the property key
      * @return the extended Pipeline
@@ -175,7 +195,8 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, Object> property(final String key);
 
     /**
-     * Add a VerticesPipe to the end of the Pipeline
+     * Add a VerticesPipe to the end of the Pipeline.
+     * Emit all the vertices of the incoming graph.
      *
      * @return the extended Pipeline
      */

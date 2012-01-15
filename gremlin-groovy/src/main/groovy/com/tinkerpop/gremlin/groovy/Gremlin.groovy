@@ -27,8 +27,8 @@ class Gremlin {
         Gremlin.addStep(Tokens.FILTER);
         Gremlin.addStep(Tokens.SIMPLEPATH);
         Gremlin.addStep(Tokens.DEDUP);
-        Gremlin.addStep(Tokens.DISCARD);
         Gremlin.addStep(Tokens.AND);
+        Gremlin.addStep(Tokens.OBJECTFILTER);
         Gremlin.addStep(Tokens.OR);
         Gremlin.addStep(Tokens.BACK);
         Gremlin.addStep(Tokens.EXCEPT);
@@ -136,6 +136,10 @@ class Gremlin {
 
     public static String version() {
         return Tokens.VERSION;
+    }
+
+    public static String language() {
+        return "gremlin-groovy";
     }
 
 }

@@ -15,6 +15,11 @@ class GremlinTest extends BaseTest {
         assertEquals(Gremlin.version(), Tokens.VERSION);
     }
 
+    public void testLanguage() throws Exception {
+        Gremlin.load();
+        assertEquals(Gremlin.language(), "gremlin-groovy");
+    }
+
     public void testCompilation() throws Exception {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 

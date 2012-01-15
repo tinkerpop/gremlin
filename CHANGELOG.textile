@@ -34,7 +34,9 @@ h3. Version 1.5 (NOT OFFICIALLY RELEASED YET)
 ```
 
 * Added @select@ step for the respective @SelectPipe@
-* Renamed @objectFilter@ step to @discard@
+* Updated @Imports.java@ to provide support for InfiniteGraph
+* Fixed classpath issues in the .bat files of respective Gremlin implementations
+* Lots of JavaDoc work to make the @GremlinPipeline@ JavaDoc be a single point of reference
 
 ==<hr/>==
 

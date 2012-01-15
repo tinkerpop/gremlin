@@ -35,7 +35,6 @@ public class Tokens {
     public static final String BACK = "back";
     public static final String CAP = "cap";
     public static final String COPYSPLIT = "copySplit";
-    public static final String DISCARD = "discard";
     public static final String EXCEPT = "except";
     public static final String EXHAUSTMERGE = "exhaustMerge";
     public static final String FAIRMERGE = "fairMerge";
@@ -49,6 +48,7 @@ public class Tokens {
     public static final String LOOP = "loop";
     public static final String MAP = "map";
     public static final String MEMOIZE = "memoize";
+    public static final String OBJECTFILTER = "objectFilter";
     public static final String OPTIONAL = "optional";
     public static final String OR = "or";
     public static final String PATHS = "paths";

@@ -5,7 +5,9 @@ import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
+import com.tinkerpop.pipes.PipeFunction;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,5 +23,25 @@ public class SelectStepTest extends com.tinkerpop.gremlin.test.transform.SelectS
 
     public void test_g_v1_asXaX_outXknowsX_asXbX_select() {
         super.test_g_v1_asXaX_outXknowsX_asXbX_select(new GremlinPipeline<Vertex, List>(g.getVertex(1)).as("a").out("knows").as("b").select());
+    }
+
+    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX() {
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(new GremlinPipeline<Vertex, List>(g.getVertex(1)).as("a").out("knows").as("b").select(new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }));
+    }
+
+    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXaX() {
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXaX(new GremlinPipeline<Vertex, List>(g.getVertex(1)).as("a").out("knows").as("b").select(Arrays.asList("a")));
+    }
+
+    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX() {
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX(new GremlinPipeline<Vertex, List>(g.getVertex(1)).as("a").out("knows").as("b").select(Arrays.asList("a"), new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }));
     }
 }

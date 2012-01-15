@@ -160,8 +160,8 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.filter(filterFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def discard(`object`: E, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
-    super.discard(`object`, filter).asInstanceOf[GremlinScalaPipeline[S, E]];
+  override def objectFilter(`object`: E, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
+    super.objectFilter(`object`, filter).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def or(pipes: Pipe[E, _]*): GremlinScalaPipeline[S, E] = {

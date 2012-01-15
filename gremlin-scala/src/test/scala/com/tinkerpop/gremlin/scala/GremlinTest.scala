@@ -14,4 +14,8 @@ class GremlinTest extends TestCase {
     assertEquals(Gremlin.version(), Tokens.VERSION);
   }
 
+  def testLanguage() {
+    assertEquals(Gremlin.language(), "gremlin-scala");
+  }
+
 }
