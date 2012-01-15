@@ -92,11 +92,11 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> store(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.store(new GroovyPipeFunction<E,Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) this.store(new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> store(final Collection storage, final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.store(storage, new GroovyPipeFunction<E,Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) this.store(storage, new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Closure... closures) {
@@ -109,6 +109,14 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
 
     public GremlinGroovyPipeline<S, E> table(final Table table, final List<String> columnNames, final Closure... closures) {
         return (GremlinGroovyPipeline<S, E>) this.table(table, columnNames, GroovyPipeFunction.generate(closures));
+    }
+
+    public GremlinGroovyPipeline<S, E> select(final Closure... closures) {
+        return (GremlinGroovyPipeline<S, E>) this.select(GroovyPipeFunction.generate(closures));
+    }
+
+    public GremlinGroovyPipeline<S, E> select(final List<String> columnNames, final Closure... closures) {
+        return (GremlinGroovyPipeline<S, E>) this.select(columnNames, GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, ?> transform(final Closure closure) {

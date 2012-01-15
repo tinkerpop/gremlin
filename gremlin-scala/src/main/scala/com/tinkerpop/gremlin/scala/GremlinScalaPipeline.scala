@@ -160,8 +160,8 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.filter(filterFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def objectFilter(`object` : E, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
-    super.objectFilter(`object`, filter).asInstanceOf[GremlinScalaPipeline[S, E]];
+  override def discard(`object`: E, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
+    super.discard(`object`, filter).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def or(pipes: Pipe[E, _]*): GremlinScalaPipeline[S, E] = {
@@ -309,6 +309,18 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   override def path(pathFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, JList[_]] =
     super.path(pathFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
+
+  override def select: GremlinScalaPipeline[S, JList[_]] = {
+    super.select().asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
+  }
+
+  override def select(stepFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, JList[_]] = {
+    super.select(stepFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
+  }
+
+  override def select(stepNames: JCollection[String], stepFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, JList[_]] = {
+    super.select(stepNames, stepFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
+  }
 
   override def scatter: GremlinScalaPipeline[S, _] = {
     super.scatter().asInstanceOf[GremlinScalaPipeline[S, _]]

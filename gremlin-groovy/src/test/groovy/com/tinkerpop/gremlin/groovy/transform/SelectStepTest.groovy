@@ -1,0 +1,25 @@
+package com.tinkerpop.gremlin.groovy.transform
+
+import com.tinkerpop.blueprints.pgm.Graph
+import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
+import com.tinkerpop.gremlin.groovy.Gremlin
+import com.tinkerpop.gremlin.test.ComplianceTest
+
+/**
+ * @author Marko A. Rodriguez (http://markorodriguez.com)
+ */
+class SelectStepTest extends com.tinkerpop.gremlin.test.transform.SelectStepTest {
+
+    Graph g = TinkerGraphFactory.createTinkerGraph();
+    static {
+        Gremlin.load();
+    }
+
+    public void testCompliance() {
+        ComplianceTest.testCompliance(this.getClass());
+    }
+    
+    public void test_g_v1_asXaX_outXknowsX_asXbX_select() {
+        super.test_g_v1_asXaX_outXknowsX_asXbX_select(g.v(1).as('a').out('knows').as('b').select)
+    }
+}

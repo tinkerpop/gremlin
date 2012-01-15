@@ -33,6 +33,9 @@ h3. Version 1.5 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Added @select@ step for the respective @SelectPipe@
+* Renamed @objectFilter@ step to @discard@
+
 ==<hr/>==
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-chickenwing.png!

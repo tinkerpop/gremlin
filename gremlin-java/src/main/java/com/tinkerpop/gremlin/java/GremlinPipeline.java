@@ -61,6 +61,7 @@ import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.PathFunctionPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
+import com.tinkerpop.pipes.transform.SelectPipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.util.AsPipe;
@@ -278,7 +279,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new FilterFunctionPipe<E>(filterFunction));
     }
 
-    public GremlinPipeline<S, E> objectFilter(final E object, final FilterPipe.Filter filter) {
+    public GremlinPipeline<S, E> discard(final E object, final FilterPipe.Filter filter) {
         return this.add(new ObjectFilterPipe<E>(object, filter));
     }
 
@@ -398,7 +399,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     /// TRANSFORM PIPES ///
     ///////////////////////
 
-    public GremlinPipeline<S, List<?>> gather() {
+    public GremlinPipeline<S, List> gather() {
         return this.add(new GatherPipe());
     }
 
@@ -427,12 +428,24 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
     }
 
-    public GremlinPipeline<S, List<?>> path(final PipeFunction... pathFunctions) {
+    public GremlinPipeline<S, List> path(final PipeFunction... pathFunctions) {
         if (pathFunctions.length == 0)
             this.addPipe(new PathPipe());
         else
             this.addPipe(new PathFunctionPipe(pathFunctions));
-        return (GremlinPipeline<S, List<?>>) this;
+        return (GremlinPipeline<S, List>) this;
+    }
+
+    public GremlinPipeline<S, List> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
+        return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+    }
+
+    public GremlinPipeline<S, List> select(final PipeFunction... columnFunctions) {
+        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), columnFunctions));
+    }
+
+    public GremlinPipeline<S, List> select() {
+        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this)));
     }
 
     public GremlinPipeline<S, ?> scatter() {

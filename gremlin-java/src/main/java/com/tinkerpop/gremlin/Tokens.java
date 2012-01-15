@@ -35,6 +35,7 @@ public class Tokens {
     public static final String BACK = "back";
     public static final String CAP = "cap";
     public static final String COPYSPLIT = "copySplit";
+    public static final String DISCARD = "discard";
     public static final String EXCEPT = "except";
     public static final String EXHAUSTMERGE = "exhaustMerge";
     public static final String FAIRMERGE = "fairMerge";
@@ -56,6 +57,7 @@ public class Tokens {
     public static final String RANDOM = "random";
     public static final String RETAIN = "retain";
     public static final String SCATTER = "scatter";
+    public static final String SELECT = "select";
     public static final String STEP = "step";
     public static final String STORE = "store";
     public static final String TABLE = "table";

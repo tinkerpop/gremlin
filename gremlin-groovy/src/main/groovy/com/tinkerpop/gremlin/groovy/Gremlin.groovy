@@ -27,6 +27,7 @@ class Gremlin {
         Gremlin.addStep(Tokens.FILTER);
         Gremlin.addStep(Tokens.SIMPLEPATH);
         Gremlin.addStep(Tokens.DEDUP);
+        Gremlin.addStep(Tokens.DISCARD);
         Gremlin.addStep(Tokens.AND);
         Gremlin.addStep(Tokens.OR);
         Gremlin.addStep(Tokens.BACK);
@@ -65,6 +66,7 @@ class Gremlin {
         Gremlin.addStep(Tokens.MEMOIZE);
         Gremlin.addStep(Tokens.GATHER);
         Gremlin.addStep(Tokens.SCATTER);
+        Gremlin.addStep(Tokens.SELECT);
         Gremlin.addStep(Tokens.PATHS);
         Gremlin.addStep(Tokens.OUT);
         Gremlin.addStep(Tokens.OUTE);
