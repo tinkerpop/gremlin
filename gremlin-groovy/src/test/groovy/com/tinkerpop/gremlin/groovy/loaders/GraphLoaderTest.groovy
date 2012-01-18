@@ -151,7 +151,7 @@ class GraphLoaderTest extends TestCase {
         assertEquals(e4.getOutVertex(), v0);
         assertEquals(e4.getInVertex(), v1);
         assertEquals(e4.getLabel(), 'knows');
-        assertEquals(e4.getProperty('weight'), 0.5f);
+        assertEquals(e4.getProperty('weight'), 0.5);
 
         Edge e5 = g.addEdge(null, v0, v2, 'hates', '{"degree": "alot"}');
         assertEquals(e5.getOutVertex(), v0);
