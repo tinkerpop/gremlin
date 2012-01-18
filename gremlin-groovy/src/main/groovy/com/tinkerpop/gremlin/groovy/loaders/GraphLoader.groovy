@@ -73,7 +73,7 @@ class GraphLoader {
             return ((Graph) delegate).addVertex(null, properties);
         }
 
-        // JSON methods
+        // JSON method
         Graph.metaClass.addVertex = {final Object id, final String jsonProperties ->
             def slurper = new JsonSlurper();
             def Map<String, Object> properties = slurper.parseText(jsonProperties);
@@ -82,10 +82,6 @@ class GraphLoader {
                 vertex.setProperty(entry.getKey(), entry.getValue());
             }
             return vertex;
-        }
-
-        Graph.metaClass.addVertex = {final String jsonProperties ->
-            return ((Graph) delegate).addVertex(null, jsonProperties);
         }
 
         Graph.metaClass.addEdge = {final Object id, final Vertex outVertex, final Vertex inVertex, final String label, final Map<String, Object> properties ->
@@ -104,7 +100,7 @@ class GraphLoader {
             return ((Graph) delegate).addEdge(null, outVertex, inVertex, label);
         }
 
-        // JSON methods
+        // JSON method
         Graph.metaClass.addEdge = {final Object id, final Vertex outVertex, final Vertex inVertex, final String label, String jsonProperties ->
             def slurper = new JsonSlurper();
             def Map<String, Object> properties = slurper.parseText(jsonProperties);
@@ -113,10 +109,6 @@ class GraphLoader {
                 edge.setProperty(entry.getKey(), entry.getValue());
             }
             return edge;
-        }
-
-        Graph.metaClass.addEdge = {final Vertex outVertex, final Vertex inVertex, final String label, final String jsonProperties ->
-            return ((Graph) delegate).addEdge(null, outVertex, inVertex, label, jsonProperties);
         }
 
         Graph.metaClass.loadGraphML = {final def fileObject ->

@@ -105,7 +105,7 @@ class GraphLoaderTest extends TestCase {
         assertEquals(v0.getProperty('name'), 'marko');
         assertEquals(v0.getProperty('age'), 31);
 
-        Vertex v1 = g.addVertex([name: 'pavel', location: 'belarus']);
+        Vertex v1 = g.addVertex(null, [name: 'pavel', location: 'belarus']);
         assertEquals(v1.getProperty('name'), 'pavel');
         assertEquals(v1.getProperty('location'), 'belarus');
 
@@ -117,7 +117,7 @@ class GraphLoaderTest extends TestCase {
         assertEquals(v4.getProperty('name'), 'marko');
         assertEquals(v4.getProperty('age'), 31);
 
-        Vertex v5 = g.addVertex('{"name": "pavel", "location": "belarus"}');
+        Vertex v5 = g.addVertex(null, '{"name": "pavel", "location": "belarus"}');
         assertEquals(v5.getProperty('name'), 'pavel');
         assertEquals(v5.getProperty('location'), 'belarus');
 
@@ -127,7 +127,7 @@ class GraphLoaderTest extends TestCase {
         assertEquals(e0.getLabel(), 'knows');
         assertEquals(e0.getProperty('weight'), 0.5f);
 
-        Edge e1 = g.addEdge(v0, v2, 'hates', [degree: 'alot']);
+        Edge e1 = g.addEdge(null, v0, v2, 'hates', [degree: 'alot']);
         assertEquals(e1.getOutVertex(), v0);
         assertEquals(e1.getInVertex(), v2);
         assertEquals(e1.getLabel(), 'hates');
@@ -153,13 +153,11 @@ class GraphLoaderTest extends TestCase {
         assertEquals(e4.getLabel(), 'knows');
         assertEquals(e4.getProperty('weight'), 0.5f);
 
-        Edge e5 = g.addEdge(v0, v2, 'hates', '{"degree": "alot"}');
+        Edge e5 = g.addEdge(null, v0, v2, 'hates', '{"degree": "alot"}');
         assertEquals(e5.getOutVertex(), v0);
         assertEquals(e5.getInVertex(), v2);
         assertEquals(e5.getLabel(), 'hates');
         assertNull(e5.getProperty('weight'));
         assertEquals(e5.getProperty('degree'), 'alot');
-
-        Vertex v3 = g.addVertex();
     }
 }
