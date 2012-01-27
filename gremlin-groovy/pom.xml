@@ -124,6 +124,12 @@
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
             <version>0.9.94</version>
+            <exclusions>
+                <exclusion>  <!-- declare the exclusion here -->
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- GROOVY/JAVA CONNECTIVITY -->
         <dependency>
