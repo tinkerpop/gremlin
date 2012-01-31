@@ -33,6 +33,18 @@ class GremlinTest extends BaseTest {
         assertFalse(pipe.hasNext());
     }
 
+    public void testStartPipeWithIdentity() {
+        Gremlin.load();
+        Pipe pipe = _().out.name;
+        pipe.setStarts([TinkerGraphFactory.createTinkerGraph().getVertex(1)]);
+        int counter = 0;
+        pipe.each {
+            assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))
+            counter++;
+        }
+        assertEquals(counter, 3);
+    }
+
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
