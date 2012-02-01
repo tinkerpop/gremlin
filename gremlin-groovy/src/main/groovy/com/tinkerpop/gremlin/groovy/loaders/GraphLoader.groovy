@@ -3,13 +3,12 @@ package com.tinkerpop.gremlin.groovy.loaders
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
-import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLReader
-import com.tinkerpop.blueprints.pgm.util.graphml.GraphMLWriter
-import com.tinkerpop.blueprints.pgm.util.json.GraphSONReader
-import com.tinkerpop.blueprints.pgm.util.json.GraphSONWriter
+import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLReader
+import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLWriter
+import com.tinkerpop.blueprints.pgm.util.io.graphson.GraphSONReader
+import com.tinkerpop.blueprints.pgm.util.io.graphson.GraphSONWriter
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
-import groovy.json.JsonSlurper
 import java.util.Map.Entry
 
 /**
@@ -73,17 +72,6 @@ class GraphLoader {
             return ((Graph) delegate).addVertex(null, properties);
         }
 
-        // JSON method
-        Graph.metaClass.addVertex = {final Object id, final String jsonProperties ->
-            def slurper = new JsonSlurper();
-            def Map<String, Object> properties = slurper.parseText(jsonProperties);
-            final Vertex vertex = ((Graph) delegate).addVertex(id);
-            for (final Entry<String, Object> entry: properties.entrySet()) {
-                vertex.setProperty(entry.getKey(), entry.getValue());
-            }
-            return vertex;
-        }
-
         Graph.metaClass.addEdge = {final Object id, final Vertex outVertex, final Vertex inVertex, final String label, final Map<String, Object> properties ->
             final Edge edge = ((Graph) delegate).addEdge(id, outVertex, inVertex, label);
             for (final Entry<String, Object> entry: properties.entrySet()) {
@@ -98,17 +86,6 @@ class GraphLoader {
 
         Graph.metaClass.addEdge = {final Vertex outVertex, final Vertex inVertex, final String label ->
             return ((Graph) delegate).addEdge(null, outVertex, inVertex, label);
-        }
-
-        // JSON method
-        Graph.metaClass.addEdge = {final Object id, final Vertex outVertex, final Vertex inVertex, final String label, String jsonProperties ->
-            def slurper = new JsonSlurper();
-            def Map<String, Object> properties = slurper.parseText(jsonProperties);
-            final Edge edge = ((Graph) delegate).addEdge(id, outVertex, inVertex, label);
-            for (final Entry<String, Object> entry: properties.entrySet()) {
-                edge.setProperty(entry.getKey(), entry.getValue());
-            }
-            return edge;
         }
 
         Graph.metaClass.loadGraphML = {final def fileObject ->
