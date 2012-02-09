@@ -58,6 +58,26 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final Tokens.T t, final Object value);
 
     /**
+     * Add a PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     *
+     * @param key   the property key to check
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Object value);
+
+    /**
+     * Add a PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     *
+     * @param key   the property key to check
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Object value);
+
+    /**
      * Add a BothEdgesPipe to the end of the Pipeline.
      * Emit both incoming and outgoing edges for the incoming vertex.
      *

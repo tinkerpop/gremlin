@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.groovy.loaders
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
 import com.tinkerpop.pipes.util.Table
+import com.tinkerpop.pipes.util.Row
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -44,7 +45,7 @@ class ObjectLoader {
 
         Table.metaClass.unique = {
             final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Table.Row row: delegate.iterator().unique()) {
+            for (final Row row: delegate.iterator().unique()) {
                 temp.addRow(row);
             }
             return temp;
@@ -53,7 +54,7 @@ class ObjectLoader {
 
         Table.metaClass.unique = {final Closure closure ->
             final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Table.Row row: delegate.iterator().unique(closure)) {
+            for (final Row row: delegate.iterator().unique(closure)) {
                 temp.addRow(row);
             }
             return temp;
@@ -61,7 +62,7 @@ class ObjectLoader {
 
         Table.metaClass.unique = {final Comparator comparator ->
             final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Table.Row row: delegate.iterator().unique(comparator)) {
+            for (final Row row: delegate.iterator().unique(comparator)) {
                 temp.addRow(row);
             }
             return temp;
@@ -69,7 +70,7 @@ class ObjectLoader {
 
         Table.metaClass.sort = {
             final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Table.Row row: ((Table) delegate).iterator().sort()) {
+            for (final Row row: ((Table) delegate).iterator().sort()) {
                 temp.addRow(row);
             }
             return temp;
@@ -77,7 +78,7 @@ class ObjectLoader {
 
         Table.metaClass.sort = {final Closure closure ->
             final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Table.Row row: delegate.iterator().sort(closure)) {
+            for (final Row row: delegate.iterator().sort(closure)) {
                 temp.addRow(row);
             }
             return temp;
@@ -85,7 +86,7 @@ class ObjectLoader {
 
         Table.metaClass.sort = {final Comparator comparator ->
             final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Table.Row row: delegate.iterator().sort(comparator)) {
+            for (final Row row: delegate.iterator().sort(comparator)) {
                 temp.addRow(row);
             }
             return temp;

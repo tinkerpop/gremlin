@@ -69,6 +69,7 @@ import com.tinkerpop.pipes.util.FluentUtility;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
+import com.tinkerpop.pipes.util.Row;
 import com.tinkerpop.pipes.util.StartPipe;
 import com.tinkerpop.pipes.util.Table;
 
@@ -110,6 +111,14 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, ? extends Element> propertyFilter(final String key, final Tokens.T t, final Object value) {
         return this.add(new PropertyFilterPipe(key, value, Tokens.mapFilter(t)));
+    }
+
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Object value) {
+        return this.add(new PropertyFilterPipe(key, value, FilterPipe.Filter.EQUAL));
+    }
+
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object value) {
+        return this.add(new PropertyFilterPipe(key, value, FilterPipe.Filter.NOT_EQUAL));
     }
 
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
@@ -436,15 +445,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return (GremlinPipeline<S, List>) this;
     }
 
-    public GremlinPipeline<S, List> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
+    public GremlinPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
         return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
-    public GremlinPipeline<S, List> select(final PipeFunction... columnFunctions) {
+    public GremlinPipeline<S, Row> select(final PipeFunction... columnFunctions) {
         return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), columnFunctions));
     }
 
-    public GremlinPipeline<S, List> select() {
+    public GremlinPipeline<S, Row> select() {
         return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this)));
     }
 
