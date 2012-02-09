@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.structures.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +39,9 @@ public class GroupCountStepTest extends com.tinkerpop.gremlin.test.sideeffect.Gr
                         return (String) vertex.getProperty("name");
                     }
                 },
-                new PipeFunction<Number, Number>() {
-                    public Long compute(Number number) {
-                        return number.longValue() + 2l;
+                new PipeFunction<Pair<?, Number>, Number>() {
+                    public Number compute(Pair<?, Number> arg) {
+                        return arg.getB().longValue() + 2l;
                     }
                 }
         ), m);

@@ -26,7 +26,7 @@ class GroupCountStepTest extends com.tinkerpop.gremlin.test.sideeffect.GroupCoun
 
     public void test_g_V_outXcreatedX_groupCountXm__name__plus_2X() {
         def m = [:]
-        super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(g.V.out('created').groupCount(m) {it.name} {it + 2l}, m);
+        super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(g.V.out('created').groupCount(m) {it.name} {it.b + 2l}, m);
     }
 
     public void test_g_V_outXcreatedX_groupCountXnameX_cap() {

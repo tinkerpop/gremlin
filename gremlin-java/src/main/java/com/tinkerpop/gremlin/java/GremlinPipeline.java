@@ -69,9 +69,10 @@ import com.tinkerpop.pipes.util.FluentUtility;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
-import com.tinkerpop.pipes.util.Row;
 import com.tinkerpop.pipes.util.StartPipe;
-import com.tinkerpop.pipes.util.Table;
+import com.tinkerpop.pipes.util.structures.Pair;
+import com.tinkerpop.pipes.util.structures.Row;
+import com.tinkerpop.pipes.util.structures.Table;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -340,11 +341,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
     }
 
-    public GremlinPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
+    public GremlinPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
         return this.add(new GroupCountFunctionPipe(map, keyFunction, valueFunction));
     }
 
-    public GremlinPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Number, Number> valueFunction) {
+    public GremlinPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
         return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
     }
 

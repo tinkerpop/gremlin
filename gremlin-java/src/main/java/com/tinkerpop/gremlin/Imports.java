@@ -49,6 +49,8 @@ public class Imports {
         imports.add("com.tinkerpop.pipes.sideeffect.*");
         imports.add("com.tinkerpop.pipes.transform.*");
         imports.add("com.tinkerpop.pipes.util.*");
+        imports.add("com.tinkerpop.pipes.util.iterators.*");
+        imports.add("com.tinkerpop.pipes.util.structures.*");
     }
 
     public static List<String> getImports() {

@@ -4,7 +4,7 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.util.SingleIterator;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;

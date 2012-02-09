@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.pipes.transform;
 
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.pipes.util.MultiIterator;
+import com.tinkerpop.pipes.util.iterators.MultiIterator;
 
 /**
  * BothEdgesPipe emits the incoming and outgoing edges of a vertex.

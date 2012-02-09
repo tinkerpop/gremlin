@@ -2,8 +2,8 @@ package com.tinkerpop.gremlin.groovy.loaders
 
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import com.tinkerpop.gremlin.groovy.GroovyPipeFunction
-import com.tinkerpop.pipes.util.Table
-import com.tinkerpop.pipes.util.Row
+import com.tinkerpop.pipes.util.structures.Table
+import com.tinkerpop.pipes.util.structures.Row
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

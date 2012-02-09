@@ -7,7 +7,8 @@ import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe}
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 import java.util.{Map => JMap, List => JList, Iterator => JIterator, Collection => JCollection, ArrayList => JArrayList}
-import com.tinkerpop.pipes.util.{Row, Table}
+import com.tinkerpop.pipes.util.structures.{Table, Row}
+import com.tinkerpop.pipes.util.structures.{Pair => TPair}
 
 class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
@@ -217,11 +218,11 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.optional(namedStep).asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
-  override def groupCount(map: JMap[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinScalaPipeline[S, E] = {
+  override def groupCount(map: JMap[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[TPair[_, Number], Number]): GremlinScalaPipeline[S, E] = {
     super.groupCount(map, keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
-  override def groupCount(keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[Number, Number]): GremlinScalaPipeline[S, E] = {
+  override def groupCount(keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[TPair[_, Number], Number]): GremlinScalaPipeline[S, E] = {
     super.groupCount(keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 

@@ -2,7 +2,7 @@ package com.tinkerpop.gremlin.test.sideeffect;
 
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.util.Table;
+import com.tinkerpop.pipes.util.structures.Table;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin.pipes.transform;
 import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.util.EmptyIterator;
+import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Iterator;
