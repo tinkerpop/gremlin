@@ -27,4 +27,8 @@ class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
   def test_g_V_hasXblah_nullX() {
     super.test_g_V_hasXblah_nullX(g.V.has("blah", null));
   }
+
+  def test_g_v1_out_hasXid_2X() {
+    super.test_g_v1_out_hasXid_2X(g.v(1).out.has("id", "2"));
+  }
 }

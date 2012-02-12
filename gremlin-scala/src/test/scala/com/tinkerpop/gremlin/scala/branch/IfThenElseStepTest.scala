@@ -19,7 +19,7 @@ class IfThenElseStepTest extends com.tinkerpop.gremlin.test.branch.IfThenElseSte
   }
 
   def test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name() {
-    super.test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name(g.v(1).out.ifThenElse({v:Vertex => val lang = v.getProperty("lang"); lang != null && lang.equals("java")},{v:Vertex => v}, {v:Vertex => v.out}).property("name").asInstanceOf[Pipe[Vertex, String]]);
+    super.test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name(g.v(1).out.ifThenElse({v: Vertex => val lang = v.getProperty("lang"); lang != null && lang.equals("java")}, {v: Vertex => v}, {v: Vertex => v.out}).property("name").asInstanceOf[Pipe[Vertex, String]]);
   }
 
 }

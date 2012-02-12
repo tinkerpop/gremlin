@@ -26,10 +26,10 @@ class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.AggregateS
   }
 
   def test_g_V_propertyXnameX_aggregate_cap() {
-      super.test_g_V_propertyXnameX_aggregate_cap(g.V.property("name").aggregate().cap.asInstanceOf[Pipe[Graph,java.util.List[String]]]);
+    super.test_g_V_propertyXnameX_aggregate_cap(g.V.property("name").aggregate().cap.asInstanceOf[Pipe[Graph, java.util.List[String]]]);
   }
 
   def test_g_V_aggregateXnameX_cap() {
-      super.test_g_V_aggregateXnameX_cap(g.V.aggregate{v:Vertex => v("name")}.cap.asInstanceOf[Pipe[Graph,java.util.List[String]]]);
+    super.test_g_V_aggregateXnameX_cap(g.V.aggregate {v: Vertex => v("name")}.cap.asInstanceOf[Pipe[Graph, java.util.List[String]]]);
   }
 }

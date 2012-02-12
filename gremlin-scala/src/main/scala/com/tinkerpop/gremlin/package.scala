@@ -3,7 +3,7 @@ package com.tinkerpop.gremlin
 import com.tinkerpop.pipes.PipeFunction
 import _root_.java.lang.{Boolean => JBoolean}
 
-/**Implicit conversions that make Gremlin easier to use in Scala. Users can just `import com.tinkerpop.gremlin.scala._` */
+/**Implicit conversions that make Gremlin easier to use in Scala. Users can just `import com.tinkerpop.gremlin.scala._`*/
 package object scala {
   /**Most generic conversion: A => B to PipeFunction[A, B]. */
   implicit def functionToPipeFunction[A, B](f: Function1[A, B]) =

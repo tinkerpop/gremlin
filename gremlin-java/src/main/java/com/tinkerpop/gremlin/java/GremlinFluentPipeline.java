@@ -4,8 +4,6 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.gremlin.Tokens;
-import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.PipesFluentPipeline;
 
 import java.util.Map;
@@ -16,50 +14,9 @@ import java.util.Map;
 public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
-     * Add an IdFilterPipe to the end of the Pipeline.
-     * If the incoming element's id matches the filter criteria over the provided id, then let the element pass.
-     *
-     * @param id     the id to filter on
-     * @param filter the filter of the pipe
-     * @return the extended Pipeline
-     */
-    public GremlinFluentPipeline<S, ? extends Element> idFilter(final Object id, final FilterPipe.Filter filter);
-
-    /**
-     * Add a LabelFilterPipe to the end of the Pipeline.
-     * If the incoming edge label matches the filter criteria over the provided label, then let the edge pass.
-     *
-     * @param label  the label to filter on
-     * @param filter the filter of the pipe
-     * @return the extended Pipeline
-     */
-    public GremlinFluentPipeline<S, Edge> labelFilter(final String label, final FilterPipe.Filter filter);
-
-    /**
-     * Add a PropertyFilterPipe to the end of the Pipeline.
-     * If the incoming element's property matches the filter criteria over the provided value, then let the element pass.
-     *
-     * @param key    the property key to check
-     * @param filter the filter of the pipe
-     * @param value  the object to filter on
-     * @return the extended Pipeline
-     */
-    public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final FilterPipe.Filter filter, final Object value);
-
-    /**
-     * Add a PropertyFilterPipe to the end of the Pipeline.
-     * If the incoming element's property matches the filter criteria over the provided value, then let the element pass.
-     *
-     * @param key   the property key to check
-     * @param t     the filter of the pipe
-     * @param value the object to filter on
-     * @return the extended Pipeline
-     */
-    public GremlinFluentPipeline<S, ? extends Element> propertyFilter(final String key, final Tokens.T t, final Object value);
-
-    /**
-     * Add a PropertyFilterPipe to the end of the Pipeline.
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
      *
      * @param key   the property key to check
      * @param value the object to filter on
@@ -68,8 +25,9 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Object value);
 
     /**
-     * Add a PropertyFilterPipe to the end of the Pipeline.
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     * If the key is id or label, then use respect id or label filtering.
      *
      * @param key   the property key to check
      * @param value the object to filter on

@@ -36,7 +36,11 @@ h3. Version 1.5 (No More Mr. Nice Guy -- NOT OFFICIALLY RELEASED YET)
 ```
 
 * Added @select@ step for the respective @SelectPipe@
-* Added @has@ and @hasNot@ step for concise property filtering (makes use of @PropertyFilterPipe@)
+* Added @has@ and @hasNot@ step for concise property/id/label filtering
+* Removed @idFilter@ step, where @has@ and @hasNot@ is the respective replacement
+* Removed @labelFilter@ step, where @has@ and @hasNot@ is the respective replacement
+* Removed @propertyFilter@ step, where @has@ and @hasNot@ is the respective replacement
+* Removed @index@ step as it was not used and there are other ways of getting that functionality
 * Altered the semantics of @groupCount@ value function such that it now takes a @Pair@ (much more expressive)
 * Updated @Imports.java@ to provide support for InfiniteGraph
 * Fixed classpath issues in the @.bat@ files of respective Gremlin implementations

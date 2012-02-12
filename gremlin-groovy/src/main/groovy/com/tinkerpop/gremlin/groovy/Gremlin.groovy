@@ -27,14 +27,14 @@ class Gremlin {
         Gremlin.addStep(Tokens.FILTER);
         Gremlin.addStep(Tokens.SIMPLEPATH);
         Gremlin.addStep(Tokens.DEDUP);
+        Gremlin.addStep(Tokens.HAS);
+        Gremlin.addStep(Tokens.HASNOT);
         Gremlin.addStep(Tokens.AND);
-        Gremlin.addStep(Tokens.OBJECTFILTER);
         Gremlin.addStep(Tokens.OR);
         Gremlin.addStep(Tokens.BACK);
         Gremlin.addStep(Tokens.EXCEPT);
         Gremlin.addStep(Tokens.RETAIN);
         Gremlin.addStep(Tokens.RANDOM);
-        Gremlin.addStep(Tokens.PROPERTYFILTER);
         // sideeffect steps
         Gremlin.addStep(Tokens.SIDEEFFECT);
         Gremlin.addStep(Tokens.AGGREGATE);
@@ -57,7 +57,6 @@ class Gremlin {
         Gremlin.addStep(Tokens.IN);
         Gremlin.addStep(Tokens.INE);
         Gremlin.addStep(Tokens.INV);
-        Gremlin.addStep(Tokens.INDEX);
         Gremlin.addStep(Tokens.IFTHENELSE);
         Gremlin.addStep(Tokens.CAP);
         Gremlin.addStep(Tokens.LABEL);

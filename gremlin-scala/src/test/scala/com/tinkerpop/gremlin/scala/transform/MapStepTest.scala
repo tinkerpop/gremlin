@@ -13,7 +13,7 @@ class MapStepTest extends com.tinkerpop.gremlin.test.transform.MapStepTest {
   }
 
   def test_g_v1_map() {
-    super.test_g_v1_map(g.v(1).->.map.asInstanceOf[GremlinScalaPipeline[Vertex,java.util.Map[String,Object]]])
+    super.test_g_v1_map(g.v(1).->.map.asInstanceOf[GremlinScalaPipeline[Vertex, java.util.Map[String, Object]]])
   }
 
   def test_g_v1_outXknowsX_map() {

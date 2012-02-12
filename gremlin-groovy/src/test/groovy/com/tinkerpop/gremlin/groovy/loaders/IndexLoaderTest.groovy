@@ -10,10 +10,10 @@ import junit.framework.TestCase
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 class IndexLoaderTest extends TestCase {
+
     public void testIndexShortcuts() throws Exception {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
-
         assertEquals(g.idx(T.v)[[name: 'marko']].next(), g.v(1));
         assertEquals(g.idx(T.e)[[label: 'created']].count(), 4);
         assertEquals(g.idx(T.v).get('name', 'marko').next(), g.v(1));

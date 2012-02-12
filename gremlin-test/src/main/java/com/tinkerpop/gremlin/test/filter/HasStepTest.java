@@ -32,4 +32,9 @@ public class HasStepTest extends TestCase {
         assertEquals(counter, 6);
     }
 
+    public void test_g_v1_out_hasXid_2X(Pipe<Vertex, Vertex> pipe) {
+        assertTrue(pipe.hasNext());
+        assertEquals(pipe.next().getId().toString(), "2");
+    }
+
 }

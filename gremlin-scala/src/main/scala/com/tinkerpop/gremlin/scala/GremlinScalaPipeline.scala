@@ -1,8 +1,6 @@
 package com.tinkerpop.gremlin.scala
 
 import com.tinkerpop.gremlin.java.GremlinPipeline
-import com.tinkerpop.gremlin.Tokens
-import com.tinkerpop.pipes.filter._
 import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe}
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
@@ -24,18 +22,6 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.path().asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
 
   ////
-
-  def idFilter[F <: Element](id: Any, filter: FilterPipe.Filter): GremlinScalaPipeline[S, F] =
-    super.idFilter(id, filter).asInstanceOf[GremlinScalaPipeline[S, F]]
-
-  override def labelFilter(label: String, filter: FilterPipe.Filter): GremlinScalaPipeline[S, Edge] =
-    super.labelFilter(label, filter).asInstanceOf[GremlinScalaPipeline[S, Edge]]
-
-  def propertyFilter[F <: Element, T](key: String, filter: FilterPipe.Filter, value: T): GremlinScalaPipeline[S, F] =
-    super.propertyFilter(key, filter, value).asInstanceOf[GremlinScalaPipeline[S, F]]
-
-  def propertyFilter[F <: Element, T](key: String, t: Tokens.T, value: T): GremlinScalaPipeline[S, F] =
-    super.propertyFilter(key, t, value).asInstanceOf[GremlinScalaPipeline[S, F]]
 
   def has[F <: Element, T](key: String, value: T): GremlinScalaPipeline[S, F] =
     super.has(key, value).asInstanceOf[GremlinScalaPipeline[S, F]]
@@ -93,9 +79,6 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   override def V: GremlinScalaPipeline[S, Vertex] =
     super.V.asInstanceOf[GremlinScalaPipeline[S, Vertex]]
-
-  override def index[F <: Element](index: Index[F], key: String, value: Object): GremlinScalaPipeline[S, F] =
-    super.index(index, key, value).asInstanceOf[GremlinScalaPipeline[S, F]]
 
   def step[F](f: JIterator[E] => F): GremlinScalaPipeline[S, F] =
     super.step(f).asInstanceOf[GremlinScalaPipeline[S, F]]
@@ -165,10 +148,6 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
   def filter(filterFunction: E => Boolean): GremlinScalaPipeline[S, E] = {
     super.filter(filterFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
-  }
-
-  override def objectFilter(`object`: E, filter: FilterPipe.Filter): GremlinScalaPipeline[S, E] = {
-    super.objectFilter(`object`, filter).asInstanceOf[GremlinScalaPipeline[S, E]];
   }
 
   override def or(pipes: Pipe[E, _]*): GremlinScalaPipeline[S, E] = {

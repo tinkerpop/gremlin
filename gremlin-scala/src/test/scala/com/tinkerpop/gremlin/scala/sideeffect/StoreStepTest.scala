@@ -19,10 +19,10 @@ class StoreStepTest extends com.tinkerpop.gremlin.test.sideeffect.StoreStepTest 
   }
 
   def test_g_V_propertyXnameX_store_cap() {
-      super.test_g_V_propertyXnameX_store_cap(g.V.property("name").store().cap.asInstanceOf[Pipe[Graph,java.util.List[String]]]);
+    super.test_g_V_propertyXnameX_store_cap(g.V.property("name").store().cap.asInstanceOf[Pipe[Graph, java.util.List[String]]]);
   }
 
   def test_g_V_storeXnameX_cap() {
-      super.test_g_V_storeXnameX_cap(g.V.store{v:Vertex => v("name")}.cap.asInstanceOf[Pipe[Graph,java.util.List[String]]]);
+    super.test_g_V_storeXnameX_cap(g.V.store {v: Vertex => v("name")}.cap.asInstanceOf[Pipe[Graph, java.util.List[String]]]);
   }
 }

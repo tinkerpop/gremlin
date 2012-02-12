@@ -19,10 +19,10 @@ class DedupStepTest extends com.tinkerpop.gremlin.test.filter.DedupStepTest {
   }
 
   def test_g_V_both_dedup_name() {
-    super.test_g_V_both_dedup_name(g.V.both().dedup.property("name").asInstanceOf[Pipe[Graph,String]]);
+    super.test_g_V_both_dedup_name(g.V.both().dedup.property("name").asInstanceOf[Pipe[Graph, String]]);
   }
 
   def test_g_V_both_dedupXlangX_name() {
-    super.test_g_V_both_dedupXlangX_name(g.V.both().dedup{v:Vertex => v("lang")}.property("name").asInstanceOf[Pipe[Graph,String]])
+    super.test_g_V_both_dedupXlangX_name(g.V.both().dedup {v: Vertex => v("lang")}.property("name").asInstanceOf[Pipe[Graph, String]])
   }
 }
