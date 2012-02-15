@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.BaseTest
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.pipes.Pipe
+import com.tinkerpop.gremlin.java.GremlinPipeline
 
 class GremlinTest extends BaseTest {
 

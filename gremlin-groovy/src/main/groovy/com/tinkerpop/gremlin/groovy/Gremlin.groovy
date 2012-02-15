@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.groovy.loaders.IndexLoader
 import com.tinkerpop.gremlin.groovy.loaders.ObjectLoader
 import com.tinkerpop.gremlin.groovy.loaders.PipeLoader
 import com.tinkerpop.gremlin.groovy.loaders.SailGraphLoader
+import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 import javax.script.SimpleBindings
 
@@ -22,56 +23,12 @@ class Gremlin {
 
     public static void load() {
 
-        Gremlin.addStep(Tokens.STEP);
-        // filter steps
-        Gremlin.addStep(Tokens.FILTER);
-        Gremlin.addStep(Tokens.SIMPLEPATH);
-        Gremlin.addStep(Tokens.DEDUP);
-        Gremlin.addStep(Tokens.HAS);
-        Gremlin.addStep(Tokens.HASNOT);
-        Gremlin.addStep(Tokens.AND);
-        Gremlin.addStep(Tokens.OR);
-        Gremlin.addStep(Tokens.BACK);
-        Gremlin.addStep(Tokens.EXCEPT);
-        Gremlin.addStep(Tokens.RETAIN);
-        Gremlin.addStep(Tokens.RANDOM);
-        // sideeffect steps
-        Gremlin.addStep(Tokens.SIDEEFFECT);
-        Gremlin.addStep(Tokens.AGGREGATE);
-        Gremlin.addStep(Tokens.GROUPBY);
-        Gremlin.addStep(Tokens.GROUPCOUNT);
-        Gremlin.addStep(Tokens.OPTIONAL)
-        Gremlin.addStep(Tokens.TABLE);
-        Gremlin.addStep(Tokens.STORE);
-        Gremlin.addStep(Tokens.AS);
-        // transform steps
-        Gremlin.addStep(Tokens.TRANSFORM);
-        Gremlin.addStep(Tokens._);
-        Gremlin.addStep(Tokens.BOTH);
-        Gremlin.addStep(Tokens.BOTHE);
-        Gremlin.addStep(Tokens.BOTHV);
-        Gremlin.addStep(Tokens.COPYSPLIT);
-        Gremlin.addStep(Tokens.FAIRMERGE);
-        Gremlin.addStep(Tokens.E);
-        Gremlin.addStep(Tokens.EXHAUSTMERGE);
-        Gremlin.addStep(Tokens.ID);
-        Gremlin.addStep(Tokens.IN);
-        Gremlin.addStep(Tokens.INE);
-        Gremlin.addStep(Tokens.INV);
-        Gremlin.addStep(Tokens.IFTHENELSE);
-        Gremlin.addStep(Tokens.CAP);
-        Gremlin.addStep(Tokens.LABEL);
-        Gremlin.addStep(Tokens.LOOP);
-        Gremlin.addStep(Tokens.MAP);
-        Gremlin.addStep(Tokens.MEMOIZE);
-        Gremlin.addStep(Tokens.GATHER);
-        Gremlin.addStep(Tokens.SCATTER);
-        Gremlin.addStep(Tokens.SELECT);
-        Gremlin.addStep(Tokens.PATHS);
-        Gremlin.addStep(Tokens.OUT);
-        Gremlin.addStep(Tokens.OUTE);
-        Gremlin.addStep(Tokens.OUTV);
-        Gremlin.addStep(Tokens.V);
+        GremlinPipeline.getMethods().each {
+            if (it.getReturnType().equals(GremlinPipeline.class)) {
+                Gremlin.addStep(it.getName());
+            }
+        }
+        Gremlin.addStep("paths"); // handle getPath() overload in Groovy
 
         ElementLoader.load();
         GraphLoader.load();
