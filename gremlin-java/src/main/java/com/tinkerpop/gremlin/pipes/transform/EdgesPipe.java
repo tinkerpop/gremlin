@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.util.Iterator;
 
@@ -13,7 +12,7 @@ import java.util.Iterator;
  */
 public class EdgesPipe extends AbstractPipe<Graph, Edge> {
 
-    protected Iterator<Edge> nextEnds = new EmptyIterator<Edge>();
+    protected Iterator<Edge> nextEnds = PipeHelper.emptyIterator();
 
     protected Edge processNextStart() {
         while (true) {
@@ -27,7 +26,7 @@ public class EdgesPipe extends AbstractPipe<Graph, Edge> {
 
     public void reset() {
         super.reset();
-        this.nextEnds = new EmptyIterator<Edge>();
+        this.nextEnds = PipeHelper.emptyIterator();
     }
 
     public String toString() {

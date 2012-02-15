@@ -38,6 +38,7 @@ class Gremlin {
         // sideeffect steps
         Gremlin.addStep(Tokens.SIDEEFFECT);
         Gremlin.addStep(Tokens.AGGREGATE);
+        Gremlin.addStep(Tokens.GROUPBY);
         Gremlin.addStep(Tokens.GROUPCOUNT);
         Gremlin.addStep(Tokens.OPTIONAL)
         Gremlin.addStep(Tokens.TABLE);

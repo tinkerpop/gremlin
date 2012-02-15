@@ -44,6 +44,7 @@ public class Tokens {
     public static final String TRANSFORM = "transform";
     public static final String FILTER = "filter";
     public static final String GATHER = "gather";
+    public static final String GROUPBY = "groupBy";
     public static final String GROUPCOUNT = "groupCount";
     public static final String IFTHENELSE = "ifThenElse";
     public static final String LOOP = "loop";

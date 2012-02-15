@@ -197,6 +197,14 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.optional(namedStep).asInstanceOf[GremlinScalaPipeline[S, _]];
   }
 
+  override def groupBy(map: JMap[_, JList[_]], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+    super.groupBy(map, keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
+
+  override def groupBy(keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[_, _]): GremlinScalaPipeline[S, E] = {
+    super.groupBy(keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
+  }
+
   override def groupCount(map: JMap[_, Number], keyFunction: PipeFunction[_, _], valueFunction: PipeFunction[TPair[_, Number], Number]): GremlinScalaPipeline[S, E] = {
     super.groupCount(map, keyFunction, valueFunction).asInstanceOf[GremlinScalaPipeline[S, E]];
   }

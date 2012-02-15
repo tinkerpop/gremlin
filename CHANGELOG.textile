@@ -46,6 +46,7 @@ h3. Version 1.5 (No More Mr. Nice Guy -- NOT OFFICIALLY RELEASED YET)
 * Fixed classpath issues in the @.bat@ files of respective Gremlin implementations
 * Lots of JavaDoc work to make the @GremlinPipeline@ JavaDoc be a single point of reference
 * Updated @distribution.xml@ files to support @data/@ and @LICENSE.txt@ inclusion in sub-modules
+* Added @groupBy@ step for the underlying @GroupByPipe@ in Pipes
 * Gremlin-Groovy
 ** Removed the @JSONSlurper@ vertex and edge overloaded methods
 

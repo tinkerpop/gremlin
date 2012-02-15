@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.util.Iterator;
 
@@ -13,7 +12,7 @@ import java.util.Iterator;
  */
 public class VerticesPipe extends AbstractPipe<Graph, Vertex> {
 
-    protected Iterator<Vertex> nextEnds = new EmptyIterator<Vertex>();
+    protected Iterator<Vertex> nextEnds = PipeHelper.emptyIterator();
 
     protected Vertex processNextStart() {
         while (true) {
@@ -27,7 +26,7 @@ public class VerticesPipe extends AbstractPipe<Graph, Vertex> {
 
     public void reset() {
         super.reset();
-        this.nextEnds = new EmptyIterator<Vertex>();
+        this.nextEnds = PipeHelper.emptyIterator();
     }
 
     public String toString() {

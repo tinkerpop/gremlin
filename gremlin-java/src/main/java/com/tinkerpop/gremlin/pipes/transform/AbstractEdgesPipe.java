@@ -4,7 +4,6 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
-import com.tinkerpop.pipes.util.iterators.EmptyIterator;
 
 import java.util.Iterator;
 
@@ -13,7 +12,7 @@ import java.util.Iterator;
  */
 public abstract class AbstractEdgesPipe extends AbstractPipe<Vertex, Edge> {
 
-    protected Iterator<Edge> nextEnds = new EmptyIterator<Edge>();
+    protected Iterator<Edge> nextEnds = PipeHelper.emptyIterator();
     protected final String[] labels;
 
     public AbstractEdgesPipe(final String... labels) {
@@ -25,7 +24,7 @@ public abstract class AbstractEdgesPipe extends AbstractPipe<Vertex, Edge> {
     }
 
     public void reset() {
-        this.nextEnds = new EmptyIterator<Edge>();
+        this.nextEnds = PipeHelper.emptyIterator();
         super.reset();
     }
 }

@@ -45,6 +45,7 @@ import com.tinkerpop.pipes.filter.RandomFilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.sideeffect.AggregatePipe;
+import com.tinkerpop.pipes.sideeffect.GroupByPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
@@ -547,6 +548,33 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, ?> optional(final String namedStep) {
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep))));
+    }
+
+    /**
+     * Add a GroupByPipe to the end of the Pipeline.
+     * Group the objects inputted objects according to a key generated from the object and a value generated from the object.
+     * The grouping map has values that are Lists.
+     *
+     * @param map           the map to store the grouping in
+     * @param keyFunction   the function that generates the key from the object
+     * @param valueFunction the function that generates the value from the function
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> groupBy(final Map<?, List<?>> map, final PipeFunction keyFunction, final PipeFunction valueFunction) {
+        return this.add(new GroupByPipe(map, keyFunction, valueFunction));
+    }
+
+    /**
+     * Add a GroupByPipe to the end of the Pipeline.
+     * Group the objects inputted objects according to a key generated from the object and a value generated from the object.
+     * The grouping map has values that are Lists.
+     *
+     * @param keyFunction   the function that generates the key from the object
+     * @param valueFunction the function that generates the value from the function
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction) {
+        return this.add(new GroupByPipe(keyFunction, valueFunction));
     }
 
     /**

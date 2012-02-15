@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.groovy;
 import com.tinkerpop.gremlin.java.GremlinFluentPipeline;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.pipes.branch.LoopPipe;
+import com.tinkerpop.pipes.sideeffect.GroupByPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Table;
 import groovy.lang.Closure;
@@ -42,6 +43,14 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
 
     public GremlinGroovyPipeline<S, ?> gather(final Closure closure) {
         return (GremlinGroovyPipeline<S, ?>) this.gather(new GroovyPipeFunction<List, Object>(closure));
+    }
+
+    public GremlinGroovyPipeline<S, E> groupBy(final Map<?, List<?>> map, final Closure keyClosure, final Closure valueClosure) {
+        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByPipe(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure)));
+    }
+
+    public GremlinGroovyPipeline<S, E> groupBy(final Closure keyClosure, final Closure valueClosure) {
+        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByPipe(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure)));
     }
 
     public GremlinGroovyPipeline<S, E> groupCount(final Closure keyClosure, Closure valueClosure) {
