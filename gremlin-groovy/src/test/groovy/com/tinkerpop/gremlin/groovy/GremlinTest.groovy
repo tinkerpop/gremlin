@@ -7,7 +7,6 @@ import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.BaseTest
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.pipes.Pipe
-import com.tinkerpop.gremlin.java.GremlinPipeline
 
 class GremlinTest extends BaseTest {
 
@@ -160,6 +159,12 @@ class GremlinTest extends BaseTest {
         println "\tMethod notation <g.V().outE().inV()>: " + results1b.mean();
         println "\tProperty notation <g.V.outE.inV.outE.inV>: " + results2a.mean();
         println "\tMethod notation <g.V().outE().inV().outE().inV()>: " + results2b.mean();
+    }
+
+    public void testCounting() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        assertEquals(g.V.count(), 6);
     }
 
 }

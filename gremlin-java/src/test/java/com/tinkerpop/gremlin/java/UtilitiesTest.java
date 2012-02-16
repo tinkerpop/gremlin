@@ -29,4 +29,8 @@ public class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     public void test_g_v1_out_fillXlistX() {
         super.test_g_v1_out_fillXlistX(new GremlinPipeline(g.getVertex(1)).out().fill(new ArrayList<Vertex>()));
     }
+
+    public void test_g_V_countXX() {
+        super.test_g_V_countXX(new GremlinPipeline(g).V().count());
+    }
 }

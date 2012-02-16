@@ -40,5 +40,9 @@ public class UtilitiesTest extends TestCase {
         this.test_g_v1_out_toList(new ArrayList<Vertex>(list));
     }
 
+    public void test_g_V_countXX(Long count) {
+        assertEquals(count, new Long(6));
+    }
+
     // test pipeline equality
 }
