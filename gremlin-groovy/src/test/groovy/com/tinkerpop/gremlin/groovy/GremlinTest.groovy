@@ -139,7 +139,6 @@ class GremlinTest extends BaseTest {
         def results1b = []
         def results2a = []
         def results2b = []
-        def results3a = []
 
         for (int i = 0; i < 500; i++) {
             this.stopWatch();
@@ -155,18 +154,12 @@ class GremlinTest extends BaseTest {
             this.stopWatch()
             g.V().outE().inV().outE().inV()
             results2b << this.stopWatch();
-
-            this.stopWatch();
-            g.V.outE('knows').inV.outE('knows').inV
-            results3a << this.stopWatch();
-
         }
 
         println "\tProperty notation <g.V.outE.inV>: " + results1a.mean();
         println "\tMethod notation <g.V().outE().inV()>: " + results1b.mean();
         println "\tProperty notation <g.V.outE.inV.outE.inV>: " + results2a.mean();
         println "\tMethod notation <g.V().outE().inV().outE().inV()>: " + results2b.mean();
-        println "\tProperty notation <g.V.outE[[label: 'knows']].inV.outE[[label:'knows']].inV>: " + results3a.mean();
     }
 
 }
