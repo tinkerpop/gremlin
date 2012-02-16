@@ -49,6 +49,7 @@ h3. Version 1.5 (No More Mr. Nice Guy -- NOT OFFICIALLY RELEASED YET)
 * Added @groupBy@ step for the underlying @GroupByPipe@ in Pipes
 * Gremlin-Groovy
 ** Removed the @JSONSlurper@ vertex and edge overloaded methods
+** @Gremlin.load()@ now makes use of method reflection to build the language tokens
 
 ==<hr/>==
 
