@@ -1,14 +1,6 @@
 Gremlin: A Graph Traversal Language
 "http://gremlin.tinkerpop.com":http://gremlin.tinkerpop.com
 
-```xml
-<repository>
-  <id>tinkerpop-repository</id>
-  <name>TinkerPop Maven2 Repository</name>
-  <url>http://tinkerpop.com/maven2</url>
-</repository>
-```
-
 h2. Gremlin 1.X
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-no-more-mr-nice-guy.png!

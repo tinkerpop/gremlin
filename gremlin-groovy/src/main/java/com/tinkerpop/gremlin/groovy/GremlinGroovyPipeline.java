@@ -58,6 +58,11 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.add(new GroupByReducePipe(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure)));
     }
 
+    public GremlinGroovyPipeline<S, E> groupBy(final Map reduceMap, final Closure keyClosure, final Closure valueClosure, Closure reduceClosure) {
+        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByReducePipe(reduceMap, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure)));
+    }
+
+
     public GremlinGroovyPipeline<S, E> groupCount(final Closure keyClosure, Closure valueClosure) {
         return (GremlinGroovyPipeline<S, E>) this.groupCount(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction<Pair<?, Number>, Number>(valueClosure));
     }
