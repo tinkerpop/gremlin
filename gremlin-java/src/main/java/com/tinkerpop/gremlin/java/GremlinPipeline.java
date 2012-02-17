@@ -46,6 +46,7 @@ import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
 import com.tinkerpop.pipes.sideeffect.AggregatePipe;
 import com.tinkerpop.pipes.sideeffect.GroupByPipe;
+import com.tinkerpop.pipes.sideeffect.GroupByReducePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
@@ -575,6 +576,22 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction) {
         return this.add(new GroupByPipe(keyFunction, valueFunction));
+    }
+
+    /**
+     * Add a GroupByReducePipe to the end of the Pipeline.
+     * Group the objects inputted objects according to a key generated from the object and a value generated from the object.
+     * The grouping map has values that are Lists.
+     * When the pipe has no more incoming objects, apply the reduce function to the keyed Lists.
+     * The sideEffect is only fully available when the pipe is empty.
+     *
+     * @param keyFunction    the function that generates the key from the object
+     * @param valueFunction  the function that generates the value from the function
+     * @param reduceFunction the function that reduces the value lists
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
+        return this.add(new GroupByReducePipe(keyFunction, valueFunction, reduceFunction));
     }
 
     /**
