@@ -8,6 +8,7 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 ** "Neo4j":http://neo4j.org/ graph database
 ** "OrientDB":http://www.orientechnologies.com/ graph database
 ** "DEX":http://www.sparsity-technologies.com/dex graph database
+** "InfiniteGraph":http://www.infinitegraph.com/ graph database
 ** "Rexster":http://rexster.tinkerpop.com graph server
 ** "Sesame 2.0":http://www.openrdf.org compliant RDF stores
 * Supporting extensions:
