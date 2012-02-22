@@ -27,7 +27,14 @@ class GroupCountStepTest extends com.tinkerpop.gremlin.test.sideeffect.GroupCoun
   // TODO: Why is the implicit converstion of a => to a PipeFunction not being respected?
   def test_g_V_outXcreatedX_groupCountXm__name__plus_2X() {
     val m = new java.util.HashMap[String, Number]();
-    super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(g.V.out("created").groupCount(m, {v: Vertex => v("name")}, com.tinkerpop.gremlin.scala.functionToPipeFunction({p: TPair[_, Number] => (p.getB.longValue() + 2l).asInstanceOf[Number]})).asInstanceOf[Pipe[Graph, Vertex]], m);
+    
+    //this works but has ugly function call instead of implicit
+    //val pipeline = g.V.out("created").groupCount(m, {v: Vertex => v("name")}, com.tinkerpop.gremlin.scala.functionToPipeFunction({p: TPair[_, Number] => (p.getB.longValue() + 2l).asInstanceOf[Number]})).asInstanceOf[Pipe[Graph, Vertex]]
+    
+    //attempting to get implicit working
+    val pipeline = g.V.out("created").groupCount(m, {v: Vertex => v("name")}, {p: TPair[_, Number] => (p.getB.longValue() + 2l).asInstanceOf[Number]}).asInstanceOf[Pipe[Graph, Vertex]]
+    
+    super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(pipeline, m);
   }
 
   def test_g_V_outXcreatedX_groupCountXnameX_cap() {
