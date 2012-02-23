@@ -7,6 +7,7 @@ import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 import java.util.{Map => JMap, List => JList, Iterator => JIterator, Collection => JCollection, ArrayList => JArrayList}
 import com.tinkerpop.pipes.util.structures.{Table, Row}
 import com.tinkerpop.pipes.util.structures.{Pair => TPair}
+import com.tinkerpop.gremlin.Tokens
 
 class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
@@ -26,8 +27,14 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   def has[F <: Element, T](key: String, value: T): GremlinScalaPipeline[S, F] =
     super.has(key, value).asInstanceOf[GremlinScalaPipeline[S, F]]
 
+  def has[F <: Element, T](key: String, comparison: Tokens.T, value: T): GremlinScalaPipeline[S, F] =
+    super.has(key, comparison, value).asInstanceOf[GremlinScalaPipeline[S, F]]
+
   def hasNot[F <: Element, T](key: String, value: T): GremlinScalaPipeline[S, F] =
     super.hasNot(key, value).asInstanceOf[GremlinScalaPipeline[S, F]]
+
+  def hasNot[F <: Element, T](key: String, comparison: Tokens.T, value: T): GremlinScalaPipeline[S, F] =
+    super.hasNot(key, comparison, value).asInstanceOf[GremlinScalaPipeline[S, F]]
 
   override def bothE(labels: String*): GremlinScalaPipeline[S, Edge] =
     super.bothE(labels: _*).asInstanceOf[GremlinScalaPipeline[S, Edge]]

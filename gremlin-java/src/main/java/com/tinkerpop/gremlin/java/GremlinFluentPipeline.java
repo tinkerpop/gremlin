@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.pgm.Edge;
 import com.tinkerpop.blueprints.pgm.Element;
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.pipes.util.PipesFluentPipeline;
 
 import java.util.Map;
@@ -26,6 +27,18 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key        the property key to check
+     * @param comparison the comparison to use
+     * @param value      the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object value);
+
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then filter the element.
      * If the key is id or label, then use respect id or label filtering.
      *
@@ -34,6 +47,18 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Object value);
+
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key        the property key to check
+     * @param comparison the comparison to use
+     * @param value      the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value);
 
     /**
      * Add a BothEdgesPipe to the end of the Pipeline.

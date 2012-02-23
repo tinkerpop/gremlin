@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.java.filter;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
 
@@ -26,5 +27,9 @@ public class HasNotStepTest extends com.tinkerpop.gremlin.test.filter.HasNotStep
 
     public void test_g_V_hasNotXblah_nullX() {
         super.test_g_V_hasNotXblah_nullX(new GremlinPipeline(g).V().hasNot("blah", null));
+    }
+
+    public void test_g_V_hasNotXage_gt_32X() {
+        super.test_g_V_hasNotXage_gt_32X(new GremlinPipeline(g).V().hasNot("age", Tokens.T.gt, 32));
     }
 }

@@ -42,6 +42,7 @@ h3. Version 1.5 (No More Mr. Nice Guy -- NOT OFFICIALLY RELEASED YET)
 * Gremlin-Groovy
 ** Removed the @JSONSlurper@ vertex and edge overloaded methods
 ** @Gremlin.load()@ now makes use of method reflection to build the language tokens
+** Increased the performance of @Element.key@ by approximately a factor of 10
 
 ==<hr/>==
 

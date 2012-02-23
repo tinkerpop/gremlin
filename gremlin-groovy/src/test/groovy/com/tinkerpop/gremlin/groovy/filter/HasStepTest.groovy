@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.groovy.filter
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
+import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.test.ComplianceTest
 
@@ -33,5 +34,9 @@ class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
 
     public void test_g_v1_out_hasXid_2X() {
         super.test_g_v1_out_hasXid_2X(g.v(1).out.has('id', '2'));
+    }
+
+    public void test_g_V_hasXage_gt_30X() {
+        super.test_g_V_hasXage_gt_30X(g.V.has('age', Tokens.T.gt, 30));
     }
 }

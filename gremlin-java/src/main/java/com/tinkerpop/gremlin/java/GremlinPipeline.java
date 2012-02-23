@@ -107,6 +107,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object value) {
+        FilterPipe.Filter filter = Tokens.mapFilter(comparison);
+        if (key.equals(Tokens.ID)) {
+            return this.add(new IdFilterPipe(value, filter));
+        } else if (key.equals(Tokens.LABEL)) {
+            return this.add(new LabelFilterPipe((String) value, filter));
+        } else {
+            return this.add(new PropertyFilterPipe(key, value, filter));
+        }
+    }
+
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object value) {
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, FilterPipe.Filter.NOT_EQUAL));
@@ -114,6 +125,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
             return this.add(new LabelFilterPipe((String) value, FilterPipe.Filter.NOT_EQUAL));
         } else {
             return this.add(new PropertyFilterPipe(key, value, FilterPipe.Filter.NOT_EQUAL));
+        }
+    }
+
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value) {
+        FilterPipe.Filter filter = Tokens.mapFlipFilter(comparison);
+        if (key.equals(Tokens.ID)) {
+            return this.add(new IdFilterPipe(value, filter));
+        } else if (key.equals(Tokens.LABEL)) {
+            return this.add(new LabelFilterPipe((String) value, filter));
+        } else {
+            return this.add(new PropertyFilterPipe(key, value, filter));
         }
     }
 

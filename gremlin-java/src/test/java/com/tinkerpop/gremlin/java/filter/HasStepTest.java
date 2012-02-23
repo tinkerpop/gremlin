@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.java.filter;
 
 import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.gremlin.Tokens.T;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
 
@@ -30,5 +31,9 @@ public class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
 
     public void test_g_v1_out_hasXid_2X() {
         super.test_g_v1_out_hasXid_2X(new GremlinPipeline(g.getVertex(1)).out().has("id", "2"));
+    }
+
+    public void test_g_V_hasXage_gt_30X() {
+        super.test_g_V_hasXage_gt_30X(new GremlinPipeline(g).V().has("age", T.gt, 30));
     }
 }
