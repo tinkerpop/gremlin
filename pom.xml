@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.tinkerpop.gremlin</groupId>
     <artifactId>gremlin</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
     <packaging>pom</packaging>
     <url>http://gremlin.tinkerpop.com</url>
     <name>Gremlin: A Graph Traversal Language</name>
@@ -48,12 +48,12 @@
             <dependency>
                 <groupId>com.tinkerpop.gremlin</groupId>
                 <artifactId>gremlin-java</artifactId>
-                <version>1.5-SNAPSHOT</version>
+                <version>1.5</version>
             </dependency>
             <dependency>
                 <groupId>com.tinkerpop.gremlin</groupId>
                 <artifactId>gremlin-test</artifactId>
-                <version>1.5-SNAPSHOT</version>
+                <version>1.5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,0 +1,19 @@
+A pipe can be seen as a type of groovy iterator. <a href="http://groovy.codehaus.org/groovy-jdk/java/util/Iterator.html">Groovy iterator methods</a> such as @sort@ and @reverse@, are available.
+
+```text
+g.v(1).out.outE.back(1).sort{it.lang}.reverse().toList()
+```
+
+Groovy iterators, as Groovy objects, inherit <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/Object.html">object methods</a> and as such @any@, @each@, and @every@.
+
+One thing to be wary about when using native Groovy methods. They do not returns Pipes, but iterators, iterables, etc. As such, to convert one of these objects back into a Pipeline flow, use _.
+
+```text
+g.v(1).out.sort{it.lang}.reverse()._().outE
+```
+
+h2. References
+
+<a href="https://groups.google.com/forum/#!msg/gremlin-users/A8bZHSOxgyA/9Pyb2wl3I8YJ">[gremlin-users] Sorting Graph Query Results with Gremlin</a>
+
+<a href="http://naleid.com/blog/2008/12/01/groovy-makes-iteration-easy/">[Ted Naleid] Groovy Makes Iteration Easy</a>

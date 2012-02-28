@@ -97,6 +97,8 @@ class GremlinILoop extends ILoop {
   /**Stop ReplReporter from printing to console. Instead we print in GremlinILoop.command. */
   class GremlinReporter(intp: GremlinInterpreter) extends ReplReporter(intp) {
     override def printMessage(msg: String) {}
+
+    //println("***" + msg)
   }
 
 }

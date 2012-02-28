@@ -1,0 +1,27 @@
+When working with Gremlin, there may be issues that arise. This section hopes to articulate common problems users have an how to resolve them.
+
+h2. Nearly everything is an iterator
+
+The expression @g.V[0]@ seems like it is returning the first vertex in the graph. However, this statement is in fact creating an iterator/iterable (i.e. a "Pipe":http://pipes.tinkerpop.com) that will return the first vertex in the graph when @next()@ is called on it. Thus, use @g.V[0].next()@ to return the first vertex in the graph. Better yet, just use @g.V.next()@.
+
+In general, when using the "Gremlin console":https://github.com/tinkerpop/gremlin/wiki/Using-Gremlin-from-the-Command-Line, it is not necessary to call @next()@ as the console will automatically iterate it and @==>@ print the objects of the iterator. However, when using Gremlin in, for example, "Java":https://github.com/tinkerpop/gremlin/wiki/Using-Gremlin-through-Java or "Groovy":https://github.com/tinkerpop/gremlin/wiki/Using-Gremlin-through-Groovy, be sure to iterate the pipe. Note that the [[Gremlin methods]] provide various shorthand mechanisms for this. For example, @iterate()@ will "@while(hasNext())@" and tends to be use consistently.
+
+h2. When the Gremlin Groovy console is stuck, use clear
+
+Many times you will misplace a @(@ or a @{@ and your console terminal will be "stuck." To get out of this situation, just type @clear@ to reset the parser.
+
+```text
+gremlin> if(true) {
+gremlin> 1+2
+gremlin> {
+gremlin> }
+gremlin> 1
+groovysh_parse: 24: Ambiguous expression could be a parameterless ...
+1 error
+gremlin> 1
+groovysh_parse: 24: Ambiguous expression could be a parameterless ...
+1 error
+gremlin> clear
+gremlin> 1
+==>1
+```
