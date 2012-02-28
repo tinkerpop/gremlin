@@ -120,20 +120,6 @@
             <version>1.5-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
-        <!-- Not using these at the moment due to gremlin-test; but may need in future...
-        <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2_2.9.1</artifactId>
-            <version>1.6.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2-scalaz-core_2.9.1</artifactId>
-            <version>6.0.1</version>
-            <scope>test</scope>
-        </dependency>
-        -->
     </dependencies>
     <repositories>
         <repository>
@@ -142,19 +128,6 @@
             <url>http://scala-tools.org/repo-releases</url>
         </repository>
     </repositories>
-    <!-- Needed for maven-scala-plugin 2.15.3-SNAPSHOT
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org snapshots</id> 
-            <name>Scala-tools Maven2 Snapshot Repository</name> 
-            <url>http://scala-tools.org/repo-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    -->
     <build>
         <directory>${basedir}/target</directory>
         <finalName>${project.artifactId}-${project.version}</finalName>
