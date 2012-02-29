@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.tinkerpop.gremlin</groupId>
         <artifactId>gremlin</artifactId>
-        <version>1.5</version>
+        <version>1.6-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>gremlin-scala</artifactId>
-    <version>1.5</version>
+    <version>1.6-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Gremlin-Scala: Gremlin for the Scala Language</name>
     <developers>
@@ -28,19 +28,16 @@
         </mailingList>
     </mailingLists>
     <inceptionYear>2011</inceptionYear>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.tinkerpop.gremlin</groupId>
             <artifactId>gremlin-java</artifactId>
-            <version>1.5</version>
+            <version>${gremlin.version}</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop</groupId>
             <artifactId>pipes</artifactId>
-            <version>1.0</version>
+            <version>${pipes.version}</version>
         </dependency>
         <dependency>
             <groupId>org.scala-lang</groupId>
@@ -62,62 +59,62 @@
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-graph-jung</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-graph-sail</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-neo4j-graph</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-neo4jbatch-graph</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-orient-graph</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-dex-graph</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-sail-graph</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-rexster-graph</artifactId>
-            <version>1.2</version>
+            <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.5</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.gremlin</groupId>
             <artifactId>gremlin-test</artifactId>
-            <version>1.5</version>
+            <version>${gremlin.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

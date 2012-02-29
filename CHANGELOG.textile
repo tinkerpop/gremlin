@@ -3,6 +3,31 @@ Gremlin: A Graph Traversal Language
 
 h2. Gremlin 1.X
 
+h3. Version 1.6 (NOT OFFICIALLY RELEASED YET)
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-java</artifactId>
+  <version>1.6-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-groovy</artifactId>
+  <version>1.6-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-scala</artifactId>
+  <version>1.6-SNAPSHOT</version>
+</dependency>
+```
+
+==<hr/>==
+
+
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-no-more-mr-nice-guy.png!
 
 h3. Version 1.5 (No More Mr. Nice Guy -- February 28, 2012)

@@ -7,7 +7,7 @@ import com.tinkerpop.pipes.filter.FilterPipe;
  */
 public class Tokens {
 
-    public static final String VERSION = "1.5";
+    public static final String VERSION = "1.6-SNAPSHOT";
     public static final String LABEL = "label";
     public static final String ID = "id";
 
