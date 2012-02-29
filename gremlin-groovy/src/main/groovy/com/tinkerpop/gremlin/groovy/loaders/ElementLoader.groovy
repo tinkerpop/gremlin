@@ -27,8 +27,6 @@ class ElementLoader {
             if (Gremlin.isStep(name)) {
                 return new GremlinGroovyPipeline(delegate)."$name"()
             } else {
-                // optimization (once, not found, never not find it again)
-                Element.metaClass."$name" = { ((Element) delegate).getProperty("$name") };
                 return ((Element) delegate).getProperty(name)
             }
         }
