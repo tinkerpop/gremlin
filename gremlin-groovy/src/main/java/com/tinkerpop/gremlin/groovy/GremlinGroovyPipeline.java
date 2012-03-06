@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.sideeffect.GroupByPipe;
 import com.tinkerpop.pipes.sideeffect.GroupByReducePipe;
 import com.tinkerpop.pipes.util.structures.Pair;
+import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
 import groovy.lang.Closure;
 
@@ -42,8 +43,8 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.filter(new GroovyPipeFunction<E, Boolean>(closure));
     }
 
-    public GremlinGroovyPipeline<S, ?> gather(final Closure closure) {
-        return (GremlinGroovyPipeline<S, ?>) this.gather(new GroovyPipeFunction<List, Object>(closure));
+    public GremlinGroovyPipeline<S, List> gather(final Closure closure) {
+        return (GremlinGroovyPipeline<S, List>) this.gather(new GroovyPipeFunction<List, List>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Map<?, List<?>> map, final Closure keyClosure, final Closure valueClosure) {
@@ -131,12 +132,12 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.table(table, columnNames, GroovyPipeFunction.generate(closures));
     }
 
-    public GremlinGroovyPipeline<S, E> select(final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.select(GroovyPipeFunction.generate(closures));
+    public GremlinGroovyPipeline<S, Row> select(final Closure... closures) {
+        return (GremlinGroovyPipeline<S, Row>) this.select(GroovyPipeFunction.generate(closures));
     }
 
-    public GremlinGroovyPipeline<S, E> select(final List<String> columnNames, final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.select(columnNames, GroovyPipeFunction.generate(closures));
+    public GremlinGroovyPipeline<S, Row> select(final List<String> columnNames, final Closure... closures) {
+        return (GremlinGroovyPipeline<S, Row>) this.select(columnNames, GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, ?> transform(final Closure closure) {

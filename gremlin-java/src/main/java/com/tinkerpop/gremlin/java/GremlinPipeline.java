@@ -850,9 +850,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param function a transformation to apply to the gathered list
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ?> gather(PipeFunction<List, ?> function) {
-        this.addPipe(new GatherPipe());
-        return this.add(new TransformFunctionPipe(function));
+    public GremlinPipeline<S, List> gather(PipeFunction<List, List> function) {
+        return this.add(new GatherPipe(function));
     }
 
     /**

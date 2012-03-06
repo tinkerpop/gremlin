@@ -291,8 +291,8 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.gather().asInstanceOf[GremlinScalaPipeline[S, JList[_]]];
   }
 
-  def gather(function: JList[_] => _): GremlinScalaPipeline[S, _] = {
-    super.gather(function).asInstanceOf[GremlinScalaPipeline[S, _]];
+  def gather(function: JList[_] => JList[_]): GremlinScalaPipeline[S, JList[_]] = {
+    super.gather(function).asInstanceOf[GremlinScalaPipeline[S, JList[_]]];
   }
 
   /*def _: GremlinPipeline[S, E] =
