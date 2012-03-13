@@ -12,7 +12,7 @@ fi
 
 # Set Java options
 if [ "$JAVA_OPTIONS" = "" ] ; then
-    JAVA_OPTIONS="-Xms32M -Xmx512M"
+    JAVA_OPTIONS="-Xms32m -Xmx512m"
 fi
 
 # Launch the application

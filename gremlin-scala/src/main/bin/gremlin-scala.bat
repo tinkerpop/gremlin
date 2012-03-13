@@ -20,7 +20,7 @@ for %%i in (%LIBDIR%\*.jar) do call :concatsep %%i
 :: cd ..\..\..\
 
 
-set JAVA_OPTIONS=-Xms32M -Xmx512M
+set JAVA_OPTIONS=-Xms32m -Xmx512m
 
 
 :: Launch the application
