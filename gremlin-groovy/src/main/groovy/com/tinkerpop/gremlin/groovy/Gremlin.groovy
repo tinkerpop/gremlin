@@ -28,7 +28,6 @@ class Gremlin {
                 Gremlin.addStep(it.getName());
             }
         }
-        Gremlin.addStep("paths"); // handle getPath() overload in Groovy
 
         ElementLoader.load();
         GraphLoader.load();

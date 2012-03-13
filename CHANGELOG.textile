@@ -25,6 +25,9 @@ h3. Version 1.6 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Gremlin-Groovy
+** Renamed @paths@-step to simply @path@ as now in Pipes the method is called @Pipe.getCurrentPath()@
+
 ==<hr/>==
 
 

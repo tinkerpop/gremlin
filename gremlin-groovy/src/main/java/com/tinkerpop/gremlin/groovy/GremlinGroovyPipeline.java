@@ -100,7 +100,7 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(emitClosure));
     }
 
-    public GremlinGroovyPipeline<S, E> paths(final Closure... closures) {
+    public GremlinGroovyPipeline<S, E> path(final Closure... closures) {
         return (GremlinGroovyPipeline<S, E>) this.path(GroovyPipeFunction.generate(closures));
     }
 
