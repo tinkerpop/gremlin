@@ -73,6 +73,7 @@ import com.tinkerpop.pipes.util.StartPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
+import com.tinkerpop.pipes.util.structures.Tree;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -835,7 +836,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param branchFunctions functions to apply to each path object in a round robin fashion
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, E> tree(final Map tree, final PipeFunction... branchFunctions) {
+    public GremlinPipeline<S, E> tree(final Tree tree, final PipeFunction... branchFunctions) {
         return this.add(new TreePipe<E>(tree, branchFunctions));
     }
 

@@ -3,11 +3,10 @@ package com.tinkerpop.gremlin.groovy;
 import com.tinkerpop.gremlin.java.GremlinFluentPipeline;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.pipes.branch.LoopPipe;
-import com.tinkerpop.pipes.sideeffect.GroupByPipe;
-import com.tinkerpop.pipes.sideeffect.GroupByReducePipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
+import com.tinkerpop.pipes.util.structures.Tree;
 import groovy.lang.Closure;
 
 import java.util.Collection;
@@ -48,19 +47,19 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Map<?, List<?>> map, final Closure keyClosure, final Closure valueClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByPipe(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure)));
+        return (GremlinGroovyPipeline<S, E>) this.groupBy(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Closure keyClosure, final Closure valueClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByPipe(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure)));
+        return (GremlinGroovyPipeline<S, E>) this.groupBy(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Closure keyClosure, final Closure valueClosure, Closure reduceClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByReducePipe(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure)));
+        return (GremlinGroovyPipeline<S, E>) this.groupBy(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Map reduceMap, final Closure keyClosure, final Closure valueClosure, Closure reduceClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.add(new GroupByReducePipe(reduceMap, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure)));
+        return (GremlinGroovyPipeline<S, E>) this.groupBy(reduceMap, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure));
     }
 
 
@@ -132,11 +131,11 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.table(table, columnNames, GroovyPipeFunction.generate(closures));
     }
 
-    public GremlinGroovyPipeline<S, E> tree(final Map tree) {
+    public GremlinGroovyPipeline<S, E> tree(final Tree tree) {
         return (GremlinGroovyPipeline<S, E>) super.tree(tree);
     }
 
-    public GremlinGroovyPipeline<S, E> tree(final Map tree, final Closure... closures) {
+    public GremlinGroovyPipeline<S, E> tree(final Tree tree, final Closure... closures) {
         return (GremlinGroovyPipeline<S, E>) this.tree(tree, GroovyPipeFunction.generate(closures));
     }
 

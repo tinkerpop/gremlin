@@ -5,9 +5,8 @@ import com.tinkerpop.blueprints.pgm._
 import com.tinkerpop.pipes.{PipeFunction, Pipe}
 import com.tinkerpop.pipes.branch.LoopPipe.LoopBundle
 import java.util.{Map => JMap, List => JList, Iterator => JIterator, Collection => JCollection, ArrayList => JArrayList}
-import com.tinkerpop.pipes.util.structures.{Table, Row}
-import com.tinkerpop.pipes.util.structures.{Pair => TPair}
 import com.tinkerpop.gremlin.Tokens
+import com.tinkerpop.pipes.util.structures.{Tree, Table, Row, Pair => TPair}
 
 class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
 
@@ -284,7 +283,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.table().asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
-  override def tree(tree: JMap[_, _], branchFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
+  override def tree(tree: Tree[_], branchFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
     super.tree(tree, branchFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
