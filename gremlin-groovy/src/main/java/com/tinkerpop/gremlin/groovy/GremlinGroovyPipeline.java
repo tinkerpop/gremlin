@@ -132,6 +132,10 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) this.table(table, columnNames, GroovyPipeFunction.generate(closures));
     }
 
+    public GremlinGroovyPipeline<S, E> tree(final Map tree) {
+        return (GremlinGroovyPipeline<S, E>) super.tree(tree);
+    }
+
     public GremlinGroovyPipeline<S, E> tree(final Map tree, final Closure... closures) {
         return (GremlinGroovyPipeline<S, E>) this.tree(tree, GroovyPipeFunction.generate(closures));
     }
@@ -144,8 +148,12 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, Row>) this.select(GroovyPipeFunction.generate(closures));
     }
 
-    public GremlinGroovyPipeline<S, Row> select(final List<String> columnNames, final Closure... closures) {
+    public GremlinGroovyPipeline<S, Row> select(final Collection<String> columnNames, final Closure... closures) {
         return (GremlinGroovyPipeline<S, Row>) this.select(columnNames, GroovyPipeFunction.generate(closures));
+    }
+
+    public GremlinGroovyPipeline<S, Row> select(final Collection<String> columnNames) {
+        return (GremlinGroovyPipeline<S, Row>) super.select(columnNames);
     }
 
     public GremlinGroovyPipeline<S, ?> transform(final Closure closure) {
