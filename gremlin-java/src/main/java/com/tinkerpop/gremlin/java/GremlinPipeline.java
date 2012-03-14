@@ -54,6 +54,7 @@ import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
+import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
@@ -824,6 +825,29 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, E> table() {
         return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this)));
+    }
+
+    /**
+     * Add a TreePipe to the end of the Pipeline
+     * This step maintains an internal tree representation of the paths that have flowed through the step.
+     *
+     * @param tree            an embedded Map data structure to store the tree representation in
+     * @param branchFunctions functions to apply to each path object in a round robin fashion
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> tree(final Map tree, final PipeFunction... branchFunctions) {
+        return this.add(new TreePipe<E>(tree, branchFunctions));
+    }
+
+    /**
+     * Add a TreePipe to the end of the Pipeline
+     * This step maintains an internal tree representation of the paths that have flowed through the step.
+     *
+     * @param branchFunctions functions to apply to each path object in a round robin fashion
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> tree(final PipeFunction... branchFunctions) {
+        return this.add(new TreePipe<E>(branchFunctions));
     }
 
     ///////////////////////

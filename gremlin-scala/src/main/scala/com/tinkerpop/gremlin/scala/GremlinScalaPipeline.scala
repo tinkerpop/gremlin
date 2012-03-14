@@ -284,6 +284,14 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
     super.table().asInstanceOf[GremlinScalaPipeline[S, E]]
   }
 
+  override def tree(tree: JMap[_, _], branchFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
+    super.tree(tree, branchFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, E]]
+  }
+
+  override def tree(branchFunctions: PipeFunction[_, _]*): GremlinScalaPipeline[S, E] = {
+    super.tree(branchFunctions: _*).asInstanceOf[GremlinScalaPipeline[S, E]]
+  }
+
   ///////////////////////
   /// TRANSFORM PIPES ///
   ///////////////////////
