@@ -58,7 +58,6 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
-import com.tinkerpop.pipes.transform.PathFunctionPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SelectPipe;
@@ -941,19 +940,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
-     * Add a PathPipe or PathFunctionPipe to the end of the Pipeline.
+     * Add a PathPipe or PathPipe to the end of the Pipeline.
      * This will emit the path that has been seen thus far.
      * If path functions are provided, then they are evaluated in a round robin fashion on the objects of the path.
      *
-     * @param pathFunctions the path function of the PathFunctionPipe
+     * @param pathFunctions the path function of the PathPipe
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, List> path(final PipeFunction... pathFunctions) {
-        if (pathFunctions.length == 0)
-            this.addPipe(new PathPipe());
-        else
-            this.addPipe(new PathFunctionPipe(pathFunctions));
-        return (GremlinPipeline<S, List>) this;
+        return this.add(new PathPipe<Object>(pathFunctions));
     }
 
     /**
