@@ -3,6 +3,8 @@ package com.tinkerpop.gremlin.groovy.loaders
 import com.tinkerpop.blueprints.pgm.Edge
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.Vertex
+import com.tinkerpop.blueprints.pgm.util.io.gml.GMLReader
+import com.tinkerpop.blueprints.pgm.util.io.gml.GMLWriter
 import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLReader
 import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLWriter
 import com.tinkerpop.blueprints.pgm.util.io.graphson.GraphSONReader
@@ -88,6 +90,8 @@ class GraphLoader {
             return ((Graph) delegate).addEdge(null, outVertex, inVertex, label);
         }
 
+        // GRAPHML
+
         Graph.metaClass.loadGraphML = {final def fileObject ->
             try {
                 GraphMLReader.inputGraph((Graph) delegate, new URL(fileObject).openStream());
@@ -99,6 +103,8 @@ class GraphLoader {
         Graph.metaClass.saveGraphML = {final def fileObject ->
             GraphMLWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject))
         }
+
+        // GRAPHSON
 
         Graph.metaClass.loadGraphSON = {final def fileObject ->
             try {
@@ -114,6 +120,20 @@ class GraphLoader {
 
         Graph.metaClass.saveGraphSON = {final def fileObject, final boolean showTypes ->
             GraphSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject), showTypes)
+        }
+
+        // GML
+
+        Graph.metaClass.loadGML = {final def fileObject ->
+            try {
+                GMLReader.inputGraph((Graph) delegate, new URL(fileObject).openStream());
+            } catch (MalformedURLException e) {
+                GMLReader.inputGraph((Graph) delegate, new FileInputStream(fileObject))
+            }
+        }
+
+        Graph.metaClass.saveGML = {final def fileObject ->
+            GMLWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject));
         }
 
     }
