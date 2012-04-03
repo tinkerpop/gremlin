@@ -45,4 +45,34 @@ public class SplitMergeStepsTest extends TestCase {
         assertTrue(ages.contains(27));
         assertTrue(ages.contains(32));
     }
+
+    public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(Pipe<Vertex, List> pipe) {
+        List<List> names = new ArrayList<List>();
+        names.add(pipe.next());
+        names.add(pipe.next());
+        List<List> ages = new ArrayList<List>();
+        ages.add(pipe.next());
+        ages.add(pipe.next());
+
+        assertFalse(pipe.hasNext());
+        assertEquals(names.size(), 2);
+        assertEquals(ages.size(), 2);
+        assertEquals(names.get(0).size(), 3);
+        assertEquals(ages.get(0).size(), 3);
+        assertEquals(((Vertex) (names.get(0)).get(0)).getId(), "1");
+        assertEquals(((Vertex) (ages.get(0)).get(0)).getId(), "1");
+        assertEquals(((Vertex) (names.get(1)).get(0)).getId(), "1");
+        assertEquals(((Vertex) (ages.get(1)).get(0)).getId(), "1");
+
+        assertEquals(((Vertex) (names.get(0)).get(1)).getId(), "2");
+        assertEquals(((Vertex) (ages.get(0)).get(1)).getId(), "2");
+        assertEquals(((Vertex) (names.get(1)).get(1)).getId(), "4");
+        assertEquals(((Vertex) (ages.get(1)).get(1)).getId(), "4");
+
+        assertEquals(names.get(0).get(2), "vadas");
+        assertEquals(ages.get(0).get(2), 27);
+        assertEquals(names.get(1).get(2), "josh");
+        assertEquals(ages.get(1).get(2), 32);
+
+    }
 }

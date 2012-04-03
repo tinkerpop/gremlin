@@ -18,7 +18,7 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   def in: GremlinScalaPipeline[S, Vertex] =
     super.in().asInstanceOf[GremlinScalaPipeline[S, Vertex]]
 
-  def paths: GremlinScalaPipeline[S, JList[_]] =
+  def path: GremlinScalaPipeline[S, JList[_]] =
     super.path().asInstanceOf[GremlinScalaPipeline[S, JList[_]]]
 
   ////

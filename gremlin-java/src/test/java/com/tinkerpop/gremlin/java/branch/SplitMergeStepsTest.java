@@ -23,4 +23,8 @@ public class SplitMergeStepsTest extends com.tinkerpop.gremlin.test.branch.Split
     public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge() {
         super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge(new GremlinPipeline(g.getVertex(1)).out("knows").copySplit(new GremlinPipeline().property("name"), new GremlinPipeline().property("age")).exhaustMerge());
     }
+
+    public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path() {
+        super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(new GremlinPipeline(g.getVertex(1)).out("knows").copySplit(new GremlinPipeline().property("name"), new GremlinPipeline().property("age")).exhaustMerge().path());
+    }
 }
