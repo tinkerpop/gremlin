@@ -28,6 +28,8 @@ h3. Version 1.6 (NOT OFFICIALLY RELEASED YET)
 * Added @tree@-step based on the @TreePipe@ to support representing the branch of a traversal
 * Gremlin-Groovy
 ** Renamed @paths@-step to simply @path@ as now in Pipes the method is called @Pipe.getCurrentPath()@
+* Gremlin-Scala
+** Ranemd @paths@-step to simply @path@ as now in Pipes hte method is called @Pipe.getCurrentPath()@
 
 ==<hr/>==
 

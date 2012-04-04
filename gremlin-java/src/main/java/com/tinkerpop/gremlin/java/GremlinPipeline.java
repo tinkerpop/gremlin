@@ -250,35 +250,13 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     /**
      * Add an ExhaustMergePipe to the end of the pipeline.
-     * The provided pipes' emitted objects are merged where the first pipe's objects are exhausted, then the second, etc.
-     *
-     * @param pipes the internal pipes ExhaustMergePipe
-     * @return the extended Pipeline
-     */
-    public GremlinPipeline<S, ?> exhaustMerge(final Pipe<E, ?>... pipes) {
-        return this.add(new ExhaustMergePipe(pipes));
-    }
-
-    /**
-     * Add an ExhaustMergePipe to the end of the pipeline.
      * The one-step previous MetaPipe in the pipeline's pipes are used as the internal pipes.
      * The pipes' emitted objects are merged where the first pipe's objects are exhausted, then the second, etc.
      *
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> exhaustMerge() {
-        return this.add(new ExhaustMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
-    }
-
-    /**
-     * Add a FairMergePipe to the end of the pipeline.
-     * The provided pipes' emitted objects are merged in a round robin fashion.
-     *
-     * @param pipes the internal pipes of the FairMergePipe
-     * @return the extended Pipeline
-     */
-    public GremlinPipeline<S, ?> fairMerge(final Pipe<E, ?>... pipes) {
-        return this.add(new FairMergePipe(pipes));
+        return this.add(new ExhaustMergePipe(((MetaPipe) FluentUtility.getPreviousPipe(this)).getPipes()));
     }
 
     /**
@@ -289,7 +267,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> fairMerge() {
-        return this.add(new FairMergePipe((((MetaPipe) FluentUtility.removePreviousPipes(this, 1).get(0)).getPipes())));
+        return this.add(new FairMergePipe(((MetaPipe) FluentUtility.getPreviousPipe(this)).getPipes()));
     }
 
     /**

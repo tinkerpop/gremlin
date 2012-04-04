@@ -98,14 +98,8 @@ class GremlinScalaPipeline[S, E] extends GremlinPipeline[S, E] {
   override def copySplit(pipes: Pipe[E, _]*): GremlinScalaPipeline[S, _] =
     super.copySplit(pipes: _*).asInstanceOf[GremlinScalaPipeline[S, _]]
 
-  override def exhaustMerge(pipes: Pipe[E, _]*): GremlinScalaPipeline[S, _] =
-    super.exhaustMerge(pipes: _*).asInstanceOf[GremlinScalaPipeline[S, _]]
-
   override def exhaustMerge: GremlinScalaPipeline[S, _] =
     super.exhaustMerge.asInstanceOf[GremlinScalaPipeline[S, _]]
-
-  override def fairMerge(pipes: Pipe[E, _]*): GremlinScalaPipeline[S, _] =
-    super.fairMerge(pipes: _*).asInstanceOf[GremlinScalaPipeline[S, _]]
 
   override def fairMerge: GremlinScalaPipeline[S, _] =
     super.fairMerge.asInstanceOf[GremlinScalaPipeline[S, _]]
