@@ -42,7 +42,6 @@
         <module>gremlin-test</module>
         <module>gremlin-java</module>
         <module>gremlin-groovy</module>
-        <module>gremlin-scala</module>
     </modules>
     <properties>
         <blueprints.version>1.3-SNAPSHOT</blueprints.version>

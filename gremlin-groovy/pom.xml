@@ -109,7 +109,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy</artifactId>
-            <version>1.8.5</version>
+            <version>1.8.6</version>
         </dependency>
         <!-- CONSOLE -->
         <dependency>
