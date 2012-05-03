@@ -918,10 +918,23 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
     }
 
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream in a default Comparable order.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, E> order() {
         return this.add(new OrderPipe());
     }
 
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream according to a comparator defined in the provided function.
+     *
+     * @param compareFunction a comparator function of two objects of type E
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, E> order(final PipeFunction<Pair<E, E>, Integer> compareFunction) {
         return this.add(new OrderPipe(compareFunction));
     }
@@ -1091,5 +1104,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     public Collection<E> fill(final Collection<E> collection) {
         PipeHelper.fillCollection(this, collection);
         return collection;
+    }
+
+    public GremlinPipeline<S, E> enablePath() {
+        this.enablePath(true);
+        return this;
     }
 }
