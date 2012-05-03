@@ -30,7 +30,7 @@ class SplitMergeStepsTest extends com.tinkerpop.gremlin.test.branch.SplitMergeSt
     public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path() {
         super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(g.v(1).out('knows').copySplit(_().name, _().age).exhaustMerge.path);
     }
-    
+
     /*public void testPlay() {
         System.out.println(g.v(1).out('knows','created').loop(1){println(it.object.toString() + "!!" + it.loops);it.loops < 3}.toList());
         System.out.println("\n")

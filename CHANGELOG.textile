@@ -18,18 +18,12 @@ h3. Version 1.6 (NOT OFFICIALLY RELEASED YET)
   <version>1.6-SNAPSHOT</version>
 </dependency>
 
-<dependency>
-  <groupId>com.tinkerpop.gremlin</groupId>
-  <artifactId>gremlin-scala</artifactId>
-  <version>1.6-SNAPSHOT</version>
-</dependency>
 ```
-
+* Removed Gremlin-Scala from the main Gremlin distribution
 * Added @tree@-step based on the @TreePipe@ to support representing the branch of a traversal
+* Added @order@-step based on the @OrderPipe@ to support in-stream ordering
 * Gremlin-Groovy
 ** Renamed @paths@-step to simply @path@ as now in Pipes the method is called @Pipe.getCurrentPath()@
-* Gremlin-Scala
-** Ranemd @paths@-step to simply @path@ as now in Pipes hte method is called @Pipe.getCurrentPath()@
 
 ==<hr/>==
 

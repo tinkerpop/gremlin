@@ -27,108 +27,112 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> aggregate(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.aggregate(new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, E>) super.aggregate(new GroovyPipeFunction(closure));
     }
 
     public GremlinGroovyPipeline<S, E> aggregate(final Collection aggregate, final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.aggregate(aggregate, new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, E>) super.aggregate(aggregate, new GroovyPipeFunction(closure));
     }
 
     public GremlinGroovyPipeline<S, E> dedup(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.dedup(new GroovyPipeFunction<E, Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) super.dedup(new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> filter(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.filter(new GroovyPipeFunction<E, Boolean>(closure));
+        return (GremlinGroovyPipeline<S, E>) super.filter(new GroovyPipeFunction<E, Boolean>(closure));
     }
 
     public GremlinGroovyPipeline<S, List> gather(final Closure closure) {
-        return (GremlinGroovyPipeline<S, List>) this.gather(new GroovyPipeFunction<List, List>(closure));
+        return (GremlinGroovyPipeline<S, List>) super.gather(new GroovyPipeFunction<List, List>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Map<?, List<?>> map, final Closure keyClosure, final Closure valueClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupBy(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupBy(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Closure keyClosure, final Closure valueClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupBy(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupBy(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Closure keyClosure, final Closure valueClosure, Closure reduceClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupBy(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupBy(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Map reduceMap, final Closure keyClosure, final Closure valueClosure, Closure reduceClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupBy(reduceMap, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupBy(reduceMap, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction(valueClosure), new GroovyPipeFunction(reduceClosure));
     }
 
 
     public GremlinGroovyPipeline<S, E> groupCount(final Closure keyClosure, Closure valueClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupCount(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction<Pair<?, Number>, Number>(valueClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupCount(new GroovyPipeFunction(keyClosure), new GroovyPipeFunction<Pair<?, Number>, Number>(valueClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupCount(final Closure keyClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupCount(new GroovyPipeFunction(keyClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupCount(new GroovyPipeFunction(keyClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupCount(final Map<Object, Number> map, final Closure keyClosure, final Closure valueClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupCount(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction<Pair<?, Number>, Number>(valueClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupCount(map, new GroovyPipeFunction(keyClosure), new GroovyPipeFunction<Pair<?, Number>, Number>(valueClosure));
     }
 
     public GremlinGroovyPipeline<S, E> groupCount(final Map<Object, Number> map, final Closure keyClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.groupCount(map, new GroovyPipeFunction(keyClosure));
+        return (GremlinGroovyPipeline<S, E>) super.groupCount(map, new GroovyPipeFunction(keyClosure));
     }
 
     public GremlinGroovyPipeline<S, ?> ifThenElse(final Closure ifClosure, final Closure thenClosure, final Closure elseClosure) {
-        return (GremlinGroovyPipeline<S, ?>) this.ifThenElse(new GroovyPipeFunction<E, Boolean>(ifClosure), new GroovyPipeFunction<E, Object>(thenClosure), new GroovyPipeFunction<E, Object>(elseClosure));
+        return (GremlinGroovyPipeline<S, ?>) super.ifThenElse(new GroovyPipeFunction<E, Boolean>(ifClosure), new GroovyPipeFunction<E, Object>(thenClosure), new GroovyPipeFunction<E, Object>(elseClosure));
     }
 
     public GremlinGroovyPipeline<S, E> loop(final Integer numberedStep, final Closure whileClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.loop(numberedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure));
+        return (GremlinGroovyPipeline<S, E>) super.loop(numberedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure));
     }
 
     public GremlinGroovyPipeline<S, E> loop(final String namedStep, final Closure whileClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure));
+        return (GremlinGroovyPipeline<S, E>) super.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure));
     }
 
     public GremlinGroovyPipeline<S, E> loop(final Integer numberedStep, final Closure whileClosure, final Closure emitClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.loop(numberedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(emitClosure));
+        return (GremlinGroovyPipeline<S, E>) super.loop(numberedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(emitClosure));
     }
 
     public GremlinGroovyPipeline<S, E> loop(final String namedStep, final Closure whileClosure, final Closure emitClosure) {
-        return (GremlinGroovyPipeline<S, E>) this.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(emitClosure));
+        return (GremlinGroovyPipeline<S, E>) super.loop(namedStep, new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(whileClosure), new GroovyPipeFunction<LoopPipe.LoopBundle<E>, Boolean>(emitClosure));
+    }
+
+    public GremlinGroovyPipeline<S, E> order(final Closure compareClosure) {
+        return (GremlinGroovyPipeline<S, E>) super.order(new GroovyPipeFunction<Pair<E, E>, Integer>(compareClosure));
     }
 
     public GremlinGroovyPipeline<S, E> path(final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.path(GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) super.path(GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, E> sideEffect(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.sideEffect(new GroovyPipeFunction<E, Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) super.sideEffect(new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, ?> step(final Closure closure) {
-        return (GremlinGroovyPipeline<S, ?>) this.step(new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, ?>) super.step(new GroovyPipeFunction(closure));
     }
 
     public GremlinGroovyPipeline<S, E> store(final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.store(new GroovyPipeFunction<E, Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) super.store(new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> store(final Collection storage, final Closure closure) {
-        return (GremlinGroovyPipeline<S, E>) this.store(storage, new GroovyPipeFunction<E, Object>(closure));
+        return (GremlinGroovyPipeline<S, E>) super.store(storage, new GroovyPipeFunction<E, Object>(closure));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.table(GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) super.table(GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Table table, final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.table(table, GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) super.table(table, GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, E> table(final Table table, final List<String> columnNames, final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.table(table, columnNames, GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) super.table(table, columnNames, GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, E> tree(final Tree tree) {
@@ -136,11 +140,11 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, E> tree(final Tree tree, final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.tree(tree, GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) super.tree(tree, GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, E> tree(final Closure... closures) {
-        return (GremlinGroovyPipeline<S, E>) this.tree(GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, E>) super.tree(GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, Row> select(final Closure... closures) {
@@ -148,7 +152,7 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, Row> select(final Collection<String> columnNames, final Closure... closures) {
-        return (GremlinGroovyPipeline<S, Row>) this.select(columnNames, GroovyPipeFunction.generate(closures));
+        return (GremlinGroovyPipeline<S, Row>) super.select(columnNames, GroovyPipeFunction.generate(closures));
     }
 
     public GremlinGroovyPipeline<S, Row> select(final Collection<String> columnNames) {
@@ -156,7 +160,7 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
     }
 
     public GremlinGroovyPipeline<S, ?> transform(final Closure closure) {
-        return (GremlinGroovyPipeline<S, ?>) this.transform(new GroovyPipeFunction(closure));
+        return (GremlinGroovyPipeline<S, ?>) super.transform(new GroovyPipeFunction(closure));
     }
 
 
