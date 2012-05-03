@@ -4,6 +4,10 @@ import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.test.ComplianceTest
+import com.tinkerpop.gremlin.java.GremlinPipeline
+import com.tinkerpop.blueprints.pgm.Vertex
+import com.tinkerpop.pipes.util.structures.Pair
+import com.tinkerpop.pipes.PipeFunction
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

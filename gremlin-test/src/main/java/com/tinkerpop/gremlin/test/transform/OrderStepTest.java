@@ -46,4 +46,20 @@ public class OrderStepTest extends TestCase {
 
     }
 
+    public void test_g_V_orderXa_nameXb_nameX_name(final Pipe<Vertex, String> pipe) {
+        List<String> names = new ArrayList<String>();
+        while (pipe.hasNext()) {
+            names.add(pipe.next());
+        }
+        assertEquals(names.size(), 6);
+        assertEquals(names.get(5), "josh");
+        assertEquals(names.get(4), "lop");
+        assertEquals(names.get(3), "marko");
+        assertEquals(names.get(2), "peter");
+        assertEquals(names.get(1), "ripple");
+        assertEquals(names.get(0), "vadas");
+
+
+    }
+
 }

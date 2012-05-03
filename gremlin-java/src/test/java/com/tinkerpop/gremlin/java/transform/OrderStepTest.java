@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.java.transform;
 
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
@@ -28,5 +29,13 @@ public class OrderStepTest extends com.tinkerpop.gremlin.test.transform.OrderSte
                 return argument.getB().compareTo(argument.getA());
             }
         }));
+    }
+
+    public void test_g_V_orderXa_nameXb_nameX_name() {
+        super.test_g_V_orderXa_nameXb_nameX_name(new GremlinPipeline(g).V().order(new PipeFunction<Pair<Vertex, Vertex>, Integer>() {
+            public Integer compute(Pair<Vertex, Vertex> argument) {
+                return ((String) argument.getB().getProperty("name")).compareTo((String) argument.getA().getProperty("name"));
+            }
+        }).property("name"));
     }
 }
