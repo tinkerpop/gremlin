@@ -14,12 +14,30 @@ public class VerticesPipe extends AbstractPipe<Graph, Vertex> {
 
     protected Iterator<Vertex> nextEnds = PipeHelper.emptyIterator();
 
+    private String key;
+
+    private Object value;
+
+    public VerticesPipe(){
+        this.key = null;
+        this.value = null;
+    }
+
+    public VerticesPipe(final String key, final Object value){
+        this.key = key;
+        this.value = value;
+    }
+
     protected Vertex processNextStart() {
         while (true) {
             if (null != this.nextEnds && this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                this.nextEnds = this.starts.next().getVertices().iterator();
+                if (this.key == null) {
+                    this.nextEnds = this.starts.next().getVertices().iterator();
+                } else {
+                    this.nextEnds = this.starts.next().getVertices(this.key, this.value).iterator();
+                }
             }
         }
     }

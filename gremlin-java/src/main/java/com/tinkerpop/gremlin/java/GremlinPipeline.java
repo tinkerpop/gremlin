@@ -157,6 +157,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new EdgesPipe());
     }
 
+    public GremlinPipeline<S, Edge> E(final String key, final Object value) {
+        return this.add(new EdgesPipe(key, value));
+    }
+
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
         return this.add(new IdEdgePipe(graph));
     }
@@ -209,6 +213,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new VerticesPipe());
     }
 
+    public GremlinPipeline<S, Vertex> V(final String key, final Object value) {
+        return this.add(new VerticesPipe(key, value));
+    }
 
     /**
      * Add a FunctionPipe to the end of the pipeline.

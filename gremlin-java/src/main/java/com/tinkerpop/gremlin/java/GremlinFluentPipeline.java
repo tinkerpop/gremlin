@@ -95,6 +95,14 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, Edge> E();
 
     /**
+     * Add an EdgesPipe to the end of the Pipeline.
+     * Emit all the edges of the incoming graph restricted by KeyIndex.
+     *
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Edge> E(final String key, final Object value);
+
+    /**
      * Add an IdEdgePipe to the end of the Pipeline.
      * Emit the edges of the graph whose ids are those of the incoming id objects.
      *
@@ -204,4 +212,12 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, Vertex> V();
+
+    /**
+     * Add a VerticesPipe to the end of the Pipeline.
+     * Emit all the vertices of the incoming graph restricted by KeyIndex.
+     *
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Vertex> V(final String key, final Object value);
 }

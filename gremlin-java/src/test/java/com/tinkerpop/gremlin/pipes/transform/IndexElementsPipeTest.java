@@ -14,7 +14,10 @@ public class IndexElementsPipeTest extends TestCase {
 
     public void testPipeBasic() {
         IndexableGraph graph = TinkerGraphFactory.createTinkerGraph();
-        Pipe<Vertex, Vertex> pipe = new IndexElementsPipe<Vertex>(graph.getIndex(Index.VERTICES, Vertex.class), "lang", "java");
+        Index idx = graph.createIndex("idx", Vertex.class);
+        idx.put("lang", "java", graph.getVertex(3));
+        idx.put("lang", "java", graph.getVertex(5));
+        Pipe<Vertex, Vertex> pipe = new IndexElementsPipe<Vertex>(graph.getIndex("idx", Vertex.class), "lang", "java");
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;

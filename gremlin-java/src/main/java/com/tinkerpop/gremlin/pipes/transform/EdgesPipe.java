@@ -13,13 +13,31 @@ import java.util.Iterator;
 public class EdgesPipe extends AbstractPipe<Graph, Edge> {
 
     protected Iterator<Edge> nextEnds = PipeHelper.emptyIterator();
+    
+    private String key;
+    
+    private Object value;
+    
+    public EdgesPipe(){
+        this.key = null;
+        this.value = null;
+    }
+    
+    public EdgesPipe(final String key, final Object value){
+        this.key = key;
+        this.value = value;
+    }
 
     protected Edge processNextStart() {
         while (true) {
             if (null != this.nextEnds && this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                this.nextEnds = this.starts.next().getEdges().iterator();
+                if (this.key == null) {
+                    this.nextEnds = this.starts.next().getEdges().iterator();
+                } else {
+                    this.nextEnds = this.starts.next().getEdges(this.key, this.value).iterator();
+                }
             }
         }
     }

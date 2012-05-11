@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
 import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.KeyIndexableGraph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
@@ -27,7 +28,23 @@ public class VerticesPipeTest extends TestCase {
             vertices.add(vertex);
             //System.out.println(vertex);
         }
-        assertEquals(counter, 6);
-        assertEquals(vertices.size(), 6);
+        assertEquals(6, counter);
+        assertEquals(6, vertices.size());
+    }
+
+    public void testVertexKeyIndexIterator() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Pipe<Graph, Vertex> pipe = new VerticesPipe("lang", "java");
+        pipe.setStarts(new SingleIterator<Graph>(graph));
+        int counter = 0;
+        Set<Vertex> vertices = new HashSet<Vertex>();
+        while (pipe.hasNext()) {
+            counter++;
+            Vertex vertex = pipe.next();
+            vertices.add(vertex);
+            //System.out.println(vertex);
+        }
+        assertEquals(2, counter);
+        assertEquals(2, vertices.size());
     }
 }
