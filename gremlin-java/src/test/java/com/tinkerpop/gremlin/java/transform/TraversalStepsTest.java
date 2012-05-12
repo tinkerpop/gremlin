@@ -17,7 +17,7 @@ public class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.Tra
     }
 
     public void test_g_V() {
-        super.test_g_V(new GremlinPipeline(g).V());
+        super.test_g_V(new GremlinPipeline(g.getVertices()));
     }
 
     public void test_g_v1_out() {
@@ -33,7 +33,7 @@ public class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.Tra
     }
 
     public void test_g_E() {
-        super.test_g_E(new GremlinPipeline(g).E());
+        super.test_g_E(new GremlinPipeline(g.getEdges()));
     }
 
     public void test_g_v1_outE() {
@@ -73,7 +73,7 @@ public class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.Tra
     }
 
     public void test_g_V_out_out() {
-        super.test_g_V_out_out(new GremlinPipeline(g).V().out().out());
+        super.test_g_V_out_out(new GremlinPipeline(g.getVertices()).out().out());
     }
 
     public void test_g_v1_out_out_out() {

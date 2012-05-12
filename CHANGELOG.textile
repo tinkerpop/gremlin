@@ -22,6 +22,7 @@ h3. Version 1.6 (NOT OFFICIALLY RELEASED YET)
 * Removed Gremlin-Scala from the main Gremlin distribution
 * Added @tree@-step based on the @TreePipe@ to support representing the branch of a traversal
 * Added @order@-step based on the @OrderPipe@ to support in-stream ordering
+* Removed @VerticesPipe@ and @EdgesPipes@ as should be called via @getVertices()@ and @getEdges()@ in @GremlinPipeline@ constructor
 * Gremlin-Groovy
 ** Renamed @paths@-step to simply @path@ as now in Pipes the method is called @Pipe.getCurrentPath()@
 

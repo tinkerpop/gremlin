@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.groovy.loaders
 
 import com.tinkerpop.blueprints.pgm.Index
 import com.tinkerpop.blueprints.pgm.IndexableGraph
-import com.tinkerpop.gremlin.Tokens.T
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
 /**
@@ -13,15 +12,7 @@ class IndexLoader {
     public static void load() {
 
         IndexableGraph.metaClass.idx = {final Object indexName ->
-            final String name;
-            if (indexName.equals(T.v)) {
-                name = Index.VERTICES
-            } else if (indexName.equals(T.e)) {
-                name = Index.EDGES
-            } else {
-                name = indexName.toString()
-            }
-            return ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(name)}
+            return ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(indexName)}
         }
 
         Index.metaClass.getAt = {final Map query ->

@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.test.sideeffect;
 
-import com.tinkerpop.blueprints.pgm.Graph;
+import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
@@ -16,7 +16,7 @@ public class StoreStepTest extends TestCase {
     }
 
 
-    public void test_g_V_propertyXnameX_store_cap(final Pipe<Graph, List<String>> pipe) {
+    public void test_g_V_propertyXnameX_store_cap(final Pipe<Vertex, List<String>> pipe) {
         List<String> names = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(names.size(), 6);
@@ -28,7 +28,7 @@ public class StoreStepTest extends TestCase {
         assertTrue(names.contains("ripple"));
     }
 
-    public void test_g_V_storeXnameX_cap(final Pipe<Graph, List<String>> pipe) {
+    public void test_g_V_storeXnameX_cap(final Pipe<Vertex, List<String>> pipe) {
         this.test_g_V_propertyXnameX_store_cap(pipe);
     }
 }

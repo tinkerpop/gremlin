@@ -18,15 +18,15 @@ public class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
     }
 
     public void test_g_V_hasXname_markoX() {
-        super.test_g_V_hasXname_markoX(new GremlinPipeline(g).V().has("name", "marko"));
+        super.test_g_V_hasXname_markoX(new GremlinPipeline(g.getVertices()).has("name", "marko"));
     }
 
     public void test_g_V_hasXname_blahX() {
-        super.test_g_V_hasXname_blahX(new GremlinPipeline(g).V().has("name", "blah"));
+        super.test_g_V_hasXname_blahX(new GremlinPipeline(g.getVertices()).has("name", "blah"));
     }
 
     public void test_g_V_hasXblah_nullX() {
-        super.test_g_V_hasXblah_nullX(new GremlinPipeline(g).V().has("blah", null));
+        super.test_g_V_hasXblah_nullX(new GremlinPipeline(g.getVertices()).has("blah", null));
     }
 
     public void test_g_v1_out_hasXid_2X() {
@@ -34,6 +34,6 @@ public class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
     }
 
     public void test_g_V_hasXage_gt_30X() {
-        super.test_g_V_hasXage_gt_30X(new GremlinPipeline(g).V().has("age", T.gt, 30));
+        super.test_g_V_hasXage_gt_30X(new GremlinPipeline(g.getVertices()).has("age", T.gt, 30));
     }
 }

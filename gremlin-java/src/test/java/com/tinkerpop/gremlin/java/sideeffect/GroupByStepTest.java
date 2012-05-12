@@ -24,7 +24,7 @@ public class GroupByStepTest extends com.tinkerpop.gremlin.test.sideeffect.Group
 
     public void test_g_V_groupByXlang_nameX() {
         Map<?, List<?>> m = new HashMap<Object, List<?>>();
-        super.test_g_V_groupByXlang_nameX(new GremlinPipeline(g).V().groupBy(m, new PipeFunction<Vertex, String>() {
+        super.test_g_V_groupByXlang_nameX(new GremlinPipeline(g.getVertices()).groupBy(m, new PipeFunction<Vertex, String>() {
                     public String compute(Vertex vertex) {
                         return (String) vertex.getProperty("lang");
                     }

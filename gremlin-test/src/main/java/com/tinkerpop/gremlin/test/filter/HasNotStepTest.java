@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.test.filter;
 
-import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.PipeHelper;
@@ -18,7 +17,7 @@ public class HasNotStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_hasNotXname_markoX(Pipe<Graph, Vertex> pipe) {
+    public void test_g_V_hasNotXname_markoX(Pipe<Vertex, Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -27,7 +26,7 @@ public class HasNotStepTest extends TestCase {
         assertEquals(counter, 5);
     }
 
-    public void test_g_V_hasNotXage_gt_32X(Pipe<Graph, Vertex> pipe) {
+    public void test_g_V_hasNotXage_gt_32X(Pipe<Vertex, Vertex> pipe) {
         List<Vertex> list = new ArrayList<Vertex>();
         PipeHelper.fillCollection(pipe, list);
         assertEquals(list.size(), 3);
@@ -36,7 +35,7 @@ public class HasNotStepTest extends TestCase {
         }
     }
 
-    public void test_g_V_hasNotXname_blahX(Pipe<Graph, Vertex> pipe) {
+    public void test_g_V_hasNotXname_blahX(Pipe<Vertex, Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -45,7 +44,7 @@ public class HasNotStepTest extends TestCase {
         assertEquals(counter, 6);
     }
 
-    public void test_g_V_hasNotXblah_nullX(Pipe<Graph, Vertex> pipe) {
+    public void test_g_V_hasNotXblah_nullX(Pipe<Vertex, Vertex> pipe) {
         assertFalse(pipe.hasNext());
     }
 

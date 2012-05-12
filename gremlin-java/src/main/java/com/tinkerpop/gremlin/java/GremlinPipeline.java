@@ -11,7 +11,6 @@ import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
-import com.tinkerpop.gremlin.pipes.transform.EdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdEdgePipe;
 import com.tinkerpop.gremlin.pipes.transform.IdPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdVertexPipe;
@@ -24,7 +23,6 @@ import com.tinkerpop.gremlin.pipes.transform.OutPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyPipe;
-import com.tinkerpop.gremlin.pipes.transform.VerticesPipe;
 import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
@@ -153,14 +151,6 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new BothVerticesPipe());
     }
 
-    public GremlinPipeline<S, Edge> E() {
-        return this.add(new EdgesPipe());
-    }
-
-    public GremlinPipeline<S, Edge> E(final String key, final Object value) {
-        return this.add(new EdgesPipe(key, value));
-    }
-
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
         return this.add(new IdEdgePipe(graph));
     }
@@ -207,14 +197,6 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Object> property(final String key) {
         return this.add(new PropertyPipe(key));
-    }
-
-    public GremlinPipeline<S, Vertex> V() {
-        return this.add(new VerticesPipe());
-    }
-
-    public GremlinPipeline<S, Vertex> V(final String key, final Object value) {
-        return this.add(new VerticesPipe(key, value));
     }
 
     /**

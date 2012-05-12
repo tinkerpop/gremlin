@@ -27,11 +27,11 @@ public class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.Agg
     }
 
     public void test_g_V_propertyXnameX_aggregate_cap() {
-        super.test_g_V_propertyXnameX_aggregate_cap(new GremlinPipeline(g).V().property("name").aggregate().cap());
+        super.test_g_V_propertyXnameX_aggregate_cap(new GremlinPipeline(g.getVertices()).property("name").aggregate().cap());
     }
 
     public void test_g_V_aggregateXnameX_cap() {
-        super.test_g_V_aggregateXnameX_cap(new GremlinPipeline(g).V().aggregate(new PipeFunction<Vertex, String>() {
+        super.test_g_V_aggregateXnameX_cap(new GremlinPipeline(g.getVertices()).aggregate(new PipeFunction<Vertex, String>() {
             public String compute(Vertex vertex) {
                 return (String) vertex.getProperty("name");
             }

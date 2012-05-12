@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.test.sideeffect;
 
-import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
@@ -16,7 +15,7 @@ public class GroupCountStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_outXcreatedX_groupCountXm__nameX(Pipe<Graph, Vertex> pipe, Map<String, Number> m) {
+    public void test_g_V_outXcreatedX_groupCountXm__nameX(Pipe<Vertex, Vertex> pipe, Map<String, Number> m) {
         int counter = 0;
         while (pipe.hasNext()) {
             Vertex vertex = pipe.next();
@@ -29,7 +28,7 @@ public class GroupCountStepTest extends TestCase {
         assertEquals(m.get("ripple"), 1l);
     }
 
-    public void test_g_V_outXcreatedX_groupCountXm__name__plus_2X(Pipe<Graph, Vertex> pipe, Map<String, Number> m) {
+    public void test_g_V_outXcreatedX_groupCountXm__name__plus_2X(Pipe<Vertex, Vertex> pipe, Map<String, Number> m) {
         int counter = 0;
         while (pipe.hasNext()) {
             Vertex vertex = pipe.next();
@@ -42,7 +41,7 @@ public class GroupCountStepTest extends TestCase {
         assertEquals(m.get("ripple"), 2l);
     }
 
-    public void test_g_V_outXcreatedX_groupCountXnameX_cap(Pipe<Graph, Map<String, Number>> pipe) {
+    public void test_g_V_outXcreatedX_groupCountXnameX_cap(Pipe<Vertex, Map<String, Number>> pipe) {
         Map m = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(m.size(), 2);

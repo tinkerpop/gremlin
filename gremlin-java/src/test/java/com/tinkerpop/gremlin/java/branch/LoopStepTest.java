@@ -35,7 +35,7 @@ public class LoopStepTest extends com.tinkerpop.gremlin.test.branch.LoopStepTest
     }
 
     public void test_g_V_out_loopX1_loops_lt_3X_propertyXnameX() {
-        super.test_g_V_out_loopX1_loops_lt_3X_propertyXnameX(new GremlinPipeline(g).V().out().loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
+        super.test_g_V_out_loopX1_loops_lt_3X_propertyXnameX(new GremlinPipeline(g.getVertices()).out().loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
             public Boolean compute(LoopPipe.LoopBundle bundle) {
                 return bundle.getLoops() < 3;
             }
@@ -43,7 +43,7 @@ public class LoopStepTest extends com.tinkerpop.gremlin.test.branch.LoopStepTest
     }
 
     public void test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX() {
-        super.test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(new GremlinPipeline(g).V().as("here").out().loop("here", new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
+        super.test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(new GremlinPipeline(g.getVertices()).as("here").out().loop("here", new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
             public Boolean compute(LoopPipe.LoopBundle bundle) {
                 return bundle.getLoops() < 3;
             }

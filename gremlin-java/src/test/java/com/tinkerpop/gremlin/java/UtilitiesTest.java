@@ -31,6 +31,6 @@ public class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     }
 
     public void test_g_V_countXX() {
-        super.test_g_V_countXX(new GremlinPipeline(g).V().count());
+        super.test_g_V_countXX(new GremlinPipeline(g.getVertices()).count());
     }
 }

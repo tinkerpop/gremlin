@@ -18,10 +18,18 @@ import java.util.Map.Entry
  */
 class GraphLoader {
 
+    private static final String V = "V";
+    private static final String E = "E";
+
     public static void load() {
 
         Graph.metaClass.propertyMissing = {final String name ->
-            if (Gremlin.isStep(name)) {
+            if (name.equals(V)) {
+                return new GremlinGroovyPipeline(((Graph) delegate).getVertices());
+            } else if (name.equals(E)) {
+                return new GremlinGroovyPipeline(((Graph) delegate).getEdges());
+            }
+            else if (Gremlin.isStep(name)) {
                 return new GremlinGroovyPipeline(delegate)."$name"();
             } else {
                 throw new MissingPropertyException(name, delegate.getClass());
@@ -57,6 +65,23 @@ class GraphLoader {
                 return edges;
             }
         }
+
+        Graph.metaClass.V = {->
+            return new GremlinGroovyPipeline(((Graph) delegate).getVertices());
+        }
+
+        Graph.metaClass.V = { final String key, final Object value ->
+            return new GremlinGroovyPipeline(((Graph) delegate).getVertices(key, value));
+        }
+
+        Graph.metaClass.E = {->
+            return new GremlinGroovyPipeline(((Graph) delegate).getEdges());
+        }
+
+        Graph.metaClass.E = { final String key, final Object value ->
+            return new GremlinGroovyPipeline(((Graph) delegate).getEdges(key, value));
+        }
+
 
         Graph.metaClass.addVertex = {->
             return ((Graph) delegate).addVertex(null);

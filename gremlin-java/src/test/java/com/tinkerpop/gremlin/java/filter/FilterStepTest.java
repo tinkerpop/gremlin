@@ -19,7 +19,7 @@ public class FilterStepTest extends com.tinkerpop.gremlin.test.filter.FilterStep
     }
 
     public void test_g_V_filterXfalseX() {
-        super.test_g_V_filterXfalseX(new GremlinPipeline(g).V().filter(new PipeFunction<Vertex, Boolean>() {
+        super.test_g_V_filterXfalseX(new GremlinPipeline(g.getVertices()).filter(new PipeFunction<Vertex, Boolean>() {
             public Boolean compute(Vertex vertex) {
                 return false;
             }
@@ -27,7 +27,7 @@ public class FilterStepTest extends com.tinkerpop.gremlin.test.filter.FilterStep
     }
 
     public void test_g_V_filterXtrueX() {
-        super.test_g_V_filterXtrueX(new GremlinPipeline(g).V().filter(new PipeFunction<Vertex, Boolean>() {
+        super.test_g_V_filterXtrueX(new GremlinPipeline(g.getVertices()).filter(new PipeFunction<Vertex, Boolean>() {
             public Boolean compute(Vertex vertex) {
                 return true;
             }
@@ -35,7 +35,7 @@ public class FilterStepTest extends com.tinkerpop.gremlin.test.filter.FilterStep
     }
 
     public void test_g_V_filterXlang_eq_javaX() {
-        super.test_g_V_filterXlang_eq_javaX(new GremlinPipeline(g).V().filter(new PipeFunction<Vertex, Boolean>() {
+        super.test_g_V_filterXlang_eq_javaX(new GremlinPipeline(g.getVertices()).filter(new PipeFunction<Vertex, Boolean>() {
             public Boolean compute(Vertex vertex) {
                 String lang = (String) vertex.getProperty("lang");
                 return lang != null && lang.equals("java");
@@ -53,7 +53,7 @@ public class FilterStepTest extends com.tinkerpop.gremlin.test.filter.FilterStep
     }
 
     public void test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX() {
-        super.test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX(new GremlinPipeline(g).V().filter(new PipeFunction<Vertex, Boolean>() {
+        super.test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX(new GremlinPipeline(g.getVertices()).filter(new PipeFunction<Vertex, Boolean>() {
             public Boolean compute(Vertex vertex) {
                 return ((String) vertex.getProperty("name")).startsWith("m") || ((String) vertex.getProperty("name")).startsWith("p");
             }

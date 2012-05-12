@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.groovy.loaders
 
 import com.tinkerpop.blueprints.pgm.Graph
 import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.Tokens.T
 import com.tinkerpop.gremlin.groovy.Gremlin
 import junit.framework.TestCase
 

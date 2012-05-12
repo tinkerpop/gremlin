@@ -12,7 +12,7 @@ public class Tokens {
     public static final String ID = "id";
 
     public static enum T {
-        v, e, gt, lt, eq, gte, lte, neq
+        gt, lt, eq, gte, lte, neq
     }
 
     public static FilterPipe.Filter mapFilter(final T t) {
@@ -29,7 +29,7 @@ public class Tokens {
         else if (t.equals(T.gte))
             return FilterPipe.Filter.GREATER_THAN_EQUAL;
         else
-            throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
+            throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
     }
 
     public static FilterPipe.Filter mapFlipFilter(final T t) {
@@ -46,7 +46,7 @@ public class Tokens {
         else if (t.equals(T.gte))
             return FilterPipe.Filter.LESS_THAN;
         else
-            throw new IllegalArgumentException(t.toString() + " is an uknown filter type");
+            throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
     }
 
 

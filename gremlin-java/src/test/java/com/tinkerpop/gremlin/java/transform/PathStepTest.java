@@ -37,7 +37,7 @@ public class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepT
     }
 
     public void test_g_V_out_loopX1__loops_lt_3X_pathXit__name__langX() {
-        super.test_g_V_out_loopX1__loops_lt_3X_pathXit__name__langX(new GremlinPipeline(g).V().out().loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
+        super.test_g_V_out_loopX1__loops_lt_3X_pathXit__name__langX(new GremlinPipeline(g.getVertices()).out().loop(1, new PipeFunction<LoopPipe.LoopBundle, Boolean>() {
             public Boolean compute(LoopPipe.LoopBundle bundle) {
                 return bundle.getLoops() < 3;
             }

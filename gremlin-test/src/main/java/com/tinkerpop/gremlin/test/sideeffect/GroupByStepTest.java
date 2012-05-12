@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.test.sideeffect;
 
-import com.tinkerpop.blueprints.pgm.Graph;
 import com.tinkerpop.blueprints.pgm.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
@@ -17,7 +16,7 @@ public class GroupByStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_groupByXlang_nameX(Pipe<Graph, Vertex> pipe, Map<String, List<String>> m) {
+    public void test_g_V_groupByXlang_nameX(Pipe<Vertex, Vertex> pipe, Map<String, List<String>> m) {
         int counter = 0;
         while (pipe.hasNext()) {
             pipe.next();
