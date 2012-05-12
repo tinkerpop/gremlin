@@ -57,12 +57,4 @@ public class Imports {
     public static List<String> getImports() {
         return Imports.imports;
     }
-
-    public static List<String> getImports(final String a, final String b) {
-        final List<String> imports2 = new ArrayList<String>();
-        for (final String i : Imports.getImports()) {
-            imports2.add(i.replace(a, b));
-        }
-        return imports2;
-    }
 }
