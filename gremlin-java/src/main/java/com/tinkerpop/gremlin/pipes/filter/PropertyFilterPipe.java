@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.pipes.filter;
 
-import com.tinkerpop.blueprints.pgm.Element;
+import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.PipeHelper;

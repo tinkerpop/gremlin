@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Vertex;
 
 /**
  * InPipe will emit vertices that are the head/target of the incoming edges to the current vertex.

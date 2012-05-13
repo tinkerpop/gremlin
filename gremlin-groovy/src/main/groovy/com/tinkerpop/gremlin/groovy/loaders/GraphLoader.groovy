@@ -1,14 +1,14 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.blueprints.pgm.Edge
-import com.tinkerpop.blueprints.pgm.Graph
-import com.tinkerpop.blueprints.pgm.Vertex
-import com.tinkerpop.blueprints.pgm.util.io.gml.GMLReader
-import com.tinkerpop.blueprints.pgm.util.io.gml.GMLWriter
-import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLReader
-import com.tinkerpop.blueprints.pgm.util.io.graphml.GraphMLWriter
-import com.tinkerpop.blueprints.pgm.util.io.graphson.GraphSONReader
-import com.tinkerpop.blueprints.pgm.util.io.graphson.GraphSONWriter
+import com.tinkerpop.blueprints.Edge
+import com.tinkerpop.blueprints.Graph
+import com.tinkerpop.blueprints.Vertex
+import com.tinkerpop.blueprints.util.io.gml.GMLReader
+import com.tinkerpop.blueprints.util.io.gml.GMLWriter
+import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader
+import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter
+import com.tinkerpop.blueprints.util.io.graphson.GraphSONReader
+import com.tinkerpop.blueprints.util.io.graphson.GraphSONWriter
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import java.util.Map.Entry

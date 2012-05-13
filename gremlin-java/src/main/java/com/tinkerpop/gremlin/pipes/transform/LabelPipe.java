@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
-import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.pipes.AbstractPipe;
 
 /**

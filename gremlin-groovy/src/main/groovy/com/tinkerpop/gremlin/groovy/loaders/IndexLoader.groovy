@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.blueprints.pgm.Index
-import com.tinkerpop.blueprints.pgm.IndexableGraph
+import com.tinkerpop.blueprints.Index
+import com.tinkerpop.blueprints.IndexableGraph
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
 /**

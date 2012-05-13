@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.test.transform;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.structures.Row;
 import junit.framework.TestCase;

@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
-import com.tinkerpop.blueprints.pgm.Element;
-import com.tinkerpop.blueprints.pgm.Index;
+import com.tinkerpop.blueprints.Element;
+import com.tinkerpop.blueprints.Index;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 
 /**

@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.test;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Vertex;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;

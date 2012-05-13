@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.blueprints.pgm.impls.sail.SailGraph
+import com.tinkerpop.blueprints.impls.sail.SailGraph
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

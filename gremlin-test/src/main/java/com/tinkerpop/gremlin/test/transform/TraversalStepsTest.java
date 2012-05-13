@@ -1,7 +1,7 @@
 package com.tinkerpop.gremlin.test.transform;
 
-import com.tinkerpop.blueprints.pgm.Edge;
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 

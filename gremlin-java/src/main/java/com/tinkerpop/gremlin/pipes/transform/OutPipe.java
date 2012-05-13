@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
-import com.tinkerpop.blueprints.pgm.Vertex;
+import com.tinkerpop.blueprints.Vertex;
 
 /**
  * OutPipe emits those vertices on the head of the outgoing edges of a vertex.

@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.pipes.filter;
 
-import com.tinkerpop.blueprints.pgm.Graph;
-import com.tinkerpop.blueprints.pgm.Vertex;
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory;
+import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;

@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.blueprints.pgm.Element
+import com.tinkerpop.blueprints.Element
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 

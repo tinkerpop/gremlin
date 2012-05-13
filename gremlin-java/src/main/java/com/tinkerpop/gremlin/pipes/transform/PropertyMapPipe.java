@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
-import com.tinkerpop.blueprints.pgm.Element;
+import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
 
 import java.util.HashMap;

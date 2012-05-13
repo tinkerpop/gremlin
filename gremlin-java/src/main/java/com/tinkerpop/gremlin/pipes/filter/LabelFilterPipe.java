@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.pipes.filter;
 
-import com.tinkerpop.blueprints.pgm.Edge;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.PipeHelper;

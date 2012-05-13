@@ -19,29 +19,29 @@ public class Imports {
         imports.add("com.tinkerpop.gremlin.pipes.transform.*");
 
         // blueprints
-        imports.add("com.tinkerpop.blueprints.pgm.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.tg.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.neo4j.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.orientdb.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.dex.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.rexster.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.neo4jbatch.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.sail.*");
-        imports.add("com.tinkerpop.blueprints.pgm.impls.sail.impls.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.io.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.io.graphml.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.io.graphson.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.batch.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.event.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.event.listener.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.id.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.readonly.*");
-        imports.add("com.tinkerpop.blueprints.pgm.util.wrappers.partition.*");
-        imports.add("com.tinkerpop.blueprints.pgm.oupls.sail.*");
-        imports.add("com.tinkerpop.blueprints.pgm.oupls.jung.*");
+        imports.add("com.tinkerpop.blueprints.*");
+        imports.add("com.tinkerpop.blueprints.impls.*");
+        imports.add("com.tinkerpop.blueprints.impls.tg.*");
+        imports.add("com.tinkerpop.blueprints.impls.neo4j.*");
+        imports.add("com.tinkerpop.blueprints.impls.orientdb.*");
+        imports.add("com.tinkerpop.blueprints.impls.dex.*");
+        imports.add("com.tinkerpop.blueprints.impls.rexster.*");
+        imports.add("com.tinkerpop.blueprints.impls.neo4jbatch.*");
+        imports.add("com.tinkerpop.blueprints.impls.sail.*");
+        imports.add("com.tinkerpop.blueprints.impls.sail.impls.*");
+        imports.add("com.tinkerpop.blueprints.util.*");
+        imports.add("com.tinkerpop.blueprints.util.io.*");
+        imports.add("com.tinkerpop.blueprints.util.io.graphml.*");
+        imports.add("com.tinkerpop.blueprints.util.io.graphson.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.batch.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.event.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.event.listener.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.id.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.readonly.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.partition.*");
+        imports.add("com.tinkerpop.blueprints.oupls.sail.*");
+        imports.add("com.tinkerpop.blueprints.oupls.jung.*");
 
         // pipes
         imports.add("com.tinkerpop.pipes.*");

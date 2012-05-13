@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.blueprints.pgm.impls.sail.impls.MemoryStoreSailGraph
+import com.tinkerpop.blueprints.impls.sail.impls.MemoryStoreSailGraph
 import junit.framework.TestCase
 
 /**

@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
-import com.tinkerpop.blueprints.pgm.Edge
-import com.tinkerpop.blueprints.pgm.Graph
-import com.tinkerpop.blueprints.pgm.Vertex
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraph
-import com.tinkerpop.blueprints.pgm.impls.tg.TinkerGraphFactory
+import com.tinkerpop.blueprints.Edge
+import com.tinkerpop.blueprints.Graph
+import com.tinkerpop.blueprints.Vertex
+import com.tinkerpop.blueprints.impls.tg.TinkerGraph
+import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.pipes.util.PipeHelper
 import junit.framework.TestCase
