@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
@@ -16,7 +17,7 @@ public class InVertexPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
         InVertexPipe pipe = new InVertexPipe();
-        pipe.setStarts(marko.getOutEdges());
+        pipe.setStarts(marko.getEdges(Direction.OUT));
         assertTrue(pipe.hasNext());
         int counter = 0;
         while (pipe.hasNext()) {
@@ -28,7 +29,7 @@ public class InVertexPipeTest extends TestCase {
 
         Vertex josh = graph.getVertex("4");
         pipe = new InVertexPipe();
-        pipe.setStarts(josh.getOutEdges().iterator());
+        pipe.setStarts(josh.getEdges(Direction.OUT).iterator());
         assertTrue(pipe.hasNext());
         counter = 0;
         while (pipe.hasNext()) {

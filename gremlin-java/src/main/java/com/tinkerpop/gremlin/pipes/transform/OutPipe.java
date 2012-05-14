@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;
 
 /**
@@ -16,7 +17,7 @@ public class OutPipe extends AbstractEdgesVerticesPipe {
     public Vertex processNextStart() {
         while (true) {
             if (null == this.nextEnds) {
-                this.nextEnds = this.starts.next().getOutEdges(this.labels).iterator();
+                this.nextEnds = this.starts.next().getEdges(Direction.OUT,  this.labels).iterator();
             } else {
                 if (this.nextEnds.hasNext()) {
                     return this.nextEnds.next().getInVertex();

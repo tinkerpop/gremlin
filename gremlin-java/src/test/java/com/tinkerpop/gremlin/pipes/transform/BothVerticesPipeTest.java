@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -16,7 +17,7 @@ public class BothVerticesPipeTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex josh = graph.getVertex("4");
         Edge tempEdge = null;
-        for (Edge edge : josh.getOutEdges()) {
+        for (Edge edge : josh.getEdges(Direction.OUT)) {
             if (edge.getId().equals("11"))
                 tempEdge = edge;
         }

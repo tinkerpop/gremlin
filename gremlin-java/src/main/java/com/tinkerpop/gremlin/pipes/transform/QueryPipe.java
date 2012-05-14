@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Query;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
 
-    private Query.Direction direction = Query.Direction.BOTH;
+    private Direction direction = Direction.BOTH;
     private String[] labels;
     private List<HasContainer> hasContainers;
     private List<IntervalContainer> intervalContainers;
@@ -29,7 +30,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
 
     private Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
-    public QueryPipe(final Class<E> resultingElementClass, final Query.Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final String... labels) {
+    public QueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final String... labels) {
         this.elementClass = resultingElementClass;
         this.direction = direction;
         this.hasContainers = hasContainers;
@@ -61,12 +62,15 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
                     query = query.labels(this.labels);
                 if (this.hasContainers.size() > 0) {
                     for (final HasContainer hasContainer : hasContainers) {
-                        query = query.has(hasContainer.key, hasContainer.value, hasContainer.compare);
+                        if (hasContainer.compare.equals(Query.Compare.EQUAL))
+                            query = query.has(hasContainer.key, hasContainer.value);
+                        else
+                            query = query.has(hasContainer.key, (Comparable) hasContainer.value, hasContainer.compare);
                     }
                 }
                 if (this.intervalContainers.size() > 0) {
                     for (final IntervalContainer intervalContainer : intervalContainers) {
-                        query = query.interval(intervalContainer.key, intervalContainer.startValue, intervalContainer.endValue);
+                        query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
                     }
                 }
                 if (this.elementClass.equals(Vertex.class))

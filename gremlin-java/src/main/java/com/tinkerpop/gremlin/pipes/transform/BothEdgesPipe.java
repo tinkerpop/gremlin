@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.util.iterators.MultiIterator;
@@ -21,7 +22,7 @@ public class BothEdgesPipe extends AbstractEdgesPipe {
                 return this.nextEnds.next();
             } else {
                 final Vertex vertex = this.starts.next();
-                this.nextEnds = new MultiIterator<Edge>(vertex.getInEdges(this.labels).iterator(), vertex.getOutEdges(this.labels).iterator());
+                this.nextEnds = new MultiIterator<Edge>(vertex.getEdges(Direction.OUT, this.labels).iterator(), vertex.getEdges(Direction.IN, this.labels).iterator());
             }
         }
     }

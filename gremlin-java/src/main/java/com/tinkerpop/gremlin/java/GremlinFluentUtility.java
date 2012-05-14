@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.java;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
@@ -50,7 +51,7 @@ public class GremlinFluentUtility extends FluentUtility {
         final List<QueryPipe.HasContainer> hasContainers = new ArrayList<QueryPipe.HasContainer>();
         final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
         String[] labels = new String[]{};
-        Query.Direction direction = Query.Direction.BOTH;
+        Direction direction = Direction.BOTH;
         Class elementClass = Edge.class;
 
         List<Pipe> removedPipes = removeEdgeQueryOptimizationPipes(pipeline);
@@ -64,11 +65,11 @@ public class GremlinFluentUtility extends FluentUtility {
             } else if (pipe instanceof AbstractEdgesPipe) {
                 labels = ((AbstractEdgesPipe) pipe).getLabels();
                 if (pipe instanceof OutEdgesPipe) {
-                    direction = Query.Direction.OUT;
+                    direction = Direction.OUT;
                 } else if (pipe instanceof InEdgesPipe) {
-                    direction = Query.Direction.IN;
+                    direction = Direction.IN;
                 } else if (pipe instanceof BothEdgesPipe) {
-                    direction = Query.Direction.BOTH;
+                    direction = Direction.BOTH;
                 } else {
                     throw new IllegalStateException("The only supported AbstractEdgesPipe are InEdgesPipes, OutEdgesPipe, and BothEdgesPipe: " + pipe.getClass());
                 }

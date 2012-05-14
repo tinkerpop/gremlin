@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 
 /**
@@ -18,7 +19,7 @@ public class InEdgesPipe extends AbstractEdgesPipe {
             if (this.nextEnds.hasNext()) {
                 return this.nextEnds.next();
             } else {
-                this.nextEnds = this.starts.next().getInEdges(this.labels).iterator();
+                this.nextEnds = this.starts.next().getEdges(Direction.IN,  this.labels).iterator();
             }
         }
     }

@@ -1,8 +1,8 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.util.iterators.MultiIterator;
 
 /**
  * BothPipe will emit those vertices adjacent to the incoming and outgoing edges of the incoming vertex.
@@ -32,7 +32,7 @@ public class BothPipe extends AbstractEdgesVerticesPipe {
                 }
             } else {
                 this.startVertex = this.starts.next();
-                this.nextEnds = new MultiIterator<Edge>(this.startVertex.getInEdges(this.labels).iterator(), this.startVertex.getOutEdges(this.labels).iterator());
+                this.nextEnds = this.startVertex.getEdges(Direction.BOTH, this.labels).iterator();
             }
         }
     }

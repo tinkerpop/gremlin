@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -43,7 +44,7 @@ public class PropertyPipeTest extends TestCase {
         Pipe evp = new InVertexPipe();
         Pipe<Vertex, String> pp = new PropertyPipe<Vertex, String>("name");
         Pipeline<Edge, String> pipeline = new Pipeline<Edge, String>(evp, pp);
-        pipeline.setStarts(marko.getOutEdges().iterator());
+        pipeline.setStarts(marko.getEdges(Direction.OUT).iterator());
         assertTrue(pipeline.hasNext());
         int counter = 0;
         while (pipeline.hasNext()) {
