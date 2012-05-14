@@ -35,4 +35,17 @@ public class PropertyFilterPipe<S extends Element, T> extends AbstractPipe<S, S>
     public String toString() {
         return PipeHelper.makePipeString(this, this.key, this.filter, this.value);
     }
+
+    public String getKey() {
+        return this.key;
+    }
+
+    public T getValue() {
+        return this.value;
+    }
+
+    public Filter getFilter() {
+        return this.filter;
+    }
+
 }

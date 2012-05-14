@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
+import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
@@ -83,13 +84,20 @@ import java.util.Map;
  */
 public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFluentPipeline<S, E> {
 
+    private boolean queryOptimization = true;
+
     public GremlinPipeline() {
         super();
     }
 
-    public GremlinPipeline(final Object starts) {
+    public GremlinPipeline(final Object starts, final boolean queryOptimization) {
         super(new StartPipe(starts));
+        this.queryOptimization = queryOptimization;
         FluentUtility.setStarts(this, starts);
+    }
+
+    public GremlinPipeline(final Object starts) {
+        this(starts, true);
     }
 
     public <T> GremlinPipeline<S, T> add(final Pipe<?, T> pipe) {
@@ -139,6 +147,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
+        return this.add(new IntervalFilterPipe<Element>(key, startValue, endValue));
+    }
+
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
         return this.add(new BothEdgesPipe(labels));
     }
@@ -148,7 +160,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Vertex> bothV() {
-        return this.add(new BothVerticesPipe());
+        if (this.queryOptimization)
+            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new BothVerticesPipe()));
+        else
+            return this.add(new BothVerticesPipe());
     }
 
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
@@ -172,7 +187,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Vertex> inV() {
-        return this.add(new InVertexPipe());
+        if (this.queryOptimization)
+            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new InVertexPipe()));
+        else
+            return this.add(new InVertexPipe());
     }
 
     public GremlinPipeline<S, String> label() {
@@ -188,7 +206,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Vertex> outV() {
-        return this.add(new OutVertexPipe());
+        if (this.queryOptimization)
+            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new OutVertexPipe()));
+        else
+            return this.add(new OutVertexPipe());
     }
 
     public GremlinPipeline<S, Map<String, Object>> map() {
@@ -1097,6 +1118,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, E> enablePath() {
         this.enablePath(true);
+        return this;
+    }
+
+    /**
+     * When possible, Gremlin takes advantage of certain sequences of pipes in order to make a more concise, and generally more efficient expression.
+     * This method will turn off query optimization from this stage in the pipeline on.
+     *
+     * @return The GremlinPipeline with the optimization turned off
+     */
+    public GremlinPipeline<S, E> disableOptimize() {
+        this.queryOptimization = false;
         return this;
     }
 }

@@ -61,6 +61,18 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value);
 
     /**
+     * Add an IntervalFilterPipe to the end of the Pipeline.
+     * If the incoming element has a value that is within the interval value range specified, then the element is allows to pass.
+     * If hte incoming element's value for the key is null, the element is filtered.
+     *
+     * @param key        the property key to check
+     * @param startValue the start of the interval (inclusive)
+     * @param endValue   the end of the interval (exclusive)
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue);
+
+    /**
      * Add a BothEdgesPipe to the end of the Pipeline.
      * Emit both incoming and outgoing edges for the incoming vertex.
      *

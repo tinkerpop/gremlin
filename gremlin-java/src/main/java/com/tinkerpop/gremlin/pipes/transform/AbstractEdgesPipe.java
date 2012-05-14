@@ -23,6 +23,10 @@ public abstract class AbstractEdgesPipe extends AbstractPipe<Vertex, Edge> {
         return PipeHelper.makePipeString(this, this.labels);
     }
 
+    public String[] getLabels() {
+        return this.labels;
+    }
+
     public void reset() {
         this.nextEnds = PipeHelper.emptyIterator();
         super.reset();
