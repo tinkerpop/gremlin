@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -36,7 +37,7 @@ public class BothEdgesPipeTest extends TestCase {
         while (pipe.hasNext()) {
             counter++;
             Edge edge = pipe.next();
-            assertTrue(edge.getInVertex().getProperty("name").equals("josh") || edge.getInVertex().getProperty("name").equals("vadas"));
+            assertTrue(edge.getVertex(Direction.IN).getProperty("name").equals("josh") || edge.getVertex(Direction.IN).getProperty("name").equals("vadas"));
         }
         assertEquals(counter, 2);
     }

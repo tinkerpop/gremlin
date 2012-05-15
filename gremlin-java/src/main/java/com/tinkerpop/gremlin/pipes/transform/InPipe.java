@@ -20,7 +20,7 @@ public class InPipe extends AbstractEdgesVerticesPipe {
                 this.nextEnds = this.starts.next().getEdges(Direction.IN, this.labels).iterator();
             } else {
                 if (this.nextEnds.hasNext()) {
-                    return this.nextEnds.next().getOutVertex();
+                    return this.nextEnds.next().getVertex(Direction.OUT);
                 } else {
                     this.nextEnds = null;
                 }

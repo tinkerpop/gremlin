@@ -21,8 +21,8 @@ public class BothPipe extends AbstractEdgesVerticesPipe {
         while (true) {
             if (null != this.nextEnds && this.nextEnds.hasNext()) {
                 final Edge edge = this.nextEnds.next();
-                final Vertex tempOut = edge.getOutVertex();
-                final Vertex tempIn = edge.getInVertex();
+                final Vertex tempOut = edge.getVertex(Direction.OUT);
+                final Vertex tempIn = edge.getVertex(Direction.IN);
                 if (tempOut.equals(tempIn)) {
                     return tempIn;
                 } else if (tempOut.equals(this.startVertex)) {

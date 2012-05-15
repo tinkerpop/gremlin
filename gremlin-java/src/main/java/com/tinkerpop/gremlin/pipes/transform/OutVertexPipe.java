@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
@@ -11,6 +12,6 @@ import com.tinkerpop.pipes.AbstractPipe;
  */
 public class OutVertexPipe extends AbstractPipe<Edge, Vertex> {
     protected Vertex processNextStart() {
-        return this.starts.next().getOutVertex();
+        return this.starts.next().getVertex(Direction.OUT);
     }
 }

@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -25,8 +26,8 @@ public class OutEdgesPipeTest extends TestCase {
         int counter = 0;
         while (pipe.hasNext()) {
             Edge e = pipe.next();
-            assertEquals(e.getOutVertex(), marko);
-            assertTrue(e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("3") || e.getInVertex().getId().equals("4"));
+            assertEquals(e.getVertex(Direction.OUT), marko);
+            assertTrue(e.getVertex(Direction.IN).getId().equals("2") || e.getVertex(Direction.IN).getId().equals("3") || e.getVertex(Direction.IN).getId().equals("4"));
             counter++;
         }
         assertEquals(counter, 3);
@@ -44,8 +45,8 @@ public class OutEdgesPipeTest extends TestCase {
         counter = 0;
         while (pipe.hasNext()) {
             Edge e = pipe.next();
-            assertEquals(e.getOutVertex(), josh);
-            assertTrue(e.getInVertex().getId().equals("5") || e.getInVertex().getId().equals("3"));
+            assertEquals(e.getVertex(Direction.OUT), josh);
+            assertTrue(e.getVertex(Direction.IN).getId().equals("5") || e.getVertex(Direction.IN).getId().equals("3"));
             counter++;
         }
         assertEquals(counter, 2);
@@ -79,21 +80,21 @@ public class OutEdgesPipeTest extends TestCase {
         OutEdgesPipe oep = new OutEdgesPipe();
         oep.setStarts(Arrays.asList(josh).iterator());
         assertTrue(oep.hasNext());
-        assertEquals("5", oep.next().getInVertex().getId());
-        assertEquals("3", oep.next().getInVertex().getId());
+        assertEquals("5", oep.next().getVertex(Direction.IN).getId());
+        assertEquals("3", oep.next().getVertex(Direction.IN).getId());
         assertFalse(oep.hasNext());
         oep.setStarts(Arrays.asList(josh).iterator());
-        assertEquals("5", oep.next().getInVertex().getId());
+        assertEquals("5", oep.next().getVertex(Direction.IN).getId());
         oep.setStarts(Arrays.asList(josh).iterator());
         // reset is only needed if iteration is abandoned partway through the edge list.
         oep.reset();
-        assertEquals("5", oep.next().getInVertex().getId());
-        assertEquals("3", oep.next().getInVertex().getId());
+        assertEquals("5", oep.next().getVertex(Direction.IN).getId());
+        assertEquals("3", oep.next().getVertex(Direction.IN).getId());
         assertFalse(oep.hasNext());
         oep.setStarts(Arrays.asList(josh).iterator());
         // reset does not have a negative effect in a normal case.
         oep.reset();
-        assertEquals("5", oep.next().getInVertex().getId());
+        assertEquals("5", oep.next().getVertex(Direction.IN).getId());
     }
 
     public void testBigGraphWithNoEdges() {
@@ -121,8 +122,8 @@ public class OutEdgesPipeTest extends TestCase {
         int counter = 0;
         while (pipe.hasNext()) {
             Edge e = pipe.next();
-            assertEquals(e.getOutVertex(), marko);
-            assertTrue(e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("4"));
+            assertEquals(e.getVertex(Direction.OUT), marko);
+            assertTrue(e.getVertex(Direction.IN).getId().equals("2") || e.getVertex(Direction.IN).getId().equals("4"));
             counter++;
         }
         assertEquals(counter, 2);

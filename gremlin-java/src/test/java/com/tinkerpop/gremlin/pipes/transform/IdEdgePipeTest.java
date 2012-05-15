@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
@@ -27,7 +28,7 @@ public class IdEdgePipeTest extends TestCase {
                 assertEquals(edge.getProperty("weight"), 0.4f);
             } else if (counter == 1) {
                 assertEquals(edge.getId(), "11");
-                assertEquals(edge.getInVertex(), graph.getVertex("3"));
+                assertEquals(edge.getVertex(Direction.IN), graph.getVertex("3"));
             } else if (counter == 2) {
                 assertEquals(edge.getId(), "12");
                 assertEquals(edge.getLabel(), "created");

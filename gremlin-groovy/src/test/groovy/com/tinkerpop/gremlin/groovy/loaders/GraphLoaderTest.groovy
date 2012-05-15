@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
+import com.tinkerpop.blueprints.Direction
 import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Graph
 import com.tinkerpop.blueprints.Vertex
@@ -113,27 +114,27 @@ class GraphLoaderTest extends TestCase {
         assertEquals(v2.getPropertyKeys().size(), 0);
 
         Edge e0 = g.addEdge(null, v0, v1, 'knows', [weight: 0.5f]);
-        assertEquals(e0.getOutVertex(), v0);
-        assertEquals(e0.getInVertex(), v1);
+        assertEquals(e0.getVertex(Direction.OUT), v0);
+        assertEquals(e0.getVertex(Direction.IN), v1);
         assertEquals(e0.getLabel(), 'knows');
         assertEquals(e0.getProperty('weight'), 0.5f);
 
         Edge e1 = g.addEdge(null, v0, v2, 'hates', [degree: 'alot']);
-        assertEquals(e1.getOutVertex(), v0);
-        assertEquals(e1.getInVertex(), v2);
+        assertEquals(e1.getVertex(Direction.OUT), v0);
+        assertEquals(e1.getVertex(Direction.IN), v2);
         assertEquals(e1.getLabel(), 'hates');
         assertNull(e1.getProperty('weight'));
         assertEquals(e1.getProperty('degree'), 'alot');
 
         Edge e2 = g.addEdge(v1, v2, 'feels_nothing');
-        assertEquals(e2.getOutVertex(), v1);
-        assertEquals(e2.getInVertex(), v2);
+        assertEquals(e2.getVertex(Direction.OUT), v1);
+        assertEquals(e2.getVertex(Direction.IN), v2);
         assertEquals(e2.getLabel(), 'feels_nothing');
         assertEquals(e2.getPropertyKeys().size(), 0);
 
         Edge e3 = g.addEdge(null, v2, v0, 'blah');
-        assertEquals(e3.getOutVertex(), v2);
-        assertEquals(e3.getInVertex(), v0);
+        assertEquals(e3.getVertex(Direction.OUT), v2);
+        assertEquals(e3.getVertex(Direction.IN), v0);
         assertEquals(e3.getLabel(), 'blah');
         assertEquals(e3.getPropertyKeys().size(), 0);
     }

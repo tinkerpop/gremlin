@@ -22,8 +22,8 @@ public class LabelFilterPipeTest extends TestCase {
         int counter = 0;
         while (lfp.hasNext()) {
             Edge e = lfp.next();
-            assertEquals(e.getOutVertex(), marko);
-            assertTrue(e.getInVertex().getId().equals("2") || e.getInVertex().getId().equals("4"));
+            assertEquals(e.getVertex(Direction.OUT), marko);
+            assertTrue(e.getVertex(Direction.IN).getId().equals("2") || e.getVertex(Direction.IN).getId().equals("4"));
             counter++;
         }
         assertEquals(counter, 2);
@@ -34,8 +34,8 @@ public class LabelFilterPipeTest extends TestCase {
         counter = 0;
         while (lfp.hasNext()) {
             Edge e = lfp.next();
-            assertEquals(e.getOutVertex(), marko);
-            assertTrue(e.getInVertex().getId().equals("3"));
+            assertEquals(e.getVertex(Direction.OUT), marko);
+            assertTrue(e.getVertex(Direction.IN).getId().equals("3"));
             counter++;
         }
         assertEquals(counter, 1);
