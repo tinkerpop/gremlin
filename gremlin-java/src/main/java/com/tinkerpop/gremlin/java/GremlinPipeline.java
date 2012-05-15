@@ -79,15 +79,15 @@ import java.util.Map;
  */
 public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFluentPipeline<S, E> {
 
-    private boolean queryOptimization = true;
+    private boolean doQueryOptimization = true;
 
     public GremlinPipeline() {
         super();
     }
 
-    public GremlinPipeline(final Object starts, final boolean queryOptimization) {
+    public GremlinPipeline(final Object starts, final boolean doQueryOptimization) {
         super(new StartPipe(starts));
-        this.queryOptimization = queryOptimization;
+        this.doQueryOptimization = doQueryOptimization;
         FluentUtility.setStarts(this, starts);
     }
 
@@ -155,7 +155,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Vertex> bothV() {
-        if (this.queryOptimization)
+        if (this.doQueryOptimization)
             return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new EdgesVerticesPipe(Direction.BOTH)));
         else
             return this.add(new EdgesVerticesPipe(Direction.BOTH));
@@ -182,7 +182,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Vertex> inV() {
-        if (this.queryOptimization)
+        if (this.doQueryOptimization)
             return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new EdgesVerticesPipe(Direction.IN)));
         else
             return this.add(new EdgesVerticesPipe(Direction.IN));
@@ -201,7 +201,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Vertex> outV() {
-        if (this.queryOptimization)
+        if (this.doQueryOptimization)
             return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new EdgesVerticesPipe(Direction.OUT)));
         else
             return this.add(new EdgesVerticesPipe(Direction.OUT));
@@ -1118,12 +1118,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     /**
      * When possible, Gremlin takes advantage of certain sequences of pipes in order to make a more concise, and generally more efficient expression.
-     * This method will turn off query optimization from this stage in the pipeline on.
+     * This method will turn on and off query optimization from this stage in the pipeline on.
      *
      * @return The GremlinPipeline with the optimization turned off
      */
-    public GremlinPipeline<S, E> disableOptimize() {
-        this.queryOptimization = false;
+    public GremlinPipeline<S, E> optimize(final boolean optimize) {
+        this.doQueryOptimization = optimize;
         return this;
     }
 }

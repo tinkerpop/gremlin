@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -19,10 +20,6 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> {
     public VerticesVerticesPipe(final Direction direction, final String... labels) {
         this.direction = direction;
         this.labels = labels;
-    }
-
-    public String[] getLabels() {
-        return this.labels;
     }
 
     public void reset() {
@@ -40,4 +37,9 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> {
             }
         }
     }
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, direction.name().toLowerCase(), Arrays.asList(labels));
+    }
+
 }

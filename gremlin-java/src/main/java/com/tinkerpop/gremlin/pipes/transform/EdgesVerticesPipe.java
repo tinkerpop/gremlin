@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -37,6 +38,10 @@ public class EdgesVerticesPipe extends AbstractPipe<Edge, Vertex> {
             }
         }
 
+    }
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, direction.name().toLowerCase());
     }
 
 }
