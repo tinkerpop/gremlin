@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.java;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
@@ -9,21 +10,15 @@ import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
+import com.tinkerpop.gremlin.pipes.transform.EdgesVerticesPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdEdgePipe;
 import com.tinkerpop.gremlin.pipes.transform.IdPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.InEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.InPipe;
-import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.LabelPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
@@ -152,18 +147,18 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
-        return this.add(new BothEdgesPipe(labels));
+        return this.add(new VerticesEdgesPipe(Direction.BOTH, labels));
     }
 
     public GremlinPipeline<S, Vertex> both(final String... labels) {
-        return this.add(new BothPipe(labels));
+        return this.add(new VerticesVerticesPipe(Direction.BOTH, labels));
     }
 
     public GremlinPipeline<S, Vertex> bothV() {
         if (this.queryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new BothVerticesPipe()));
+            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new EdgesVerticesPipe(Direction.BOTH)));
         else
-            return this.add(new BothVerticesPipe());
+            return this.add(new EdgesVerticesPipe(Direction.BOTH));
     }
 
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
@@ -179,18 +174,18 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Edge> inE(final String... labels) {
-        return this.add(new InEdgesPipe(labels));
+        return this.add(new VerticesEdgesPipe(Direction.IN, labels));
     }
 
     public GremlinPipeline<S, Vertex> in(final String... labels) {
-        return this.add(new InPipe(labels));
+        return this.add(new VerticesVerticesPipe(Direction.IN, labels));
     }
 
     public GremlinPipeline<S, Vertex> inV() {
         if (this.queryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new InVertexPipe()));
+            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new EdgesVerticesPipe(Direction.IN)));
         else
-            return this.add(new InVertexPipe());
+            return this.add(new EdgesVerticesPipe(Direction.IN));
     }
 
     public GremlinPipeline<S, String> label() {
@@ -198,18 +193,18 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, Edge> outE(final String... labels) {
-        return this.add(new OutEdgesPipe(labels));
+        return this.add(new VerticesEdgesPipe(Direction.OUT, labels));
     }
 
     public GremlinPipeline<S, Vertex> out(final String... labels) {
-        return this.add(new OutPipe(labels));
+        return this.add(new VerticesVerticesPipe(Direction.OUT, labels));
     }
 
     public GremlinPipeline<S, Vertex> outV() {
         if (this.queryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new OutVertexPipe()));
+            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new EdgesVerticesPipe(Direction.OUT)));
         else
-            return this.add(new OutVertexPipe());
+            return this.add(new EdgesVerticesPipe(Direction.OUT));
     }
 
     public GremlinPipeline<S, Map<String, Object>> map() {

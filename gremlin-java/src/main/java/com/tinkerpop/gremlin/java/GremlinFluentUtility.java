@@ -6,14 +6,9 @@ import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
-import com.tinkerpop.gremlin.pipes.transform.AbstractEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
-import com.tinkerpop.gremlin.pipes.transform.InEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
+import com.tinkerpop.gremlin.pipes.transform.EdgesVerticesPipe;
 import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
@@ -32,10 +27,10 @@ public class GremlinFluentUtility extends FluentUtility {
         int pipelineSize = pipeline.size();
         for (int i = pipelineSize - 1; i >= 0; i--) {
             final Pipe pipe = pipeline.get(i);
-            if (pipe instanceof OutEdgesPipe || pipe instanceof InEdgesPipe || pipe instanceof BothEdgesPipe) {
+            if (pipe instanceof VerticesEdgesPipe) {
                 numberedStep = pipelineSize - i;
                 break;
-            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof InVertexPipe || pipe instanceof OutVertexPipe || pipe instanceof BothVerticesPipe) {
+            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof EdgesVerticesPipe) {
                 continue;
             } else {
                 break;
@@ -62,18 +57,10 @@ public class GremlinFluentUtility extends FluentUtility {
             } else if (pipe instanceof IntervalFilterPipe) {
                 final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                 intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
-            } else if (pipe instanceof AbstractEdgesPipe) {
-                labels = ((AbstractEdgesPipe) pipe).getLabels();
-                if (pipe instanceof OutEdgesPipe) {
-                    direction = Direction.OUT;
-                } else if (pipe instanceof InEdgesPipe) {
-                    direction = Direction.IN;
-                } else if (pipe instanceof BothEdgesPipe) {
-                    direction = Direction.BOTH;
-                } else {
-                    throw new IllegalStateException("The only supported AbstractEdgesPipe are InEdgesPipes, OutEdgesPipe, and BothEdgesPipe: " + pipe.getClass());
-                }
-            } else if (pipe instanceof InVertexPipe || pipe instanceof OutVertexPipe || pipe instanceof BothVerticesPipe) {
+            } else if (pipe instanceof VerticesEdgesPipe) {
+                labels = ((VerticesEdgesPipe) pipe).getLabels();
+                direction = ((VerticesEdgesPipe) pipe).getDirection();
+            } else if (pipe instanceof EdgesVerticesPipe) {
                 elementClass = Vertex.class;
             }
         }

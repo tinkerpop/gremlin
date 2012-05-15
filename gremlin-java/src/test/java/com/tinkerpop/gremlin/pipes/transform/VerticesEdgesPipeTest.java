@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.util.iterators.SingleIterator;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -15,12 +16,55 @@ import java.util.NoSuchElementException;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class OutEdgesPipeTest extends TestCase {
+public class VerticesEdgesPipeTest extends TestCase {
+
+    public void testBothEdges() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex josh = graph.getVertex("4");
+        VerticesEdgesPipe pipe = new VerticesEdgesPipe(Direction.BOTH);
+        pipe.setStarts(new SingleIterator<Vertex>(josh));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            Edge edge = pipe.next();
+            assertTrue(edge.getId().equals("8") || edge.getId().equals("10") || edge.getId().equals("11"));
+        }
+        assertEquals(counter, 3);
+    }
+
+    public void testBothEdgesWithLabels() {
+
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = graph.getVertex("1");
+        VerticesEdgesPipe pipe = new VerticesEdgesPipe(Direction.BOTH, "knows");
+        pipe.setStarts(new SingleIterator<Vertex>(marko));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            Edge edge = pipe.next();
+            assertTrue(edge.getVertex(Direction.IN).getProperty("name").equals("josh") || edge.getVertex(Direction.IN).getProperty("name").equals("vadas"));
+        }
+        assertEquals(counter, 2);
+    }
+
+    public void testInEdges() {
+        Graph graph = TinkerGraphFactory.createTinkerGraph();
+        Vertex josh = graph.getVertex("4");
+        VerticesEdgesPipe pipe = new VerticesEdgesPipe(Direction.IN);
+        pipe.setStarts(new SingleIterator<Vertex>(josh));
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            Edge edge = pipe.next();
+            assertEquals(edge.getId(), "8");
+        }
+        assertEquals(counter, 1);
+    }
 
     public void testOutGoingEdges() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        OutEdgesPipe pipe = new OutEdgesPipe();
+        VerticesEdgesPipe pipe = new VerticesEdgesPipe(Direction.OUT);
         pipe.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;
@@ -39,7 +83,7 @@ public class OutEdgesPipeTest extends TestCase {
         }
 
         Vertex josh = graph.getVertex("4");
-        pipe = new OutEdgesPipe();
+        pipe = new VerticesEdgesPipe(Direction.OUT);
         pipe.setStarts(Arrays.asList(josh).iterator());
         assertTrue(pipe.hasNext());
         counter = 0;
@@ -58,7 +102,7 @@ public class OutEdgesPipeTest extends TestCase {
         }
 
         Vertex lop = graph.getVertex("3");
-        pipe = new OutEdgesPipe();
+        pipe = new VerticesEdgesPipe(Direction.OUT);
         pipe.setStarts(Arrays.asList(lop).iterator());
         assertFalse(pipe.hasNext());
         counter = 0;
@@ -77,7 +121,7 @@ public class OutEdgesPipeTest extends TestCase {
     public void testReset() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex josh = graph.getVertex("4");
-        OutEdgesPipe oep = new OutEdgesPipe();
+        VerticesEdgesPipe oep = new VerticesEdgesPipe(Direction.OUT);
         oep.setStarts(Arrays.asList(josh).iterator());
         assertTrue(oep.hasNext());
         assertEquals("5", oep.next().getVertex(Direction.IN).getId());
@@ -103,7 +147,7 @@ public class OutEdgesPipeTest extends TestCase {
         for (int i = 0; i < 10000; i++) {
             graph.addVertex(null);
         }
-        OutEdgesPipe outEdges = new OutEdgesPipe();
+        VerticesEdgesPipe outEdges = new VerticesEdgesPipe(Direction.OUT);
         outEdges.setStarts(graph.getVertices());
         int counter = 0;
         while (outEdges.hasNext()) {
@@ -116,7 +160,7 @@ public class OutEdgesPipeTest extends TestCase {
     public void testLabelFilterEdges() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex(1);
-        Pipe<Vertex, Edge> pipe = new OutEdgesPipe("knows");
+        Pipe<Vertex, Edge> pipe = new VerticesEdgesPipe(Direction.OUT, "knows");
         pipe.setStarts(Arrays.asList(marko).iterator());
         assertTrue(pipe.hasNext());
         int counter = 0;

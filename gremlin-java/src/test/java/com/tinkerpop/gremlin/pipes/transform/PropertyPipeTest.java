@@ -41,7 +41,7 @@ public class PropertyPipeTest extends TestCase {
     public void testMultiProperty() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe evp = new InVertexPipe();
+        Pipe evp = new EdgesVerticesPipe(Direction.IN);
         Pipe<Vertex, String> pp = new PropertyPipe<Vertex, String>("name");
         Pipeline<Edge, String> pipeline = new Pipeline<Edge, String>(evp, pp);
         pipeline.setStarts(marko.getEdges(Direction.OUT).iterator());

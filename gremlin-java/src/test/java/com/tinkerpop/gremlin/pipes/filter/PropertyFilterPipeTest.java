@@ -1,11 +1,12 @@
 package com.tinkerpop.gremlin.pipes.filter;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.gremlin.pipes.transform.EdgesVerticesPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -22,8 +23,8 @@ public class PropertyFilterPipeTest extends TestCase {
     public void testPropertyFilter() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-        Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
+        Pipe<Vertex, Edge> pipe1 = new VerticesEdgesPipe(Direction.OUT);
+        Pipe<Edge, Vertex> pipe2 = new EdgesVerticesPipe(Direction.IN);
         Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", FilterPipe.Filter.EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());
@@ -49,8 +50,8 @@ public class PropertyFilterPipeTest extends TestCase {
     public void testPropertyFilter2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        Pipe<Vertex, Edge> pipe1 = new OutEdgesPipe();
-        Pipe<Edge, Vertex> pipe2 = new InVertexPipe();
+        Pipe<Vertex, Edge> pipe1 = new VerticesEdgesPipe(Direction.OUT);
+        Pipe<Edge, Vertex> pipe2 = new EdgesVerticesPipe(Direction.IN);
         Pipe pipe3 = new PropertyFilterPipe<Vertex, String>("lang", "java", FilterPipe.Filter.NOT_EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(Arrays.asList(pipe1, pipe2, pipe3));
         pipeline.setStarts(Arrays.asList(marko).iterator());

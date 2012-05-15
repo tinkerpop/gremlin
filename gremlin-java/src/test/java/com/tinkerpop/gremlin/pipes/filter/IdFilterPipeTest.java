@@ -1,10 +1,11 @@
 package com.tinkerpop.gremlin.pipes.filter;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.gremlin.pipes.transform.EdgesVerticesPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
@@ -19,8 +20,8 @@ public class IdFilterPipeTest extends TestCase {
     public void testFilterIds1() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        OutEdgesPipe pipe1 = new OutEdgesPipe();
-        InVertexPipe pipe2 = new InVertexPipe();
+        VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
+        EdgesVerticesPipe pipe2 = new EdgesVerticesPipe(Direction.IN);
         IdFilterPipe pipe3 = new IdFilterPipe("3", FilterPipe.Filter.EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
@@ -36,8 +37,8 @@ public class IdFilterPipeTest extends TestCase {
     public void testFilterIds2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        OutEdgesPipe pipe1 = new OutEdgesPipe();
-        InVertexPipe pipe2 = new InVertexPipe();
+        VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
+        EdgesVerticesPipe pipe2 = new EdgesVerticesPipe(Direction.IN);
         IdFilterPipe pipe3 = new IdFilterPipe("3", FilterPipe.Filter.NOT_EQUAL);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));

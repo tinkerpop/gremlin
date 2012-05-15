@@ -1,11 +1,12 @@
 package com.tinkerpop.gremlin.pipes.filter;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
-import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.gremlin.pipes.transform.EdgesVerticesPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 import junit.framework.TestCase;
 
@@ -19,9 +20,9 @@ public class IntervalFilterPipeTest extends TestCase {
     public void testFilterEdgeWeight1() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        OutEdgesPipe pipe1 = new OutEdgesPipe();
+        VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
         IntervalFilterPipe pipe2 = new IntervalFilterPipe<Edge>("weight", 0.5f, 1.01f);
-        InVertexPipe pipe3 = new InVertexPipe();
+        EdgesVerticesPipe pipe3 = new EdgesVerticesPipe(Direction.IN);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
@@ -36,9 +37,9 @@ public class IntervalFilterPipeTest extends TestCase {
     public void testFilterEdgeWeight2() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        OutEdgesPipe pipe1 = new OutEdgesPipe();
+        VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
         IntervalFilterPipe pipe2 = new IntervalFilterPipe<Edge>("weight", 0.1f, 0.5f);
-        InVertexPipe pipe3 = new InVertexPipe();
+        EdgesVerticesPipe pipe3 = new EdgesVerticesPipe(Direction.IN);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
@@ -53,9 +54,9 @@ public class IntervalFilterPipeTest extends TestCase {
     public void testFilterEdgeWeight3() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         Vertex marko = graph.getVertex("1");
-        OutEdgesPipe pipe1 = new OutEdgesPipe();
+        VerticesEdgesPipe pipe1 = new VerticesEdgesPipe(Direction.OUT);
         IntervalFilterPipe pipe2 = new IntervalFilterPipe<Edge>("weight", -0.1f, 0.1f);
-        InVertexPipe pipe3 = new InVertexPipe();
+        EdgesVerticesPipe pipe3 = new EdgesVerticesPipe(Direction.IN);
         Pipeline<Vertex, Vertex> pipeline = new Pipeline<Vertex, Vertex>(pipe1, pipe2, pipe3);
         pipeline.setStarts(Arrays.asList(marko));
         int counter = 0;
