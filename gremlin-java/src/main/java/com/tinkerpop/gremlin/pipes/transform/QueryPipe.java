@@ -47,7 +47,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     }
 
     public String toString() {
-        final String extra = "has:" + (this.hasContainers.size() > 0) + ",intervals:" + (this.intervalContainers.size() > 0);
+        final String extra = "has:" + (this.hasContainers.size() > 0) + ",interval:" + (this.intervalContainers.size() > 0);
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 
