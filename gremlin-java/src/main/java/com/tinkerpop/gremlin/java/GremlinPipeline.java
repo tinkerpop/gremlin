@@ -111,7 +111,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object value) {
-        FilterPipe.Filter filter = Tokens.mapFilter(comparison);
+        final FilterPipe.Filter filter = Tokens.mapFilter(comparison);
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, filter));
         } else if (key.equals(Tokens.LABEL)) {
@@ -132,7 +132,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value) {
-        FilterPipe.Filter filter = Tokens.mapFlipFilter(comparison);
+        final FilterPipe.Filter filter = Tokens.mapFlipFilter(comparison);
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, filter));
         } else if (key.equals(Tokens.LABEL)) {

@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * QueryPipe makes use of the Vertex.query() method in Blueprints which allows for intelligent edge look ups from the underlying graph.
  * Note that QueryPipe is automatically constructed by a GremlinPipeline when a pattern of the following is seen:
- * <p>outE(x).has(x).interval(x).inV()</p>
- * The final inV() can be either inV(), outV(), or bothV().
+ * <p>outE(x).has(x).interval(x).xV()</p>
+ * The final xV() can be either inV(), outV(), or bothV().
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -47,7 +47,8 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     }
 
     public String toString() {
-        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(labels), elementClass.getSimpleName().toLowerCase());
+        final String extra = "has:" + (this.hasContainers.size() > 0) + ",intervals:" + (this.intervalContainers.size() > 0);
+        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 
     public E processNextStart() {
