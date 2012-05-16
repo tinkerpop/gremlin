@@ -43,61 +43,20 @@ class ObjectLoader {
 
         }
 
-        Table.metaClass.unique = {
-            final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Row row: delegate.iterator().unique()) {
-                temp.addRow(row);
-            }
-            return temp;
-        }
-
-
         Table.metaClass.unique = {final Closure closure ->
-            final Table temp = ObjectLoader.cloneTable((Table) delegate);
+            final Table temp = Table.cloneTableStructure((Table) delegate);
             for (final Row row: delegate.iterator().unique(closure)) {
                 temp.addRow(row);
             }
             return temp;
         }
 
-        Table.metaClass.unique = {final Comparator comparator ->
-            final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Row row: delegate.iterator().unique(comparator)) {
-                temp.addRow(row);
-            }
-            return temp;
-        }
-
-        Table.metaClass.sort = {
-            final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Row row: ((Table) delegate).iterator().sort()) {
-                temp.addRow(row);
-            }
-            return temp;
-        }
-
         Table.metaClass.sort = {final Closure closure ->
-            final Table temp = ObjectLoader.cloneTable((Table) delegate);
+            final Table temp = Table.cloneTableStructure((Table) delegate);
             for (final Row row: delegate.iterator().sort(closure)) {
                 temp.addRow(row);
             }
             return temp;
         }
-
-        Table.metaClass.sort = {final Comparator comparator ->
-            final Table temp = ObjectLoader.cloneTable((Table) delegate);
-            for (final Row row: delegate.iterator().sort(comparator)) {
-                temp.addRow(row);
-            }
-            return temp;
-        }
-
-    }
-
-    private static Table cloneTable(final Table table) {
-        if (table.getColumnNames().size() > 0)
-            return new Table(table.columnNames.toArray(new String[table.columnNames.size()]));
-        else
-            return new Table();
     }
 }
