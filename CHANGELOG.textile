@@ -23,12 +23,9 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 * Added @tree@-step based on the @TreePipe@ to support representing the branch of a traversal
 * Added @order@-step based on the @OrderPipe@ to support in-stream ordering
 * Removed @VerticesPipe@ and @EdgesPipes@ as should be called via @getVertices()@ and @getEdges()@ in @GremlinPipeline@ constructor
-* Removed @OutPipe@, @InPipe@, and @BothPipe@ and replaced with @VerticesVerticesPipe@
-* Removed @OutEdgesPipe@, @InEdgesPipe@, and @BothEdgesPipe@ and replaced with @VerticesEdgesPipe@
-* Removed @OutVertexPipe@, @InVertexPipe@, and @BothVerticesPipe@ and replaced with @EdgesVerticesPipe@
 * Added @QueryPipe@ support automated optimizations around @Vertex.query()@
 * Added @GremlinPipeline.enablePath()@ to allow for non-automated path enabling
-* Provided @GremlinPipeline.optimize(boolean)@ to automatically optimize the pipeline
+* Provided @GremlinPipeline.optimize(boolean)@ to control whether the pipeline is query optimized
 * Gremlin-Groovy
 ** Renamed @paths@-step to simply @path@ as now in Pipes the method is called @Pipe.getCurrentPath()@
 
@@ -227,7 +224,7 @@ h3. Version 1.0 (Gremlin -- May 8, 2011)
 * @SailLoader@ is loaded on startup (no longer required by developer)
 * Faster @Gremlin.compile()@ using @GremlinScriptEngine@
 * Renamed @andf@, @orf@, and @propf@ to @andFilter@, @orFilter@, and @propFilter@
-* Moved to the more optimal vertex/edge incident Pipes
+* Moved to the more optimal vertex/edge incidence Pipes
 * Renamed @unique@ to @uniqueObject@
 * Updated Gremlin-specific pipes to support @reset()@ API
 
