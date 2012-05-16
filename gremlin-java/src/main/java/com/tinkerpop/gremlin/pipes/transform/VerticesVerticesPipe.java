@@ -13,8 +13,8 @@ import java.util.Iterator;
  */
 public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> {
 
-    private Direction direction;
-    private String[] labels;
+    protected Direction direction;
+    protected String[] labels;
     protected Iterator<Vertex> nextEnds = PipeHelper.emptyIterator();
 
     public VerticesVerticesPipe(final Direction direction, final String... labels) {

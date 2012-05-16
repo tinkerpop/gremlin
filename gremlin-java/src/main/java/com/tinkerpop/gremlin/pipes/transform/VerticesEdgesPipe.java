@@ -14,8 +14,8 @@ import java.util.Iterator;
  */
 public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> {
 
-    private Direction direction;
-    private String[] labels;
+    protected Direction direction;
+    protected String[] labels;
     protected Iterator<Edge> nextEnds = PipeHelper.emptyIterator();
 
     public VerticesEdgesPipe(final Direction direction, final String... labels) {

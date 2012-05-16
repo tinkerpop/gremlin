@@ -11,8 +11,8 @@ import com.tinkerpop.pipes.util.PipeHelper;
  */
 public class EdgesVerticesPipe extends AbstractPipe<Edge, Vertex> {
 
-    private Direction direction;
-    private Vertex nextVertex = null;
+    protected Direction direction;
+    protected Vertex nextVertex = null;
 
     public EdgesVerticesPipe(final Direction direction) {
         this.direction = direction;
