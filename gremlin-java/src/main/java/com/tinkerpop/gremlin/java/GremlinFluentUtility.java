@@ -30,7 +30,7 @@ public class GremlinFluentUtility extends FluentUtility {
             if (pipe instanceof VerticesEdgesPipe) {
                 numberedStep = pipelineSize - i;
                 break;
-            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof EdgesVerticesPipe) {
+            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof EdgesVerticesPipe) {
                 continue;
             } else {
                 break;
