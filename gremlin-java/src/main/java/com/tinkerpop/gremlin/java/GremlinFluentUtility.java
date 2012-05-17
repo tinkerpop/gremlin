@@ -3,7 +3,6 @@ package com.tinkerpop.gremlin.java;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Query;
-import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
@@ -25,18 +24,19 @@ public class GremlinFluentUtility extends FluentUtility {
     public static List<Pipe> removeEdgeQueryOptimizationPipes(final GremlinPipeline pipeline) {
         int numberedStep = -1;
         int pipelineSize = pipeline.size();
+        boolean filtersSeen = false;
         for (int i = pipelineSize - 1; i >= 0; i--) {
             final Pipe pipe = pipeline.get(i);
             if (pipe instanceof VerticesEdgesPipe) {
                 numberedStep = pipelineSize - i;
                 break;
-            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof IdentityPipe) {
-                continue;
-            } else {
+            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe) {
+                filtersSeen = true;
+            } else if (!(pipe instanceof IdentityPipe)) {
                 break;
             }
         }
-        if (numberedStep != -1)
+        if (numberedStep != -1 && filtersSeen)
             return FluentUtility.removePreviousPipes(pipeline, numberedStep);
         else
             return Collections.emptyList();
