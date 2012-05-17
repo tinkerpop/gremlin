@@ -161,9 +161,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Vertex> bothV() {
         if (this.doQueryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new BothVerticesPipe()));
-        else
-            return this.add(new BothVerticesPipe());
+            GremlinFluentUtility.optimizePipelineForVertexQueries(this);
+
+        return this.add(new BothVerticesPipe());
     }
 
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
@@ -188,9 +188,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Vertex> inV() {
         if (this.doQueryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new InVertexPipe()));
-        else
-            return this.add(new InVertexPipe());
+            GremlinFluentUtility.optimizePipelineForVertexQueries(this);
+
+        return this.add(new InVertexPipe());
     }
 
     public GremlinPipeline<S, String> label() {
@@ -207,9 +207,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Vertex> outV() {
         if (this.doQueryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexQueries(this.add(new OutVertexPipe()));
-        else
-            return this.add(new OutVertexPipe());
+            GremlinFluentUtility.optimizePipelineForVertexQueries(this);
+
+        return this.add(new OutVertexPipe());
     }
 
     public GremlinPipeline<S, Map<String, Object>> map() {

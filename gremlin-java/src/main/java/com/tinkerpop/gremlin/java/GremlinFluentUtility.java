@@ -6,11 +6,11 @@ import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
-import com.tinkerpop.gremlin.pipes.transform.EdgesVerticesPipe;
 import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class GremlinFluentUtility extends FluentUtility {
             if (pipe instanceof VerticesEdgesPipe) {
                 numberedStep = pipelineSize - i;
                 break;
-            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof EdgesVerticesPipe) {
+            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof IdentityPipe) {
                 continue;
             } else {
                 break;
@@ -47,9 +47,8 @@ public class GremlinFluentUtility extends FluentUtility {
         final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
         String[] labels = new String[]{};
         Direction direction = Direction.BOTH;
-        Class elementClass = Edge.class;
 
-        List<Pipe> removedPipes = removeEdgeQueryOptimizationPipes(pipeline);
+        final List<Pipe> removedPipes = removeEdgeQueryOptimizationPipes(pipeline);
         for (final Pipe pipe : removedPipes) {
             if (pipe instanceof PropertyFilterPipe) {
                 final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
@@ -60,12 +59,14 @@ public class GremlinFluentUtility extends FluentUtility {
             } else if (pipe instanceof VerticesEdgesPipe) {
                 labels = ((VerticesEdgesPipe) pipe).getLabels();
                 direction = ((VerticesEdgesPipe) pipe).getDirection();
-            } else if (pipe instanceof EdgesVerticesPipe) {
-                elementClass = Vertex.class;
             }
         }
-        if (removedPipes.size() > 0)
-            pipeline.addPipe(new QueryPipe(elementClass, direction, hasContainers, intervalContainers, labels));
+        if (removedPipes.size() > 0) {
+            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, labels));
+            for (int i = 0; i < removedPipes.size() - 1; i++) {
+                pipeline.addPipe(new IdentityPipe());
+            }
+        }
         return pipeline;
     }
 

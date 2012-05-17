@@ -3,7 +3,11 @@ package com.tinkerpop.gremlin.java;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.Tokens;
+import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
+import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
+import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
+import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.util.StartPipe;
 import junit.framework.TestCase;
 
@@ -11,7 +15,6 @@ import junit.framework.TestCase;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class GremlinFluentUtilityTest extends TestCase {
-
 
     public void testBackRemove() {
 
@@ -32,13 +35,59 @@ public class GremlinFluentUtilityTest extends TestCase {
         assertEquals(pipeline.size(), 2);
     }
 
-    public void testTest() {
+    public void testOptimization() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
-        GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", "0.5").inV();
-        assertEquals(pipeline.size(), 2);
+
+        GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).outE().inV();
+        //System.out.println(pipeline);
+        assertEquals(pipeline.size(), 3);
         assertTrue(pipeline.get(0) instanceof StartPipe);
         assertTrue(pipeline.get(1) instanceof QueryPipe);
-        //QueryPipe pipe = (QueryPipe) pipeline.get(1);
+        assertTrue(pipeline.get(2) instanceof InVertexPipe);
+
+        pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", "0.5").inV();
+        //System.out.println(pipeline);
+        assertEquals(pipeline.size(), 4);
+        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof IdentityPipe);
+        assertTrue(pipeline.get(3) instanceof InVertexPipe);
+
+        pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", "0.5").interval("since", 10, 2).inV();
+        //System.out.println(pipeline);
+        assertEquals(pipeline.size(), 5);
+        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof IdentityPipe);
+        assertTrue(pipeline.get(3) instanceof IdentityPipe);
+        assertTrue(pipeline.get(4) instanceof InVertexPipe);
+
+        pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", "0.5").interval("since", 10, 2).outV();
+        //System.out.println(pipeline);
+        assertEquals(pipeline.size(), 5);
+        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof IdentityPipe);
+        assertTrue(pipeline.get(3) instanceof IdentityPipe);
+        assertTrue(pipeline.get(4) instanceof OutVertexPipe);
+
+        pipeline = new GremlinPipeline(graph.getVertex(1)).inE("knows", "created").has("weight", "0.5").interval("since", 10, 2).outV();
+        //System.out.println(pipeline);
+        assertEquals(pipeline.size(), 5);
+        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof IdentityPipe);
+        assertTrue(pipeline.get(3) instanceof IdentityPipe);
+        assertTrue(pipeline.get(4) instanceof OutVertexPipe);
+
+        pipeline = new GremlinPipeline(graph.getVertex(1)).bothE("knows", "created").has("weight", "0.5").interval("since", 10, 2).bothV();
+        //System.out.println(pipeline);
+        assertEquals(pipeline.size(), 5);
+        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof IdentityPipe);
+        assertTrue(pipeline.get(3) instanceof IdentityPipe);
+        assertTrue(pipeline.get(4) instanceof BothVerticesPipe);
     }
 
 }
