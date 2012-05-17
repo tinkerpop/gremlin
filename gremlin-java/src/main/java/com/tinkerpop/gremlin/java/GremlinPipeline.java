@@ -54,6 +54,7 @@ import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.sideeffect.TreePipe;
+import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
@@ -863,8 +864,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param function a transformation to apply to the gathered list
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, List> gather(PipeFunction<List, List> function) {
-        return this.add(new GatherPipe(function));
+    public GremlinPipeline<S, ?> gather(PipeFunction<List, ?> function) {
+        return this.add(new GatherFunctionPipe(function));
     }
 
     /**

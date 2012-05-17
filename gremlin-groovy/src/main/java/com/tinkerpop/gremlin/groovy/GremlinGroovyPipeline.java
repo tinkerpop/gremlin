@@ -42,8 +42,8 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) super.filter(new GroovyPipeFunction<E, Boolean>(closure));
     }
 
-    public GremlinGroovyPipeline<S, List> gather(final Closure closure) {
-        return (GremlinGroovyPipeline<S, List>) super.gather(new GroovyPipeFunction<List, List>(closure));
+    public GremlinGroovyPipeline<S, ?> gather(final Closure closure) {
+        return (GremlinGroovyPipeline<S, ?>) super.gather(new GroovyPipeFunction(closure));
     }
 
     public GremlinGroovyPipeline<S, E> groupBy(final Map<?, List<?>> map, final Closure keyClosure, final Closure valueClosure) {
