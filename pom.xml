@@ -19,7 +19,7 @@
         Gremlin makes use of a path-based syntax to support complex graph traversals.
         This language has application in the areas of graph query, analysis, and manipulation.
     </description>
-    <inceptionYear>2011</inceptionYear>
+    <inceptionYear>2009</inceptionYear>
     <licenses>
         <license>
             <name>BSD 3-Clause</name>
