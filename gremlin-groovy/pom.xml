@@ -129,12 +129,12 @@
             </exclusions>
         </dependency>
         <!-- GROOVY/JAVA CONNECTIVITY -->
-        <dependency>
-            <groupId>org.codehaus.gmaven</groupId>
-            <artifactId>gmaven-plugin</artifactId>
-            <version>1.3</version>
-            <scope>runtime</scope>
-        </dependency>
+            <dependency>
+                <groupId>org.codehaus.gmaven.runtime</groupId>
+                <artifactId>gmaven-runtime-1.8</artifactId>
+                <version>1.4</version>
+                <scope>runtime</scope>
+            </dependency>
         <!-- TESTING -->
         <dependency>
             <groupId>junit</groupId>
@@ -197,7 +197,7 @@
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.3</version>
+                <version>1.4</version>
                 <executions>
                     <execution>
                         <goals>

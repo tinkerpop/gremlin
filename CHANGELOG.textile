@@ -28,6 +28,7 @@ h3. Version 2.0.0 (NOT OFFICIALLY RELEASED YET)
 * Provided @GremlinPipeline.optimize(boolean)@ to control whether the pipeline is query optimized
 * Gremlin-Groovy
 ** Renamed @paths@-step to simply @path@ as now in Pipes the method is called @Pipe.getCurrentPath()@
+** Bumped to support GMaven 1.4
 
 
 h2. Gremlin 1.X
