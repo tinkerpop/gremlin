@@ -33,6 +33,7 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.impls.sail.impls.*");
         imports.add("com.tinkerpop.blueprints.util.*");
         imports.add("com.tinkerpop.blueprints.util.io.*");
+        imports.add("com.tinkerpop.blueprints.util.io.gml.*");
         imports.add("com.tinkerpop.blueprints.util.io.graphml.*");
         imports.add("com.tinkerpop.blueprints.util.io.graphson.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.*");
