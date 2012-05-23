@@ -25,7 +25,7 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.impls.*");
         imports.add("com.tinkerpop.blueprints.impls.tg.*");
         imports.add("com.tinkerpop.blueprints.impls.neo4j.*");
-        imports.add("com.tinkerpop.blueprints.impls.orientdb.*");
+        imports.add("com.tinkerpop.blueprints.impls.orient.*");
         imports.add("com.tinkerpop.blueprints.impls.dex.*");
         imports.add("com.tinkerpop.blueprints.impls.rexster.*");
         imports.add("com.tinkerpop.blueprints.impls.neo4jbatch.*");
@@ -37,6 +37,7 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.util.io.graphson.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.batch.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.batch.cache.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.event.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.event.listener.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.id.*");
