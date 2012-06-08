@@ -24,6 +24,7 @@ import com.tinkerpop.gremlin.pipes.transform.OutPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyPipe;
+import com.tinkerpop.gremlin.pipes.transform.XMLWriterPipe;
 import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
@@ -69,6 +70,7 @@ import com.tinkerpop.pipes.util.FluentUtility;
 import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
+import com.tinkerpop.pipes.util.SortPipe;
 import com.tinkerpop.pipes.util.StartPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
@@ -77,8 +79,11 @@ import com.tinkerpop.pipes.util.structures.Tree;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -148,6 +153,40 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    public GremlinPipeline<S, Vertex> writeNode(XMLStreamWriter aWriter, String anXMLNodeName, String[] somePropertyNames) {
+        return this.add(new XMLWriterPipe(aWriter, anXMLNodeName, somePropertyNames, getXMLPipes(this)));
+    }
+    
+    
+    public GremlinPipeline<S, E> sort(Comparator<S> aComparator) {
+        return this.add(new SortPipe(aComparator));
+    }
+    
+    
+    public GremlinPipeline<S, E> sort(Comparator<S> aComparator, String aScopeName) {
+    	for (AsPipe anAsPipe : FluentUtility.getAsPipes(this)) {
+    		if (anAsPipe.getName().equals(aScopeName)) {
+    	    	return this.add(new SortPipe(aComparator, anAsPipe));
+    		}
+    	}
+    	return null;
+    }
+    
+    
+    public List<XMLWriterPipe> getXMLPipes(final MetaPipe metaPipe) {
+        final List<XMLWriterPipe> xmlPipes = new ArrayList<XMLWriterPipe>();
+        for (final Pipe subPipe : metaPipe.getPipes()) {
+            if (subPipe instanceof XMLWriterPipe) {
+            	xmlPipes.add((XMLWriterPipe) subPipe);
+            }
+            if (subPipe instanceof MetaPipe) {
+            	xmlPipes.addAll(getXMLPipes((MetaPipe) subPipe));
+            }
+        }
+        return xmlPipes;
+    }
+    
+    
     public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
         return this.add(new IntervalFilterPipe<Element>(key, startValue, endValue));
     }
@@ -472,6 +511,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new RangeFilterPipe<E>(low, high));
     }
 
+    public GremlinPipeline<S, E> range(final int low, final int high, String aScopeName) {
+    	for (AsPipe anAsPipe : FluentUtility.getAsPipes(this)) {
+    		if (anAsPipe.getName().equals(aScopeName)) {
+    	    	return this.add(new RangeFilterPipe(low, high, anAsPipe));
+    		}
+    	}
+    	return null;
+    }
+    
     /**
      * Add a RetainFilterPipe to the end of the Pipeline.
      * Will emit the object only if it is in the provided collection.
