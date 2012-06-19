@@ -20,7 +20,7 @@
         <fileSet>
             <directory>target</directory>
             <includes>
-                <include>gremlin-core-*.jar</include>
+                <include>gremlin-java-*.jar</include>
             </includes>
         </fileSet>
     </fileSets>

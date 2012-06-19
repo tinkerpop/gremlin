@@ -4,31 +4,31 @@
     </formats>
     <fileSets>
         <fileSet>
-            <includes>
-                <include>pom.xml</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <fileMode>0775</fileMode>
+            <directory>target/${project.artifactId}-${project.version}-standalone/bin</directory>
+            <outputDirectory>bin</outputDirectory>
             <includes>
-                <include>gremlin-groovy.sh</include>
-                <include>gremlin-groovy.bat</include>
+                <include>*.sh</include>
+                <include>*.bat</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>src</directory>
         </fileSet>
-        <fileSet>
+        <!--<fileSet>
             <directory>target/apidocs</directory>
-        </fileSet>
+            <outputDirectory>doc/javadoc</outputDirectory>
+        </fileSet>-->
         <fileSet>
-            <directory>target/site</directory>
-        </fileSet>
-        <fileSet>
-            <directory>target/${project.artifactId}-${project.version}-standalone</directory>
+            <directory>target/${project.artifactId}-${project.version}-standalone/lib</directory>
+            <outputDirectory>lib</outputDirectory>
         </fileSet>
     </fileSets>
     <files>
+        <file>
+            <source>pom.xml</source>
+            <outputDirectory>src</outputDirectory>
+        </file>
         <file>
             <source>../data/graph-example-1.json</source>
             <outputDirectory>data</outputDirectory>
@@ -47,6 +47,14 @@
         </file>
         <file>
             <source>../LICENSE.txt</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
+        <file>
+            <source>../CHANGELOG.textile</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
+        <file>
+            <source>src/main/bin/README.txt</source>
             <outputDirectory>/</outputDirectory>
         </file>
     </files>
