@@ -21,6 +21,10 @@ h3. Version 2.1.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
+* Optimized the pom.xml for both the parent and child projects
+* Added Travis continuous integration support
+* Restructured the distribution.xml to provide a more "standard" looking directory structure
+
 ==<hr/>==
 
 h3. Version 2.0.0 (May 23, 2012)
