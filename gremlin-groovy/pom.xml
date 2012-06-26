@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.tinkerpop.gremlin</groupId>
             <artifactId>gremlin-java</artifactId>
-            <version>${project.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <!-- PROVIDED DEPENDENCIES -->
         <dependency>

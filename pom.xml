@@ -17,7 +17,7 @@
     <name>Gremlin: A Graph Traversal Language</name>
     <description>Gremlin is a domain specific language for traversing property graphs.
         Gremlin makes use of a path-based syntax to support complex graph traversals.
-        This language has application in the areas of graph query, analysis, and manipulation.
+        Gremlin has application in the areas of graph query, analysis, and manipulation.
     </description>
     <inceptionYear>2009</inceptionYear>
     <licenses>
