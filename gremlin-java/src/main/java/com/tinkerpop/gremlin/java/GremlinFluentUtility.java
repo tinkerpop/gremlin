@@ -9,6 +9,7 @@ import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 
@@ -30,8 +31,11 @@ public class GremlinFluentUtility extends FluentUtility {
             if (pipe instanceof VerticesEdgesPipe) {
                 numberedStep = pipelineSize - i;
                 break;
-            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe) {
-                filtersSeen = true;
+            } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof RangeFilterPipe) {
+                if (pipe instanceof RangeFilterPipe && ((RangeFilterPipe) pipe).getLowRange() != 0)
+                    break;
+                else
+                    filtersSeen = true;
             } else if (!(pipe instanceof IdentityPipe)) {
                 break;
             }
@@ -43,26 +47,31 @@ public class GremlinFluentUtility extends FluentUtility {
     }
 
     public static GremlinPipeline optimizePipelineForVertexQueries(final GremlinPipeline pipeline) {
-        final List<QueryPipe.HasContainer> hasContainers = new ArrayList<QueryPipe.HasContainer>();
-        final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
-        String[] labels = new String[]{};
-        Direction direction = Direction.BOTH;
-
         final List<Pipe> removedPipes = removeEdgeQueryOptimizationPipes(pipeline);
-        for (final Pipe pipe : removedPipes) {
-            if (pipe instanceof PropertyFilterPipe) {
-                final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getValue(), convertFromFilter(temp.getFilter())));
-            } else if (pipe instanceof IntervalFilterPipe) {
-                final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
-                intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
-            } else if (pipe instanceof VerticesEdgesPipe) {
-                labels = ((VerticesEdgesPipe) pipe).getLabels();
-                direction = ((VerticesEdgesPipe) pipe).getDirection();
-            }
-        }
+
         if (removedPipes.size() > 0) {
-            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, labels));
+            final List<QueryPipe.HasContainer> hasContainers = new ArrayList<QueryPipe.HasContainer>();
+            final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
+            long limit = -1l;
+            String[] labels = new String[]{};
+            Direction direction = Direction.BOTH;
+
+            for (final Pipe pipe : removedPipes) {
+                if (pipe instanceof PropertyFilterPipe) {
+                    final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
+                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getValue(), convertFromFilter(temp.getFilter())));
+                } else if (pipe instanceof IntervalFilterPipe) {
+                    final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
+                    intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
+                } else if (pipe instanceof VerticesEdgesPipe) {
+                    labels = ((VerticesEdgesPipe) pipe).getLabels();
+                    direction = ((VerticesEdgesPipe) pipe).getDirection();
+                } else if (pipe instanceof RangeFilterPipe) {
+                    limit = ((RangeFilterPipe) pipe).getHighRange() + 1;
+                }
+            }
+
+            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, limit, labels));
             for (int i = 0; i < removedPipes.size() - 1; i++) {
                 pipeline.addPipe(new IdentityPipe());
             }

@@ -24,6 +24,8 @@ h3. Version 2.1.0 (NOT OFFICIALLY RELEASED YET)
 * Optimized the pom.xml for both the parent and child projects
 * Added Travis continuous integration support
 * Restructured the distribution.xml to provide a more "standard" looking directory structure
+* Provide support for @Query.limit()@ in query optimization
+* Added import static support for @Direction.*@
 
 ==<hr/>==
 

@@ -27,15 +27,28 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     private List<HasContainer> hasContainers;
     private List<IntervalContainer> intervalContainers;
     private final Class<E> elementClass;
+    private final long limit;
 
     private Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
-    public QueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final String... labels) {
+    /**
+     * Construct a new Query pipe that wraps an underlying Blueprints Query object.
+     * Given the optional nature of many of the parameters, note the "wildcard" settings for each parameter.
+     *
+     * @param resultingElementClass this must be either Vertex.class or Edge.class (anything else will throw an IllegalArgumentException)
+     * @param direction             this must be a legal direction representing the direction of the edge.
+     * @param hasContainers         this must be a collection of 'has'-filters (i.e. property filters). Provide an empty list if no such filters are to be applied.
+     * @param intervalContainers    this must be a collection of 'interval'-filters (i.e. property filters within a range). Provide an empty list if no such filters are to be applied.
+     * @param limit                 this must be a long value which limits the number of elements returns. Use -1 if no such limit is desired.
+     * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
+     */
+    public QueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long limit, final String... labels) {
         this.elementClass = resultingElementClass;
         this.direction = direction;
         this.hasContainers = hasContainers;
         this.intervalContainers = intervalContainers;
         this.labels = labels;
+        this.limit = limit;
 
         if (!resultingElementClass.equals(Vertex.class) && !resultingElementClass.equals(Edge.class))
             throw new IllegalArgumentException("The provided element class must be either Vertex or Edge");
@@ -47,7 +60,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     }
 
     public String toString() {
-        final String extra = "has:" + (this.hasContainers.size() > 0) + ",interval:" + (this.intervalContainers.size() > 0);
+        final String extra = "has:" + (this.hasContainers.size() > 0) + ",interval:" + (this.intervalContainers.size() > 0) + ",limit:" + this.limit;
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 
@@ -73,6 +86,9 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
                     for (final IntervalContainer intervalContainer : intervalContainers) {
                         query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
                     }
+                }
+                if (this.limit > -1) {
+                    query = query.limit(this.limit);
                 }
                 if (this.elementClass.equals(Vertex.class))
                     this.currentIterator = (Iterator<E>) query.vertices().iterator();

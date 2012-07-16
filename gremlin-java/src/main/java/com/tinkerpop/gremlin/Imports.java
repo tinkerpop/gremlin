@@ -1,5 +1,8 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.TransactionalGraph;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +23,8 @@ public class Imports {
 
         // blueprints
         imports.add("com.tinkerpop.blueprints.*");
-        imports.add("static com.tinkerpop.blueprints.Direction.*");
-        imports.add("static com.tinkerpop.blueprints.TransactionalGraph.Conclusion.*");
+        imports.add("static " + Direction.class.getName() + ".*");
+        imports.add("static " + TransactionalGraph.Conclusion.class.getName() + ".*");
         imports.add("com.tinkerpop.blueprints.impls.*");
         imports.add("com.tinkerpop.blueprints.impls.tg.*");
         imports.add("com.tinkerpop.blueprints.impls.neo4j.*");
