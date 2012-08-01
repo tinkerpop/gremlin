@@ -19,7 +19,7 @@ Gremlin documentation can be found online at:
 
 --------------- RUNNING GREMLIN ---------------
 
-gremlin$ bin/gremlin-groovy.sh
+gremlin$ bin/gremlin.sh
 
          \,,,/
          (o o)
