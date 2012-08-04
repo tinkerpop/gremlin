@@ -1,0 +1,45 @@
+Assuming:
+
+* @A@ : id of the starting vertex
+* @B@ : id of the ending vertex
+* @N@ : maximum number of loops
+
+h2. To find all paths in a directed graph:
+
+```text
+g.v(A).out.loop(1){it.loops<=N && !(it.object.id in [A,B])}.filter{it.id==B}.path
+```
+
+Example: find path between marko and ripple using sample TinkerGraph
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> A='1';B='5';N=3
+gremlin> g.v(A).out.loop(1){it.loops<=N && !(it.object.id in [A,B])}.filter{it.id==B}.path
+==>[v[1], v[4], v[5]]
+```
+
+Notice that @A@ and @B@ are strings, not integers. To check it:
+
+```text
+gremlin> g.v(1).id.class
+==>class java.lang.String
+```
+
+h2. To find all paths in an undirected graph:
+
+```text
+g.v(A).both.loop(1){it.loops<=N && !(it.object.id in [A,B])}.filter{it.id==B}.path
+```
+
+Using the same example:
+
+```text
+gremlin> A='1';B='5';N=3
+gremlin> g.v(A).both.loop(1){it.loops<=N && !(it.object.id in [A,B])}.filter{it.id==B}.path
+==>[v[1], v[4], v[5]]
+==>[v[1], v[3], v[4], v[5]]
+```
+
+See more examples at "https://gist.github.com/1156323":https://gist.github.com/1156323
