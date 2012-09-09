@@ -13,11 +13,11 @@ import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
-import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
 import com.tinkerpop.pipes.util.StartPipe;
 import junit.framework.TestCase;
-import org.w3c.dom.ranges.Range;
+
+import java.util.Iterator;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -121,7 +121,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         assertTrue(pipeline.get(4) instanceof IdentityPipe);
         assertTrue(pipeline.get(5) instanceof BothVerticesPipe);
 
-        pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows", "created").has("weight", 0.5)._().interval("since", 10, 2).range(1,10).bothV();
+        pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows", "created").has("weight", 0.5)._().interval("since", 10, 2).range(1, 10).bothV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 7);
         assertTrue(pipeline.get(0) instanceof StartPipe);
@@ -164,7 +164,7 @@ public class GremlinFluentUtilityTest extends TestCase {
 
 
         // TEST OPTIMIZE(BOOLEAN) PARAMETERIZATION
-        pipeline = new GremlinPipeline(graph.getVertex(1)).optimize(false).outE("knows").has("weight",0.5).inV();
+        pipeline = new GremlinPipeline(graph.getVertex(1)).optimize(false).outE("knows").has("weight", 0.5).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
         assertTrue(pipeline.get(0) instanceof StartPipe);
@@ -172,13 +172,39 @@ public class GremlinFluentUtilityTest extends TestCase {
         assertTrue(pipeline.get(2) instanceof PropertyFilterPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
 
-        pipeline = new GremlinPipeline(graph.getVertex(1)).optimize(true).outE("knows").has("weight",0.5).inV();
+        pipeline = new GremlinPipeline(graph.getVertex(1)).optimize(true).outE("knows").has("weight", 0.5).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
         assertTrue(pipeline.get(0) instanceof StartPipe);
         assertTrue(pipeline.get(1) instanceof QueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
+    }
+
+    public void testNullStart() {
+        GremlinPipeline pipeline;
+        try {
+            pipeline = new GremlinPipeline(null);
+        } catch (NullPointerException e) {
+        }
+        try {
+            pipeline = new GremlinPipeline(null, false);
+            fail();
+        } catch (NullPointerException e) {
+        }
+        try {
+            pipeline = new GremlinPipeline();
+            pipeline.start(null);
+            fail();
+        } catch (NullPointerException e) {
+        }
+        try {
+            pipeline = new GremlinPipeline();
+            pipeline.setStarts((Iterator) null);
+            fail();
+        } catch (NullPointerException e) {
+        }
+
     }
 
 }
