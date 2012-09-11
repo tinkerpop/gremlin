@@ -21,7 +21,8 @@ h3. Version 2.2.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Revised method signatures for loadGraphSON and saveGraphSON that now use the GraphSONMode enum.
+* Revised method signatures for loadGraphSON and saveGraphSON that now use the GraphSONMode enum
+* Bumped to support Groovy 1.8.8
 
 h3. Version 2.1.0 (August 4, 2012)
 
