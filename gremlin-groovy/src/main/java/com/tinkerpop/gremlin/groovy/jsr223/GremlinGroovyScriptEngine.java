@@ -16,13 +16,13 @@ import java.io.StringReader;
  */
 public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
 
-    private String imports;
+    protected String imports;
 
     public GremlinGroovyScriptEngine() {
         super();
         Gremlin.load();
-        StringBuilder sb = new StringBuilder();
-        for (String imp : Imports.getImports()) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String imp : Imports.getImports()) {
             sb.append("import ").append(imp).append("\n");
         }
         sb.append("import com.tinkerpop.gremlin.Tokens.T\n").append("import com.tinkerpop.gremlin.groovy.*\n");
