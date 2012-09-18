@@ -12,7 +12,30 @@ public class Tokens {
     public static final String ID = "id";
 
     public static enum T {
-        gt, lt, eq, gte, lte, neq
+        /**
+         * Greater than
+         */
+        gt,
+        /**
+         * Less than
+         */
+        lt,
+        /**
+         * Equal to
+         */
+        eq,
+        /**
+         * Greater than or equal to
+         */
+        gte,
+        /**
+         * Less than or equal to
+         */
+        lte,
+        /**
+         * Not equal to
+         */
+        neq
     }
 
     public static FilterPipe.Filter mapFilter(final T t) {
