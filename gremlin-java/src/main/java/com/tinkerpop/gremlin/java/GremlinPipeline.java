@@ -87,12 +87,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     private boolean doQueryOptimization = true;
 
+    private static final String NPE_NULL_START = "<null> as start is not allowed";
+
     public GremlinPipeline() {
         super();
     }
 
     public GremlinPipeline(final Object starts, final boolean doQueryOptimization) {
         super(new StartPipe(starts));
+        if (starts == null) {
+            throw new NullPointerException(NPE_NULL_START);
+        }
         this.doQueryOptimization = doQueryOptimization;
         FluentUtility.setStarts(this, starts);
     }
@@ -1057,6 +1062,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, S> start(final S object) {
+        if (object == null) {
+            throw new NullPointerException(NPE_NULL_START);
+        }
         this.add(new StartPipe<S>(object));
         FluentUtility.setStarts(this, object);
         return (GremlinPipeline<S, S>) this;
