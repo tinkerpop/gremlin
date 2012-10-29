@@ -38,6 +38,14 @@ public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> {
         }
     }
 
+    public Direction getDirection() {
+        return this.direction;
+    }
+
+    public String[] getLabels() {
+        return this.labels;
+    }
+
     public String toString() {
         return PipeHelper.makePipeString(this, direction.name().toLowerCase(), Arrays.asList(labels));
     }

@@ -3,10 +3,12 @@ package com.tinkerpop.gremlin.java;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
+import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
@@ -32,6 +34,7 @@ public class GremlinFluentUtility extends FluentUtility {
                 numberedStep = pipelineSize - i;
                 break;
             } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof RangeFilterPipe) {
+                // todo: support non-zero low
                 if (pipe instanceof RangeFilterPipe && ((RangeFilterPipe) pipe).getLowRange() != 0)
                     break;
                 else
@@ -46,7 +49,21 @@ public class GremlinFluentUtility extends FluentUtility {
             return Collections.emptyList();
     }
 
-    public static GremlinPipeline optimizePipelineForVertexQueries(final GremlinPipeline pipeline) {
+    public static GremlinPipeline optimizePipelineForVertexRange(final GremlinPipeline pipeline) {
+        if (pipeline.get(pipeline.size() - 1) instanceof RangeFilterPipe && pipeline.get(pipeline.size() - 2) instanceof VerticesVerticesPipe) {
+            final RangeFilterPipe range = (RangeFilterPipe) pipeline.remove(pipeline.size() - 1);
+            // todo: support non-zero low
+            if (range.getLowRange() == 0l) {
+                final VerticesVerticesPipe vertices = (VerticesVerticesPipe) pipeline.remove(pipeline.size() - 1);
+                pipeline.add(new QueryPipe(Vertex.class, vertices.getDirection(),
+                        (List) Collections.emptyList(), (List) Collections.emptyList(), range.getHighRange() + 1, vertices.getLabels()));
+                pipeline.add(new IdentityPipe());
+            }
+        }
+        return pipeline;
+    }
+
+    public static GremlinPipeline optimizePipelineForEdgeConstraints(final GremlinPipeline pipeline) {
         final List<Pipe> removedPipes = removeEdgeQueryOptimizationPipes(pipeline);
 
         if (removedPipes.size() > 0) {

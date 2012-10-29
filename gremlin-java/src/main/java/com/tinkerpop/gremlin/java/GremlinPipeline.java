@@ -162,7 +162,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Vertex> bothV() {
         if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForVertexQueries(this);
+            GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
 
         return this.add(new BothVerticesPipe());
     }
@@ -189,7 +189,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Vertex> inV() {
         if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForVertexQueries(this);
+            GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
 
         return this.add(new InVertexPipe());
     }
@@ -208,7 +208,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     public GremlinPipeline<S, Vertex> outV() {
         if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForVertexQueries(this);
+            GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
 
         return this.add(new OutVertexPipe());
     }
@@ -469,7 +469,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> range(final int low, final int high) {
-        return this.add(new RangeFilterPipe<E>(low, high));
+        this.add(new RangeFilterPipe<E>(low, high));
+
+        if (this.doQueryOptimization)
+            return GremlinFluentUtility.optimizePipelineForVertexRange(this);
+        else
+            return this;
     }
 
     /**
@@ -1126,6 +1131,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * When possible, Gremlin takes advantage of certain sequences of pipes in order to make a more concise, and generally more efficient expression.
      * This method will turn on and off query optimization from this stage in the pipeline on.
      *
+     * @param optimize whether to optimize the pipeline from here on or not
      * @return The GremlinPipeline with the optimization turned off
      */
     public GremlinPipeline<S, E> optimize(final boolean optimize) {

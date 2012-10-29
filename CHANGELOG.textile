@@ -21,9 +21,10 @@ h3. Version 2.2.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Revised method signatures for loadGraphSON and saveGraphSON that now use the GraphSONMode enum
+* Revised method signatures for @loadGraphSON()@ and @saveGraphSON()@ that now use the GraphSONMode enum
 * Bumped to support Groovy 1.8.8
-* Fixed bug in @QueryPipe@ limit where limit was not decrementing via counting already emitted elements
+* Fixed a bug in @QueryPipe@ limit, where limit was not decrementing via counting already emitted elements
+* Provided a vertex-centric query optimization for @out[0..1]@ type traversals
 
 
 h3. Version 2.1.0 (August 4, 2012)

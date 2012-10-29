@@ -190,5 +190,4 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(names.size(), 3);
     }
 
-
 }
