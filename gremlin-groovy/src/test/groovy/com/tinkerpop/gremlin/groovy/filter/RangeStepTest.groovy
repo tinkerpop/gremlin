@@ -31,4 +31,12 @@ class RangeStepTest extends com.tinkerpop.gremlin.test.filter.RangeStepTest {
         super.test_g_v1_outXknowsX_outXcreatedX_rangeX0_0X(g.v(1).out('knows').out('created')[0..0]);
     }
 
+    public void test_g_v1_outXcreatedX_inXcreatedX_rangeX1_2X() {
+        super.test_g_v1_outXcreatedX_inXcreatedX_rangeX1_2X(g.v(1).out('created').in('created')[1..2]);
+    }
+
+    public void test_g_v1_outXcreatedX_inEXcreatedX_rangeX1_2X_outV() {
+        super.test_g_v1_outXcreatedX_inXcreatedX_rangeX1_2X(g.v(1).out('created').inE('created')[1..2].outV);
+    }
+
 }

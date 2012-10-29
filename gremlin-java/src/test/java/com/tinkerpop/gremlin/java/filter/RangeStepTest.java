@@ -20,13 +20,21 @@ public class RangeStepTest extends com.tinkerpop.gremlin.test.filter.RangeStepTe
     public void test_g_v1_out_rangeX0_1X() {
         super.test_g_v1_out_rangeX0_1X(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out().range(0, 1));
     }
-    
+
     public void test_g_v1_outXknowsX_outEXcreatedX_rangeX0_0X_inV() {
         super.test_g_v1_outXknowsX_outEXcreatedX_rangeX0_0X_inV(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out("knows").outE("created").range(0, 0).inV());
     }
-    
+
     public void test_g_v1_outXknowsX_outXcreatedX_rangeX0_0X() {
-        super.test_g_v1_outXknowsX_outXcreatedX_rangeX0_0X(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out("knows").out("created").range(0,0));
+        super.test_g_v1_outXknowsX_outXcreatedX_rangeX0_0X(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out("knows").out("created").range(0, 0));
+    }
+
+    public void test_g_v1_outXcreatedX_inXcreatedX_rangeX1_2X() {
+        super.test_g_v1_outXcreatedX_inXcreatedX_rangeX1_2X(new GremlinPipeline<Vertex, Vertex>((g.getVertex(1))).out("created").in("created").range(1, 2));
+    }
+
+    public void test_g_v1_outXcreatedX_inEXcreatedX_rangeX1_2X_outV() {
+        super.test_g_v1_outXcreatedX_inEXcreatedX_rangeX1_2X_outV(new GremlinPipeline<Vertex, Vertex>((g.getVertex(1))).out("created").inE("created").range(1, 2).outV());
     }
 
 }

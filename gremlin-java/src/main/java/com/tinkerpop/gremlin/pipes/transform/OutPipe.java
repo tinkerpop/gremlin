@@ -9,11 +9,11 @@ import com.tinkerpop.pipes.util.PipeHelper;
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class OutPipe extends VerticesVerticesPipe {
-    
+
     public OutPipe(final String... labels) {
         super(Direction.OUT, labels);
     }
-    
+
     public String toString() {
         return PipeHelper.makePipeString(this, this.labels);
     }

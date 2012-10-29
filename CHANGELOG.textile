@@ -25,6 +25,7 @@ h3. Version 2.2.0 (NOT OFFICIALLY RELEASED YET)
 * Bumped to support Groovy 1.8.8
 * Fixed a bug in @QueryPipe@ limit, where limit was not decrementing via counting already emitted elements
 * Provided a vertex-centric query optimization for @out[0..1]@ type traversals
+* Added support for non-zero low range limits in @QueryPipe@
 
 
 h3. Version 2.1.0 (August 4, 2012)

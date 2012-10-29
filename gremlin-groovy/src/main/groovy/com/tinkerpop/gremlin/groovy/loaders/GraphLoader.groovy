@@ -7,12 +7,12 @@ import com.tinkerpop.blueprints.util.io.gml.GMLReader
 import com.tinkerpop.blueprints.util.io.gml.GMLWriter
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLWriter
+import com.tinkerpop.blueprints.util.io.graphson.GraphSONMode
 import com.tinkerpop.blueprints.util.io.graphson.GraphSONReader
 import com.tinkerpop.blueprints.util.io.graphson.GraphSONWriter
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 import java.util.Map.Entry
-import com.tinkerpop.blueprints.util.io.graphson.GraphSONMode
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -151,7 +151,7 @@ class GraphLoader {
         Graph.metaClass.saveGraphSON = {final def fileObject, final GraphSONMode mode,
                                         final List<String> vertexPropertyKeys, final List<String> edgePropertyKeys ->
             GraphSONWriter.outputGraph((Graph) delegate, new FileOutputStream(fileObject),
-                                       vertexPropertyKeys as Set, edgePropertyKeys as Set, mode)
+                    vertexPropertyKeys as Set, edgePropertyKeys as Set, mode)
         }
 
         // GML

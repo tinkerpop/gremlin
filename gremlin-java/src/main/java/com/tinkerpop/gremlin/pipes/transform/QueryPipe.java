@@ -27,7 +27,8 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     private List<HasContainer> hasContainers;
     private List<IntervalContainer> intervalContainers;
     private final Class<E> elementClass;
-    private final long limit;
+    private final long lowRange;
+    private final long highRange;
 
     private long count = 0l;
 
@@ -41,16 +42,18 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
      * @param direction             this must be a legal direction representing the direction of the edge.
      * @param hasContainers         this must be a collection of 'has'-filters (i.e. property filters). Provide an empty list if no such filters are to be applied.
      * @param intervalContainers    this must be a collection of 'interval'-filters (i.e. property filters within a range). Provide an empty list if no such filters are to be applied.
-     * @param limit                 this must be a long value which limits the number of elements returns. Use -1 if no such limit is desired.
+     * @param lowRange              this must be a long value representing the low range of elements to emit
+     * @param highRange             this must be a long value representing the high range of elements to emit
      * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
      */
-    public QueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long limit, final String... labels) {
+    public QueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long lowRange, final long highRange, final String... labels) {
         this.elementClass = resultingElementClass;
         this.direction = direction;
         this.hasContainers = hasContainers;
         this.intervalContainers = intervalContainers;
         this.labels = labels;
-        this.limit = limit;
+        this.lowRange = (lowRange < 0l) ? 0 : lowRange;
+        this.highRange = highRange;
 
         if (!resultingElementClass.equals(Vertex.class) && !resultingElementClass.equals(Edge.class))
             throw new IllegalArgumentException("The provided element class must be either Vertex or Edge");
@@ -63,7 +66,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     }
 
     public String toString() {
-        final String extra = "has:" + (this.hasContainers.size() > 0) + ",interval:" + (this.intervalContainers.size() > 0) + ",limit:" + this.limit;
+        final String extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:[" + this.lowRange + "," + this.highRange + "]";
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 
@@ -71,28 +74,30 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
         while (true) {
             if (this.currentIterator.hasNext()) {
                 this.count++;
-                return currentIterator.next();
+                final E e = currentIterator.next();
+                if (this.count > this.lowRange)
+                    return e;
             } else {
                 final Vertex vertex = this.starts.next();
                 Query query = vertex.query();
                 query = query.direction(this.direction);
                 if (this.labels.length > 0)
                     query = query.labels(this.labels);
-                if (this.hasContainers.size() > 0) {
-                    for (final HasContainer hasContainer : hasContainers) {
+                if (null != this.hasContainers) {
+                    for (final HasContainer hasContainer : this.hasContainers) {
                         if (hasContainer.compare.equals(Query.Compare.EQUAL))
                             query = query.has(hasContainer.key, hasContainer.value);
                         else
                             query = query.has(hasContainer.key, (Comparable) hasContainer.value, hasContainer.compare);
                     }
                 }
-                if (this.intervalContainers.size() > 0) {
-                    for (final IntervalContainer intervalContainer : intervalContainers) {
+                if (null != this.intervalContainers) {
+                    for (final IntervalContainer intervalContainer : this.intervalContainers) {
                         query = query.interval(intervalContainer.key, (Comparable) intervalContainer.startValue, (Comparable) intervalContainer.endValue);
                     }
                 }
-                if (this.limit > -1) {
-                    query = query.limit(this.limit - this.count);
+                if (this.highRange != Long.MAX_VALUE) {
+                    query = query.limit(this.highRange - this.count);
                 }
                 if (this.elementClass.equals(Vertex.class))
                     this.currentIterator = (Iterator<E>) query.vertices().iterator();

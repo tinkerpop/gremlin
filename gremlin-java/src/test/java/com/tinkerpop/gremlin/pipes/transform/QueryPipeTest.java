@@ -6,7 +6,6 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -18,8 +17,7 @@ public class QueryPipeTest extends TestCase {
 
     public void testQueryLimit() {
 
-        QueryPipe<Vertex> pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH,
-                new ArrayList<QueryPipe.HasContainer>(), new ArrayList<QueryPipe.IntervalContainer>(), 3);
+        QueryPipe<Vertex> pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 0, 3);
         pipe.setStarts(Arrays.asList(graph.getVertex(1), graph.getVertex(3)));
         int counter = 0;
         while (pipe.hasNext()) {
@@ -39,19 +37,26 @@ public class QueryPipeTest extends TestCase {
         assertEquals(counter, 3);
 
         counter = 0;
-        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH,
-                new ArrayList<QueryPipe.HasContainer>(), new ArrayList<QueryPipe.IntervalContainer>(), 5);
+        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Long.MIN_VALUE, 5);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
             counter++;
         }
         assertEquals(counter, 5);
+
+        counter = 0;
+        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 2, 5);
+        pipe.setStarts(graph.getVertices());
+        while (pipe.hasNext()) {
+            pipe.next();
+            counter++;
+        }
+        assertEquals(counter, 3);
     }
 
     public void testDirection() {
-        QueryPipe<Vertex> pipe = new QueryPipe<Vertex>(Vertex.class, Direction.IN,
-                new ArrayList<QueryPipe.HasContainer>(), new ArrayList<QueryPipe.IntervalContainer>(), -1);
+        QueryPipe<Vertex> pipe = new QueryPipe<Vertex>(Vertex.class, Direction.IN, null, null, 0, Long.MAX_VALUE);
         pipe.setStarts(Arrays.asList(graph.getVertex(1)));
         assertFalse(pipe.hasNext());
 

@@ -34,11 +34,7 @@ public class GremlinFluentUtility extends FluentUtility {
                 numberedStep = pipelineSize - i;
                 break;
             } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof RangeFilterPipe) {
-                // todo: support non-zero low
-                if (pipe instanceof RangeFilterPipe && ((RangeFilterPipe) pipe).getLowRange() != 0)
-                    break;
-                else
-                    filtersSeen = true;
+                filtersSeen = true;
             } else if (!(pipe instanceof IdentityPipe)) {
                 break;
             }
@@ -52,13 +48,9 @@ public class GremlinFluentUtility extends FluentUtility {
     public static GremlinPipeline optimizePipelineForVertexRange(final GremlinPipeline pipeline) {
         if (pipeline.get(pipeline.size() - 1) instanceof RangeFilterPipe && pipeline.get(pipeline.size() - 2) instanceof VerticesVerticesPipe) {
             final RangeFilterPipe range = (RangeFilterPipe) pipeline.remove(pipeline.size() - 1);
-            // todo: support non-zero low
-            if (range.getLowRange() == 0l) {
-                final VerticesVerticesPipe vertices = (VerticesVerticesPipe) pipeline.remove(pipeline.size() - 1);
-                pipeline.add(new QueryPipe(Vertex.class, vertices.getDirection(),
-                        (List) Collections.emptyList(), (List) Collections.emptyList(), range.getHighRange() + 1, vertices.getLabels()));
-                pipeline.add(new IdentityPipe());
-            }
+            final VerticesVerticesPipe vertices = (VerticesVerticesPipe) pipeline.remove(pipeline.size() - 1);
+            pipeline.add(new QueryPipe(Vertex.class, vertices.getDirection(), null, null, range.getLowRange(), range.getHighRange() + 1, vertices.getLabels()));
+            pipeline.add(new IdentityPipe());
         }
         return pipeline;
     }
@@ -69,7 +61,8 @@ public class GremlinFluentUtility extends FluentUtility {
         if (removedPipes.size() > 0) {
             final List<QueryPipe.HasContainer> hasContainers = new ArrayList<QueryPipe.HasContainer>();
             final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
-            long limit = -1l;
+            long lowRange = Long.MIN_VALUE;
+            long highRange = Long.MAX_VALUE;
             String[] labels = new String[]{};
             Direction direction = Direction.BOTH;
 
@@ -84,11 +77,12 @@ public class GremlinFluentUtility extends FluentUtility {
                     labels = ((VerticesEdgesPipe) pipe).getLabels();
                     direction = ((VerticesEdgesPipe) pipe).getDirection();
                 } else if (pipe instanceof RangeFilterPipe) {
-                    limit = ((RangeFilterPipe) pipe).getHighRange() + 1;
+                    lowRange = ((RangeFilterPipe) pipe).getLowRange();
+                    highRange = ((RangeFilterPipe) pipe).getHighRange();
                 }
             }
 
-            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, limit, labels));
+            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, lowRange, highRange + 1, labels));
             for (int i = 0; i < removedPipes.size() - 1; i++) {
                 pipeline.addPipe(new IdentityPipe());
             }
