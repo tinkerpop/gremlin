@@ -49,7 +49,7 @@ public class GremlinFluentUtility extends FluentUtility {
         if (pipeline.get(pipeline.size() - 1) instanceof RangeFilterPipe && pipeline.get(pipeline.size() - 2) instanceof VerticesVerticesPipe) {
             final RangeFilterPipe range = (RangeFilterPipe) pipeline.remove(pipeline.size() - 1);
             final VerticesVerticesPipe vertices = (VerticesVerticesPipe) pipeline.remove(pipeline.size() - 1);
-            pipeline.add(new QueryPipe(Vertex.class, vertices.getDirection(), null, null, range.getLowRange(), range.getHighRange() + 1, vertices.getLabels()));
+            pipeline.add(new QueryPipe(Vertex.class, vertices.getDirection(), null, null, range.getLowRange(), range.getHighRange(), vertices.getLabels()));
             pipeline.add(new IdentityPipe());
         }
         return pipeline;
@@ -82,7 +82,7 @@ public class GremlinFluentUtility extends FluentUtility {
                 }
             }
 
-            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, lowRange, highRange + 1, labels));
+            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, lowRange, highRange, labels));
             for (int i = 0; i < removedPipes.size() - 1; i++) {
                 pipeline.addPipe(new IdentityPipe());
             }

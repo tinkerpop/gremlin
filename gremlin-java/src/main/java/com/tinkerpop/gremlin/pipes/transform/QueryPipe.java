@@ -53,7 +53,8 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
         this.intervalContainers = intervalContainers;
         this.labels = labels;
         this.lowRange = (lowRange < 0l) ? 0 : lowRange;
-        this.highRange = highRange;
+        // +1 high range as Blueprints range is one off from Gremlin range
+        this.highRange = (highRange == Long.MAX_VALUE) ? Long.MAX_VALUE : highRange + 1;
 
         if (!resultingElementClass.equals(Vertex.class) && !resultingElementClass.equals(Edge.class))
             throw new IllegalArgumentException("The provided element class must be either Vertex or Edge");
@@ -66,7 +67,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     }
 
     public String toString() {
-        final String extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:[" + this.lowRange + "," + this.highRange + "]";
+        final String extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 

@@ -17,7 +17,7 @@ public class QueryPipeTest extends TestCase {
 
     public void testQueryLimit() {
 
-        QueryPipe<Vertex> pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 0, 3);
+        QueryPipe<Vertex> pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 0, 2);
         pipe.setStarts(Arrays.asList(graph.getVertex(1), graph.getVertex(3)));
         int counter = 0;
         while (pipe.hasNext()) {
@@ -37,7 +37,7 @@ public class QueryPipeTest extends TestCase {
         assertEquals(counter, 3);
 
         counter = 0;
-        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Long.MIN_VALUE, 5);
+        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, Long.MIN_VALUE, 4);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
@@ -46,7 +46,7 @@ public class QueryPipeTest extends TestCase {
         assertEquals(counter, 5);
 
         counter = 0;
-        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 2, 5);
+        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.BOTH, null, null, 2, 4);
         pipe.setStarts(graph.getVertices());
         while (pipe.hasNext()) {
             pipe.next();
