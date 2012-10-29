@@ -29,6 +29,8 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     private final Class<E> elementClass;
     private final long limit;
 
+    private long count = 0l;
+
     private Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
     /**
@@ -57,6 +59,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
     public void reset() {
         super.reset();
         this.currentIterator = PipeHelper.emptyIterator();
+        this.count = 0;
     }
 
     public String toString() {
@@ -66,9 +69,10 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
 
     public E processNextStart() {
         while (true) {
-            if (this.currentIterator.hasNext())
+            if (this.currentIterator.hasNext()) {
+                this.count++;
                 return currentIterator.next();
-            else {
+            } else {
                 final Vertex vertex = this.starts.next();
                 Query query = vertex.query();
                 query = query.direction(this.direction);
@@ -88,7 +92,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
                     }
                 }
                 if (this.limit > -1) {
-                    query = query.limit(this.limit);
+                    query = query.limit(this.limit - this.count);
                 }
                 if (this.elementClass.equals(Vertex.class))
                     this.currentIterator = (Iterator<E>) query.vertices().iterator();
