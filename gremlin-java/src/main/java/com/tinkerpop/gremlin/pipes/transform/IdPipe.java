@@ -2,13 +2,14 @@ package com.tinkerpop.gremlin.pipes.transform;
 
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 
 /**
  * IdPipe emits the id of the element.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdPipe extends AbstractPipe<Element, Object> {
+public class IdPipe extends AbstractPipe<Element, Object> implements TransformPipe {
 
     protected Object processNextStart() {
         return this.starts.next().getId();

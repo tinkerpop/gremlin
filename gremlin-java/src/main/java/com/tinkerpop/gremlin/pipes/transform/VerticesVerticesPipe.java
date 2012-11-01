@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.pipes.transform;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import java.util.Iterator;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> {
+public class VerticesVerticesPipe extends AbstractPipe<Vertex, Vertex> implements TransformPipe {
 
     protected Direction direction;
     protected String[] labels;

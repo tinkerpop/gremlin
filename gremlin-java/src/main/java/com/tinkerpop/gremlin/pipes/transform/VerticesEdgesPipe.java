@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.Iterator;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> {
+public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> implements TransformPipe {
 
     protected Direction direction;
     protected String[] labels;

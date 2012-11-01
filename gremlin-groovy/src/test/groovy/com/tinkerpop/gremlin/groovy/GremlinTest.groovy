@@ -165,6 +165,15 @@ class GremlinTest extends BaseTest {
         Gremlin.load();
         Graph g = TinkerGraphFactory.createTinkerGraph();
         assertEquals(g.V.count(), 6);
+        assertEquals(g.E.count(), 6);
+    }
+
+    public void testSelfLoopsInPaths() {
+        Gremlin.load();
+        Graph g = new TinkerGraph();
+        Vertex a = g.addVertex();
+        g.addEdge(a, a, "self");
+        assertEquals(a.out.out.out.path.next().size(), 4)
     }
 
 }

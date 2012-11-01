@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.pipes.transform;
 
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PropertyMapPipe<S extends Element> extends AbstractPipe<S, Map<String, Object>> {
+public class PropertyMapPipe<S extends Element> extends AbstractPipe<S, Map<String, Object>> implements TransformPipe {
 
     protected Map<String, Object> processNextStart() {
         final S element = this.starts.next();

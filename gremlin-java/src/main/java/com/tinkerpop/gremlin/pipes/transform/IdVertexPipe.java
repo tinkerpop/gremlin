@@ -3,11 +3,12 @@ package com.tinkerpop.gremlin.pipes.transform;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdVertexPipe<S> extends AbstractPipe<S, Vertex> {
+public class IdVertexPipe<S> extends AbstractPipe<S, Vertex> implements TransformPipe {
 
     private final Graph graph;
 

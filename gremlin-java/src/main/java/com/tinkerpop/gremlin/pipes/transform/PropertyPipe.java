@@ -2,6 +2,7 @@ package com.tinkerpop.gremlin.pipes.transform;
 
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 /**
@@ -9,7 +10,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> {
+public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> implements TransformPipe {
 
     private final String key;
     private final boolean allowNull;

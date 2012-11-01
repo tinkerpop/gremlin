@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> {
+public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe {
 
     private Direction direction = Direction.BOTH;
     private String[] labels;
