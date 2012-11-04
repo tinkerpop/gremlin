@@ -11,6 +11,6 @@ import java.util.Arrays;
 public class ScriptExecutorTest extends TestCase {
 
     public void testArguments() {
-        ScriptExecutor.evaluate(new InputStreamReader(ScriptExecutorTest.class.getResourceAsStream("gremlin-script.grm")), Arrays.asList("1", "2", "3"));
+        ScriptExecutor.evaluate(new InputStreamReader(ScriptExecutorTest.class.getResourceAsStream("GremlinScript.groovy")), Arrays.asList("1", "2", "3"));
     }
 }

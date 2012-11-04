@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * This implementation maps the native GroovyScriptEngine to work correctly with JSR223.
  * This code was heavily adapted by the ScriptEngine project at Google (Apache2 licensed).
- * Thank you for the code as this mapping is very complex and I'm glad someone already did it.
+ * Thank you for the code as this mapping is complex and I'm glad someone already did it.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -131,7 +131,7 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
 
     public Object invokeMethod(final Object thiz, final String name, final Object args[]) throws ScriptException, NoSuchMethodException {
         if (thiz == null) {
-            throw new IllegalArgumentException("script object is null");
+            throw new IllegalArgumentException("Script object can not be null");
         } else {
             return invokeImpl(thiz, name, args);
         }
