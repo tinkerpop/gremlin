@@ -11,7 +11,6 @@ import com.tinkerpop.gremlin.groovy.loaders.PipeLoader
 import com.tinkerpop.gremlin.groovy.loaders.SailGraphLoader
 import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
-import javax.script.SimpleBindings
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -65,7 +64,7 @@ class Gremlin {
     }
 
     public static Pipe compile(final String script) {
-        return (Pipe) engine.eval(script, new SimpleBindings());
+        return (Pipe) engine.eval(script, engine.createBindings());
     }
 
     public static void addStep(final String stepName) {

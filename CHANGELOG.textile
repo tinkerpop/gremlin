@@ -27,7 +27,7 @@ h3. Version 2.2.0 (NOT OFFICIALLY RELEASED YET)
 * Provided a vertex-centric query optimization for @out[0..1]@ type traversals
 * Added support for non-zero low range limits in @QueryPipe@
 * All transform steps implement new @TransformPipe@ interface (marker interface)
-* Added support for @CompiledScript@ in JSR223 @GremlinGroovyScriptEngine@
+* Various thread safety test cases added for @GremlinGroovyScriptEngine@
 
 h3. Version 2.1.0 (August 4, 2012)
 

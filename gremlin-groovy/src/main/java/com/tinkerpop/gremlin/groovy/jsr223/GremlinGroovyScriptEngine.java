@@ -31,11 +31,15 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     }
 
     public CompiledScript compile(final String script) throws ScriptException {
-        return super.compile(script);
+        return super.compile(this.imports + script);
     }
 
     public CompiledScript compile(final Reader reader) throws ScriptException {
-        return super.compile(reader);
+        try {
+            return super.compile(generateStringReader(reader));
+        } catch (Exception e) {
+            throw new ScriptException(e.getMessage());
+        }
     }
 
     public Object eval(final String script) throws ScriptException {
@@ -49,7 +53,6 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     public Object eval(final String script, final Bindings bindings) throws ScriptException {
         return super.eval(this.imports + script, bindings);
     }
-
 
     public Object eval(final Reader reader) throws ScriptException {
         try {
@@ -84,6 +87,4 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
         }
         return new StringReader(sb.toString());
     }
-
-
 }

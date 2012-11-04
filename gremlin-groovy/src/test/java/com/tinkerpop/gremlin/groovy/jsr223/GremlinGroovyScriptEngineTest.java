@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import junit.framework.TestCase;
 
 import javax.script.Bindings;
+import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         engine.put("g", TinkerGraphFactory.createTinkerGraph());
         engine.put("list", list);
         assertEquals(list.size(), 0);
-        engine.eval("g.v(1).outE.inV.fill(list)");
+        engine.eval("g.v(1).outE.inV._.fill(list)");
         assertEquals(list.size(), 3);
     }
 
@@ -40,7 +41,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         assertEquals(engine.eval("g.v(1)"), TinkerGraphFactory.createTinkerGraph().getVertex(1));
     }
 
-    public void testThreadSafety() throws Exception {
+    public void testThreadSafetyOnEngine() throws Exception {
         final ScriptEngine engine = new GremlinGroovyScriptEngine();
 
         int runs = 100;
@@ -53,11 +54,10 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
                 public void run() {
                     String name = names.get(random.nextInt(names.size() - 1));
                     try {
-                        final String var = "pipe";
                         final Bindings bindings = engine.createBindings();
                         bindings.put("g", TinkerGraphFactory.createTinkerGraph());
-                        final Object result = engine.eval(var + " = g.V('name','" + name + "'); if(" + var + ".hasNext()) { " + var + ".count() } else { null }", bindings);
-                        //System.out.println(name);
+                        bindings.put("name", name);
+                        final Object result = engine.eval("pipe = g.V('name',name); if(pipe.hasNext()) { pipe.out.count() } else { null }", bindings);
                         if (name.equals("stephen") || name.equals("pavel") || name.equals("matthias"))
                             assertNull(result);
                         else
@@ -72,4 +72,73 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         }
         latch.await();
     }
+
+    public void testThreadSafetyOnCompiledScript() throws Exception {
+        final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
+        final CompiledScript script = engine.compile("pipe = g.V('name',name); if(pipe.hasNext()) { pipe.out.count() } else { null }");
+
+        int runs = 100;
+        final CountDownLatch latch = new CountDownLatch(runs);
+        final List<String> names = Arrays.asList("marko", "peter", "josh", "vadas", "stephen", "pavel", "matthias");
+        final Random random = new Random();
+
+        for (int i = 0; i < runs; i++) {
+            new Thread() {
+                public void run() {
+                    String name = names.get(random.nextInt(names.size() - 1));
+                    try {
+                        final Bindings bindings = engine.createBindings();
+                        bindings.put("g", TinkerGraphFactory.createTinkerGraph());
+                        bindings.put("name", name);
+                        Object result = script.eval(bindings);
+                        if (name.equals("stephen") || name.equals("pavel") || name.equals("matthias"))
+                            assertNull(result);
+                        else
+                            assertNotNull(result);
+                    } catch (ScriptException e) {
+                        //System.out.println(e);
+                        assertFalse(true);
+                    }
+                    latch.countDown();
+                }
+            }.start();
+        }
+        latch.await();
+    }
+
+    /*public void testEngineVsCompiledCosts() throws Exception {
+        final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
+        Bindings bindings = engine.createBindings();
+        bindings.put("g", TinkerGraphFactory.createTinkerGraph());
+
+        int runs = 500;
+
+        long totalTime = 0l;
+        for (int i = 0; i < runs; i++) {
+            long time = System.currentTimeMillis();
+            CompiledScript script = engine.compile("g.v(1).out.count()");
+            script.eval(bindings);
+            totalTime += System.currentTimeMillis() - time;
+        }
+        System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);
+
+        totalTime = 0l;
+        for (int i = 0; i < runs; i++) {
+            long time = System.currentTimeMillis();
+            engine.eval("g.v(1).out.count()", bindings);
+            totalTime += System.currentTimeMillis() - time;
+        }
+        System.out.println("Evaluated script runtime for " + runs + " runs: " + totalTime);
+
+        /*totalTime = 0l;
+        for (int i = 0; i < runs; i++) {
+            long time = System.currentTimeMillis();
+            CompiledScript script = engine.compile("g.v(1).out.count()");
+            script.eval(bindings);
+            totalTime += System.currentTimeMillis() - time;
+        }
+        System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);*/
+
+
+   // }
 }
