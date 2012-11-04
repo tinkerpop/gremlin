@@ -175,5 +175,4 @@ class GremlinTest extends BaseTest {
         g.addEdge(a, a, "self");
         assertEquals(a.out.out.out.path.next().size(), 4)
     }
-
 }
