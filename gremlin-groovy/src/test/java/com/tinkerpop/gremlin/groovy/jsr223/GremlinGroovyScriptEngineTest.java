@@ -32,6 +32,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
     public void testImports() throws Exception {
         ScriptEngine engine = new GremlinGroovyScriptEngine();
         engine.eval("new TinkerGraph()");
+        engine.eval("TinkerGraphFactory.createTinkerGraph().V.hasNot('age',null).has('age',T.gt,25).count()");
     }
 
     public void testBindings() throws Exception {
@@ -106,12 +107,12 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         latch.await();
     }
 
-    /*public void testEngineVsCompiledCosts() throws Exception {
+    public void testEngineVsCompiledCosts() throws Exception {
         final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
         Bindings bindings = engine.createBindings();
         bindings.put("g", TinkerGraphFactory.createTinkerGraph());
 
-        int runs = 500;
+        int runs = 1000;
 
         long totalTime = 0l;
         for (int i = 0; i < runs; i++) {
@@ -120,7 +121,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
             script.eval(bindings);
             totalTime += System.currentTimeMillis() - time;
         }
-        System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);
+        System.out.println("Multi-compiled script runtime for " + runs + " runs: " + totalTime);
 
         totalTime = 0l;
         for (int i = 0; i < runs; i++) {
@@ -130,15 +131,14 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         }
         System.out.println("Evaluated script runtime for " + runs + " runs: " + totalTime);
 
-        /*totalTime = 0l;
+        totalTime = 0l;
+        CompiledScript script = engine.compile("g.v(1).out.count()");
         for (int i = 0; i < runs; i++) {
             long time = System.currentTimeMillis();
-            CompiledScript script = engine.compile("g.v(1).out.count()");
             script.eval(bindings);
             totalTime += System.currentTimeMillis() - time;
         }
-        System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);*/
+        System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);
+    }
 
-
-   // }
 }

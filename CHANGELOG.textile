@@ -28,6 +28,7 @@ h3. Version 2.2.0 (NOT OFFICIALLY RELEASED YET)
 * Added support for non-zero low range limits in @QueryPipe@
 * All transform steps implement new @TransformPipe@ interface (marker interface)
 * Various thread safety test cases added for @GremlinGroovyScriptEngine@
+* Significant performance improvements in @GremlinGroovyScriptEngine@ (mapped to @GroovyScriptEngine@)
 
 h3. Version 2.1.0 (August 4, 2012)
 
