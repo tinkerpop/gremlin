@@ -5,6 +5,7 @@ import com.tinkerpop.gremlin.groovy.Gremlin;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 
 import javax.script.Bindings;
+import javax.script.CompiledScript;
 import javax.script.ScriptContext;
 import javax.script.ScriptException;
 import java.io.BufferedReader;
@@ -27,6 +28,14 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
         }
         sb.append("import com.tinkerpop.gremlin.Tokens.T\n").append("import com.tinkerpop.gremlin.groovy.*\n");
         this.imports = sb.toString();
+    }
+
+    public CompiledScript compile(final String script) throws ScriptException {
+        return super.compile(script);
+    }
+
+    public CompiledScript compile(final Reader reader) throws ScriptException {
+        return super.compile(reader);
     }
 
     public Object eval(final String script) throws ScriptException {
