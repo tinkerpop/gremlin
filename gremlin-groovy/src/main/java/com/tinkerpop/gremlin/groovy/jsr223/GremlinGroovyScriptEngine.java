@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.TransactionalGraph;
 import com.tinkerpop.gremlin.Imports;
 import com.tinkerpop.gremlin.groovy.Gremlin;
 import groovy.lang.Binding;
@@ -58,15 +60,24 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
 
     public GremlinGroovyScriptEngine() {
         Gremlin.load();
+        final CompilerConfiguration conf = new CompilerConfiguration();
+        conf.addCompilationCustomizers(GremlinGroovyScriptEngine.getImportCustomizer());
+        this.loader = new GroovyClassLoader(getParentLoader(), conf);
+    }
+
+    public static ImportCustomizer getImportCustomizer() {
         final ImportCustomizer ic = new ImportCustomizer();
         for (final String imp : Imports.getImports()) {
             ic.addStarImports(imp.replace(DOT_STAR, EMPTY_STRING));
         }
         ic.addImports("com.tinkerpop.gremlin.Tokens.T");
         ic.addStarImports("com.tinkerpop.gremlin.groovy");
-        final CompilerConfiguration conf = new CompilerConfiguration();
-        conf.addCompilationCustomizers(ic);
-        this.loader = new GroovyClassLoader(getParentLoader(), conf);
+        ic.addStaticImport(Direction.class.getName(), Direction.OUT.toString());
+        ic.addStaticImport(Direction.class.getName(), Direction.IN.toString());
+        ic.addStaticImport(Direction.class.getName(), Direction.BOTH.toString());
+        ic.addStaticImport(TransactionalGraph.Conclusion.class.getName(), TransactionalGraph.Conclusion.SUCCESS.toString());
+        ic.addStaticImport(TransactionalGraph.Conclusion.class.getName(), TransactionalGraph.Conclusion.FAILURE.toString());
+        return ic;
     }
 
     public Object eval(final Reader reader, final ScriptContext context) throws ScriptException {
@@ -88,14 +99,14 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     }
 
     public ScriptEngineFactory getFactory() {
-        if (factory == null) {
+        if (this.factory == null) {
             synchronized (this) {
-                if (factory == null) {
-                    factory = new GremlinGroovyScriptEngineFactory();
+                if (this.factory == null) {
+                    this.factory = new GremlinGroovyScriptEngineFactory();
                 }
             }
         }
-        return factory;
+        return this.factory;
     }
 
     public CompiledScript compile(final String scriptSource) throws ScriptException {

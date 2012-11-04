@@ -31,8 +31,15 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
 
     public void testImports() throws Exception {
         ScriptEngine engine = new GremlinGroovyScriptEngine();
+        engine.eval("Vertex.class.getName()");
         engine.eval("new TinkerGraph()");
         engine.eval("TinkerGraphFactory.createTinkerGraph().V.hasNot('age',null).has('age',T.gt,25).count()");
+        engine.eval("TinkerGraphFactory.createTinkerGraph().getVertex(1).getVertices(OUT)");
+        engine.eval("TinkerGraphFactory.createTinkerGraph().getVertex(1).getEdges(BOTH)");
+        engine.eval("TinkerGraphFactory.createTinkerGraph().getVertex(1).getEdges(IN)");
+        engine.eval("Direction.OUT.toString(); Direction.IN.toString(); Direction.BOTH.toString()");
+        engine.eval("SUCCESS.toString(); FAILURE.toString()");
+        engine.eval("TransactionalGraph.Conclusion.SUCCESS.toString(); TransactionalGraph.Conclusion.FAILURE.toString()");
     }
 
     public void testBindings() throws Exception {
@@ -117,7 +124,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         long totalTime = 0l;
         for (int i = 0; i < runs; i++) {
             long time = System.currentTimeMillis();
-            CompiledScript script = engine.compile("g.v(1).out.count()");
+            CompiledScript script = engine.compile("g.v(1).out().count()");
             script.eval(bindings);
             totalTime += System.currentTimeMillis() - time;
         }
@@ -126,13 +133,13 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         totalTime = 0l;
         for (int i = 0; i < runs; i++) {
             long time = System.currentTimeMillis();
-            engine.eval("g.v(1).out.count()", bindings);
+            engine.eval("g.v(1).out().count()", bindings);
             totalTime += System.currentTimeMillis() - time;
         }
         System.out.println("Evaluated script runtime for " + runs + " runs: " + totalTime);
 
         totalTime = 0l;
-        CompiledScript script = engine.compile("g.v(1).out.count()");
+        CompiledScript script = engine.compile("g.v(1).out().count()");
         for (int i = 0; i < runs; i++) {
             long time = System.currentTimeMillis();
             script.eval(bindings);
