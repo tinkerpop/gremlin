@@ -50,9 +50,7 @@ class GraphLoader {
                 return ((Graph) delegate).getVertex(ids[0]);
             else {
                 final Graph g = (Graph) delegate;
-                final List vertices = new ArrayList();
-                ids.each {vertices.add(g.getVertex(it))};
-                return vertices;
+                return new GremlinGroovyPipeline(ids.collect {g.getVertex(it)});
             }
         }
 
