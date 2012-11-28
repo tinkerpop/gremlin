@@ -68,7 +68,13 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implem
     }
 
     public String toString() {
-        final String extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
+
+        final String extra;
+        if (this.lowRange == 0 && highRange == Long.MAX_VALUE)
+            extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:false";
+        else
+            extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
+
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 
