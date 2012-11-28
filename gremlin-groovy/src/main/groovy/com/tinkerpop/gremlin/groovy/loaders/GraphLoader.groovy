@@ -59,9 +59,7 @@ class GraphLoader {
                 return ((Graph) delegate).getEdge(ids[0]);
             else {
                 final Graph g = (Graph) delegate;
-                final List edges = new ArrayList();
-                ids.each {edges.add(g.getEdge(it))};
-                return edges;
+                return new GremlinGroovyPipeline(ids.collect {g.getEdge(it)});
             }
         }
 

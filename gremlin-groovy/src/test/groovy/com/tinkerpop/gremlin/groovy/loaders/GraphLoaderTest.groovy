@@ -42,11 +42,15 @@ class GraphLoaderTest extends TestCase {
 
         assertEquals(g.v(1, 2, 3).toList(), [g.v(1), g.v(2), g.v(3)]);
         assertEquals(g.e(7, 8, 9).toList(), [g.e(7), g.e(8), g.e(9)]);
-
+        
         assertEquals(g.v(1, 2, 10).toList(), [g.v(1), g.v(2), null]);
         assertEquals(g.v(1, 2, 10).toList(), [g.v(1), g.v(2), g.v(10)]);
+
+        assertEquals(g.e(7, 8, 34).toList(), [g.e(7), g.e(8), null]);
+        assertEquals(g.e(7, 8, 34).toList(), [g.e(7), g.e(8), g.e(34)]);
         
         g.v(1,2,3).out.toList();
+        g.e(7,8,9).inV.toList();
     }
 
     public void testIdAndLabelProperties() throws Exception {
