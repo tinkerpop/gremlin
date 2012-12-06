@@ -112,6 +112,7 @@ class GremlinTest extends BaseTest {
         assertEquals(g.v(1).outE.inV, g.v(1).outE.inV);
         assertEquals(g.v(1)._.outE._._.inV[0..100], g.v(1)._.outE.inV._._);
         assertEquals(g.v(1).inE, g.v(1).inE);
+        assertEquals(g.V.out[0..5], g.V.outE[0..5].inV);
     }
 
     public void testPipelineReset() throws Exception {
