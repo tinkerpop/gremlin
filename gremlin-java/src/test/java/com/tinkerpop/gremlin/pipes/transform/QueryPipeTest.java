@@ -53,6 +53,15 @@ public class QueryPipeTest extends TestCase {
             counter++;
         }
         assertEquals(counter, 3);
+
+        counter = 0;
+        pipe = new QueryPipe<Vertex>(Vertex.class, Direction.OUT, null, null, 2, 5);
+        pipe.setStarts(graph.getVertices());
+        while (pipe.hasNext()) {
+            pipe.next();
+            counter++;
+        }
+        assertEquals(counter, 4);
     }
 
     public void testDirection() {

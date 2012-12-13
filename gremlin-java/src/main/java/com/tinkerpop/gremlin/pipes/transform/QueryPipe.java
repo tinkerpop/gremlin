@@ -7,6 +7,7 @@ import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
+import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.PipeHelper;
 
 import java.util.Arrays;
@@ -69,18 +70,25 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implem
 
     public String toString() {
 
-        final String extra;
-        if (this.lowRange == 0 && highRange == Long.MAX_VALUE)
-            extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:false";
-        else
-            extra = "has:" + (this.hasContainers != null) + ",interval:" + (this.intervalContainers != null) + ",range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
-
+        String extra = "";
+        if (this.hasContainers != null && this.hasContainers.size() > 0)
+            extra = extra + "has";
+        if (this.intervalContainers != null && this.intervalContainers.size() > 0) {
+            if (extra.length() != 0) extra = extra + ",";
+            extra = extra + "interval";
+        }
+        if (this.lowRange != 0 || highRange != Long.MAX_VALUE) {
+            if (extra.length() != 0) extra = extra + ",";
+            extra = extra + "range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
+        }
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
     }
 
     public E processNextStart() {
         while (true) {
-            if (this.currentIterator.hasNext()) {
+            if (this.count >= this.highRange) {
+                throw FastNoSuchElementException.instance();
+            } else if (this.currentIterator.hasNext()) {
                 this.count++;
                 final E e = currentIterator.next();
                 if (this.count > this.lowRange)
