@@ -1,6 +1,6 @@
 [[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-running.png|width=125px|align=left|float]]
 
-There are numerous ways to denote the same path expression. The trade off is between readability and speed. To maximize readability, "Groovy closures":http://groovy.codehaus.org/Closures are usually the way to go. To maximize speed, the general rule is to avoid closures if possible. While using Groovy closures may make a path expression easier to read, unfortunately, its slower than the corresponding @Pipe@. However, when no corresponding @Pipe@ exists, then a closure is the appropriate solution. This section demonstrates the various ways to express the same path and provides some timing statistics on the graph described in [[Defining a More Complex Property Graph]].
+There are numerous ways to denote the same path expression. The trade off is between readability and speed. To maximize readability, "Groovy closures":http://groovy.codehaus.org/Closures are usually the way to go. *To maximize speed, the general rule is to avoid closures if possible*. While using Groovy closures may make a path expression easier to read, unfortunately, its slower than the corresponding @Pipe@. However, when no corresponding @Pipe@ exists, then a closure is the appropriate solution. This section demonstrates the various ways to express the same path and provides some timing statistics on the graph described in [[Defining a More Complex Property Graph]].
 
 ```text
 g = new TinkerGraph()

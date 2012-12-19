@@ -40,7 +40,7 @@ h2. Transform-Based Steps
 | @map@ | get the property map of an element | @PropertyMapPipe()@ |
 | @memoize(string, map?)@ | "memoize":http://en.wikipedia.org/wiki/Memoization a named section with optional map being a cache | @MemoizePipe()@ |
 | @memoize(integer, map?)@ | "memoize":http://en.wikipedia.org/wiki/Memoization @n@-steps ago with optional map being a cache | @MemoizePipe()@ |
-| @gather{closure?}@ | collect all objects up to that step and process with provided closure | @GatherPipe()@ and @TransformFunctionPipe(closure)@ |
+| @gather{closure?}@ | collect all objects up to that step and process with provided closure | @GatherPipe()@ or @GatherFunctionPipe(closure)@ |
 | @scatter@ | unroll all objects in the iterable at that step | @ScatterPipe()@ |
 | @path(closures..?)@ | the path through the pipeline up to this point, where closures are post-processing for each object in the path | @PathPipe()@ or @PathFunctionPipe(closures...?)@ |
 | @cap@ | emits the side effect of the pipe prior | @SideEffectCapPipe(pipe)@ |
@@ -55,7 +55,7 @@ h2. Filter-Based Steps
 | @[i]@ | emit the particular indexed object | @RangeFilterPipe(i,i)@ |
 | @[i..j]@ | emit the objects indexed by the range | @RangeFilterPipe(i,j)@ |
 | @has('key',value)@ | allow element if has property | @PropertyFilterPipe('key',value,Filter.EQUALS)@ |
-| @has('key',T,value)@ | allow element if property is T related to value | @PropertyFilterPipe('key',value,T)@ |
+| @has('key',T,value)@ | allow element if property is T related to value, where T is @T.eq@, @T.neq@, @T.lt@, @T.lte@, @T.gt@, or @T.gte@ | @PropertyFilterPipe('key',value,T)@ |
 | @hasNot('key',value)@ | filter element if has property | @PropertyFilterPipe('key',value,Filter.NOT_EQUALS)@ |
 | @hasNot('key',T,value)@ | filter element if property is not T related to value | @PropertyFilterPipe('key',value,!T)@ |
 | @back(integer)@ | go back to the results from n-steps ago | @BackFilterPipe(Pipe())@ |

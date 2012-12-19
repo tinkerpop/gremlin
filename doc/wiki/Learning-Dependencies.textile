@@ -1,6 +1,6 @@
 Gremlin is part of a larger eco-system of technologies. The primary technologies to understand when using Gremlin are itemized below.
 
-* "Blueprints":http://blueprints.tinkerpop.com: A library to interact with various graph database vendors.
+* "Blueprints":http://blueprints.tinkerpop.com: A library to interact with various graph software vendors.
 * "Pipes":http://pipes.tinkerpop.com: A library for computing using data flows.
 * "Groovy":http://groovy.codehaus.org: The default host language for Gremlin.
 
@@ -8,7 +8,7 @@ h2. Blueprints
 
 !https://github.com/tinkerpop/blueprints/raw/master/doc/images/blueprints-logo.png!
 
-"Blueprints":http://blueprints.tinkerpop.com can be considered the "JDBC":http://en.wikipedia.org/wiki/Java_Database_Connectivity of the graph database community. It provides a set of interfaces that when implemented, yield a Blueprints-enabled graph database. The "TinkerPop graph stack":http://engineering.attinteractive.com/2010/12/a-graph-processing-stack/ is all predicated on Blueprints and the databases that support Blueprints.
+"Blueprints":http://blueprints.tinkerpop.com can be considered the "JDBC":http://en.wikipedia.org/wiki/Java_Database_Connectivity of the graph database community. It provides a set of interfaces that when implemented, yield a Blueprints-enabled graph database. The "TinkerPop graph stack":http://tinkerpop.com is all predicated on Blueprints and the databases that support Blueprints.
 
 Given that Gremlin is hosted by various JVM languages, it is possible to make use of the Blueprints API from within these other JVM languages. In this way, all the utilities provided in Blueprints are easily accessible. In essence, Gremlin is a shorthand notation for many of the access patterns used when dealing with Blueprints.
 

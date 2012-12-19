@@ -74,6 +74,7 @@ new GremlinPipeline(g.getVertex(1)).outE().store(x, new PipeFunction<Edge,Double
 
 h2. Other Gremlin Language Implementations
 
-"Gremlin Scala TinkerPop 2.0":https://github.com/mpollmeier/tinkubator/tree/gremlin-scala-tinkerpop2.0 - ported Gremlin-Scala to the TinkerPop 2.0 stack
-
 Please feel free to add other Gremlin language implementations to this section.
+
+"Gremlin Scala":https://github.com/mpollmeier/tinkubator (TinkerPop 2.x)
+"Gremlin Clojure":http://github.com/olabini/clj-gremlin (TinkerPop 2.x)
