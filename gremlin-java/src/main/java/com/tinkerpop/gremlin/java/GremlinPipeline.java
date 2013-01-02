@@ -213,8 +213,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new OutVertexPipe());
     }
 
-    public GremlinPipeline<S, Map<String, Object>> map() {
-        return this.add(new PropertyMapPipe());
+    public GremlinPipeline<S, Map<String, Object>> map(final String... keys) {
+        return this.add(new PropertyMapPipe(keys));
     }
 
     public GremlinPipeline<S, Object> property(final String key) {

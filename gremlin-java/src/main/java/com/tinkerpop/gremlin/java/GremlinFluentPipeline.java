@@ -188,9 +188,10 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
      * Add a PropertyMapPipe to the end of the Pipeline.
      * Emit the properties of the incoming element as a java.util.Map.
      *
+     * @param keys the keys to get from the element (if none provided, all keys retrieved)
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline<S, Map<String, Object>> map();
+    public GremlinFluentPipeline<S, Map<String, Object>> map(final String... keys);
 
     /**
      * Add a PropertyPipe to the end of the Pipeline.
