@@ -26,7 +26,7 @@ if "%1" == "-v" goto version
 :console
 
 set CLASSPATH=%CP%;%OLD_CLASSPATH%
-java %JAVA_OPTIONS% %JAVA_ARGS% com.tinkerpop.gremlin.groovy.console.Console
+java %JAVA_OPTIONS% %JAVA_ARGS% com.tinkerpop.gremlin.groovy.console.Console %*
 
 set CLASSPATH=%OLD_CLASSPATH%
 goto :eof
