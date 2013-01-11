@@ -62,6 +62,7 @@ import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SelectPipe;
+import com.tinkerpop.pipes.transform.ShufflePipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.util.AsPipe;
@@ -1013,6 +1014,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, Row> select() {
         return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this)));
+    }
+
+    /**
+     * Add a ShufflePipe to the end of the Pipeline.
+     * All the objects previous to this step are aggregated in a greedy fashion, their order randomized and emitted
+     * as a List.
+     *
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, List> shuffle() {
+        return this.add(new ShufflePipe());
     }
 
     /**
