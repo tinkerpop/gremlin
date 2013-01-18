@@ -1,8 +1,11 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
+import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Ignore;
 
 import javax.script.Bindings;
 import javax.script.CompiledScript;
@@ -146,6 +149,43 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
             totalTime += System.currentTimeMillis() - time;
         }
         System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);
+    }
+
+    public void ignoreTestBlowTheHeap() throws ScriptException {
+        final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
+        final Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        long parameterizedStartTime = System.currentTimeMillis();
+        System.out.println("Try to blow the heap with parameterized Gremlin.");
+        try {
+            for (int ix = 0; ix < 100000; ix++) {
+                final Bindings bindings = engine.createBindings();
+                bindings.put("g", g);
+                bindings.put("x", ix);
+                engine.eval("g.v(x)", bindings);
+
+                if (ix > 0 && ix % 5000 == 0) {
+                    System.out.println(String.format("%s scripts processed in %s (ms).", ix, System.currentTimeMillis() - parameterizedStartTime));
+                }
+            }
+        } catch (OutOfMemoryError oome) {
+            assertTrue(false);
+        }
+
+        System.out.println("Try to blow the heap with non-parameterized Gremlin.");
+        try {
+            for (int ix = 0; ix < 10000; ix++) {
+                final Bindings bindings = engine.createBindings();
+                bindings.put("g", g);
+                engine.eval(String.format("g.v(%s)", ix), bindings);
+
+                if (ix > 0 && ix % 500 == 0) {
+                    System.out.println(String.format("%s scripts processed in %s (ms).", ix, System.currentTimeMillis() - parameterizedStartTime));
+                }
+            }
+        } catch (OutOfMemoryError oome) {
+            assertTrue(false);
+        }
     }
 
 }
