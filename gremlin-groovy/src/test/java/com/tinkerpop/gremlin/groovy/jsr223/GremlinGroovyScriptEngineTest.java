@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.impls.neo4j.Neo4jGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import junit.framework.Assert;
@@ -151,18 +152,37 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         System.out.println("Compiled script runtime for " + runs + " runs: " + totalTime);
     }
 
-    public void ignoreTestBlowTheHeap() throws ScriptException {
+    /**
+     * Tries to force the out of memory exceptions that commonly seem to happen with scriptengine.
+     */
+    public void untestBlowTheHeap() throws ScriptException {
         final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
         final Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        // tinkergrph behaves the same as neo4j
+        //final Graph g = new Neo4jGraph("/tmp/neo4j");
+
+        final String[] gremlins = new String[] {
+                "g.v(xxx).out.toList()",
+                "g.v(xxx).in.toList()",
+                "g.v(xxx).out.loop(1){true}{true}.toList()",
+                "g.v(xxx).groupCount.cap.next()"
+        };
+
+        /******************START PARAMETERIZE GREMLIN***************
+         * parameterized gremlin doesn't blow the heap
+         */
+
+        /*
 
         long parameterizedStartTime = System.currentTimeMillis();
         System.out.println("Try to blow the heap with parameterized Gremlin.");
         try {
-            for (int ix = 0; ix < 100000; ix++) {
+            for (int ix = 0; ix < 100001; ix++) {
                 final Bindings bindings = engine.createBindings();
                 bindings.put("g", g);
-                bindings.put("x", ix);
-                engine.eval("g.v(x)", bindings);
+                bindings.put("xxx", ((ix % 4) + 1));
+                Object x = engine.eval(gremlins[ix % 4], bindings);
 
                 if (ix > 0 && ix % 5000 == 0) {
                     System.out.println(String.format("%s scripts processed in %s (ms).", ix, System.currentTimeMillis() - parameterizedStartTime));
@@ -171,16 +191,35 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         } catch (OutOfMemoryError oome) {
             assertTrue(false);
         }
+        */
 
+        /*************************DONE PARAMETERIZE GREMLIN*****************/
+
+        long notParameterizedStartTime = System.currentTimeMillis();
         System.out.println("Try to blow the heap with non-parameterized Gremlin.");
         try {
-            for (int ix = 0; ix < 10000; ix++) {
+            for (int ix = 0; ix < 100001; ix++) {
                 final Bindings bindings = engine.createBindings();
                 bindings.put("g", g);
-                engine.eval(String.format("g.v(%s)", ix), bindings);
 
-                if (ix > 0 && ix % 500 == 0) {
-                    System.out.println(String.format("%s scripts processed in %s (ms).", ix, System.currentTimeMillis() - parameterizedStartTime));
+                // DOESN'T BLOW THE HEAP
+                //Object x = engine.eval(gremlins[ix % 4].replace("xxx", String.valueOf((ix % 4) + 1)), bindings);
+
+                // DOESN'T BLOW THE HEAP
+                //Object x = engine.eval(String.format(gremlins[ix % 4].replace("xxx", "%s"), String.valueOf((ix % 4) + 1)), bindings);
+
+                // DOESN'T BLOW THE HEAP
+                //Object x = engine.eval(String.format("g.v(%s)", (ix % 4) + 1), bindings);
+
+                // KABOOM!!!!!!!!!!!
+                // note that the previous line that doesn't blow the heap does the same exact thing,
+                // constructs the string in the same exact way, but doesn't return null because the argument
+                // being pushed into the string is actually constrained to those vertices in the toy graph.
+                // unclear why that matters
+                Object x = engine.eval(String.format("g.v(%s)", ix), bindings);
+
+                if (ix > 0 && ix % 5000 == 0) {
+                    System.out.println(String.format("%s scripts processed in %s (ms).", ix, System.currentTimeMillis() - notParameterizedStartTime));
                 }
             }
         } catch (OutOfMemoryError oome) {
@@ -188,4 +227,10 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         }
     }
 
+    /*
+    public static void main(String args[]) throws Exception {
+        Thread.sleep(5000);
+        new GremlinGroovyScriptEngineTest().testBlowTheHeap();
+    }
+    */
 }
