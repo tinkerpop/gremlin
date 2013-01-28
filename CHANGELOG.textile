@@ -21,9 +21,10 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* @GremlinGroovyScriptEngine@ now maintains an internal cache reset to ensure no @OutOfMemoryException@ issues
 * The @map@ step now is @map(String... keys)@ with user provided keys to get (@id@ and @label@ possible options)
-* The console can be initialized with a script to pre-define steps and initialize other aspects of the environment.
-* The @shuffle@ step gathers all objects into a list and randomizes the order of their output.
+* The console can be initialized with a script to pre-define steps and initialize other aspects of the environment
+* The @shuffle@ step gathers all objects into a list and randomizes the order of their output
 
 h3. Version 2.2.0 (December 19, 2012)
 

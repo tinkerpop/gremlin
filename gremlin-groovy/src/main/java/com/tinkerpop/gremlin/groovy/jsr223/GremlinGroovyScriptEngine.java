@@ -54,9 +54,15 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     private GroovyClassLoader loader;
     private volatile GremlinGroovyScriptEngineFactory factory;
     private static int counter = 0;
+    private int cacheResetSize = 1750;
 
     private static final String DOT_STAR = ".*";
     private static final String EMPTY_STRING = "";
+
+    public GremlinGroovyScriptEngine(final int cacheResetSize) {
+        this();
+        this.cacheResetSize = cacheResetSize;
+    }
 
     public GremlinGroovyScriptEngine() {
         Gremlin.load();
@@ -78,6 +84,14 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
         ic.addStaticImport(TransactionalGraph.Conclusion.class.getName(), TransactionalGraph.Conclusion.SUCCESS.toString());
         ic.addStaticImport(TransactionalGraph.Conclusion.class.getName(), TransactionalGraph.Conclusion.FAILURE.toString());
         return ic;
+    }
+
+    private void checkClearCache() {
+        if (this.classMap.size() > this.cacheResetSize) {
+            this.globalClosures.clear();
+            this.classMap.clear();
+            this.loader.clearCache();
+        }
     }
 
     public Object eval(final Reader reader, final ScriptContext context) throws ScriptException {
@@ -149,6 +163,8 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     }
 
     Object eval(final Class scriptClass, final ScriptContext context) throws ScriptException {
+        this.checkClearCache();
+
         context.setAttribute("context", context, ScriptContext.ENGINE_SCOPE);
         java.io.Writer writer = context.getWriter();
         context.setAttribute("out", writer instanceof PrintWriter ? writer : new PrintWriter(writer), ScriptContext.ENGINE_SCOPE);
