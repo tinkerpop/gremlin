@@ -44,10 +44,27 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
     }
 
     public void testBindings() throws Exception {
-        ScriptEngine engine = new GremlinGroovyScriptEngine();
+        final TinkerGraph g = TinkerGraphFactory.createTinkerGraph();
+        final ScriptEngine engine = new GremlinGroovyScriptEngine();
         assertTrue(engine.eval("g = TinkerGraphFactory.createTinkerGraph()") instanceof TinkerGraph);
         assertTrue(engine.get("g") instanceof TinkerGraph);
-        assertEquals(engine.eval("g.v(1)"), TinkerGraphFactory.createTinkerGraph().getVertex(1));
+        assertEquals(engine.eval("g.v(1)"), g.getVertex(1));
+
+        final Bindings bindings = engine.createBindings();
+        bindings.put("g", g);
+        bindings.put("s", "marko");
+        bindings.put("f", 0.5f);
+        bindings.put("i", 1);
+        bindings.put("b", true);
+        bindings.put("l", 100l);
+        bindings.put("d", 1.55555d);
+
+        assertEquals(g.getEdge(7), engine.eval("g.E.has('weight',f).next()", bindings));
+        assertEquals(g.getVertex(1), engine.eval("g.V.has('name',s).next()", bindings));
+        assertEquals(g.getVertex(1), engine.eval("g.V.sideEffect{it.bbb=it.name=='marko'}.iterate();g.V.has('bbb',b).next()", bindings));
+        assertEquals(g.getVertex(1), engine.eval("g.V.sideEffect{it.iii=it.name=='marko'?1:0}.iterate();g.V.has('iii',i).next()", bindings));
+        assertEquals(g.getVertex(1), engine.eval("g.V.sideEffect{it.lll=it.name=='marko'?100l:0l}.iterate();g.V.has('lll',l).next()", bindings));
+        assertEquals(g.getVertex(1), engine.eval("g.V.sideEffect{it.ddd=it.name=='marko'?1.55555d:0}.iterate();g.V.has('ddd',d).next()", bindings));
     }
 
     public void testThreadSafetyOnEngine() throws Exception {
