@@ -221,4 +221,38 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
             assertTrue(false);
         }
     }
+
+    public void untestFunctionsUsedInClosure() throws ScriptException {
+        GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
+        final Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        final Bindings bindings = engine.createBindings();
+        bindings.put("g", g);
+
+        // this works on its own when the function and the line that uses it is in one "script".  this is the
+        // current workaround
+        assertEquals(g.getVertex(2), engine.eval("def isVadas(v){v.name=='vadas'};g.V.filter{isVadas(it)}.next()", bindings));
+
+        // let's reset this piece and make sure isVadas is not hanging around.
+        engine = new GremlinGroovyScriptEngine();
+
+        // validate that isVadas throws an exception since it is not defined
+        try {
+            engine.eval("isVadas(g.v(2))", bindings);
+
+            // fail the test if the above doesn't throw an exception
+            fail();
+        } catch (Exception ex) {
+            // this is good...we want this. it means isVadas isn't hanging about
+        }
+
+        // now...define the function separately on its own in one script
+        engine.eval("def isVadas(v){v.name=='vadas'}", bindings);
+
+        // make sure the function works on its own...no problem
+        assertEquals(true, engine.eval("isVadas(g.v(2))", bindings));
+
+        // make sure the function works in a closure...this generates a StackOverflowError
+        assertEquals(g.getVertex(2), engine.eval("g.V.filter{isVadas(it)}.next()", bindings));
+    }
 }
