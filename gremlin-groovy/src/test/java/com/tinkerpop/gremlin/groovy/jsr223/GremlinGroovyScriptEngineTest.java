@@ -255,4 +255,41 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         // make sure the function works in a closure...this generates a StackOverflowError
         assertEquals(g.getVertex(2), engine.eval("g.V.filter{isVadas(it)}.next()", bindings));
     }
+
+    public void untestUsingClassesIsGood() throws ScriptException {
+        GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
+        final Graph g = TinkerGraphFactory.createTinkerGraph();
+
+        final Bindings bindings = engine.createBindings();
+        bindings.put("g", g);
+
+        // works when it's all defined together
+        assertEquals(true, engine.eval("class c { static def isVadas(v){v.name=='vadas'}};c.isVadas(g.v(2))", bindings));
+
+        // let's reset this piece and make sure isVadas is not hanging around.
+        engine = new GremlinGroovyScriptEngine();
+
+        // validate that isVadas throws an exception since it is not defined
+        try {
+            engine.eval("c.isVadas(g.v(2))", bindings);
+
+            // fail the test if the above doesn't throw an exception
+            fail();
+        } catch (Exception ex) {
+            // this is good...we want this. it means isVadas isn't hanging about
+        }
+
+        // now...define the class separately on its own in one script...
+        // HERE'S and AWKWARD BIT.........
+        // YOU HAVE TO END WITH: null;
+        // ....OR ELSE YOU GET:
+        // javax.script.ScriptException: javax.script.ScriptException:
+        // org.codehaus.groovy.runtime.metaclass.MissingMethodExceptionNoStack: No signature of method: c.main()
+        // is applicable for argument types: ([Ljava.lang.String;) values: [[]]
+        // WOULD BE NICE IF WE DIDN'T HAVE TO DO THAT
+        engine.eval("class c { static def isVadas(v){v.name=='vadas'}};null;", bindings);
+
+        // make sure the class works on its own...this generates: groovy.lang.MissingPropertyException: No such property: c for class: Script2
+        assertEquals(true, engine.eval("c.isVadas(g.v(2))", bindings));
+    }
 }
