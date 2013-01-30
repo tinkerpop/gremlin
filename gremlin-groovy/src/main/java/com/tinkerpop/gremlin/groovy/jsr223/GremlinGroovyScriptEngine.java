@@ -54,7 +54,7 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     private GroovyClassLoader loader;
     private volatile GremlinGroovyScriptEngineFactory factory;
     private static int counter = 0;
-    private int cacheResetSize = 1750;
+    private int cacheResetSize = 1500;
 
     private static final String DOT_STAR = ".*";
     private static final String EMPTY_STRING = "";
@@ -207,7 +207,7 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
                     } else if (args instanceof Tuple) {
                         return invokeMethod(object, name, ((Tuple) args).toArray());
                     } else if (args instanceof Object[]) {
-                        return invokeMethod(object, name, args);
+                        return invokeMethod(object, name, (Object[]) args);
                     } else {
                         return invokeMethod(object, name, new Object[]{args});
                     }

@@ -222,7 +222,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         }
     }
 
-    public void untestFunctionsUsedInClosure() throws ScriptException {
+    public void testFunctionsUsedInClosure() throws ScriptException {
         GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
         final Graph g = TinkerGraphFactory.createTinkerGraph();
 
@@ -278,7 +278,6 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         } catch (Exception ex) {
             // this is good...we want this. it means isVadas isn't hanging about
         }
-
         // now...define the class separately on its own in one script...
         // HERE'S and AWKWARD BIT.........
         // YOU HAVE TO END WITH: null;

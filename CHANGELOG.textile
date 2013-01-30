@@ -21,6 +21,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* Fixed a @StackOverflowError@ in @GremlinGroovyScriptEngine@ having to do with infinite looping on function calls
 * @GremlinGroovyScriptEngine@ now maintains an internal cache reset to ensure no @OutOfMemoryException@ issues
 * The @map@ step now is @map(String... keys)@ with user provided keys to get (@id@ and @label@ possible options)
 * The console can be initialized with a script to pre-define steps and initialize other aspects of the environment
