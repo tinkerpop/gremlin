@@ -21,6 +21,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* @ScriptExecutor@ provides support for @args[]@ as well as @a1@, @a2@, etc. type parameters
 * Fixed a @StackOverflowError@ in @GremlinGroovyScriptEngine@ having to do with infinite looping on function calls
 * @GremlinGroovyScriptEngine@ now maintains an internal cache reset to ensure no @OutOfMemoryException@ issues
 * The @map@ step now is @map(String... keys)@ with user provided keys to get (@id@ and @label@ possible options)

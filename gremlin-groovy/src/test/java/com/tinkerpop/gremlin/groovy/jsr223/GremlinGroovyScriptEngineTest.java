@@ -173,9 +173,6 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         final GremlinGroovyScriptEngine engine = new GremlinGroovyScriptEngine();
         final Graph g = TinkerGraphFactory.createTinkerGraph();
 
-        // tinkergrph behaves the same as neo4j
-        //final Graph g = new Neo4jGraph("/tmp/neo4j");
-
         final String[] gremlins = new String[]{
                 "g.v(xxx).out.toList()",
                 "g.v(xxx).in.toList()",
