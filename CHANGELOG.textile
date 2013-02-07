@@ -21,8 +21,8 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
-* Added @mapOrder@ step which takes a @Map@ as input, orders its entries, and then emits its keys
-* Added @Tokens.T.decr@ and @Tokens.T.incr@ for default ordering in @order@ and @mapOrder@ steps
+* Added @orderMap@ step which takes a @Map@ as input, orders its entries, and then emits its keys
+* Added @Tokens.T.decr@ and @Tokens.T.incr@ for default ordering in @order@ and @orderMap@ steps
 * @ScriptExecutor@ provides support for @args[]@ as well as @a1@, @a2@, etc. type parameters
 * Fixed a @StackOverflowError@ in @GremlinGroovyScriptEngine@ having to do with infinite looping on function calls
 * @GremlinGroovyScriptEngine@ now maintains an internal cache reset to ensure no @OutOfMemoryException@ issues
