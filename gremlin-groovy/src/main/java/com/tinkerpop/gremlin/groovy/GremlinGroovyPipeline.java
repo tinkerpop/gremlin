@@ -107,6 +107,10 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) super.path(GroovyPipeFunction.generate(closures));
     }
 
+    public GremlinGroovyPipeline<S, E> mapOrder(final Closure closure) {
+        return (GremlinGroovyPipeline<S, E>) super.mapOrder(new GroovyPipeFunction(closure));
+    }
+
     public GremlinGroovyPipeline<S, E> sideEffect(final Closure closure) {
         return (GremlinGroovyPipeline<S, E>) super.sideEffect(new GroovyPipeFunction<E, Object>(closure));
     }

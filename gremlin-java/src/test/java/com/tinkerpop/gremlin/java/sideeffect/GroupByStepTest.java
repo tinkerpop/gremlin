@@ -29,10 +29,10 @@ public class GroupByStepTest extends com.tinkerpop.gremlin.test.sideeffect.Group
                         return (String) vertex.getProperty("lang");
                     }
                 }, new PipeFunction<Vertex, String>() {
-            public String compute(Vertex vertex) {
-                return (String) vertex.getProperty("name");
-            }
-        }
+                    public String compute(Vertex vertex) {
+                        return (String) vertex.getProperty("name");
+                    }
+                }
         ), (Map) m);
     }
 

@@ -24,7 +24,7 @@ class SelectStepTest extends com.tinkerpop.gremlin.test.transform.SelectStepTest
     }
 
     public void test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX() {
-        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(g.v(1).as('a').out('knows').as('b').select {it.name});
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(g.v(1).as('a').out('knows').as('b').select { it.name });
     }
 
     public void test_g_v1_asXaX_outXknowsX_asXbX_selectXaX() {
@@ -32,6 +32,6 @@ class SelectStepTest extends com.tinkerpop.gremlin.test.transform.SelectStepTest
     }
 
     public void test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX() {
-        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX(g.v(1).as('a').out('knows').as('b').select(['a']) {it.name});
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX(g.v(1).as('a').out('knows').as('b').select(['a']) { it.name });
     }
 }

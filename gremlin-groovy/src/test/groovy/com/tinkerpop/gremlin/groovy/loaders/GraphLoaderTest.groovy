@@ -42,15 +42,15 @@ class GraphLoaderTest extends TestCase {
 
         assertEquals(g.v(1, 2, 3).toList(), [g.v(1), g.v(2), g.v(3)]);
         assertEquals(g.e(7, 8, 9).toList(), [g.e(7), g.e(8), g.e(9)]);
-        
+
         assertEquals(g.v(1, 2, 10).toList(), [g.v(1), g.v(2), null]);
         assertEquals(g.v(1, 2, 10).toList(), [g.v(1), g.v(2), g.v(10)]);
 
         assertEquals(g.e(7, 8, 34).toList(), [g.e(7), g.e(8), null]);
         assertEquals(g.e(7, 8, 34).toList(), [g.e(7), g.e(8), g.e(34)]);
-        
-        g.v(1,2,3).out.toList();
-        g.e(7,8,9).inV.toList();
+
+        g.v(1, 2, 3).out.toList();
+        g.e(7, 8, 9).inV.toList();
     }
 
     public void testIdAndLabelProperties() throws Exception {
@@ -80,13 +80,13 @@ class GraphLoaderTest extends TestCase {
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[1].name.next()));
         assertTrue(["vadas", "josh", "lop"].contains(g.v(1).out[2].name.next()));
 
-        assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV), 3);
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[0].name.next()));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[1].name.next()));
-        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter {it.label == 'created' | it.label == 'knows'}.inV[2].name.next()));
+        assertEquals(PipeHelper.counter(g.v(1).outE.filter { it.label == 'created' | it.label == 'knows' }.inV), 3);
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter { it.label == 'created' | it.label == 'knows' }.inV[0].name.next()));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter { it.label == 'created' | it.label == 'knows' }.inV[1].name.next()));
+        assertTrue(["vadas", "josh", "lop"].contains(g.v(1).outE.filter { it.label == 'created' | it.label == 'knows' }.inV[2].name.next()));
 
-        assertEquals(PipeHelper.counter(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0].next()}.inV), 2);
-        assertTrue(["vadas", "josh"].contains(g.v(1).outE.filter {it.weight >= g.v(1).outE['weight'][0].next()}.inV[0].name.next()));
+        assertEquals(PipeHelper.counter(g.v(1).outE.filter { it.weight >= g.v(1).outE['weight'][0].next() }.inV), 2);
+        assertTrue(["vadas", "josh"].contains(g.v(1).outE.filter { it.weight >= g.v(1).outE['weight'][0].next() }.inV[0].name.next()));
         assertEquals(PipeHelper.counter(g.v(1).inE), 0);
 
         def results = [];
@@ -100,7 +100,7 @@ class GraphLoaderTest extends TestCase {
         assertTrue(results.contains('lop'))
 
         results = [];
-        g.v(3).inE('created').filter {it.weight > 0.3}.outV.name.fill(results)
+        g.v(3).inE('created').filter { it.weight > 0.3 }.outV.name.fill(results)
         assertEquals(results.size(), 2)
         assertTrue(results.contains('marko'))
         assertTrue(results.contains('josh'))

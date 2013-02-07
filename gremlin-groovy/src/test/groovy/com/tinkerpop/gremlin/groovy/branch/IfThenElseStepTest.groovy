@@ -20,6 +20,6 @@ class IfThenElseStepTest extends com.tinkerpop.gremlin.test.branch.IfThenElseSte
     }
 
     public void test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name() {
-        super.test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name(g.v(1).out.ifThenElse {it.lang == 'java'} {it} {it.out}.name);
+        super.test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name(g.v(1).out.ifThenElse { it.lang == 'java' } { it } { it.out }.name);
     }
 }

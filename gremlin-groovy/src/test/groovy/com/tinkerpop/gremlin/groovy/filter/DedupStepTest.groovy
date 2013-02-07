@@ -24,7 +24,7 @@ class DedupStepTest extends com.tinkerpop.gremlin.test.filter.DedupStepTest {
     }
 
     public void test_g_V_both_dedupXlangX_name() {
-        super.test_g_V_both_dedupXlangX_name(g.V.both.dedup {it.lang}.name);
+        super.test_g_V_both_dedupXlangX_name(g.V.both.dedup { it.lang }.name);
     }
 
 }

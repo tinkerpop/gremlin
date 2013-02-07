@@ -1,14 +1,8 @@
-package com.tinkerpop.gremlin.groovy;
-
+package com.tinkerpop.gremlin.groovy
 
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine
-import com.tinkerpop.gremlin.groovy.loaders.ElementLoader
-import com.tinkerpop.gremlin.groovy.loaders.GraphLoader
-import com.tinkerpop.gremlin.groovy.loaders.IndexLoader
-import com.tinkerpop.gremlin.groovy.loaders.ObjectLoader
-import com.tinkerpop.gremlin.groovy.loaders.PipeLoader
-import com.tinkerpop.gremlin.groovy.loaders.SailGraphLoader
+import com.tinkerpop.gremlin.groovy.loaders.*
 import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.pipes.Pipe
 

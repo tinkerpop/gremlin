@@ -22,6 +22,6 @@ class GroupByStepTest extends com.tinkerpop.gremlin.test.sideeffect.GroupByStepT
 
     public void test_g_V_groupByXlang_nameX() {
         def m = [:];
-        super.test_g_V_groupByXlang_nameX(g.V.groupBy(m) {it.lang} {it.name}, m);
+        super.test_g_V_groupByXlang_nameX(g.V.groupBy(m) { it.lang } { it.name }, m);
     }
 }

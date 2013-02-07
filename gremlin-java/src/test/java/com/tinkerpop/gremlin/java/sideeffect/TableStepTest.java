@@ -37,10 +37,10 @@ public class TableStepTest extends com.tinkerpop.gremlin.test.sideeffect.TableSt
                         return (String) vertex.getProperty("name");
                     }
                 }, new PipeFunction<String, Integer>() {
-            public Integer compute(String name) {
-                return name.length();
-            }
-        }
+                    public Integer compute(String name) {
+                        return name.length();
+                    }
+                }
         ).cap());
     }
 }

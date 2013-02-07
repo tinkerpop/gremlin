@@ -23,6 +23,6 @@ class GatherStepTest extends com.tinkerpop.gremlin.test.transform.GatherStepTest
     }
 
     public void test_g_v1_out_gatherXget0X(final Pipe<Vertex, Vertex> pipe) {
-        super.test_g_v1_out_gatherXget0X(g.v(1).out.gather {it[0]});
+        super.test_g_v1_out_gatherXget0X(g.v(1).out.gather { it[0] });
     }
 }

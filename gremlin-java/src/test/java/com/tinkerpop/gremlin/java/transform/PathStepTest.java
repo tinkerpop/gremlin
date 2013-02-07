@@ -25,14 +25,14 @@ public class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepT
 
     public void test_g_v1_out_pathXage__nameX() {
         super.test_g_v1_out_pathXage__nameX(new GremlinPipeline(g.getVertex(1)).out().path(new PipeFunction<Vertex, Integer>() {
-                    public Integer compute(Vertex vertex) {
-                        return (Integer) vertex.getProperty("age");
-                    }
-                }, new PipeFunction<Vertex, String>() {
-            public String compute(Vertex vertex) {
-                return (String) vertex.getProperty("name");
-            }
-        }
+                                                                                               public Integer compute(Vertex vertex) {
+                                                                                                   return (Integer) vertex.getProperty("age");
+                                                                                               }
+                                                                                           }, new PipeFunction<Vertex, String>() {
+                                                                                               public String compute(Vertex vertex) {
+                                                                                                   return (String) vertex.getProperty("name");
+                                                                                               }
+                                                                                           }
         ));
     }
 
@@ -50,10 +50,10 @@ public class PathStepTest extends com.tinkerpop.gremlin.test.transform.PathStepT
                         return (String) vertex.getProperty("name");
                     }
                 }, new PipeFunction<Vertex, String>() {
-            public String compute(Vertex vertex) {
-                return (String) vertex.getProperty("lang");
-            }
-        }
+                    public String compute(Vertex vertex) {
+                        return (String) vertex.getProperty("lang");
+                    }
+                }
         ));
     }
 }

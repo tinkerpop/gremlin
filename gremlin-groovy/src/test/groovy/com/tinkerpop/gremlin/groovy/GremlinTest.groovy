@@ -29,7 +29,7 @@ class GremlinTest extends BaseTest {
         // test compilation
         Pipe pipe = Gremlin.compile("_().outE.inV.name");
         pipe.setStarts(g.v(1).iterator());
-        (pipe.next(3)).each {assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas"))}
+        (pipe.next(3)).each { assertTrue(it.equals("josh") || it.equals("lop") || it.equals("vadas")) }
         assertFalse(pipe.hasNext());
     }
 
@@ -48,9 +48,9 @@ class GremlinTest extends BaseTest {
     public void testMidPipeVariableSetting() throws Exception {
         Gremlin.load();
         def x = 0;
-        new GremlinGroovyPipeline().start([1, 2, 3]).step {x = it.next()}.iterate()
+        new GremlinGroovyPipeline().start([1, 2, 3]).step { x = it.next() }.iterate()
         assertEquals(x, 3);
-        new GremlinGroovyPipeline().start([3, 2, 1]).step {x = it.next()}.iterate()
+        new GremlinGroovyPipeline().start([3, 2, 1]).step { x = it.next() }.iterate()
         assertEquals(x, 1);
     }
 
@@ -59,7 +59,7 @@ class GremlinTest extends BaseTest {
         Graph g = TinkerGraphFactory.createTinkerGraph();
 
         Gremlin.defineStep("coCreator", [Pipe, Vertex], {
-            def x; _().sideEffect {x = it}.out('created').in('created').filter {it != x}
+            def x; _().sideEffect { x = it }.out('created').in('created').filter { it != x }
         });
         def results = []
         g.v(1).coCreator.fill(results)
@@ -70,7 +70,7 @@ class GremlinTest extends BaseTest {
         ///////////////////////
 
         Gremlin.defineStep("co", [Pipe, Vertex], { final String label ->
-            def x; _().sideEffect {x = it}.out(label).in(label).filter {it != x}
+            def x; _().sideEffect { x = it }.out(label).in(label).filter { it != x }
         });
         results = []
         g.v(1).co('created').fill(results)
@@ -83,7 +83,7 @@ class GremlinTest extends BaseTest {
         ///////////////////////
         def x;
         Gremlin.defineStep("twoStep", [Pipe, Vertex], { final Object... params ->
-            _().sideEffect {x = it}.out(params[0]).in(params[0]).filter(params[1])
+            _().sideEffect { x = it }.out(params[0]).in(params[0]).filter(params[1])
         });
         //TODO: can this be possible?
         /*Gremlin.defineStep("twoStep", [Pipe, Vertex], { final String label, Closure function ->
@@ -91,14 +91,14 @@ class GremlinTest extends BaseTest {
         });*/
 
         results = []
-        g.v(1).twoStep('created') {it != x}.fill(results)
+        g.v(1).twoStep('created') { it != x }.fill(results)
         assertEquals(results.size(), 2);
         assertTrue(results.contains(g.v(4)));
         assertTrue(results.contains(g.v(6)));
-        assertEquals(g.v(1).co('created'), g.v(1).twoStep('created') {it != x});
+        assertEquals(g.v(1).co('created'), g.v(1).twoStep('created') { it != x });
 
         results = []
-        g.v(1).twoStep('created') {it == x}.fill(results)
+        g.v(1).twoStep('created') { it == x }.fill(results)
         assertEquals(results.size(), 1);
         assertTrue(results.contains(g.v(1)));
 

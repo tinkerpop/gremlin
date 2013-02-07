@@ -57,6 +57,7 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.transform.MapOrderPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
@@ -65,6 +66,7 @@ import com.tinkerpop.pipes.transform.SelectPipe;
 import com.tinkerpop.pipes.transform.ShufflePipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.AsPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 import com.tinkerpop.pipes.util.MetaPipe;
@@ -947,6 +949,28 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
 
     /**
      * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream in a default Comparable order.
+     *
+     * @param order if the stream is composed of comparable objects, then increment or decrement can be specified
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> order(TransformPipe.Order order) {
+        return this.add(new OrderPipe(order));
+    }
+
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
+     * This step will sort the objects in the stream in a default Comparable order.
+     *
+     * @param order if the stream is composed of comparable objects, then increment or decrement can be specified
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> order(Tokens.T order) {
+        return this.add(new OrderPipe(Tokens.mapOrder(order)));
+    }
+
+    /**
+     * Add an OrderPipe to the end of the Pipeline.
      * This step will sort the objects in the stream according to a comparator defined in the provided function.
      *
      * @param compareFunction a comparator function of two objects of type E
@@ -957,7 +981,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
-     * Add a PathPipe or PathPipe to the end of the Pipeline.
+     * Add a PathPipe to the end of the Pipeline.
      * This will emit the path that has been seen thus far.
      * If path functions are provided, then they are evaluated in a round robin fashion on the objects of the path.
      *
@@ -1037,6 +1061,39 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     public GremlinPipeline<S, ?> cap() {
         return this.add(new SideEffectCapPipe((SideEffectPipe) FluentUtility.removePreviousPipes(this, 1).get(0)));
 
+    }
+
+    /**
+     * Add a MapOrderPipe to the end of the Pipeline
+     * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
+     *
+     * @param order if the values implement Comparable, then a increment or decrement sort is usable
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, ?> mapOrder(final TransformPipe.Order order) {
+        return this.add(new MapOrderPipe<Object>(order));
+    }
+
+    /**
+     * Add a MapOrderPipe to the end of the Pipeline
+     * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
+     *
+     * @param order if the values implement Comparable, then a increment or decrement sort is usable
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, ?> mapOrder(final Tokens.T order) {
+        return this.mapOrder(Tokens.mapOrder(order));
+    }
+
+    /**
+     * Add a MapOrderPipe to the end of the Pipeline
+     * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
+     *
+     * @param compareFunction a function to compare to map entries
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, ?> mapOrder(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
+        return this.add(new MapOrderPipe(compareFunction));
     }
 
     /**

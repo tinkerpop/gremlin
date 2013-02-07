@@ -11,11 +11,11 @@ class ElementLoader {
 
     public static void load() {
 
-        Element.metaClass.propertyMissing = {final String name, final def value ->
+        Element.metaClass.propertyMissing = { final String name, final def value ->
             ((Element) delegate).setProperty(name, value)
         }
 
-        Element.metaClass.methodMissing = {final String name, final def args ->
+        Element.metaClass.methodMissing = { final String name, final def args ->
             if (Gremlin.isStep(name)) {
                 return new GremlinGroovyPipeline(delegate)."$name"(* args)
             } else {
@@ -23,7 +23,7 @@ class ElementLoader {
             }
         }
 
-        Element.metaClass.propertyMissing = {final String name ->
+        Element.metaClass.propertyMissing = { final String name ->
             if (Gremlin.isStep(name)) {
                 return new GremlinGroovyPipeline(delegate)."$name"()
             } else {
@@ -33,7 +33,7 @@ class ElementLoader {
 
         Element.metaClass.map = {
             final Map<String, Object> map = new HashMap<String, Object>();
-            for (final String key: ((Element) delegate).getPropertyKeys()) {
+            for (final String key : ((Element) delegate).getPropertyKeys()) {
                 map.put(key, ((Element) delegate).getProperty(key))
             }
             return map;
@@ -45,7 +45,7 @@ class ElementLoader {
 
         Element.metaClass.values = {
             final List values = new ArrayList();
-            for (final String key: ((Element) delegate).getPropertyKeys()) {
+            for (final String key : ((Element) delegate).getPropertyKeys()) {
                 values.add(((Element) delegate).getProperty(key))
             }
             return values;

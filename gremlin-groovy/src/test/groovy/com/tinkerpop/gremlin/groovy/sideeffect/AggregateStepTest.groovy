@@ -29,6 +29,6 @@ class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.AggregateS
     }
 
     public void test_g_V_aggregateXnameX_cap() {
-        super.test_g_V_aggregateXnameX_cap(g.V.aggregate {it.name}.cap);
+        super.test_g_V_aggregateXnameX_cap(g.V.aggregate { it.name }.cap);
     }
 }

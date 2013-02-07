@@ -28,6 +28,6 @@ class OrderStepTest extends com.tinkerpop.gremlin.test.transform.OrderStepTest {
     }
 
     public void test_g_V_orderXa_nameXb_nameX_name() {
-        super.test_g_V_orderXa_nameXb_nameX_name(g.V.order {it.b.name <=> it.a.name}.name);
+        super.test_g_V_orderXa_nameXb_nameX_name(g.V.order { it.b.name <=> it.a.name }.name);
     }
 }

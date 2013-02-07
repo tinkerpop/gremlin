@@ -1,6 +1,7 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -35,7 +36,24 @@ public class Tokens {
         /**
          * Not equal to
          */
-        neq
+        neq,
+        /**
+         * Decrement
+         */
+        decr,
+        /**
+         * Increment
+         */
+        incr
+    }
+
+    public static TransformPipe.Order mapOrder(final T t) {
+        if (t.equals(T.decr))
+            return TransformPipe.Order.DECR;
+        else if (t.equals(T.incr))
+            return TransformPipe.Order.INCR;
+        else
+            throw new IllegalArgumentException(t.toString() + " is an unknown order type");
     }
 
     public static FilterPipe.Filter mapFilter(final T t) {

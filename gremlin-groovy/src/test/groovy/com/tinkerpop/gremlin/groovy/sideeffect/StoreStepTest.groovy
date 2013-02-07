@@ -24,6 +24,6 @@ class StoreStepTest extends com.tinkerpop.gremlin.test.sideeffect.StoreStepTest 
     }
 
     public void test_g_V_storeXnameX_cap() {
-        super.test_g_V_storeXnameX_cap(g.V.store {it.name}.cap);
+        super.test_g_V_storeXnameX_cap(g.V.store { it.name }.cap);
     }
 }

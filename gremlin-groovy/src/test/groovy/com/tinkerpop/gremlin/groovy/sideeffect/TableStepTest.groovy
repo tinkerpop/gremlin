@@ -25,11 +25,11 @@ class TableStepTest extends com.tinkerpop.gremlin.test.sideeffect.TableStepTest 
     }
 
     public void test_g_v1_asXaX_out_asXbX_tableXnameX_cap() {
-        super.test_g_v1_asXaX_out_asXbX_tableXnameX_cap(g.v(1).as('a').out.as('b').table {it.name}.cap);
+        super.test_g_v1_asXaX_out_asXbX_tableXnameX_cap(g.v(1).as('a').out.as('b').table { it.name }.cap);
     }
 
     public void test_g_v1_asXaX_out_propertyXnameX_asXbX_tableXname_lengthX_cap() {
-        super.test_g_v1_asXaX_out_propertyXnameX_asXbX_tableXname_lengthX_cap(g.v(1).as('a').out.name.as('b').table {it.name} {it.length()}.cap);
+        super.test_g_v1_asXaX_out_propertyXnameX_asXbX_tableXname_lengthX_cap(g.v(1).as('a').out.name.as('b').table { it.name } { it.length() }.cap);
     }
 
     public void testTableMethods() {
@@ -37,12 +37,12 @@ class TableStepTest extends com.tinkerpop.gremlin.test.sideeffect.TableStepTest 
         table.addRow("marko", 3);
         table.addRow("josh", 2);
         table.addRow("stephen", 1);
-        Table temp = table.sort {a, b -> a.get(1) <=> b.get(1)};
+        Table temp = table.sort { a, b -> a.get(1) <=> b.get(1) };
         assertEquals(temp.get(0, 0), "stephen")
         assertEquals(temp.get(1, 0), "josh")
         assertEquals(temp.get(2, 0), "marko")
 
-        temp = table.apply {it.length()} {it + 1};
+        temp = table.apply { it.length() } { it + 1 };
         assertEquals(temp.get(0, 0), 5)
         assertEquals(temp.get(0, 1), 4)
         assertEquals(temp.get(1, 0), 4)

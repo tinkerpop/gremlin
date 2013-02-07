@@ -11,11 +11,11 @@ class IndexLoader {
 
     public static void load() {
 
-        IndexableGraph.metaClass.idx = {final Object indexName ->
-            return ((IndexableGraph) delegate).getIndices().find {it.getIndexName().equals(indexName)}
+        IndexableGraph.metaClass.idx = { final Object indexName ->
+            return ((IndexableGraph) delegate).getIndices().find { it.getIndexName().equals(indexName) }
         }
 
-        Index.metaClass.getAt = {final Map query ->
+        Index.metaClass.getAt = { final Map query ->
             final Map.Entry entry = (Map.Entry) query.iterator().next();
             return new GremlinGroovyPipeline().start((((Index) delegate).get((String) entry.getKey(), entry.getValue())));
         }

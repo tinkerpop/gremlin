@@ -19,6 +19,6 @@ class FunctionStepTest extends com.tinkerpop.gremlin.test.FunctionStepTest {
     }
 
     public void test_g_v1_out_stepXnext_nameX() {
-        super.test_g_v1_out_stepXnext_nameX(g.v(1).out.step {it.next().name});
+        super.test_g_v1_out_stepXnext_nameX(g.v(1).out.step { it.next().name });
     }
 }

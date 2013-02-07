@@ -20,6 +20,6 @@ class TreeStepTest extends com.tinkerpop.gremlin.test.sideeffect.TreeStepTest {
     }
 
     public void test_g_v1_out_out_treeXnameX_cap() {
-        super.test_g_v1_out_out_treeXnameX_cap(g.v(1).out.out.tree {it.name}.cap);
+        super.test_g_v1_out_out_treeXnameX_cap(g.v(1).out.out.tree { it.name }.cap);
     }
 }
