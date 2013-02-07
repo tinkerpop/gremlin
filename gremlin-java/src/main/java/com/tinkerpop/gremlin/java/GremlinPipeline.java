@@ -57,7 +57,7 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.MapOrderPipe;
+import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
@@ -1064,36 +1064,36 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
-     * Add a MapOrderPipe to the end of the Pipeline
+     * Add a OrderMapPipe to the end of the Pipeline
      * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
      *
      * @param order if the values implement Comparable, then a increment or decrement sort is usable
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ?> mapOrder(final TransformPipe.Order order) {
-        return this.add(new MapOrderPipe<Object>(order));
+    public GremlinPipeline<S, ?> orderMap(final TransformPipe.Order order) {
+        return this.add(new OrderMapPipe<Object>(order));
     }
 
     /**
-     * Add a MapOrderPipe to the end of the Pipeline
+     * Add a OrderMapPipe to the end of the Pipeline
      * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
      *
      * @param order if the values implement Comparable, then a increment or decrement sort is usable
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> mapOrder(final Tokens.T order) {
-        return this.mapOrder(Tokens.mapOrder(order));
+        return this.orderMap(Tokens.mapOrder(order));
     }
 
     /**
-     * Add a MapOrderPipe to the end of the Pipeline
+     * Add a OrderMapPipe to the end of the Pipeline
      * Given a Map as an input, the map is first ordered and then the keys are emitted in the order.
      *
      * @param compareFunction a function to compare to map entries
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ?> mapOrder(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
-        return this.add(new MapOrderPipe(compareFunction));
+    public GremlinPipeline<S, ?> orderMap(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
+        return this.add(new OrderMapPipe(compareFunction));
     }
 
     /**
