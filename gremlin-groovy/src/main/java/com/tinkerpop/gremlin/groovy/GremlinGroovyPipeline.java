@@ -107,7 +107,7 @@ public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implement
         return (GremlinGroovyPipeline<S, E>) super.path(GroovyPipeFunction.generate(closures));
     }
 
-    public GremlinGroovyPipeline<S, E> mapOrder(final Closure closure) {
+    public GremlinGroovyPipeline<S, E> orderMap(final Closure closure) {
         return (GremlinGroovyPipeline<S, E>) super.orderMap(new GroovyPipeFunction(closure));
     }
 

@@ -1081,7 +1081,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param order if the values implement Comparable, then a increment or decrement sort is usable
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ?> mapOrder(final Tokens.T order) {
+    public GremlinPipeline<S, ?> orderMap(final Tokens.T order) {
         return this.orderMap(Tokens.mapOrder(order));
     }
 
