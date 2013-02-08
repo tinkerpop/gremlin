@@ -5,7 +5,9 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
+import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
 
 /**
@@ -38,4 +40,9 @@ public class OrderStepTest extends com.tinkerpop.gremlin.test.transform.OrderSte
             }
         }).property("name"));
     }
+
+    public void test_g_V_name_orderXdecrX() {
+        super.test_g_V_name_orderXdecrX(new GremlinPipeline(g.getVertices()).property("name").order(TransformPipe.Order.DECR));
+    }
+
 }

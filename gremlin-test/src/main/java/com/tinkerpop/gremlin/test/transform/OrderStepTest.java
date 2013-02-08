@@ -62,4 +62,8 @@ public class OrderStepTest extends TestCase {
 
     }
 
+    public void test_g_V_name_orderXdecrX(final Pipe<Vertex, String> pipe) {
+        this.test_g_V_orderXa_nameXb_nameX_name(pipe);
+    }
+
 }
