@@ -32,4 +32,10 @@ class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     public void test_g_V_countXX() {
         super.test_g_V_countXX(g.V.count());
     }
+
+    public void test_g_E_remove() {
+        def temp = TinkerGraphFactory.createTinkerGraph();
+        temp.E.remove();
+        super.test_g_E_remove(temp);
+    }
 }

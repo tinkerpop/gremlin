@@ -187,7 +187,7 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         long parameterizedStartTime = System.currentTimeMillis();
         System.out.println("Try to blow the heap with parameterized Gremlin.");
         try {
-            for (int ix = 0; ix < 100001; ix++) {
+            for (int ix = 0; ix < 50001; ix++) {
                 final Bindings bindings = engine.createBindings();
                 bindings.put("g", g);
                 bindings.put("xxx", ((ix % 4) + 1));

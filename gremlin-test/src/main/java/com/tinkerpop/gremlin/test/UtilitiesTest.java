@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin.test;
 
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import junit.framework.TestCase;
 
@@ -42,6 +44,18 @@ public class UtilitiesTest extends TestCase {
 
     public void test_g_V_countXX(Long count) {
         assertEquals(count, new Long(6));
+    }
+
+    public void test_g_E_remove(Graph graph) {
+        int count = 0;
+        for (Edge e : graph.getEdges()) {
+            count++;
+        }
+        assertEquals(count, 0);
+        for (Vertex v : graph.getVertices()) {
+            count++;
+        }
+        assertEquals(count, 6);
     }
 
     // test pipeline equality

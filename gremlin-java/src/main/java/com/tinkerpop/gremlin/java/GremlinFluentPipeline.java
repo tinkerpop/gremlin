@@ -144,7 +144,7 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
 
     /**
      * Add an InVertexPipe to the end of the Pipeline.
-     * Emit the tail vertex of the incoming edge.
+     * Emit the head vertex of the incoming edge.
      *
      * @return the extended Pipeline
      */
@@ -201,4 +201,65 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, Object> property(final String key);
+
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an outgoing edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> linkOut(final String label, final String namedStep);
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> linkIn(final String label, final String namedStep);
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming and outgoing edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> linkBoth(final String label, final String namedStep);
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an outgoing edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> linkOut(final String label, final Vertex other);
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> linkIn(final String label, final Vertex other);
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming and outgoing edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> linkBoth(final String label, final Vertex other);
 }

@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.java;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
@@ -9,6 +10,7 @@ import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
+import com.tinkerpop.gremlin.pipes.sideeffect.LinkPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
@@ -57,8 +59,8 @@ import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
+import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
@@ -109,6 +111,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return (GremlinPipeline<S, T>) this;
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key   the property key to check
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> has(final String key, final Object value) {
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, FilterPipe.Filter.EQUAL));
@@ -119,6 +130,16 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key        the property key to check
+     * @param comparison the comparison to use
+     * @param value      the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object value) {
         final FilterPipe.Filter filter = Tokens.mapFilter(comparison);
         if (key.equals(Tokens.ID)) {
@@ -130,6 +151,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key   the property key to check
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object value) {
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, FilterPipe.Filter.NOT_EQUAL));
@@ -140,6 +170,16 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key        the property key to check
+     * @param comparison the comparison to use
+     * @param value      the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value) {
         final FilterPipe.Filter filter = Tokens.mapFlipFilter(comparison);
         if (key.equals(Tokens.ID)) {
@@ -151,18 +191,48 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IntervalFilterPipe to the end of the Pipeline.
+     * If the incoming element has a value that is within the interval value range specified, then the element is allows to pass.
+     * If hte incoming element's value for the key is null, the element is filtered.
+     *
+     * @param key        the property key to check
+     * @param startValue the start of the interval (inclusive)
+     * @param endValue   the end of the interval (exclusive)
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
         return this.add(new IntervalFilterPipe<Element>(key, startValue, endValue));
     }
 
+    /**
+     * Add a BothEdgesPipe to the end of the Pipeline.
+     * Emit both incoming and outgoing edges for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
         return this.add(new BothEdgesPipe(labels));
     }
 
+    /**
+     * Add a BothPipe to the end of the Pipeline.
+     * Emit both the incoming and outgoing adjacent vertices for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> both(final String... labels) {
         return this.add(new BothPipe(labels));
     }
 
+    /**
+     * Add a BothVerticesPipe to the end of the Pipeline.
+     * Emit both the tail and head vertices of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> bothV() {
         if (this.doQueryOptimization)
             GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
@@ -170,26 +240,66 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new BothVerticesPipe());
     }
 
+    /**
+     * Add an IdEdgePipe to the end of the Pipeline.
+     * Emit the edges of the graph whose ids are those of the incoming id objects.
+     *
+     * @param graph the graph of the pipe
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
         return this.add(new IdEdgePipe(graph));
     }
 
+    /**
+     * Add an IdPipe to the end of the Pipeline.
+     * Emit the id of the incoming element.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Object> id() {
         return this.add(new IdPipe());
     }
 
+    /**
+     * Add an IdVertexPipe to the end of the Pipeline.
+     * Emit the vertices of the graph whose ids are those of the incoming id objects.
+     *
+     * @param graph the graph of the pipe
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> idVertex(final Graph graph) {
         return this.add(new IdVertexPipe(graph));
     }
 
+    /**
+     * Add an InEdgesPipe to the end of the Pipeline.
+     * Emit the incoming edges for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> inE(final String... labels) {
         return this.add(new InEdgesPipe(labels));
     }
 
+    /**
+     * Add a InPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> in(final String... labels) {
         return this.add(new InPipe(labels));
     }
 
+    /**
+     * Add an InVertexPipe to the end of the Pipeline.
+     * Emit the head vertex of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> inV() {
         if (this.doQueryOptimization)
             GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
@@ -197,18 +307,44 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new InVertexPipe());
     }
 
+    /**
+     * Add an LabelPipe to the end of the Pipeline.
+     * Emit the label of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, String> label() {
         return this.add(new LabelPipe());
     }
 
+    /**
+     * Add an OutEdgesPipe to the end of the Pipeline.
+     * Emit the outgoing edges for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> outE(final String... labels) {
         return this.add(new OutEdgesPipe(labels));
     }
 
+    /**
+     * Add an OutPipe to the end of the Pipeline.
+     * Emit the adjacent outgoing vertices of the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> out(final String... labels) {
         return this.add(new OutPipe(labels));
     }
 
+    /**
+     * Add an OutVertexPipe to the end of the Pipeline.
+     * Emit the tail vertex of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> outV() {
         if (this.doQueryOptimization)
             GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
@@ -216,10 +352,24 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new OutVertexPipe());
     }
 
+    /**
+     * Add a PropertyMapPipe to the end of the Pipeline.
+     * Emit the properties of the incoming element as a java.util.Map.
+     *
+     * @param keys the keys to get from the element (if none provided, all keys retrieved)
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Map<String, Object>> map(final String... keys) {
         return this.add(new PropertyMapPipe(keys));
     }
 
+    /**
+     * Add a PropertyPipe to the end of the Pipeline.
+     * Emit the respective property of the incoming element.
+     *
+     * @param key the property key
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Object> property(final String key) {
         return this.add(new PropertyPipe(key));
     }
@@ -714,6 +864,78 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an outgoing edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkOut(final String label, final String namedStep) {
+        return this.add(new LinkPipe(Direction.OUT, label, FluentUtility.getAsPipe(this, namedStep)));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkIn(final String label, final String namedStep) {
+        return this.add(new LinkPipe(Direction.IN, label, FluentUtility.getAsPipe(this, namedStep)));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming and outgoing edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkBoth(final String label, final String namedStep) {
+        return this.add(new LinkPipe(Direction.BOTH, label, FluentUtility.getAsPipe(this, namedStep)));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an outgoing edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkOut(final String label, final Vertex other) {
+        return this.add(new LinkPipe(Direction.OUT, label, other));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkIn(final String label, final Vertex other) {
+        return this.add(new LinkPipe(Direction.IN, label, other));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming and outgoing edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkBoth(final String label, final Vertex other) {
+        return this.add(new LinkPipe(Direction.BOTH, label, other));
+    }
+
+    /**
      * Add a SideEffectFunctionPipe to the end of the Pipeline.
      * The provided function is evaluated and the incoming object is the outgoing object.
      *
@@ -1191,6 +1413,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return collection;
     }
 
+    /**
+     * Enable path calculations within the Pipeline.
+     * This is typically done automatically and in rare occasions needs to be called.
+     *
+     * @return the Pipeline with path calculations enabled
+     */
     public GremlinPipeline<S, E> enablePath() {
         this.enablePath(true);
         return this;
@@ -1206,5 +1434,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     public GremlinPipeline<S, E> optimize(final boolean optimize) {
         this.doQueryOptimization = optimize;
         return this;
+    }
+
+    /**
+     * Remove every element at the end of this Pipeline.
+     */
+    @Override
+    public void remove() {
+        for (final Object object : this) {
+            ((Element) object).remove();
+        }
     }
 }
