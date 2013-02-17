@@ -6,11 +6,15 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.util.AsPipe;
+import com.tinkerpop.pipes.util.PipeHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class LinkPipe extends AbstractPipe<Vertex, Vertex> implements SideEffectPipe<Vertex, Edge> {
+public class LinkPipe extends AbstractPipe<Vertex, Vertex> implements SideEffectPipe.LazySideEffectPipe<Vertex, Object> {
 
     final private Direction direction;
     final private String label;
@@ -18,21 +22,26 @@ public class LinkPipe extends AbstractPipe<Vertex, Vertex> implements SideEffect
     private AsPipe<?, Vertex> asPipe;
     private Vertex other;
 
-    private Edge sideEffect;
+    private Object sideEffect;
 
-    public LinkPipe(final Direction direction, final String label, final Vertex other) {
+    private LinkPipe(final Direction direction, final String label) {
         this.direction = direction;
         this.label = label;
+        if (direction.equals(Direction.BOTH))
+            this.sideEffect = new ArrayList<Edge>();
+    }
+
+    public LinkPipe(final Direction direction, final String label, final Vertex other) {
+        this(direction, label);
         this.other = other;
     }
 
     public LinkPipe(final Direction direction, final String label, final AsPipe<?, Vertex> asPipe) {
-        this.direction = direction;
-        this.label = label;
+        this(direction, label);
         this.asPipe = asPipe;
     }
 
-    public Edge getSideEffect() {
+    public Object getSideEffect() {
         return this.sideEffect;
     }
 
@@ -41,13 +50,23 @@ public class LinkPipe extends AbstractPipe<Vertex, Vertex> implements SideEffect
 
         if (null != this.asPipe)
             this.other = asPipe.getCurrentEnd();
+        if (this.direction.equals(Direction.BOTH))
+            ((List) this.sideEffect).clear();
 
         if (this.direction.equals(Direction.IN) || this.direction.equals(Direction.BOTH)) {
-            this.sideEffect = this.other.addEdge(this.label, vertex);
+            final Edge edge = this.other.addEdge(this.label, vertex);
+            if (this.direction.equals(Direction.BOTH))
+                ((List<Edge>) this.sideEffect).add(edge);
+            else
+                this.sideEffect = edge;
         }
 
         if (this.direction.equals(Direction.OUT) || this.direction.equals(Direction.BOTH)) {
-            this.sideEffect = vertex.addEdge(this.label, this.other);
+            final Edge edge = vertex.addEdge(this.label, this.other);
+            if (this.direction.equals(Direction.BOTH))
+                ((List<Edge>) this.sideEffect).add(edge);
+            else
+                this.sideEffect = edge;
         }
         return vertex;
     }
@@ -55,5 +74,9 @@ public class LinkPipe extends AbstractPipe<Vertex, Vertex> implements SideEffect
     public void reset() {
         super.reset();
         this.sideEffect = null;
+    }
+
+    public String toString() {
+        return PipeHelper.makePipeString(this, this.direction.name(), this.label, null == this.asPipe ? this.other : this.asPipe.getName());
     }
 }
