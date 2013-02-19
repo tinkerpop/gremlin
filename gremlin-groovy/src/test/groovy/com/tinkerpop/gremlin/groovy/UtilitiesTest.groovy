@@ -38,4 +38,8 @@ class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
         temp.E.remove();
         super.test_g_E_remove(temp);
     }
+
+    public void test_g_V_hasXidX1X_name_equals_g_v1_name() {
+        super.test_g_V_hasXidX1X_name_equals_g_v1_name(g.V.has('id', '1').name, g.v(1)._().name);
+    }
 }

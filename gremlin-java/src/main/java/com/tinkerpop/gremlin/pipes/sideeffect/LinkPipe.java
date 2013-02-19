@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * LinkPipe supports the creation of an edge between the current vertex in the pipe and some other vertex.
+ * That other vertex is either defined by an AsPipe or a specifically specified vertex.
+ *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
 public class LinkPipe extends AbstractPipe<Vertex, Vertex> implements SideEffectPipe.LazySideEffectPipe<Vertex, Object> {

@@ -3,6 +3,7 @@ package com.tinkerpop.gremlin.test;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -58,5 +59,7 @@ public class UtilitiesTest extends TestCase {
         assertEquals(count, 6);
     }
 
-    // test pipeline equality
+    public void test_g_V_hasXidX1X_name_equals_g_v1_name(Pipe pipe1, Pipe pipe2) {
+        assertTrue(pipe1.equals(pipe2));
+    }
 }
