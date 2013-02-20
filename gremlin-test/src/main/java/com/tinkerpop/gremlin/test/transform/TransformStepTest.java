@@ -42,4 +42,21 @@ public class TransformStepTest extends TestCase {
         assertEquals(lengths.size(), 3);
     }
 
+    public void test_g_V_asXaX_out_transformXa_nameX(final Pipe<Vertex, String> pipe) {
+        int marko = 0;
+        int peter = 0;
+        int josh = 0;
+        int other = 0;
+        for (String name : pipe) {
+            if (name.equals("marko")) marko++;
+            else if (name.equals("peter")) peter++;
+            else if (name.equals("josh")) josh++;
+            else other++;
+        }
+        assertEquals(marko, 3);
+        assertEquals(josh, 2);
+        assertEquals(peter, 1);
+        assertEquals(other, 0);
+    }
+
 }

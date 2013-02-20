@@ -30,4 +30,8 @@ class TransformStepTest extends com.tinkerpop.gremlin.test.transform.TransformSt
     public void test_g_v1_out_transformXnameX_transformXlengthX() {
         super.test_g_v1_out_transformXnameX_transformXlengthX(g.v(1).out.transform { it.name }.transform { it.length() });
     }
+
+    public void test_g_V_asXaX_out_transformXa_nameX() {
+        super.test_g_V_asXaX_out_transformXa_nameX(g.V.as('a').out.transform { x, y -> y.a.name });
+    }
 }
