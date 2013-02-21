@@ -7,7 +7,7 @@ import groovy.lang.Closure;
 
 /**
  * GroovyPipeFunction wraps a Groovy Closure in a PipeFunction.
- * If used within the context of a GremlinGroovyPipeline, the AsMap is indexed.
+ * If used within the context of a GremlinGroovyPipeline, the AsMap is the second argument of the function.
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
