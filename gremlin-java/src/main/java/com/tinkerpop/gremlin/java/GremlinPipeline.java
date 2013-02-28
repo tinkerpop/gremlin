@@ -582,6 +582,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
+     * Add an ExceptFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is not equal to any of the objects contained at the named steps.
+     *
+     * @param namedSteps the named steps in the pipeline
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> except(final String... namedSteps) {
+        return this.add(new ExceptFilterPipe<E>(this.asMap, namedSteps));
+    }
+
+    /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
      * The serves are an arbitrary filter where the filter criteria is provided by the filterFunction.
      *
@@ -641,6 +652,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, E> retain(final Collection<E> collection) {
         return this.add(new RetainFilterPipe<E>(collection));
+    }
+
+    /**
+     * Add a RetainFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is equal to any of the objects contained at the named steps.
+     *
+     * @param namedSteps the named steps in the pipeline
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> retain(final String... namedSteps) {
+        return this.add(new RetainFilterPipe<E>(this.asMap, namedSteps));
     }
 
     /**
