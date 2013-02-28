@@ -21,6 +21,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* @GroovyPipeFunction@ provides support for @AsMap@ referencing and closure access to named-steps
 * Bumped to support Groovy 1.8.9
 * Added @GremlinPipeline.remove()@ which removes all elements at the end of the pipeline (overrides @Iterator.remove())
 * Added @LinkPipe@ and @linkOut@, @linkIn@, @linkBoth@ steps to allow for the addition of linking current vertex with past vertex
