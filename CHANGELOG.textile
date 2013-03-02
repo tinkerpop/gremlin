@@ -21,6 +21,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* Updated all @TransformPipes@ to new typing interface rules in Pipes
 * @except()/retain()@ support @String[]@ of named steps to reference as collection
 * @GroovyPipeFunction@ provides support for @AsMap@ referencing and closure access to named-steps
 * Bumped to support Groovy 1.8.9

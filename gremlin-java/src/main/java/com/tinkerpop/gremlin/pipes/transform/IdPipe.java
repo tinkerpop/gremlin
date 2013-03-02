@@ -9,7 +9,7 @@ import com.tinkerpop.pipes.transform.TransformPipe;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdPipe extends AbstractPipe<Element, Object> implements TransformPipe {
+public class IdPipe extends AbstractPipe<Element, Object> implements TransformPipe<Element, Object> {
 
     protected Object processNextStart() {
         return this.starts.next().getId();

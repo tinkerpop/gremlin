@@ -9,7 +9,7 @@ import com.tinkerpop.pipes.transform.TransformPipe;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class LabelPipe extends AbstractPipe<Edge, String> implements TransformPipe {
+public class LabelPipe extends AbstractPipe<Edge, String> implements TransformPipe<Edge, String> {
 
     protected String processNextStart() {
         return this.starts.next().getLabel();

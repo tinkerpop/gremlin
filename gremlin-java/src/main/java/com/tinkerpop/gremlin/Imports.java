@@ -19,6 +19,7 @@ public class Imports {
         imports.add("com.tinkerpop.gremlin.java.*");
         imports.add("com.tinkerpop.gremlin.pipes.*");
         imports.add("com.tinkerpop.gremlin.pipes.filter.*");
+        imports.add("com.tinkerpop.gremlin.pipes.sideeffect.*");
         imports.add("com.tinkerpop.gremlin.pipes.transform.*");
 
         // blueprints
@@ -45,8 +46,8 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.util.wrappers.event.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.event.listener.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.id.*");
-        imports.add("com.tinkerpop.blueprints.util.wrappers.readonly.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.partition.*");
+        imports.add("com.tinkerpop.blueprints.util.wrappers.readonly.*");
         imports.add("com.tinkerpop.blueprints.oupls.sail.*");
         imports.add("com.tinkerpop.blueprints.oupls.jung.*");
 

@@ -10,7 +10,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class EdgesVerticesPipe extends AbstractPipe<Edge, Vertex> implements TransformPipe {
+public class EdgesVerticesPipe extends AbstractPipe<Edge, Vertex> implements TransformPipe<Edge, Vertex> {
 
     protected Direction direction;
     protected Vertex nextVertex = null;
