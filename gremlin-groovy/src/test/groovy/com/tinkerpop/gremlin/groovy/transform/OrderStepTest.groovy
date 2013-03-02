@@ -4,9 +4,7 @@ import com.tinkerpop.blueprints.Graph
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.Tokens
 import com.tinkerpop.gremlin.groovy.Gremlin
-import com.tinkerpop.gremlin.java.GremlinPipeline
 import com.tinkerpop.gremlin.test.ComplianceTest
-import com.tinkerpop.pipes.transform.TransformPipe
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

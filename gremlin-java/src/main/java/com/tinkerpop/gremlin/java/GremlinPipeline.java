@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.java;
 
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
@@ -9,6 +10,7 @@ import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
+import com.tinkerpop.gremlin.pipes.sideeffect.LinkPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
@@ -56,9 +58,9 @@ import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
-import com.tinkerpop.pipes.transform.OrderMapPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
+import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
@@ -73,6 +75,7 @@ import com.tinkerpop.pipes.util.MetaPipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import com.tinkerpop.pipes.util.Pipeline;
 import com.tinkerpop.pipes.util.StartPipe;
+import com.tinkerpop.pipes.util.structures.AsMap;
 import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
@@ -89,6 +92,7 @@ import java.util.Map;
 public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFluentPipeline<S, E> {
 
     private boolean doQueryOptimization = true;
+    protected final AsMap asMap = new AsMap(this);
 
     public GremlinPipeline() {
         super();
@@ -109,6 +113,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return (GremlinPipeline<S, T>) this;
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key   the property key to check
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> has(final String key, final Object value) {
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, FilterPipe.Filter.EQUAL));
@@ -119,6 +132,16 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key        the property key to check
+     * @param comparison the comparison to use
+     * @param value      the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object value) {
         final FilterPipe.Filter filter = Tokens.mapFilter(comparison);
         if (key.equals(Tokens.ID)) {
@@ -130,6 +153,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key   the property key to check
+     * @param value the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object value) {
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(value, FilterPipe.Filter.NOT_EQUAL));
@@ -140,6 +172,16 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key        the property key to check
+     * @param comparison the comparison to use
+     * @param value      the object to filter on
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value) {
         final FilterPipe.Filter filter = Tokens.mapFlipFilter(comparison);
         if (key.equals(Tokens.ID)) {
@@ -151,18 +193,48 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         }
     }
 
+    /**
+     * Add an IntervalFilterPipe to the end of the Pipeline.
+     * If the incoming element has a value that is within the interval value range specified, then the element is allows to pass.
+     * If hte incoming element's value for the key is null, the element is filtered.
+     *
+     * @param key        the property key to check
+     * @param startValue the start of the interval (inclusive)
+     * @param endValue   the end of the interval (exclusive)
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
         return this.add(new IntervalFilterPipe<Element>(key, startValue, endValue));
     }
 
+    /**
+     * Add a BothEdgesPipe to the end of the Pipeline.
+     * Emit both incoming and outgoing edges for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
         return this.add(new BothEdgesPipe(labels));
     }
 
+    /**
+     * Add a BothPipe to the end of the Pipeline.
+     * Emit both the incoming and outgoing adjacent vertices for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> both(final String... labels) {
         return this.add(new BothPipe(labels));
     }
 
+    /**
+     * Add a BothVerticesPipe to the end of the Pipeline.
+     * Emit both the tail and head vertices of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> bothV() {
         if (this.doQueryOptimization)
             GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
@@ -170,26 +242,66 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new BothVerticesPipe());
     }
 
+    /**
+     * Add an IdEdgePipe to the end of the Pipeline.
+     * Emit the edges of the graph whose ids are those of the incoming id objects.
+     *
+     * @param graph the graph of the pipe
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> idEdge(final Graph graph) {
         return this.add(new IdEdgePipe(graph));
     }
 
+    /**
+     * Add an IdPipe to the end of the Pipeline.
+     * Emit the id of the incoming element.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Object> id() {
         return this.add(new IdPipe());
     }
 
+    /**
+     * Add an IdVertexPipe to the end of the Pipeline.
+     * Emit the vertices of the graph whose ids are those of the incoming id objects.
+     *
+     * @param graph the graph of the pipe
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> idVertex(final Graph graph) {
         return this.add(new IdVertexPipe(graph));
     }
 
+    /**
+     * Add an InEdgesPipe to the end of the Pipeline.
+     * Emit the incoming edges for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> inE(final String... labels) {
         return this.add(new InEdgesPipe(labels));
     }
 
+    /**
+     * Add a InPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> in(final String... labels) {
         return this.add(new InPipe(labels));
     }
 
+    /**
+     * Add an InVertexPipe to the end of the Pipeline.
+     * Emit the head vertex of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> inV() {
         if (this.doQueryOptimization)
             GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
@@ -197,18 +309,44 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new InVertexPipe());
     }
 
+    /**
+     * Add an LabelPipe to the end of the Pipeline.
+     * Emit the label of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, String> label() {
         return this.add(new LabelPipe());
     }
 
+    /**
+     * Add an OutEdgesPipe to the end of the Pipeline.
+     * Emit the outgoing edges for the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Edge> outE(final String... labels) {
         return this.add(new OutEdgesPipe(labels));
     }
 
+    /**
+     * Add an OutPipe to the end of the Pipeline.
+     * Emit the adjacent outgoing vertices of the incoming vertex.
+     *
+     * @param labels the edge labels to traverse
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> out(final String... labels) {
         return this.add(new OutPipe(labels));
     }
 
+    /**
+     * Add an OutVertexPipe to the end of the Pipeline.
+     * Emit the tail vertex of the incoming edge.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Vertex> outV() {
         if (this.doQueryOptimization)
             GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
@@ -216,10 +354,24 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return this.add(new OutVertexPipe());
     }
 
+    /**
+     * Add a PropertyMapPipe to the end of the Pipeline.
+     * Emit the properties of the incoming element as a java.util.Map.
+     *
+     * @param keys the keys to get from the element (if none provided, all keys retrieved)
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Map<String, Object>> map(final String... keys) {
         return this.add(new PropertyMapPipe(keys));
     }
 
+    /**
+     * Add a PropertyPipe to the end of the Pipeline.
+     * Emit the respective property of the incoming element.
+     *
+     * @param key the property key
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<S, Object> property(final String key) {
         return this.add(new PropertyPipe(key));
     }
@@ -233,7 +385,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> step(final PipeFunction function) {
-        return this.add(new FunctionPipe(function));
+        return this.add(new FunctionPipe(FluentUtility.prepareFunction(this.asMap, function)));
     }
 
     /**
@@ -296,7 +448,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> ifThenElse(final PipeFunction<E, Boolean> ifFunction, final PipeFunction<E, ?> thenFunction, final PipeFunction<E, ?> elseFunction) {
-        return this.add(new IfThenElsePipe(ifFunction, thenFunction, elseFunction));
+        return this.add(new IfThenElsePipe(FluentUtility.prepareFunction(this.asMap, ifFunction), FluentUtility.prepareFunction(this.asMap, thenFunction), FluentUtility.prepareFunction(this.asMap, elseFunction)));
     }
 
     /**
@@ -310,7 +462,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction)));
     }
 
     /**
@@ -324,7 +476,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction)));
     }
 
     /**
@@ -340,7 +492,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), whileFunction, emitFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction), FluentUtility.prepareFunction(this.asMap, emitFunction)));
     }
 
     /**
@@ -356,7 +508,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> loop(final String namedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
-        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), whileFunction, emitFunction));
+        return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, namedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction), FluentUtility.prepareFunction(this.asMap, emitFunction)));
     }
 
     ////////////////////
@@ -415,7 +567,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> dedup(final PipeFunction<E, ?> dedupFunction) {
-        return this.add(new DuplicateFilterPipe<E>(dedupFunction));
+        return this.add(new DuplicateFilterPipe<E>(FluentUtility.prepareFunction(this.asMap, dedupFunction)));
     }
 
     /**
@@ -430,6 +582,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
+     * Add an ExceptFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is not equal to any of the objects contained at the named steps.
+     *
+     * @param namedSteps the named steps in the pipeline
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> except(final String... namedSteps) {
+        return this.add(new ExceptFilterPipe<E>(this.asMap, namedSteps));
+    }
+
+    /**
      * Add an FilterFunctionPipe to the end of the Pipeline.
      * The serves are an arbitrary filter where the filter criteria is provided by the filterFunction.
      *
@@ -437,7 +600,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> filter(final PipeFunction<E, Boolean> filterFunction) {
-        return this.add(new FilterFunctionPipe<E>(filterFunction));
+        return this.add(new FilterFunctionPipe<E>(FluentUtility.prepareFunction(this.asMap, filterFunction)));
     }
 
     /**
@@ -492,6 +655,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
+     * Add a RetainFilterPipe to the end of the Pipeline.
+     * Will only emit the object if it is equal to any of the objects contained at the named steps.
+     *
+     * @param namedSteps the named steps in the pipeline
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, E> retain(final String... namedSteps) {
+        return this.add(new RetainFilterPipe<E>(this.asMap, namedSteps));
+    }
+
+    /**
      * Add a CyclicPathFilterPipe to the end of the Pipeline.
      * If the object's path is repeating (looping), then the object is filtered.
      * Thus, what is emitted are those objects whose history is composed of unique objects.
@@ -536,7 +710,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> aggregate(final Collection aggregate, final PipeFunction<E, ?> aggregateFunction) {
-        return this.add(new AggregatePipe<E>(aggregate, aggregateFunction));
+        return this.add(new AggregatePipe<E>(aggregate, FluentUtility.prepareFunction(this.asMap, aggregateFunction)));
     }
 
     /**
@@ -547,7 +721,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> aggregate(final PipeFunction<E, ?> aggregateFunction) {
-        return this.aggregate(new ArrayList(), aggregateFunction);
+        return this.aggregate(new ArrayList(), FluentUtility.prepareFunction(this.asMap, aggregateFunction));
     }
 
     /**
@@ -583,7 +757,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupBy(final Map<?, List<?>> map, final PipeFunction keyFunction, final PipeFunction valueFunction) {
-        return this.add(new GroupByPipe(map, keyFunction, valueFunction));
+        return this.add(new GroupByPipe(map, FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     /**
@@ -596,7 +770,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction) {
-        return this.add(new GroupByPipe(keyFunction, valueFunction));
+        return this.add(new GroupByPipe(FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     /**
@@ -613,7 +787,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupBy(final Map reduceMap, final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
-        return this.add(new GroupByReducePipe(reduceMap, keyFunction, valueFunction, reduceFunction));
+        return this.add(new GroupByReducePipe(reduceMap, FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction), FluentUtility.prepareFunction(this.asMap, reduceFunction)));
     }
 
     /**
@@ -629,7 +803,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupBy(final PipeFunction keyFunction, final PipeFunction valueFunction, final PipeFunction reduceFunction) {
-        return this.add(new GroupByReducePipe(keyFunction, valueFunction, reduceFunction));
+        return this.add(new GroupByReducePipe(FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction), FluentUtility.prepareFunction(this.asMap, reduceFunction)));
     }
 
     /**
@@ -644,7 +818,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
-        return this.add(new GroupCountFunctionPipe(map, keyFunction, valueFunction));
+        return this.add(new GroupCountFunctionPipe(map, FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     /**
@@ -658,7 +832,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupCount(final PipeFunction keyFunction, final PipeFunction<Pair<?, Number>, Number> valueFunction) {
-        return this.add(new GroupCountFunctionPipe(keyFunction, valueFunction));
+        return this.add(new GroupCountFunctionPipe(FluentUtility.prepareFunction(this.asMap, keyFunction), FluentUtility.prepareFunction(this.asMap, valueFunction)));
     }
 
     /**
@@ -672,7 +846,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupCount(final Map<?, Number> map, final PipeFunction keyFunction) {
-        return this.add(new GroupCountFunctionPipe(map, keyFunction, null));
+        return this.add(new GroupCountFunctionPipe(map, FluentUtility.prepareFunction(this.asMap, keyFunction), null));
     }
 
     /**
@@ -685,7 +859,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> groupCount(final PipeFunction keyFunction) {
-        return this.add(new GroupCountFunctionPipe(keyFunction, null));
+        return this.add(new GroupCountFunctionPipe(FluentUtility.prepareFunction(this.asMap, keyFunction), null));
     }
 
     /**
@@ -714,6 +888,78 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an outgoing edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkOut(final String label, final String namedStep) {
+        return this.add(new LinkPipe(Direction.OUT, label, FluentUtility.getAsPipe(this, namedStep)));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkIn(final String label, final String namedStep) {
+        return this.add(new LinkPipe(Direction.IN, label, FluentUtility.getAsPipe(this, namedStep)));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming and outgoing edge to incoming vertex.
+     *
+     * @param label     the edge label
+     * @param namedStep the step name that has the other vertex to link to
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkBoth(final String label, final String namedStep) {
+        return this.add(new LinkPipe(Direction.BOTH, label, FluentUtility.getAsPipe(this, namedStep)));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an outgoing edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkOut(final String label, final Vertex other) {
+        return this.add(new LinkPipe(Direction.OUT, label, other));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkIn(final String label, final Vertex other) {
+        return this.add(new LinkPipe(Direction.IN, label, other));
+    }
+
+    /**
+     * Add a LinkPipe to the end of the Pipeline.
+     * Emit the incoming vertex, but have other vertex provide an incoming and outgoing edge to incoming vertex.
+     *
+     * @param label the edge label
+     * @param other the other vertex
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> linkBoth(final String label, final Vertex other) {
+        return this.add(new LinkPipe(Direction.BOTH, label, other));
+    }
+
+    /**
      * Add a SideEffectFunctionPipe to the end of the Pipeline.
      * The provided function is evaluated and the incoming object is the outgoing object.
      *
@@ -721,7 +967,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> sideEffect(final PipeFunction<E, ?> sideEffectFunction) {
-        return this.add(new SideEffectFunctionPipe(sideEffectFunction));
+        return this.add(new SideEffectFunctionPipe(FluentUtility.prepareFunction(this.asMap, sideEffectFunction)));
     }
 
     /**
@@ -744,7 +990,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> store(final Collection storage, final PipeFunction<E, ?> storageFunction) {
-        return this.add(new StorePipe<E>(storage, storageFunction));
+        return this.add(new StorePipe<E>(storage, FluentUtility.prepareFunction(this.asMap, storageFunction)));
     }
 
     /**
@@ -765,7 +1011,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> store(final PipeFunction<E, ?> storageFunction) {
-        return this.store(new ArrayList(), storageFunction);
+        return this.store(new ArrayList(), FluentUtility.prepareFunction(this.asMap, storageFunction));
     }
 
     /**
@@ -778,7 +1024,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> table(final Table table, final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe(table, stepNames, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     /**
@@ -790,7 +1036,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> table(final Table table, final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe(table, null, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     /**
@@ -801,7 +1047,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> table(final PipeFunction... columnFunctions) {
-        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new TablePipe(new Table(), null, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     /**
@@ -834,7 +1080,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> tree(final Tree tree, final PipeFunction... branchFunctions) {
-        return this.add(new TreePipe<E>(tree, branchFunctions));
+        return this.add(new TreePipe<E>(tree, FluentUtility.prepareFunctions(this.asMap, branchFunctions)));
     }
 
     /**
@@ -845,7 +1091,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> tree(final PipeFunction... branchFunctions) {
-        return this.add(new TreePipe<E>(branchFunctions));
+        return this.add(new TreePipe<E>(FluentUtility.prepareFunctions(this.asMap, branchFunctions)));
     }
 
     ///////////////////////
@@ -873,7 +1119,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> gather(PipeFunction<List, ?> function) {
-        return this.add(new GatherFunctionPipe(function));
+        return this.add(new GatherFunctionPipe(FluentUtility.prepareFunction(this.asMap, function)));
     }
 
     /**
@@ -977,7 +1223,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> order(final PipeFunction<Pair<E, E>, Integer> compareFunction) {
-        return this.add(new OrderPipe(compareFunction));
+        return this.add(new OrderPipe(FluentUtility.prepareFunction(this.asMap, compareFunction)));
     }
 
     /**
@@ -989,7 +1235,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, List> path(final PipeFunction... pathFunctions) {
-        return this.add(new PathPipe<Object>(pathFunctions));
+        return this.add(new PathPipe<Object>(FluentUtility.prepareFunctions(this.asMap, pathFunctions)));
     }
 
     /**
@@ -1013,7 +1259,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Row> select(final Collection<String> stepNames, final PipeFunction... columnFunctions) {
-        return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new SelectPipe(stepNames, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     /**
@@ -1026,7 +1272,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Row> select(final PipeFunction... columnFunctions) {
-        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), columnFunctions));
+        return this.add(new SelectPipe(null, FluentUtility.getAsPipes(this), FluentUtility.prepareFunctions(this.asMap, columnFunctions)));
     }
 
     /**
@@ -1093,7 +1339,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ?> orderMap(final PipeFunction<Pair<Map.Entry, Map.Entry>, Integer> compareFunction) {
-        return this.add(new OrderMapPipe(compareFunction));
+        return this.add(new OrderMapPipe(FluentUtility.prepareFunction(this.asMap, compareFunction)));
     }
 
     /**
@@ -1104,7 +1350,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public <T> GremlinPipeline<S, T> transform(final PipeFunction<E, T> function) {
-        return this.add(new TransformFunctionPipe(function));
+        return this.add(new TransformFunctionPipe(FluentUtility.prepareFunction(this.asMap, function)));
     }
 
     //////////////////////
@@ -1119,7 +1365,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> as(final String name) {
-        return this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
+        final GremlinPipeline<S, E> pipeline = this.add(new AsPipe(name, FluentUtility.removePreviousPipes(this, 1).get(0)));
+        this.asMap.refresh();
+        return pipeline;
     }
 
     /**
@@ -1191,6 +1439,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return collection;
     }
 
+    /**
+     * Enable path calculations within the Pipeline.
+     * This is typically done automatically and in rare occasions needs to be called.
+     *
+     * @return the Pipeline with path calculations enabled
+     */
     public GremlinPipeline<S, E> enablePath() {
         this.enablePath(true);
         return this;
@@ -1206,5 +1460,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     public GremlinPipeline<S, E> optimize(final boolean optimize) {
         this.doQueryOptimization = optimize;
         return this;
+    }
+
+    /**
+     * Remove every element at the end of this Pipeline.
+     */
+    @Override
+    public void remove() {
+        for (final Object object : this) {
+            ((Element) object).remove();
+        }
     }
 }

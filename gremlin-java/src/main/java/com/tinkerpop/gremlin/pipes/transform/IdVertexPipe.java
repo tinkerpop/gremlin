@@ -8,7 +8,7 @@ import com.tinkerpop.pipes.transform.TransformPipe;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdVertexPipe<S> extends AbstractPipe<S, Vertex> implements TransformPipe {
+public class IdVertexPipe<S> extends AbstractPipe<S, Vertex> implements TransformPipe<S, Vertex> {
 
     private final Graph graph;
 

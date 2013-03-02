@@ -12,7 +12,7 @@ import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
-import com.tinkerpop.pipes.transform.IdentityPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 
 import java.util.ArrayList;

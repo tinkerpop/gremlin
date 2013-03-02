@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe {
+public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe<Vertex,E> {
 
     private Direction direction = Direction.BOTH;
     private String[] labels;

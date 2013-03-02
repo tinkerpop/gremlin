@@ -21,6 +21,13 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* A semantic change to @store().cap()@ where @StorePipe@ now implements @LazySideEffectPipe@
+* Updated all @TransformPipes@ to new typing interface rules in Pipes
+* @except()/retain()@ support @String[]@ of named steps to reference as collection
+* @GroovyPipeFunction@ provides support for @AsMap@ referencing and closure access to named-steps
+* Bumped to support Groovy 1.8.9
+* Added @GremlinPipeline.remove()@ which removes all elements at the end of the pipeline (overrides @Iterator.remove())
+* Added @LinkPipe@ and @linkOut@, @linkIn@, @linkBoth@ steps to allow for the addition of linking current vertex with past vertex
 * Added @orderMap@ step which takes a @Map@ as input, orders its entries, and then emits its keys
 * Added @Tokens.T.decr@ and @Tokens.T.incr@ for default ordering in @order@ and @orderMap@ steps
 * @ScriptExecutor@ provides support for @args[]@ as well as @a1@, @a2@, etc. type parameters

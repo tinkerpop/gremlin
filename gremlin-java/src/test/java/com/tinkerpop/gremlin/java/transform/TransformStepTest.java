@@ -6,6 +6,7 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
 import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.util.PipesFunction;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -44,5 +45,15 @@ public class TransformStepTest extends com.tinkerpop.gremlin.test.transform.Tran
                 return name.length();
             }
         }));
+    }
+
+    public void test_g_V_asXaX_out_transformXa_nameX() {
+        super.test_g_V_asXaX_out_transformXa_nameX(new GremlinPipeline(g.getVertices()).as("a").out().transform(
+                new PipesFunction() {
+                    public Object compute(Object argument) {
+                        return ((Vertex) this.asMap.get("a")).getProperty("name");
+                    }
+                }
+        ));
     }
 }

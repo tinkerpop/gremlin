@@ -33,4 +33,15 @@ public class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     public void test_g_V_countXX() {
         super.test_g_V_countXX(new GremlinPipeline(g.getVertices()).count());
     }
+
+    public void test_g_E_remove() {
+        Graph temp = TinkerGraphFactory.createTinkerGraph();
+        new GremlinPipeline(temp.getEdges()).remove();
+        super.test_g_E_remove(temp);
+    }
+
+    public void test_g_V_hasXidX1X_name_equals_g_v1_name() {
+        super.test_g_V_hasXidX1X_name_equals_g_v1_name(new GremlinPipeline(g.getVertices()).has("id", "1").property("name"),
+                new GremlinPipeline(g.getVertex(1)).property("name"));
+    }
 }

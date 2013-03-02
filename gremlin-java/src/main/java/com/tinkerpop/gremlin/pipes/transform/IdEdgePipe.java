@@ -8,7 +8,7 @@ import com.tinkerpop.pipes.transform.TransformPipe;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class IdEdgePipe<S> extends AbstractPipe<S, Edge> implements TransformPipe {
+public class IdEdgePipe<S> extends AbstractPipe<S, Edge> implements TransformPipe<S, Edge> {
 
     private final Graph graph;
 

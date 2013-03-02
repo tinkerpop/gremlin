@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PropertyMapPipe<S extends Element> extends AbstractPipe<S, Map<String, Object>> implements TransformPipe {
+public class PropertyMapPipe<S extends Element> extends AbstractPipe<S, Map<String, Object>> implements TransformPipe<S, Map<String, Object>> {
 
     private final String[] keys;
 
