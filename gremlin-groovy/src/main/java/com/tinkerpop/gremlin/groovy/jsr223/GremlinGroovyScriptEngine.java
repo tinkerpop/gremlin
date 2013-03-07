@@ -51,7 +51,7 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
 
     private Map<String, Class> classMap = new ConcurrentHashMap<String, Class>();
     private Map<String, MethodClosure> globalClosures = new ConcurrentHashMap<String, MethodClosure>();
-    private GroovyClassLoader loader;
+    protected GroovyClassLoader loader;
     private volatile GremlinGroovyScriptEngineFactory factory;
     private static int counter = 0;
     private int cacheResetSize = 1500;
@@ -296,7 +296,7 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
         }
     }
 
-    private ClassLoader getParentLoader() {
+    protected ClassLoader getParentLoader() {
         final ClassLoader ctxtLoader = Thread.currentThread().getContextClassLoader();
         try {
             final Class c = ctxtLoader.loadClass("groovy.lang.Script");
