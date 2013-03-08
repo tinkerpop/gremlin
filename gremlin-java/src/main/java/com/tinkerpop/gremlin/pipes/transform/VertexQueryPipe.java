@@ -5,6 +5,7 @@ import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.VertexQuery;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
@@ -16,13 +17,13 @@ import java.util.List;
 
 /**
  * QueryPipe makes use of the Vertex.query() method in Blueprints which allows for intelligent edge look ups from the underlying graph.
- * Note that QueryPipe is automatically constructed by a GremlinPipeline when a pattern of the following is seen:
+ * Note that VertexQueryPipe is automatically constructed by a GremlinPipeline when a pattern of the following is seen:
  * <p>outE(x).has(x).interval(x).xV()</p>
  * The final xV() can be either inV(), outV(), or bothV().
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe<Vertex,E> {
+public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe<Vertex,E> {
 
     private Direction direction = Direction.BOTH;
     private String[] labels;
@@ -48,7 +49,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implem
      * @param highRange             this must be a long value representing the high range of elements to emit
      * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
      */
-    public QueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long lowRange, final long highRange, final String... labels) {
+    public VertexQueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long lowRange, final long highRange, final String... labels) {
         this.elementClass = resultingElementClass;
         this.direction = direction;
         this.hasContainers = hasContainers;
@@ -95,7 +96,7 @@ public class QueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implem
                     return e;
             } else {
                 final Vertex vertex = this.starts.next();
-                Query query = vertex.query();
+                VertexQuery query = vertex.query();
                 query = query.direction(this.direction);
                 if (this.labels.length > 0)
                     query = query.labels(this.labels);
