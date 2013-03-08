@@ -58,9 +58,29 @@
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
+            <artifactId>blueprints-sail-graph</artifactId>
+            <version>${blueprints.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-graph-sail</artifactId>
             <version>${blueprints.version}</version>
             <scope>provided</scope>
+            <!--<exclusions>
+                <exclusion>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </exclusion>
+            </exclusions>-->
+        </dependency>
+        <!-- temporary... this compensates for a conflict by which commons-httpclient is depended upon via
+             GraphSail and via SailGraph.  Maven prefers the GraphSail path, but that path fails to depend on
+             the commons-logging package, leading to CNFEs -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
@@ -83,12 +103,6 @@
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
             <artifactId>blueprints-dex-graph</artifactId>
-            <version>${blueprints.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tinkerpop.blueprints</groupId>
-            <artifactId>blueprints-sail-graph</artifactId>
             <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
