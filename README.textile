@@ -8,16 +8,12 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 ** "Neo4j":http://neo4j.org/ graph database
 ** "OrientDB":http://www.orientechnologies.com/ graph database
 ** "DEX":http://www.sparsity-technologies.com/dex graph database
-** "InfiniteGraph":http://www.objectivity.com/products/infinitegraph/ graph database
 ** "Titan":http://thinkaurelius.github.com/titan/ graph database
+** "Faunus":http://thinkaurelius.github.com/faunus/ graph analytics engine
+** "InfiniteGraph":http://www.objectivity.com/products/infinitegraph/ graph database
 ** "Rexster":http://rexster.tinkerpop.com graph server
-** "Sesame 2.0":http://www.openrdf.org compliant RDF stores
+** "Sesame 2.x":http://www.openrdf.org compliant RDF stores
 ** Many "third-party":https://github.com/tinkerpop/blueprints/wiki Blueprints implementations
-* Supporting extensions:
-** "GraphML Reader/Writer":http://graphml.graphdrawing.org/ library
-** "GraphSON Reader/Writer":http://www.json.org/ library
-** "GML Reader/Writer":http://en.wikipedia.org/wiki/Graph_Modelling_Language library
-** "Java Universal/Graph":http://jung.sourceforge.net/ framework
 
 * JVM language connectivity:
 ** "Java":http://java.com/: Gremlin in the Java Language
