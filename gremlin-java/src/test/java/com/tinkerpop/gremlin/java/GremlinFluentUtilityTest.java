@@ -8,7 +8,7 @@ import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
 import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
+import com.tinkerpop.gremlin.pipes.transform.VertexQueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
@@ -69,7 +69,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
 
@@ -77,7 +77,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
         assertTrue(pipeline.get(4) instanceof InVertexPipe);
@@ -86,7 +86,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
         assertTrue(pipeline.get(4) instanceof OutVertexPipe);
@@ -95,7 +95,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
         assertTrue(pipeline.get(4) instanceof OutVertexPipe);
@@ -104,7 +104,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
         assertTrue(pipeline.get(4) instanceof BothVerticesPipe);
@@ -113,7 +113,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 6);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
         assertTrue(pipeline.get(4) instanceof IdentityPipe);
@@ -123,7 +123,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         System.out.println(pipeline);
         assertEquals(pipeline.size(), 7);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
         assertTrue(pipeline.get(4) instanceof IdentityPipe);
@@ -174,7 +174,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
         assertTrue(pipeline.get(0) instanceof StartPipe);
-        assertTrue(pipeline.get(1) instanceof QueryPipe);
+        assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
     }
@@ -194,7 +194,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         assertEquals(pipeline.size(), 4);
         assertTrue(pipeline.get(0) instanceof StartPipe);
         assertTrue(pipeline.get(1) instanceof VerticesVerticesPipe);
-        assertTrue(pipeline.get(2) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).out("knows").out().range(5, 10);
@@ -202,7 +202,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         assertEquals(pipeline.size(), 4);
         assertTrue(pipeline.get(0) instanceof StartPipe);
         assertTrue(pipeline.get(1) instanceof VerticesVerticesPipe);
-        assertTrue(pipeline.get(2) instanceof QueryPipe);
+        assertTrue(pipeline.get(2) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
 
         // no optimization should occur

@@ -51,13 +51,16 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
 
     private Map<String, Class> classMap = new ConcurrentHashMap<String, Class>();
     private Map<String, MethodClosure> globalClosures = new ConcurrentHashMap<String, MethodClosure>();
-    private GroovyClassLoader loader;
+    protected GroovyClassLoader loader;
     private volatile GremlinGroovyScriptEngineFactory factory;
     private static int counter = 0;
     private int cacheResetSize = 1500;
 
-    private static final String DOT_STAR = ".*";
-    private static final String EMPTY_STRING = "";
+    protected static final String DOT_STAR = ".*";
+    protected static final String EMPTY_STRING = "";
+    private static final String SCRIPT = "Script";
+    private static final String DOT_GROOVY = ".groovy";
+    private static final String GROOVY_LANG_SCRIPT = "groovy.lang.Script";
 
     public GremlinGroovyScriptEngine(final int cacheResetSize) {
         this();
@@ -281,7 +284,7 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     }
 
     private synchronized String generateScriptName() {
-        return "Script" + ++counter + ".groovy";
+        return SCRIPT + ++counter + DOT_GROOVY;
     }
 
     private Object makeInterface(final Object obj, final Class clazz) {
@@ -296,10 +299,10 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
         }
     }
 
-    private ClassLoader getParentLoader() {
+    protected ClassLoader getParentLoader() {
         final ClassLoader ctxtLoader = Thread.currentThread().getContextClassLoader();
         try {
-            final Class c = ctxtLoader.loadClass("groovy.lang.Script");
+            final Class c = ctxtLoader.loadClass(GROOVY_LANG_SCRIPT);
             if (c == groovy.lang.Script.class) {
                 return ctxtLoader;
             }

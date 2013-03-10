@@ -6,7 +6,7 @@ import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
-import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
+import com.tinkerpop.gremlin.pipes.transform.VertexQueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.Pipe;
@@ -49,7 +49,7 @@ public class GremlinFluentUtility extends FluentUtility {
         if (pipeline.get(pipeline.size() - 1) instanceof RangeFilterPipe && pipeline.get(pipeline.size() - 2) instanceof VerticesVerticesPipe) {
             final RangeFilterPipe range = (RangeFilterPipe) pipeline.remove(pipeline.size() - 1);
             final VerticesVerticesPipe vertices = (VerticesVerticesPipe) pipeline.remove(pipeline.size() - 1);
-            pipeline.add(new QueryPipe(Vertex.class, vertices.getDirection(), null, null, range.getLowRange(), range.getHighRange(), vertices.getLabels()));
+            pipeline.add(new VertexQueryPipe(Vertex.class, vertices.getDirection(), null, null, range.getLowRange(), range.getHighRange(), vertices.getLabels()));
             pipeline.add(new IdentityPipe());
         }
         return pipeline;
@@ -59,8 +59,8 @@ public class GremlinFluentUtility extends FluentUtility {
         final List<Pipe> removedPipes = removeEdgeQueryOptimizationPipes(pipeline);
 
         if (removedPipes.size() > 0) {
-            final List<QueryPipe.HasContainer> hasContainers = new ArrayList<QueryPipe.HasContainer>();
-            final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
+            final List<VertexQueryPipe.HasContainer> hasContainers = new ArrayList<VertexQueryPipe.HasContainer>();
+            final List<VertexQueryPipe.IntervalContainer> intervalContainers = new ArrayList<VertexQueryPipe.IntervalContainer>();
             long lowRange = Long.MIN_VALUE;
             long highRange = Long.MAX_VALUE;
             String[] labels = new String[]{};
@@ -69,10 +69,10 @@ public class GremlinFluentUtility extends FluentUtility {
             for (final Pipe pipe : removedPipes) {
                 if (pipe instanceof PropertyFilterPipe) {
                     final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getValue(), convertFromFilter(temp.getFilter())));
+                    hasContainers.add(new VertexQueryPipe.HasContainer(temp.getKey(), temp.getValue(), convertFromFilter(temp.getFilter())));
                 } else if (pipe instanceof IntervalFilterPipe) {
                     final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
-                    intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
+                    intervalContainers.add(new VertexQueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
                 } else if (pipe instanceof VerticesEdgesPipe) {
                     labels = ((VerticesEdgesPipe) pipe).getLabels();
                     direction = ((VerticesEdgesPipe) pipe).getDirection();
@@ -82,7 +82,7 @@ public class GremlinFluentUtility extends FluentUtility {
                 }
             }
 
-            pipeline.addPipe(new QueryPipe(Edge.class, direction, hasContainers, intervalContainers, lowRange, highRange, labels));
+            pipeline.addPipe(new VertexQueryPipe(Edge.class, direction, hasContainers, intervalContainers, lowRange, highRange, labels));
             for (int i = 0; i < removedPipes.size() - 1; i++) {
                 pipeline.addPipe(new IdentityPipe());
             }
