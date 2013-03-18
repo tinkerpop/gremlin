@@ -1,6 +1,8 @@
 package com.tinkerpop.gremlin.groovy.loaders
 
+import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Element
+import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.groovy.GremlinGroovyPipeline
 
@@ -49,6 +51,16 @@ class ElementLoader {
                 values.add(((Element) delegate).getProperty(key))
             }
             return values;
+        }
+
+        // for Vertex only
+
+        Vertex.metaClass.addEdge = { final String label, final Vertex inVertex, final Map<String, Object> properties ->
+            final Edge edge = ((Vertex) delegate).addEdge(label, inVertex);
+            for (final Map.Entry<String, Object> entry : properties.entrySet()) {
+                edge.setProperty(entry.getKey(), entry.getValue());
+            }
+            return edge;
         }
     }
 }

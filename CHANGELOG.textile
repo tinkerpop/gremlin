@@ -21,6 +21,7 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* Added support for @Vertex.addEdge()@ with @Map<String,Object>@ properties for the edge
 * A semantic change to @store().cap()@ where @StorePipe@ now implements @LazySideEffectPipe@
 * Updated all @TransformPipes@ to new typing interface rules in Pipes
 * @except()/retain()@ support @String[]@ of named steps to reference as collection
