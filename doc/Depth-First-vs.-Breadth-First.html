@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Depth First vs. Breadth First</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Depth First vs. Breadth First</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Depth-First-vs.-Breadth-First"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Depth-First-vs.-Breadth-First"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="http://www.cse.unsw.edu.au/~billw/Justsearch1.gif" alt="" /><br />
+[ <strong>Note</strong>: Image linked to from <a href="http://www.cse.unsw.edu.au/~billw/Justsearch.html">original webpage</a> ]</p>
+<p><a href="http://en.wikipedia.org/wiki/Depth-first_search">Depth-first traverse</a> traverses down an entire path as specified by a path expression before turning to the next legal path. On the other hand <a href="http://en.wikipedia.org/wiki/Breadth-first_search">breadth-first traverse</a> traverses legal paths &#x201C;in parallel,&#x201D; where at each step, all legal objects are computed before moving onto the next step of the path. Gremlin provides support for both types of traversals.</p>
+<ul><li><a href="#depth">Depth-First Traversal</a></li>
+	<li><a href="#breadth">Breadth-First Traversal</a></li>
+</ul><p><a name="depth" id="depth"></a></p>
+<h2>Depth-First Traversal</h2>
+<p>Gremlin is naturally a depth-first traversal language/engine. Typical path expression (as used in this documentation) evaluate in a depth-first manner. The following &#x201C;co-created&#x201D; expression is a depth-first expression.</p>
+<pre><code>gremlin&gt; g = TinkerGraphFactory.createTinkerGraph()
+==&gt;tinkergraph[vertices:6 edges:6]
+gremlin&gt; g.v(1).outE('created').inV.inE('created').outV
+==&gt;v[1]
+==&gt;v[4]
+==&gt;v[6]</code></pre>
+<p>In the expression above, the following occurs in the Gremlin evaluator (see <a class="internal present" href="Defining-a-Property-Graph.html">Defining a Property Graph</a> for diagram of graph).</p>
+<ol><li>Vertex <code>1</code> is passed to step <code>outE</code> which yields three outgoing edges.</li>
+	<li>The first of these outgoing edges is then passed into the label filter and goes through since its a <code>created</code> edge.</li>
+	<li>The edge then goes to the next step <code>inV</code> which produces vertex <code>3</code>.</li>
+	<li>Vertex <code>3</code> is then passed to <code>inE</code> which yields three edges.</li>
+	<li>The first edge is passed to the label filter and passes through because its a <code>created</code> edge.</li>
+	<li>The edge is passed to <code>outV</code> which yields vertex <code>1</code>.</li>
+</ol><p>At this point, the path expression is complete for the full <strong>depth</strong> of the expression (thus, depth-first). The evaluator then goes onto the remaining two edges created from the first <code>outE</code> and the process continues until all legal branches of the path expression have been evaluated.</p>
+<p><a name="breadth" id="breadth"></a></p>
+<h2>Breadth-First Traversal</h2>
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/4/46/Animated_BFS.gif" alt="" /><br />
+[ <strong>Note</strong>: Image linked to from <a href="http://en.wikipedia.org/wiki/Breadth-first_search">original webpage</a> ]</p>
+<p>In a breadth-first traversal, all results for each step of the process are gathered before the next step is evaluated. The equivalent breadth-first traversal for the previous &#x201C;co-created&#x201D; expression is as follows.</p>
+<pre><code>gremlin&gt; g.v(1).outE('created').gather.scatter.inV.gather.scatter.inE('created').gather.scatter.outV.gather.scatter
+==&gt;v[1]
+==&gt;v[4]
+==&gt;v[6]</code></pre>
+<p>The <code>gather</code> step is used to aggregate all the results of the previous step into a list. Given that <code>gather</code> exhausts all the objects of the previous step and emits a list. The <code>scatter</code> step is used to unroll that list and pass it to the next step.</p>
+<p>With <code>gather</code>, the generated list can be analyzed by a step to determine some desired property that is a function of all current objects in the breadth of the path. For example.</p>
+<pre><code>gremlin&gt; g.v(1).outE.gather{ println "processing: ${it}"; return it.get(0) }.inV
+processing: [e[7][1-knows-&gt;2], e[8][1-knows-&gt;4], e[9][1-created-&gt;3]]
+==&gt;v[2]</code></pre>
+<p>Note that with breadth-first traverse being controlled by the <code>gather</code> step, its possible to intermix the use of depth- and breadth-first traversing in a single path expression. In other words, its not necessary to gather all results from the previous step at every step. In fact, its only necessary when all objects of a particular part of the path expression are needed in a computation.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

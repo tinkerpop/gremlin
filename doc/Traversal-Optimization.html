@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Traversal Optimization</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Traversal Optimization</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Traversal-Optimization"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Traversal-Optimization"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/gremlin-gremopoly.png" alt="" /></p>
+<p>In Gremlin, the same path expression can be written in numerous ways. Gremlin is an <a href="http://en.wikipedia.org/wiki/Imperative_programming">imperative language</a> in that the developer explicitly instructs Gremlin which path to take through the graph (as defined by an abstract path description). However, Gremlin doesn&#x2019;t always do as he is told. There are various optimizations that Gremlin will automatically take advantage of. This section describes such automatic optimizations.</p>
+<h2>Vertex Query Optimization</h2>
+<p>In <a href="../../blueprints/2.3.0/Home.html">Blueprints</a>, their is a method called <code>Vertex.query()</code>. This method returns a <code>Query</code> object that can be configured to filter the edges/vertices associated with that <code>Vertex</code> according to edge labels, edge properties, edge property intervals, etc. Whenever a pattern such as <code>outE....inV</code> is seen by Gremlin, Gremlin will automatically compile that statement into a <code>Query</code> object.</p>
+<pre><code>gremlin&gt; g.v(1).outE('knows','created').interval('weight',0.5,1.0).has('date',2012).inV.name.toString()
+==&gt;[StartPipe, QueryPipe(out,[knows, created],has:true,interval:true,edge), IdentityPipe, IdentityPipe, InVertexPipe, PropertyPipe(name)]</code></pre>
+<p>However, Gremlin ensures that the pipeline length stays the same by introducing <code>IdentityPipe</code> steps. This ensure that numbered step constructs (e.g. <code>loop(2)</code>, <code>back(1)</code>) remain faithful. Though it is always a good idea to <code>toString()</code> an expression when using numbered steps to ensure proper indexing.</p>
+<p>If the query optimization is not desired, there is the method <code>GremlinPipeline.optimize(boolean)</code>. This method makes it possible to turn off query optimizations.</p>
+<pre><code>gremlin&gt; g.v(1).optimize(false).outE('knows','created').interval('weight',0.5,1.0).has('date',2012).inV.name.toString()
+==&gt;[StartPipe, OutEdgesPipe(knows,created), IntervalFilterPipe, PropertyFilterPipe(date,EQUAL,2012), InVertexPipe, PropertyPipe(name)]</code></pre>
+<h2>Automatic Path Enabling</h2>
+<p><a href="../../pipes/2.3.0/Home.html">Pipes</a> natively supports the recording of the history of a particular traversal. By default, Gremlin does not assume that path information will be required of the traversal unless a path-specific step is called &#x2014; e.g. <code>path</code>, <code>simplePath</code>. If the path information is required internal to a closure, Gremlin doesn&#x2019;t know that as it can not interpret what is in a closure. As such, be sure to <code>GremlinPipeline.enablePath()</code> if path information will be required by the expression.</p>
+<pre><code>gremlin&gt; g.v(1).out.loop(1){it.loops &lt; 3}{it.path.contains(g.v(4))}             
+Cannot invoke method contains() on null object
+Display stack trace? [yN] 
+gremlin&gt; g.v(1).out.loop(1){it.loops &lt; 3}{it.path.contains(g.v(4))}.enablePath()
+==&gt;v[5]
+==&gt;v[3]</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

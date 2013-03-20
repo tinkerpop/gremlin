@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Getting Started</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Getting Started</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Getting-Started"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Getting-Started"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>Welcome to Gremlin. Gremlin is a <a href="http://en.wikipedia.org/wiki/Domain-specific_language">domain specific language</a> for traversing <a href="http://en.wikipedia.org/wiki/Graph_%28mathematics%29">graphs</a>. Graphs are data structures where there exists vertices (i.e. dots, nodes) and edges (i.e. lines, arcs). Gremlin was designed to work with a type of graph called a property graph. Property graphs are defined, in detail, in the <a class="internal present" href="Defining-a-Property-Graph.html">Defining a Property Graph</a> section of this documentation. By using Gremlin, it is possible make use of a <a href="http://en.wikipedia.org/wiki/Read-eval-print_loop"><span class="caps">REPL</span></a> (command line/console) to interactively traverse a graph.</p>
+<h2>Installing Gremlin</h2>
+<p>Here are the steps to get Gremlin up and running. Either <code>git clone</code> from <code>http://github.com/tinkerpop/gremlin.git</code> and build the latest version of Gremlin or you can download a pre-built version. For the latter, follow the steps below.</p>
+<ol><li>Download the latest distribution of Gremlin from <a href="../../gremlin/2.3.0/Downloads.html">downloads</a>.</li>
+	<li>Unzip the downloaded <code>gremlin-xx.zip</code> and <code>cd</code> to the <code>gremlin-xx/</code> directory it creates.</li>
+	<li>Run <code>gremlin.sh</code> (unix) or <code>gremin.bat</code> (windows) in the <code>bin</code> directory to start the Gremlin console.</li>
+</ol><h2>Using the Gremlin Console</h2>
+<pre><code>marko$ ./bin/gremlin.sh 
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin&gt;</code></pre>
+<p>Note that using the <code>gremlin.bat</code> requires backslashes instead of forwardslashes at the command line.</p>
+<p>Thats it. The default Gremlin Groovy console is loaded and ready for commands. Please review Groovy for help on Groovy-related constructs. In short, Groovy is a superset of Java. What works in Java, works in Groovy. However, Groovy provides many shorthands to make it easier to interact with the Java <span class="caps">API</span>. Moreoever, Gremlin provides many neat shorthands to make it easier to express paths through a property graph.</p>
+<pre><code>gremlin&gt; i = 'goodbye'
+==&gt;goodbye
+gremlin&gt; j = 'self'
+==&gt;self
+gremlin&gt; i + " " + j
+==&gt;goodbye self
+gremlin&gt; "${i} ${j}"
+==&gt;goodbye self</code></pre>
+<p>We will use a simple, 6 vertex/6 edge, graph that is provided with Gremlin and is fully diagrammed in <a class="internal present" href="Defining-a-Property-Graph.html">Defining a Property Graph</a>. This graph is used so much throughout the documentation that it is hard coded and can be constructed using the <code>TinkerGraphFactory.createTinkerGraph()</code> factory method.</p>
+<pre><code>gremlin&gt; g = TinkerGraphFactory.createTinkerGraph()
+==&gt;tinkergraph[vertices:6 edges:6]
+gremlin&gt; g.class
+==&gt;class com.tinkerpop.blueprints.impls.tg.TinkerGraph
+gremlin&gt; // lets look at all the vertices
+gremlin&gt; g.V
+==&gt;v[3]
+==&gt;v[2]
+==&gt;v[1]
+==&gt;v[6]
+==&gt;v[5]
+==&gt;v[4]
+gremlin&gt; // lets look at all the names of those vertices
+gremlin&gt; g.V.name
+==&gt;lop
+==&gt;vadas
+==&gt;marko
+==&gt;peter
+==&gt;ripple
+==&gt;josh
+gremlin&gt; // lets look at all the properties of those vertices
+gremlin&gt; g.V.map
+==&gt;{name=lop, lang=java}
+==&gt;{name=vadas, age=27}
+==&gt;{name=marko, age=29}
+==&gt;{name=peter, age=35}
+==&gt;{name=ripple, lang=java}
+==&gt;{name=josh, age=32}
+gremlin&gt; // lets look at all the edges
+gremlin&gt; g.E
+==&gt;e[10][4-created-&gt;5]
+==&gt;e[7][1-knows-&gt;2]
+==&gt;e[9][1-created-&gt;3]
+==&gt;e[8][1-knows-&gt;4]
+==&gt;e[11][4-created-&gt;3]
+==&gt;e[12][6-created-&gt;3]
+gremlin&gt; v = g.v(1)
+==&gt;v[1]
+gremlin&gt; v.name + ' is ' + v.age + ' years old.'
+==&gt;marko is 29 years old.
+gremlin&gt; // lets do a traversal from the '1' marko vertex to the adjacent outgoing vertices.
+gremlin&gt; v.out
+==&gt;v[2]
+==&gt;v[3]
+==&gt;v[4]
+gremlin&gt; // lets only take 'knows' labeled edges
+gremlin&gt; v.out('knows')
+==&gt;v[2]
+==&gt;v[4]
+gremlin&gt; // lets do a traversal from the '1' marko vertex to its outgoing edges.
+gremlin&gt; // in the property graph world, edges are first class citizens that can be traversed to.
+gremlin&gt; v.outE
+==&gt;e[7][1-knows-&gt;2]
+==&gt;e[9][1-created-&gt;3]
+==&gt;e[8][1-knows-&gt;4]
+gremlin&gt; v.outE('knows')
+==&gt;e[7][1-knows-&gt;2]
+==&gt;e[8][1-knows-&gt;4]
+gremlin&gt; // what are the weight values on all outgoing edges
+gremlin&gt; v.outE.weight
+==&gt;0.5
+==&gt;0.4
+==&gt;1.0
+gremlin&gt; // lets only traverse to the head vertices of those edges
+gremlin&gt; // that have a weight that is less than 1.0
+gremlin&gt; v.outE.has('weight', T.lt, 1.0f).inV
+==&gt;v[2]
+==&gt;v[3]
+gremlin&gt; // lets do the same, but with a more general "filter closure"
+gremlin&gt; v.outE.filter{it.weight &lt; 1.0}.inV
+==&gt;v[2]
+==&gt;v[3]                           
+gremlin&gt; // lets get the property maps of these vertices.
+gremlin&gt; v.outE.filter{it.weight &lt; 1.0}.inV.map
+==&gt;{name=vadas, age=27}
+==&gt;{name=lop, lang=java}
+gremlin&gt; // lets traverse to marko's 30+ year old friends' created projects
+gremlin&gt; v.out('knows').filter{it.age &gt; 30}.out('created').name
+==&gt;ripple
+==&gt;lop</code></pre>
+<p>What was presented is some of the basic functionality in Gremlin. The remainder of this documentation will discuss path construction and their use in performing graph algorithms on property graph structures.</p>
+<h2>Tips on the Gremlin Console</h2>
+<p>Its always handy to add the following to the <code>.bash_profile</code>.</p>
+<pre><code>alias gremlin="Users/marko/software/gremlin/bin/gremlin.sh.html"</code></pre>
+<p>If you are a Windows user, you can do the following.</p>
+<pre><code>doskey gremlin=cd C:\Users\marko\software\gremlin\bin\$tgremlin.bat</code></pre>
+<pre><code>~$ gremlin
+
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin&gt;</code></pre>
+<p>Finally, Gremlin scripts can be executed from the command line. To do so, simply create a Gremlin script file (e.g. in Groovy).</p>
+<pre><code>for(i in 1..3)
+  println i</code></pre>
+<p>Now you can evaluate the script using <code>gremlin.sh</code> with the parameter for <code>-e</code> being set to the script to execute.</p>
+<pre><code>marko$ ./bin/gremlin.sh -e example.groovy
+1
+2
+3
+marko$</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

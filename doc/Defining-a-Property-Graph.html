@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Defining a Property Graph</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Defining a Property Graph</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Defining-a-Property-Graph"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Defining-a-Property-Graph"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>Gremlin was designed specifically for the analysis and manipulation of key/value-based, directed, multi-relational graphs. This long term refers to a type of graph data structure that has certain features. These features are described as follows. The first term, key/value, refers to the fact that both vertices and edges can have any number of properties associated with them. The second term, directed, refers to the fact that the edges in the graph have a directionality &#x2014; that is, there is a tail and head to each edge. Finally, the third term, multi-relational, refers to the fact that there can many types of edges and thus, many types of relationships can exist between the vertices. For the remainder of this documentation, and for the sake of brevity, these types of graphs will be called <strong>property graphs</strong>. A property graph is demonstrated in the following example. This diagrammed property graph comes with the Gremlin distribution in <a href="http://graphml.graphdrawing.org/">GraphML</a> format at <code>data/graph-example-1.xml</code> (see <a href="https://github.com/tinkerpop/gremlin/blob/master/data/graph-example-1.xml">graph-example-1.xml</a>) or GraphSON at <code>data/graph-example-1.json</code> (see <a href="https://github.com/tinkerpop/gremlin/blob/master/data/graph-example-1.json">graph-example-1.json</a>)</p>
+<p><img src=" images/graph-example-1.jpg" alt="" /></p>
+<p>A property graph has these elements:</p>
+<ol><li>a set of vertices
+	<ul><li>each vertex has a unique identifier.</li>
+		<li>each vertex has a set of outgoing edges.</li>
+		<li>each vertex has a set of incoming edges.</li>
+		<li>each vertex has a collection of properties defined by a map from key to value.</li>
+	</ul></li>
+	<li>a set of edges
+	<ul><li>each edge has a unique identifier.</li>
+		<li>each edge has an outgoing tail vertex.</li>
+		<li>each edge has an incoming head vertex.</li>
+		<li>each edge has a label that denotes the type of relationship between its two vertices.</li>
+		<li>each edge has a collection of properties defined by a map from key to value.</li>
+	</ul></li>
+</ol><p>Learn more about the property graph data model from <a href="../../blueprints/2.3.0/Home.html">Blueprints</a>.</p>
+<p><a href="../../blueprints/2.3.0/Home.html"><img src="https://github.com/tinkerpop/blueprints/raw/master/doc/images/blueprints-logo.png" alt="" /></a></p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

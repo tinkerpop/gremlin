@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>JVM Language Implementations</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>JVM Language Implementations</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/JVM-Language-Implementations"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/JVM-Language-Implementations"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>Gremlin is a style of graph traversing that can be hosted in any number of <span class="caps">JVM</span> languages. The only requirements of the host language are that it supports:</p>
+<ul><li><strong>Function composition</strong>: traversals are specified imperatively, where each function in a series performs some computation that directs the traverser through the graph in a directed, algorithmic fashion.</li>
+	<li><strong>Iteration</strong>: without iteration, each step/function in a path expression would yield a complete set of intermediate results. For traversals that touch large parts of the graph, memory issues can ensue.</li>
+	<li><strong>Function closure</strong>: to ensure arbitrary computations, it is necessary to allow the user to specify closures (e.g. anonymous functions) that augment the generic steps of the language.</li>
+</ul><p>When a language has these features, it can host Gremlin-style graph traversing. The benefit of this is that users can make use of the programming language they are most comfortable with. This model is different than, lets say, using <a href="http://en.wikipedia.org/wiki/SQL"><span class="caps">SQL</span></a> in Java where the query is evaluated by passing a string representation of the query to the <span class="caps">SQL</span> engine. On the contrary, with native Gremlin support for other <span class="caps">JVM</span> languages, there is no string passing. Instead, all there exists is simple method chaining in Gremlin&#x2019;s fluent style. However, the drawback of this model is that for each <span class="caps">JVM</span> language, there are syntactic variations that must be accounted for.</p>
+<p>The examples below demonstrate the same traversal in <a href="http://groovy.codehaus.org/">Groovy</a> and <a href="http://java.com/">Java</a>, respectively.</p>
+<p><img width="175" src="http://groovy.codehaus.org/images/groovy-logo-medium.png" /><img width="175" src="http://cdn3.digitaltrends.com/wp-content/uploads/2010/11/java-logo.jpg" /></p>
+<p><strong>How to read the examples to follow</strong><br /></p><pre><code>Groovy version
+Java version</code></pre>
+<hr /><p><strong>Iterate through all the vertices in the graph</strong><br /></p><pre><code>g.V
+new GremlinPipeline(g).V()</code></pre>
+<p><strong>Iterate through all the vertices that vertex 1 knows</strong><br /></p><pre><code>g.v(1).out('knows')
+new GremlinPipeline(g.getVertex(1)).out("knows")</code></pre>
+<p><strong>Iterate through the names of all the vertices that vertex 1 knows</strong><br /></p><pre><code>g.v(1).out('knows').name
+new GremlinPipeline(g.getVertex(1)).out("knows").property("name")</code></pre>
+<p><strong>Iterate through the names of all the vertices that vertex 1 knows whose age is greater than 30</strong><br /></p><pre><code>g.v(1).out('knows').has('age',T.gt,30).name
+new GremlinPipeline(g.getVertex(1)).out("knows").has("age",T.gt,30).property("name")</code></pre>
+<p><strong>Iterate though all vertices that vertex 1 knows whose name starts with &#x2018;j&#x2019;</strong><br /></p><pre><code>g.v(1).out.filter{it.name.startsWith('j')}
+
+new GremlinPipeline(g.getVertex(1)).out().filter(new PipeFunction&lt;Vertex,Boolean&gt;() { 
+  public Boolean compute(Vertex v) {
+    return v.getProperty("name").startsWith("j");
+  }
+}</code></pre>
+<p><strong>Determine the co-developers of vertex 1</strong></p>
+<pre><code>g.v(1).out('created').in('created').except([g.v(1)])
+new GremlinPipeline(g.getVertex(1)).out("created").in("created").except(Arrays.asList(g.getVertex(1)))</code></pre>
+<p><strong>Store the weight value of the outgoing edges of vertex 1 into list x</strong><br /></p><pre><code>x = []; g.v(1).outE.store(x){it.weight}
+
+List&lt;Double&gt; x = new ArrayList&lt;Double&gt;();
+new GremlinPipeline(g.getVertex(1)).outE().store(x, new PipeFunction&lt;Edge,Double&gt;() {
+  public Double compute(Edge e) {
+    return (Double) e.getProperty("weight");
+  }
+}</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>
