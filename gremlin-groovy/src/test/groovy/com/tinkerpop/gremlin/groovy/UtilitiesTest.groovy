@@ -21,6 +21,14 @@ class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
         super.test_g_v1_out_toList(g.v(1).out.toList());
     }
 
+    public void test_g_v1_out_first() {
+        super.test_g_v1_out_first(g.v(1).out.first());
+    }
+    
+    public void test_g_v1_out_firstNoResult() {
+        super.test_g_v1_out_firstNoResult(g.v(1).in.first());
+    }
+    
     public void test_g_v1_out_nextX1X() {
         super.test_g_v1_out_nextX1X(g.v(1).out.next(1));
     }

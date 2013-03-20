@@ -1,11 +1,11 @@
 package com.tinkerpop.gremlin.java;
 
+import java.util.ArrayList;
+
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.test.ComplianceTest;
-
-import java.util.ArrayList;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -17,9 +17,17 @@ public class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     public void testCompliance() {
         ComplianceTest.testCompliance(this.getClass());
     }
-
+    
     public void test_g_v1_out_toList() {
         super.test_g_v1_out_toList(new GremlinPipeline(g.getVertex(1)).out().toList());
+    }
+
+    public void test_g_v1_out_first() {
+        super.test_g_v1_out_first(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out().<Vertex>first());      
+    }
+    
+    public void test_g_v1_out_firstNoResult() {
+        super.test_g_v1_out_firstNoResult(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).in().<Vertex>first());
     }
 
     public void test_g_v1_out_nextX1X() {
