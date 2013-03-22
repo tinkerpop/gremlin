@@ -1,6 +1,9 @@
 package com.tinkerpop.gremlin.java;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
+import junit.framework.Assert;
 
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
@@ -17,17 +20,21 @@ public class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     public void testCompliance() {
         ComplianceTest.testCompliance(this.getClass());
     }
-    
+
     public void test_g_v1_out_toList() {
         super.test_g_v1_out_toList(new GremlinPipeline(g.getVertex(1)).out().toList());
     }
 
     public void test_g_v1_out_first() {
-        super.test_g_v1_out_first(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out().<Vertex>first());      
+        super.test_g_v1_out_first(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out().<Vertex> first());
     }
-    
+
     public void test_g_v1_out_firstNoResult() {
-        super.test_g_v1_out_firstNoResult(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).in().<Vertex>first());
+        try {
+            new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).in().<Vertex>first();
+            Assert.fail();
+        }catch(NoSuchElementException e) {
+        }
     }
 
     public void test_g_v1_out_nextX1X() {

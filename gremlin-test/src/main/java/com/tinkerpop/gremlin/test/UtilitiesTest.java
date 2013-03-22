@@ -68,7 +68,4 @@ public class UtilitiesTest extends TestCase {
         assertTrue(names.contains((String) first.getProperty("name")));
     }
 
-    public void test_g_v1_out_firstNoResult(Vertex vertex) {
-        assertNull(vertex);
-    }
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
@@ -1412,7 +1413,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     public <R extends E> R first() {
         Iterator<E> iterator = iterator();
         if(!iterator.hasNext()) {
-            return null;
+            throw new NoSuchElementException("Cannot access first() element from an empty Iterable");
         }
         return (R) iterator.next();
     }

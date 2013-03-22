@@ -1,5 +1,5 @@
 package com.tinkerpop.gremlin.groovy
-
+import org.junit.Assert
 import com.tinkerpop.blueprints.Graph
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory
 import com.tinkerpop.gremlin.test.ComplianceTest
@@ -24,11 +24,16 @@ class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
     public void test_g_v1_out_first() {
         super.test_g_v1_out_first(g.v(1).out.first());
     }
-    
+
     public void test_g_v1_out_firstNoResult() {
-        super.test_g_v1_out_firstNoResult(g.v(1).in.first());
+        try {
+           g.v(1).in.first();
+           Assert.fail();
+        }
+        catch(e) {
+        }
     }
-    
+
     public void test_g_v1_out_nextX1X() {
         super.test_g_v1_out_nextX1X(g.v(1).out.next(1));
     }
