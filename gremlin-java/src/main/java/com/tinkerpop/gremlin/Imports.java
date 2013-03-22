@@ -29,10 +29,11 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.impls.*");
         imports.add("com.tinkerpop.blueprints.impls.tg.*");
         imports.add("com.tinkerpop.blueprints.impls.neo4j.*");
+        imports.add("com.tinkerpop.blueprints.impls.neo4j.batch.*");
         imports.add("com.tinkerpop.blueprints.impls.orient.*");
+        imports.add("com.tinkerpop.blueprints.impls.orient.batch.*");
         imports.add("com.tinkerpop.blueprints.impls.dex.*");
         imports.add("com.tinkerpop.blueprints.impls.rexster.*");
-        imports.add("com.tinkerpop.blueprints.impls.neo4jbatch.*");
         imports.add("com.tinkerpop.blueprints.impls.sail.*");
         imports.add("com.tinkerpop.blueprints.impls.sail.impls.*");
         imports.add("com.tinkerpop.blueprints.util.*");
@@ -49,6 +50,7 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.util.wrappers.partition.*");
         imports.add("com.tinkerpop.blueprints.util.wrappers.readonly.*");
         imports.add("com.tinkerpop.blueprints.oupls.sail.*");
+        imports.add("com.tinkerpop.blueprints.oupls.sail.pg.*");
         imports.add("com.tinkerpop.blueprints.oupls.jung.*");
 
         // pipes

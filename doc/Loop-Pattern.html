@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Loop Pattern</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Loop Pattern</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Loop-Pattern"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Loop-Pattern"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src=" images/gremlin-kilt.png" /></p>
+<p>Looping is essential for traversing to an arbitrary depth. The <code>loop</code> step allows you to loop over a particular set of steps in the pipeline. For the examples to follow, the Grateful Dead graph discussed in <a class="internal present" href="Defining-a-More-Complex-Property-Graph.html">Defining a More Complex Property Graph</a> is used. Most of the examples in this section make use of <code>GremlinPipeline.optimize(boolean)</code>. Please refer to <a class="internal present" href="Traversal-Optimization.html">Traversal Optimization</a> for the rationale behind this method.</p>
+<pre><code>gremlin&gt; g = new TinkerGraph()
+==&gt;tinkergraph[vertices:0 edges:0]
+gremlin&gt; g.loadGraphML('data/graph-example-2.xml')
+==&gt;null</code></pre>
+<p>You can create an explicit pipeline to walk a particular path through the graph (<code>outE.inV</code>).</p>
+<pre><code>gremlin&gt; g.v(89).outE.inV.path
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83]]
+==&gt;[v[89], e[7022][89-followed_by-&gt;21], v[21]]
+==&gt;[v[89], e[7023][89-followed_by-&gt;206], v[206]]
+==&gt;[v[89], e[7006][89-followed_by-&gt;127], v[127]]
+...</code></pre>
+<p>You can also loop for an arbitrary depth (i.e. any arbitrary number of loops through the looped section of the pipeline). In the example below, the <code>loop</code> step is used. The single integer argument to <code>loop</code> states how many steps back to loop over (i.e. <code>outE.inV</code>). The provided closure says to continue to loop <strong>while</strong> the number of loops that have occurred is less than 3. Thus, what is emitted from <code>loop</code> is the vertices 2 steps away from vertex 89 (Dark Star). Finally, the <code>path</code> step is used to emit the paths of length 2 emanating from vertex 89.</p>
+<pre><code>gremlin&gt; g.v(89).outE.inV.loop(2){it.loops &lt; 3}.path
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1437][83-followed_by-&gt;29], v[29]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1411][83-followed_by-&gt;13], v[13]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1436][83-followed_by-&gt;14], v[14]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1410][83-followed_by-&gt;12], v[12]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1435][83-followed_by-&gt;36], v[36]]
+...</code></pre>
+<p>Feel free to use <code>as</code> to label the loop point.</p>
+<pre><code>gremlin&gt; g.v(89).as('x').outE.inV.loop('x'){it.loops &lt; 3}.path
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1437][83-followed_by-&gt;29], v[29]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1411][83-followed_by-&gt;13], v[13]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1436][83-followed_by-&gt;14], v[14]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1410][83-followed_by-&gt;12], v[12]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1435][83-followed_by-&gt;36], v[36]]
+...</code></pre>
+<p>Note the the expression above is equivalent to the &#x201C;unrolled&#x201D; version below.</p>
+<pre><code>gremlin&gt; g.v(89).outE.inV.outE.inV.path
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1437][83-followed_by-&gt;29], v[29]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1411][83-followed_by-&gt;13], v[13]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1436][83-followed_by-&gt;14], v[14]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1410][83-followed_by-&gt;12], v[12]]
+==&gt;[v[89], e[7021][89-followed_by-&gt;83], v[83], e[1435][83-followed_by-&gt;36], v[36]]
+...</code></pre>
+<p>In fact:</p>
+<pre><code>gremlin&gt; g.v(89).outE.inV.loop(2){it.loops &lt; 3} == g.v(89).outE.inV.outE.inV            
+==&gt;true</code></pre>
+<h2>Loop Bundles and their Metadata</h2>
+<p>The <code>it</code> component of the <code>loop</code> step closure has three properties that are accessible. These properties can be used to reason about when to break out of the loop.</p>
+<ol><li><code>it.object</code>: the current object of the traverser.</li>
+	<li><code>it.path</code>: the current path of the traverser.</li>
+	<li><code>it.loops</code>: the number of times the traverser has looped through the loop section.</li>
+</ol><p><strong><span class="caps">NOTE</span></strong>: If you are using <code>it.path</code> in the while/emit closure, be sure that the pipeline has had its path functionality enabled.</p>
+<pre><code>gremlin&gt; g.v(89).out.loop(1){it.loops &lt; 3}{it.path.contains(g.v(12))}
+Cannot invoke method contains() on null object
+Display stack trace? [yN] 
+gremlin&gt; g.v(89).out.loop(1){it.loops &lt; 3}{it.path.contains(g.v(12))}.enablePath
+==&gt;v[19]
+==&gt;v[27]
+==&gt;v[130]
+==&gt;v[49]
+==&gt;v[252]
+...</code></pre>
+<h2>Using an Emit Closure</h2>
+<p>The <code>loop</code> step can be updated with a second closure called the &#x201C;emit closure.&#x201D; This boolean-based closure will determine wether the current object in the loop structure is emitted or not. As such, it is possible to emit intermediate objects, not simply those at the end of the loop.</p>
+<pre><code>gremlin&gt; g.v(89).out.loop(1){it.loops &lt; 4}.count()      
+==&gt;70307
+gremlin&gt; g.v(89).out.loop(1){it.loops &lt; 4}{true}.count()
+==&gt;71972
+gremlin&gt; g.v(89).out.loop(1){it.loops &lt; 4}{it.object.id == '89'}.count()
+==&gt;582</code></pre>
+<p>Finally, use <code>toString()</code> to see how <code>loop</code> wraps a section of the pipeline.</p>
+<pre><code>gremlin&gt; println g.v(89).outE.inV.path
+[StartPipe, QueryPipe(out,[],has:false,interval:false,edge), InVertexPipe, PathPipe]
+==&gt;null
+gremlin&gt; println g.v(89).outE.inV.loop(2){it.loops &lt; 3}.path
+[StartPipe, LoopPipe([QueryPipe(out,[],has:false,interval:false,edge), InVertexPipe]), PathPipe]
+==&gt;null
+gremlin&gt; println g.v(89).out.loop(1){it.loops &lt; 3}.path
+[StartPipe, LoopPipe([OutPipe]), PathPipe]
+==&gt;null</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

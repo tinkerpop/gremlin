@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href=" css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href=" css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href=" css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src=" css/jquery.js"></script>
+  <script type="text/javascript" src=" css/gollum.js"></script>
+  <script type="text/javascript" src=" css/gollum.dialog.js"></script>
+  <script type="text/javascript" src=" css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src=" css/editor/gollum.editor.js"></script>
+  <title>Defining a More Complex Property Graph</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.3.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Defining a More Complex Property Graph</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Defining-a-More-Complex-Property-Graph"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Defining-a-More-Complex-Property-Graph"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p>The documentation up to this point has been using examples from a simple toy graph of 6 vertices and 6 edges. For this section, a more complicated graph structure is used in the examples. A clipped representation (i.e. low weighted edges removed) of this graph is diagrammed below. This graph is a representation of the American band, the <a href="http://en.wikipedia.org/wiki/Grateful_Dead">Grateful Dead</a>.</p>
+<p><img src=" images/graph-example-2.jpg" alt="" /></p>
+<p>More information about this data set can be found in the following article.</p>
+<p>Rodriguez, M.A., Gintautas, V., Pepe, A., <a href="http://arxiv.org/abs/0807.2466">A Grateful Dead Analysis: The Relationship Between Concert and Listening Behavior</a>, First Monday, volume 14, number 1, University of Illinois at Chicago Library, January 2009.</p>
+<pre><code>g = new TinkerGraph()
+g.loadGraphML('data/graph-example-2.xml')</code></pre>
+<p>In the above Grateful Dead graph, there are vertices and there are edges. The vertices are broken into two sets: songs (e.g. <a href="http://en.wikipedia.org/wiki/Dark_Star_%28song%29">Dark Star</a>, <a href="http://en.wikipedia.org/wiki/China_Cat_Sunflower">China Cat Sunflower</a>) and artists (e.g. <a href="http://en.wikipedia.org/wiki/Jerry_Garcia">Jerry Garcia</a>, <a href="http://en.wikipedia.org/wiki/Robert_Hunter_%28lyricist%29">Robert Hunter</a>). The following itemization describes the properties associated with vertices and edges.</p>
+<ol><li>vertices
+	<ul><li>song vertices
+			<ul><li>type (string): always &#x2018;song&#x2019; for song vertices.</li>
+				<li>name (string): the name of the song.</li>
+				<li>performances (integer): the number of times the song was played in concert.</li>
+				<li>song_type (string): whether the song is a &#x2018;cover&#x2019; song or an &#x2018;original&#x2019;.</li>
+			</ul></li>
+		<li>artist vertices
+			<ul><li>type (string): always &#x2018;artist&#x2019; for artist vertices.</li>
+				<li>name (string): the name of the artist.</li>
+			</ul></li>
+	</ul></li>
+	<li>edges
+	<ul><li>followed_by (song &#x2192; song): if the tail song was followed by the head song in concert.
+			<ul><li>weight (integer): the number of times these two songs were paired in concert.</li>
+			</ul></li>
+		<li>sung_by (song &#x2192; artist): if the tail song was primarily sung by the head artist.</li>
+		<li>written_by (song &#x2192; artist): if the tail song was written by the head artist.</li>
+	</ul></li>
+</ol>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>okram</b>, 2013-03-20 04:28:53</p>
+</div>
+</div>
+
+<script type="text/javascript" src=" css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>
