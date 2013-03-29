@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.tinkerpop.gremlin</groupId>
         <artifactId>gremlin</artifactId>
-        <version>2.3.0</version>
+        <version>2.3.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>gremlin-test</artifactId>
