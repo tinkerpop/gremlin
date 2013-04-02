@@ -62,4 +62,10 @@ public class UtilitiesTest extends TestCase {
     public void test_g_V_hasXidX1X_name_equals_g_v1_name(Pipe pipe1, Pipe pipe2) {
         assertTrue(pipe1.equals(pipe2));
     }
+
+    public void test_g_v1_out_first(Vertex first) {
+        List<String> names = Arrays.asList("josh", "vadas", "lop");
+        assertTrue(names.contains((String) first.getProperty("name")));
+    }
+
 }

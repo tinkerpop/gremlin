@@ -1,11 +1,14 @@
 package com.tinkerpop.gremlin.java;
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
+
+import junit.framework.Assert;
+
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.test.ComplianceTest;
-
-import java.util.ArrayList;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -20,6 +23,18 @@ public class UtilitiesTest extends com.tinkerpop.gremlin.test.UtilitiesTest {
 
     public void test_g_v1_out_toList() {
         super.test_g_v1_out_toList(new GremlinPipeline(g.getVertex(1)).out().toList());
+    }
+
+    public void test_g_v1_out_first() {
+        super.test_g_v1_out_first(new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).out().<Vertex> first());
+    }
+
+    public void test_g_v1_out_firstNoResult() {
+        try {
+            new GremlinPipeline<Vertex, Vertex>(g.getVertex(1)).in().<Vertex>first();
+            Assert.fail();
+        }catch(NoSuchElementException e) {
+        }
     }
 
     public void test_g_v1_out_nextX1X() {

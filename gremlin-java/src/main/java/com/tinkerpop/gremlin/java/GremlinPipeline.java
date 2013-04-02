@@ -1,5 +1,12 @@
 package com.tinkerpop.gremlin.java;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
@@ -27,6 +34,7 @@ import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyPipe;
 import com.tinkerpop.pipes.FunctionPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.CopySplitPipe;
@@ -58,7 +66,6 @@ import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
-import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
@@ -80,11 +87,6 @@ import com.tinkerpop.pipes.util.structures.Pair;
 import com.tinkerpop.pipes.util.structures.Row;
 import com.tinkerpop.pipes.util.structures.Table;
 import com.tinkerpop.pipes.util.structures.Tree;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -1405,6 +1407,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         PipeHelper.iterate(this);
     }
 
+    /**
+     * Return the first item or null if no value is output.
+     */
+    public <R extends E> R first() {
+        Iterator<E> iterator = iterator();
+        if(!iterator.hasNext()) {
+            throw new NoSuchElementException("Cannot access first() element from an empty Iterable");
+        }
+        return (R) iterator.next();
+    }
+    
     /**
      * Return the next X objects in the pipeline as a list.
      *
