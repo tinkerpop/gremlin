@@ -5,28 +5,33 @@ h2. Gremlin 2.y.z
 
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-2.png!
 
-h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
+h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
+
+* Added @GremlinPipeline.cast@ to allow pipeline end type to be reset.
+
+h3. Version 2.3.0 (March 20, 2013)
 
 ```xml
 <dependency>
   <groupId>com.tinkerpop.gremlin</groupId>
   <artifactId>gremlin-java</artifactId>
-  <version>2.3.0-SNAPSHOT</version>
+  <version>2.3.0</version>
 </dependency>
 
 <dependency>
   <groupId>com.tinkerpop.gremlin</groupId>
   <artifactId>gremlin-groovy</artifactId>
-  <version>2.3.0-SNAPSHOT</version>
+  <version>2.3.0</version>
 </dependency>
 ```
 
+* Added support for @Vertex.addEdge()@ with @Map<String,Object>@ properties for the edge
 * A semantic change to @store().cap()@ where @StorePipe@ now implements @LazySideEffectPipe@
 * Updated all @TransformPipes@ to new typing interface rules in Pipes
 * @except()/retain()@ support @String[]@ of named steps to reference as collection
 * @GroovyPipeFunction@ provides support for @AsMap@ referencing and closure access to named-steps
 * Bumped to support Groovy 1.8.9
-* Added @GremlinPipeline.remove()@ which removes all elements at the end of the pipeline (overrides @Iterator.remove())
+* Added @GremlinPipeline.remove()@ which removes all elements at the end of the pipeline (overrides @Iterator.remove()@)
 * Added @LinkPipe@ and @linkOut@, @linkIn@, @linkBoth@ steps to allow for the addition of linking current vertex with past vertex
 * Added @orderMap@ step which takes a @Map@ as input, orders its entries, and then emits its keys
 * Added @Tokens.T.decr@ and @Tokens.T.incr@ for default ordering in @order@ and @orderMap@ steps
@@ -36,6 +41,8 @@ h3. Version 2.3.0 (NOT OFFICIALLY RELEASE YET)
 * The @map@ step now is @map(String... keys)@ with user provided keys to get (@id@ and @label@ possible options)
 * The console can be initialized with a script to pre-define steps and initialize other aspects of the environment
 * Added @shuffle@ step which gathers all objects into a list and randomizes the order of their output
+
+==<hr/>==
 
 h3. Version 2.2.0 (December 19, 2012)
 

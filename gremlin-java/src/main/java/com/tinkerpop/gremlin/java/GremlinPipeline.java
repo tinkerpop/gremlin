@@ -1471,4 +1471,15 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
             ((Element) object).remove();
         }
     }
+    
+    /**
+     * Returns the current pipeline with a new end type.
+     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     *
+     * @return returns the current pipeline with the new end type.
+     */
+    @Override
+    public <E> GremlinPipeline<S, E> cast(Class<E> end) {
+        return (GremlinPipeline<S, E>) this;
+    }
 }

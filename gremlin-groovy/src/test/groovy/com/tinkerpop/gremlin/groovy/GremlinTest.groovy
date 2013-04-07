@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.groovy
 
+import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Graph
 import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph
@@ -175,5 +176,15 @@ class GremlinTest extends BaseTest {
         Vertex a = g.addVertex();
         g.addEdge(a, a, "self");
         assertEquals(a.out.out.out.path.next().size(), 4)
+    }
+
+    public void testVertexAddEdge() {
+        Gremlin.load();
+        Graph g = new TinkerGraph();
+        Edge e = g.addVertex(1).addEdge("knows", g.addVertex(2), [weight: 0.2f]);
+        assertEquals(e.outV.id.next(), "1");
+        assertEquals(e.inV.id.next(), "2");
+        assertEquals(e.weight, 0.2f)
+        assertEquals(e.propertyKeys.size(), 1);
     }
 }
