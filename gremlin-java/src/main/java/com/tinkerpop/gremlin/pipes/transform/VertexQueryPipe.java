@@ -71,18 +71,18 @@ public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> 
 
     public String toString() {
 
-        String extra = "";
+        StringBuilder extra = new StringBuilder();
         if (this.hasContainers != null && this.hasContainers.size() > 0)
-            extra = extra + "has";
+            extra.append("has");
         if (this.intervalContainers != null && this.intervalContainers.size() > 0) {
-            if (extra.length() != 0) extra = extra + ",";
-            extra = extra + "interval";
+            if (extra.length() != 0) extra.append(",");
+            extra.append("interval");
         }
         if (this.lowRange != 0 || highRange != Long.MAX_VALUE) {
-            if (extra.length() != 0) extra = extra + ",";
-            extra = extra + "range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
+            if (extra.length() != 0) extra.append(",");
+            extra.append("range:["); extra.append(this.lowRange); extra.append(","); extra.append(this.highRange - 1); extra.append("]");
         }
-        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
+        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra.toString(), this.elementClass.getSimpleName().toLowerCase());
     }
 
     public E processNextStart() {
