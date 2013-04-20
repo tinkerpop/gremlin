@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe<Vertex,E> {
+public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe<Vertex, E> {
 
     private Direction direction = Direction.BOTH;
     private String[] labels;
@@ -80,7 +80,11 @@ public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> 
         }
         if (this.lowRange != 0 || highRange != Long.MAX_VALUE) {
             if (extra.length() != 0) extra.append(",");
-            extra.append("range:["); extra.append(this.lowRange); extra.append(","); extra.append(this.highRange - 1); extra.append("]");
+            extra.append("range:[");
+            extra.append(this.lowRange);
+            extra.append(",");
+            extra.append(this.highRange - 1);
+            extra.append("]");
         }
         return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra.toString(), this.elementClass.getSimpleName().toLowerCase());
     }
@@ -105,7 +109,7 @@ public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> 
                         if (hasContainer.compare.equals(Query.Compare.EQUAL))
                             query = query.has(hasContainer.key, hasContainer.value);
                         else
-                            query = query.has(hasContainer.key, (Comparable) hasContainer.value, hasContainer.compare);
+                            query = query.has(hasContainer.key, hasContainer.compare, (Comparable) hasContainer.value);
                     }
                 }
                 if (null != this.intervalContainers) {

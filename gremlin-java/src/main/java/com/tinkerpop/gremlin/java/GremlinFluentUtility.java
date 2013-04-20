@@ -2,17 +2,16 @@ package com.tinkerpop.gremlin.java;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
 import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.gremlin.pipes.transform.VertexQueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
-import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.IdentityPipe;
+import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class GremlinFluentUtility extends FluentUtility {
             for (final Pipe pipe : removedPipes) {
                 if (pipe instanceof PropertyFilterPipe) {
                     final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                    hasContainers.add(new VertexQueryPipe.HasContainer(temp.getKey(), temp.getValue(), convertFromFilter(temp.getFilter())));
+                    hasContainers.add(new VertexQueryPipe.HasContainer(temp.getKey(), temp.getValue(), Tokens.mapCompare(temp.getFilter())));
                 } else if (pipe instanceof IntervalFilterPipe) {
                     final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                     intervalContainers.add(new VertexQueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
@@ -88,22 +87,5 @@ public class GremlinFluentUtility extends FluentUtility {
             }
         }
         return pipeline;
-    }
-
-    private static Query.Compare convertFromFilter(final FilterPipe.Filter filter) {
-        if (filter.equals(FilterPipe.Filter.EQUAL))
-            return Query.Compare.EQUAL;
-        else if (filter.equals(FilterPipe.Filter.GREATER_THAN))
-            return Query.Compare.GREATER_THAN;
-        else if (filter.equals(FilterPipe.Filter.GREATER_THAN_EQUAL))
-            return Query.Compare.GREATER_THAN_EQUAL;
-        else if (filter.equals(FilterPipe.Filter.LESS_THAN))
-            return Query.Compare.LESS_THAN;
-        else if (filter.equals(FilterPipe.Filter.LESS_THAN_EQUAL))
-            return Query.Compare.LESS_THAN_EQUAL;
-        else if (filter.equals(FilterPipe.Filter.NOT_EQUAL))
-            return Query.Compare.NOT_EQUAL;
-        else
-            throw new IllegalStateException("The provided filter is not a legal filter: " + filter);
     }
 }
