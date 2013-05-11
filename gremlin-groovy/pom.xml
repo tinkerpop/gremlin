@@ -199,7 +199,7 @@
                             <goal>testCompile</goal>
                         </goals>
                         <configuration>
-                            <providerSelection>1.7</providerSelection>
+                            <providerSelection>1.8</providerSelection>
                         </configuration>
                     </execution>
                 </executions>
