@@ -13,7 +13,7 @@ import java.util.Iterator;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> implements TransformPipe<Vertex,Edge> {
+public class VerticesEdgesPipe extends AbstractPipe<Vertex, Edge> implements TransformPipe<Vertex, Edge> {
 
     protected Direction direction;
     protected String[] labels;

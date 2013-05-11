@@ -19,7 +19,7 @@ public class StoreStepTest extends TestCase {
 
     public void test_g_V_propertyXnameX_store_cap(final Pipe<Vertex, List<String>> pipe) {
         List<String> names = new ArrayList<String>();
-        while(pipe.hasNext())
+        while (pipe.hasNext())
             names = pipe.next();
 
         assertFalse(pipe.hasNext());
