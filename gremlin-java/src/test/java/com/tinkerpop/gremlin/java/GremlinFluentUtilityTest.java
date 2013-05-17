@@ -10,10 +10,10 @@ import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.VertexQueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.filter.FilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
-import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.util.StartPipe;
 import junit.framework.TestCase;
 
@@ -27,27 +27,27 @@ public class GremlinFluentUtilityTest extends TestCase {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
         GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).out("knows").property("name");
         assertEquals(pipeline.size(), 3);
-        assertEquals(GremlinFluentUtility.removeEdgeQueryOptimizationPipes(pipeline).size(), 0);
+        assertEquals(GremlinFluentUtility.removeVertexQueryOptimizationPipes(pipeline).size(), 0);
         assertEquals(pipeline.size(), 3);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", 0.5);
         assertEquals(pipeline.size(), 3);
-        assertEquals(GremlinFluentUtility.removeEdgeQueryOptimizationPipes(pipeline).size(), 2);
+        assertEquals(GremlinFluentUtility.removeVertexQueryOptimizationPipes(pipeline).size(), 2);
         assertEquals(pipeline.size(), 1);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", 0.5)._();
         assertEquals(pipeline.size(), 4);
-        assertEquals(GremlinFluentUtility.removeEdgeQueryOptimizationPipes(pipeline).size(), 3);
+        assertEquals(GremlinFluentUtility.removeVertexQueryOptimizationPipes(pipeline).size(), 3);
         assertEquals(pipeline.size(), 1);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).has("name", "marko").outE("knows").has("weight", 0.5).has("weight", Tokens.T.lt, 0.7);
         assertEquals(pipeline.size(), 5);
-        assertEquals(GremlinFluentUtility.removeEdgeQueryOptimizationPipes(pipeline).size(), 3);
+        assertEquals(GremlinFluentUtility.removeVertexQueryOptimizationPipes(pipeline).size(), 3);
         assertEquals(pipeline.size(), 2);
 
     }
 
-    public void testEdgeConstraintsOptimization() {
+    public void testVertexQueryOptimization() {
         Graph graph = TinkerGraphFactory.createTinkerGraph();
 
         GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).outE().inV();
@@ -120,7 +120,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         assertTrue(pipeline.get(5) instanceof BothVerticesPipe);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows", "created").has("weight", 0.5)._().interval("since", 10, 2).range(1, 10).bothV();
-        System.out.println(pipeline);
+        //System.out.println(pipeline);
         assertEquals(pipeline.size(), 7);
         assertTrue(pipeline.get(0) instanceof StartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);

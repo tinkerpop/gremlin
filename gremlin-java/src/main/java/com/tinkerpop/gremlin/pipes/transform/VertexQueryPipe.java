@@ -1,13 +1,10 @@
 package com.tinkerpop.gremlin.pipes.transform;
 
 import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.VertexQuery;
-import com.tinkerpop.pipes.AbstractPipe;
-import com.tinkerpop.pipes.transform.TransformPipe;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.PipeHelper;
 
@@ -23,22 +20,13 @@ import java.util.List;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> implements TransformPipe<Vertex,E> {
+public class VertexQueryPipe<E extends Element> extends QueryPipe<Vertex, E> {
 
     private Direction direction = Direction.BOTH;
     private String[] labels;
-    private List<HasContainer> hasContainers;
-    private List<IntervalContainer> intervalContainers;
-    private final Class<E> elementClass;
-    private final long lowRange;
-    private final long highRange;
-
-    private long count = 0l;
-
-    private Iterator<E> currentIterator = PipeHelper.emptyIterator();
 
     /**
-     * Construct a new Query pipe that wraps an underlying Blueprints Query object.
+     * Construct a new VertexQuery pipe that wraps an underlying Blueprints VertexQuery object.
      * Given the optional nature of many of the parameters, note the "wildcard" settings for each parameter.
      *
      * @param resultingElementClass this must be either Vertex.class or Edge.class (anything else will throw an IllegalArgumentException)
@@ -50,39 +38,25 @@ public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> 
      * @param labels                this is a list of Strings representing the edge label filters to apply. Do not provide any Strings if no such filtering is desired.
      */
     public VertexQueryPipe(final Class<E> resultingElementClass, final Direction direction, final List<HasContainer> hasContainers, final List<IntervalContainer> intervalContainers, final long lowRange, final long highRange, final String... labels) {
-        this.elementClass = resultingElementClass;
+        this.setResultingElementClass(resultingElementClass);
         this.direction = direction;
-        this.hasContainers = hasContainers;
-        this.intervalContainers = intervalContainers;
+        if (null != hasContainers) {
+            for (final HasContainer container : hasContainers) {
+                super.addHasContainer(container);
+            }
+        }
+        if (null != intervalContainers) {
+            for (final IntervalContainer container : intervalContainers) {
+                super.addIntervalContainer(container);
+            }
+        }
+        super.setLowRange(lowRange);
+        super.setHighRange(highRange);
         this.labels = labels;
-        this.lowRange = (lowRange < 0l) ? 0 : lowRange;
-        // +1 high range as Blueprints range is one off from Gremlin range
-        this.highRange = (highRange == Long.MAX_VALUE) ? Long.MAX_VALUE : highRange + 1;
-
-        if (!resultingElementClass.equals(Vertex.class) && !resultingElementClass.equals(Edge.class))
-            throw new IllegalArgumentException("The provided element class must be either Vertex or Edge");
-    }
-
-    public void reset() {
-        super.reset();
-        this.currentIterator = PipeHelper.emptyIterator();
-        this.count = 0;
     }
 
     public String toString() {
-
-        String extra = "";
-        if (this.hasContainers != null && this.hasContainers.size() > 0)
-            extra = extra + "has";
-        if (this.intervalContainers != null && this.intervalContainers.size() > 0) {
-            if (extra.length() != 0) extra = extra + ",";
-            extra = extra + "interval";
-        }
-        if (this.lowRange != 0 || highRange != Long.MAX_VALUE) {
-            if (extra.length() != 0) extra = extra + ",";
-            extra = extra + "range:[" + this.lowRange + "," + (this.highRange - 1) + "]";
-        }
-        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), extra, this.elementClass.getSimpleName().toLowerCase());
+        return PipeHelper.makePipeString(this, this.direction.name().toLowerCase(), Arrays.asList(this.labels), super.toString());
     }
 
     public E processNextStart() {
@@ -105,7 +79,7 @@ public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> 
                         if (hasContainer.compare.equals(Query.Compare.EQUAL))
                             query = query.has(hasContainer.key, hasContainer.value);
                         else
-                            query = query.has(hasContainer.key, (Comparable) hasContainer.value, hasContainer.compare);
+                            query = query.has(hasContainer.key, hasContainer.compare, (Comparable) hasContainer.value);
                     }
                 }
                 if (null != this.intervalContainers) {
@@ -124,28 +98,5 @@ public class VertexQueryPipe<E extends Element> extends AbstractPipe<Vertex, E> 
         }
     }
 
-    public static class HasContainer {
-        public String key;
-        public Object value;
-        public Query.Compare compare;
-
-        public HasContainer(final String key, final Object value, final Query.Compare compare) {
-            this.key = key;
-            this.value = value;
-            this.compare = compare;
-        }
-    }
-
-    public static class IntervalContainer {
-        public String key;
-        public Object startValue;
-        public Object endValue;
-
-        public IntervalContainer(final String key, final Object startValue, final Object endValue) {
-            this.key = key;
-            this.startValue = startValue;
-            this.endValue = endValue;
-        }
-    }
 
 }

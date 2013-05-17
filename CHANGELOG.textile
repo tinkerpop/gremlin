@@ -8,6 +8,9 @@ h2. Gremlin 2.y.z
 h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 
 * Added @GremlinPipeline.cast@ to allow pipeline end type to be reset.
+* Added @GraphQueryPipe@ and support for Graph index query optimization via pipeline rewriting.
+
+==<hr/>==
 
 h3. Version 2.3.0 (March 20, 2013)
 

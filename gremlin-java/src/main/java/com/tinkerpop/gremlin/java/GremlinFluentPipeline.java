@@ -262,11 +262,11 @@ public interface GremlinFluentPipeline<S, E> extends PipesFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, ? extends Element> linkBoth(final String label, final Vertex other);
-    
-    
+
+
     /**
      * Returns the current pipeline with a new end type.
-     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     * Useful if the end type of the pipeline cannot be implicitly derived.
      *
      * @return returns the current pipeline with the new end type.
      */

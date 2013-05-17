@@ -10,7 +10,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
  *
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> implements TransformPipe<S,E> {
+public class PropertyPipe<S extends Element, E> extends AbstractPipe<S, E> implements TransformPipe<S, E> {
 
     private final String key;
     private final boolean allowNull;

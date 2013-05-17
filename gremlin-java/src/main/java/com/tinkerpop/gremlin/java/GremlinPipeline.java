@@ -14,6 +14,7 @@ import com.tinkerpop.gremlin.pipes.sideeffect.LinkPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
+import com.tinkerpop.gremlin.pipes.transform.GraphQueryPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdEdgePipe;
 import com.tinkerpop.gremlin.pipes.transform.IdPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdVertexPipe;
@@ -27,6 +28,7 @@ import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyMapPipe;
 import com.tinkerpop.gremlin.pipes.transform.PropertyPipe;
 import com.tinkerpop.pipes.FunctionPipe;
+import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.PipeFunction;
 import com.tinkerpop.pipes.branch.CopySplitPipe;
@@ -58,7 +60,6 @@ import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.sideeffect.TreePipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
-import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
@@ -113,6 +114,22 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         return (GremlinPipeline<S, T>) this;
     }
 
+    public GremlinPipeline<Graph, Vertex> V() {
+        return this.add(new GraphQueryPipe(Vertex.class));
+    }
+
+    public GremlinPipeline<Graph, Edge> E() {
+        return this.add(new GraphQueryPipe(Edge.class));
+    }
+
+    public GremlinPipeline<Graph, Vertex> V(final String key, final Object value) {
+        return this.add(new GraphQueryPipe(Vertex.class)).has(key, value);
+    }
+
+    public GremlinPipeline<Graph, Edge> E(final String key, final Object value) {
+        return this.add(new GraphQueryPipe(Edge.class)).has(key, value);
+    }
+
     /**
      * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
@@ -128,7 +145,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         } else if (key.equals(Tokens.LABEL)) {
             return this.add(new LabelFilterPipe((String) value, FilterPipe.Filter.EQUAL));
         } else {
-            return this.add(new PropertyFilterPipe(key, value, FilterPipe.Filter.EQUAL));
+            final Pipe pipe = new PropertyFilterPipe(key, value, FilterPipe.Filter.EQUAL);
+            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
 
@@ -149,7 +167,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         } else if (key.equals(Tokens.LABEL)) {
             return this.add(new LabelFilterPipe((String) value, filter));
         } else {
-            return this.add(new PropertyFilterPipe(key, value, filter));
+            final Pipe pipe = new PropertyFilterPipe(key, value, filter);
+            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
 
@@ -168,7 +187,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         } else if (key.equals(Tokens.LABEL)) {
             return this.add(new LabelFilterPipe((String) value, FilterPipe.Filter.NOT_EQUAL));
         } else {
-            return this.add(new PropertyFilterPipe(key, value, FilterPipe.Filter.NOT_EQUAL));
+            final Pipe pipe = new PropertyFilterPipe(key, value, FilterPipe.Filter.NOT_EQUAL);
+            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
 
@@ -189,7 +209,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         } else if (key.equals(Tokens.LABEL)) {
             return this.add(new LabelFilterPipe((String) value, filter));
         } else {
-            return this.add(new PropertyFilterPipe(key, value, filter));
+            final Pipe pipe = new PropertyFilterPipe(key, value, filter);
+            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
 
@@ -204,7 +225,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
-        return this.add(new IntervalFilterPipe<Element>(key, startValue, endValue));
+        final Pipe pipe = new IntervalFilterPipe<Element>(key, startValue, endValue);
+        return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
     }
 
     /**
@@ -237,7 +259,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, Vertex> bothV() {
         if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
+            GremlinFluentUtility.optimizePipelineForVertexQuery(this);
 
         return this.add(new BothVerticesPipe());
     }
@@ -304,7 +326,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, Vertex> inV() {
         if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
+            GremlinFluentUtility.optimizePipelineForVertexQuery(this);
 
         return this.add(new InVertexPipe());
     }
@@ -349,7 +371,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, Vertex> outV() {
         if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForEdgeConstraints(this);
+            GremlinFluentUtility.optimizePipelineForVertexQuery(this);
 
         return this.add(new OutVertexPipe());
     }
@@ -635,12 +657,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, E> range(final int low, final int high) {
-        this.add(new RangeFilterPipe<E>(low, high));
-
-        if (this.doQueryOptimization)
-            return GremlinFluentUtility.optimizePipelineForVertexRange(this);
-        else
-            return this;
+        final Pipe pipe = new RangeFilterPipe<E>(low, high);
+        if (!this.doQueryOptimization)
+            return this.add(pipe);
+        else {
+            return GremlinFluentUtility.optimizePipelineForVertexQueryRange(GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe));
+        }
     }
 
     /**
@@ -1471,10 +1493,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
             ((Element) object).remove();
         }
     }
-    
+
     /**
      * Returns the current pipeline with a new end type.
-     * Useful if the end type of the pipeline cannot be implicitly derived. 
+     * Useful if the end type of the pipeline cannot be implicitly derived.
      *
      * @return returns the current pipeline with the new end type.
      */
