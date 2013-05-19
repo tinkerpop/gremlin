@@ -187,4 +187,13 @@ class GremlinTest extends BaseTest {
         assertEquals(e.weight, 0.2f)
         assertEquals(e.propertyKeys.size(), 1);
     }
+
+    public void testPipeStarts() {
+        Gremlin.load()
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        g.V.out.path.each {
+            assertFalse(it[0] instanceof Graph);
+            assertEquals(it.size(), 2);
+        }
+    }
 }

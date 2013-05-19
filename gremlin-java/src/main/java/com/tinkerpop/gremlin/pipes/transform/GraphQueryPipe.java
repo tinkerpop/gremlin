@@ -8,7 +8,9 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.util.FastNoSuchElementException;
 import com.tinkerpop.pipes.util.PipeHelper;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -59,5 +61,4 @@ public class GraphQueryPipe<E extends Element> extends QueryPipe<Graph, E> {
     public String toString() {
         return PipeHelper.makePipeString(this, super.toString());
     }
-
 }

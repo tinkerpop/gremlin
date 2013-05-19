@@ -15,6 +15,7 @@ import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothPipe;
 import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
 import com.tinkerpop.gremlin.pipes.transform.GraphQueryPipe;
+import com.tinkerpop.gremlin.pipes.transform.GremlinStartPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdEdgePipe;
 import com.tinkerpop.gremlin.pipes.transform.IdPipe;
 import com.tinkerpop.gremlin.pipes.transform.IdVertexPipe;
@@ -100,7 +101,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     public GremlinPipeline(final Object starts, final boolean doQueryOptimization) {
-        super(new StartPipe(starts));
+        super(new GremlinStartPipe(starts));
         this.doQueryOptimization = doQueryOptimization;
         FluentUtility.setStarts(this, starts);
     }
