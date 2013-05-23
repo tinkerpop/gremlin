@@ -196,4 +196,10 @@ class GremlinTest extends BaseTest {
             assertEquals(it.size(), 2);
         }
     }
+
+    public void testIsSimple() {
+        Gremlin.load();
+        assertTrue([1, 2, 4].isSimple());
+        assertFalse([1, 2, 2].isSimple());
+    }
 }

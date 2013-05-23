@@ -58,5 +58,9 @@ class ObjectLoader {
             }
             return temp;
         }
+
+        List.metaClass.isSimple = {
+            return new HashSet(((List) delegate)).size() == ((List) delegate).size()
+        }
     }
 }
