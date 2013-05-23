@@ -4,30 +4,9 @@ import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.Tokens;
-import com.tinkerpop.gremlin.pipes.filter.IdFilterPipe;
-import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
-import com.tinkerpop.gremlin.pipes.filter.LabelFilterPipe;
-import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
-import com.tinkerpop.gremlin.pipes.sideeffect.LinkPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothPipe;
-import com.tinkerpop.gremlin.pipes.transform.BothVerticesPipe;
-import com.tinkerpop.gremlin.pipes.transform.GraphQueryPipe;
-import com.tinkerpop.gremlin.pipes.transform.GremlinStartPipe;
-import com.tinkerpop.gremlin.pipes.transform.IdEdgePipe;
-import com.tinkerpop.gremlin.pipes.transform.IdPipe;
-import com.tinkerpop.gremlin.pipes.transform.IdVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.InEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.InPipe;
-import com.tinkerpop.gremlin.pipes.transform.InVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.LabelPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutPipe;
-import com.tinkerpop.gremlin.pipes.transform.OutVertexPipe;
-import com.tinkerpop.gremlin.pipes.transform.PropertyMapPipe;
-import com.tinkerpop.gremlin.pipes.transform.PropertyPipe;
 import com.tinkerpop.pipes.FunctionPipe;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
@@ -43,8 +22,11 @@ import com.tinkerpop.pipes.filter.CyclicPathFilterPipe;
 import com.tinkerpop.pipes.filter.DuplicateFilterPipe;
 import com.tinkerpop.pipes.filter.ExceptFilterPipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
-import com.tinkerpop.pipes.filter.FilterPipe;
+import com.tinkerpop.pipes.filter.IdFilterPipe;
+import com.tinkerpop.pipes.filter.IntervalFilterPipe;
+import com.tinkerpop.pipes.filter.LabelFilterPipe;
 import com.tinkerpop.pipes.filter.OrFilterPipe;
+import com.tinkerpop.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.pipes.filter.RandomFilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
 import com.tinkerpop.pipes.filter.RetainFilterPipe;
@@ -53,18 +35,36 @@ import com.tinkerpop.pipes.sideeffect.GroupByPipe;
 import com.tinkerpop.pipes.sideeffect.GroupByReducePipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.GroupCountPipe;
+import com.tinkerpop.pipes.sideeffect.LinkPipe;
 import com.tinkerpop.pipes.sideeffect.OptionalPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectFunctionPipe;
 import com.tinkerpop.pipes.sideeffect.SideEffectPipe;
 import com.tinkerpop.pipes.sideeffect.StorePipe;
 import com.tinkerpop.pipes.sideeffect.TablePipe;
 import com.tinkerpop.pipes.sideeffect.TreePipe;
+import com.tinkerpop.pipes.transform.BothEdgesPipe;
+import com.tinkerpop.pipes.transform.BothPipe;
+import com.tinkerpop.pipes.transform.BothVerticesPipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
+import com.tinkerpop.pipes.transform.GraphQueryPipe;
+import com.tinkerpop.pipes.transform.GremlinStartPipe;
+import com.tinkerpop.pipes.transform.IdEdgePipe;
+import com.tinkerpop.pipes.transform.IdPipe;
+import com.tinkerpop.pipes.transform.IdVertexPipe;
+import com.tinkerpop.pipes.transform.InEdgesPipe;
+import com.tinkerpop.pipes.transform.InPipe;
+import com.tinkerpop.pipes.transform.InVertexPipe;
+import com.tinkerpop.pipes.transform.LabelPipe;
 import com.tinkerpop.pipes.transform.MemoizePipe;
 import com.tinkerpop.pipes.transform.OrderMapPipe;
 import com.tinkerpop.pipes.transform.OrderPipe;
+import com.tinkerpop.pipes.transform.OutEdgesPipe;
+import com.tinkerpop.pipes.transform.OutPipe;
+import com.tinkerpop.pipes.transform.OutVertexPipe;
 import com.tinkerpop.pipes.transform.PathPipe;
+import com.tinkerpop.pipes.transform.PropertyMapPipe;
+import com.tinkerpop.pipes.transform.PropertyPipe;
 import com.tinkerpop.pipes.transform.ScatterPipe;
 import com.tinkerpop.pipes.transform.SelectPipe;
 import com.tinkerpop.pipes.transform.ShufflePipe;
@@ -136,19 +136,21 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key   the property key to check
-     * @param value the object to filter on
+     * @param key    the property key to check
+     * @param values the object to filter on (in an OR manner)
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> has(final String key, final Object value) {
-        if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(value, FilterPipe.Filter.EQUAL));
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Object... values) {
+        return this.has(key, Tokens.T.eq, values);
+
+        /*if (key.equals(Tokens.ID)) {
+            return this.add(new IdFilterPipe(FilterPipe.Filter.EQUAL, values[0]));
         } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe((String) value, FilterPipe.Filter.EQUAL));
+            return this.add(new LabelFilterPipe(FilterPipe.Filter.EQUAL, (String) values[0]));
         } else {
-            final Pipe pipe = new PropertyFilterPipe(key, value, FilterPipe.Filter.EQUAL);
+            final Pipe pipe = new PropertyFilterPipe(key, FilterPipe.Filter.EQUAL, values);
             return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
-        }
+        }*/
     }
 
     /**
@@ -158,17 +160,17 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      *
      * @param key        the property key to check
      * @param comparison the comparison to use
-     * @param value      the object to filter on
+     * @param values     the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object value) {
-        final FilterPipe.Filter filter = Tokens.mapFilter(comparison);
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object... values) {
+        final Query.Compare compare = Tokens.mapCompare(comparison);
         if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(value, filter));
+            return this.add(new IdFilterPipe(compare, values));
         } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe((String) value, filter));
+            return this.add(new LabelFilterPipe(compare, (String[]) values));
         } else {
-            final Pipe pipe = new PropertyFilterPipe(key, value, filter);
+            final Pipe pipe = new PropertyFilterPipe(key, compare, values);
             return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
@@ -178,19 +180,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * If the incoming element has the provided key/value as check with .equals(), then filter the element.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key   the property key to check
-     * @param value the object to filter on
+     * @param key    the property key to check
+     * @param values the objects to filter on (in an OR manner)
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object value) {
-        if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(value, FilterPipe.Filter.NOT_EQUAL));
-        } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe((String) value, FilterPipe.Filter.NOT_EQUAL));
-        } else {
-            final Pipe pipe = new PropertyFilterPipe(key, value, FilterPipe.Filter.NOT_EQUAL);
-            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
-        }
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object... values) {
+        return this.hasNot(key, Tokens.T.eq, values);
     }
 
     /**
@@ -200,17 +195,18 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      *
      * @param key        the property key to check
      * @param comparison the comparison to use
-     * @param value      the object to filter on
+     * @param values     the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object value) {
-        final FilterPipe.Filter filter = Tokens.mapFlipFilter(comparison);
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object... values) {
+        //return this.has(key, Tokens.mapCompare(comparison).opposite(), values);
+        final Query.Compare compare = Tokens.mapCompare(comparison).opposite();
         if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(value, filter));
+            return this.add(new IdFilterPipe(compare, values));
         } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe((String) value, filter));
+            return this.add(new LabelFilterPipe(compare, (String[]) values));
         } else {
-            final Pipe pipe = new PropertyFilterPipe(key, value, filter);
+            final Pipe pipe = new PropertyFilterPipe(key, compare, values);
             return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }

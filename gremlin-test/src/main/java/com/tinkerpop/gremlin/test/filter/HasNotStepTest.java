@@ -44,8 +44,14 @@ public class HasNotStepTest extends TestCase {
         assertEquals(counter, 6);
     }
 
-    public void test_g_V_hasNotXblah_nullX(Pipe<Vertex, Vertex> pipe) {
-        assertFalse(pipe.hasNext());
+    public void test_g_V_hasNotXblahX(Pipe<Vertex, Vertex> pipe) {
+        int counter = 0;
+        while (pipe.hasNext()) {
+            pipe.next();
+            counter++;
+        }
+        assertEquals(counter, 6);
     }
+
 
 }

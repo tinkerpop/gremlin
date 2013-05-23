@@ -1,6 +1,5 @@
 package com.tinkerpop.gremlin.groovy;
 
-import com.tinkerpop.gremlin.java.GremlinFluentPipeline;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.pipes.branch.LoopPipe;
 import com.tinkerpop.pipes.util.structures.Pair;
@@ -16,7 +15,7 @@ import java.util.Map;
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
-public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> implements GremlinFluentPipeline<S, E> {
+public class GremlinGroovyPipeline<S, E> extends GremlinPipeline<S, E> {
 
     public GremlinGroovyPipeline() {
         super();
