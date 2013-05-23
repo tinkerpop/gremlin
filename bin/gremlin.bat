@@ -1,7 +1,7 @@
 :: Windows launcher script for Gremlin
 @echo off
 
-cd %CD%\gremlin-groovy\target\
+cd %CD%\..\gremlin-groovy\target\
 
 set TARGET=
 
