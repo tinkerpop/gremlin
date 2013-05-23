@@ -44,7 +44,27 @@ public class Tokens {
         /**
          * Increment
          */
-        incr
+        incr;
+
+        public T opposite() {
+            if (this.equals(eq))
+                return neq;
+            else if (this.equals(neq))
+                return eq;
+            else if (this.equals(gt))
+                return lte;
+            else if (this.equals(gte))
+                return lt;
+            else if (this.equals(lt))
+                return gte;
+            else if (this.equals(lte))
+                return gt;
+            else if (this.equals(decr))
+                return incr;
+            else if (this.equals(incr))
+                return decr;
+            else throw new IllegalArgumentException("The provided token has no opposite: " + this);
+        }
     }
 
     public static TransformPipe.Order mapOrder(final T t) {
@@ -55,7 +75,6 @@ public class Tokens {
         else
             throw new IllegalArgumentException(t.toString() + " is an unknown order type");
     }
-
 
     public static Query.Compare mapCompare(final T t) {
         if (t.equals(T.eq))
