@@ -28,11 +28,11 @@ class HasNotStepTest extends com.tinkerpop.gremlin.test.filter.HasNotStepTest {
         super.test_g_V_hasNotXname_blahX(g.V.hasNot('name', 'blah'));
     }
 
-    public void test_g_V_hasNotXblah_nullX() {
-        super.test_g_V_hasNotXblah_nullX(g.V.hasNot('blah', null));
-    }
-
     public void test_g_V_hasNotXage_gt_32X() {
         super.test_g_V_hasNotXage_gt_32X(g.V.hasNot('age', T.gt, 32));
+    }
+
+    public void test_g_V_hasNotXblahX() {
+        super.test_g_V_hasNotXblahX(g.V.hasNot('blah'));
     }
 }

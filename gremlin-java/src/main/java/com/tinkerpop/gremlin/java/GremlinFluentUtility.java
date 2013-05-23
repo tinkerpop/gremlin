@@ -3,17 +3,16 @@ package com.tinkerpop.gremlin.java;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.gremlin.Tokens;
-import com.tinkerpop.gremlin.pipes.filter.IntervalFilterPipe;
-import com.tinkerpop.gremlin.pipes.filter.PropertyFilterPipe;
-import com.tinkerpop.gremlin.pipes.transform.GraphQueryPipe;
-import com.tinkerpop.gremlin.pipes.transform.QueryPipe;
-import com.tinkerpop.gremlin.pipes.transform.VertexQueryPipe;
-import com.tinkerpop.gremlin.pipes.transform.VerticesEdgesPipe;
-import com.tinkerpop.gremlin.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.IdentityPipe;
 import com.tinkerpop.pipes.Pipe;
+import com.tinkerpop.pipes.filter.IntervalFilterPipe;
+import com.tinkerpop.pipes.filter.PropertyFilterPipe;
 import com.tinkerpop.pipes.filter.RangeFilterPipe;
+import com.tinkerpop.pipes.transform.GraphQueryPipe;
+import com.tinkerpop.pipes.transform.QueryPipe;
+import com.tinkerpop.pipes.transform.VertexQueryPipe;
+import com.tinkerpop.pipes.transform.VerticesEdgesPipe;
+import com.tinkerpop.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 
 import java.util.ArrayList;
@@ -37,25 +36,6 @@ public class GremlinFluentUtility extends FluentUtility {
             } else if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof RangeFilterPipe) {
                 filtersSeen = true;
             } else if (!(pipe instanceof IdentityPipe)) {
-                break;
-            }
-        }
-        if (numberedStep != -1 && filtersSeen)
-            return FluentUtility.removePreviousPipes(pipeline, numberedStep);
-        else
-            return Collections.emptyList();
-    }
-
-    public static List<Pipe> removeGraphQueryOptimizationPipes(final GremlinPipeline pipeline) {
-        int numberedStep = -1;
-        int pipelineSize = pipeline.size();
-        boolean filtersSeen = false;
-        for (int i = pipelineSize - 1; i >= 0; i--) {
-            final Pipe pipe = pipeline.get(i);
-            if (pipe instanceof PropertyFilterPipe || pipe instanceof IntervalFilterPipe || pipe instanceof RangeFilterPipe) {
-                filtersSeen = true;
-            } else if (!(pipe instanceof IdentityPipe)) {
-                numberedStep = pipelineSize - i;
                 break;
             }
         }
@@ -89,7 +69,7 @@ public class GremlinFluentUtility extends FluentUtility {
             for (final Pipe pipe : removedPipes) {
                 if (pipe instanceof PropertyFilterPipe) {
                     final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getValue(), Tokens.mapCompare(temp.getFilter())));
+                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getCompare(), temp.getValues()));
                 } else if (pipe instanceof IntervalFilterPipe) {
                     final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                     intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
@@ -124,7 +104,7 @@ public class GremlinFluentUtility extends FluentUtility {
         if (null != queryPipe) {
             if (pipe instanceof PropertyFilterPipe) {
                 final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                queryPipe.addHasContainer(new QueryPipe.HasContainer(temp.getKey(), temp.getValue(), Tokens.mapCompare(temp.getFilter())));
+                queryPipe.addHasContainer(new QueryPipe.HasContainer(temp.getKey(), temp.getCompare(), temp.getValues()));
             } else if (pipe instanceof IntervalFilterPipe) {
                 final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                 queryPipe.addIntervalContainer(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));

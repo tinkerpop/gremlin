@@ -25,8 +25,8 @@ public class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
         super.test_g_V_hasXname_blahX(new GremlinPipeline(g.getVertices()).has("name", "blah"));
     }
 
-    public void test_g_V_hasXblah_nullX() {
-        super.test_g_V_hasXblah_nullX(new GremlinPipeline(g.getVertices()).has("blah", null));
+    public void test_g_V_hasXblahX() {
+        super.test_g_V_hasXblahX(new GremlinPipeline(g.getVertices()).has("blah"));
     }
 
     public void test_g_v1_out_hasXid_2X() {
