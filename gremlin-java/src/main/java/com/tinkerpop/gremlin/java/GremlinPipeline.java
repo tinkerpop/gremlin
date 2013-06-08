@@ -48,7 +48,6 @@ import com.tinkerpop.pipes.transform.BothVerticesPipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.GraphQueryPipe;
-import com.tinkerpop.pipes.transform.GremlinStartPipe;
 import com.tinkerpop.pipes.transform.IdEdgePipe;
 import com.tinkerpop.pipes.transform.IdPipe;
 import com.tinkerpop.pipes.transform.IdVertexPipe;
