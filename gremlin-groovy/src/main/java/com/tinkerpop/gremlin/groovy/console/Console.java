@@ -38,6 +38,7 @@ public class Console {
         }
         groovy.execute("import com.tinkerpop.gremlin.Tokens.T");
         groovy.execute("import com.tinkerpop.gremlin.groovy.*");
+        groovy.execute("import groovy.grape.Grape");
 
         groovy.setResultHook(new ResultHookClosure(groovy, io, resultPrompt));
         groovy.setHistory(new History());
