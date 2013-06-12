@@ -14,6 +14,8 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * Additions to the @HasStepTest@ and @HasNotStepTest@ test suites
 * Moved all pipe definitions to Pipes package (greatly reduced the size of Gremlin as a project)
 * Moved gremlin.sh and gremlin.bat to bin/ (noticeable to developers of source only)
+* Added @GremlinStartPipe@ to better handle graph as the root of a @GremlinPipeline@
+* Fixed a double @iterator()@ call in @GremlinPipeline@
 
 ==<hr/>==
 

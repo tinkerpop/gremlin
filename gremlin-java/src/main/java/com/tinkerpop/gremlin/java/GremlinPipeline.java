@@ -48,7 +48,6 @@ import com.tinkerpop.pipes.transform.BothVerticesPipe;
 import com.tinkerpop.pipes.transform.GatherFunctionPipe;
 import com.tinkerpop.pipes.transform.GatherPipe;
 import com.tinkerpop.pipes.transform.GraphQueryPipe;
-import com.tinkerpop.pipes.transform.GremlinStartPipe;
 import com.tinkerpop.pipes.transform.IdEdgePipe;
 import com.tinkerpop.pipes.transform.IdPipe;
 import com.tinkerpop.pipes.transform.IdVertexPipe;
@@ -110,23 +109,58 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         this(starts, true);
     }
 
+    /**
+     * Add an arbitrary pipe to the GremlinPipeline
+     *
+     * @param pipe the pipe to add to the pipeline
+     * @param <T>  the type of the end of the pipe
+     * @return the extended Pipeline
+     */
     public <T> GremlinPipeline<S, T> add(final Pipe<?, T> pipe) {
         this.addPipe(pipe);
         return (GremlinPipeline<S, T>) this;
     }
 
+    /**
+     * Add a GraphQueryPipe to the end of the Pipeline.
+     * If optimizations are enabled, then the the next steps can fold into a GraphQueryPipe compilation.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<Graph, Vertex> V() {
         return this.add(new GraphQueryPipe(Vertex.class));
     }
 
+    /**
+     * Add a GraphQueryPipe to the end of the Pipeline.
+     * If optimizations are enabled, then the the next steps can fold into a GraphQueryPipe compilation.
+     *
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<Graph, Edge> E() {
         return this.add(new GraphQueryPipe(Edge.class));
     }
 
+    /**
+     * Add a GraphQueryPipe to the end of the Pipeline.
+     * If optimizations are enabled, then the the next steps can fold into a GraphQueryPipe compilation.
+     *
+     * @param key   they key that all the emitted vertices should be checked on
+     * @param value the value that all the emitted vertices should have for the key
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<Graph, Vertex> V(final String key, final Object value) {
         return this.add(new GraphQueryPipe(Vertex.class)).has(key, value);
     }
 
+    /**
+     * Add a GraphQueryPipe to the end of the Pipeline.
+     * If optimizations are enabled, then the the next steps can fold into a GraphQueryPipe compilation.
+     *
+     * @param key   they key that all the emitted edges should be checked on
+     * @param value the value that all the emitted edges should have for the key
+     * @return the extended Pipeline
+     */
     public GremlinPipeline<Graph, Edge> E(final String key, final Object value) {
         return this.add(new GraphQueryPipe(Edge.class)).has(key, value);
     }
@@ -142,15 +176,6 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, ? extends Element> has(final String key, final Object... values) {
         return this.has(key, Tokens.T.eq, values);
-
-        /*if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(FilterPipe.Filter.EQUAL, values[0]));
-        } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe(FilterPipe.Filter.EQUAL, (String) values[0]));
-        } else {
-            final Pipe pipe = new PropertyFilterPipe(key, FilterPipe.Filter.EQUAL, values);
-            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
-        }*/
     }
 
     /**
@@ -158,19 +183,19 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key        the property key to check
-     * @param comparison the comparison to use
-     * @param values     the object to filter on
+     * @param key     the property key to check
+     * @param compare the comparison to use
+     * @param values  the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object... values) {
-        final Query.Compare compare = Tokens.mapCompare(comparison);
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T compare, final Object... values) {
+        final Query.Compare queryCompare = Tokens.mapCompare(compare);
         if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(compare, values));
+            return this.add(new IdFilterPipe(queryCompare, values));
         } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe(compare, (String[]) values));
+            return this.add(new LabelFilterPipe(queryCompare, (String[]) values));
         } else {
-            final Pipe pipe = new PropertyFilterPipe(key, compare, values);
+            final Pipe pipe = new PropertyFilterPipe(key, queryCompare, values);
             return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
@@ -185,7 +210,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object... values) {
-        return this.hasNot(key, Tokens.T.eq, values);
+        return this.has(key, Tokens.T.neq, values);
     }
 
     /**
@@ -193,22 +218,13 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * If the incoming element has the provided key/value as check with .equals(), then filter the element.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key        the property key to check
-     * @param comparison the comparison to use
-     * @param values     the object to filter on
+     * @param key     the property key to check
+     * @param compare the comparison to use
+     * @param values  the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object... values) {
-        //return this.has(key, Tokens.mapCompare(comparison).opposite(), values);
-        final Query.Compare compare = Tokens.mapCompare(comparison).opposite();
-        if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(compare, values));
-        } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe(compare, (String[]) values));
-        } else {
-            final Pipe pipe = new PropertyFilterPipe(key, compare, values);
-            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
-        }
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T compare, final Object... values) {
+        return this.has(key, compare.opposite(), values);
     }
 
     /**

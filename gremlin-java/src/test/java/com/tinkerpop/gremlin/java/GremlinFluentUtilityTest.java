@@ -53,14 +53,14 @@ public class GremlinFluentUtilityTest extends TestCase {
         GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).outE().inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 3);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof OutEdgesPipe);
         assertTrue(pipeline.get(2) instanceof InVertexPipe);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE()._().inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof OutEdgesPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
@@ -68,7 +68,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", 0.5).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
@@ -76,7 +76,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", 0.5).interval("since", 10, 2).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -85,7 +85,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows").has("weight", 0.5).interval("since", 10, 2).outV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -94,7 +94,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).inE("knows", "created").has("weight", 0.5).interval("since", 10, 2).outV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -103,7 +103,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).bothE("knows", "created").has("weight", 0.5).interval("since", 10, 2).bothV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -112,7 +112,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).bothE("knows", "created").has("weight", 0.5)._().interval("since", 10, 2).bothV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 6);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -122,7 +122,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE("knows", "created").has("weight", 0.5)._().interval("since", 10, 2).range(1, 10).bothV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 7);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -137,7 +137,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).outE().sideEffect(null).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof OutEdgesPipe);
         assertTrue(pipeline.get(2) instanceof SideEffectFunctionPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
@@ -145,7 +145,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE().filter(null).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof OutEdgesPipe);
         assertTrue(pipeline.get(2) instanceof FilterPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
@@ -153,7 +153,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).outE().has("weight", 0.5).filter(null).has("date", 2012).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 6);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof OutEdgesPipe);
         assertTrue(pipeline.get(2) instanceof PropertyFilterPipe);
         assertTrue(pipeline.get(3) instanceof FilterPipe);
@@ -165,7 +165,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).optimize(false).outE("knows").has("weight", 0.5).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof OutEdgesPipe);
         assertTrue(pipeline.get(2) instanceof PropertyFilterPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
@@ -173,7 +173,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).optimize(true).outE("knows").has("weight", 0.5).inV();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(2) instanceof IdentityPipe);
         assertTrue(pipeline.get(3) instanceof InVertexPipe);
@@ -185,14 +185,14 @@ public class GremlinFluentUtilityTest extends TestCase {
         GremlinPipeline pipeline = new GremlinPipeline(graph.getVertex(1)).out().out();
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 3);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VerticesVerticesPipe);
         assertTrue(pipeline.get(2) instanceof VerticesVerticesPipe);
 
         pipeline = new GremlinPipeline(graph.getVertex(1)).out().out().range(0, 10);
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VerticesVerticesPipe);
         assertTrue(pipeline.get(2) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -200,7 +200,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).out("knows").out().range(5, 10);
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 4);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VerticesVerticesPipe);
         assertTrue(pipeline.get(2) instanceof VertexQueryPipe);
         assertTrue(pipeline.get(3) instanceof IdentityPipe);
@@ -209,7 +209,7 @@ public class GremlinFluentUtilityTest extends TestCase {
         pipeline = new GremlinPipeline(graph.getVertex(1)).out("knows").out().has("name", "marko").range(0, 10);
         //System.out.println(pipeline);
         assertEquals(pipeline.size(), 5);
-        assertTrue(pipeline.get(0) instanceof StartPipe);
+        assertTrue(pipeline.get(0) instanceof GremlinStartPipe);
         assertTrue(pipeline.get(1) instanceof VerticesVerticesPipe);
         assertTrue(pipeline.get(2) instanceof VerticesVerticesPipe);
         assertTrue(pipeline.get(3) instanceof PropertyFilterPipe);
