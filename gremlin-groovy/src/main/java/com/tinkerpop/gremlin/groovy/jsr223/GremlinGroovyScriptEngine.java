@@ -52,41 +52,29 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
     private Map<String, Class> classMap = new ConcurrentHashMap<String, Class>();
     private Map<String, MethodClosure> globalClosures = new ConcurrentHashMap<String, MethodClosure>();
     protected GroovyClassLoader loader;
+
     private volatile GremlinGroovyScriptEngineFactory factory;
     private static int counter = 0;
     private int cacheResetSize = 1500;
 
-    protected static final String DOT_STAR = ".*";
-    protected static final String EMPTY_STRING = "";
     private static final String SCRIPT = "Script";
     private static final String DOT_GROOVY = ".groovy";
     private static final String GROOVY_LANG_SCRIPT = "groovy.lang.Script";
+
+    public GremlinGroovyScriptEngine() {
+        this(new DefaultImportCustomizerProvider());
+    }
 
     public GremlinGroovyScriptEngine(final int cacheResetSize) {
         this();
         this.cacheResetSize = cacheResetSize;
     }
 
-    public GremlinGroovyScriptEngine() {
+    public GremlinGroovyScriptEngine(final ImportCustomizerProvider importCustomizerProvider) {
         Gremlin.load();
         final CompilerConfiguration conf = new CompilerConfiguration();
-        conf.addCompilationCustomizers(GremlinGroovyScriptEngine.getImportCustomizer());
+        conf.addCompilationCustomizers(importCustomizerProvider.getImportCustomizer());
         this.loader = new GroovyClassLoader(getParentLoader(), conf);
-    }
-
-    public static ImportCustomizer getImportCustomizer() {
-        final ImportCustomizer ic = new ImportCustomizer();
-        for (final String imp : Imports.getImports()) {
-            ic.addStarImports(imp.replace(DOT_STAR, EMPTY_STRING));
-        }
-        ic.addImports("com.tinkerpop.gremlin.Tokens.T");
-        ic.addStarImports("com.tinkerpop.gremlin.groovy");
-        ic.addStaticImport(Direction.class.getName(), Direction.OUT.toString());
-        ic.addStaticImport(Direction.class.getName(), Direction.IN.toString());
-        ic.addStaticImport(Direction.class.getName(), Direction.BOTH.toString());
-        ic.addStaticImport(TransactionalGraph.Conclusion.class.getName(), TransactionalGraph.Conclusion.SUCCESS.toString());
-        ic.addStaticImport(TransactionalGraph.Conclusion.class.getName(), TransactionalGraph.Conclusion.FAILURE.toString());
-        return ic;
     }
 
     private void checkClearCache() {
