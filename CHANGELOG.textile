@@ -16,7 +16,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * Moved gremlin.sh and gremlin.bat to bin/ (noticeable to developers of source only)
 * Added @GremlinStartPipe@ to better handle graph as the root of a @GremlinPipeline@
 * Fixed a double @iterator()@ call in @GremlinPipeline@
-* Allow use of @Grape@ from the console to dynamically import packages.
+* Allow use of @Grape@ from the console to dynamically import packages
 
 ==<hr/>==
 

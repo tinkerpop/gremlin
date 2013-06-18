@@ -39,4 +39,12 @@ class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
     public void test_g_V_hasXage_gt_30X() {
         super.test_g_V_hasXage_gt_30X(g.V.has('age', Tokens.T.gt, 30));
     }
+
+    public void test_g_E_hasXlabelXknowsX() {
+        super.test_g_E_hasXlabelXknowsX(g.E.has("label", "knows"));
+    }
+
+    public void test_g_E_hasXlabelXknows_createdX() {
+        super.test_g_E_hasXlabelXknows_createdX(g.E.has("label", "knows", "created"));
+    }
 }

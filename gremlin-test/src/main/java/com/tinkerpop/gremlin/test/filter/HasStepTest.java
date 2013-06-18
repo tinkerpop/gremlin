@@ -1,5 +1,7 @@
 package com.tinkerpop.gremlin.test.filter;
 
+import com.tinkerpop.blueprints.Edge;
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.PipeHelper;
@@ -17,16 +19,16 @@ public class HasStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_hasXname_markoX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_hasXname_markoX(Pipe<?, Vertex> pipe) {
         assertEquals(pipe.next().getProperty("name"), "marko");
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_hasXname_blahX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_hasXname_blahX(Pipe<?, Vertex> pipe) {
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_hasXage_gt_30X(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_hasXage_gt_30X(Pipe<?, Vertex> pipe) {
         List<Vertex> list = new ArrayList<Vertex>();
         PipeHelper.fillCollection(pipe, list);
         assertEquals(list.size(), 2);
@@ -35,13 +37,32 @@ public class HasStepTest extends TestCase {
         }
     }
 
-    public void test_g_v1_out_hasXid_2X(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out_hasXid_2X(Pipe<?, Vertex> pipe) {
         assertTrue(pipe.hasNext());
         assertEquals(pipe.next().getId().toString(), "2");
     }
 
     public void test_g_V_hasXblahX(Pipe<Vertex, Vertex> pipe) {
         assertFalse(pipe.hasNext());
+    }
+
+    public void test_g_E_hasXlabelXknowsX(Pipe<?, Edge> pipe) {
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            assertEquals(pipe.next().getLabel(), "knows");
+        }
+        assertEquals(counter, 2);
+    }
+
+    public void test_g_E_hasXlabelXknows_createdX(Pipe<?, Edge> pipe) {
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            String label = pipe.next().getLabel();
+            assertTrue(label.equals("knows") || label.equals("created"));
+        }
+        assertEquals(counter, 6);
     }
 
 }

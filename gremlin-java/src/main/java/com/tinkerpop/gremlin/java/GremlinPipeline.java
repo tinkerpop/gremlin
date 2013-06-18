@@ -193,7 +193,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(queryCompare, values));
         } else if (key.equals(Tokens.LABEL)) {
-            return this.add(new LabelFilterPipe(queryCompare, (String[]) values));
+            final String[] labels = new String[values.length];
+            System.arraycopy(values, 0, labels, 0, values.length);
+            return this.add(new LabelFilterPipe(queryCompare, labels));
         } else {
             final Pipe pipe = new PropertyFilterPipe(key, queryCompare, values);
             return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
