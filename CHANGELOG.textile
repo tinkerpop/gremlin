@@ -9,7 +9,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 
 * Added @GremlinPipeline.cast@ to allow pipeline end type to be reset
 * Added @GraphQueryPipe@ and support for Graph index query optimization via pipeline rewriting
-* Added support for @has(key,values...)@ and @hasNot(key,values...)@ as dictated by new Blueprints Query API changes
+* Added support for @has(key, CompareRelation, values...)@ as dictated by new Blueprints Query API changes
 * Added support for @has(key)@ and @hasNot(key)@ to identify the existence of an element key
 * Additions to the @HasStepTest@ and @HasNotStepTest@ test suites
 * Moved all pipe definitions to Pipes package (greatly reduced the size of Gremlin as a project)
