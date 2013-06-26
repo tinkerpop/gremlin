@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin.java;
 
+import com.tinkerpop.blueprints.CompareRelation;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
@@ -270,52 +271,67 @@ public interface GremlinFluentPipeline<S, E> {
      */
     public GremlinFluentPipeline<S, E> simplePath();
 
+    /**
+     * Check if the element has a property with provided key.
+     *
+     * @param key the property key to check
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key);
+
+    /**
+     * Check if the element does not have a property with provided key.
+     *
+     * @param key the property key to check
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key);
 
     /**
      * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key    the property key to check
-     * @param values the object to filter on (in an OR manner)
+     * @param key   the property key to check
+     * @param value the object to filter on (in an OR manner)
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Object... values);
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Object value);
 
     /**
      * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key        the property key to check
-     * @param comparison the comparison to use
-     * @param values     the object to filter on
+     * @param key          the property key to check
+     * @param compareToken the comparison to use
+     * @param value        the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Tokens.T comparison, final Object... values);
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Tokens.T compareToken, final Object value);
+
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key             the property key to check
+     * @param compareRelation the comparison to use
+     * @param value           the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final CompareRelation compareRelation, final Object value);
 
     /**
      * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
      * If the incoming element has the provided key/value as check with .equals(), then filter the element.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key    the property key to check
-     * @param values the objects to filter on (in an OR manner)
+     * @param key   the property key to check
+     * @param value the objects to filter on (in an OR manner)
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Object... values);
-
-    /**
-     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
-     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
-     * If the key is id or label, then use respect id or label filtering.
-     *
-     * @param key        the property key to check
-     * @param comparison the comparison to use
-     * @param value      the object to filter on
-     * @return the extended Pipeline
-     */
-    public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T comparison, final Object... value);
+    public GremlinFluentPipeline<S, ? extends Element> hasNot(final String key, final Object value);
 
     /**
      * Add an IntervalFilterPipe to the end of the Pipeline.

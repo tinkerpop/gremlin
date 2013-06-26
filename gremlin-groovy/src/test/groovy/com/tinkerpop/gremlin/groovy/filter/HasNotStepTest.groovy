@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.groovy.filter
 
 import com.tinkerpop.blueprints.Graph
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory
-import com.tinkerpop.gremlin.Tokens.T
 import com.tinkerpop.gremlin.groovy.Gremlin
 import com.tinkerpop.gremlin.test.ComplianceTest
 
@@ -26,10 +25,6 @@ class HasNotStepTest extends com.tinkerpop.gremlin.test.filter.HasNotStepTest {
 
     public void test_g_V_hasNotXname_blahX() {
         super.test_g_V_hasNotXname_blahX(g.V.hasNot('name', 'blah'));
-    }
-
-    public void test_g_V_hasNotXage_gt_32X() {
-        super.test_g_V_hasNotXage_gt_32X(g.V.hasNot('age', T.gt, 32));
     }
 
     public void test_g_V_hasNotXblahX() {

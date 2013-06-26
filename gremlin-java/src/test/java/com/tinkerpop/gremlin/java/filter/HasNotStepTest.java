@@ -28,8 +28,4 @@ public class HasNotStepTest extends com.tinkerpop.gremlin.test.filter.HasNotStep
     public void test_g_V_hasNotXblahX() {
         super.test_g_V_hasNotXblahX(new GremlinPipeline(g.getVertices()).hasNot("blah"));
     }
-
-    public void test_g_V_hasNotXage_gt_32X() {
-        super.test_g_V_hasNotXage_gt_32X(new GremlinPipeline(g.getVertices()).hasNot("age", Tokens.T.gt, 32));
-    }
 }

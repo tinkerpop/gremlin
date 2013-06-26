@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.java;
 
-import com.tinkerpop.blueprints.Compare;
+import com.tinkerpop.blueprints.CompareRelation;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
@@ -166,16 +166,13 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
     }
 
     /**
-     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
-     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
-     * If the key is id or label, then use respect id or label filtering.
+     * Check if the element has a property with provided key.
      *
-     * @param key    the property key to check
-     * @param values the object to filter on (in an OR manner)
+     * @param key the property key to check
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> has(final String key, final Object... values) {
-        return this.has(key, Tokens.T.eq, values);
+    public GremlinPipeline<S, ? extends Element> has(final String key) {
+        return this.has(key, Tokens.T.neq, null);
     }
 
     /**
@@ -183,36 +180,57 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key     the property key to check
-     * @param compare the comparison to use
-     * @param values  the object to filter on
+     * @param key   the property key to check
+     * @param value the object to filter on (in an OR manner)
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T compare, final Object... values) {
-        final Compare queryCompare = Tokens.mapCompare(compare);
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Object value) {
+        return this.has(key, Tokens.T.eq, value);
+    }
+
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key          the property key to check
+     * @param compareToken the comparison to use
+     * @param value        the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T compareToken, final Object value) {
+        return this.has(key, Tokens.mapCompareRelation(compareToken), value);
+    }
+
+    /**
+     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
+     * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
+     * If the key is id or label, then use respect id or label filtering.
+     *
+     * @param key             the property key to check
+     * @param compareRelation the comparison to use
+     * @param value           the object to filter on
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, ? extends Element> has(final String key, final CompareRelation compareRelation, final Object value) {
         if (key.equals(Tokens.ID)) {
-            return this.add(new IdFilterPipe(queryCompare, values));
+            return this.add(new IdFilterPipe(compareRelation, value));
         } else if (key.equals(Tokens.LABEL)) {
-            final String[] labels = new String[values.length];
-            System.arraycopy(values, 0, labels, 0, values.length);
-            return this.add(new LabelFilterPipe(queryCompare, labels));
+            return this.add(new LabelFilterPipe(compareRelation, value));
         } else {
-            final Pipe pipe = new PropertyFilterPipe(key, queryCompare, values);
+            final Pipe pipe = new PropertyFilterPipe(key, compareRelation, value);
             return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
         }
     }
 
     /**
-     * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
-     * If the incoming element has the provided key/value as check with .equals(), then filter the element.
-     * If the key is id or label, then use respect id or label filtering.
+     * Check if the element does not have a property with provided key.
      *
-     * @param key    the property key to check
-     * @param values the objects to filter on (in an OR manner)
+     * @param key the property key to check
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object... values) {
-        return this.has(key, Tokens.T.neq, values);
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key) {
+        return this.has(key, Tokens.T.eq, null);
     }
 
     /**
@@ -220,13 +238,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * If the incoming element has the provided key/value as check with .equals(), then filter the element.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key     the property key to check
-     * @param compare the comparison to use
-     * @param values  the object to filter on
+     * @param key   the property key to check
+     * @param value the objects to filter on (in an OR manner)
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Tokens.T compare, final Object... values) {
-        return this.has(key, compare.opposite(), values);
+    public GremlinPipeline<S, ? extends Element> hasNot(final String key, final Object value) {
+        return this.has(key, Tokens.T.neq, value);
     }
 
     /**

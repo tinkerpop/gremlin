@@ -1,7 +1,8 @@
 package com.tinkerpop.gremlin;
 
 import com.tinkerpop.blueprints.Compare;
-import com.tinkerpop.blueprints.Query;
+import com.tinkerpop.blueprints.CompareRelation;
+import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 /**
@@ -45,7 +46,15 @@ public class Tokens {
         /**
          * Increment
          */
-        incr;
+        incr,
+        /**
+         * In collection
+         */
+        in,
+        /**
+         * Not in collection
+         */
+        notin;
 
         public T opposite() {
             if (this.equals(eq))
@@ -64,6 +73,10 @@ public class Tokens {
                 return incr;
             else if (this.equals(incr))
                 return decr;
+            else if (this.equals(in))
+                return notin;
+            else if (this.equals(notin))
+                return in;
             else throw new IllegalArgumentException("The provided token has no opposite: " + this);
         }
     }
@@ -77,7 +90,7 @@ public class Tokens {
             throw new IllegalArgumentException(t.toString() + " is an unknown order type");
     }
 
-    public static Compare mapCompare(final T t) {
+    public static CompareRelation mapCompareRelation(final T t) {
         if (t.equals(T.eq))
             return Compare.EQUAL;
         else if (t.equals(T.neq))
@@ -90,8 +103,12 @@ public class Tokens {
             return Compare.GREATER_THAN;
         else if (t.equals(T.gte))
             return Compare.GREATER_THAN_EQUAL;
+        else if (t.equals(T.in))
+            return Contains.IN;
+        else if(t.equals(T.notin))
+            return Contains.NOT_IN;
         else
-            throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
+        throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
     }
 
 }

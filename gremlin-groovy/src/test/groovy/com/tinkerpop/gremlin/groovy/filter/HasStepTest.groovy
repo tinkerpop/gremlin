@@ -45,6 +45,6 @@ class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
     }
 
     public void test_g_E_hasXlabelXknows_createdX() {
-        super.test_g_E_hasXlabelXknows_createdX(g.E.has("label", "knows", "created"));
+        super.test_g_E_hasXlabelXknows_createdX(g.E.has("label", Tokens.T.in, ["knows", "created"]));
     }
 }

@@ -1,11 +1,14 @@
 package com.tinkerpop.gremlin.java.filter;
 
+import com.tinkerpop.blueprints.Contains;
 import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
 import com.tinkerpop.gremlin.Tokens.T;
 import com.tinkerpop.gremlin.java.GremlinPipeline;
 import com.tinkerpop.gremlin.test.ComplianceTest;
 import com.tinkerpop.pipes.Pipe;
+
+import java.util.Arrays;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -39,10 +42,10 @@ public class HasStepTest extends com.tinkerpop.gremlin.test.filter.HasStepTest {
     }
 
     public void test_g_E_hasXlabelXknowsX() {
-        super.test_g_E_hasXlabelXknowsX((Pipe) new GremlinPipeline(g).E().has("label", "knows"));
+        super.test_g_E_hasXlabelXknowsX((Pipe) new GremlinPipeline(g).E().has("label", T.eq, "knows"));
     }
 
     public void test_g_E_hasXlabelXknows_createdX() {
-        super.test_g_E_hasXlabelXknows_createdX(new GremlinPipeline(g.getEdges()).has("label", "knows", "created"));
+        super.test_g_E_hasXlabelXknows_createdX(new GremlinPipeline(g.getEdges()).has("label", T.in, Arrays.asList("knows", "created")));
     }
 }

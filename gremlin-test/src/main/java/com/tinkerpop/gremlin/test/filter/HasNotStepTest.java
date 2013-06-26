@@ -26,15 +26,6 @@ public class HasNotStepTest extends TestCase {
         assertEquals(counter, 5);
     }
 
-    public void test_g_V_hasNotXage_gt_32X(Pipe<Vertex, Vertex> pipe) {
-        List<Vertex> list = new ArrayList<Vertex>();
-        PipeHelper.fillCollection(pipe, list);
-        assertEquals(list.size(), 3);
-        for (Vertex v : list) {
-            assertTrue((Integer) v.getProperty("age") <= 32);
-        }
-    }
-
     public void test_g_V_hasNotXname_blahX(Pipe<Vertex, Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {

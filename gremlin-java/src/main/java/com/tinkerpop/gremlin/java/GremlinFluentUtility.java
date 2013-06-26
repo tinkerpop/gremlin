@@ -61,15 +61,15 @@ public class GremlinFluentUtility extends FluentUtility {
         if (removedPipes.size() > 0) {
             final List<QueryPipe.HasContainer> hasContainers = new ArrayList<QueryPipe.HasContainer>();
             final List<QueryPipe.IntervalContainer> intervalContainers = new ArrayList<QueryPipe.IntervalContainer>();
-            long lowRange = Long.MIN_VALUE;
-            long highRange = Long.MAX_VALUE;
+            int lowRange = Integer.MIN_VALUE;
+            int highRange = Integer.MAX_VALUE;
             String[] labels = new String[]{};
             Direction direction = Direction.BOTH;
 
             for (final Pipe pipe : removedPipes) {
                 if (pipe instanceof PropertyFilterPipe) {
                     final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getCompareRelation(), temp.getValues()));
+                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getCompareRelation(), temp.getValue()));
                 } else if (pipe instanceof IntervalFilterPipe) {
                     final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                     intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
@@ -104,7 +104,7 @@ public class GremlinFluentUtility extends FluentUtility {
         if (null != queryPipe) {
             if (pipe instanceof PropertyFilterPipe) {
                 final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                queryPipe.addHasContainer(new QueryPipe.HasContainer(temp.getKey(), temp.getCompareRelation(), temp.getValues()));
+                queryPipe.addHasContainer(new QueryPipe.HasContainer(temp.getKey(), temp.getCompareRelation(), temp.getValue()));
             } else if (pipe instanceof IntervalFilterPipe) {
                 final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                 queryPipe.addIntervalContainer(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
