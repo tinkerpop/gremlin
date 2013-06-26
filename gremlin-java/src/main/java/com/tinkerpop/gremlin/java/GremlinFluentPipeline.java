@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.java;
 
-import com.tinkerpop.blueprints.CompareRelation;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Predicate;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.pipes.Pipe;
@@ -315,12 +315,12 @@ public interface GremlinFluentPipeline<S, E> {
      * If the incoming element has the provided key/value as check with .equals(), then let the element pass.
      * If the key is id or label, then use respect id or label filtering.
      *
-     * @param key             the property key to check
-     * @param compareRelation the comparison to use
-     * @param value           the object to filter on
+     * @param key       the property key to check
+     * @param predicate the comparison to use
+     * @param value     the object to filter on
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final CompareRelation compareRelation, final Object value);
+    public GremlinFluentPipeline<S, ? extends Element> has(final String key, final Predicate predicate, final Object value);
 
     /**
      * Add an IdFilterPipe, LabelFilterPipe, or PropertyFilterPipe to the end of the Pipeline.
