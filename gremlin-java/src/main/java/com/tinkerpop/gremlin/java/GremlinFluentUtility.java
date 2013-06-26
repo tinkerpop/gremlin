@@ -69,7 +69,7 @@ public class GremlinFluentUtility extends FluentUtility {
             for (final Pipe pipe : removedPipes) {
                 if (pipe instanceof PropertyFilterPipe) {
                     final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getCompare(), temp.getValues()));
+                    hasContainers.add(new QueryPipe.HasContainer(temp.getKey(), temp.getCompareRelation(), temp.getValues()));
                 } else if (pipe instanceof IntervalFilterPipe) {
                     final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                     intervalContainers.add(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));
@@ -104,7 +104,7 @@ public class GremlinFluentUtility extends FluentUtility {
         if (null != queryPipe) {
             if (pipe instanceof PropertyFilterPipe) {
                 final PropertyFilterPipe temp = (PropertyFilterPipe) pipe;
-                queryPipe.addHasContainer(new QueryPipe.HasContainer(temp.getKey(), temp.getCompare(), temp.getValues()));
+                queryPipe.addHasContainer(new QueryPipe.HasContainer(temp.getKey(), temp.getCompareRelation(), temp.getValues()));
             } else if (pipe instanceof IntervalFilterPipe) {
                 final IntervalFilterPipe temp = (IntervalFilterPipe) pipe;
                 queryPipe.addIntervalContainer(new QueryPipe.IntervalContainer(temp.getKey(), temp.getStartValue(), temp.getEndValue()));

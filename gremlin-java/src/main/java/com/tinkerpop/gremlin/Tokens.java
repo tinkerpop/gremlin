@@ -1,5 +1,6 @@
 package com.tinkerpop.gremlin;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
@@ -76,19 +77,19 @@ public class Tokens {
             throw new IllegalArgumentException(t.toString() + " is an unknown order type");
     }
 
-    public static Query.Compare mapCompare(final T t) {
+    public static Compare mapCompare(final T t) {
         if (t.equals(T.eq))
-            return Query.Compare.EQUAL;
+            return Compare.EQUAL;
         else if (t.equals(T.neq))
-            return Query.Compare.NOT_EQUAL;
+            return Compare.NOT_EQUAL;
         else if (t.equals(T.lt))
-            return Query.Compare.LESS_THAN;
+            return Compare.LESS_THAN;
         else if (t.equals(T.lte))
-            return Query.Compare.LESS_THAN_EQUAL;
+            return Compare.LESS_THAN_EQUAL;
         else if (t.equals(T.gt))
-            return Query.Compare.GREATER_THAN;
+            return Compare.GREATER_THAN;
         else if (t.equals(T.gte))
-            return Query.Compare.GREATER_THAN_EQUAL;
+            return Compare.GREATER_THAN_EQUAL;
         else
             throw new IllegalArgumentException(t.toString() + " is an unknown filter type");
     }

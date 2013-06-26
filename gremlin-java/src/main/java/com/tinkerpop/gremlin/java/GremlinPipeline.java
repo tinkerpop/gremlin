@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.java;
 
+import com.tinkerpop.blueprints.Compare;
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Element;
 import com.tinkerpop.blueprints.Graph;
-import com.tinkerpop.blueprints.Query;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.gremlin.Tokens;
 import com.tinkerpop.pipes.FunctionPipe;
@@ -189,7 +189,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, ? extends Element> has(final String key, final Tokens.T compare, final Object... values) {
-        final Query.Compare queryCompare = Tokens.mapCompare(compare);
+        final Compare queryCompare = Tokens.mapCompare(compare);
         if (key.equals(Tokens.ID)) {
             return this.add(new IdFilterPipe(queryCompare, values));
         } else if (key.equals(Tokens.LABEL)) {
