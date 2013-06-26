@@ -63,6 +63,9 @@ public class Imports {
         imports.add("com.tinkerpop.pipes.util.*");
         imports.add("com.tinkerpop.pipes.util.iterators.*");
         imports.add("com.tinkerpop.pipes.util.structures.*");
+
+        // apache configuration for use with GraphFactory
+        imports.add("org.apache.commons.configuration.*");
     }
 
     public static List<String> getImports() {
