@@ -1,11 +1,9 @@
 package com.tinkerpop.gremlin.groovy.console;
 
+import com.tinkerpop.gremlin.java.GremlinToStringPipe;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
 import groovy.lang.Closure;
 import org.codehaus.groovy.tools.shell.IO;
-
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
@@ -22,21 +20,11 @@ public class ResultHookClosure extends Closure {
 
     public Object call(final Object[] args) {
         final Object result = args[0];
-        final Iterator itty;
-        if (result instanceof Iterator) {
-            itty = (Iterator) result;
-        } else if (result instanceof Iterable) {
-            itty = ((Iterable) result).iterator();
-        } else if (result instanceof Object[]) {
-            itty = new ArrayIterator((Object[]) result);
-        } else if (result instanceof Map) {
-            itty = ((Map) result).entrySet().iterator();
-        } else {
-            itty = new SingleIterator<Object>(result);
-        }
+        GremlinToStringPipe toStringPipe = new GremlinToStringPipe();
+        toStringPipe.setStarts(new SingleIterator<Object>(result));
 
-        while (itty.hasNext()) {
-            this.io.out.println(this.resultPrompt + itty.next());
+        while (toStringPipe.hasNext()) {
+            this.io.out.println(this.resultPrompt + toStringPipe.next());
         }
 
         return null;
