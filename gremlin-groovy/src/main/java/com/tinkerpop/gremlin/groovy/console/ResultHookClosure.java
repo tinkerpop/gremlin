@@ -1,6 +1,6 @@
 package com.tinkerpop.gremlin.groovy.console;
 
-import com.tinkerpop.gremlin.java.GremlinToStringPipe;
+import com.tinkerpop.pipes.transform.ToStringPipe;
 import com.tinkerpop.pipes.util.iterators.SingleIterator;
 import groovy.lang.Closure;
 import org.codehaus.groovy.tools.shell.IO;
@@ -20,9 +20,8 @@ public class ResultHookClosure extends Closure {
 
     public Object call(final Object[] args) {
         final Object result = args[0];
-        GremlinToStringPipe toStringPipe = new GremlinToStringPipe();
+        ToStringPipe toStringPipe = new ToStringPipe();
         toStringPipe.setStarts(new SingleIterator<Object>(result));
-
         while (toStringPipe.hasNext()) {
             this.io.out.println(this.resultPrompt + toStringPipe.next());
         }
