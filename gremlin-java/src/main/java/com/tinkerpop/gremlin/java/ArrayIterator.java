@@ -1,4 +1,4 @@
-package com.tinkerpop.gremlin.groovy.console;
+package com.tinkerpop.gremlin.java;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
