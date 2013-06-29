@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ public class TraversalStepsTest extends TestCase {
 
     // VERTEX ADJACENCY
 
-    public void test_g_V(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V(final Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -30,7 +31,7 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(counter, 6);
     }
 
-    public void test_g_v1_out(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out(final Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -45,7 +46,7 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(vertices.size(), 3);
     }
 
-    public void test_g_v2_in(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v2_in(final Iterator<Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -54,7 +55,7 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(counter, 1);
     }
 
-    public void test_g_v4_both(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v4_both(final Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -71,7 +72,7 @@ public class TraversalStepsTest extends TestCase {
 
     // EDGE ADJACENCY
 
-    public void test_g_E(final Pipe<Edge, Edge> pipe) {
+    public void test_g_E(final Iterator<Edge> pipe) {
         int counter = 0;
         Set<Edge> edges = new HashSet<Edge>();
         while (pipe.hasNext()) {
@@ -82,7 +83,7 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(counter, 6);
     }
 
-    public void test_g_v1_outE(final Pipe<Vertex, Edge> pipe) {
+    public void test_g_v1_outE(final Iterator<Edge> pipe) {
         int counter = 0;
         Set<Edge> edges = new HashSet<Edge>();
         while (pipe.hasNext()) {
@@ -95,7 +96,7 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(edges.size(), 3);
     }
 
-    public void test_g_v2_inE(final Pipe<Vertex, Edge> pipe) {
+    public void test_g_v2_inE(final Iterator<Edge> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -104,7 +105,7 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(counter, 1);
     }
 
-    public void test_g_v4_bothE(final Pipe<Vertex, Edge> pipe) {
+    public void test_g_v4_bothE(final Iterator<Edge> pipe) {
         int counter = 0;
         Set<Edge> edges = new HashSet<Edge>();
         while (pipe.hasNext()) {
@@ -119,7 +120,7 @@ public class TraversalStepsTest extends TestCase {
 
     // EDGE/VERTEX ADJACENCY
 
-    public void test_g_v1_outE_inV(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_outE_inV(final Iterator<Vertex> pipe) {
         this.test_g_v1_out(pipe);
     }
 

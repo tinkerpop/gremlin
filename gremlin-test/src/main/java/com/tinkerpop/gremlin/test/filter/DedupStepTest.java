@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class DedupStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_both_dedup_name(Pipe<Vertex, String> pipe) {
+    public void test_g_V_both_dedup_name(Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         PipeHelper.fillCollection(pipe, names);
         assertEquals(names.size(), 6);
@@ -30,7 +31,7 @@ public class DedupStepTest extends TestCase {
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_both_dedupXlangX_name(Pipe<Vertex, String> pipe) {
+    public void test_g_V_both_dedupXlangX_name(Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         PipeHelper.fillCollection(pipe, names);
         assertEquals(names.size(), 2);

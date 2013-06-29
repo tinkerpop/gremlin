@@ -1,10 +1,10 @@
 package com.tinkerpop.gremlin.test.filter;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -16,7 +16,7 @@ public class BackStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_backX1X(Pipe<Vertex, ?> pipe) {
+    public void test_g_v1_out_backX1X(Iterator<?> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -25,11 +25,11 @@ public class BackStepTest extends TestCase {
         assertEquals(counter, 1);
     }
 
-    public void test_g_v1_asXhereX_out_backXhereX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_asXhereX_out_backXhereX(Iterator<Vertex> pipe) {
         this.test_g_v1_out_backX1X(pipe);
     }
 
-    public void test_g_v4_out_filterXlang_eq_javaX_backX1X(Pipe<Vertex, ?> pipe) {
+    public void test_g_v4_out_filterXlang_eq_javaX_backX1X(Iterator<?> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -40,11 +40,11 @@ public class BackStepTest extends TestCase {
         assertEquals(counter, 2);
     }
 
-    public void test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX(Iterator<Vertex> pipe) {
         this.test_g_v4_out_filterXlang_eq_javaX_backX1X(pipe);
     }
 
-    public void test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX(Pipe<Vertex, String> pipe) {
+    public void test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX(Iterator<String> pipe) {
         int counter = 0;
         Set<String> names = new HashSet<String>();
         while (pipe.hasNext()) {

@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.util.PipeHelper;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class HasNotStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_hasNotXname_markoX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_hasNotXname_markoX(Iterator<Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -26,7 +27,7 @@ public class HasNotStepTest extends TestCase {
         assertEquals(counter, 5);
     }
 
-    public void test_g_V_hasNotXname_blahX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_hasNotXname_blahX(Iterator<Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -35,7 +36,7 @@ public class HasNotStepTest extends TestCase {
         assertEquals(counter, 6);
     }
 
-    public void test_g_V_hasNotXblahX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_hasNotXblahX(Iterator<Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             pipe.next();

@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -16,11 +17,11 @@ public class FilterStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_filterXfalseX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXfalseX(Iterator<Vertex> pipe) {
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_filterXtrueX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXtrueX(Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -31,7 +32,7 @@ public class FilterStepTest extends TestCase {
         assertEquals(vertices.size(), 6);
     }
 
-    public void test_g_V_filterXlang_eq_javaX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXlang_eq_javaX(Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -45,12 +46,12 @@ public class FilterStepTest extends TestCase {
         assertEquals(vertices.size(), 2);
     }
 
-    public void test_g_v1_out_filterXage_gt_30X(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out_filterXage_gt_30X(Iterator<Vertex> pipe) {
         assertEquals(pipe.next().getProperty("age"), 32);
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_V_filterXname_startsWith_m_OR_name_startsWith_pX(Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {

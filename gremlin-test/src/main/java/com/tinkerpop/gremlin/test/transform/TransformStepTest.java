@@ -1,10 +1,9 @@
 package com.tinkerpop.gremlin.test.transform;
 
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,12 +15,12 @@ public class TransformStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_transformXnameX(final Pipe<Vertex, String> pipe) {
+    public void test_g_v1_transformXnameX(final Iterator<String> pipe) {
         assertEquals(pipe.next(), "marko");
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_v1_outE_label_transformXlengthX(final Pipe<Vertex, Integer> pipe) {
+    public void test_g_v1_outE_label_transformXlengthX(final Iterator<Integer> pipe) {
         List<Integer> lengths = new ArrayList<Integer>();
         while (pipe.hasNext()) {
             lengths.add(pipe.next());
@@ -31,7 +30,7 @@ public class TransformStepTest extends TestCase {
         assertEquals(lengths.size(), 3);
     }
 
-    public void test_g_v1_out_transformXnameX_transformXlengthX(final Pipe<Vertex, Integer> pipe) {
+    public void test_g_v1_out_transformXnameX_transformXlengthX(final Iterator<Integer> pipe) {
         List<Integer> lengths = new ArrayList<Integer>();
         while (pipe.hasNext()) {
             lengths.add(pipe.next());
@@ -42,12 +41,13 @@ public class TransformStepTest extends TestCase {
         assertEquals(lengths.size(), 3);
     }
 
-    public void test_g_V_asXaX_out_transformXa_nameX(final Pipe<Vertex, String> pipe) {
+    public void test_g_V_asXaX_out_transformXa_nameX(final Iterator<String> pipe) {
         int marko = 0;
         int peter = 0;
         int josh = 0;
         int other = 0;
-        for (String name : pipe) {
+        while (pipe.hasNext()) {
+            String name = pipe.next();
             if (name.equals("marko")) marko++;
             else if (name.equals("peter")) peter++;
             else if (name.equals("josh")) josh++;

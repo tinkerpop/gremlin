@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class OrderStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_name_order(final Pipe<Vertex, String> pipe) {
+    public void test_g_V_name_order(final Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         while (pipe.hasNext()) {
             names.add(pipe.next());
@@ -30,7 +31,7 @@ public class OrderStepTest extends TestCase {
         assertEquals(names.get(5), "vadas");
     }
 
-    public void test_g_V_name_orderXabX(final Pipe<Vertex, String> pipe) {
+    public void test_g_V_name_orderXabX(final Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         while (pipe.hasNext()) {
             names.add(pipe.next());

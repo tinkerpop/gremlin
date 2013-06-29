@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class SplitMergeStepsTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_copySplitXpropertyXnameX__propertyXageXX_fairMerge(Pipe<Vertex, Object> pipe) {
+    public void test_g_v1_out_copySplitXpropertyXnameX__propertyXageXX_fairMerge(Iterator<Object> pipe) {
         while (pipe.hasNext()) {
             String name = (String) pipe.next();
             if (name.equals("vadas")) {
@@ -31,7 +32,7 @@ public class SplitMergeStepsTest extends TestCase {
         }
     }
 
-    public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge(Pipe<Vertex, Object> pipe) {
+    public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge(Iterator<Object> pipe) {
         List<String> names = new ArrayList<String>();
         names.add((String) pipe.next());
         names.add((String) pipe.next());
@@ -46,7 +47,7 @@ public class SplitMergeStepsTest extends TestCase {
         assertTrue(ages.contains(32));
     }
 
-    public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(Pipe<Vertex, List> pipe) {
+    public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(Iterator<List> pipe) {
         List<List> names = new ArrayList<List>();
         names.add(pipe.next());
         names.add(pipe.next());

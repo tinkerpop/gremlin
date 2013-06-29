@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,7 @@ public class GroupByStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_V_groupByXlang_nameX(Pipe<Vertex, Vertex> pipe, Map<String, List<String>> m) {
+    public void test_g_V_groupByXlang_nameX(Iterator<Vertex> pipe, Map<String, List<String>> m) {
         int counter = 0;
         while (pipe.hasNext()) {
             pipe.next();

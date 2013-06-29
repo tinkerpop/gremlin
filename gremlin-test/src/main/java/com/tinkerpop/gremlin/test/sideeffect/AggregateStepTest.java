@@ -1,9 +1,9 @@
 package com.tinkerpop.gremlin.test.sideeffect;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ public class AggregateStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(final Iterator<Vertex> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -25,7 +25,7 @@ public class AggregateStepTest extends TestCase {
         assertEquals(counter, 2);
     }
 
-    public void test_g_V_propertyXnameX_aggregate_cap(final Pipe<Vertex, List<String>> pipe) {
+    public void test_g_V_propertyXnameX_aggregate_cap(final Iterator<List<String>> pipe) {
         List<String> names = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(names.size(), 6);
@@ -37,7 +37,7 @@ public class AggregateStepTest extends TestCase {
         assertTrue(names.contains("ripple"));
     }
 
-    public void test_g_V_aggregateXnameX_cap(final Pipe<Vertex, List<String>> pipe) {
+    public void test_g_V_aggregateXnameX_cap(final Iterator<List<String>> pipe) {
         this.test_g_V_propertyXnameX_aggregate_cap(pipe);
     }
 }

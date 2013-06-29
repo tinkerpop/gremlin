@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +19,7 @@ public class ExceptStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_exceptXg_v2X(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out_exceptXg_v2X(Iterator<Vertex> pipe) {
         int counter = 0;
         Set<Vertex> vertices = new HashSet<Vertex>();
         while (pipe.hasNext()) {
@@ -31,12 +32,12 @@ public class ExceptStepTest extends TestCase {
         assertEquals(vertices.size(), 2);
     }
 
-    public void test_g_v1_out_aggregateXxX_out_exceptXxX(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out_aggregateXxX_out_exceptXxX(Iterator<Vertex> pipe) {
         assertEquals(pipe.next().getProperty("name"), "ripple");
         assertFalse(pipe.hasNext());
     }
 
-    public void test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(Pipe<Vertex, String> pipe) {
+    public void test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(Iterator<String> pipe) {
         List<String> names = Arrays.asList(pipe.next(), pipe.next());
         assertFalse(pipe.hasNext());
         assertEquals(names.size(), 2);

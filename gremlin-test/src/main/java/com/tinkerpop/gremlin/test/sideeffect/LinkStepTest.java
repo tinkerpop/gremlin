@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,10 +18,11 @@ public class LinkStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_asXaX_outXcreatedX_inXcreatedX_linkBothXcocreator_aX(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_asXaX_outXcreatedX_inXcreatedX_linkBothXcocreator_aX(final Iterator<Vertex> pipe) {
         List<Vertex> cocreators = new ArrayList<Vertex>();
         List<Object> ids = new ArrayList<Object>();
-        for (Vertex vertex : pipe) {
+        while(pipe.hasNext()) {
+            Vertex vertex = pipe.next();
             cocreators.add(vertex);
             ids.add(vertex.getId());
         }

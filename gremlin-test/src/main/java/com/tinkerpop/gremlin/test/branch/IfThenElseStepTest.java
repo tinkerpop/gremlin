@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -16,7 +17,7 @@ public class IfThenElseStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name(Pipe<Vertex, String> pipe) {
+    public void test_g_v1_out_ifThenElseXlang_eq_java__it__outX_name(Iterator<String> pipe) {
         int counter = 0;
         Set<String> names = new HashSet<String>();
         while (pipe.hasNext()) {

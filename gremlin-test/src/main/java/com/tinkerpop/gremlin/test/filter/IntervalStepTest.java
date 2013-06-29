@@ -4,6 +4,8 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
+
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)
  */
@@ -13,7 +15,7 @@ public class IntervalStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_outE_intervalXweight_0_06X_inV(Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_outE_intervalXweight_0_06X_inV(Iterator<Vertex> pipe) {
         while (pipe.hasNext()) {
             Vertex vertex = pipe.next();
             assertTrue(vertex.getProperty("name").equals("vadas") || vertex.getProperty("name").equals("lop"));

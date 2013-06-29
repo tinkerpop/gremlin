@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.structures.Tree;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ public class TreeStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_out_treeXnameX_cap(final Pipe<Vertex, Tree> pipe) {
+    public void test_g_v1_out_out_treeXnameX_cap(final Iterator<Tree> pipe) {
         Map map = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(map.size(), 1);

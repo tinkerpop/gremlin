@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class StoreStepTest extends TestCase {
     }
 
 
-    public void test_g_V_propertyXnameX_store_cap(final Pipe<Vertex, List<String>> pipe) {
+    public void test_g_V_propertyXnameX_store_cap(final Iterator<List<String>> pipe) {
         List<String> names = new ArrayList<String>();
         while (pipe.hasNext())
             names = pipe.next();
@@ -32,7 +33,7 @@ public class StoreStepTest extends TestCase {
         assertTrue(names.contains("ripple"));
     }
 
-    public void test_g_V_storeXnameX_cap(final Pipe<Vertex, List<String>> pipe) {
+    public void test_g_V_storeXnameX_cap(final Iterator<List<String>> pipe) {
         this.test_g_V_propertyXnameX_store_cap(pipe);
     }
 }

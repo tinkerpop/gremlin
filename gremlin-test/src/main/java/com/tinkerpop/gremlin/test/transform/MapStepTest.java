@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -15,7 +16,7 @@ public class MapStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_map(final Pipe<Vertex, Map<String, Object>> pipe) {
+    public void test_g_v1_map(final Iterator<Map<String, Object>> pipe) {
         Map map = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(map.get("name"), "marko");
@@ -23,7 +24,7 @@ public class MapStepTest extends TestCase {
         assertEquals(map.size(), 2);
     }
 
-    public void test_g_v1_mapXname_idX(final Pipe<Vertex, Map<String, Object>> pipe) {
+    public void test_g_v1_mapXname_idX(final Iterator<Map<String, Object>> pipe) {
         Map map = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(map.get("name"), "marko");
@@ -32,7 +33,7 @@ public class MapStepTest extends TestCase {
         assertEquals(map.size(), 2);
     }
 
-    public void test_g_v1_outXknowsX_map(final Pipe<Vertex, Map<String, Object>> pipe) {
+    public void test_g_v1_outXknowsX_map(final Iterator<Map<String, Object>> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             Map map = pipe.next();

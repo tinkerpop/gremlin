@@ -1,10 +1,9 @@
 package com.tinkerpop.gremlin.test;
 
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class FunctionStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_stepXnext_nameX(Pipe<Vertex, String> pipe) {
+    public void test_g_v1_out_stepXnext_nameX(Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         while (pipe.hasNext()) {
             names.add(pipe.next());

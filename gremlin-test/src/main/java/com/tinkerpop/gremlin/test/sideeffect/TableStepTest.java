@@ -6,6 +6,7 @@ import com.tinkerpop.pipes.util.structures.Table;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class TableStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_asXaX_out_properyXnameX_asXbX_table_cap(final Pipe<Vertex, Table> pipe) {
+    public void test_g_v1_asXaX_out_properyXnameX_asXbX_table_cap(final Iterator<Table> pipe) {
         Table t = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(((Vertex) t.get(0, "a")).getProperty("name"), "marko");
@@ -35,7 +36,7 @@ public class TableStepTest extends TestCase {
         assertEquals(t.getRowCount(), 3);
     }
 
-    public void test_g_v1_asXaX_out_asXbX_tableXnameX_cap(final Pipe<Vertex, Table> pipe) {
+    public void test_g_v1_asXaX_out_asXbX_tableXnameX_cap(final Iterator<Table> pipe) {
         Table t = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(((String) t.get(0, "a")), "marko");
@@ -53,7 +54,7 @@ public class TableStepTest extends TestCase {
         assertEquals(t.getRowCount(), 3);
     }
 
-    public void test_g_v1_asXaX_out_propertyXnameX_asXbX_tableXname_lengthX_cap(final Pipe<Vertex, Table> pipe) {
+    public void test_g_v1_asXaX_out_propertyXnameX_asXbX_tableXname_lengthX_cap(final Iterator<Table> pipe) {
         Table t = pipe.next();
         assertFalse(pipe.hasNext());
         assertEquals(((String) t.get(0, "a")), "marko");

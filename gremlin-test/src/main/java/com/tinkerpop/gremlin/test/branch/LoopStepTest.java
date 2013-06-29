@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class LoopStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_loopX1_loops_lt_3X_propertyXnameX(Pipe<Vertex, String> pipe) {
+    public void test_g_v1_out_loopX1_loops_lt_3X_propertyXnameX(Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         while (pipe.hasNext()) {
             names.add(pipe.next());
@@ -26,11 +27,11 @@ public class LoopStepTest extends TestCase {
         assertTrue(names.contains("lop"));
     }
 
-    public void test_g_v1_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(Pipe<Vertex, String> pipe) {
+    public void test_g_v1_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(Iterator<String> pipe) {
         this.test_g_v1_out_loopX1_loops_lt_3X_propertyXnameX(pipe);
     }
 
-    public void test_g_V_out_loopX1_loops_lt_3X_propertyXnameX(Pipe<Vertex, String> pipe) {
+    public void test_g_V_out_loopX1_loops_lt_3X_propertyXnameX(Iterator<String> pipe) {
         List<String> names = new ArrayList<String>();
         while (pipe.hasNext()) {
             names.add(pipe.next());
@@ -40,7 +41,7 @@ public class LoopStepTest extends TestCase {
         assertTrue(names.contains("lop"));
     }
 
-    public void test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(Pipe<Vertex, String> pipe) {
+    public void test_g_V_asXhereX_out_loopXhere_loops_lt_3X_propertyXnameX(Iterator<String> pipe) {
         this.test_g_V_out_loopX1_loops_lt_3X_propertyXnameX(pipe);
     }
 }

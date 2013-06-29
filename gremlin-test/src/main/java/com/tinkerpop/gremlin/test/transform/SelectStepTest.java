@@ -5,6 +5,7 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.structures.Row;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class SelectStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_asXaX_outXknowsX_asXbX_select(final Pipe<Vertex, Row> pipe) {
+    public void test_g_v1_asXaX_outXknowsX_asXbX_select(final Iterator<Row> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -28,7 +29,7 @@ public class SelectStepTest extends TestCase {
         assertEquals(counter, 2);
     }
 
-    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(final Pipe<Vertex, Row> pipe) {
+    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(final Iterator<Row> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -41,7 +42,7 @@ public class SelectStepTest extends TestCase {
         assertEquals(counter, 2);
     }
 
-    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXaX(final Pipe<Vertex, Row> pipe) {
+    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXaX(final Iterator<Row> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;
@@ -53,7 +54,7 @@ public class SelectStepTest extends TestCase {
         assertEquals(counter, 2);
     }
 
-    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX(final Pipe<Vertex, Row> pipe) {
+    public void test_g_v1_asXaX_outXknowsX_asXbX_selectXa_nameX(final Iterator<Row> pipe) {
         int counter = 0;
         while (pipe.hasNext()) {
             counter++;

@@ -4,6 +4,7 @@ import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class GatherStepTest extends TestCase {
         assertTrue(true);
     }
 
-    public void test_g_v1_out_gather(final Pipe<Vertex, List<Vertex>> pipe) {
+    public void test_g_v1_out_gather(final Iterator<List<Vertex>> pipe) {
         List<Vertex> list = pipe.next();
         assertFalse(pipe.hasNext());
         for (Vertex vertex : list) {
@@ -23,7 +24,7 @@ public class GatherStepTest extends TestCase {
         }
     }
 
-    public void test_g_v1_out_gatherXget0X(final Pipe<Vertex, Vertex> pipe) {
+    public void test_g_v1_out_gatherXget0X(final Iterator<Vertex> pipe) {
         Vertex vertex = pipe.next();
         assertFalse(pipe.hasNext());
         assertTrue(vertex.getId().equals(2) || vertex.getId().equals(4));
