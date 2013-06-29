@@ -202,11 +202,4 @@ class GremlinTest extends BaseTest {
         assertTrue([1, 2, 4].isSimple());
         assertFalse([1, 2, 2].isSimple());
     }
-
-    public void testTest() {
-        Gremlin.load();
-        Graph g = TinkerGraphFactory.createTinkerGraph();
-        println g.V.outE.has('weight',Tokens.T.gt, 0.5).inV.toString()
-
-    }
 }
