@@ -70,6 +70,7 @@ import com.tinkerpop.pipes.transform.ShufflePipe;
 import com.tinkerpop.pipes.transform.SideEffectCapPipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
+import com.tinkerpop.pipes.transform.VertexQueryPipe;
 import com.tinkerpop.pipes.util.AsPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 import com.tinkerpop.pipes.util.MetaPipe;
@@ -219,7 +220,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
             return this.add(new LabelFilterPipe(predicate, value));
         } else {
             final Pipe pipe = new PropertyFilterPipe(key, predicate, value);
-            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
+            return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForQuery(this, pipe) : this.add(pipe);
         }
     }
 
@@ -258,7 +259,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      */
     public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
         final Pipe pipe = new IntervalFilterPipe<Element>(key, startValue, endValue);
-        return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe) : this.add(pipe);
+        return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForQuery(this, pipe) : this.add(pipe);
     }
 
     /**
@@ -269,7 +270,10 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
-        return this.add(new BothEdgesPipe(labels));
+        if (this.doQueryOptimization)
+            return this.add(new VertexQueryPipe(Edge.class, Direction.BOTH, null, null, 0, Integer.MAX_VALUE, labels));
+        else
+            return this.add(new BothEdgesPipe(labels));
     }
 
     /**
@@ -280,7 +284,9 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> both(final String... labels) {
-        return this.add(new BothPipe(labels));
+        if (this.doQueryOptimization)
+            return this.add(new VertexQueryPipe(Vertex.class, Direction.BOTH, null, null, 0, Integer.MAX_VALUE, labels));
+        else return this.add(new BothPipe(labels));
     }
 
     /**
@@ -290,10 +296,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> bothV() {
-        if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForVertexQuery(this);
-
-        return this.add(new BothVerticesPipe());
+        if (this.doQueryOptimization) {
+            GremlinFluentUtility.optimizePipelineForVertexQuery(this, new BothVerticesPipe());
+            return (GremlinPipeline) this;
+        } else {
+            return this.add(new BothVerticesPipe());
+        }
     }
 
     /**
@@ -336,7 +344,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Edge> inE(final String... labels) {
-        return this.add(new InEdgesPipe(labels));
+        if (this.doQueryOptimization) {
+            return this.add(new VertexQueryPipe(Edge.class, Direction.IN, null, null, 0, Integer.MAX_VALUE, labels));
+        } else {
+            return this.add(new InEdgesPipe(labels));
+        }
     }
 
     /**
@@ -347,7 +359,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> in(final String... labels) {
-        return this.add(new InPipe(labels));
+        if (this.doQueryOptimization) {
+            return this.add(new VertexQueryPipe(Vertex.class, Direction.IN, null, null, 0, Integer.MAX_VALUE, labels));
+        } else {
+            return this.add(new InPipe(labels));
+        }
     }
 
     /**
@@ -357,10 +373,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> inV() {
-        if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForVertexQuery(this);
-
-        return this.add(new InVertexPipe());
+        if (this.doQueryOptimization) {
+            GremlinFluentUtility.optimizePipelineForQuery(this, new InVertexPipe());
+            return (GremlinPipeline) this;
+        } else {
+            return this.add(new InVertexPipe());
+        }
     }
 
     /**
@@ -381,7 +399,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Edge> outE(final String... labels) {
-        return this.add(new OutEdgesPipe(labels));
+        if (this.doQueryOptimization) {
+            return this.add(new VertexQueryPipe(Edge.class, Direction.OUT, null, null, 0, Integer.MAX_VALUE, labels));
+        } else {
+            return this.add(new OutEdgesPipe(labels));
+        }
     }
 
     /**
@@ -392,7 +414,11 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> out(final String... labels) {
-        return this.add(new OutPipe(labels));
+        if (this.doQueryOptimization) {
+            return this.add(new VertexQueryPipe(Vertex.class, Direction.OUT, null, null, 0, Integer.MAX_VALUE, labels));
+        } else {
+            return this.add(new OutPipe(labels));
+        }
     }
 
     /**
@@ -402,10 +428,12 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> outV() {
-        if (this.doQueryOptimization)
-            GremlinFluentUtility.optimizePipelineForVertexQuery(this);
-
-        return this.add(new OutVertexPipe());
+        if (this.doQueryOptimization) {
+            GremlinFluentUtility.optimizePipelineForQuery(this, new OutVertexPipe());
+            return (GremlinPipeline) this;
+        } else {
+            return this.add(new OutVertexPipe());
+        }
     }
 
     /**
@@ -693,7 +721,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
         if (!this.doQueryOptimization)
             return this.add(pipe);
         else {
-            return GremlinFluentUtility.optimizePipelineForVertexQueryRange(GremlinFluentUtility.optimizePipelineForGraphQuery(this, pipe));
+            return GremlinFluentUtility.optimizePipelineForQuery(this, pipe);
         }
     }
 

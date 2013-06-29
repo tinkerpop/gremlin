@@ -18,6 +18,8 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * Fixed a double @iterator()@ call in @GremlinPipeline@
 * Allow use of @Grape@ from the console to dynamically import packages
 * Generalized the console iterator using @ToStringPipe@ in Pipes
+* Solved the @QueryPipe@ support for when the last statement is an edge-statement
+* Code simplification around @GraphQuery@ and @VertexQuery@ related traversals
 
 ==<hr/>==
 
