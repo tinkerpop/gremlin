@@ -7,6 +7,20 @@ h2. Gremlin 2.y.z
 
 h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 
+```xml
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-java</artifactId>
+  <version>2.4.0-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-groovy</artifactId>
+  <version>2.4.0-SNAPSHOT</version>
+</dependency>
+```
+
 * Added @GremlinPipeline.cast@ to allow pipeline end type to be reset
 * Added @GraphQueryPipe@ and support for Graph index query optimization via pipeline rewriting
 * Added support for @has(key,predicate,value)@ as dictated by new Blueprints @Query@ API changes
@@ -21,6 +35,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * Solved the @QueryPipe@ support for when the last statement is an edge-statement
 * Code simplification around @GraphQuery@ and @VertexQuery@ related traversals
 * Updated test cases to use @Iterator@ and thus, made typing more general for more stringent Gremlin implementations
+* Updated test cases to support the testing of both optimized and non-optimized @GremlinPipelines@
 
 ==<hr/>==
 

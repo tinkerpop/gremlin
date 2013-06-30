@@ -18,13 +18,17 @@ public class SplitMergeStepsTest extends com.tinkerpop.gremlin.test.branch.Split
 
     public void test_g_v1_out_copySplitXpropertyXnameX__propertyXageXX_fairMerge() {
         super.test_g_v1_out_copySplitXpropertyXnameX__propertyXageXX_fairMerge(new GremlinPipeline(g.getVertex(1)).out().copySplit(new GremlinPipeline().property("name"), new GremlinPipeline().property("age")).fairMerge());
+        super.test_g_v1_out_copySplitXpropertyXnameX__propertyXageXX_fairMerge(new GremlinPipeline(g.getVertex(1)).optimize(false).out().copySplit(new GremlinPipeline().optimize(false).property("name"), new GremlinPipeline().property("age")).fairMerge());
     }
 
     public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge() {
         super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge(new GremlinPipeline(g.getVertex(1)).out("knows").copySplit(new GremlinPipeline().property("name"), new GremlinPipeline().property("age")).exhaustMerge());
+        super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge(new GremlinPipeline(g.getVertex(1)).optimize(false).out("knows").copySplit(new GremlinPipeline().optimize(false).property("name"), new GremlinPipeline().property("age")).exhaustMerge());
     }
 
     public void test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path() {
         super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(new GremlinPipeline(g.getVertex(1)).out("knows").copySplit(new GremlinPipeline().property("name"), new GremlinPipeline().property("age")).exhaustMerge().path());
+        super.test_g_v1_outXknowsX_copySplitXpropertyXnameX__propertyXageXX_exhaustMerge_path(new GremlinPipeline(g.getVertex(1)).optimize(false).out("knows").copySplit(new GremlinPipeline().property("name"), new GremlinPipeline().property("age")).exhaustMerge().path());
+
     }
 }

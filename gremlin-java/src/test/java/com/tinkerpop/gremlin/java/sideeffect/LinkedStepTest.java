@@ -9,10 +9,13 @@ import com.tinkerpop.gremlin.java.GremlinPipeline;
  */
 public class LinkedStepTest extends com.tinkerpop.gremlin.test.sideeffect.LinkStepTest {
 
-    Graph g = TinkerGraphFactory.createTinkerGraph();
-
     public void test_g_v1_asXaX_outXcreatedX_inXcreatedX_linkBothXcocreator_aX() {
+        Graph g = TinkerGraphFactory.createTinkerGraph();
         super.test_g_v1_asXaX_outXcreatedX_inXcreatedX_linkBothXcocreator_aX(
                 new GremlinPipeline(g.getVertex(1)).as("a").out("created").in("created").linkBoth("cocreator", "a"));
+
+        g = TinkerGraphFactory.createTinkerGraph();
+        super.test_g_v1_asXaX_outXcreatedX_inXcreatedX_linkBothXcocreator_aX(
+                new GremlinPipeline(g.getVertex(1)).optimize(false).as("a").out("created").in("created").linkBoth("cocreator", "a"));
     }
 }

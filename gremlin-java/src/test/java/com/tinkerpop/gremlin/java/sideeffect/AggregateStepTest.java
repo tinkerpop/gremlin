@@ -24,14 +24,24 @@ public class AggregateStepTest extends com.tinkerpop.gremlin.test.sideeffect.Agg
     public void test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX() {
         List<Vertex> x = new ArrayList<Vertex>();
         super.test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(new GremlinPipeline(g.getVertex(1)).aggregate(x).out("created").in("created").except(x));
+
+        x = new ArrayList<Vertex>();
+        super.test_g_v1_aggregateXxX_outXcreatedX_inXcreatedX_exceptXxX(new GremlinPipeline(g.getVertex(1)).optimize(false).aggregate(x).out("created").in("created").except(x));
     }
 
     public void test_g_V_propertyXnameX_aggregate_cap() {
         super.test_g_V_propertyXnameX_aggregate_cap(new GremlinPipeline(g.getVertices()).property("name").aggregate().cap());
+        super.test_g_V_propertyXnameX_aggregate_cap(new GremlinPipeline(g).optimize(false).V().property("name").aggregate().cap());
     }
 
     public void test_g_V_aggregateXnameX_cap() {
-        super.test_g_V_aggregateXnameX_cap(new GremlinPipeline(g.getVertices()).aggregate(new PipeFunction<Vertex, String>() {
+        super.test_g_V_aggregateXnameX_cap(new GremlinPipeline(g).V().aggregate(new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }).cap());
+
+        super.test_g_V_aggregateXnameX_cap(new GremlinPipeline(g.getVertices()).optimize(false).aggregate(new PipeFunction<Vertex, String>() {
             public String compute(Vertex vertex) {
                 return (String) vertex.getProperty("name");
             }

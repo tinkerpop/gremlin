@@ -128,8 +128,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      *
      * @return the extended Pipeline
      */
-    public GremlinPipeline<Graph, Vertex> V() {
-        return this.add(new GraphQueryPipe(Vertex.class));
+    public GremlinPipeline<S, Vertex> V() {
+        return this.add(new GraphQueryPipe<Vertex>(Vertex.class));
     }
 
     /**
@@ -138,8 +138,8 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      *
      * @return the extended Pipeline
      */
-    public GremlinPipeline<Graph, Edge> E() {
-        return this.add(new GraphQueryPipe(Edge.class));
+    public GremlinPipeline<S, Edge> E() {
+        return this.add(new GraphQueryPipe<Edge>(Edge.class));
     }
 
     /**
@@ -150,7 +150,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param value the value that all the emitted vertices should have for the key
      * @return the extended Pipeline
      */
-    public GremlinPipeline<Graph, Vertex> V(final String key, final Object value) {
+    public GremlinPipeline<S, Vertex> V(final String key, final Object value) {
         return this.add(new GraphQueryPipe(Vertex.class)).has(key, value);
     }
 
@@ -162,7 +162,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param value the value that all the emitted edges should have for the key
      * @return the extended Pipeline
      */
-    public GremlinPipeline<Graph, Edge> E(final String key, final Object value) {
+    public GremlinPipeline<S, Edge> E(final String key, final Object value) {
         return this.add(new GraphQueryPipe(Edge.class)).has(key, value);
     }
 

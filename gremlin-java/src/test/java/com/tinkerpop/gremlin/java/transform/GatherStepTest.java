@@ -23,10 +23,17 @@ public class GatherStepTest extends com.tinkerpop.gremlin.test.transform.GatherS
 
     public void test_g_v1_out_gather(final Pipe<Vertex, List<Vertex>> pipe) {
         super.test_g_v1_out_gather(new GremlinPipeline(g.getVertex(1)).out().gather());
+        super.test_g_v1_out_gather(new GremlinPipeline(g.getVertex(1)).optimize(false).out().gather());
     }
 
     public void test_g_v1_out_gatherXget0X(final Pipe<Vertex, Vertex> pipe) {
         super.test_g_v1_out_gatherXget0X(new GremlinPipeline(g.getVertex(1)).out().gather(new PipeFunction<List, Vertex>() {
+            public Vertex compute(List argument) {
+                return (Vertex) argument.get(0);
+            }
+        }));
+
+        super.test_g_v1_out_gatherXget0X(new GremlinPipeline(g.getVertex(1)).optimize(false).out().gather(new PipeFunction<List, Vertex>() {
             public Vertex compute(List argument) {
                 return (Vertex) argument.get(0);
             }

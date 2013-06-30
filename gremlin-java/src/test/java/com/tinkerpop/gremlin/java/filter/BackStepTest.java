@@ -20,14 +20,22 @@ public class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest
 
     public void test_g_v1_out_backX1X() {
         super.test_g_v1_out_backX1X(new GremlinPipeline(g.getVertex(1)).out().back(1));
+        super.test_g_v1_out_backX1X(new GremlinPipeline(g.getVertex(1)).optimize(false).out().back(1));
     }
 
     public void test_g_v1_asXhereX_out_backXhereX() {
         super.test_g_v1_asXhereX_out_backXhereX(new GremlinPipeline(g.getVertex(1)).as("here").out().back("here"));
+        super.test_g_v1_asXhereX_out_backXhereX(new GremlinPipeline(g.getVertex(1)).optimize(false).as("here").out().back("here"));
     }
 
     public void test_g_v4_out_filterXlang_eq_javaX_backX1X() {
         super.test_g_v4_out_filterXlang_eq_javaX_backX1X(new GremlinPipeline(g.getVertex(4)).out().filter(new PipeFunction<Vertex, Boolean>() {
+            public Boolean compute(Vertex v) {
+                return v.getProperty("lang").equals("java");
+            }
+        }).back(1));
+
+        super.test_g_v4_out_filterXlang_eq_javaX_backX1X(new GremlinPipeline(g.getVertex(4)).optimize(false).out().filter(new PipeFunction<Vertex, Boolean>() {
             public Boolean compute(Vertex v) {
                 return v.getProperty("lang").equals("java");
             }
@@ -40,10 +48,22 @@ public class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest
                 return v.getProperty("lang").equals("java");
             }
         }).back("here"));
+
+        super.test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX(new GremlinPipeline(g.getVertex(4)).optimize(false).out().as("here").filter(new PipeFunction<Vertex, Boolean>() {
+            public Boolean compute(Vertex v) {
+                return v.getProperty("lang").equals("java");
+            }
+        }).back("here"));
     }
 
     public void test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX() {
         super.test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX(new GremlinPipeline(g.getVertex(4)).out().as("here").filter(new PipeFunction<Vertex, Boolean>() {
+            public Boolean compute(Vertex v) {
+                return v.getProperty("lang").equals("java");
+            }
+        }).back("here").property("name"));
+
+        super.test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX(new GremlinPipeline(g.getVertex(4)).optimize(false).out().as("here").filter(new PipeFunction<Vertex, Boolean>() {
             public Boolean compute(Vertex v) {
                 return v.getProperty("lang").equals("java");
             }

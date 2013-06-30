@@ -25,5 +25,11 @@ public class FunctionStepTest extends com.tinkerpop.gremlin.test.FunctionStepTes
                 return iterator.next();
             }
         }).property("name"));
+
+        super.test_g_v1_out_stepXnext_nameX(new GremlinPipeline(g.getVertex(1)).optimize(false).out().step(new PipeFunction<Iterator<Vertex>, Vertex>() {
+            public Vertex compute(Iterator<Vertex> iterator) {
+                return iterator.next();
+            }
+        }).property("name"));
     }
 }

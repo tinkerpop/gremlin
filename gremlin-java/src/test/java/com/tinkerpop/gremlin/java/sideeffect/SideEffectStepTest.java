@@ -53,6 +53,12 @@ public class SideEffectStepTest extends com.tinkerpop.gremlin.test.sideeffect.Si
                 return false;
             }
         }).property("name"));
+
+        super.test_g_v1_out_sideEffectXfalseX_propertyXnameX(new GremlinPipeline(g.getVertex(1)).optimize(false).out().sideEffect(new PipeFunction<Vertex, Object>() {
+            public Object compute(Vertex vertex) {
+                return false;
+            }
+        }).property("name"));
     }
 
 }

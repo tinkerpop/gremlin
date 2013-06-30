@@ -22,11 +22,18 @@ public class SelectStepTest extends com.tinkerpop.gremlin.test.transform.SelectS
     }
 
     public void test_g_v1_asXaX_outXknowsX_asXbX_select() {
-        super.test_g_v1_asXaX_outXknowsX_asXbX_select(new GremlinPipeline<Vertex, List>(g.getVertex(1)).as("a").out("knows").as("b").select());
+        super.test_g_v1_asXaX_outXknowsX_asXbX_select(new GremlinPipeline(g.getVertex(1)).as("a").out("knows").as("b").select());
+        super.test_g_v1_asXaX_outXknowsX_asXbX_select(new GremlinPipeline(g.getVertex(1)).optimize(false).as("a").out("knows").as("b").select());
     }
 
     public void test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX() {
-        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(new GremlinPipeline<Vertex, List>(g.getVertex(1)).as("a").out("knows").as("b").select(new PipeFunction<Vertex, String>() {
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(new GremlinPipeline(g.getVertex(1)).as("a").out("knows").as("b").select(new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }));
+
+        super.test_g_v1_asXaX_outXknowsX_asXbX_selectXnameX(new GremlinPipeline(g.getVertex(1)).optimize(false).as("a").out("knows").as("b").select(new PipeFunction<Vertex, String>() {
             public String compute(Vertex vertex) {
                 return (String) vertex.getProperty("name");
             }

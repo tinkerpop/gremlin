@@ -23,14 +23,19 @@ public class ExceptStepTest extends com.tinkerpop.gremlin.test.filter.ExceptStep
 
     public void test_g_v1_out_exceptXg_v2X() {
         super.test_g_v1_out_exceptXg_v2X(new GremlinPipeline(g.getVertex(1)).out().except(Arrays.asList(g.getVertex(2))));
+        super.test_g_v1_out_exceptXg_v2X(new GremlinPipeline(g.getVertex(1)).optimize(false).out().except(Arrays.asList(g.getVertex(2))));
     }
 
     public void test_g_v1_out_aggregateXxX_out_exceptXxX() {
         Set<Vertex> x = new HashSet<Vertex>();
         super.test_g_v1_out_aggregateXxX_out_exceptXxX(new GremlinPipeline(g.getVertex(1)).out().aggregate(x).out().except(x));
+
+        x = new HashSet<Vertex>();
+        super.test_g_v1_out_aggregateXxX_out_exceptXxX(new GremlinPipeline(g.getVertex(1)).optimize(false).out().aggregate(x).out().except(x));
     }
 
     public void test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX() {
         super.test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(new GremlinPipeline(g.getVertex(1)).out("created").in("created").except(Arrays.asList(g.getVertex(1))).property("name"));
+        super.test_g_v1_outXcreatedX_inXcreatedX_exceptXg_v1X_propertyXnameX(new GremlinPipeline(g.getVertex(1)).optimize(false).out("created").in("created").except(Arrays.asList(g.getVertex(1))).property("name"));
     }
 }

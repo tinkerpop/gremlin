@@ -29,11 +29,32 @@ public class GroupCountStepTest extends com.tinkerpop.gremlin.test.sideeffect.Gr
                 return (String) vertex.getProperty("name");
             }
         }), m);
+
+        m = new HashMap<String, Number>();
+        super.test_g_V_outXcreatedX_groupCountXm__nameX(new GremlinPipeline(g).optimize(false).V().out("created").groupCount(m, new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }), m);
     }
 
     public void test_g_V_outXcreatedX_groupCountXm__name__plus_2X() {
         Map<String, Number> m = new HashMap<String, Number>();
-        super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(new GremlinPipeline(g.getVertices()).out("created").groupCount(m,
+        super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(new GremlinPipeline(g).V().out("created").groupCount(m,
+                new PipeFunction<Vertex, String>() {
+                    public String compute(Vertex vertex) {
+                        return (String) vertex.getProperty("name");
+                    }
+                },
+                new PipeFunction<Pair<?, Number>, Number>() {
+                    public Number compute(Pair<?, Number> arg) {
+                        return arg.getB().longValue() + 2l;
+                    }
+                }
+        ), m);
+
+        m = new HashMap<String, Number>();
+        super.test_g_V_outXcreatedX_groupCountXm__name__plus_2X(new GremlinPipeline(g.getVertices()).optimize(false).out("created").groupCount(m,
                 new PipeFunction<Vertex, String>() {
                     public String compute(Vertex vertex) {
                         return (String) vertex.getProperty("name");
@@ -49,6 +70,12 @@ public class GroupCountStepTest extends com.tinkerpop.gremlin.test.sideeffect.Gr
 
     public void test_g_V_outXcreatedX_groupCountXnameX_cap() {
         super.test_g_V_outXcreatedX_groupCountXnameX_cap(new GremlinPipeline(g.getVertices()).out("created").groupCount(new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }).cap());
+
+        super.test_g_V_outXcreatedX_groupCountXnameX_cap(new GremlinPipeline(g).optimize(false).V().out("created").groupCount(new PipeFunction<Vertex, String>() {
             public String compute(Vertex vertex) {
                 return (String) vertex.getProperty("name");
             }

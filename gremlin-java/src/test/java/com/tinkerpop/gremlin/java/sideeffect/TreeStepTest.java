@@ -25,5 +25,11 @@ public class TreeStepTest extends com.tinkerpop.gremlin.test.sideeffect.TreeStep
                 return (String) vertex.getProperty("name");
             }
         }).cap());
+
+        super.test_g_v1_out_out_treeXnameX_cap(new GremlinPipeline(graph.getVertex(1)).optimize(false).out().out().tree(new PipeFunction<Vertex, String>() {
+            public String compute(Vertex vertex) {
+                return (String) vertex.getProperty("name");
+            }
+        }).cap());
     }
 }

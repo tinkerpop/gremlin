@@ -20,10 +20,17 @@ public class DedupStepTest extends com.tinkerpop.gremlin.test.filter.DedupStepTe
 
     public void test_g_V_both_dedup_name() {
         super.test_g_V_both_dedup_name(new GremlinPipeline(g.getVertices()).both().dedup().property("name"));
+        super.test_g_V_both_dedup_name(new GremlinPipeline(g.getVertices()).optimize(false).both().dedup().property("name"));
     }
 
     public void test_g_V_both_dedupXlangX_name() {
         super.test_g_V_both_dedupXlangX_name(new GremlinPipeline(g.getVertices()).both().dedup(new PipeFunction<Vertex, String>() {
+            public String compute(final Vertex vertex) {
+                return (String) vertex.getProperty("lang");
+            }
+        }).property("name"));
+
+        super.test_g_V_both_dedupXlangX_name(new GremlinPipeline(g).optimize(false).V().both().dedup(new PipeFunction<Vertex, String>() {
             public String compute(final Vertex vertex) {
                 return (String) vertex.getProperty("lang");
             }

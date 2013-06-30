@@ -34,6 +34,18 @@ public class GroupByStepTest extends com.tinkerpop.gremlin.test.sideeffect.Group
                     }
                 }
         ), (Map) m);
+
+        m = new HashMap<Object, List<?>>();
+        super.test_g_V_groupByXlang_nameX(new GremlinPipeline(g.getVertices()).optimize(false).groupBy(m, new PipeFunction<Vertex, String>() {
+                    public String compute(Vertex vertex) {
+                        return (String) vertex.getProperty("lang");
+                    }
+                }, new PipeFunction<Vertex, String>() {
+                    public String compute(Vertex vertex) {
+                        return (String) vertex.getProperty("name");
+                    }
+                }
+        ), (Map) m);
     }
 
 }
