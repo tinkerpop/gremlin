@@ -296,12 +296,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> bothV() {
-        if (this.doQueryOptimization) {
-            GremlinFluentUtility.optimizePipelineForVertexQuery(this, new BothVerticesPipe());
-            return (GremlinPipeline) this;
-        } else {
-            return this.add(new BothVerticesPipe());
-        }
+        return this.add(new BothVerticesPipe());
     }
 
     /**
@@ -373,12 +368,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> inV() {
-        if (this.doQueryOptimization) {
-            GremlinFluentUtility.optimizePipelineForQuery(this, new InVertexPipe());
-            return (GremlinPipeline) this;
-        } else {
-            return this.add(new InVertexPipe());
-        }
+        return this.add(new InVertexPipe());
     }
 
     /**
@@ -428,12 +418,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> outV() {
-        if (this.doQueryOptimization) {
-            GremlinFluentUtility.optimizePipelineForQuery(this, new OutVertexPipe());
-            return (GremlinPipeline) this;
-        } else {
-            return this.add(new OutVertexPipe());
-        }
+        return this.add(new OutVertexPipe());
     }
 
     /**
@@ -543,6 +528,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param whileFunction whether or not to continue looping on the current object
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction)));
     }
@@ -573,6 +559,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param emitFunction  whether or not to emit the current object (irrespective of looping)
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction) {
         return this.add(new LoopPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), FluentUtility.prepareFunction(this.asMap, whileFunction), FluentUtility.prepareFunction(this.asMap, emitFunction)));
     }
@@ -616,6 +603,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param numberedStep the number of steps previous to back up to
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinPipeline<S, ?> back(final int numberedStep) {
         return this.add(new BackFilterPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
@@ -813,6 +801,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param numberedStep the number of steps previous to optional back to
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinPipeline<S, ?> optional(final int numberedStep) {
         return this.add(new OptionalPipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
@@ -1235,6 +1224,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param numberedStep the number of the step previous to memoize to
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinPipeline<S, E> memoize(final int numberedStep) {
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep))));
     }
@@ -1261,6 +1251,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param map          the memoization map
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinPipeline<S, E> memoize(final int numberedStep, final Map map) {
         return this.add(new MemoizePipe(new Pipeline(FluentUtility.removePreviousPipes(this, numberedStep)), map));
     }

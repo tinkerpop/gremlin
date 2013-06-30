@@ -97,6 +97,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param whileFunction whether or not to continue looping on the current object
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinFluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction);
 
     /**
@@ -123,6 +124,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param emitFunction  whether or not to emit the current object (irrespective of looping)
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinFluentPipeline<S, E> loop(final int numberedStep, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> whileFunction, final PipeFunction<LoopPipe.LoopBundle<E>, Boolean> emitFunction);
 
     /**
@@ -160,6 +162,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param numberedStep the number of steps previous to back up to
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinFluentPipeline<S, ?> back(final int numberedStep);
 
     /**
@@ -397,6 +400,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param numberedStep the number of the step previous to memoize to
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinFluentPipeline<S, E> memoize(final int numberedStep);
 
     /**
@@ -419,6 +423,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param map          the memoization map
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinFluentPipeline<S, E> memoize(final int numberedStep, final Map map);
 
     /**
@@ -720,6 +725,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param numberedStep the number of steps previous to optional back to
      * @return the extended Pipeline
      */
+    @Deprecated
     public GremlinFluentPipeline<S, ?> optional(final int numberedStep);
 
     /**

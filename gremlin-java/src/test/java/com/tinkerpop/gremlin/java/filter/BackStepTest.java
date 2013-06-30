@@ -69,4 +69,15 @@ public class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest
             }
         }).back("here").property("name"));
     }
+
+    public void test_g_v1_outE_inV_hasXname_vadasX_backX2X() {
+        super.test_g_v1_outE_inV_hasXname_vadasX_backX2X(new GremlinPipeline(g.getVertex(1)).outE().inV().has("name", "vadas").back(2));
+        super.test_g_v1_outE_inV_hasXname_vadasX_backX2X(new GremlinPipeline(g.getVertex(1)).optimize(false).outE().inV().has("name", "vadas").back(2));
+    }
+
+    public void test_g_v1_outE_asXhereX_inV_hasXname_vadasX_backXhereX() {
+        super.test_g_v1_outE_asXhereX_inV_hasXname_vadasX_backXhereX(new GremlinPipeline(g.getVertex(1)).outE().as("here").inV().has("name", "vadas").back("here"));
+        super.test_g_v1_outE_asXhereX_inV_hasXname_vadasX_backXhereX(new GremlinPipeline(g.getVertex(1)).optimize(false).outE().as("here").inV().has("name", "vadas").back("here"));
+    }
+
 }

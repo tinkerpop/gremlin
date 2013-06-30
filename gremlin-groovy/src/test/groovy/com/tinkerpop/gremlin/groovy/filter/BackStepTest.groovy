@@ -38,4 +38,12 @@ class BackStepTest extends com.tinkerpop.gremlin.test.filter.BackStepTest {
     public void test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX() {
         super.test_g_v4_out_asXhereX_filterXlang_eq_javaX_backXhereX_propertyXnameX(g.v(4).out.as('here').filter { it.lang == 'java' }.back('here').name);
     }
+
+    public void test_g_v1_outE_inV_hasXname_vadasX_backX2X() {
+        super.test_g_v1_outE_inV_hasXname_vadasX_backX2X(g.v(1).outE().inV.has("name", "vadas").back(2));
+    }
+
+    public void test_g_v1_outE_asXhereX_inV_hasXname_vadasX_backXhereX() {
+        super.test_g_v1_outE_asXhereX_inV_hasXname_vadasX_backXhereX(g.v(1).outE.as("here").inV.has("name", "vadas").back("here"));
+    }
 }
