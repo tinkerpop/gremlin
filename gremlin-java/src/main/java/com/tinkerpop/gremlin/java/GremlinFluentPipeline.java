@@ -557,6 +557,16 @@ public interface GremlinFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, Edge> bothE(final String... labels);
 
     /**
+     * Add a BothEdgesPipe to the end of the Pipeline.
+     * Emit the adjacent incoming edges for the incoming vertex.
+     *
+     * @param branchFactor the number of max incident edges for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Edge> bothE(final int branchFactor, final String... labels);
+
+    /**
      * Add a BothPipe to the end of the Pipeline.
      * Emit both the incoming and outgoing adjacent vertices for the incoming vertex.
      *
@@ -564,6 +574,16 @@ public interface GremlinFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, Vertex> both(final String... labels);
+
+    /**
+     * Add a BothPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
+     *
+     * @param branchFactor the number of max adjacent vertices for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Vertex> both(final int branchFactor, final String... labels);
 
     /**
      * Add a BothVerticesPipe to the end of the Pipeline.
@@ -612,10 +632,30 @@ public interface GremlinFluentPipeline<S, E> {
      * Add a InPipe to the end of the Pipeline.
      * Emit the adjacent incoming vertices for the incoming vertex.
      *
+     * @param branchFactor the number of max incident edges for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Edge> inE(final int branchFactor, final String... labels);
+
+    /**
+     * Add a InPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
+     *
      * @param labels the edge labels to traverse
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, Vertex> in(final String... labels);
+
+    /**
+     * Add a InPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
+     *
+     * @param branchFactor the number of max adjacent vertices for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Vertex> in(final int branchFactor, final String... labels);
 
     /**
      * Add an InVertexPipe to the end of the Pipeline.
@@ -643,6 +683,16 @@ public interface GremlinFluentPipeline<S, E> {
     public GremlinFluentPipeline<S, Edge> outE(final String... labels);
 
     /**
+     * Add an OutEdgesPipe to the end of the Pipeline.
+     * Emit the outgoing edges for the incoming vertex.
+     *
+     * @param branchFactor the number of max incident edges for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Edge> outE(final int branchFactor, final String... labels);
+
+    /**
      * Add an OutPipe to the end of the Pipeline.
      * Emit the adjacent outgoing vertices of the incoming vertex.
      *
@@ -650,6 +700,16 @@ public interface GremlinFluentPipeline<S, E> {
      * @return the extended Pipeline
      */
     public GremlinFluentPipeline<S, Vertex> out(final String... labels);
+
+    /**
+     * Add an OutPipe to the end of the Pipeline.
+     * Emit the adjacent outgoing vertices of the incoming vertex.
+     *
+     * @param branchFactor the number of max adjacent vertices for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinFluentPipeline<S, Vertex> out(final int branchFactor, final String... labels);
 
     /**
      * Add an OutVertexPipe to the end of the Pipeline.

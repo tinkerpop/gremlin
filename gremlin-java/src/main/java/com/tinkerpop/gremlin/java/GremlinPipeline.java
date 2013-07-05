@@ -270,11 +270,24 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Edge> bothE(final String... labels) {
-        if (this.doQueryOptimization)
-            return this.add(new VertexQueryPipe(Edge.class, Direction.BOTH, null, null, 0, Integer.MAX_VALUE, labels));
-        else
-            return this.add(new BothEdgesPipe(labels));
+        return this.bothE(Integer.MAX_VALUE, labels);
     }
+
+    /**
+     * Add a BothEdgesPipe to the end of the Pipeline.
+     * Emit both incoming and outgoing edges for the incoming vertex.
+     *
+     * @param branchFactor the number of max incident edges for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Edge> bothE(final int branchFactor, final String... labels) {
+        if (this.doQueryOptimization)
+            return this.add(new VertexQueryPipe(Edge.class, Direction.BOTH, null, null, branchFactor, 0, Integer.MAX_VALUE, labels));
+        else
+            return this.add(new BothEdgesPipe(branchFactor, labels));
+    }
+
 
     /**
      * Add a BothPipe to the end of the Pipeline.
@@ -284,9 +297,21 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> both(final String... labels) {
+        return this.both(Integer.MAX_VALUE, labels);
+    }
+
+    /**
+     * Add a BothPipe to the end of the Pipeline.
+     * Emit both the incoming and outgoing adjacent vertices for the incoming vertex.
+     *
+     * @param branchFactor the number of max adjacent vertices for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> both(final int branchFactor, final String... labels) {
         if (this.doQueryOptimization)
-            return this.add(new VertexQueryPipe(Vertex.class, Direction.BOTH, null, null, 0, Integer.MAX_VALUE, labels));
-        else return this.add(new BothPipe(labels));
+            return this.add(new VertexQueryPipe(Vertex.class, Direction.BOTH, null, null, branchFactor, 0, Integer.MAX_VALUE, labels));
+        else return this.add(new BothPipe(branchFactor, labels));
     }
 
     /**
@@ -339,10 +364,22 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Edge> inE(final String... labels) {
+        return this.inE(Integer.MAX_VALUE, labels);
+    }
+
+    /**
+     * Add an InEdgesPipe to the end of the Pipeline.
+     * Emit the incoming edges for the incoming vertex.
+     *
+     * @param branchFactor the number of max incident edges for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Edge> inE(final int branchFactor, final String... labels) {
         if (this.doQueryOptimization) {
-            return this.add(new VertexQueryPipe(Edge.class, Direction.IN, null, null, 0, Integer.MAX_VALUE, labels));
+            return this.add(new VertexQueryPipe(Edge.class, Direction.IN, null, null, branchFactor, 0, Integer.MAX_VALUE, labels));
         } else {
-            return this.add(new InEdgesPipe(labels));
+            return this.add(new InEdgesPipe(branchFactor, labels));
         }
     }
 
@@ -354,10 +391,22 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> in(final String... labels) {
+        return this.in(Integer.MAX_VALUE, labels);
+    }
+
+    /**
+     * Add a InPipe to the end of the Pipeline.
+     * Emit the adjacent incoming vertices for the incoming vertex.
+     *
+     * @param branchFactor the number of max adjacent vertices for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> in(final int branchFactor, final String... labels) {
         if (this.doQueryOptimization) {
-            return this.add(new VertexQueryPipe(Vertex.class, Direction.IN, null, null, 0, Integer.MAX_VALUE, labels));
+            return this.add(new VertexQueryPipe(Vertex.class, Direction.IN, null, null, branchFactor, 0, Integer.MAX_VALUE, labels));
         } else {
-            return this.add(new InPipe(labels));
+            return this.add(new InPipe(branchFactor, labels));
         }
     }
 
@@ -389,10 +438,38 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Edge> outE(final String... labels) {
+        return this.outE(Integer.MAX_VALUE, labels);
+    }
+
+    /**
+     * Add an OutEdgesPipe to the end of the Pipeline.
+     * Emit the outgoing edges for the incoming vertex.
+     *
+     * @param branchFactor the number of max incident edges for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Edge> outE(final int branchFactor, final String... labels) {
         if (this.doQueryOptimization) {
-            return this.add(new VertexQueryPipe(Edge.class, Direction.OUT, null, null, 0, Integer.MAX_VALUE, labels));
+            return this.add(new VertexQueryPipe(Edge.class, Direction.OUT, null, null, branchFactor, 0, Integer.MAX_VALUE, labels));
         } else {
-            return this.add(new OutEdgesPipe(labels));
+            return this.add(new OutEdgesPipe(branchFactor, labels));
+        }
+    }
+
+    /**
+     * Add an OutPipe to the end of the Pipeline.
+     * Emit the adjacent outgoing vertices of the incoming vertex.
+     *
+     * @param branchFactor the number of max adjacent vertices for each incoming vertex
+     * @param labels       the edge labels to traverse
+     * @return the extended Pipeline
+     */
+    public GremlinPipeline<S, Vertex> out(final int branchFactor, final String... labels) {
+        if (this.doQueryOptimization) {
+            return this.add(new VertexQueryPipe(Vertex.class, Direction.OUT, null, null, branchFactor, 0, Integer.MAX_VALUE, labels));
+        } else {
+            return this.add(new OutPipe(branchFactor, labels));
         }
     }
 
@@ -404,11 +481,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @return the extended Pipeline
      */
     public GremlinPipeline<S, Vertex> out(final String... labels) {
-        if (this.doQueryOptimization) {
-            return this.add(new VertexQueryPipe(Vertex.class, Direction.OUT, null, null, 0, Integer.MAX_VALUE, labels));
-        } else {
-            return this.add(new OutPipe(labels));
-        }
+        return this.out(Integer.MAX_VALUE, labels);
     }
 
     /**

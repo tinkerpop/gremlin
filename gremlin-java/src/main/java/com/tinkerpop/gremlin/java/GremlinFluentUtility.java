@@ -12,6 +12,7 @@ import com.tinkerpop.pipes.transform.GraphQueryPipe;
 import com.tinkerpop.pipes.transform.QueryPipe;
 import com.tinkerpop.pipes.transform.VertexQueryPipe;
 import com.tinkerpop.pipes.transform.VerticesEdgesPipe;
+import com.tinkerpop.pipes.transform.VerticesVerticesPipe;
 import com.tinkerpop.pipes.util.FluentUtility;
 
 /**
@@ -42,12 +43,19 @@ public class GremlinFluentUtility extends FluentUtility {
                 if (queryPipe.getResultElementClass().equals(Vertex.class))
                     return false;
                 queryPipe.setResultingElementClass(Vertex.class);
+            } else if (pipe instanceof VerticesVerticesPipe) {
+                if (queryPipe.getResultElementClass().equals(Vertex.class))
+                    return false;
+                queryPipe.setDirection(((VerticesVerticesPipe) pipe).getDirection());
+                queryPipe.setLabels(((VerticesVerticesPipe) pipe).getLabels());
+                queryPipe.setBranchFactor(((VerticesVerticesPipe) pipe).getBranchFactor());
             } else if (pipe instanceof VerticesEdgesPipe) {
                 if (queryPipe.getResultElementClass().equals(Vertex.class))
                     return false;
                 queryPipe.setResultingElementClass(Edge.class);
                 queryPipe.setDirection(((VerticesEdgesPipe) pipe).getDirection());
                 queryPipe.setLabels(((VerticesEdgesPipe) pipe).getLabels());
+                queryPipe.setBranchFactor(((VerticesEdgesPipe) pipe).getBranchFactor());
             } else if (pipe instanceof PropertyFilterPipe) {
                 if (queryPipe.getResultElementClass().equals(Vertex.class))
                     return false;

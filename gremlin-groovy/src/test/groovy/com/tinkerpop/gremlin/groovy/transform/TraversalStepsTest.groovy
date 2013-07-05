@@ -1,5 +1,4 @@
-package com.tinkerpop.gremlin.groovy.transform;
-
+package com.tinkerpop.gremlin.groovy.transform
 
 import com.tinkerpop.blueprints.Graph
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory
@@ -86,6 +85,10 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
 
     public void test_g_v1_out_propertyXnameX() {
         super.test_g_v1_out_propertyXnameX(g.v(1).out.name);
+    }
+
+    public void test_g_v1_outX1_knowsX_name() {
+        super.test_g_v1_outX1_knowsX_name(g.v(1).out(1, "knows").property("name"));
     }
 
 

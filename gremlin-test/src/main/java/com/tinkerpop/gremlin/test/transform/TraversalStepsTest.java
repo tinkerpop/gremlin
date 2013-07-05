@@ -191,4 +191,10 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(names.size(), 3);
     }
 
+
+    public void test_g_v1_outX1_knowsX_name(final Iterator<String> pipe) {
+        final String name = pipe.next();
+        assertTrue(name.equals("vadas") || name.equals("josh"));
+        assertFalse(pipe.hasNext());
+    }
 }

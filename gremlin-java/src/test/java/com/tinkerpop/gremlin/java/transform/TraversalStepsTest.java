@@ -107,4 +107,8 @@ public class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.Tra
         super.test_g_v1_out_propertyXnameX(new GremlinPipeline(g.getVertex(1)).optimize(false).out().property("name"));
     }
 
+    public void test_g_v1_outX1_knowsX_name() {
+        super.test_g_v1_outX1_knowsX_name(new GremlinPipeline(g.getVertex(1)).out(1, "knows").property("name"));
+        super.test_g_v1_outX1_knowsX_name(new GremlinPipeline(g.getVertex(1)).optimize(false).out(1, "knows").property("name"));
+    }
 }

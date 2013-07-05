@@ -58,5 +58,4 @@ public class TransformStepTest extends TestCase {
         assertEquals(peter, 1);
         assertEquals(other, 0);
     }
-
 }

@@ -37,6 +37,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 * Updated test cases to use @Iterator@ and thus, made typing more general for more stringent Gremlin implementations
 * Updated test cases to support the testing of both optimized and non-optimized @GremlinPipelines@
 * Deprecated all numbered steps in favor of @as@-based steps
+* Added branch factor support for @out@, @outE@, @in@, @inE@, @both@, and @bothE@
 
 ==<hr/>==
 
