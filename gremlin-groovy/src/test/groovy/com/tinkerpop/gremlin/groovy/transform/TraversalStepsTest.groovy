@@ -35,6 +35,10 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
         super.test_g_v4_both(g.v(4).both);
     }
 
+    public void test_g_v1_outX1_knowsX_name() {
+        super.test_g_v1_outX1_knowsX_name(g.v(1).out(1, "knows").property("name"));
+    }
+
     public void test_g_E() {
         super.test_g_E(g.E);
     }
@@ -49,6 +53,10 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
 
     public void test_g_v4_bothE() {
         super.test_g_v4_bothE(g.v(4).bothE);
+    }
+
+    public void test_g_v4_bothEX1_createdX() {
+        super.test_g_v4_bothEX1_createdX(g.v(4).bothE(1, "created"));
     }
 
     public void test_g_v1_outE_inV() {
@@ -86,10 +94,4 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
     public void test_g_v1_out_propertyXnameX() {
         super.test_g_v1_out_propertyXnameX(g.v(1).out.name);
     }
-
-    public void test_g_v1_outX1_knowsX_name() {
-        super.test_g_v1_outX1_knowsX_name(g.v(1).out(1, "knows").property("name"));
-    }
-
-
 }
