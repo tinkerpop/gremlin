@@ -39,6 +39,10 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
         super.test_g_v1_outX1_knowsX_name(g.v(1).out(1, "knows").property("name"));
     }
 
+    public void test_g_V_bothX1_createdX_name() {
+        super.test_g_V_bothX1_createdX_name(g.V.both(1, "created").name);
+    }
+
     public void test_g_E() {
         super.test_g_E(g.E);
     }
@@ -57,6 +61,10 @@ class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.TraversalS
 
     public void test_g_v4_bothEX1_createdX() {
         super.test_g_v4_bothEX1_createdX(g.v(4).bothE(1, "created"));
+    }
+
+    public void test_g_V_inEX2_knowsX_outV_name() {
+        super.test_g_V_inEX2_knowsX_outV_name(g.V.inE(2, 'knows').outV.name);
     }
 
     public void test_g_v1_outE_inV() {

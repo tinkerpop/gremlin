@@ -257,7 +257,7 @@ public class GremlinPipeline<S, E> extends Pipeline<S, E> implements GremlinFlue
      * @param endValue   the end of the interval (exclusive)
      * @return the extended Pipeline
      */
-    public GremlinPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue) {
+    public GremlinPipeline<S, ? extends Element> interval(final String key, final Comparable startValue, final Comparable endValue) {
         final Pipe pipe = new IntervalFilterPipe<Element>(key, startValue, endValue);
         return this.doQueryOptimization ? GremlinFluentUtility.optimizePipelineForQuery(this, pipe) : this.add(pipe);
     }

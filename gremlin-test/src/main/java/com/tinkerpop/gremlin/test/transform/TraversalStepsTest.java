@@ -76,6 +76,16 @@ public class TraversalStepsTest extends TestCase {
         assertFalse(pipe.hasNext());
     }
 
+    public void test_g_V_bothX1_createdX_name(final Iterator<String> pipe) {
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            final String name = pipe.next();
+            assertTrue(name.equals("marko") || name.equals("lop") || name.equals("josh") || name.equals("ripple") || name.equals("peter"));
+        }
+        assertEquals(counter, 5);
+    }
+
     // EDGE ADJACENCY
 
     public void test_g_E(final Iterator<Edge> pipe) {
@@ -129,6 +139,16 @@ public class TraversalStepsTest extends TestCase {
         assertEquals(edge.getLabel(), "created");
         assertTrue(edge.getProperty("weight").equals(1.0f) || edge.getProperty("weight").equals(0.4f));
         assertFalse(pipe.hasNext());
+    }
+
+    public void test_g_V_inEX2_knowsX_outV_name(final Iterator<String> pipe) {
+        int counter = 0;
+        while (pipe.hasNext()) {
+            counter++;
+            assertEquals(pipe.next(), "marko");
+        }
+        assertFalse(pipe.hasNext());
+        assertEquals(counter, 2);
     }
 
     // EDGE/VERTEX ADJACENCY

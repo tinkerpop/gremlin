@@ -346,7 +346,7 @@ public interface GremlinFluentPipeline<S, E> {
      * @param endValue   the end of the interval (exclusive)
      * @return the extended Pipeline
      */
-    public GremlinFluentPipeline<S, ? extends Element> interval(final String key, final Object startValue, final Object endValue);
+    public GremlinFluentPipeline<S, ? extends Element> interval(final String key, final Comparable startValue, final Comparable endValue);
 
     ///////////////////////
     /// TRANSFORM PIPES ///
