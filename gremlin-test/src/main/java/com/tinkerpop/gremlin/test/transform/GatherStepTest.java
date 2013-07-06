@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.test.transform;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.Iterator;

@@ -1,8 +1,5 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
-import com.tinkerpop.blueprints.Direction;
-import com.tinkerpop.blueprints.TransactionalGraph;
-import com.tinkerpop.gremlin.Imports;
 import com.tinkerpop.gremlin.groovy.Gremlin;
 import groovy.lang.Binding;
 import groovy.lang.Closure;
@@ -15,7 +12,6 @@ import groovy.lang.Script;
 import groovy.lang.Tuple;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.jsr223.GroovyCompiledScript;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineImpl;
 import org.codehaus.groovy.runtime.InvokerHelper;

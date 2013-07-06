@@ -2,7 +2,6 @@ package com.tinkerpop.gremlin.test.sideeffect;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class LinkStepTest extends TestCase {
     public void test_g_v1_asXaX_outXcreatedX_inXcreatedX_linkBothXcocreator_aX(final Iterator<Vertex> pipe) {
         List<Vertex> cocreators = new ArrayList<Vertex>();
         List<Object> ids = new ArrayList<Object>();
-        while(pipe.hasNext()) {
+        while (pipe.hasNext()) {
             Vertex vertex = pipe.next();
             cocreators.add(vertex);
             ids.add(vertex.getId());

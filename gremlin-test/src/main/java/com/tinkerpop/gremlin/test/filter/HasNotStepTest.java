@@ -1,13 +1,9 @@
 package com.tinkerpop.gremlin.test.filter;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.util.PipeHelper;
 import junit.framework.TestCase;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author Marko A. Rodriguez (http://markorodriguez.com)

@@ -1,7 +1,6 @@
 package com.tinkerpop.gremlin.test.sideeffect;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.structures.Table;
 import junit.framework.TestCase;
 

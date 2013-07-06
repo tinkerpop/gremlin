@@ -1,9 +1,7 @@
 package com.tinkerpop.gremlin.test.filter;
 
 import com.tinkerpop.blueprints.Edge;
-import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.PipeHelper;
 import junit.framework.TestCase;
 

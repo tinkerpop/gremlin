@@ -44,8 +44,8 @@ public class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.Tra
     }
 
     public void test_g_V_bothX1_createdX_name() {
-        super.test_g_V_bothX1_createdX_name(new GremlinPipeline(g).V().both(1,"created").property("name"));
-        super.test_g_V_bothX1_createdX_name(new GremlinPipeline(g).optimize(false).V().both(1,"created").property("name"));
+        super.test_g_V_bothX1_createdX_name(new GremlinPipeline(g).V().both(1, "created").property("name"));
+        super.test_g_V_bothX1_createdX_name(new GremlinPipeline(g).optimize(false).V().both(1, "created").property("name"));
     }
 
     public void test_g_E() {
@@ -76,8 +76,8 @@ public class TraversalStepsTest extends com.tinkerpop.gremlin.test.transform.Tra
     }
 
     public void test_g_V_inEX2_knowsX_outV_name() {
-        super.test_g_V_inEX2_knowsX_outV_name(new GremlinPipeline(g).V().inE(2,"knows").outV().property("name"));
-        super.test_g_V_inEX2_knowsX_outV_name(new GremlinPipeline(g).optimize(false).V().inE(2,"knows").outV().property("name"));
+        super.test_g_V_inEX2_knowsX_outV_name(new GremlinPipeline(g).V().inE(2, "knows").outV().property("name"));
+        super.test_g_V_inEX2_knowsX_outV_name(new GremlinPipeline(g).optimize(false).V().inE(2, "knows").outV().property("name"));
     }
 
     public void test_g_v1_outE_inV() {

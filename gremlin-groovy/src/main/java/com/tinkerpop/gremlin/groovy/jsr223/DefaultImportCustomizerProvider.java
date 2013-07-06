@@ -8,7 +8,7 @@ import java.util.Set;
  *
  * @author Stephen Mallette (http://stephen.genoprime.com)
  */
-public class DefaultImportCustomizerProvider  extends AbstractImportCustomizerProvider {
+public class DefaultImportCustomizerProvider extends AbstractImportCustomizerProvider {
     private static Set<String> staticExtraImports = new HashSet<String>();
     private static Set<String> staticExtraStaticImports = new HashSet<String>();
 
@@ -31,7 +31,7 @@ public class DefaultImportCustomizerProvider  extends AbstractImportCustomizerPr
 
     /**
      * Allows imports to defined globally and statically.
-     *
+     * <p/>
      * This method must be called prior to initialization of a ScriptEngine instance through the ScriptEngineFactory.
      */
     public static void initializeStatically(final Set<String> extraImports, final Set<String> extraStaticImports) {
