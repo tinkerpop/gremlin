@@ -24,5 +24,15 @@ class SailGraphLoader {
                 ((SailGraph) delegate).loadRDF(new FileInputStream(fileObject), "", format, null);
             }
         }
+
+        SailGraph.metaClass.saveRDF = { final def fileObject, final String format ->
+            if (fileObject instanceof String) {
+                ((SailGraph) delegate).saveRDF(new FileOutputStream(new File(fileObject)), format);
+            } else if (fileObject instanceof File) {
+                ((SailGraph) delegate).saveRDF(new FileOutputStream(fileObject), format);
+            } else if (fileObject instanceof OutputStream) {
+                ((SailGraph) delegate).saveRDF(fileObject, format);
+            }
+        }
     }
 }

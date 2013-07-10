@@ -21,6 +21,7 @@ h3. Version 2.4.0 (NOT OFFICIALLY RELEASE YET)
 </dependency>
 ```
 
+* Added loader support for @SailGraph.saveRDF@
 * Added @GremlinPipeline.cast@ to allow pipeline end type to be reset
 * Added @GraphQueryPipe@ and support for Graph index query optimization via pipeline rewriting
 * Added support for @has(key,predicate,value)@ as dictated by new Blueprints @Query@ API changes
