@@ -1,0 +1,11 @@
+com.tinkerpop.gremlin
+com.tinkerpop.gremlin.groovy
+com.tinkerpop.gremlin.groovy.console
+com.tinkerpop.gremlin.groovy.jsr223
+com.tinkerpop.gremlin.groovy.loaders
+com.tinkerpop.gremlin.java
+com.tinkerpop.gremlin.test
+com.tinkerpop.gremlin.test.branch
+com.tinkerpop.gremlin.test.filter
+com.tinkerpop.gremlin.test.sideeffect
+com.tinkerpop.gremlin.test.transform

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Using Gremlin through Groovy</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Using Gremlin through Groovy</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Using-Gremlin-through-Groovy"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Using-Gremlin-through-Groovy"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="http://groovy.codehaus.org/download/attachments/1866/groovydukemed.jpg" alt="" /></p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.tinkerpop.gremlin&lt;/groupId&gt;
+  &lt;artifactId&gt;gremlin-groovy&lt;/artifactId&gt;
+  &lt;version&gt;??&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p>Gremlin Groovy works by using the <a href="http://en.wikipedia.org/wiki/Metaprogramming">metaprogramming</a> facilities provided by <a href="http://groovy.codehaus.org/">Groovy</a>. Groovy is used to compile Gremlin syntax down to raw Java <a href="../../pipes/2.4.0/Home.html">Pipes</a>.</p>
+<h2>Groovy Classes with Gremlin</h2>
+<p>If you are using Groovy classes, its trivial to access Gremlin. In this way, your Java code and your Gremlin/Groovy code seamless interact through standard class mechanisms (i.e. method invocations). There is a Groovy class called <code>Gremlin.groovy</code>. To use Gremlin while in Groovy, simply invoke <code>Gremlin.load()</code>.</p>
+<pre><code>class SimpleExample { 
+  static {
+    Gremlin.load()
+  }
+  public List exampleMethod() {
+    Graph g = TinkerGraphFactory.createTinkerGraph()
+    def results = []
+    g.v(1).out('knows').fill(results)
+    return results
+  }
+}</code></pre>
+<h2>Java Classes talking to Groovy Classes with Gremlin</h2>
+<p>Here is a typical used pattern when mixing Gremlin/Groovy and Java classes. In this example, the Java class calls the methods of the Groovy class as if it were a Java class. This is one of the benefits of Groovy&#x2014;it works seamlessly within a larger Java project while providing useful language features and, of course, Gremlin.</p>
+<pre><code>// a Groovy class
+class GraphAlgorithms {
+  static { 
+    Gremlin.load() 
+  }
+  
+  public static Map&lt;Vertex, Integer&gt; eigenvectorRank(Graph g) {  
+    Map&lt;Vertex,Integer&gt; m = [:]; int c = 0
+    g.V.as('x').out.groupCount(m).loop('x') {c++ &lt; 1000}.iterate()
+    return m
+  }
+}
+
+// a Java class
+public class GraphFramework {
+  public static void main(String[] args) {
+    System.out.println(GraphAlgorithms.eigenvectorRank(new Neo4jGraph("/tmp/graphdata")));
+  }
+}</code></pre>
+<p>Finally, if you build with <a href="http://maven.apache.org/">Maven2</a>, here are some useful snippets that you can add to your <code>pom.xml</code></p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.codehaus.groovy&lt;/groupId&gt;
+  &lt;artifactId&gt;groovy&lt;/artifactId&gt;
+  &lt;version&gt;??&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- PROJECT BUILDING WITH GROOVY/JAVA --&gt;
+&lt;dependency&gt;
+   &lt;groupId&gt;org.codehaus.groovy.maven&lt;/groupId&gt;
+   &lt;artifactId&gt;gmaven-plugin&lt;/artifactId&gt;
+   &lt;version&gt;1.3&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;plugin&gt;
+  &lt;groupId&gt;org.codehaus.groovy.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;gmaven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;1.3&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;generateStubs&lt;/goal&gt;
+        &lt;goal&gt;compile&lt;/goal&gt;
+        &lt;goal&gt;generateTestStubs&lt;/goal&gt;
+        &lt;goal&gt;testCompile&lt;/goal&gt;
+       &lt;/goals&gt;
+       &lt;configuration&gt;
+         &lt;providerSelection&gt;1.7&lt;/providerSelection&gt;
+       &lt;/configuration&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;</code></pre>
+<h2>Gremlin and Groovy Shell</h2>
+<p>Gremlin shell (<code>gremlin.sh</code>) is basically the <a href="http://groovy.codehaus.org/Groovy+Shell">Groovy shell</a> wrapped to have the Gremlin look and feel and some other small tweaks. For example, do <code>\h</code> at the <code>gremlin&gt;</code> prompt to get the Groovy shell help.</p>
+<p>To get the version of Gremlin <code>gremlin.sh</code> do:</p>
+<pre><code>gremlin.sh -v
+gremlin x.y.z-SNAPSHOT</code></pre>
+<p>To initialize Gremlin with a script that executes at startup do:</p>
+<pre><code>gremlin.sh init.groovy</code></pre>
+<p>Starting Gremlin with a script is useful for initializing the environment with <a class="internal present" href="User-Defined-Steps.html">User Defined Steps</a> or other settings.</p>
+<p>To simply execute a script without starting the console do:</p>
+<pre><code>gremlin.sh -e do-some-work.groovy</code></pre>
+<h3>Use of External Jars</h3>
+<p>External <code>jar</code> files can be used within Gremlin in one of two ways:</p>
+<ol><li>Manually copy the <code>jar</code> files to the Gremlin path (i.e. the <code>GREMLIN_HOME/lib</code> directory.</li>
+	<li>Use <a href="http://groovy.codehaus.org/Grape">Grape</a> from the Gremlin prompt.</li>
+</ol><p>Using Grape is helpful in that it helps handle versions and dependencies of the library being used automatically.  To use Grape, consider the following example utilizing <a href="https://github.com/poiati/gmongo">gmongo</a>:</p>
+<pre><code>gremlin&gt; Grape.grab(group:'com.gmongo',module:'gmongo',version:'1.2')
+==&gt;null</code></pre>
+<p>In either approach (manual <code>jar</code> copy or Grape), classes to be used must first be imported prior to use:</p>
+<pre><code>gremlin&gt; import com.gmongo.GMongo
+==&gt;import com.tinkerpop.gremlin.*
+==&gt;import com.tinkerpop.gremlin.java.*
+==&gt;import com.tinkerpop.gremlin.pipes.filter.*
+...
+==&gt;import com.gmongo.GMongo
+gremlin&gt; mongo = new GMongo()
+==&gt;com.gmongo.GMongo@3717ee94</code></pre>
+<h3>Use from Groovy Shell</h3>
+<p>Its recommended that you use <code>gremlin.sh</code> for terminal work, however, this subsection is provided for those that use Groovy shell exclusively.</p>
+<pre><code>marko:~$ groovysh 
+Groovy Shell (1.7.2, JVM: 1.6.0_22)
+Type 'help' or '\h' for help.
+-------------------------------------------------------------------------------
+groovy:000&gt; com.tinkerpop.gremlin.groovy.Gremlin.load()</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:16:49</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Using JUNG</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Using JUNG</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Using-JUNG"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Using-JUNG"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <blockquote>
+<p><a href="http://jung.sourceforge.net/"><span class="caps">JUNG</span></a> is a software library that provides a common and extendible language for the modeling, analysis, and visualization of data that can be represented as a graph or network. It is written in Java, which allows <span class="caps">JUNG</span>-based applications to make use of the extensive built-in capabilities of the Java <span class="caps">API</span>, as well as those of other existing third-party Java libraries.</p>
+</blockquote>
+<p>Its possible to make use of JUNG&#x2019;s visualization and algorithm packages in Gremlin by means of <code>GraphJung</code>. <code>GraphJung</code> is a <a href="../../blueprints/2.4.0/Home.html">Blueprints</a> class that takes any Blueprints <code>Graph</code> and exposes it as <span class="caps">JUNG</span> graph.</p>
+<h2>Gremlin and <span class="caps">JUNG</span> Algorithms</h2>
+<p>Before using <span class="caps">JUNG</span> algorithms its important to <code>import</code> the respective package you want to use from the <a href="http://jung.sourceforge.net/doc/api/index.html"><span class="caps">JUNG</span> <span class="caps">API</span></a>.</p>
+<pre><code>gremlin&gt; import edu.uci.ics.jung.algorithms.scoring.PageRank     
+==&gt;import com.tinkerpop.gremlin.*
+==&gt;import com.tinkerpop.gremlin.java.*
+==&gt;import com.tinkerpop.gremlin.pipes.*
+...
+==&gt;import edu.uci.ics.jung.algorithms.scoring.PageRank</code></pre>
+<p>Once the respective package has been imported (e.g. PageRank) its necessary to wrap the desired Blueprints graph into a <code>GraphJung</code> and create and instance of the algorithm. For the examples in this section, the graph diagrammed in <a class="internal present" href="Defining-a-Property-Graph.html">Defining a Property Graph</a> is used (i.e. <code>TinkerGraphFactory.createTinkerGraph()</code>).</p>
+<pre><code>gremlin&gt; g = new GraphJung(TinkerGraphFactory.createTinkerGraph());
+==&gt;graphjung[tinkergraph[vertices:6 edges:6]]
+gremlin&gt; pr = new PageRank&lt;Vertex,Edge&gt;(g, 0.15d)            
+==&gt;edu.uci.ics.jung.algorithms.scoring.PageRank@34b6a6d6</code></pre>
+<p>Now its possible to evaluate the algorithm.</p>
+<pre><code>gremlin&gt; pr.evaluate()
+==&gt;null
+gremlin&gt; g.getVertices().collect{ [it, pr.getVertexScore(it)] }                       
+==&gt;[v[3], 0.30472082661863664]
+==&gt;[v[2], 0.14598540145985392]
+==&gt;[v[1], 0.11375485828040566]
+==&gt;[v[6], 0.11375485828040566]
+==&gt;[v[5], 0.1757986539008436]
+==&gt;[v[4], 0.14598540145985392]</code></pre>
+<p>Note that all edges are treated equally. That is, with <span class="caps">JUNG</span>, you can not discriminate the calculation to traverse particular paths. For those familiar with PageRank, you can&#x2019;t arbitrarily bias the random walker (see <a href="http://arxiv.org/abs/0803.4355">Grammar-Based Random Walkers in Semantics Networks</a>). The best that we can achieve with <span class="caps">JUNG</span> is to bias it with edge weights and filtered edge labels. In the example below, an <code>EdgeLabelTransformer</code> (from Blueprints) is used to only allow the traverser to follow <code>knows</code> edges in the graph. As such, besides the background alpha-probability, only vertices <code>2</code> and <code>4</code> get rank as they are the head of <code>knows</code> edges.</p>
+<pre><code>gremlin&gt; t = new EdgeLabelTransformer(['knows'] as Set, false)
+==&gt;com.tinkerpop.blueprints.pgm.oupls.jung.util.EdgeLabelTransformer@301abf87
+gremlin&gt; pr = new PageRank&lt;Vertex,Edge&gt;(g, t, 0.15d)
+==&gt;edu.uci.ics.jung.algorithms.scoring.PageRank@da3b359
+gremlin&gt; pr.evaluate()
+==&gt;null
+gremlin&gt; g.getVertices().collect{ [it, pr.getVertexScore(it)] }      
+==&gt;[v[3], 0.05499541704857928]
+==&gt;[v[2], 0.10174152153987166]
+==&gt;[v[1], 0.05499541704857928]
+==&gt;[v[6], 0.05499541704857928]
+==&gt;[v[5], 0.05499541704857928]
+==&gt;[v[4], 0.10174152153987166]</code></pre>
+<h2>Gremlin and <span class="caps">JUNG</span> Visualization</h2>
+<p><span class="caps">JUNG</span> has a rich set of classes for creating <a href="http://en.wikipedia.org/wiki/Swing_(Java)">Swing</a> based visualizations. You can make use of these classes from within Gremlin. For example, to render the visualization below, use the code that follows.</p>
+<p><img src="https://github.com/tinkerpop/blueprints/raw/master/doc/images/jung-visualization.png" alt="" /></p>
+<pre><code>import java.awt.*
+import javax.swing.*
+import org.apache.commons.collections15.Transformer
+import edu.uci.ics.jung.algorithms.layout.CircleLayout
+import edu.uci.ics.jung.visualization.BasicVisualizationServer
+
+g = new GraphJung(TinkerGraphFactory.createTinkerGraph());
+layout = new CircleLayout&lt;Vertex, Edge&gt;(g);
+layout.setSize(new Dimension(300, 300));
+viz = new BasicVisualizationServer&lt;Vertex, Edge&gt;(layout);
+viz.setPreferredSize(new Dimension(350, 350));
+
+vertexLabelTransformer = new Transformer&lt;Vertex, String&gt;() {
+  public String transform(Vertex vertex) {
+    return (String) vertex.getProperty("name");
+  }
+};
+
+edgeLabelTransformer = new Transformer&lt;Edge, String&gt;() {
+  public String transform(Edge edge) {
+    return edge.getLabel();
+  }
+};
+
+viz.getRenderContext().setEdgeLabelTransformer(edgeLabelTransformer);
+viz.getRenderContext().setVertexLabelTransformer(vertexLabelTransformer);
+
+frame = new JFrame("TinkerPop");
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+frame.getContentPane().add(viz);
+frame.pack();
+frame.setVisible(true);</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:16:49</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Flow Rank Pattern</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Flow Rank Pattern</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Flow-Rank-Pattern"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Flow-Rank-Pattern"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="images/gremlin-kilt.png" /></p>
+<p>Many times its important to determine how many times a particular element is traversed over. That is, determine the flow through an element. Particular examples include:</p>
+<ul><li>&#x201C;Rank my friends friends by how many friends we share in common.&#x201D;</li>
+	<li>&#x201C;Rank items by how many people, who like the same things I like, like them.&#x201D;</li>
+</ul><pre><code>gremlin&gt; software = []
+gremlin&gt; g.V('lang','java').fill(software)
+==&gt;v[3]
+==&gt;v[5]
+gremlin&gt; software                                  
+==&gt;v[3]
+==&gt;v[5]</code></pre>
+<p>Vertices <code>v[3]</code> and <code>v[5]</code> are software projects. Lets determine who is on the most software projects. In other words, lets traverse out of these vertices and see which developer vertices get the most flow.</p>
+<pre><code>gremlin&gt; software._().in('created').name.groupCount.cap  
+==&gt;{marko=1, peter=1, josh=2}</code></pre>
+<p>Josh received the most traversals through him. The <code>groupCount</code> step maintains an internal <code>Map&lt;Object,Number&gt;</code>. The <code>cap</code> step is used to &#x201C;cap&#x201D; <code>groupCount</code> and have it emit its internal map, not the elements that flow through it. The following example better explains &#x201C;capping&#x201D; by demonstrating what happens when its not used.</p>
+<pre><code>gremlin&gt; m = [:]
+gremlin&gt; software._().in('created').name.groupCount(m)
+==&gt;marko
+==&gt;josh
+==&gt;peter
+==&gt;josh
+gremlin&gt; m
+==&gt;marko=1
+==&gt;josh=2
+==&gt;peter=1</code></pre>
+<p><img src="images/grateful-dead-concert2.jpg" /></p>
+<p>Here is a more complicated example using the <code>loop</code> step and the Grateful Dead graph diagrammed in <a class="internal present" href="Defining-a-More-Complex-Property-Graph.html">Defining a More Complex Property Graph</a>.</p>
+<pre><code>g = new TinkerGraph()
+g.loadGraphML('data/graph-example-2.xml')</code></pre>
+<p>The example below will continue to loop until a counter reaches 1000 (so the loop doesn&#x2019;t continue indefinitely). The loop will walk the outgoing edges of a vertex and update the flow map <code>m</code>. What is returned is how many times each song is traversed when starting from vertex <code>12</code> (Me and My Uncle). Finally, <code>iterate()</code> is appended so no results are outputted to the terminal.</p>
+<pre><code>gremlin&gt; c = 0                                                                
+==&gt;0
+gremlin&gt; m = [:]                                                              
+gremlin&gt; g.v(12).as('x').out.groupCount(m){it.name}.loop('x'){c++ &lt; 1000}.iterate()
+gremlin&gt; m
+==&gt;CHINA CAT SUNFLOWER=518
+==&gt;RAMBLE ON ROSE=527
+==&gt;WHARF RAT=213
+==&gt;HES GONE=439
+==&gt;HURTS ME TOO=112
+==&gt;SHIP OF FOOLS=345
+==&gt;FRIEND OF THE DEVIL=378
+==&gt;IT MUST HAVE BEEN THE ROSES=371
+==&gt;JACK STRAW=540
+==&gt;MEXICALI BLUES=369
+==&gt;CANDYMAN=345
+==&gt;LOOKS LIKE RAIN=471
+==&gt;DIRE WOLF=341
+==&gt;HELP ON THE WAY=245
+...
+gremlin&gt; println g.v(12).as('x').out.groupCount(m){it.name}.loop('x'){c++ &lt; 1000}
+[StartPipe, LoopPipe([OutPipe, GroupCountFunctionPipe])]
+==&gt;null</code></pre>
+<p>Finally, you can sort your rankings and, for example, get the top 5 results.</p>
+<pre><code>gremlin&gt; m.sort{a,b -&gt; b.value &lt;=&gt; a.value}[0..4]
+==&gt;PLAYING IN THE BAND=587
+==&gt;ME AND MY UNCLE=570
+==&gt;JACK STRAW=540
+==&gt;EL PASO=532
+==&gt;RAMBLE ON ROSE=527</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:16:49</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

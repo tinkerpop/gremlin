@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Except Retain Pattern</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Except Retain Pattern</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Except-Retain-Pattern"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Except-Retain-Pattern"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="images/gremlin-kilt.png" /></p>
+<p>In many instances its desirable to traverse to only those elements that have not been seen in a previous step. Specific use cases are:</p>
+<ul><li>&#x201C;Who are my friends friends that are not already my friends?&#x201D;</li>
+	<li>&#x201C;What is liked by the people that like the same things as me that I don&#x2019;t already like?&#x201D;</li>
+</ul><p>The solution to these types of problems is provided by the except pattern. Its opposite is the retain pattern&#x2014;only traverse to those vertices that have been seen in a previous step.</p>
+<pre><code>gremlin&gt; g = TinkerGraphFactory.createTinkerGraph()                                                               
+==&gt;tinkergraph[vertices:6 edges:6]
+gremlin&gt; g.v(1).out
+==&gt;v[2]
+==&gt;v[3]
+==&gt;v[4]
+gremlin&gt; g.v(1).out.out
+==&gt;v[5]
+==&gt;v[3]</code></pre>
+<p>Both the first and the second emit <code>v[3]</code>. To ensure that <code>v[3]</code> is not traversed to on the second step, its necessary to save the results seen after the first <code>out</code>. There are three high-level pipes called <code>aggregate</code>, <code>except</code>, and <code>retain</code>. In the examples below, <code>x</code> stores all the values seen up to the <code>aggregate</code> step. Note that, everything in <code>out</code> is &#x201C;drained&#x201D; into <code>x</code> before going to the next <code>out</code>.</p>
+<pre><code>gremlin&gt; x = []
+gremlin&gt; g.v(1).out.aggregate(x).out.except(x)
+==&gt;v[5]</code></pre>
+<pre><code>gremlin&gt; x = []
+gremlin&gt; g.v(1).out.aggregate(x).out.retain(x)
+==&gt;v[3]</code></pre>
+<p>With named steps it is possible to <code>except</code> and <code>retain</code> previously (and actually forward) objects in the pipeline.</p>
+<pre><code>gremlin&gt; g.v(1).as('x').out('created').in('created').except('x')
+==&gt;v[4]
+==&gt;v[6]</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:16:49</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>

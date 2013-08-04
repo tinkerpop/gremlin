@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="css/gollum.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/editor.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/dialog.css" media="all">
+  <link rel="stylesheet" type="text/css" href="css/template.css" media="all">
+  
+  <!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="css/ie7.css" media="all">
+  <![endif]-->
+  
+  <script type="text/javascript" src="css/jquery.js"></script>
+  <script type="text/javascript" src="css/gollum.js"></script>
+  <script type="text/javascript" src="css/gollum.dialog.js"></script>
+  <script type="text/javascript" src="css/gollum.placeholder.js"></script>
+  
+  <script type="text/javascript" 
+    src="css/editor/gollum.editor.js"></script>
+  <title>Step Closures</title>
+</head>
+<body>
+
+<div id="wiki-wrapper" class="page">
+<div id="head"><h3><a href="../../index.html">TinkerPop 2.4.0</a> - <a href="Home.html">Gremlin</a></h3>
+  <h1>Step Closures</h1>
+  <ul class="actions">
+    <li class="minibutton"><a href="/pages"
+      class="action-all-pages">All Pages</a></li>
+    <li class="minibutton" class="jaws">
+      <a href="#" id="minibutton-new-page">New Page</a></li>
+    <li class="minibutton"><a href="/edit/Step-Closures"
+       class="action-edit-page">Edit Page</a></li>
+    <li class="minibutton"><a href="/history/Step-Closures"
+       class="action-page-history">Page History</a></li>
+  </ul>
+  <div id="searchbar">
+    <form action="/search" method="get" id="search-form">
+    <div id="searchbar-fauxtext">
+      <input type="text" name="q" id="search-query" value="Search&hellip;" autocomplete="off">
+      <a href="#" id="search-submit" title="Search this wiki">
+        <span>Search</span>
+      </a>
+    </div>
+    </form>
+  </div></div>
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content">
+    <div id="template">
+      <p><img src="http://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Lambda_uc_lc.svg/150px-Lambda_uc_lc.svg.png" alt="" /></p>
+<p>Many Gremlin steps take a user-defined function (or functions). These steps have the form:</p>
+<pre><code>step{ // some function }</code></pre>
+<p>A Gremlin closure/function can take either one or two arguments. If passed one argument, then the argument references the current object passing through the step. For instance:</p>
+<pre><code>gremlin&gt; g.v(1).out.transform{it.name}
+==&gt;vadas
+==&gt;josh
+==&gt;lop</code></pre>
+<p>The variable <code>it</code> is a shorthand for naming the argument as follows:</p>
+<pre><code>gremlin&gt; g.v(1).out.transform{v -&gt; v.name} 
+==&gt;vadas
+==&gt;josh
+==&gt;lop</code></pre>
+<p>If two arguments are passed to the closure, then the second argument represents the variable map of the Gremlin pipeline. When a step is named using <code>as</code>, then the last object that has passed through that named step can be accessed in the step closure. For instance:</p>
+<pre><code>gremlin&gt; g.v(1).out.as('x').out.transform{v,m -&gt; m.x.name + ' ' + v.name}        
+==&gt;josh ripple
+==&gt;josh lop</code></pre>
+<p>The variable <code>m</code> has a <code>get(String name)</code> method which allows getting the value last seen at the particular named step.</p>
+    </div>
+  </div>
+  </div>
+
+</div>
+<div id="footer">
+  <p id="last-edit">Last edited by <b>stephen mallette</b>, 2013-08-03 13:16:49</p>
+</div>
+</div>
+
+<script type="text/javascript" src="css/MathJax/MathJax.js"></script>
+
+
+</body>
+</html>
