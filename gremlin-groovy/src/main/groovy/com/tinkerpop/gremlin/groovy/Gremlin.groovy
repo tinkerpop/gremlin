@@ -111,6 +111,10 @@ class Gremlin {
         return loadedPlugins
     }
 
+    public static def deps() {
+        return Grape.listDependencies(Console.groovysh.interp.classLoader).sort{a,b -> a.key <=> b.key}
+    }
+
     public static void use(final Map dependency) {
         if (dependency == null || dependency.isEmpty())
             throw IllegalArgumentException("dependency cannot be null or empty")
