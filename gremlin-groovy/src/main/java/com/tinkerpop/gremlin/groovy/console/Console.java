@@ -23,36 +23,37 @@ public class Console {
 
     private static final String HISTORY_FILE = ".gremlin_groovy_history";
     private static final String STANDARD_INPUT_PROMPT = "gremlin> ";
-    private static final String STANDARD_RESULT_PROMPT = "==>";
+    public static final String STANDARD_RESULT_PROMPT = "==>";
 
-    public Console(final IO io, final String inputPrompt, final String resultPrompt, final String initScriptFile) {
-        io.out.println();
-        io.out.println("         \\,,,/");
-        io.out.println("         (o o)");
-        io.out.println("-----oOOo-(_)-oOOo-----");
+    private static final IO STANDARD_IO = new IO(System.in, System.out, System.err);
+    private static final Groovysh GROOVYSH = new Groovysh();
 
-        final Groovysh groovy = new Groovysh();
-        groovy.setResultHook(new NullResultHookClosure(groovy));
+    public Console(final String initScriptFile) {
+        STANDARD_IO.out.println();
+        STANDARD_IO.out.println("         \\,,,/");
+        STANDARD_IO.out.println("         (o o)");
+        STANDARD_IO.out.println("-----oOOo-(_)-oOOo-----");
+
+        GROOVYSH.setResultHook(new NullResultHookClosure(GROOVYSH));
         for (String imps : Imports.getImports()) {
-            groovy.execute("import " + imps);
+            GROOVYSH.execute("import " + imps);
         }
-        groovy.execute("import com.tinkerpop.gremlin.Tokens.T");
-        groovy.execute("import com.tinkerpop.gremlin.groovy.*");
-        groovy.execute("import groovy.grape.Grape");
+        GROOVYSH.execute("import com.tinkerpop.gremlin.Tokens.T");
+        GROOVYSH.execute("import com.tinkerpop.gremlin.groovy.*");
 
-        groovy.setResultHook(new ResultHookClosure(groovy, io, resultPrompt));
-        groovy.setHistory(new History());
+        GROOVYSH.setResultHook(new ResultHookClosure(GROOVYSH, STANDARD_IO, STANDARD_RESULT_PROMPT));
+        GROOVYSH.setHistory(new History());
 
-        final InteractiveShellRunner runner = new InteractiveShellRunner(groovy, new PromptClosure(groovy, inputPrompt));
-        runner.setErrorHandler(new ErrorHookClosure(runner, io));
+        final InteractiveShellRunner runner = new InteractiveShellRunner(GROOVYSH, new PromptClosure(GROOVYSH, STANDARD_INPUT_PROMPT));
+        runner.setErrorHandler(new ErrorHookClosure(runner, STANDARD_IO));
         try {
             runner.setHistory(new History(new File(System.getProperty("user.home") + "/" + HISTORY_FILE)));
         } catch (IOException e) {
-            io.err.println("Unable to create history file: " + HISTORY_FILE);
+            STANDARD_IO.err.println("Unable to create history file: " + HISTORY_FILE);
         }
 
         Gremlin.load();
-        initializeShellWithScript(io, initScriptFile, groovy);
+        initializeShellWithScript(STANDARD_IO, initScriptFile, GROOVYSH);
 
         try {
             runner.run();
@@ -61,14 +62,18 @@ public class Console {
         }
     }
 
-    public Console() {
-        // opted to keep this constructor after adding the one with the initialization script file in case something
-        // is using it...not sure if anything is.  if not, it can go.
-        this(null);
+    /**
+     * Used by the Gremlin.use() function to send Groovysh instance to the plugin.
+     */
+    public static Groovysh getGroovysh() {
+        return GROOVYSH;
     }
 
-    public Console(final String initScriptFile) {
-        this(new IO(System.in, System.out, System.err), STANDARD_INPUT_PROMPT, STANDARD_RESULT_PROMPT, initScriptFile);
+    /**
+     * Used by the Gremlin.use() function to send IO instance to the plugin.
+     */
+    public static IO getStandardIo() {
+        return STANDARD_IO;
     }
 
     private void initializeShellWithScript(final IO io, final String initScriptFile, final Groovysh groovy) {
