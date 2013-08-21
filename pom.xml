@@ -31,18 +31,18 @@
         <developerConnection>scm:git:git@github.com:tinkerpop/gremlin.git</developerConnection>
         <url>git@github.com:tinkerpop/gremlin.git</url>
     </scm>
-    <contributors>
-        <contributor>
+    <developers>
+        <developer>
             <name>Marko A. Rodriguez</name>
             <email>marko@markorodriguez.com</email>
             <url>http://markorodriguez.com</url>
-        </contributor>
-        <contributor>
+        </developer>
+        <developer>
             <name>Stephen Mallette</name>
             <email>spmva@genoprime.com</email>
             <url>http://stephen.genoprime.com</url>
-        </contributor>
-    </contributors>
+        </developer>
+    </developers>
     <modules>
         <module>gremlin-test</module>
         <module>gremlin-java</module>
