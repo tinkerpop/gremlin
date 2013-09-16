@@ -40,6 +40,7 @@ public class Console {
         }
         GROOVYSH.execute("import com.tinkerpop.gremlin.Tokens.T");
         GROOVYSH.execute("import com.tinkerpop.gremlin.groovy.*");
+        GROOVYSH.execute("import groovy.grape.Grape");
 
         GROOVYSH.setResultHook(new ResultHookClosure(GROOVYSH, STANDARD_IO, STANDARD_RESULT_PROMPT));
         GROOVYSH.setHistory(new History());
