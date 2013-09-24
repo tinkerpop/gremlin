@@ -24,6 +24,7 @@ h3. Version 2.5.0 (NOT OFFICIALLY RELEASED YET)
 * Added a plugin system for the Gremlin Console that allows external libraries to extend the Gremlin environment.
 ** Remove @Grape@ from imports as it is replaced by @Gremlin.use()@.
 ** Add @Gremlin.deps()@ to list imported dependencies.
+* Added @g.tryTx@ to execute transactions with retry capabilities.
 
 ==<hr/>==
 
