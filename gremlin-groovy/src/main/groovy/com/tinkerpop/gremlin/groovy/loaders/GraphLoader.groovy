@@ -2,7 +2,10 @@ package com.tinkerpop.gremlin.groovy.loaders
 
 import com.tinkerpop.blueprints.Edge
 import com.tinkerpop.blueprints.Graph
+import com.tinkerpop.blueprints.TransactionalGraph
 import com.tinkerpop.blueprints.Vertex
+import com.tinkerpop.blueprints.util.TransactionRetryHelper
+import com.tinkerpop.blueprints.util.TransactionWork
 import com.tinkerpop.blueprints.util.io.gml.GMLReader
 import com.tinkerpop.blueprints.util.io.gml.GMLWriter
 import com.tinkerpop.blueprints.util.io.graphml.GraphMLReader
@@ -86,6 +89,18 @@ class GraphLoader {
 
         Graph.metaClass.addEdge = { final Vertex outVertex, final Vertex inVertex, final String label ->
             return ((Graph) delegate).addEdge(null, outVertex, inVertex, label);
+        }
+
+        // Transaction Retry
+        Graph.metaClass.tryTx = { final Closure work ->
+            final def g = (Graph) delegate
+            if (!(g instanceof TransactionalGraph)) throw new UnsupportedOperationException("Graph must be a TransactionalGraph instance.")
+            return new TransactionRetryHelper.Builder<Object>(g as TransactionalGraph).perform(new TransactionWork<Object>() {
+                @Override
+                public Object execute(final TransactionalGraph graph) throws Exception {
+                    return work(graph)
+                }
+            }).build()
         }
 
         // GRAPHML
