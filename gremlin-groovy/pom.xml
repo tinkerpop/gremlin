@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy</artifactId>
+            <artifactId>groovy-all</artifactId>
             <version>1.8.9</version>
         </dependency>
         <!-- included to complete the groovy dependencies so that AntBuilder can be used gremlin repl.  not
@@ -194,6 +194,12 @@
                         <manifest>
                             <mainClass>com.tinkerpop.gremlin.groovy.console.Console</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <Premain-Class>com.tinkerpop.gremlin.groovy.util.ClosureAgent</Premain-Class>
+                            <Agent-Class>com.tinkerpop.gremlin.groovy.util.ClosureAgent</Agent-Class>
+                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

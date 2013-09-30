@@ -16,6 +16,10 @@ else
     JAVA="$JAVA_HOME/bin/java -server"
 fi
 
+if [ "$GREMLIN_HOME" = "" ] ; then
+    GREMLIN_HOME="."
+fi
+
 # Set Java options
 if [ "$JAVA_OPTIONS" = "" ] ; then
     JAVA_OPTIONS="-Xms32m -Xmx512m"
@@ -37,7 +41,7 @@ else
   if [ "$1" = "-v" ]; then
     $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.Version
   else
-    $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.groovy.console.Console $@
+    $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH -javaagent:$GREMLIN_HOME/lib/gremlin-groovy-2.5.0-SNAPSHOT.jar=options com.tinkerpop.gremlin.groovy.console.Console $@
   fi
 fi
 
