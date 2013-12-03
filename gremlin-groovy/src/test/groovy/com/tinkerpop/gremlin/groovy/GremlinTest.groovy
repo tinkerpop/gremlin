@@ -212,6 +212,14 @@ class GremlinTest extends BaseTest {
         } catch(Exception e) {
             assertTrue(true);
         }
-        assertEquals(g.V.out.name.toList().size(),6);
+
+        assertEquals(g.V.out.name.toList(), g.V.out.name.collect{it});
+
+        try {
+            g.V.out.name.toList.iterate()
+            assertTrue(false);
+        } catch(Exception e) {
+            assertTrue(true);
+        }
     }
 }
