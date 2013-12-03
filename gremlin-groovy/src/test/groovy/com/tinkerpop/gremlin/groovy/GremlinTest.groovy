@@ -202,4 +202,16 @@ class GremlinTest extends BaseTest {
         assertTrue([1, 2, 4].isSimple());
         assertFalse([1, 2, 2].isSimple());
     }
+
+    public void testMethodPropertyNameConfusion() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        try {
+            g.V.out.name.toList.iterate()
+            assertTrue(false);
+        } catch(Exception e) {
+            assertTrue(true);
+        }
+        assertEquals(g.V.out.name.toList().size(),6);
+    }
 }
