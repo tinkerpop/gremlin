@@ -15,8 +15,6 @@ class PipeLoader {
             if (Gremlin.isStep(name)) {
                 return delegate."$name"();
             } else {
-                if (!GremlinGroovyPipeline.getMethods().find { it.getName() })
-                    GremlinGroovyPipeline.metaClass."$name" = { ((GremlinGroovyPipeline) delegate).property(name); }
                 return ((GremlinGroovyPipeline) delegate).property(name);
             }
         }

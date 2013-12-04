@@ -222,4 +222,16 @@ class GremlinTest extends BaseTest {
             assertTrue(true);
         }
     }
+
+    /*public void testPropertyClosureCachingSpeed() {
+        Gremlin.load();
+        Graph g = TinkerGraphFactory.createTinkerGraph();
+        def times = 0l;
+        (0..10000).each{
+            def t = System.nanoTime();
+            g.V.out.name;
+            times += System.nanoTime() - t;
+        }
+        println times/10000;
+    }*/
 }
