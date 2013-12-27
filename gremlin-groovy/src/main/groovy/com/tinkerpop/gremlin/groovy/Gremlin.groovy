@@ -131,14 +131,14 @@ class Gremlin {
         // from within there given loading through Grape.
         ServiceLoader.load(ConsolePlugin.class, Console.groovysh.interp.classLoader).each{
             if (!Gremlin.plugins().contains(it.name)) {
-                it.pluginTo(new ConsoleGroovy(Console.groovysh), new ConsoleIO(it, Console.standardIo));
+                it.pluginTo(new ConsoleGroovy(Console.groovysh), new ConsoleIO(it, Console.standardIo), dependency.args);
                 Gremlin.plugins().add(it.name)
                 Console.standardIo.out.println(Console.STANDARD_RESULT_PROMPT + "Plugin Loaded: " + it.name)
             }
         }
     }
 
-    public static void use(final String group, final String module, final String version, final boolean changing = false) {
+    public static void use(final String group, final String module, final String version, final Map args = [:], final boolean changing = false) {
         if (group == null || group.isEmpty())
             throw IllegalArgumentException("group cannot be null or empty")
 
@@ -147,6 +147,6 @@ class Gremlin {
 
         if (version == null || version.isEmpty())
             throw IllegalArgumentException("version cannot be null or empty")
-        use([group:group, module:module, version:version, changing:changing])
+        use([group:group, module:module, version:version, args:args, changing:changing])
     }
 }
