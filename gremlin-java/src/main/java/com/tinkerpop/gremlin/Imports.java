@@ -31,6 +31,8 @@ public class Imports {
         imports.add("com.tinkerpop.blueprints.impls.tg.*");
         imports.add("com.tinkerpop.blueprints.impls.neo4j.*");
         imports.add("com.tinkerpop.blueprints.impls.neo4j.batch.*");
+        imports.add("com.tinkerpop.blueprints.impls.neo4j2.*");
+        imports.add("com.tinkerpop.blueprints.impls.neo4j2.batch.*");
         imports.add("com.tinkerpop.blueprints.impls.orient.*");
         imports.add("com.tinkerpop.blueprints.impls.orient.batch.*");
         imports.add("com.tinkerpop.blueprints.impls.dex.*");
