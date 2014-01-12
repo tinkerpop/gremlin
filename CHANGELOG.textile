@@ -21,12 +21,13 @@ h3. Version 2.5.0 (NOT OFFICIALLY RELEASED YET)
 </dependency>
 ```
 
-* Added a plugin system for the Gremlin Console that allows external libraries to extend the Gremlin environment.
-** Remove @Grape@ from imports as it is replaced by @Gremlin.use()@.
-** Add @Gremlin.deps()@ to list imported dependencies.
-* Added @g.tryTx@ to execute transactions with retry capabilities.
+* Added a plugin system for the Gremlin Console that allows external libraries to extend the Gremlin environment
+** Remove @Grape@ from imports as it is replaced by @Gremlin.use()@
+** Add @Gremlin.deps()@ to list imported dependencies
+* Added @g.tryTx@ to execute transactions with retry capabilities
 * Fixed a property/method caching bug
 * @gremlin.sh@ accepts more than nine parameters.
+* Added support for Neo4j2 (via @Imports@ and Gremlin-Groovy dependency)
 
 ==<hr/>==
 
