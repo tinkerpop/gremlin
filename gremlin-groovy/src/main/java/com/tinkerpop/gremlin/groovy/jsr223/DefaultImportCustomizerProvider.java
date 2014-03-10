@@ -31,7 +31,7 @@ public class DefaultImportCustomizerProvider extends AbstractImportCustomizerPro
 
     /**
      * Allows imports to defined globally and statically.
-     * <p/>
+     * 
      * This method must be called prior to initialization of a ScriptEngine instance through the ScriptEngineFactory.
      */
     public static void initializeStatically(final Set<String> extraImports, final Set<String> extraStaticImports) {
