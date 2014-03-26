@@ -3,6 +3,7 @@ notifications:
   email:
     - okrammarko@gmail.com
     - spmallette@gmail.com
+    - parcour@gmail.com
 jdk:
   - oraclejdk7
   - openjdk7
