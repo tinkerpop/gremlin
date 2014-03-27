@@ -2,7 +2,7 @@ language: java
 notifications:
   email:
     - okrammarko@gmail.com
-    - spmallette@gmail.com
+    - spmva@genoprime.com
     - parcour@gmail.com
 jdk:
   - oraclejdk7
