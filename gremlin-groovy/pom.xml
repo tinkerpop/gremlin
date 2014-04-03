@@ -134,7 +134,7 @@
         </dependency>
         <dependency>
             <groupId>com.tinkerpop.blueprints</groupId>
-            <artifactId>blueprints-dex-graph</artifactId>
+            <artifactId>blueprints-sparksee-graph</artifactId>
             <version>${blueprints.version}</version>
             <scope>provided</scope>
         </dependency>
