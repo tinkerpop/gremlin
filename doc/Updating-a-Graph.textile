@@ -1,0 +1,90 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-hardhat.png|float|align=left]] 
+
+Many of the examples in the Gremlin documentations are with respect to querying/reading the graph. However, Gremlin is not simply a query language. With Gremlin it is also possible to update the graph.  Gremlin can directly access "Blueprints":http://blueprints.tinkerpop.com and whatever Blueprints provides, Gremlin provides.
+
+<br/>
+
+h2. The Standard Blueprints API
+
+The Blueprints API provides methods to manipulate vertices, edges, properties, etc. The Blueprints API is strict to the Java convention. Given the scripting nature of Gremlin, many shorthand methods are provided. Such methods can be found in [[Gremlin Methods]]. 
+To set double or float values you have to explicitly specify the datatypes as the .dot notation won't work.
+
+Below is a grab bag of update operations in Gremlin.
+
+```text
+gremlin> g = new TinkerGraph()
+==>tinkergraph[vertices:0 edges:0]
+gremlin> v = g.addVertex()    
+==>v[0]
+gremlin> v.name = 'marko'     
+==>marko
+gremlin> v.age = 31           
+==>31
+gremlin> v.height = 186.5d
+==>186.5
+gremlin> v.weight = 72.4f
+==>72.4
+gremlin> v.map()              
+==>name=marko
+==>age=31
+==>height=186.5
+==>weight=72.4
+gremlin> u = g.addVertex([name:'pierre',location:'belgium'])
+==>v[1]
+gremlin> u.map()
+==>location=belgium
+==>name=pierre
+gremlin> g.addEdge(v,u,'collaborator',[since:2011])
+==>e[2][0-collaborator->1]
+gremlin> v.outE.since
+==>2011
+gremlin> g.V              
+==>v[1]
+==>v[0]
+gremlin> g.E
+==>e[2][0-collaborator->1]
+gremlin> g.removeVertex(v)
+==>null
+gremlin> g.V
+==>v[1]
+gremlin> g.E
+gremlin> g.V.as('x').linkOut('knows','x')
+==>v[1]
+gremlin> g.E
+==>e[3][1-knows->1]
+```
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()  
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).out.name
+==>vadas
+==>lop
+==>josh
+gremlin> g.v(1).out.sideEffect{it.name = it.name + '!'}.name
+==>vadas!
+==>lop!
+==>josh!
+gremlin> g.v(1).out.name                                    
+==>vadas!
+==>lop!
+==>josh!
+gremlin> g.v(1).addEdge('coworker',g.v(2)).since = 2008
+==>2008
+gremlin> g.v(1).outE('coworker')
+==>e[0][1-coworker->2]
+gremlin> g.v(1).outE('coworker').since
+==>2008
+```
+
+h2. The Helper Utilities of Blueprints
+
+Blueprints comes with a collection of helper utilities that makes it easy to do the following operations:
+
+* Copy properties: @ElementHelper.copyProperties(v,u)@
+* Remove properties: @ElementHelper.removeProperties(v)@
+* Rename properties: @ElementHelper.renameProperty('original', 'new', g.V)@
+* Typecase properties: @ElementHelper.typecastProperty('age', Integer.class, g.V)@
+* ..and more. 
+
+Please refer to the Blueprints API for numerous handy operations to work with indices, transactions, etc.

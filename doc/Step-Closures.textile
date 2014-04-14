@@ -1,0 +1,35 @@
+!http://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Lambda_uc_lc.svg/150px-Lambda_uc_lc.svg.png!
+
+Many Gremlin steps take a user-defined function (or functions). These steps have the form:
+
+```
+step{ // some function }
+```
+
+A Gremlin closure/function can take either one or two arguments. If passed one argument, then the argument references the current object passing through the step. For instance:
+
+```
+gremlin> g.v(1).out.transform{it.name}
+==>vadas
+==>josh
+==>lop
+```
+
+The variable @it@ is a shorthand for naming the argument as follows:
+
+```
+gremlin> g.v(1).out.transform{v -> v.name} 
+==>vadas
+==>josh
+==>lop
+```
+
+If two arguments are passed to the closure, then the second argument represents the variable map of the Gremlin pipeline. When a step is named using @as@, then the last object that has passed through that named step can be accessed in the step closure. For instance:
+
+```
+gremlin> g.v(1).out.as('x').out.transform{v,m -> m.x.name + ' ' + v.name}        
+==>josh ripple
+==>josh lop
+```
+
+The variable @m@ has a @get(String name)@ method which allows getting the value last seen at the particular named step.

@@ -1,0 +1,101 @@
+Gremlin provides the ability for a user to define their own step definitions natively in Groovy or in Java. This is very useful when wishing to work with your low-level graph data at a higher level of abstraction.  This section will discuss how to write your own step definitions and demonstrate how they are useful for making your Gremlin code more concise and more self-explanatory.
+
+# Defining a Step in Gremlin
+# Defining an Anonymous Step in Gremlin
+
+h2. Defining a Step in Gremlin
+
+Gremlin comes with a collection of built-in step definitions (see [[Gremlin Steps]]). It is possible for developers to create their own step definitions. Simply add a closure that represents the step to the respective classes. The method to use is:
+
+```text
+Gremlin.defineStep(String stepName, List<Class> classes, Closure stepClosure);
+```
+
+```text
+Gremlin.defineStep('codeveloper',[Vertex,Pipe], {_().as('x').out('created').in('created').except('x')})
+```
+
+In the code above, the final argument is a closure to create the desired composite step. The step closure says:
+
+  * Reference the current vertex by the variable @x@
+  * Get the outgoing @created@ vertices of the current vertex.
+  * Get the incoming @created@ vertices of those previous vertices.
+  * Exclude the first vertex from the path (a person can not be a codeveloper of themselves)
+  ** The second argument of the filter is the variable map of the pipeline (references @as@ steps)
+
+Given the graph diagrammed in [[Defining a Property Graph]], we can determine the codevelopers of a particular vertex.
+
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/grammar-example-1.jpg!
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).codeveloper
+==>v[4]
+==>v[6]
+```
+
+Realize that this step definition can be used like any other step definition.
+
+```text
+gremlin> g.v(1).codeveloper.name
+==>josh
+==>peter
+gremlin> g.v(1).codeveloper.name.toString() 
+==>[StartPipe, [AsPipe(x,StartPipe), OutPipe(created), InPipe(created), ExceptFilterPipe(NOT_EQUAL)], PropertyPipe(name)]
+```
+
+What step definitions allow you to do is to work with "higher order" relationships in your graph. Thus, instead of working at the level of 
+
+```text
+_().as('x').out('created').in('created').except('x')
+```
+
+you can work at the more semantically natural level of
+
+```text
+codeveloper
+```
+
+It is also possible to pass in parameters to a step definition. For example, lets generalize @codeveloper@ to simply be @co@.
+
+```text
+Gremlin.defineStep('co',[Vertex,Pipe], {String label -> _().as('x').out(label).in(label).except('x')})
+```
+
+In the above step definition, upon evaluating the step, the step expects a @String@ parameter to be passed into it. Thus, in order to properly evaluate the @co@ step do the following:
+
+```text
+gremlin> g.v(1).co('created')
+==>v[4]
+==>v[6]
+```
+
+Finally, realize that the parameters passed to the step can be closures. Thus, it is possible to effect dynamic behavior.
+
+```text
+Gremlin.defineStep('twoStep', [Pipe, Vertex], { final Object... params ->  _().as('x').out(params[0]).in(params[0]).filter(params[1]) });
+```
+
+```text
+gremlin> g.v(1).twoStep('created'){v,m -> v != m.x}
+==>v[4]
+==>v[6]
+gremlin> g.v(1).twoStep('created'){v,m -> v == m.x}
+==>v[1]
+```
+
+h2. Defining an Anonymous Step in Gremlin
+
+You can also create an anonymous step (or "lambda step") using the @step@ step. For example:
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()    
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).out.step{ it.next().map() }
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+==>{name=josh, age=32}
+```
+
+The method @it.next()@ is equivalent to @starts.next()@ which is defined in "Pipes":http://pipes.tinkerpop.com and represents the next end of the previous pipe. For those familiar with Pipes, the provided @step@ function becomes the method @AbstractPipe.processNextStart()@. 

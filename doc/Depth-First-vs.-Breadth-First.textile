@@ -1,0 +1,59 @@
+!http://www.cse.unsw.edu.au/~billw/Justsearch1.gif!
+[ *Note*: Image linked to from "original webpage":http://www.cse.unsw.edu.au/~billw/Justsearch.html ]
+
+"Depth-first traverse":http://en.wikipedia.org/wiki/Depth-first_search traverses down an entire path as specified by a path expression before turning to the next legal path. On the other hand "breadth-first traverse":http://en.wikipedia.org/wiki/Breadth-first_search traverses legal paths "in parallel," where at each step, all legal objects are computed before moving onto the next step of the path. Gremlin provides support for both types of traversals.
+
+* "Depth-First Traversal":#depth
+* "Breadth-First Traversal":#breadth
+
+<a name="depth"></a>
+
+h2(#depth). Depth-First Traversal
+
+Gremlin is naturally a depth-first traversal language/engine. Typical path expression (as used in this documentation) evaluate in a depth-first manner. The following "co-created" expression is a depth-first expression.
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).outE('created').inV.inE('created').outV
+==>v[1]
+==>v[4]
+==>v[6]
+```
+
+In the expression above, the following occurs in the Gremlin evaluator (see [[Defining a Property Graph]] for diagram of graph).
+
+# Vertex @1@ is passed to step @outE@ which yields three outgoing edges.
+# The first of these outgoing edges is then passed into the label filter and goes through since its a @created@ edge.
+# The edge then goes to the next step @inV@ which produces vertex @3@.
+# Vertex @3@ is then passed to @inE@ which yields three edges. 
+# The first edge is passed to the label filter and passes through because its a @created@ edge.
+# The edge is passed to @outV@ which yields vertex @1@.
+
+At this point, the path expression is complete for the full *depth* of the expression (thus, depth-first). The evaluator then goes onto the remaining two edges created from the first @outE@ and the process continues until all legal branches of the path expression have been evaluated.
+
+<a name="breadth"></a>
+
+h2(#breadth). Breadth-First Traversal
+
+!http://upload.wikimedia.org/wikipedia/commons/4/46/Animated_BFS.gif!
+[ *Note*: Image linked to from "original webpage":http://en.wikipedia.org/wiki/Breadth-first_search ]
+
+In a breadth-first traversal, all results for each step of the process are gathered before the next step is evaluated. The equivalent breadth-first traversal for the previous "co-created" expression is as follows.
+
+```text
+gremlin> g.v(1).outE('created').gather.scatter.inV.gather.scatter.inE('created').gather.scatter.outV.gather.scatter
+==>v[1]
+==>v[4]
+==>v[6]
+```
+
+The @gather@ step is used to aggregate all the results of the previous step into a list. Given that @gather@ exhausts all the objects of the previous step and emits a list. The @scatter@ step is used to unroll that list and pass it to the next step.
+
+With @gather@, the generated list can be analyzed by a step to determine some desired property that is a function of all current objects in the breadth of the path. For example.
+
+bc. gremlin> g.v(1).outE.gather{ println "processing: ${it}"; return it.get(0) }.inV
+processing: [e[7][1-knows->2], e[8][1-knows->4], e[9][1-created->3]]
+==>v[2]
+
+Note that with breadth-first traverse being controlled by the @gather@ step, its possible to intermix the use of depth- and breadth-first traversing in a single path expression. In other words, its not necessary to gather all results from the previous step at every step. In fact, its only necessary when all objects of a particular part of the path expression are needed in a computation.

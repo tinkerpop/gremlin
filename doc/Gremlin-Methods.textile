@@ -1,0 +1,43 @@
+*IMPORTANT*: The full "Java API":http://download.oracle.com/javase/6/docs/api/ can be seamlessly accessed by Gremlin. Thus, both the "Blueprints":http://blueprints.tinkerpop.com and "Pipes":http://pipes.tinkerpop.com APIs can be accessed from within Gremlin. For behaviors that are commonly used in Gremlin, Gremlin Groovy adds @MetaClass@ methods/operators to make it easier and faster to work with the Blueprints and Pipes APIs. These @MetaClass@ methods/operators are provided in the table below.
+
+The "Groovy API":http://groovy.codehaus.org/groovy-jdk/ extends many of the Java API classes with methods that are useful for iteration. Its possible to use these methods with Gremlin as well. Two Groovy classes that are worth looking at are:
+  * "Groovy Iterator":http://groovy.codehaus.org/groovy-jdk/java/util/Iterator.html
+  * "Groovy Collection":http://groovy.codehaus.org/groovy-jdk/java/util/Collection.html
+
+*Developer Note*: If you come up a with a generally useful method and would like to include it into the main Gremlin distribution, please make an "issue":https://github.com/tinkerpop/gremlin/issues or provide the appropriate pull request.
+
+|_. method/operator |_. equivalence |_. description |
+| @Graph.v(Object...)@ | no simple representation | get vertices by provided ids |
+| @Graph.e(Object...)@ | no simple representation | get edges by provided ids |
+| @Graph.idx(String)@ | @Graph.getIndex(String, Class)@ | get an index by its name |
+| @Graph.addVertex()@ | @Graph.addVertex(null)@ | add a vertex |
+| @Graph.addVertex(Object, Map)@ | no simple representation | add a vertex with property map |
+| @Graph.addVertex(Map)@ | no simple representation | add a vertex with property map |
+| @Graph.addEdge(Object, Vertex, Vertex, String, Map)@ | no simple representation | add an edge with property map |
+| @Graph.addEdge(Vertex, Vertex, String, Map)@ | no simple representation | add an edge with property map |
+| @Graph.loadGML(String or File)@ | @GMLReader.inputGraph(...)@ | load "GML":http://www.fim.uni-passau.de/en/fim/faculty/chairs/theoretische-informatik/projects.html file into graph |
+| @Graph.saveGML(String or File)@ | @GMLWriter.outputGraph(...)@ | save graph to a "GML":http://www.fim.uni-passau.de/en/fim/faculty/chairs/theoretische-informatik/projects.html file |
+| @Graph.loadGraphML(String or File)@ | @GraphMLReader.inputGraph(...)@ | load "GraphML":http://graphml.graphdrawing.org/ file into graph |
+| @Graph.saveGraphML(String or File)@ | @GraphMLWriter.outputGraph(...)@ | save graph to a "GraphML":http://graphml.graphdrawing.org/ file |
+| @Graph.loadGraphSON(String or File)@ | @GraphSONReader.inputGraph(...)@ | load GraphSON file into graph |
+| @Graph.saveGraphSON(String or File, boolean?)@ | @GraphSONWriter.outputGraph(...)@ | save graph to a GraphSON file |
+| @Graph.tryTx@ | no simple representation | create a "TransactionRetryHelper":https://github.com/tinkerpop/blueprints/wiki/Graph-Transactions#transaction-retry-helper object for the graph |
+| @Index[Map.Entry]@ | @Index.get(String, Object)@ | get an element by its key/value |
+| @Element.key@ | @Element.getProperty(key)@ | get the value of a property by key |
+| @Element.key = value@ | @Element.setProperty(key,value)@ | set the value of a property |
+| @Element.keys()@ | @Element.getPropertyKeys()@ | get the property keys of the element |
+| @Element.values()@ | no simple representation | get the property values of the element |
+| @Element.map()@ | no simple representation | get the property map of the element |
+| @Element.remove()@ | @Element.remove()@ | remove the element from the graph |
+| @Vertex.addEdge(String, Vertex)@ | @Vertex.addEdge(String, Vertex)@ | add outgoing string-labeled edge to vertex |
+| @Vertex.addEdge(String, Vertex, Map)@ | no simple representation | add outgoing string-labeled edge to vertex with provided properties |
+| @Pipe.next()@ | @Iterator.next()@ | get the next object in the pipe |
+| @Pipe.next(int)@ | no simple representation | get the next @n@ objects in pipe and return as a list |
+| @Pipe.iterate()@ | @PipeHelper.iterate(Pipe)@ | @next()@ all the objects out of the pipe |
+| @Pipe.fill(collection)@ | @PipeHelper.fillCollection(...)@ | add all the pipe objects to the collection |
+| @Pipe.toList()@ | no simple representation | return a list of all the objects in the pipe |
+| @Pipe.count()@ | @PipeHelper.counter(Pipe)@ | count objects in the pipe |
+| @Pipe.mean()@ | no simple representation | the average of the objects in the pipe |
+| @Map[IntRange]@ | no simple representation | create a map of the entry range of the provided map |
+
+*Note*: Most all of the @Pipe@ methods/operators also work for @Iterator@ and @Iterable@.

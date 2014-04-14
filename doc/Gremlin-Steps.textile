@@ -1,0 +1,105 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-pipe.png|float|align=left]] Gremlin comes with a collection of predefined steps. Gremlin steps map to a particular @Pipe@ in "Pipes":http://pipes.tinkerpop.com. A @Pipe<S,E>@ extends @Iterator<E>@ and @Iterable<E>@. It takes an object of type @S@ and emits and object of type @E@. Chaining pipes together creates a @Pipeline@. In essence, Gremlin is a "DSL":http://en.wikipedia.org/wiki/Domain-specific_language for constructing @Pipeline@ objects. Finally, be sure to look at [[User Defined Steps]] to learn how to define your own custom steps.
+
+h1. Step Library
+
+Even link in a pipeline is called a step. Steps can be categorized as either being transform-, filter-, sideEffect-, or branch- based.
+
+* @step@: a generic, general-purpose computational step.
+** @transform@: take an object and emit a transformation of it.
+** @filter@: decide whether to allow an object to pass or not.
+** @sideEffect@: pass the object, but yield some side effect.
+** @branch@: decide which step to take.
+
+h2. Step
+
+|_. step |_. description |_. pipe |
+| @step{closure}@ | an anonymous/lambda step defined by a closure | @FunctionPipe(closure)@ |
+| @_@ | emit the incoming object unchanged | @IdentityPipe()@ |
+
+h2. Transform-Based Steps
+
+|_. step |_. description |_. pipe |
+| @transform{closure}@ | emit the result of the closure | @TransformFunctionPipe(closure)@ |
+| @V@ | the vertex iterator of the graph (with key indices, @V(key,value)@ possible) | @VerticesPipe()@ |
+| @E@ | the edge iterator of the graph (with key indices, @E(key,value)@ possible) | @EdgesPipe()@ |
+| @id@ | the identifier of the element | @IdPipe()@ |
+| @label@ | the label of the edge | @LabelPipe()@ |
+| @out(labels...?)@ | out adjacent vertices to the vertex | @VerticesVerticesPipe(out,labels...?)@ |
+| @outE(labels...?)@ | the outgoing edges of the vertex | @VerticesEdgesPipe(out,labels...?)@ |
+| @in(labels...?)@ | in adjacent vertices to the vertex | @VerticesVerticesPipe(in,labels...?)@ |
+| @inE(labels...?)@ | the incoming edges of the vertex | @VerticesEdgesPipe(in,labels...?)@ |
+| @both(labels...?)@ | both adjacent vertices of the vertex | @VerticesVerticesPipe(both,labels...?)@ |
+| @bothE(labels...?)@ | both incoming and outgoing edges of the vertex | @VerticesEdgesPipe(both,labels...?)@ |
+| @outV@ | the outgoing tail vertex of the edge | @EdgesVerticesPipe(out)@ |
+| @inV@ | the incoming head vertex of the edge | @EdgesVerticesPipe(in)@ |
+| @bothV@ | both incoming and outgoing vertices of the edge | @EdgesVerticesPipe(both)@ |
+| @['key']@ | get the property value of an element | @PropertyPipe('key')@ |
+| @key@ | get the property value of an element | @PropertyPipe(key)@ |
+| @map(strings..?)@ | get the property map of an element (for provided keys?) | @PropertyMapPipe(strings..?)@ |
+| @memoize(string, map?)@ | "memoize":http://en.wikipedia.org/wiki/Memoization a named section with optional map being a cache | @MemoizePipe()@ |
+| @gather{closure?}@ | collect all objects up to that step and process with provided closure | @GatherPipe()@ or @GatherFunctionPipe(closure)@ |
+| @scatter@ | unroll all objects in the iterable at that step | @ScatterPipe()@ |
+| @path(closures..?)@ | the path through the pipeline up to this point, where closures are post-processing for each object in the path | @PathPipe()@ or @PathFunctionPipe(closures...?)@ |
+| @cap@ | emits the side effect of the pipe prior | @SideEffectCapPipe(pipe)@ |
+| @select(list?,closures..?)@ | select the named steps to emit after select with post-processing closures | @SelectPipe(list?, closures..?)@ |
+| @shuffle@ | collect all objects up to that step and randomize their order | @ShufflePipe()@ |
+| @order(closure?)@ | order the items in the stream according to the closure if provided | @OrderPipe(closure?)@ |
+| @order(T)@ | order the items in the stream according to @T@ where @T@ is @T.decr@ or @T.incr@ | @OrderPipe(T)@ |
+| @orderMap(closure)@ | for every incoming map, sort and emit keys | @OrderMapPipe(closure)@ |
+| @orderMap(T)@ | for every incoming map, sort by @T@ and emit keys where @T@ is @T.decr@ or @T.incr@ | @OrderMapPipe(T)@ |
+
+h2. Filter-Based Steps
+
+|_. step |_. description |_. pipe |
+| @filter{closure}@ | return true to allow the object to pass | @FilterFunctionPipe(closure)@ |
+| @[i]@ | emit the particular indexed object | @RangeFilterPipe(i,i)@ |
+| @[i..j]@ | emit the objects indexed by the range | @RangeFilterPipe(i,j)@ |
+| @has(key)@ | emit the element if it has the property key | @PropertyFilterPipe(key,NOT_EQUALS,null)@ |
+| @has(key,value)@ | allow element if has property | @PropertyFilterPipe(key,EQUALS,value)@ |
+| @has(key,T,value)@ | allow element if property is T related to value, where T is shorthand compare | @PropertyFilterPipe(key,T,value)@ |
+| @hasNot(key)@ | emit the element if it does not have the property key | @PropertyFilterPipe(key,EQUALS,null)@ |
+| @hasNot(key,value)@ | filter element if has property | @PropertyFilterPipe(key,NOT_EQUAL,value)@ |
+| @back(string)@ | go back to the results as the named step | @BackFilterPipe(Pipe)@ |
+| @and(pipes...)@ | emit the incoming object if all pipes emit results | @AndFilterPipe(pipes...)@ |
+| @or(pipes...)@ | emit the incoming object if any pipe emit results | @OrFilterPipe(pipes...)@ |
+| @random(double)@ | emit the incoming object if biased coin toss is heads | @RandomFilterPipe(double)@ |
+| @dedup(closure?)@ | emit only incoming objects that have not been seen before with optional closure being object to check on | @DuplicateFilterPipe(closure?)@ |
+| @simplePath@ | emit the object only if the current path has no repeated elements | @CyclicPathFilterPipe()@ |
+| @except(collection)@ | allow everything to pass except what is in @collection@ | @ExceptFilterPipe(collection)@ |
+| @except(string...)@ | allow everything to pass except what is at named steps | @ExceptFilterPipe(asmap, string...)@ |
+| @retain(collection)@ | allow everything to pass except what is not in @collection@ | @RetainFilterPipe(collection)@ |
+| @retain(string...)@ | allow everything to pass except what is not at named steps | @RetainFilterPipe(asmap, string...)@ |
+| @interval(key,start,end)@ | allow elements to pass that have their property in provided start/end interval | @IntervalFilterPipe(key,start,end)@ |
+
+h2. SideEffect-Based Steps
+
+|_. step |_. description |_. pipe |
+| @sideEffect{closure}@ | emits input, but calls a side effect closure on each input | @SideEffectFunctionPipe(closure)@ |
+| @groupBy(map?){closure}{closure}@ | emits input, but groups input after processing it by provided key-closure and value-closure | @GroupByPipe(map?, closure, closure)@ |
+| @groupCount(map?){closure?}{closure?}@ | emits input, but updates a map for each input, where closures provides generic map update | @GroupCountFunctionPipe(map?,closure?,closure?)@ |
+| @aggregate(collection?,closure?)@ | emits input, but adds input in collection, where provided closure processes input prior to insertion (greedy) | @AggregatePipe(collection?,closure?)@ |
+| @table(table?,strings..?,closures..?)@ | emits input, but stores row of @as@ values (constrained by column names if provided) | @TablePipe(table?,strings..?,closures..?)@ |
+| @tree(map?, closures..?)@ | emit input, but stores the tree formed by the traversal as a map | @TreePipe(map?, closures..?)@ |
+| @as(string)@ | emits input, but names the previous step | @AsPipe(string, Pipe)@ |
+| @optional(string)@ | go back to the results as the named step | @OptionalPipe(Pipe)@ |
+| @store(collection?,closure?)@ | emits input, but adds input to collection, where provided closure processes input prior to insertion (lazy) | @StorePipe(collection?, closure?)@ |
+| @linkOut(string,vertex)@ | for every incoming vertex, create an outgoing @label@-edge to provided vertex | @LinkPipe(string,vertex)@ |
+| @linkIn(string,vertex)@ | for every incoming vertex, create an incoming @label@-edge to provided vertex | @LinkPipe(string,vertex)@ |
+| @linkBoth(string,vertex)@ | for every incoming vertex, create an incoming and outgoing @label@-edge to provided vertex | @LinkPipe(string,vertex)@ |
+| @linkOut(string,string)@ | for every incoming vertex, create an outgoing @label@-edge to provided vertex | @LinkPipe(string,AsPipe)@ |
+| @linkIn(string,string)@ | for every incoming vertex, create an incoming @label@-edge to provided vertex | @LinkPipe(string,AsPipe)@ |
+| @linkBoth(string,string)@ | for every incoming vertex, create an incoming and outgoing @label@-edge to provided vertex | @LinkPipe(string,AsPipe)@ |
+
+h2. Branch-Based Steps
+
+|_. step |_. description |_. pipe |
+| @loop(string){whileClosure}{emitClosure?}@ | if whileClosure true for emitted object, put object back at start (emit object mid-loop if emitClosure is true) | @LoopPipe(Pipe,whileC,emitC?)@ |
+| @ifThenElse{ifClosure}{thenClosure}{elseClosure}@ | if/then/else branch | @IfThenElsePipe(ifC,thenC,elseC)@ |
+| @copySplit(pipes...)@ | copies incoming object to internal pipes | @CopySplitPipe(pipes...)@ |
+| @fairMerge@ | round-robin merges internal pipe objects | @FairMergePipe()@ |
+| @exhaustMerge@ | exhaustively merges internal pipe objects | @ExhaustMergePipe()@ |
+
+h3. Notes
+
+  * If a pipe's argument is postfixed with a @?@, then the argument is optional. When no argument is provided, a reasonable default argument is created.
+  * If you come up a with a generally useful step/pipe and would like to include it into the main Gremlin distribution, please make an "issue":https://github.com/tinkerpop/gremlin/issues or provide the appropriate pull request.

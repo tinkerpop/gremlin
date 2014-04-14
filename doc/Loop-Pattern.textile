@@ -1,0 +1,102 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png]]
+
+Looping is essential for traversing to an arbitrary depth. The @loop@ step allows you to loop over a particular set of steps in the pipeline. For the examples to follow, the Grateful Dead graph discussed in [[Defining a More Complex Property Graph]] is used. Most of the examples in this section make use of @GremlinPipeline.optimize(boolean)@. Please refer to [[Traversal Optimization]] for the rationale behind this method.
+
+```text
+gremlin> g = new TinkerGraph()
+==>tinkergraph[vertices:0 edges:0]
+gremlin> g.loadGraphML('data/graph-example-2.xml')
+==>null
+```
+
+You can create an explicit pipeline to walk a particular path through the graph (@outE.inV@).
+
+```text
+gremlin> g.v(89).outE.inV.path
+==>[v[89], e[7021][89-followed_by->83], v[83]]
+==>[v[89], e[7022][89-followed_by->21], v[21]]
+==>[v[89], e[7023][89-followed_by->206], v[206]]
+==>[v[89], e[7006][89-followed_by->127], v[127]]
+...
+```
+
+You can also loop for an arbitrary depth (i.e. any arbitrary number of loops through the looped section of the pipeline). In the example below, the @loop@ step is used. The single integer argument to @loop@ states how many steps back to loop over (i.e. @outE.inV@). The provided closure says to continue to loop *while* the number of loops that have occurred is less than 3. Thus, what is emitted from @loop@ is the vertices 2 steps away from vertex 89 (Dark Star) (as 'x'). Finally, the @path@ step is used to emit the paths of length 2 emanating from vertex 89.
+
+```text
+gremlin> g.v(89).as('x').outE.inV.loop('x'){it.loops < 3}.path
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1437][83-followed_by->29], v[29]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1411][83-followed_by->13], v[13]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1436][83-followed_by->14], v[14]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1410][83-followed_by->12], v[12]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1435][83-followed_by->36], v[36]]
+...
+```
+
+Note the the expression above is equivalent to the "unrolled" version below.
+
+```text
+gremlin> g.v(89).outE.inV.outE.inV.path
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1437][83-followed_by->29], v[29]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1411][83-followed_by->13], v[13]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1436][83-followed_by->14], v[14]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1410][83-followed_by->12], v[12]]
+==>[v[89], e[7021][89-followed_by->83], v[83], e[1435][83-followed_by->36], v[36]]
+...
+```
+
+In fact:
+
+```text
+gremlin> g.v(89).as('x').outE.inV.loop('x'){it.loops < 3} == g.v(89).outE.inV.outE.inV            
+==>true
+```
+
+h2. Loop Bundles and their Metadata
+
+The @it@ component of the @loop@ step closure has three properties that are accessible. These properties can be used to reason about when to break out of the loop.
+
+# @it.object@: the current object of the traverser.
+# @it.path@: the current path of the traverser.
+# @it.loops@: the number of times the traverser has looped through the loop section.
+
+*NOTE*: If you are using @it.path@ in the while/emit closure, be sure that the pipeline has had its path functionality enabled.
+
+```text
+gremlin> g.v(89).as('x').out.loop('x'){it.loops < 3}{it.path.contains(g.v(12))}
+Cannot invoke method contains() on null object
+Display stack trace? [yN] 
+gremlin> g.v(89).as('x').out.loop('x'){it.loops < 3}{it.path.contains(g.v(12))}.enablePath
+==>v[19]
+==>v[27]
+==>v[130]
+==>v[49]
+==>v[252]
+...
+```
+
+h2. Using an Emit Closure
+
+The @loop@ step can be updated with a second closure called the "emit closure." This boolean-based closure will determine wether the current object in the loop structure is emitted or not. As such, it is possible to emit intermediate objects, not simply those at the end of the loop.
+
+```text
+gremlin> g.v(89).as('x').out.loop('x'){it.loops < 4}.count()      
+==>70307
+gremlin> g.v(89).as('x').out.loop('x'){it.loops < 4}{true}.count()
+==>71972
+gremlin> g.v(89).as('x').out.loop('x'){it.loops < 4}{it.object.id == '89'}.count()
+==>582
+```
+
+Finally, use @toString()@ to see how @loop@ wraps a section of the pipeline.
+
+```text
+gremlin> println g.v(89).outE.inV.path
+[GremlinStartPipe, VertexQueryPipe(out,[],edge), InVertexPipe, PathPipe]
+==>null
+gremlin> println g.v(89).as('x').outE.inV.loop('x'){it.loops < 3}.path
+[AsPipe(x,GremlinStartPipe), LoopPipe([VertexQueryPipe(out,[],edge), InVertexPipe]), PathPipe]
+==>null
+gremlin> println g.v(89).as('x').out.loop('x'){it.loops < 3}.path
+[AsPipe(x,GremlinStartPipe), LoopPipe([VertexQueryPipe(out,[],vertex)]), PathPipe]
+==>null
+```

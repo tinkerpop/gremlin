@@ -1,0 +1,85 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-running.png|width=125px|align=left|float]]
+
+There are numerous ways to denote the same path expression. The trade off is between readability and speed. To maximize readability, "Groovy closures":http://groovy.codehaus.org/Closures are usually the way to go. While using Groovy closures may make a path expression easier to read, unfortunately, its slower than the corresponding @Pipe@. However, when no corresponding @Pipe@ exists, then a closure is the appropriate solution. This section demonstrates the various ways to express the same path and provides some timing statistics on the graph described in [[Defining a More Complex Property Graph]].
+
+```text
+g = new TinkerGraph()
+g.loadGraphML('data/graph-example-2.xml')
+```
+
+All the examples make use of the following code snippet to determine timing:
+
+```text
+t = System.currentTimeMillis(); ...expression... ; System.currentTimeMillis() - t
+```
+
+h2. Avoid Element Property Selection using Key
+
+Gremlin provides field support for grabbing property values of elements (e.g. vertices/edge) by simply providing the property key as a field selector of the instance. However, while this is convenient, it is slow as it requires Java reflection to resolve the field. If performance is the concern, it is always best to use the raw "Blueprints":http://blueprints.tinkerpop.com API methods even though they tend to be more verbose and less attractive. In general, for "REPLing":http://en.wikipedia.org/wiki/Read-eval-print_loop around a graph, use the more concise representation. For production traversals, use native Blueprints API calls and avoid reflection.
+
+```text
+~50ms: g.E.sideEffect{it.weight}.iterate()
+~5ms: g.E.sideEffect{it.getProperty('weight')}.iterate()
+```
+
+The method call @it.getProperty('weight')@ is much faster as a direct reference to the appropriate Java method is known. Using @it.weight@ is a convenient, but slow convention.
+
+```text
+~1750ms: g.V.outE.filter{it.weight>0}.inV.outE.filter{it.weight>0}.inV.iterate()
+~100ms: g.V.outE.filter{it.getProperty('weight')>0}.inV.outE.filter{it.getProperty('weight')>0}.inV.iterate()
+~60ms: g.V.outE.has('weight',T.gt,0).inV.outE.has('weight',T.gt,0).inV.iterate()
+```
+
+Note that this @Element.key@ is not the same as @Pipe.key@. For instance, @g.E.weight@ is fast as its applied to a Pipe, not to a specific element.
+
+h2. Using Loops
+
+```text
+~850ms: g.v(89).as('x').out.loop('x'){it.loops < 5}.iterate()
+~225ms: g.v(89).out.out.out.out.iterate()
+```
+
+The @loop@ step takes a function that determine whether to loop an object or not (i.e. a "while"). "Unrolling" the loop is more efficient than using @loop@. In many situations, knowing how many times to loop is not known and as such, @loop@ is required. A nifty trick to use is to use code to construct the expression:
+
+```text
+gremlin> pipe = g.v(89)._(); null
+==>null
+gremlin> (1..3).each{
+  pipe = pipe.out;
+}; null
+==>null
+gremlin> pipe
+==>v[81]
+==>v[264]
+==>v[153]
+==>v[160]
+==>v[164]
+...
+gremlin> pipe.toString()
+==>[StartPipe, OutPipe, OutPipe, OutPipe]
+```
+
+h2. Method Notation vs. Property Notation
+
+In many situations, a step looks like an object property from a Java/Groovy perspective. In fact, each step is a method. However, by using the "metaprogramming":http://en.wikipedia.org/wiki/Metaprogramming facilities offered by Groovy, its possible to "trick" Groovy into thinking that a property is a method. For example, assume the following pipeline:
+
+```java
+v.outE.inV.name
+```
+
+This can be re-written in more Java/Groovy friendly syntax as:
+
+```java
+v.outE().inV().name
+```
+
+In the first example, when Groovy realizes that @outE@ is not a property of @v@, it calls the @propertyMissing@ method of the @MetaClass@ of @Vertex@. Gremlin uses this method to say "oh, @outE@ is not a property, its a method. Let me resolve that method and return its value." At which point, Gremlin returns the running @Pipeline@ with the new @OutEdgePipe@ appended to it. What makes this possible is dynamic programming in Groovy and the ability to make a property return the evaluation of a method. 
+
+```java
+Pipe.metaClass.propertyMissing = {final String name ->
+  if (Gremlin.isStep(name)) {
+    return delegate."$name"();
+  } 
+  ...
+}
+```

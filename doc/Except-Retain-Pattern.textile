@@ -1,0 +1,42 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png]]
+
+In many instances its desirable to traverse to only those elements that have not been seen in a previous step. Specific use cases are: 
+
+* "Who are my friends friends that are not already my friends?" 
+* "What is liked by the people that like the same things as me that I don't already like?"
+
+The solution to these types of problems is provided by the except pattern. Its opposite is the retain pattern--only traverse to those vertices that have been seen in a previous step.
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()                                                               
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.v(1).out
+==>v[2]
+==>v[3]
+==>v[4]
+gremlin> g.v(1).out.out
+==>v[5]
+==>v[3]
+```
+
+Both the first and the second emit @v[3]@. To ensure that @v[3]@ is not traversed to on the second step, its necessary to save the results seen after the first @out@. There are three high-level pipes called @aggregate@, @except@, and @retain@. In the examples below, @x@ stores all the values seen up to the @aggregate@ step. Note that, everything in @out@ is "drained" into @x@ before going to the next @out@.
+
+```text
+gremlin> x = []
+gremlin> g.v(1).out.aggregate(x).out.except(x)
+==>v[5]
+```
+
+```text
+gremlin> x = []
+gremlin> g.v(1).out.aggregate(x).out.retain(x)
+==>v[3]
+```
+
+With named steps it is possible to @except@ and @retain@ previously (and actually forward) objects in the pipeline.
+
+```text
+gremlin> g.v(1).as('x').out('created').in('created').except('x')
+==>v[4]
+==>v[6]
+```

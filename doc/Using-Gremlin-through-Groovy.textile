@@ -1,0 +1,170 @@
+!http://groovy.codehaus.org/download/attachments/1866/groovydukemed.jpg!
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-groovy</artifactId>
+  <version>??</version>
+</dependency>
+```
+
+Gremlin Groovy works by using the "metaprogramming":http://en.wikipedia.org/wiki/Metaprogramming facilities provided by "Groovy":http://groovy.codehaus.org/. Groovy is used to compile Gremlin syntax down to raw Java "Pipes":http://pipes.tinkerpop.com.
+
+h2. Groovy Classes with Gremlin
+
+If you are using Groovy classes, its trivial to access Gremlin. In this way, your Java code and your Gremlin/Groovy code seamless interact through standard class mechanisms (i.e. method invocations). There is a Groovy class called @Gremlin.groovy@. To use Gremlin while in Groovy, simply invoke @Gremlin.load()@.
+
+```java
+class SimpleExample { 
+  static {
+    Gremlin.load()
+  }
+  public List exampleMethod() {
+    Graph g = TinkerGraphFactory.createTinkerGraph()
+    def results = []
+    g.v(1).out('knows').fill(results)
+    return results
+  }
+}
+```
+
+h2. Java Classes talking to Groovy Classes with Gremlin
+
+Here is a typical used pattern when mixing Gremlin/Groovy and Java classes. In this example, the Java class calls the methods of the Groovy class as if it were a Java class. This is one of the benefits of Groovy--it works seamlessly within a larger Java project while providing useful language features and, of course, Gremlin.
+
+```java
+// a Groovy class
+class GraphAlgorithms {
+  static { 
+    Gremlin.load() 
+  }
+  
+  public static Map<Vertex, Integer> eigenvectorRank(Graph g) {  
+    Map<Vertex,Integer> m = [:]; int c = 0
+    g.V.as('x').out.groupCount(m).loop('x') {c++ < 1000}.iterate()
+    return m
+  }
+}
+
+// a Java class
+public class GraphFramework {
+  public static void main(String[] args) {
+    System.out.println(GraphAlgorithms.eigenvectorRank(new Neo4jGraph("/tmp/graphdata")));
+  }
+}
+```
+
+Finally, if you build with "Maven2":http://maven.apache.org/, here are some useful snippets that you can add to your @pom.xml@
+
+```xml
+<dependency>
+  <groupId>org.codehaus.groovy</groupId>
+  <artifactId>groovy</artifactId>
+  <version>??</version>
+</dependency>
+<!-- PROJECT BUILDING WITH GROOVY/JAVA -->
+<dependency>
+   <groupId>org.codehaus.groovy.maven</groupId>
+   <artifactId>gmaven-plugin</artifactId>
+   <version>1.3</version>
+</dependency>
+<plugin>
+  <groupId>org.codehaus.groovy.maven</groupId>
+  <artifactId>gmaven-plugin</artifactId>
+  <version>1.3</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generateStubs</goal>
+        <goal>compile</goal>
+        <goal>generateTestStubs</goal>
+        <goal>testCompile</goal>
+       </goals>
+       <configuration>
+         <providerSelection>1.7</providerSelection>
+       </configuration>
+    </execution>
+  </executions>
+</plugin>
+```
+
+h2. Gremlin and Groovy Shell
+
+Gremlin shell (@gremlin.sh@) is basically the "Groovy shell":http://groovy.codehaus.org/Groovy+Shell wrapped to have the Gremlin look and feel and some other small tweaks. For example, do @\h@ at the @gremlin>@ prompt to get the Groovy shell help.
+
+To get the version of Gremlin @gremlin.sh@ do:
+
+```text
+gremlin.sh -v
+gremlin x.y.z-SNAPSHOT
+```
+
+To initialize Gremlin with a script that executes at startup do:
+
+```text
+gremlin.sh init.groovy
+```
+
+Starting Gremlin with a script is useful for initializing the environment with [[User Defined Steps]] or other settings.
+
+To simply execute a script without starting the console do:
+
+```text
+gremlin.sh -e do-some-work.groovy
+```
+
+h3. Use of External Jars
+
+External @jar@ files can be used within Gremlin in one of two ways:
+
+# Manually copy the @jar@ files to the Gremlin path (i.e. the @GREMLIN_HOME/lib@ directory. 
+# @Gremlin.use()@ (which utilizes "Grape":http://groovy.codehaus.org/Grape) from the Gremlin prompt.
+
+Using @Gremlin.use()@ is helpful in that it helps handle versions and dependencies of the library being used automatically.  Consider the following example utilizing "gmongo":https://github.com/poiati/gmongo:
+
+```text
+gremlin> Gremlin.use('com.gmongo','gmongo','1.2')
+==>null
+```
+
+In either approach (manual @jar@ copy or Grape), classes to be used must first be imported prior to use:
+
+```text
+gremlin> import com.gmongo.GMongo
+==>import com.tinkerpop.gremlin.*
+==>import com.tinkerpop.gremlin.java.*
+==>import com.tinkerpop.gremlin.pipes.filter.*
+...
+==>import com.gmongo.GMongo
+gremlin> mongo = new GMongo()
+==>com.gmongo.GMongo@3717ee94
+```
+
+In addition to simply pulling in dependencies, @Gremlin.use()@ also tries to load [[Console Plugins|Writing Gremlin REPL Plugins]] from the dependencies.  Plugins can do things like extend the Gremlin language or auto-import certain classes so that they don't need to be done manually.
+
+The following code sample shows how to view the list of imported dependencies via @Gremlin.use()@:
+
+```text
+gremlin> Gremlin.deps()
+==>{group=com.gmongo, module=gmongo, version=1.2}
+```
+
+*NOTE* - Be aware that @Gremlin.use()@ may not properly update @SNAPSHOT@ dependencies.  How well that works is generally dependent on the underlying dependency resolver and the local environment.  The surefire way to deal with @SNAPSHOT@ dependencies is to delete them from the Grape cache prior to calling @Gremlin.use()@.
+
+*NOTE* - You can add other Maven repositories directly with Grape as follows:
+
+```text
+Grape.addResolver([name: 'sonatype-snapshots', root: 'https://oss.sonatype.org/content/repositories/snapshots', m2Compatible: 'true'])
+```
+
+h3. Use from Groovy Shell
+
+Its recommended that you use @gremlin.sh@ for terminal work, however, this subsection is provided for those that use Groovy shell exclusively.
+
+```text
+marko:~$ groovysh 
+Groovy Shell (1.7.2, JVM: 1.6.0_22)
+Type 'help' or '\h' for help.
+-------------------------------------------------------------------------------
+groovy:000> com.tinkerpop.gremlin.groovy.Gremlin.load()
+```

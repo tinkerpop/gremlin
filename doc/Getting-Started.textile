@@ -1,0 +1,166 @@
+[[https://raw.github.com/tinkerpop/gremlin/master/doc/images/gremlin-lab-coat.png|float|align=left|width=300px]]
+
+Welcome to Gremlin. Gremlin is a "domain specific language":http://en.wikipedia.org/wiki/Domain-specific_language for traversing "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Graphs are data structures where there exists vertices (i.e. dots, nodes) and edges (i.e. lines, arcs). Gremlin was designed to work with a type of graph called a property graph. Property graphs are defined, in detail, in the [[Defining a Property Graph]] section of this documentation. By using Gremlin, it is possible make use of a "REPL":http://en.wikipedia.org/wiki/Read-eval-print_loop (command line/console) to interactively traverse a graph.
+
+<br/>
+
+h2. Installing Gremlin
+
+Here are the steps to get Gremlin up and running. Either @git clone@ from @http://github.com/tinkerpop/gremlin.git@ and build the latest version of Gremlin or you can download a pre-built version. For the latter, follow the steps below.
+
+# Download the latest distribution of Gremlin from "downloads":https://github.com/tinkerpop/gremlin/wiki/Downloads.
+# Unzip the downloaded @gremlin-xx.zip@ and @cd@ to the @gremlin-xx/@ directory it creates.
+# Run @gremlin.sh@ (unix) or @gremin.bat@ (windows) in the @bin@ directory to start the Gremlin console.
+
+h2. Using the Gremlin Console
+
+```text
+marko$ ./bin/gremlin.sh 
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin>
+```
+
+Note that using the @gremlin.bat@ requires backslashes instead of forwardslashes at the command line.
+
+Thats it. The default Gremlin Groovy console is loaded and ready for commands. Please review Groovy for help on Groovy-related constructs. In short, Groovy is a superset of Java. What works in Java, works in Groovy. However, Groovy provides many shorthands to make it easier to interact with the Java API. Moreoever, Gremlin provides many neat shorthands to make it easier to express paths through a property graph.
+
+```text
+gremlin> i = 'goodbye'
+==>goodbye
+gremlin> j = 'self'
+==>self
+gremlin> i + " " + j
+==>goodbye self
+gremlin> "${i} ${j}"
+==>goodbye self
+```
+
+We will use a simple, 6 vertex/6 edge, graph that is provided with Gremlin and is fully diagrammed in [[Defining a Property Graph]]. This graph is used so much throughout the documentation that it is hard coded and can be constructed using the @TinkerGraphFactory.createTinkerGraph()@ factory method.
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+gremlin> g.class
+==>class com.tinkerpop.blueprints.impls.tg.TinkerGraph
+gremlin> // lets look at all the vertices
+gremlin> g.V
+==>v[3]
+==>v[2]
+==>v[1]
+==>v[6]
+==>v[5]
+==>v[4]
+gremlin> // lets look at all the names of those vertices
+gremlin> g.V.name
+==>lop
+==>vadas
+==>marko
+==>peter
+==>ripple
+==>josh
+gremlin> // lets look at all the properties of those vertices
+gremlin> g.V.map
+==>{name=lop, lang=java}
+==>{name=vadas, age=27}
+==>{name=marko, age=29}
+==>{name=peter, age=35}
+==>{name=ripple, lang=java}
+==>{name=josh, age=32}
+gremlin> // lets look at all the edges
+gremlin> g.E
+==>e[10][4-created->5]
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+==>e[11][4-created->3]
+==>e[12][6-created->3]
+gremlin> v = g.v(1)
+==>v[1]
+gremlin> v.name + ' is ' + v.age + ' years old.'
+==>marko is 29 years old.
+gremlin> // lets do a traversal from the '1' marko vertex to the adjacent outgoing vertices.
+gremlin> v.out
+==>v[2]
+==>v[3]
+==>v[4]
+gremlin> // lets only take 'knows' labeled edges
+gremlin> v.out('knows')
+==>v[2]
+==>v[4]
+gremlin> // lets do a traversal from the '1' marko vertex to its outgoing edges.
+gremlin> // in the property graph world, edges are first class citizens that can be traversed to.
+gremlin> v.outE
+==>e[7][1-knows->2]
+==>e[9][1-created->3]
+==>e[8][1-knows->4]
+gremlin> v.outE('knows')
+==>e[7][1-knows->2]
+==>e[8][1-knows->4]
+gremlin> // what are the weight values on all outgoing edges
+gremlin> v.outE.weight
+==>0.5
+==>0.4
+==>1.0
+gremlin> // lets only traverse to the head vertices of those edges
+gremlin> // that have a weight that is less than 1.0
+gremlin> v.outE.has('weight', T.lt, 1.0f).inV
+==>v[2]
+==>v[3]
+gremlin> // lets do the same, but with a more general "filter closure"
+gremlin> v.outE.filter{it.weight < 1.0}.inV
+==>v[2]
+==>v[3]                           
+gremlin> // lets get the property maps of these vertices.
+gremlin> v.outE.filter{it.weight < 1.0}.inV.map
+==>{name=vadas, age=27}
+==>{name=lop, lang=java}
+gremlin> // lets traverse to marko's 30+ year old friends' created projects
+gremlin> v.out('knows').filter{it.age > 30}.out('created').name
+==>ripple
+==>lop
+```
+
+What was presented is some of the basic functionality in Gremlin. The remainder of this documentation will discuss path construction and their use in performing graph algorithms on property graph structures.
+
+h2. Tips on the Gremlin Console
+
+Its always handy to add the following to the @.bash_profile@.
+
+```bash
+alias gremlin="/Users/marko/software/gremlin/bin/gremlin.sh"
+```
+
+If you are a Windows user, you can do the following.
+
+```text
+doskey gremlin=cd C:\Users\marko\software\gremlin\bin\$tgremlin.bat
+```
+
+
+```text
+~$ gremlin
+
+         \,,,/
+         (o o)
+-----oOOo-(_)-oOOo-----
+gremlin>
+```
+
+Finally, Gremlin scripts can be executed from the command line. To do so, simply create a Gremlin script file (e.g. in Groovy).
+
+```text
+for(i in 1..3)
+  println i
+```
+
+Now you can evaluate the script using @gremlin.sh@ with the parameter for @-e@ being set to the script to execute.
+
+```text
+marko$ ./bin/gremlin.sh -e example.groovy
+1
+2
+3
+marko$
+```

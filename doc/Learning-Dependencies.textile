@@ -1,0 +1,35 @@
+Gremlin is part of a larger eco-system of technologies. The primary technologies to understand when using Gremlin are itemized below.
+
+* "Blueprints":http://blueprints.tinkerpop.com: A library to interact with various graph software vendors.
+* "Pipes":http://pipes.tinkerpop.com: A library for computing using data flows.
+* "Groovy":http://groovy.codehaus.org: The default host language for Gremlin.
+
+h2. Blueprints
+
+!https://github.com/tinkerpop/blueprints/raw/master/doc/images/blueprints-logo.png!
+
+"Blueprints":http://blueprints.tinkerpop.com can be considered the "JDBC":http://en.wikipedia.org/wiki/Java_Database_Connectivity of the graph database community. It provides a set of interfaces that when implemented, yield a Blueprints-enabled graph database. The "TinkerPop graph stack":http://tinkerpop.com is all predicated on Blueprints and the databases that support Blueprints.
+
+Given that Gremlin is hosted by various JVM languages, it is possible to make use of the Blueprints API from within these other JVM languages. In this way, all the utilities provided in Blueprints are easily accessible. In essence, Gremlin is a shorthand notation for many of the access patterns used when dealing with Blueprints.
+
+h2. Pipes
+
+!https://github.com/tinkerpop/pipes/raw/master/doc/images/pipes-logo.png!
+
+"Pipes":http://pipes.tinkerpop.com is a "data flow framework":http://en.wikipedia.org/wiki/Dataflow_programming written in Java. Gremlin extends Pipes to support data flow processing of Blueprints-enabled graph databases. Pipes boasts a lazy evaluation model that yields memory efficient graph traversal algorithms. When coding in Pipes, in Java, code can be very verbose. Gremlin simplifies this process by compiling its shorthand notation down to Pipes. In essence, Gremlin is a Pipes compiler for other JVM languages.
+
+h2. Groovy
+
+!http://media.xircles.codehaus.org/_projects/groovy/_logos/medium.png!
+
+"Groovy":http://groovy.codehaus.org is a "dynamic language":http://en.wikipedia.org/wiki/Dynamic_programming_language that serves as a superset of Java. It provides "metaprogramming":http://en.wikipedia.org/wiki/Metaprogramming facilities through the "Java Reflection API":http://java.sun.com/developer/technicalArticles/ALT/Reflection/ and as such, easily supports the creation of "domain specific languages":http://en.wikipedia.org/wiki/Domain-specific_language. 
+
+Gremlin is a particular DSL that manipulates the @MetaClass@ of various objects. Beyond that, Gremlin is full Groovy. All constructs such as variable setting, looping, branching, closures, currying, etc. are all provided to Gremlin through the Groovy language. Finally, Groovy works seamlessly with Java and vice versa. The benefit of this is that Gremlin developers are able to easily use the "Java API":http://java.sun.com/javase/6/docs/api/ in their algorithms.
+
+Here is a collection of introductory texts on Groovy that may be helpful:
+
+* "Groovy Recipes":http://www.amazon.com/Groovy-Recipes-Greasing-Pragmatic-Programmers/dp/0978739299
+* "http://en.wikipedia.org/wiki/Groovy_%28programming_language%29":http://en.wikipedia.org/wiki/Groovy_%28programming_language%29
+* "http://www.heatonresearch.com/content/introduction-groovy":http://www.heatonresearch.com/content/introduction-groovy
+* "http://hanuska.blogspot.com/2008/12/easy-groovy-iteration.html":http://hanuska.blogspot.com/2008/12/easy-groovy-iteration.html
+* "http://www.ibm.com/developerworks/java/library/j-alj08034.html":http://www.ibm.com/developerworks/java/library/j-alj08034.html

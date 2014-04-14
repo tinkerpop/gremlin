@@ -1,0 +1,141 @@
+!https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png!
+
+The path that a traverser takes through a graph can be see as a tree where the root of the tree is the source of the traversal and the branches are the various paths emanating from that root (respective of the provided path description). Note that a traversal can have multiple sources and thus, the respective traversal tree can have multiple roots. Gremlin provides the ability to collect this traversal tree information via the @tree@-step.
+
+h2. Creating a Traversal Tree
+
+The example to follow makes use of the toy TinkerPop graph diagrammed [[here|Defining a Property Graph]].
+
+```text
+gremlin> g = TinkerGraphFactory.createTinkerGraph()
+==>tinkergraph[vertices:6 edges:6]
+```
+
+The @tree@-step makes use of the path information of the step to construct an internal embedded map. This map is the tree representation of the traversal. First, look at the serial paths of a traversal.
+
+```text
+gremlin> g.v(1).out.out.path
+==>[v[1], v[4], v[5]]
+==>[v[1], v[4], v[3]]
+```
+
+These serial paths provide the requisite information about the tree nature of the traversal. The purpose of @tree@ is to capture this inherent structure as a tree data structure.
+
+```text
+gremlin> g.v(1).out.out.tree.cap
+==>{v[1]={v[4]={v[3]={}, v[5]={}}}}
+```
+
+```text
+{
+  v[1]={
+    v[4]={
+      v[3]={}, 
+      v[5]={}
+    }
+  }
+}
+```
+ 
+If closures are provided to @tree@, then the closures are evaluated in a round-robin fashion against the objects of the path.
+
+```text
+gremlin> g.v(1).out.out.tree{it.name}.cap
+==>{marko={josh={lop={}, ripple={}}}}
+```
+
+```text
+{
+  marko={
+    josh={
+      lop={}, 
+      ripple={}
+    }
+  }
+}
+```
+
+h2. Working with a Tree
+
+The tree data structure can be walked using Groovy map notation as @Tree@ is a @java.util.Map<T, Tree<T>>@. Note that the leaves of the tree are those maps where the key has an empty map value. For non-Groovy Gremlin implementations, it is possible to, in native Java, simply do: @tree.get("marko").get("josh")@.
+
+```text
+gremlin> tree = g.v(1).out.out.tree{it.name}.cap.next()
+==>marko={josh={lop={}, ripple={}}}
+gremlin> tree.marko.josh
+==>lop={}
+==>ripple={}
+```
+
+If a @Tree@ is provided to @tree@, then that is the side-effect that can be accessed like any other variable.
+
+```text
+gremlin> t = new Tree()
+gremlin> g.v(1).out.out.tree(t){it.name}
+==>v[5]
+==>v[3]
+gremlin> t
+==>marko={josh={lop={}, ripple={}}}
+```
+
+Moreover, there are numerous helper methods in @Tree@ that can be invoked.
+
+```text
+gremlin> t.getLeafObjects()
+==>lop
+==>ripple
+gremlin> t.getLeafTrees()
+==>{lop={}}
+==>{ripple={}}
+gremlin> t.getObjectsAtDepth(2)
+==>josh
+gremlin> t.getObjectsAtDepth(3)
+==>lop
+==>ripple
+gremlin> t.getTreesAtDepth(3)
+==>{lop={}, ripple={}}
+```
+
+h2. Multi-Object Trees
+
+The @Tree@ data structure is not limited to only vertices in a graph. It is possible to store anything touched in the traversal as an object of the traversal tree.
+
+```text
+gremlin> g.v(1).optimize(false).outE.inV.out.name.tree.cap       
+==>{v[1]={e[8][1-knows->4]={v[4]={v[3]={lop={}}, v[5]={ripple={}}}}}}
+```
+
+```text
+{
+  v[1]={
+    e[8][1-knows->4]={
+      v[4]={
+        v[3]={
+          lop={}
+        }, 
+        v[5]={
+        ripple={}
+        }
+      }
+    }
+  }
+}
+```
+
+h2. Looping and Range Filters
+
+It is possible to make use of the @tree@-step during a loop. For the following examples, the [[Grateful Dead graph|Defining a More Complex Property Graph]] will be used.
+
+```text
+gremlin> g = new TinkerGraph()
+==>tinkergraph[vertices:0 edges:0]
+gremlin> g.loadGraphML('data/graph-example-2.xml')
+==>null
+```
+
+As can be seen, it is possible to use @loop@ to construct the tree. Moreover, by using a range filter (e.g. @[0..100]@) it is possible to limit the number of paths stored in the tree data structure.
+
+```text
+gremlin> g.v(89).as('x').out.loop('x'){it.loops < 3}[0..100].tree{it.name}.cap.next()
+==>DARK STAR={EYES OF THE WORLD={CHINA DOLL={}, DANCIN IN THE STREETS={}, STELLA BLUE={}, LOST SAILOR={}, PLAYING IN THE BAND={}, UNBROKEN CHAIN={}, BLACK PETER={}, BIG RIVER={}, BOX OF RAIN={}, THE MUSIC NEVER STOPPED={}, THROWING STONES={}, LOOKS LIKE RAIN={}, WHY DONT WE DO IT IN THE ROAD={}, LET ME SING YOUR BLUES AWAY={}, ESTIMATED PROPHET={}, MORNING DEW={}, HES GONE={}, CORINA={}, WOMEN ARE SMARTER={}, WALKING BLUES={}, ONE MORE SATURDAY NIGHT={}, WHARF RAT={}, WEATHER REPORT SUITE={}, GOING DOWN THE ROAD FEELING BAD={}, DONT NEED LOVE={}, TRUCKING={}, SAMSON AND DELILAH={}, DRUMS={}, PROMISED LAND={}, FIRE ON THE MOUNTAIN={}, I WILL TAKE YOU HOME={}, Garcia={}, LET IT GROW={}, PICASSO MOON={}, THE OTHER ONE={}, SUGAR MAGNOLIA={}, SAMBA IN THE RAIN={}, FOOLISH HEART={}, ME AND MY UNCLE={}, Hunter={}, SHIP OF FOOLS={}, I NEED A MIRACLE={}, NOT FADE AWAY={}, SAINT OF CIRCUMSTANCE={}, LONG WAY TO GO HOME={}, ETERNITY={}, IT MUST HAVE BEEN THE ROSES={}, MAYBE YOU KNOW HOW I FEEL={}, GOOD TIME BLUES={}, DARK STAR={}}, TRUCKING={FRANKLINS TOWER={}, GOOD LOVING={}, BERTHA={}, NEW MINGLEWOOD BLUES={}, GIMME SOME LOVIN={}, STELLA BLUE={}, ROLLIN AND TUMBLIN={}, SUGAREE={}, EYES OF THE WORLD={}, JACK STRAW={}, PLAYING IN THE BAND={}, SPOONFUL={}, NEW SPEEDWAY BOOGIE={}, SMOKESTACK LIGHTNING={}, CRAZY FINGERS={}, THROWING STONES={}, DEAL={}, AROUND AND AROUND={}, HEAVEN HELP THE FOOL={}, SPANISH JAM={}, MORNING DEW={}, HES GONE={}, IKO IKO={}, ONE MORE SATURDAY NIGHT={}, I JUST WANNA MAKE LOVE TO YOU={}, TOUCH OF GREY={}, WEATHER REPORT SUITE={}, GOING DOWN THE ROAD FEELING BAD={}, TERRAPIN STATION={}, NOBODYS FAULT BUT MINE={}, ALABAMA GETAWAY={}, COMES A TIME={}, SCARLET BEGONIAS={}, DRUMS={}, LAZY RIVER={}, THAT WOULD BE SOMETHING={}, GOOD MORNING LITTLE SCHOOL GIRL={}, LET IT GROW={}, BIRD SONG={}, SHAKEDOWN STREET={}, SUGAR MAGNOLIA={}, THE OTHER ONE={}, SAMBA IN THE RAIN={}, CHINA CAT SUNFLOWER={}, I NEED A MIRACLE={}, RAMBLE ON ROSE={}, WANG DANG DOODLE={}, NOT FADE AWAY={}, OTHER ONE JAM={}, ROW JIMMY={}, THE ELEVEN={}}}
+```

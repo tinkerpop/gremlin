@@ -1,0 +1,27 @@
+Developers who wish to extend the features of the Gremlin REPL can do so by writing a plugin.  Common use cases for plugin development include:
+
+* Not all Blueprints implementations are distributed via the Gremlin distribution.  A plugin provides a common way for any Blueprints implementations to be accessible in the REPL.
+* Third-party developers who implement Blueprints, may wish to extend the Gremlin language with new features specific to their database.
+* Extend the Gremlin language to include a convenient overload to an existing step or include entirely new functions to the language itself.
+
+Users can load plugins with the @Gremlin.use()@ function which is described in greater detail "here":Using-Gremlin-through-Groovy#use-of-external-jars.
+
+h2. Writing a Plugin
+
+To write a plugin, first implement the @com.tinkerpop.gremlin.groovy.console.ConsolePlugin@ interface.  It has two methods to implement: @getName@ and @pluginTo@.  The @getName@ method simply returns the "name" of the plugin.  This name must be unique within the list of plugins loaded to the REPL at any given point.  If a naming conflict occurs, the second plugin to be loaded with that name will be ignored.
+
+The @pluginTo@ method has the following signature:
+
+```java
+void pluginTo(final ConsoleGroovy groovy, final ConsoleIO io, final Map args);
+```
+
+This method gets called when the @Gremlin.use()@ function is called and after all dependencies have been loaded by "Grape":http://groovy.codehaus.org/Grape.  The reference to @ConsoleGroovy@ allows the execution of arbitrary Groovy within the context of the REPL.  For example, a common function of a plugin would be to auto-import classes for users that are relevant to the plugin:
+
+```java
+groovy.execute("import org.apache.commons.math3.util.FastMath");
+```
+
+The @ConsoleIO@ argument allows the plugin to write something to the console for the caller to see and the @Map@ argument contains any arguments that were passed to @Gremlin.use()@.  
+
+Once the implementation of the @ConsolePlugin@ has been written, it must be made available such that the @Gremlin.use()@ function can find it at runtime.  Gremlin uses "ServiceLoader":http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html to lookup plugin implementations at runtime.  Therefore, to make the implementation known, add a @com.tinkerpop.gremlin.groovy.console.ConsolePlugin@ file to the @META-INF/services@ of the package plugin.  The file should list the fully qualified name of the @ConsolePlugin@ class.

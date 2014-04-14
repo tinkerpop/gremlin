@@ -1,0 +1,91 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-logo.png|height=143px]] <a href="https://github.com/tinkerpop/gremlin/wiki/Downloads">[[https://github.com/tinkerpop/blueprints/raw/master/doc/images/tinkerpop-download.png|align=right|float]]</a>
+
+Gremlin is a graph traversal language. The documentation herein will provide all the information necessary to understand how to use Gremlin for graph query, analysis, and manipulation. Gremlin works over those graph databases/frameworks that implement the "Blueprints":http://blueprints.tinkerpop.com property graph data model. Gremlin is a style of graph traversal that can be used in various "JVM languages":http://en.wikipedia.org/wiki/List_of_JVM_languages. This distribution of Gremlin provides support for Java and "Groovy":http://groovy.codehaus.org/. Except where otherwise stated, the documentation herein is respective of the Groovy implementation (minor syntactic tweaks are required to map the ideas over to other JVM implementations).
+
+Please join the Gremlin users group at "http://groups.google.com/group/gremlin-users":http://groups.google.com/group/gremlin-users for all "TinkerPop":http://tinkerpop.com related discussions. [1]
+
+```text
+// calculate basic collaborative filtering for vertex 1
+m = [:]
+g.v(1).out('likes').in('likes').out('likes').groupCount(m)
+m.sort{-it.value}
+
+// calculate the primary eigenvector (eigenvector centrality) of a graph
+m = [:]; c = 0;
+g.V.as('x').out.groupCount(m).loop('x'){c++ < 1000}
+m.sort{-it.value}
+```
+* "GremlinDocs":http://gremlindocs.com/ (*easy reference manual*)
+* "SQL2Gremlin":http://sql2gremlin.com/ (*easy reference manual*)
+
+==<hr/>==
+* [[The Benefits of Gremlin]]
+* Basic Concepts
+  ** [[Getting Started]]
+  ** [[Learning Dependencies]]
+  ** [[Defining a Property Graph]]
+  ** [[Basic Graph Traversals]]
+  ** Gremlin API
+    **** [[Gremlin Steps]] (*cheat sheet*)
+      ****** "GremlinPipeline JavaDoc":http://tinkerpop.com/docs/javadocs/gremlin/2.4.0/com/tinkerpop/gremlin/java/GremlinPipeline.html  (*definitive*)
+    **** [[Gremlin Methods]] (*cheat sheet*)
+      ****** [[Updating a Graph]]
+* Intermediate Concepts
+  ** [[Defining a More Complex Property Graph]]
+  ** Traversal Patterns
+    **** [[Backtrack Pattern]]
+    **** [[Except/Retain Pattern]]
+    **** [[Flow Rank Pattern]]
+    **** [[Path Pattern]]
+    **** [[Loop Pattern]]
+    **** [[Split/Merge Pattern]]
+    **** [[MapReduce Pattern]]
+    **** [[Pattern Match Pattern]]
+    **** [[Tree Pattern]]
+  ** [[Step Closures]]
+  ** [[User Defined Steps]]
+  ** [[Depth-First vs. Breadth-First]]
+  ** [[Traversal Optimization]]
+  ** [[Writing Gremlin REPL Plugins]]
+* Graph Framework Connectors
+  ** [[Using JUNG]]
+  ** [[SPARQL vs. Gremlin]]
+  ** [[LinkedData Sail]] (Traversing the Web of Data)
+* [[JVM Language Implementations]] (*cheat sheet*)
+  ** Gremlin Java
+  **** [[Using Gremlin through Java]]
+  ** Gremlin Groovy
+  **** [[Using Gremlin through Groovy]]
+  **** [[Gremlin Groovy Path Optimizations]]
+  ** [[Gremlin Scala|https://github.com/mpollmeier/gremlin-scala]] (*third-party*)
+  ** [[Gremlin Clojure|http://github.com/olabini/clj-gremlin]] (*third-party*)
+  ** [[Gremlin Clojure (Ogre)|http://ogredocs.com/]] (*third-party*)
+  ** [[Gremlin JavaScript|https://github.com/inolen/gremlin-node]] (*third-party*)
+  ** [[Gremlin JRuby (Pacer)|http://pangloss.github.com/pacer/]] (*third-party*)
+* Conclusion
+  ** [[Troubleshooting]]
+  ** [[Acknowledgments]]
+  ** [[Release Notes]]
+
+"The Graph Traversal Programming Pattern":http://windycitydb.org/videos2010/#5 (*Presentation of Basic Graph Traversal Concepts*)
+"On the Nature of Pipes":http://markorodriguez.com/2011/08/03/on-the-nature-of-pipes/ (*Understand the Gremlin Engine*)
+"Gremlin Tutorial 1":http://www.youtube.com/watch?v=5wpTtEBK4-E (*Screencast of Gremlin 0.7*)
+"Gremlin Tutorial 2":http://windycitydb.org/videos2011/#1 (*Presentation of Gremlin 1.1*)
+
+==<hr/>==
+
+```xml
+<!-- * can be java, groovy, or test -->
+<dependency>
+   <groupId>com.tinkerpop.gremlin</groupId>
+   <artifactId>gremlin-*</artifactId>
+   <version>2.5.0</version>
+</dependency>
+```
+
+Non-Maven users can get the raw release jars from Apache's "Central Repository":http://maven.org.  Snapshots can be obtained from "Sonatype":https://oss.sonatype.org/content/repositories/snapshots/  (see "Maven Repositories":https://github.com/tinkerpop/homepage/wiki/Maven-Repositories for more information).
+
+fn1. Gremlin documentation is up to date with the current Gremlin "codebase":http://github.com/tinkerpop/gremlin/tree/master, not with the latest Gremlin release.
+
+Gremlin JavaDoc: "2.5.0":http://tinkerpop.com/docs/javadocs/gremlin/2.5.0/ - "2.4.0":http://tinkerpop.com/docs/javadocs/gremlin/2.4.0/ - "2.3.0":http://tinkerpop.com/docs/javadocs/gremlin/2.3.0/ - "2.2.0":http://tinkerpop.com/docs/javadocs/gremlin/2.2.0/ -  "2.1.0":http://tinkerpop.com/docs/javadocs/gremlin/2.1.0/ - "2.0.0":http://tinkerpop.com/docs/javadocs/gremlin/2.0.0/ 
+Gremlin WikiDoc: "2.5.0":http://tinkerpop.com/docs/wikidocs/gremlin/2.5.0/Home.html - "2.4.0":http://tinkerpop.com/docs/wikidocs/gremlin/2.4.0/Home.html - "2.3.0":http://tinkerpop.com/docs/wikidocs/gremlin/2.3.0/Home.html - "2.2.0":http://tinkerpop.com/docs/wikidocs/gremlin/2.2.0/Home.html - "2.1.0":http://tinkerpop.com/docs/wikidocs/gremlin/2.1.0/Home.html - "2.0.0":http://tinkerpop.com/docs/wikidocs/gremlin/2.0.0/Home.html

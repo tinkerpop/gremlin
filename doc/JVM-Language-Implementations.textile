@@ -1,0 +1,73 @@
+Gremlin is a style of graph traversing that can be hosted in any number of JVM languages. The only requirements of the host language are that it supports:
+
+* *Function composition*: traversals are specified imperatively, where each function in a series performs some computation that directs the traverser through the graph in a directed, algorithmic fashion.
+* *Iteration*: without iteration, each step/function in a path expression would yield a complete set of intermediate results. For traversals that touch large parts of the graph, memory issues can ensue.
+* *Function closure*: to ensure arbitrary computations, it is necessary to allow the user to specify closures (e.g. anonymous functions) that augment the generic steps of the language.
+
+When a language has these features, it can host Gremlin-style graph traversing. The benefit of this is that users can make use of the programming language they are most comfortable with. This model is different than, lets say, using "SQL":http://en.wikipedia.org/wiki/SQL in Java where the query is evaluated by passing a string representation of the query to the SQL engine. On the contrary, with native Gremlin support for other JVM languages, there is no string passing. Instead, all there exists is simple method chaining in Gremlin's fluent style. However, the drawback of this model is that for each JVM language, there are syntactic variations that must be accounted for.
+
+The examples below demonstrate the same traversal in "Groovy":http://groovy.codehaus.org/ and "Java":http://java.com/, respectively.
+
+<img width="175" src="http://groovy.codehaus.org/images/groovy-logo-medium.png" /> <img width="175" src="http://cdn3.digitaltrends.com/wp-content/uploads/2010/11/java-logo.jpg" />
+
+*How to read the examples to follow*
+```text
+Groovy version
+Java version
+```
+
+<hr/>
+
+*Iterate through all the vertices in the graph*
+```text
+g.V
+new GremlinPipeline(g).V()
+```
+
+*Iterate through all the vertices that vertex 1 knows*
+```text
+g.v(1).out('knows')
+new GremlinPipeline(g.getVertex(1)).out("knows")
+```
+
+*Iterate through the names of all the vertices that vertex 1 knows*
+```text
+g.v(1).out('knows').name
+new GremlinPipeline(g.getVertex(1)).out("knows").property("name")
+```
+
+*Iterate through the names of all the vertices that vertex 1 knows whose age is greater than 30*
+```text
+g.v(1).out('knows').has('age',T.gt,30).name
+new GremlinPipeline(g.getVertex(1)).out("knows").has("age",T.gt,30).property("name")
+```
+
+*Iterate though all vertices that vertex 1 knows whose name starts with 'j'*
+```text
+g.v(1).out.filter{it.name.startsWith('j')}
+
+new GremlinPipeline(g.getVertex(1)).out().filter(new PipeFunction<Vertex,Boolean>() { 
+  public Boolean compute(Vertex v) {
+    return v.getProperty("name").startsWith("j");
+  }
+}
+```
+
+*Determine the co-developers of vertex 1*
+
+```text
+g.v(1).out('created').in('created').except([g.v(1)])
+new GremlinPipeline(g.getVertex(1)).out("created").in("created").except(Arrays.asList(g.getVertex(1)))
+```
+
+*Store the weight value of the outgoing edges of vertex 1 into list x*
+```text
+x = []; g.v(1).outE.store(x){it.weight}
+
+List<Double> x = new ArrayList<Double>();
+new GremlinPipeline(g.getVertex(1)).outE().store(x, new PipeFunction<Edge,Double>() {
+  public Double compute(Edge e) {
+    return (Double) e.getProperty("weight");
+  }
+}
+```

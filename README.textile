@@ -7,7 +7,7 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 ** "TinkerGraph":https://github.com/tinkerpop/blueprints/wiki/TinkerGraph in-memory graph
 ** "Neo4j":http://neo4j.org/ graph database
 ** "OrientDB":http://www.orientechnologies.com/ graph database
-** "DEX":http://www.sparsity-technologies.com/dex graph database
+** "Sparksee":http://www.sparsity-technologies.com/#sparksee graph database
 ** "Titan":http://thinkaurelius.github.com/titan/ graph database
 ** "Faunus":http://thinkaurelius.github.com/faunus/ graph analytics engine
 ** "InfiniteGraph":http://www.objectivity.com/products/infinitegraph/ graph database

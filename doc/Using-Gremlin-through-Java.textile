@@ -1,0 +1,143 @@
+[[http://www.mikestratton.net/images/java_duke.png|width=200px]]
+
+```xml
+<dependency>
+  <groupId>com.tinkerpop.gremlin</groupId>
+  <artifactId>gremlin-java</artifactId>
+  <version>??</version>
+</dependency>
+```
+
+h2. Making Use of GremlinPipeline in Java
+
+The example below demonstrates how to use the @GremlinPipeline@ chaining/combinator approach to defining a Gremlin-style graph traversal.
+
+```java
+Graph g = ... // a reference to a Blueprints graph
+GremlinPipeline pipe = new GremlinPipeline();
+pipe.start(g.getVertex(1)).out("knows").property("name");
+```
+
+At the end of line 3, @pipe@ is a @GremlinPipeline@ that will determine the name of the vertice's that vertex 1 knows. Beyond being able to easily construct pipelines, there are various utility methods provided with @GremlinPipeline@. For example, give the @pipe@ constructed in the previous example:
+
+```java
+pipe.next() // the next String name in the pipe
+pipe.next(5) // the next 5 String names in the pipe as a List
+pipe.iterate() // while(true) { pipe.next() } (useful when only side-effects are desired)
+pipe.toList() // fill a list of all the elements in the pipe
+pipe.count() // the number of objects in the pipe
+...
+```
+
+Many of the pipes in Pipes make use of @PipeFunction@. Unfortunately, the way in which "anonymous functions":http://en.wikipedia.org/wiki/Anonymous_function are expressed in Java is through "inner-classes":http://en.wikipedia.org/wiki/Inner_class which can be quite verbose. An example below is presented that uses the @FilterFunctionPipe@ to find all the vertices that vertex 1 knows whose name starts with 'j'.
+
+```java
+new GremlinPipeline(g.getVertex(1)).out("knows").property("name").filter(new PipeFunction<String,Boolean>() {
+  public Boolean compute(String argument) {
+    return argument.startsWith("j");
+  }
+});
+```
+
+In short, a @PipeFunction@ is constructed on the fly with the abstract @compute()@ method defined inline. Of course, the last statement simply returns the @GremlinPipeline@ and thus, more pipes can be appended as demonstrated below. The example below traverses to those things that were created by vertex 1's friends whose names start with 'j'.
+
+```java
+new GremlinPipeline(g.getVertex(1)).out("knows").property("name").filter(new PipeFunction<String,Boolean>() {
+  public Boolean compute(String argument) {
+    return argument.startsWith("j");
+  }
+}).back(2).out("created");
+```
+
+h2. Type Casting
+
+Sometimes the fluent pipeline may not be able to determine the end type, for instance when using the 'back' step. In this example the back step is used to get friends of josh:
+
+```java
+new GremlinPipeline<Vertex, Vertex>(g.getVertices())
+  .as("person").out("knows").has("name", "josh").back("person");
+  //Pipeline is currently Pipeline<Vertex, ?>
+```
+
+It is now impossible to add a filter to the end of this pipe without casting as the type at the end of the pipe is unknown.
+Adding a cast step allows the end type to be manually set without the noise of a java cast.
+
+```java
+new GremlinPipeline<Vertex, Vertex>(g.getVertices())
+  .as("person").out("knows").has("name", "josh").back("person").cast(Vertex.class);
+  //Pipeline is currently Pipeline<Vertex, Vertex>
+```
+
+This means you can either iterate directly over the pipeline as vertices or continue the pipeline in a type safe fashion.
+
+h2. Compiling Gremlin Groovy from Java to Create Pipes
+
+It is possible to use Gremlin in a Java application. The primary way to interact with @Gremlin.groovy@ is through the @Gremlin.compile(String gremlin)@ method. This method creates a @Pipe@ (see "Pipes":http://pipes.tinkerpop.com) that can be iterated. An example is provided below.
+
+```java
+Graph graph = TinkerGraphFactory.createTinkerGraph();
+Pipe pipe = Gremlin.compile("_().out('knows').name");
+pipe.setStarts(new SingleIterator<Vertex>(graph.getVertex(1)));
+for(Object name : pipe) {
+  System.out.println((String) name);
+}
+```
+
+The best way to integrate Gremlin Groovy into a larger Java project is via Groovy/Java class interactions. See [[Using Gremlin through Groovy]] for more information and some examples on how to intercommunicate Gremlin, Groovy, and Java.
+
+h2. Using JSR 223 GremlinGroovyScriptEngine
+
+One of the exciting developments that occurred in Java 1.6+ was the creation of a collection of interfaces that allow developers to tie other languages to the Java virtual machine ("JSR 223":http://www.jcp.org/en/jsr/detail?id=223). In this way, these languages, through a standard set of methods, can be used within any Java 1.6+ application. Thus, it's possible to capitalize on the features of another language when building a Java application. For Java applications that make use of graphs, Gremlin is a prime candidate for inclusion.
+
+The reference implementation of JSR 223 deployed with Java 1.6+ is Mozilla's JavaScript implementation known as "Rhino":http://www.mozilla.org/rhino. Other popular implementations include "Jython":http://www.jython.org, "JRuby":http://jruby.org, and "Groovy":http://groovy.codehaus.org. For an excellent reference to other implementations of JSR 223, please see "https://scripting.dev.java.net":https://scripting.dev.java.net.
+
+Finally, you can learn more about JSR 223 from the articles below.
+
+* O'Conner, J., "Scripting for the Java Platform":http://java.sun.com/developer/technicalArticles/J2SE/Desktop/scripting/, July 2006. 
+* Wu, C., "Build Your Own Language for Java":http://www.javaworld.com/javaworld/jw-04-2006/jw-0424-scripting.html, April 2006.
+
+Gremlin provides two classes that should be communicated with directly when using the Gremlin virtual machine from within a Java application.
+
+* @GremlinGroovyScriptEngine implements ScriptEngine@
+* @GremlinGroovyScriptEngineFactory implements ScriptEngineFactory@
+
+The common way in which to use Gremlin through these interfaces is as follows. First add a text file named @javax.script.ScriptEngineFactory@ to your @META-INF/services@ directory (@ScriptEngineFactory@ is a "service provider":http://java.sun.com/javase/6/docs/technotes/guides/jar/jar.html#Service%20Provider). In that file, add the line @com.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngineFactory@. Now, the @GremlinGroovyScriptEngineFactory@ is available to the @ScriptEngineManager@.
+
+```java
+ScriptEngineManager manager = new ScriptEngineManager();
+ScriptEngine engine = manager.getEngineByName("gremlin-groovy");
+// or, instead of above, simply do:
+//       ScriptEngine engine = new GremlinGroovyScriptEngineFactory().getScriptEngine();
+// or
+//       ScriptEngine engine = new GremlinGroovyScriptEngine();
+Graph graph = TinkerGraphFactory.createTinkerGraph();
+List results = new ArrayList();
+Bindings bindings = engine.createBindings();
+bindings.put("g", graph);
+bindings.put("v", graph.getVertex(1)); 
+bindings.put("name", "josh");
+bindings.put("results", results);
+...
+// be sure to use parameterized scripts for efficiency and speed
+engine.eval("v.out('knows').has('name',name).fill(results)", bindings);
+String script = "i = 0\n" +
+                "for(x in 1..10)\n" +
+                "  i++";
+engine.eval(script);
+engine.eval(new FileReader("script.grm"));
+```
+
+* *ENGINE_SCOPE*:  Engine scope variables/bindings are visible during the lifetime of a single @ScriptEngine@ and a set of variables is maintained for each engine.
+* *GLOBAL_SCOPE*: Global scope variables/bindings are visible to all engines created by same @ScriptEngineManager@. This is a @SimpleBindings@ that allow various @ScriptEngine@ 's created from the same manager to communicate with one another through a "blackboard". For example, global scope bindings in a Groovy engine can be used by a Gremlin engine and vice versa.
+
+To avoid scoping and thus, variable sharing, use
+```java
+ScriptEngine engine = new GremlinGroovyScriptEngine();
+```
+
+!http://www.javaworld.com/javaworld/jw-04-2006/images/jw-0424-scripting3.gif!
+
+==<hr/>==
+
+* See the "JavaDoc":http://java.sun.com/javase/6/docs/api/javax/script/ScriptEngine.html on @ScriptEngine@ for all the methods exposed by @GremlinGroovyScriptEngine@.
+* See the "JavaDoc":http://java.sun.com/javase/6/docs/api/javax/script/ScriptEngineFactory.html on @ScriptEngineFactory@ for all the methods exposed by @GremlinGroovyScriptEngineFactory@.

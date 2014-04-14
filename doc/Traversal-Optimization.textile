@@ -1,0 +1,59 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-gremopoly.png|width=125px|align=left|float]]
+
+In Gremlin, the same path expression can be written in numerous ways. Gremlin is an "imperative language":http://en.wikipedia.org/wiki/Imperative_programming in that the developer explicitly instructs Gremlin which path to take through the graph (as defined by an abstract path description). However, Gremlin doesn't always do as he is told. There are various optimizations that Gremlin will automatically take advantage of. This section describes such optimizations.
+
+==<br/>==
+
+h2. Query Optimization
+
+[[https://raw.github.com/tinkerpop/blueprints/master/doc/images/blueprints-character-2.png|width=100px|align=right|float]]
+In "Blueprints":http://blueprints.tinkerpop.com there are two types of graph indices that are respected: graph and vertex indices. A graph index is global to the entire graph whereby vertices/edges can be efficiently looked-up by their key/value properties. A vertex index is local to a vertex whereby incident edges can be efficiently looked-up by their direction, label, and key/value properties.
+
+h3. Graph Query Optimization
+
+Blueprints provides a method called @Graph.query()@. This method returns a @GraphQuery@ object that can be configured to filter the vertices and edges of a graph according to their properties. While the implementation depends on the backend graph engine, typically global indicies are utilized (i.e. @log(n)@-structures, where @n@ is the number of vertices/edges in the graph). In Gremlin, whenever an expression starts with @g.V@ (or @g.E@) the next series of statements provides predicates to the @GraphQuery@.
+
+```text
+gremlin> g.V.has('name','marko').interval('age',20,40).toString()
+==>[GremlinStartPipe, GraphQueryPipe(has,interval,vertex), IdentityPipe, IdentityPipe]
+```
+
+h3. Vertex Query Optimization
+
+Blueprints provides a method called @Vertex.query()@. This method returns a @VertexQuery@ object that can be configured to filter the edges (and thus vertices) associated with that @Vertex@ according to edge labels, edge properties, edge property intervals, etc. While the implementation depends on the backend graph engine, typically vertex-centric indicies are utilized (i.e. @log(m)@-structures, where @m@ is the number of incident edges to the vertex). Whenever a pattern such as @outE....inV@ is seen by Gremlin, Gremlin will automatically compile that statement into a @VertexQuery@ object.
+
+```text
+gremlin> g.v(1).outE('knows','created').interval('weight',0.5,1.0).has('date',2012).inV.name.toString()
+==>[GremlinStartPipe, VertexQueryPipe(out,[knows, created],has,interval,edge), IdentityPipe, IdentityPipe, InVertexPipe, PropertyPipe(name)]
+```
+
+Also, a range filter on a vertex-to-vertex traversal will compile to a @VertexQueryPipe@.
+
+```text
+gremlin> g.v(1).out('knows')[0..10].toString()
+==>[GremlinStartPipe, VertexQueryPipe(out,[knows],range:[0,10],vertex), IdentityPipe]
+```
+
+Note that Gremlin ensures that the pipeline length stays the same by introducing @IdentityPipe@ steps. This ensures that numbered step constructs (e.g. @loop(2)@, @back(1)@) remain faithful. Though it is always a good idea to @toString()@ an expression when using numbered steps to ensure proper indexing. 
+
+If the query optimization is not desired, there is the method @GremlinPipeline.optimize(boolean)@. This method makes it possible to turn off query optimizations.
+
+```text
+gremlin> g.v(1).optimize(false).outE('knows','created').interval('weight',0.5,1.0).has('date',2012).inV.name.toString()
+==>[GremlinStartPipe, OutEdgesPipe(knows,created), IntervalFilterPipe, PropertyFilterPipe(date,EQUAL,2012), InVertexPipe, PropertyPipe(name)]
+```
+
+h2. Automatic Path Enabling
+
+[[https://raw.github.com/tinkerpop/pipes/master/doc/images/pipes-character-2.png|width=100px|align=left|float]]
+
+"Pipes":http://pipes.tinkerpop.com natively supports the recording of the history of a particular traversal. By default, Gremlin does not assume that path information will be required of the traversal unless a path-specific step is called -- e.g. @path@, @simplePath@. If the path information is required internal to a closure, Gremlin doesn't know that as it can not interpret what is in a closure. As such, be sure to @GremlinPipeline.enablePath()@ if path information will be required by the expression.
+
+```text
+gremlin> g.v(1).as('x').out.loop('x'){it.loops < 3}{it.path.contains(g.v(4))}             
+Cannot invoke method contains() on null object
+Display stack trace? [yN] 
+gremlin> g.v(1).as('x').out.loop('x'){it.loops < 3}{it.path.contains(g.v(4))}.enablePath()
+==>v[5]
+==>v[3]
+```

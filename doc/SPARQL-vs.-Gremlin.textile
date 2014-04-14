@@ -1,0 +1,145 @@
+[[http://ebiquity.umbc.edu/blogger/wp-content/uploads//2006/05/sparql.png|float|align=left]]
+
+"SPARQL":http://www.w3.org/TR/rdf-sparql-query/ is a popular query language for RDF graphs. SPARQL is simple and intuitive, though it lacks various constructs for expressing any arbitrary graph query (e.g. looping and branching constructs). On the other hand, while Gremlin can be used to perform any arbitrary graph query, it lacks much of the intuitive and clean syntax made available by SPARQL. This section will discuss how to perform common SPARQL queries in Gremlin to help the user get a sense of how to query an RDF graph with Gremlin. Finally, note that it is possible to directly execute SPARQL queries in Gremlin over Sail-based graphs using the method @SailGraph.executeSparql()@.
+
+Here is a simple SPARQL query that will return all the vertices (i.e. resources) that  @tg:1@ @tg:knows@.
+
+```text
+SELECT ?x WHERE {
+  tg:1 tg:knows ?x
+}
+```
+
+An RDF store can be seen as a three column database table (with appropriate indices). Thus, each line of a SPARQL query is a pattern match on variables and/or constants, where each variable name (e.g. @?x@) must hold for all lines of the query (see "Prolog":http://en.wikipedia.org/wiki/Prolog). In Gremlin, this is accomplished by a filtered path traversal out of vertex @tg:1@. First, some setup code to load the graph diagrammed "at this location":http://github.com/tinkerpop/gremlin/raw/master/doc/images/graph-example-1-rdf.jpg.
+
+```text
+gremlin> g = new MemoryStoreSailGraph()      
+==>sailgraph[memorystore]
+gremlin> g.addNamespace('tg','http://tinkerpop.com#')
+==>null
+gremlin> g.loadRDF(new FileInputStream('data/graph-example-1.ntriple'), 'http://tinkerpop.com#', 'n-triples', null)
+==>null
+```
+
+And now the traversal.
+
+```text
+gremlin> g.v('tg:1').out('tg:knows')              
+==>v[http://tinkerpop.com#2]
+==>v[http://tinkerpop.com#4]
+```
+
+
+A more complicated example is provided below where the names of the "known" resources are desired.
+
+```text
+SELECT ?y WHERE {
+  tg:1 tg:knows ?x .
+  ?x tg:name ?y
+}
+```
+
+The corresponding Gremlin traversal is as follows.
+
+```text
+gremlin> g.v('tg:1').out('tg:knows').out('tg:name') 
+==>v["vadas"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["josh"^^<http://www.w3.org/2001/XMLSchema#string>]
+```
+
+Or, for only returning the string values:
+
+```text
+gremlin> g.v('tg:1').out('tg:knows').out('tg:name').value
+==>vadas
+==>josh
+```
+
+The general pattern for turning a SPARQL query into a Gremlin traversal is to find a constant in the query. For example, @tg:1@. Use that constant as the root from which to start a traversal from. If there are multiple constants, then ground the traversal as follows.
+
+```text
+SELECT ?y WHERE {
+  tg:1 tg:knows tg:2 .
+  tg:2 tg:name ?y
+}
+```
+
+```text
+gremlin> g.v('tg:1').out('tg:knows').has('id',g.uri('tg:2')).out('tg:name').value
+==>vadas
+```
+
+In this traversal, @tg:2@ serves as a ground (a mid-path constant).
+
+Lets do a table binding that will match arbitrary parts of the graph. In SPARQL, this is accomplished by returning multiple bindings.
+
+```text
+SELECT ?x, ?y WHERE {
+  tg:1 tg:knows ?x .
+  ?x tg:name ?y
+}
+```
+
+In Gremlin, this is accomplished by naming steps and using the table construct to return the results of each named step.
+
+```text
+gremlin> t = new Table()                                                 
+gremlin> g.v('tg:1').out('tg:knows').as('x').out('tg:name').value.as('y').table(t)
+==>vadas
+==>josh
+gremlin> t
+==>[x:v[http://tinkerpop.com#2], y:vadas]
+==>[x:v[http://tinkerpop.com#4], y:josh]
+gremlin> t.get(0,'y')
+==>vadas
+gremlin> t.get(1,'y')
+==>josh
+```
+
+If the SPARQL query does not have a constant, then a full edge scan is required in Gremlin. For example,
+
+```text
+SELECT ?z WHERE {
+  ?x ?y ?z
+}
+```
+
+has the corresponding Gremlin representation:
+
+```text
+gremlin> g.E.inV
+==>v[http://tinkerpop.com#2]
+==>v[http://tinkerpop.com#4]
+==>v[http://tinkerpop.com#3]
+==>v[http://tinkerpop.com#3]
+==>v[http://tinkerpop.com#5]
+==>v[http://tinkerpop.com#3]
+==>v["marko"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["29"^^<http://www.w3.org/2001/XMLSchema#int>]
+==>v["vadas"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["27"^^<http://www.w3.org/2001/XMLSchema#int>]
+==>v["lop"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["java"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["josh"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["32"^^<http://www.w3.org/2001/XMLSchema#int>]
+==>v["ripple"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["java"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["peter"^^<http://www.w3.org/2001/XMLSchema#string>]
+==>v["35"^^<http://www.w3.org/2001/XMLSchema#int>]
+```
+
+If @?y@, in the previous SPARQL query, is a constant, as in
+
+```text
+SELECT ?z WHERE {
+  ?x tg:knows ?z
+}
+```
+
+then in Gremlin do the following.
+
+```text
+gremlin> g.E.has('label',g.uri('tg:knows')).inV
+==>v[http://tinkerpop.com#2]
+==>v[http://tinkerpop.com#4]
+```

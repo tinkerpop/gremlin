@@ -1,0 +1,86 @@
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-kilt.png]]
+
+Many times its important to determine how many times a particular element is traversed over. That is, determine the flow through an element. Particular examples include:
+
+* "Rank my friends friends by how many friends we share in common."
+* "Rank items by how many people, who like the same things I like, like them."
+
+```text
+gremlin> software = []
+gremlin> g.V('lang','java').fill(software)
+==>v[3]
+==>v[5]
+gremlin> software                                  
+==>v[3]
+==>v[5]
+```
+
+Vertices @v[3]@ and @v[5]@ are software projects. Lets determine who is on the most software projects. In other words, lets traverse out of these vertices and see which developer vertices get the most flow.
+
+```text
+gremlin> software._().in('created').name.groupCount.cap  
+==>{marko=1, peter=1, josh=2}
+```
+
+Josh received the most traversals through him. The @groupCount@ step maintains an internal @Map<Object,Number>@. The @cap@ step is used to "cap" @groupCount@ and have it emit its internal map, not the elements that flow through it. The following example better explains "capping" by demonstrating what happens when its not used.
+
+```text
+gremlin> m = [:]
+gremlin> software._().in('created').name.groupCount(m)
+==>marko
+==>josh
+==>peter
+==>josh
+gremlin> m
+==>marko=1
+==>josh=2
+==>peter=1
+```
+
+[[https://github.com/tinkerpop/gremlin/raw/master/doc/images/grateful-dead-concert2.jpg]]
+
+Here is a more complicated example using the @loop@ step and the Grateful Dead graph diagrammed in [[Defining a More Complex Property Graph]]. 
+
+```text
+g = new TinkerGraph()
+g.loadGraphML('data/graph-example-2.xml')
+```
+
+The example below will continue to loop until a counter reaches 1000 (so the loop doesn't continue indefinitely). The loop will walk the outgoing edges of a vertex and update the flow map @m@. What is returned is how many times each song is traversed when starting from vertex @12@ (Me and My Uncle). Finally, @iterate()@ is appended so no results are outputted to the terminal.
+
+```text
+gremlin> c = 0                                                                
+==>0
+gremlin> m = [:]                                                              
+gremlin> g.v(12).as('x').out.groupCount(m){it.name}.loop('x'){c++ < 1000}.iterate()
+gremlin> m
+==>CHINA CAT SUNFLOWER=518
+==>RAMBLE ON ROSE=527
+==>WHARF RAT=213
+==>HES GONE=439
+==>HURTS ME TOO=112
+==>SHIP OF FOOLS=345
+==>FRIEND OF THE DEVIL=378
+==>IT MUST HAVE BEEN THE ROSES=371
+==>JACK STRAW=540
+==>MEXICALI BLUES=369
+==>CANDYMAN=345
+==>LOOKS LIKE RAIN=471
+==>DIRE WOLF=341
+==>HELP ON THE WAY=245
+...
+gremlin> println g.v(12).as('x').out.groupCount(m){it.name}.loop('x'){c++ < 1000}
+[StartPipe, LoopPipe([OutPipe, GroupCountFunctionPipe])]
+==>null
+```
+
+Finally, you can sort your rankings and, for example, get the top 5 results.
+
+```text
+gremlin> m.sort{a,b -> b.value <=> a.value}[0..4]
+==>PLAYING IN THE BAND=587
+==>ME AND MY UNCLE=570
+==>JACK STRAW=540
+==>EL PASO=532
+==>RAMBLE ON ROSE=527
+```
