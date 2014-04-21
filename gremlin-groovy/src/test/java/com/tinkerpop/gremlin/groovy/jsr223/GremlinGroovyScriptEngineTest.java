@@ -1,18 +1,17 @@
 package com.tinkerpop.gremlin.groovy.jsr223;
 
 import com.tinkerpop.blueprints.Graph;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraphFactory;
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import javax.script.Bindings;
 import javax.script.CompiledScript;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -288,4 +287,31 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         // make sure the class works on its own...this generates: groovy.lang.MissingPropertyException: No such property: c for class: Script2
         assertEquals(true, engine.eval("c.isVadas(g.v(2))", bindings));
     }
+
+    public void testGremlinScriptEngineWithScriptBaseClass() throws Exception {
+        ScriptEngine engine = new GremlinGroovyScriptEngine();
+        List list = new ArrayList();
+        engine.put("g", TinkerGraphFactory.createTinkerGraph());
+        engine.put("list", list);
+        assertEquals(list.size(), 0);
+        engine.eval("g.V.fill(list)");
+        assertEquals(6, list.size());
+
+        list.clear();
+        TinkerGraph tinkerGraph = TinkerGraphFactory.createTinkerGraph();
+        Vertex marko = tinkerGraph.getVertex(1L);
+        Assert.assertEquals("marko", marko.getProperty("name"));
+        marko.setProperty("deleted", new Date());
+
+        engine = new GremlinGroovyScriptEngine("com.tinkerpop.gremlin.groovy.basescript.GremlinGroovyScriptBaseClassForTest");
+        engine.put("g", tinkerGraph);
+        engine.put("list", list);
+        assertEquals(list.size(), 0);
+        String groovy = "g.V.fill(list)";
+        groovy = "useInterceptor( GremlinGroovyPipeline, com.tinkerpop.gremlin.groovy.basescript.GremlinGroovyPipelineInterceptor) {" + groovy + "}";
+        engine.eval(groovy);
+        assertEquals(5, list.size());
+
+    }
+
 }

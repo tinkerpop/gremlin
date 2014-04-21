@@ -66,9 +66,20 @@ public class GremlinGroovyScriptEngine extends GroovyScriptEngineImpl {
         this.cacheResetSize = cacheResetSize;
     }
 
+    public GremlinGroovyScriptEngine(String scripBaseClass) {
+        this(scripBaseClass, new DefaultImportCustomizerProvider());
+    }
+
     public GremlinGroovyScriptEngine(final ImportCustomizerProvider importCustomizerProvider) {
+        this(null, importCustomizerProvider);
+    }
+
+    public GremlinGroovyScriptEngine(String scriptBaseClass, final ImportCustomizerProvider importCustomizerProvider) {
         Gremlin.load();
         final CompilerConfiguration conf = new CompilerConfiguration();
+        if (scriptBaseClass != null) {
+            conf.setScriptBaseClass(scriptBaseClass);
+        }
         conf.addCompilationCustomizers(importCustomizerProvider.getImportCustomizer());
         this.loader = new GroovyClassLoader(getParentLoader(), conf);
     }
