@@ -35,11 +35,8 @@ if [ "$1" = "-e" ]; then
   eval $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.groovy.jsr223.ScriptExecutor $k
 else
   if [ "$1" = "-v" ]; then
-    $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.Version
+    exec $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.Version
   else
-    $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.groovy.console.Console $@
+    exec $JAVA $JAVA_OPTIONS -cp $CP:$CLASSPATH com.tinkerpop.gremlin.groovy.console.Console $@
   fi
 fi
-
-# Return the program's exit code
-exit $?
