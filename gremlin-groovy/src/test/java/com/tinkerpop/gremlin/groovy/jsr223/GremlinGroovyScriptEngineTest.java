@@ -311,7 +311,10 @@ public class GremlinGroovyScriptEngineTest extends TestCase {
         groovy = "useInterceptor( GremlinGroovyPipeline, com.tinkerpop.gremlin.groovy.basescript.GremlinGroovyPipelineInterceptor) {" + groovy + "}";
         engine.eval(groovy);
         assertEquals(5, list.size());
-
     }
 
+    public void testGremlinScriptEngineWithUTF8Characters() throws Exception {
+        ScriptEngine engine = new GremlinGroovyScriptEngine();
+        assertEquals("轉注", engine.eval("'轉注'"));
+    }
 }
