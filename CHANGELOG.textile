@@ -21,7 +21,8 @@ h3. Version 2.6.0 (NOT YET RELEASED)
  </dependency>
  ```
 
- * @GremlinGroovyScriptEngine@ allows for a script base class to be set.
+* @GremlinGroovyScriptEngine@ reads scripts to UTF-8.
+* @GremlinGroovyScriptEngine@ allows for a script base class to be set.
 
 h3. Version 2.5.0 (April 14, 2014)
 
