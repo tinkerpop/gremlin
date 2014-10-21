@@ -147,7 +147,7 @@
         <dependency>
             <groupId>jline</groupId>
             <artifactId>jline</artifactId>
-            <version>0.9.94</version>
+            <version>1.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId>
