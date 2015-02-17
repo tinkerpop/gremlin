@@ -6,6 +6,7 @@ Gremlin is a domain specific language for traversing property "graphs":http://en
 * Graph database connectivity:
 ** "TinkerGraph":https://github.com/tinkerpop/blueprints/wiki/TinkerGraph in-memory graph
 ** "Neo4j":http://neo4j.org/ graph database
+** "Cayley":https://github.com/google/cayley graph database
 ** "OrientDB":http://www.orientechnologies.com/ graph database
 ** "Sparksee":http://www.sparsity-technologies.com/#sparksee graph database
 ** "Titan":http://thinkaurelius.github.com/titan/ graph database
