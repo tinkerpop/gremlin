@@ -12,7 +12,7 @@ g = TinkerGraphFactory.createTinkerGraph()
 The query below says, in plain English: "What are the ages of the people that know people that are 30+ years old?" The call to @back('x')@ refers to the elements at step @x@ that have paths up to the @back('x')@ step (i.e. back to the @V@ step). In the example below, @back('x')@ "wraps" @out('knows').has('age', T.gt, 30)@.
 
 ```text
-gremlin> g.V.as('x').outE('knows').inV.has('age', T.gt, 30).back('x').age
+gremlin> g.V.as('x').out('knows').has('age', T.gt, 30).back('x').age
 ==>29
 ```
 
