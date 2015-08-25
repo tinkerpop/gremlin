@@ -54,7 +54,7 @@ gremlin> g.v(89).out('followed_by').as('x').out('sung_by').has('name','Garcia').
 In order to determine how many steps to go back, the @GremlinPipeline.toString()@ can be handy for displaying all the steps in an expression.
 
 ```text
-gremlin> println g.v(89).out('followed_by').out('sung_by').has('name','Garcia')             
+gremlin> g.v(89).out('followed_by').out('sung_by').has('name','Garcia').toString()             
 [StartPipe, OutPipe(followed_by), OutPipe(sung_by), PropertyFilterPipe(name,EQUAL,Garcia)]
 ==>null
 ```
@@ -62,7 +62,7 @@ gremlin> println g.v(89).out('followed_by').out('sung_by').has('name','Garcia')
 Now, using the @back@ step, notice how @back('x')@ wraps 3 pipes prior to it. The name of the pipe in "Pipes":http://pipes.tinkerpop.com is @BackFilterPipe@.
 
 ```text
-gremlin> println g.v(89).out('followed_by').as('x').out('sung_by').has('name','Garcia').back('x').name
+gremlin> g.v(89).out('followed_by').as('x').out('sung_by').has('name','Garcia').back('x').name.toString()
 [StartPipe, AsPipe(x,OutPipe(followed_by)), BackFilterPipe([OutPipe(sung_by), PropertyFilterPipe(name,EQUAL,Garcia)]), PropertyPipe(name)]
 ==>null
 ```
