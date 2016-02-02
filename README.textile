@@ -2,7 +2,7 @@
 
 <img alt="" height="170" src="https://raw.githubusercontent.com/apache/incubator-tinkerpop/master/docs/static/images/not-tinkerpop3-gremlin.png" />
 
-*IMPORTANT* - TinkerPop is now a part of the Apache Software Foundation and "TinkerPop 3.x":http://tinkerpop.incubator.apache.org/ is the latest incarnation of The TinkerPop.  This project is TinkerPop 2.x and is in maintenance mode.  
+*IMPORTANT* - TinkerPop is now a part of the Apache Software Foundation and "TinkerPop 3.x":http://tinkerpop.incubator.apache.org/ is the latest incarnation of The TinkerPop.  This project is TinkerPop 2.x and is no longer active.  
 
 Gremlin is a domain specific language for traversing property "graphs":http://en.wikipedia.org/wiki/Graph_%28mathematics%29. Gremlin makes use of "Pipes":http://pipes.tinkerpop.com to perform complex graph traversals. This language has application in the areas of graph query, analysis, and manipulation. Connectors, provided by "Blueprints":http://blueprints.tinkerpop.com, exist for the following graph management systems:
 
