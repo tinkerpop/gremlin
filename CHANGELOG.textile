@@ -472,7 +472,7 @@ h3. Version 0.8 (Grem Stefani -- March 2, 2011)
 * Added @outE(label)@, @inE(label)@ and @bothE(label)@ support
 * Added support for dynamic counter adjustment in @groupCount@
 * Bumped to using Groovy 1.7.8
-* Created a type-cast friendly @groupCount@ step 
+* Created a type-cast friendly @groupCount@ step
 
 ==<hr/>==
 
