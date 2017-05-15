@@ -1,6 +1,6 @@
 !https://github.com/tinkerpop/gremlin/raw/master/doc/images/gremlin-logo.png!
 
-<a href="http://tinkerpop.apache.org><img alt="" height="170" src="https://raw.githubusercontent.com/apache/incubator-tinkerpop/master/docs/static/images/not-tinkerpop3-gremlin.png" /></a>
+<a href="http://tinkerpop.apache.org"><img alt="" height="170" src="https://raw.githubusercontent.com/apache/incubator-tinkerpop/master/docs/static/images/not-tinkerpop3-gremlin.png" /></a>
 
 *IMPORTANT* - TinkerPop is now a part of the Apache Software Foundation and "TinkerPop 3.x":http://tinkerpop.apache.org/ is the latest incarnation of The TinkerPop.  This project is TinkerPop 2.x and is no longer active.  
 
